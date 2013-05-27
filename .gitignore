@@ -1,13 +1,41 @@
-# Compiled Object files
-*.slo
-*.lo
-*.o
+#Ignore files build by Visual Studio
+*.obj
+*.exe
+*.pdb
+*.user
+*.aps
+*.pch
+*.vspscc
+*_i.c
+*_p.c
+*.ncb
+*.suo
+*.tlb
+*.tlh
+*.bak
+*.cache
+*.ilk
+*.log
+*.lib
+*.sbr
+*.sdf
+*.opensdf
+_ReSharper*/
+[Tt]est[Rr]esult*
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
+#Ignore project folders
+bin/
+intermediate/
+lib/
+stuff/
+src/ipch/
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
+#Ignore unnecessary SDK files
+src/Thirdparty/CDSDK/Doc/
+src/Thirdparty/CDSDK/install/
+src/Thirdparty/CDSDK/Sample/
+src/Thirdparty/CDSDK/Samples/
+src/Thirdparty/EDSDK/Dll/icc/
+src/Thirdparty/EDSDK/Document/
+src/Thirdparty/PSREC/Doc/
+src/Thirdparty/PSREC/Sample/
