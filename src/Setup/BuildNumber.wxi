@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+
+  RemotePhotoTool - remote camera control software
+  Copyright (C) 2008-2013 Michael Fink
+
+  BuildNumber.wxi - Build number include file
+
+  This is usually overwritten by automated build to set an actual version number
+
+-->
+<Include xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+   <?define BuildNumber = "0" ?>
+
+</Include>

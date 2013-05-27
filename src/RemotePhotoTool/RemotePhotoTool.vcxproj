@@ -1,0 +1,212 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{CDEDF8B5-A808-4995-97EB-1289A84FF7ED}</ProjectGuid>
+    <RootNamespace>RemotePhotoTool</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v110_xp</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v110_xp</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\boost.props" />
+    <Import Project="..\atl71-x86.props" />
+    <Import Project="..\wtl81.props" />
+    <Import Project="..\RemotePhotoTool-Release.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\boost.props" />
+    <Import Project="..\atl71-x86.props" />
+    <Import Project="..\wtl81.props" />
+    <Import Project="..\RemotePhotoTool-Debug.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>11.0.51106.1</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)\..\bin\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)\..\bin\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <TargetEnvironment>Win32</TargetEnvironment>
+      <GenerateStublessProxies>true</GenerateStublessProxies>
+      <TypeLibraryName>$(IntDir)RemotePhotoTool.tlb</TypeLibraryName>
+      <HeaderFileName>RemotePhotoTool.h</HeaderFileName>
+      <DllDataFileName />
+      <InterfaceIdentifierFileName>RemotePhotoTool_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>RemotePhotoTool_p.c</ProxyFileName>
+    </Midl>
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\Base;..\CanonControl\exports;..\Thirdparty;..\Thirdparty\jpeg-8d;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;STRICT;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <AdditionalOptions>/ignore:4254 /ignore:4078 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>Base.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <TargetEnvironment>Win32</TargetEnvironment>
+      <GenerateStublessProxies>true</GenerateStublessProxies>
+      <TypeLibraryName>$(IntDir)RemotePhotoTool.tlb</TypeLibraryName>
+      <HeaderFileName>RemotePhotoTool.h</HeaderFileName>
+      <DllDataFileName />
+      <InterfaceIdentifierFileName>RemotePhotoTool_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>RemotePhotoTool_p.c</ProxyFileName>
+    </Midl>
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\Base;..\CanonControl\exports;..\Thirdparty;..\Thirdparty\jpeg-8d;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;STRICT;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <AdditionalOptions>/ignore:4254 /ignore:4078 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>Base.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="AboutDlg.cpp" />
+    <ClCompile Include="App.cpp" />
+    <ClCompile Include="AppSettings.cpp" />
+    <ClCompile Include="CameraInfoDlg.cpp" />
+    <ClCompile Include="ConnectCameraDlg.cpp" />
+    <ClCompile Include="DevicePropertyView.cpp" />
+    <ClCompile Include="HDRPhotoModeView.cpp" />
+    <ClCompile Include="HuginInterface.cpp" />
+    <ClCompile Include="ImageFileManager.cpp" />
+    <ClCompile Include="ImagePropertyCombobox.cpp" />
+    <ClCompile Include="ImagePropertyValueManager.cpp" />
+    <ClCompile Include="ImagePropertyView.cpp" />
+    <ClCompile Include="JpegMemoryReader.cpp" />
+    <ClCompile Include="MainFrame.cpp" />
+    <ClCompile Include="PanoramaPhotoModeView.cpp" />
+    <ClCompile Include="PhotomatixInterface.cpp" />
+    <ClCompile Include="RemotePhotoTool.cpp" />
+    <ClCompile Include="SettingsDlg.cpp" />
+    <ClCompile Include="StandardPhotoModeView.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="ViewFinderImageWindow.cpp" />
+    <ClCompile Include="ViewManager.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AboutDlg.hpp" />
+    <ClInclude Include="App.hpp" />
+    <ClInclude Include="AppSettings.hpp" />
+    <ClInclude Include="BlankView.hpp" />
+    <ClInclude Include="CameraErrorDlg.hpp" />
+    <ClInclude Include="CameraInfoDlg.hpp" />
+    <ClInclude Include="ConnectCameraDlg.hpp" />
+    <ClInclude Include="DevicePropertyView.hpp" />
+    <ClInclude Include="HDRPhotoModeView.hpp" />
+    <ClInclude Include="HuginInterface.hpp" />
+    <ClInclude Include="Icons.hpp" />
+    <ClInclude Include="IImagePropertyControl.hpp" />
+    <ClInclude Include="ImageFileManager.hpp" />
+    <ClInclude Include="ImagePropertyCombobox.hpp" />
+    <ClInclude Include="ImagePropertyValueManager.hpp" />
+    <ClInclude Include="ImagePropertyView.hpp" />
+    <ClInclude Include="IPhotoModeView.hpp" />
+    <ClInclude Include="IPhotoModeViewHost.hpp" />
+    <ClInclude Include="JpegDecoder.hpp" />
+    <ClInclude Include="JpegMemoryReader.hpp" />
+    <ClInclude Include="JpegMemorySourceManager.hpp" />
+    <ClInclude Include="MainFrame.hpp" />
+    <ClInclude Include="PanoramaPhotoModeView.hpp" />
+    <ClInclude Include="PhotomatixInterface.hpp" />
+    <ClInclude Include="res\MainFrameRibbon.h" />
+    <ClInclude Include="SettingsDlg.hpp" />
+    <ClInclude Include="StandardPhotoModeView.hpp" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="ViewFinderImageWindow.hpp" />
+    <ClInclude Include="ViewManager.hpp" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\RemotePhotoTool.ico" />
+    <Image Include="res\toolbar.bmp" />
+    <Image Include="res\toolbar_big.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="RemotePhotoTool.rc" />
+    <ResourceCompile Include="res\MainFrameRibbon.rc" />
+    <ResourceCompile Include="versioninfo.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CanonControl\CanonControl.vcxproj">
+      <Project>{ce953b34-5513-4719-aead-a61f0585ab34}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\LuaScripting\LuaScripting.vcxproj">
+      <Project>{41b565f7-f668-4425-a93d-6cabc18f6d1f}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="res\MainFrameRibbon.xml">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">uicc %(FullPath) %(RootDir)%(Directory)%(Filename).bml /header:%(RootDir)%(Directory)%(Filename).h /res:%(RootDir)%(Directory)%(Filename).rc</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Compiling %(Filename)%(Extension)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(RootDir)%(Directory)%(Filename).bml;%(RootDir)%(Directory)%(Filename).rc;%(RootDir)%(Directory)%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">uicc %(FullPath) %(RootDir)%(Directory)%(Filename).bml /header:%(RootDir)%(Directory)%(Filename).h /res:%(RootDir)%(Directory)%(Filename).rc</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Compiling %(Filename)%(Extension)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(RootDir)%(Directory)%(Filename).bml;%(RootDir)%(Directory)%(Filename).rc;%(RootDir)%(Directory)%(Filename).h;%(Outputs)</Outputs>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Changelog.md" />
+    <None Include="..\..\License.md" />
+    <None Include="..\..\README.md" />
+    <None Include="res\MainFrameRibbon.bml" />
+    <None Include="res\toolbar.xcf" />
+    <None Include="res\toolbar_big.xcf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\TODO.txt" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

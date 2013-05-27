@@ -1,0 +1,100 @@
+<?xml version='1.0'?>
+<!--
+
+  RemotePhotoTool - remote camera control software
+  Copyright (C) 2008-2013 Michael Fink
+
+  SdkFiles.wxs - Thirdparty SDK file components (fragment)
+
+-->
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+   <?include Config.wxi ?>
+   <Fragment>
+      <!-- ***************************************** -->
+      <ComponentGroup Id="EdsdkFiles">
+         <Component Id="DppdllDll" Guid="C320B655-7A34-4B57-8101-84C57B357034" Directory="INSTALLDIR">
+            <File Id="DppdllDll" Name="DPPDLL.dll" DiskId="1" KeyPath="yes" Source="$(var.SourceFolder)\DPPDLL.dll" />
+         </Component>
+
+        <Component Id="DpplibcomDll" Guid="59766A86-6C22-47DD-B4EC-31B46F5032D3" Directory="INSTALLDIR">
+          <File Id="DpplibcomDll" Name="DPPLibCom.dll" DiskId="1" KeyPath="yes" Source="$(var.SourceFolder)\DPPLibCom.dll" />
+        </Component>
+        
+        <Component Id="DpprscDll" Guid="EB38BEBE-C4D6-4AA9-A4AF-7E359A44B9D5" Directory="INSTALLDIR">
+          <File Id="DpprscDll" Name="DPPRSC.dll" DiskId="1" KeyPath="yes" Source="$(var.SourceFolder)\DPPRSC.dll" />
+        </Component>
+        
+        <Component Id="EdsdkDll" Guid="4832DFAB-7FD3-4D0D-A495-81799D96EC59" Directory="INSTALLDIR">
+          <File Id="EdsdkDll" Name="EDSDK.dll" DiskId="1" KeyPath="yes" Source="$(var.SourceFolder)\EDSDK.dll" />
+        </Component>
+        
+        <Component Id="EdsimageDll" Guid="79300D66-2A1D-4CB9-B93D-00D7B3D78B78" Directory="INSTALLDIR">
+          <File Id="EdsimageDll" Name="EdsImage.dll" DiskId="1" KeyPath="yes" Source="$(var.SourceFolder)\EdsImage.dll" />
+        </Component>
+        
+        <Component Id="MlibDll" Guid="5D0581D0-0CA8-4593-A866-678C68B2180B" Directory="INSTALLDIR">
+          <File Id="MlibDll" Name="Mlib.dll" DiskId="1" KeyPath="yes" Source="$(var.SourceFolder)\Mlib.dll" />
+        </Component>
+        
+        <Component Id="Ucs32pDll" Guid="07575CA9-DD15-4454-9392-43C6CB181857" Directory="INSTALLDIR">
+          <File Id="Ucs32pDll" Name="Ucs32P.dll" DiskId="1" KeyPath="yes" Source="$(var.SourceFolder)\Ucs32P.dll" />
+        </Component>
+      </ComponentGroup>
+     <!-- ***************************************** -->
+
+     <ComponentGroup Id="PsrecFiles">
+        <Component Id="PrsdkDll" Guid="F5DA09E7-2C51-4D7A-817A-D3DFA05D3265" Directory="INSTALLDIR">
+          <File Id="PrsdkDll" Name="PRSDK.dll" DiskId="1" KeyPath="yes" Source="$(var.SourceFolder)\PRSDK.dll" />
+        </Component>
+
+        <Component Id="PrlibDll" Guid="3E98DCC8-8F64-4591-BBE9-318BB1781D86" Directory="INSTALLDIR">
+          <File Id="PrlibDll" Name="PRLIB.dll" DiskId="1" KeyPath="yes" Source="$(var.SourceFolder)\PRLIB.dll" />
+        </Component>
+      </ComponentGroup>
+     <!-- ***************************************** -->
+
+     <!-- ComponentGroup Id="CdsdkFiles">
+       <Component Id="CDPROCMN.exe" Guid="{875023FC-C08A-45AB-A144-DE2C69A79C58}" Directory="INSTALLDIR">
+         <File Id="CDPROCMN.exe" Name="CDPROCMN.exe" DiskId="1" KeyPath="yes" Source="$(var.SourceFolder)\CDPROCMN.exe" />
+       </Component>
+       <Component Id="CDPTPCLS.dll" Guid="{35EA4046-E6B7-4B88-9F61-0AA8199590C2}" Directory="INSTALLDIR">
+         <File Id="CDPTPCLS.dll" Name="CDPTPCLS.dll" DiskId="1" KeyPath="yes" Source="$(var.SourceFolder)\CDPTPCLS.dll" />
+       </Component>
+       <Component Id="CDPTPCLT.dll" Guid="{4E6F3E71-5E9D-4698-86A2-E3DF077B5FA7}" Directory="INSTALLDIR">
+         <File Id="CDPTPCLT.dll" Name="CDPTPCLT.dll" DiskId="1" KeyPath="yes" Source="$(var.SourceFolder)\CDPTPCLT.dll" />
+       </Component>
+       <Component Id="CDRAPCLS.dll" Guid="{39001CDA-2CCE-4D8F-B1A8-D9BCD99F2E34}" Directory="INSTALLDIR">
+         <File Id="CDRAPCLS.dll" Name="CDRAPCLS.dll" DiskId="1" KeyPath="yes" Source="$(var.SourceFolder)\CDRAPCLS.dll" />
+       </Component>
+       <Component Id="CDSDK.dll" Guid="{BD2AF049-8E18-4B63-B898-B0F5A1CABD28}" Directory="INSTALLDIR">
+         <File Id="CDSDK.dll" Name="CDSDK.dll" DiskId="1" KeyPath="yes" Source="$(var.SourceFolder)\CDSDK.dll" />
+       </Component>
+       <Component Id="EWatch.exe" Guid="{98E99F41-350F-4B60-B329-1B4AD4C7EF48}" Directory="INSTALLDIR">
+         <File Id="EWatch.exe" Name="EWatch.exe" DiskId="1" KeyPath="yes" Source="$(var.SourceFolder)\EWatch.exe" />
+       </Component>
+       <Component Id="GetPicture.exe" Guid="{C6292D1C-68CB-4400-BF91-7BD0ED56B362}" Directory="INSTALLDIR">
+         <File Id="GetPicture.exe" Name="GetPicture.exe" DiskId="1" KeyPath="yes" Source="$(var.SourceFolder)\GetPicture.exe" />
+       </Component>
+       <Component Id="IWrap.dll" Guid="{9EC303A5-72E2-4D48-9831-71CB86A384A7}" Directory="INSTALLDIR">
+         <File Id="IWrap.dll" Name="IWrap.dll" DiskId="1" KeyPath="yes" Source="$(var.SourceFolder)\IWrap.dll" />
+       </Component>
+       <Component Id="psCamDat.dll" Guid="{F5BACD27-CDD7-4947-9115-4215A44EEC5C}" Directory="INSTALLDIR">
+         <File Id="psCamDat.dll" Name="psCamDat.dll" DiskId="1" KeyPath="yes" Source="$(var.SourceFolder)\psCamDat.dll" />
+       </Component>
+       <Component Id="cdDcd.dll" Guid="{DB25B8F0-BA14-4EE1-848F-CB54D77944B5}" Directory="INSTALLDIR">
+         <File Id="cdDcd.dll" Name="cdDcd.dll" DiskId="1" KeyPath="yes" Source="$(var.SourceFolder)\cdDcd.dll" />
+       </Component>
+       <Component Id="cdDvlp.dll" Guid="{80A4D661-410C-4957-A214-E31EAF0E7A0D}" Directory="INSTALLDIR">
+         <File Id="cdDvlp.dll" Name="cdDvlp.dll" DiskId="1" KeyPath="yes" Source="$(var.SourceFolder)\cdDvlp.dll" />
+       </Component>
+       <Component Id="cdParse.dll" Guid="{D5859356-88CE-4657-ABCF-545AA48FD544}" Directory="INSTALLDIR">
+         <File Id="cdParse.dll" Name="cdParse.dll" DiskId="1" KeyPath="yes" Source="$(var.SourceFolder)\cdParse.dll" />
+       </Component>
+       <Component Id="CDPROC.exe" Guid="{EE96D10F-0F1D-432E-9628-11F273D6741E}" Directory="INSTALLDIR">
+         <File Id="CDPROC.exe" Name="CDPROC.exe" DiskId="1" KeyPath="yes" Source="$(var.SourceFolder)\CDPROC.exe" />
+       </Component>
+     </ComponentGroup -->
+     <!-- ***************************************** -->
+
+   </Fragment>
+</Wix>

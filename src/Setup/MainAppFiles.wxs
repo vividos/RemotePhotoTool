@@ -1,0 +1,33 @@
+<?xml version='1.0'?>
+<!--
+
+  RemotePhotoTool - remote camera control software
+  Copyright (C) 2008-2013 Michael Fink
+
+  MainAppFiles.wxs - Main application file components (fragment)
+
+-->
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+  <?include Config.wxi ?>
+
+  <Fragment>
+    <ComponentGroup Id="MainAppFiles">
+
+      <Component Id="RemotePhotoToolExe" Guid="9BCE338C-3509-449A-BDFF-871DB7E83CB5" Directory="INSTALLDIR">
+        <File Id="RemotePhotoToolExe" Name="RemotePhotoTool.exe" DiskId="1" KeyPath="yes" Source="$(var.SourceFolder)\RemotePhotoTool.exe" />
+      </Component>
+
+      <Component Id="MainAppShortcut" Guid="5A8B18B1-9CCB-4A2B-87AC-AC8B62DCFD2D" Directory="MainAppShortcutFolder">
+        <Shortcut Id="RemotePhotoToolShortcut"
+           Name="$(var.ProductName)"
+           Description="Starts $(var.ProductName)"
+           Target="[INSTALLDIR]RemotePhotoTool.exe"
+           WorkingDirectory="INSTALLDIR"/>
+        <RemoveFolder Id="MainAppShortcutFolder" On="uninstall"/>
+        <RegistryValue Root="HKCU" Key="Software\Microsoft\$(var.ProductName)" Name="Installed" Type="integer" Value="1" KeyPath="yes"/>
+      </Component>
+
+    </ComponentGroup>
+  </Fragment>
+</Wix>

@@ -1,0 +1,176 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{CE953B34-5513-4719-AEAD-A61F0585AB34}</ProjectGuid>
+    <RootNamespace>CanonControl</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v110_xp</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v110_xp</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\boost.props" />
+    <Import Project="..\atl71-x86.props" />
+    <Import Project="..\wtl81.props" />
+    <Import Project="..\RemotePhotoTool-Release.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\boost.props" />
+    <Import Project="..\atl71-x86.props" />
+    <Import Project="..\wtl81.props" />
+    <Import Project="..\RemotePhotoTool-Debug.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>11.0.51106.1</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)\..\lib\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)\..\lib\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <CustomBuildStep>
+      <Command />
+    </CustomBuildStep>
+    <ClCompile>
+      <AdditionalIncludeDirectories>exports;..\Base;..\Thirdparty\EDSDK\Header;..\Thirdparty\CDSDK\inc;..\Thirdparty\PSREC\PSReCSDK\inc;..\Thirdparty\boost-log-2.0-RC1;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;CANONCONTROL_EXPORTS;BOOST_DATE_TIME_NO_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Lib>
+      <AdditionalOptions>/IGNORE:4006 /IGNORE:4221 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalLibraryDirectories>$(SolutionDir)\Thirdparty\CDSDK\lib;$(SolutionDir)\Thirdparty\EDSDK\Library;$(SolutionDir)\Thirdparty\PSREC\PSReCSDK\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>edsdk.lib;prsdk.lib</AdditionalDependencies>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <CustomBuildStep>
+      <Command />
+    </CustomBuildStep>
+    <ClCompile>
+      <AdditionalIncludeDirectories>exports;..\Base;..\Thirdparty\EDSDK\Header;..\Thirdparty\CDSDK\inc;..\Thirdparty\PSREC\PSReCSDK\inc;..\Thirdparty\boost-log-2.0-RC1;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;BOOST_DATE_TIME_NO_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Lib>
+      <AdditionalOptions>/IGNORE:4006 /IGNORE:4221 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalLibraryDirectories>$(SolutionDir)\Thirdparty\CDSDK\lib;$(SolutionDir)\Thirdparty\EDSDK\Library;$(SolutionDir)\Thirdparty\PSREC\PSReCSDK\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>edsdk.lib;prsdk.lib</AdditionalDependencies>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="CdsdkPropertyAccess.cpp" />
+    <ClCompile Include="CommonPropertyAccess.cpp" />
+    <ClCompile Include="ImageFormat.cpp" />
+    <ClCompile Include="Instance.cpp" />
+    <ClCompile Include="CameraException.cpp" />
+    <ClCompile Include="DeviceProperty.cpp" />
+    <ClCompile Include="EdsdkCommon.cpp" />
+    <ClCompile Include="EdsdkPropertyAccess.cpp" />
+    <ClCompile Include="EdsdkRemoteReleaseControlImpl.cpp" />
+    <ClCompile Include="EdsdkViewfinderImpl.cpp" />
+    <ClCompile Include="ImageProperty.cpp" />
+    <ClCompile Include="PsrecPropertyAccess.cpp" />
+    <ClCompile Include="PsrecRemoteReleaseControlImpl.cpp" />
+    <ClCompile Include="ShutterSpeedValue.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Variant.cpp" />
+    <ClCompile Include="CdsdkCommon.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="PsrecCommon.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Thirdparty\CDSDK\inc\cdAPI.h" />
+    <ClInclude Include="..\Thirdparty\CDSDK\inc\cdError.h" />
+    <ClInclude Include="..\Thirdparty\CDSDK\inc\cdEvent.h" />
+    <ClInclude Include="..\Thirdparty\CDSDK\inc\cdFncTyp.h" />
+    <ClInclude Include="..\Thirdparty\CDSDK\inc\cdType.h" />
+    <ClInclude Include="..\Thirdparty\EDSDK\Header\EDSDK.h" />
+    <ClInclude Include="..\Thirdparty\EDSDK\Header\EDSDKErrors.h" />
+    <ClInclude Include="..\Thirdparty\EDSDK\Header\EDSDKTypes.h" />
+    <ClInclude Include="..\Thirdparty\PSREC\PSReCSDK\inc\prAPI.h" />
+    <ClInclude Include="..\Thirdparty\PSREC\PSReCSDK\inc\prError.h" />
+    <ClInclude Include="..\Thirdparty\PSREC\PSReCSDK\inc\prFuncType.h" />
+    <ClInclude Include="..\Thirdparty\PSREC\PSReCSDK\inc\prType.h" />
+    <ClInclude Include="BackgroundWorkerThread.hpp" />
+    <ClInclude Include="CommonPropertyAccess.hpp" />
+    <ClInclude Include="exports\BulbReleaseControl.hpp" />
+    <ClInclude Include="exports\Instance.hpp" />
+    <ClInclude Include="exports\CameraException.hpp" />
+    <ClInclude Include="exports\DeviceProperty.hpp" />
+    <ClInclude Include="exports\ImageProperty.hpp" />
+    <ClInclude Include="exports\ImplFwd.hpp" />
+    <ClInclude Include="exports\RemoteReleaseControl.hpp" />
+    <ClInclude Include="exports\ShootingMode.hpp" />
+    <ClInclude Include="exports\ShutterReleaseSettings.hpp" />
+    <ClInclude Include="exports\ShutterSpeedValue.hpp" />
+    <ClInclude Include="exports\SourceDevice.hpp" />
+    <ClInclude Include="exports\SourceInfo.hpp" />
+    <ClInclude Include="exports\Variant.hpp" />
+    <ClInclude Include="exports\Viewfinder.hpp" />
+    <ClInclude Include="BackgroundWindowThread.hpp" />
+    <ClInclude Include="CanonControlExports.hpp" />
+    <ClInclude Include="ImageFormat.hpp" />
+    <ClInclude Include="PsrecViewfinderImpl.hpp" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="CdsdkCommon.hpp" />
+    <ClInclude Include="CdsdkPropertyAccess.hpp" />
+    <ClInclude Include="CdsdkRemoteReleaseControlImpl.hpp" />
+    <ClInclude Include="CdsdkSourceDeviceImpl.hpp" />
+    <ClInclude Include="CdsdkSourceInfoImpl.hpp" />
+    <ClInclude Include="CdsdkViewfinderImpl.hpp" />
+    <ClInclude Include="EdsdkBulbReleaseControlImpl.hpp" />
+    <ClInclude Include="EdsdkCommon.hpp" />
+    <ClInclude Include="EdsdkPropertyAccess.hpp" />
+    <ClInclude Include="EdsdkRemoteReleaseControlImpl.hpp" />
+    <ClInclude Include="EdsdkSourceDeviceImpl.hpp" />
+    <ClInclude Include="EdsdkSourceInfoImpl.hpp" />
+    <ClInclude Include="EdsdkViewfinderImpl.hpp" />
+    <ClInclude Include="PsrecCommon.hpp" />
+    <ClInclude Include="PsrecDeviceInfo.hpp" />
+    <ClInclude Include="PsrecPropertyAccess.hpp" />
+    <ClInclude Include="PsrecRemoteReleaseControlImpl.hpp" />
+    <ClInclude Include="PsrecSourceDeviceImpl.hpp" />
+    <ClInclude Include="PsrecSourceInfoImpl.hpp" />
+    <ClInclude Include="PsrecVarDataParser.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Thirdparty\CDSDK\Doc\CDSDK73UserGuide.doc" />
+    <None Include="..\Thirdparty\CDSDK\Doc\CDSDK73UserGuide.pdf" />
+    <None Include="..\Thirdparty\EDSDK\Document\EDSDK_API.pdf" />
+    <None Include="..\Thirdparty\PSREC\Doc\PSReCSDK110eUserGuide.doc" />
+    <None Include="..\Thirdparty\PSREC\Doc\PSReCSDK110eUserGuide.pdf" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -1,0 +1,132 @@
+<?xml version='1.0'?>
+<!--
+
+  RemotePhotoTool - remote camera control software
+  Copyright (C) 2008-2013 Michael Fink
+
+  RemotePhotoTool.wxs - RemotePhotoTool install package
+
+-->
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+  <?include Config.wxi ?>
+
+  <Product Id="$(var.ProductId)"
+     UpgradeCode="$(var.UpgradeCode)"
+     Name="$(var.ProductName)"
+     Language="1033"
+     Version="$(var.Version)" Manufacturer="Michael Fink">
+
+    <Package Id="*"
+       Description="$(var.ProductNameVersion) Setup"
+       Comments="This installs $(var.ProductNameVersion)"
+       Manufacturer="Michael Fink"
+       InstallerVersion="405"
+       InstallPrivileges="elevated"
+       AdminImage="no"
+       Compressed="yes"
+       ShortNames="no"
+       Languages="1033"
+       Keywords="$(var.ProductName) Canon Remote Capture"
+       SummaryCodepage="1252"
+       Platform="x86" />
+
+    <Media Id="1" Cabinet="data1.cab" EmbedCab="yes" />
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Merge Id="VCRedist" SourceFile="$(env.CommonProgramFiles)\Merge Modules\Microsoft_VC110_CRT_x86.msm" DiskId="1" Language="0" />
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="MainAppFolder" Name="$(var.ProductName)">
+          <Directory Id="INSTALLDIR" Name=".">
+          </Directory>
+        </Directory>
+      </Directory>
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="MainAppShortcutFolder" Name="$(var.ProductName)"/>
+      </Directory>
+    </Directory>
+
+    <Feature Id="MainApp" Title="$(var.ProductName) Application"
+       Description="Installs the $(var.ProductName) application." Level="1"
+       AllowAdvertise="no" TypicalDefault="install" ConfigurableDirectory="INSTALLDIR">
+      <ComponentGroupRef Id="MainAppFiles" />
+      <ComponentGroupRef Id="EdsdkFiles" />
+      <ComponentGroupRef Id="PsrecFiles" />
+      <!-- ComponentGroupRef Id="CdsdkFiles" / -->
+
+    </Feature>
+
+    <Feature Id="VCRedist" Title="Visual C++ 2012 Runtime" AllowAdvertise="no" Display="hidden" Level="1">
+      <MergeRef Id="VCRedist"/>
+    </Feature>
+
+    <!-- custom actions to register/unregister WIA handler -->
+
+    <CustomAction Id="RegisterWIAEvent"
+                  FileKey="RemotePhotoToolExe" ExeCommand="--register-wia"
+                  Execute="deferred" Return="ignore"
+                  HideTarget="no" Impersonate="no" />
+    <CustomAction Id="UnregisterWIAEvent"
+                  FileKey="RemotePhotoToolExe" ExeCommand="--unregister-wia"
+                  Execute="deferred" Return="ignore"
+                  HideTarget="no" Impersonate="no" />
+
+    <InstallExecuteSequence>
+      <Custom Action="RegisterWIAEvent" Before="InstallFinalize">NOT Installed</Custom>
+      <Custom Action="UnregisterWIAEvent" After="InstallInitialize">Installed AND NOT UPGRADINGPRODUCTCODE</Custom>
+    </InstallExecuteSequence>
+
+    <!-- common properties -->
+
+    <Property Id="ALLUSERS"><![CDATA[1]]></Property>
+
+    <Property Id="ARPURLINFOABOUT"><![CDATA[https://github.com/vividos/RemotePhotoTool/]]></Property>
+    <Property Id="ARPCOMMENTS"><![CDATA[For more information, please visit https://github.com/vividos/RemotePhotoTool/]]></Property>
+    <Property Id="ARPHELPLINK" Value="https://github.com/vividos/RemotePhotoTool/" />
+
+    <Icon Id="RemotePhotoToolIcon" SourceFile="$(var.SourceFolder)\..\..\src\RemotePhotoTool\res\RemotePhotoTool.ico"/>
+    <Property Id="ARPPRODUCTICON" Value="RemotePhotoToolIcon" />
+
+    <UIRef Id="WixUI_InstallDir" />
+    <Property Id="WIXUI_INSTALLDIR" Value="MainAppFolder" />
+
+    <WixVariable Id="WixUILicenseRtf" Value="License.rtf" />
+    <!--
+      <WixVariable Id="WixUIBannerBmp" Value="" />
+      <WixVariable Id="WixUIDialogBmp" Value="" />
+
+      WixUIBannerBmp  Top banner 493 × 58
+      WixUIDialogBmp  Background bitmap used on the welcome and completion dialogs 493 × 312
+      -->
+
+    <!-- upgrade stuff -->
+
+    <Property Id="UPGRADEGUIDS" Secure="yes" />
+    <Property Id="NEWERFOUND" Secure="yes" />
+
+    <!-- upgrade section for all versions -->
+    <Upgrade Id="$(var.UpgradeCode)">
+      <!-- finds all previous versions and fills UPGRADEGUIDS with all product codes to remove -->
+      <UpgradeVersion Maximum="$(var.Version)"
+                      IncludeMaximum="no"
+                      Property="UPGRADEGUIDS"
+                      MigrateFeatures="yes"
+                         />
+
+      <!-- finds newer versions and prevents downgrades -->
+      <UpgradeVersion OnlyDetect="yes"
+                      Property="NEWERFOUND"
+                      Minimum="$(var.Version)"
+                      IncludeMinimum="no" />
+    </Upgrade>
+
+    <CustomAction Id="NoDowngrade" Error="A later version of [ProductName] is already installed." />
+
+    <InstallExecuteSequence>
+      <Custom Action="NoDowngrade" After="FindRelatedProducts">NEWERFOUND</Custom>
+      <RemoveExistingProducts After="InstallFinalize"/>
+    </InstallExecuteSequence>
+
+  </Product>
+
+</Wix>

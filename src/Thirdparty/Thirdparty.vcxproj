@@ -1,0 +1,161 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{F6F15874-951D-4B12-8136-AC27FE6E1215}</ProjectGuid>
+    <RootNamespace>Thirdparty</RootNamespace>
+    <Keyword>MakeFileProj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\RemotePhotoTool-Release.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\RemotePhotoTool-Debug.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>11.0.51106.1</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>..\..\bin\$(Configuration)\</OutDir>
+    <NMakeBuildCommandLine>mkdir $(OutDir) &gt; nul
+copy CDSDK\Redist\*.* $(OutDir)
+copy EDSDK\dll\*.* $(OutDir)
+copy PSREC\PSReCSDK\redist\*.* $(OutDir)</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>del $(OutDir)cdDcd.dll &gt; nul
+del $(OutDir)cdDvlp.dll &gt; nul
+del $(OutDir)cdParse.dll &gt; nul
+del $(OutDir)CDPROC.exe &gt; nul
+del $(OutDir)CDPROCMN.exe &gt; nul
+del $(OutDir)CDPTPCLS.dll &gt; nul
+del $(OutDir)CDPTPCLT.dll &gt; nul
+del $(OutDir)CDRAPCLS.dll &gt; nul
+del $(OutDir)CDSDK.dll &gt; nul
+del $(OutDir)DPPDLL.dll &gt; nul
+del $(OutDir)DPPLibCom.dll &gt; nul
+del $(OutDir)DPPRSC.dll &gt; nul
+del $(OutDir)EDSDK.dll &gt; nul
+del $(OutDir)EdsImage.dll &gt; nul
+del $(OutDir)EWatch.exe &gt; nul
+del $(OutDir)GetPicture.exe &gt; nul
+del $(OutDir)IWrap.dll &gt; nul
+del $(OutDir)MLib.dll &gt; nul
+del $(OutDir)PRLIB.dll &gt; nul
+del $(OutDir)PRSDK.dll &gt; nul
+del $(OutDir)psCamDat.dll &gt; nul
+del $(OutDir)Ucs32P.dll &gt; nul
+copy CDSDK\Redist\*.* $(OutDir)
+copy EDSDK\dll\*.* $(OutDir)
+copy PSREC\PSReCSDK\redist\*.* $(OutDir)</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>del $(OutDir)cdDcd.dll &gt; nul
+del $(OutDir)cdDvlp.dll &gt; nul
+del $(OutDir)cdParse.dll &gt; nul
+del $(OutDir)CDPROC.exe &gt; nul
+del $(OutDir)CDPROCMN.exe &gt; nul
+del $(OutDir)CDPTPCLS.dll &gt; nul
+del $(OutDir)CDPTPCLT.dll &gt; nul
+del $(OutDir)CDRAPCLS.dll &gt; nul
+del $(OutDir)CDSDK.dll &gt; nul
+del $(OutDir)DPPDLL.dll &gt; nul
+del $(OutDir)DPPLibCom.dll &gt; nul
+del $(OutDir)DPPRSC.dll &gt; nul
+del $(OutDir)EDSDK.dll &gt; nul
+del $(OutDir)EdsImage.dll &gt; nul
+del $(OutDir)EWatch.exe &gt; nul
+del $(OutDir)GetPicture.exe &gt; nul
+del $(OutDir)IWrap.dll &gt; nul
+del $(OutDir)MLib.dll &gt; nul
+del $(OutDir)PRLIB.dll &gt; nul
+del $(OutDir)PRSDK.dll &gt; nul
+del $(OutDir)psCamDat.dll &gt; nul
+del $(OutDir)Ucs32P.dll &gt; nul</NMakeCleanCommandLine>
+    <NMakeOutput>$(OutDir)cdDcd.dll, $(OutDir)cdDvlp.dll, $(OutDir)cdParse.dll, $(OutDir)CDPROC.exe, $(OutDir)CDPROCMN.exe, $(OutDir)CDPTPCLS.dll, $(OutDir)CDPTPCLT.dll, $(OutDir)CDRAPCLS.dll, $(OutDir)CDSDK.dll, $(OutDir)DPPDLL.dll, $(OutDir)DPPLibCom.dll, $(OutDir)DPPRSC.dll, $(OutDir)EDSDK.dll, $(OutDir)EdsImage.dll, $(OutDir)EWatch.exe, $(OutDir)GetPicture.exe, $(OutDir)IWrap.dll, $(OutDir)MLib.dll, $(OutDir)PRLIB.dll, $(OutDir)PRSDK.dll, $(OutDir)psCamDat.dll, $(OutDir)Ucs32P.dll</NMakeOutput>
+    <NMakePreprocessorDefinitions>WIN32;_DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>..\..\bin\$(Configuration)\</OutDir>
+    <NMakeBuildCommandLine>mkdir $(OutDir) &gt; nul
+copy CDSDK\Redist\*.* $(OutDir)
+copy EDSDK\dll\*.* $(OutDir)
+copy PSREC\PSReCSDK\redist\*.* $(OutDir)</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>del $(OutDir)cdDcd.dll &gt; nul
+del $(OutDir)cdDvlp.dll &gt; nul
+del $(OutDir)cdParse.dll &gt; nul
+del $(OutDir)CDPROC.exe &gt; nul
+del $(OutDir)CDPROCMN.exe &gt; nul
+del $(OutDir)CDPTPCLS.dll &gt; nul
+del $(OutDir)CDPTPCLT.dll &gt; nul
+del $(OutDir)CDRAPCLS.dll &gt; nul
+del $(OutDir)CDSDK.dll &gt; nul
+del $(OutDir)DPPDLL.dll &gt; nul
+del $(OutDir)DPPLibCom.dll &gt; nul
+del $(OutDir)DPPRSC.dll &gt; nul
+del $(OutDir)EDSDK.dll &gt; nul
+del $(OutDir)EdsImage.dll &gt; nul
+del $(OutDir)EWatch.exe &gt; nul
+del $(OutDir)GetPicture.exe &gt; nul
+del $(OutDir)IWrap.dll &gt; nul
+del $(OutDir)MLib.dll &gt; nul
+del $(OutDir)PRLIB.dll &gt; nul
+del $(OutDir)PRSDK.dll &gt; nul
+del $(OutDir)psCamDat.dll &gt; nul
+del $(OutDir)Ucs32P.dll &gt; nul
+copy CDSDK\Redist\*.* $(OutDir)
+copy EDSDK\dll\*.* $(OutDir)
+copy PSREC\PSReCSDK\redist\*.* $(OutDir)</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>del $(OutDir)cdDcd.dll &gt; nul
+del $(OutDir)cdDvlp.dll &gt; nul
+del $(OutDir)cdParse.dll &gt; nul
+del $(OutDir)CDPROC.exe &gt; nul
+del $(OutDir)CDPROCMN.exe &gt; nul
+del $(OutDir)CDPTPCLS.dll &gt; nul
+del $(OutDir)CDPTPCLT.dll &gt; nul
+del $(OutDir)CDRAPCLS.dll &gt; nul
+del $(OutDir)CDSDK.dll &gt; nul
+del $(OutDir)DPPDLL.dll &gt; nul
+del $(OutDir)DPPLibCom.dll &gt; nul
+del $(OutDir)DPPRSC.dll &gt; nul
+del $(OutDir)EDSDK.dll &gt; nul
+del $(OutDir)EdsImage.dll &gt; nul
+del $(OutDir)EWatch.exe &gt; nul
+del $(OutDir)GetPicture.exe &gt; nul
+del $(OutDir)IWrap.dll &gt; nul
+del $(OutDir)MLib.dll &gt; nul
+del $(OutDir)PRLIB.dll &gt; nul
+del $(OutDir)PRSDK.dll &gt; nul
+del $(OutDir)psCamDat.dll &gt; nul
+del $(OutDir)Ucs32P.dll &gt; nul</NMakeCleanCommandLine>
+    <NMakeOutput>$(OutDir)cdDcd.dll, $(OutDir)cdDvlp.dll, $(OutDir)cdParse.dll, $(OutDir)CDPROC.exe, $(OutDir)CDPROCMN.exe, $(OutDir)CDPTPCLS.dll, $(OutDir)CDPTPCLT.dll, $(OutDir)CDRAPCLS.dll, $(OutDir)CDSDK.dll, $(OutDir)DPPDLL.dll, $(OutDir)DPPLibCom.dll, $(OutDir)DPPRSC.dll, $(OutDir)EDSDK.dll, $(OutDir)EdsImage.dll, $(OutDir)EWatch.exe, $(OutDir)GetPicture.exe, $(OutDir)IWrap.dll, $(OutDir)MLib.dll, $(OutDir)PRLIB.dll, $(OutDir)PRSDK.dll, $(OutDir)psCamDat.dll, $(OutDir)Ucs32P.dll</NMakeOutput>
+    <NMakePreprocessorDefinitions>WIN32;NDEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

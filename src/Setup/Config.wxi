@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+
+  RemotePhotoTool - remote camera control software
+  Copyright (C) 2008-2013 Michael Fink
+
+  Config.wxi - Configuration include file
+
+-->
+<Include xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+  <?include BuildNumber.wxi ?>
+
+  <!-- version -->
+  <?define MajorVersion = "1" ?>
+  <?define MinorVersion = "0" ?>
+  <?define SubVersion = "0" ?>
+  <?define Version = "$(var.MajorVersion).$(var.MinorVersion).$(var.SubVersion).$(var.BuildNumber)" ?>
+
+  <!-- settings -->
+  <?define ProductId = "b6b16a3c-3c08-4311-ba2d-3b6f7a77045d" ?>
+  <?define ProductName = "RemotePhotoTool" ?>
+  <?define ProductNameVersion = "RemotePhotoTool $(var.MajorVersion).$(var.MinorVersion).$(var.SubVersion) Build $(var.BuildNumber)" ?>
+  <?define UpgradeCode = "4b6144a9-117d-4418-8097-3ef4e6a6eb93" ?>
+
+  <!-- set $(var.SourceFolder) -->
+  <?define SourceFolder = "$(sys.SOURCEFILEDIR)\..\..\bin\Release" ?>
+
+</Include>

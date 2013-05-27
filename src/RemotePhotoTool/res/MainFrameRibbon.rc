@@ -1,0 +1,28 @@
+// ******************************************************************************
+// * This is an automatically generated file containing the ribbon resource for *
+// * your application.                                                          *
+// ******************************************************************************
+
+#include ".\MainFrameRibbon.h"
+
+STRINGTABLE 
+BEGIN
+    ID_TAB_HOME_LabelTitle_RESID L"Home" /* LabelTitle ID_TAB_HOME_LabelTitle_RESID: (null) */
+END
+
+STRINGTABLE 
+BEGIN
+    ID_GROUP_HOME_LabelTitle_RESID L"Home" /* LabelTitle ID_GROUP_HOME_LabelTitle_RESID: (null) */
+END
+
+STRINGTABLE 
+BEGIN
+    ID_GROUP_PHOTO_MODES_LabelTitle_RESID L"Photo Modes" /* LabelTitle ID_GROUP_PHOTO_MODES_LabelTitle_RESID: (null) */
+END
+
+STRINGTABLE 
+BEGIN
+    ID_GROUP_VIEWFINDER_LabelTitle_RESID L"Viewfinder" /* LabelTitle ID_GROUP_VIEWFINDER_LabelTitle_RESID: (null) */
+END
+
+APPLICATION_RIBBON    UIFILE    "D:\\Projekte\\RemotePhotoTool\\src\\RemotePhotoTool\\res\\MainFrameRibbon.bml"

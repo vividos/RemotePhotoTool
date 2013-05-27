@@ -1,0 +1,60 @@
+CanonControl
+------------
+replace logging with Boost Log v2
+write documentation for CanonControl library
+remove TODOs
+Viewfinder: implement image on TFT and/or PC
+make all dtors throw()
+replace throw() with nothrow (?)
+
+PSREC
+-----
+implement display text for all properties
+implement AF Lock -> shutter half press to focus
+implement prPTP_PUSHED_RELEASE_SW by using another thread to call Release()
+implement new state events in T_enStateEvent
+support focus lock, PR_RC_FocusLock
+implement ImageFormat class
+* Test functionality
+
+EDSDK
+-----
+implement DisplayTextFromIdAndValue() for all properties
+implement UI lock
+implement AF lock
+on protocol 0 cameras, lock UI when getting/setting property
+use EdsCreateFileStreamEx() for unicode filenames
+support custom function numbers through kEdsPropID_CFn
+* Bug: "Recording... Remaining images" on EOS display
+
+CDSDK
+-----
+Reactivate code
+Implement device and image properties
+Implement viewfinder
+
+RemotePhotoTool
+---------
+Nice toolbar icons
+impl HDR pano view
+impl timelapse
+impl photo stack
+* Status bar updates for all actions
+* implement view finder stage 1: zoom, scaling
+implement view finder stage 2: half transparent background image, battery, number of remaining shots, histogram
+* Sort and clean up resource ids
+HDR: Set Photomatix current folder to image output folder
+Add current date to log filename, at start of application
+* Bug: Release while viewfinder locks application
+* Bug: Switching Photo Modes hides Liveview
+Write manual
+Multi-camera photo view
+
+PhotoToolCmdline
+----------------
+implement opening by index, {0}
+fix crashes in EDSDK: call EdsGetEvent() often
+
+Setup
+-----
+Replace stock background and banner bitmaps

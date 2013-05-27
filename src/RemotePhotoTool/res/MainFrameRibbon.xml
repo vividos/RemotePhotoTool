@@ -1,0 +1,121 @@
+<Application xmlns="http://schemas.microsoft.com/windows/2009/Ribbon">
+
+  <Application.Commands>
+    <!-- RemotePhotoTool.rc Menu Commands-->
+    <Command Name="phototool_HOME_CONNECT" Symbol="ID_HOME_CONNECT" Id="32768"/>
+    <Command Name="phototool_HOME_SETTINGS" Symbol="ID_HOME_SETTINGS" Id="32769"/>
+    <Command Name="phototool_PHOTO_MODE_NORMAL" Symbol="ID_PHOTO_MODE_NORMAL" Id="32770"/>
+    <Command Name="phototool_PHOTO_MODE_HDR" Symbol="ID_PHOTO_MODE_HDR" Id="32771"/>
+    <Command Name="phototool_PHOTO_MODE_PANO" Symbol="ID_PHOTO_MODE_PANO" Id="32772"/>
+    <Command Name="phototool_PHOTO_MODE_HDR_PANO" Symbol="ID_PHOTO_MODE_HDR_PANO" Id="32773"/>
+    <Command Name="phototool_PHOTO_MODE_TIMELAPSE" Symbol="ID_PHOTO_MODE_TIMELAPSE" Id="32774"/>
+    <Command Name="phototool_PHOTO_MODE_PHOTOSTACK" Symbol="ID_PHOTO_MODE_PHOTOSTACK" Id="32775"/>
+    <Command Name="phototool_PHOTO_MODE_SCRIPTING" Symbol="ID_PHOTO_MODE_SCRIPTING" Id="32776"/>
+    <Command Name="phototool_PHOTO_MODE_DEVICE_PROPERTIES" Symbol="ID_PHOTO_MODE_DEVICE_PROPERTIES" Id="32777"/>
+    <Command Name="phototool_PHOTO_MODE_IMAGE_PROPERTIES" Symbol="ID_PHOTO_MODE_IMAGE_PROPERTIES" Id="32778"/>
+    <Command Name="phototool_VIEWFINDER_SHOW" Symbol="ID_VIEWFINDER_SHOW" Id="32779"/>
+    <Command Name="wtl_VIEW_RIBBON" Symbol="ID_VIEW_RIBBON" Id="0xE804"/>
+
+    <Command Name="wtl_APP_ABOUT" Symbol="ID_APP_ABOUT" Id="0xE140"/>
+    <Command Name="wtl_APP_EXIT" Symbol="ID_APP_EXIT" Id="0xE141"/>
+
+    <!-- Tabs -->
+    <Command Name="TabHome" Symbol="ID_TAB_HOME" LabelTitle="Home" />
+    <!-- Command Name="TabCamera" Symbol="ID_TAB_CAMERA" LabelTitle="Camera" / -->
+
+    <!-- Groups -->
+    <Command Name="GroupHome" Symbol="ID_GROUP_HOME" LabelTitle="Home" />
+    <Command Name="GroupPhotoModes" Symbol="ID_GROUP_PHOTO_MODES" LabelTitle="Photo Modes" />
+    <Command Name="GroupViewFinder" Symbol="ID_GROUP_VIEWFINDER" LabelTitle="Viewfinder" />
+
+    <!-- App Menu, MRU list, Help button and Quick Access Toolbar -->
+    <Command Name="AppMenu" Symbol="ID_RIBBON_APP_MENU"/>
+    <Command Name="QAT" Symbol="ID_RIBBON_QAT"/>
+  </Application.Commands>
+
+  <Application.Views>
+    <Ribbon>
+      <!-- Application Menu -->
+      <Ribbon.ApplicationMenu >
+        <ApplicationMenu CommandName="AppMenu" >
+          <MenuGroup Class="StandardItems" >
+            <Button CommandName="phototool_HOME_CONNECT"/>
+            <Button CommandName="phototool_HOME_SETTINGS"/>
+          </MenuGroup>
+          <MenuGroup >
+            <Button CommandName="wtl_APP_EXIT"/>
+          </MenuGroup>
+        </ApplicationMenu>
+      </Ribbon.ApplicationMenu >
+
+      <!-- Help button -->
+      <Ribbon.HelpButton>
+        <HelpButton CommandName="wtl_APP_ABOUT" />
+      </Ribbon.HelpButton>
+
+      <!-- QAT (Quick Access Toolbar) -->
+      <Ribbon.QuickAccessToolbar>
+        <QuickAccessToolbar CommandName="QAT">
+          <QuickAccessToolbar.ApplicationDefaults>
+            <Button CommandName="phototool_HOME_CONNECT"/>
+          </QuickAccessToolbar.ApplicationDefaults>
+        </QuickAccessToolbar>
+      </Ribbon.QuickAccessToolbar>
+
+      <Ribbon.Tabs>
+        <Tab CommandName="TabHome">
+          <Tab.ScalingPolicy>
+            <ScalingPolicy>
+              <ScalingPolicy.IdealSizes>
+                <Scale Group="GroupHome" Size="Large"/>
+              </ScalingPolicy.IdealSizes>
+            </ScalingPolicy>
+          </Tab.ScalingPolicy>
+
+          <Group CommandName="GroupHome" SizeDefinition="ThreeButtons">
+            <Button CommandName="phototool_HOME_CONNECT"/>
+            <Button CommandName="phototool_HOME_SETTINGS"/>
+            <Button CommandName="wtl_VIEW_RIBBON"/>
+          </Group>
+
+          <Group CommandName="GroupPhotoModes" SizeDefinition="FiveButtons">
+            <Button CommandName="phototool_PHOTO_MODE_NORMAL"/>
+            <Button CommandName="phototool_PHOTO_MODE_HDR"/>
+            <Button CommandName="phototool_PHOTO_MODE_PANO" />
+            <!-- Button CommandName="phototool_PHOTO_MODE_HDR_PANO" />
+            <Button CommandName="phototool_PHOTO_MODE_TIMELAPSE" />
+            <Button CommandName="phototool_PHOTO_MODE_PHOTOSTACK" />
+            <Button CommandName="phototool_PHOTO_MODE_SCRIPTING" / -->
+            <Button CommandName="phototool_PHOTO_MODE_DEVICE_PROPERTIES" />
+            <Button CommandName="phototool_PHOTO_MODE_IMAGE_PROPERTIES" />
+          </Group>
+
+          <Group CommandName="GroupViewFinder" SizeDefinition="OneButton">
+            <Button CommandName="phototool_VIEWFINDER_SHOW"/>
+          </Group>
+        </Tab>
+
+        <!-- Tab CommandName="TabCamera">
+          <Tab.ScalingPolicy>
+            <ScalingPolicy>
+              <ScalingPolicy.IdealSizes>
+                <Scale Group="GroupPhotoModes" Size="Large"/>
+                <Scale Group="GroupViewFinder" Size="Large"/>
+              </ScalingPolicy.IdealSizes>
+            </ScalingPolicy>
+          </Tab.ScalingPolicy>
+          
+          <Group CommandName="GroupPhotoModes" SizeDefinition="TwoButtons">
+            <Button CommandName="phototool_PHOTO_MODE_NORMAL"/>
+            <Button CommandName="phototool_PHOTO_MODE_HDR"/>
+          </Group>
+
+          <Group CommandName="GroupViewFinder" SizeDefinition="OneButton">
+            <Button CommandName="phototool_VIEWFINDER_SHOW"/>
+          </Group>
+        </Tab -->
+
+      </Ribbon.Tabs>
+    </Ribbon>
+  </Application.Views>
+</Application>

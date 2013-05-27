@@ -1,0 +1,268 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Exported Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{eef9149d-5006-413a-8410-b647f61f22dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PSREC Files">
+      <UniqueIdentifier>{f8d623e8-aa47-44af-b945-2991eaf96612}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EDSDK Files">
+      <UniqueIdentifier>{269bb8d1-7a4c-4cf6-b1a0-ca6129d899d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CDSDK Files">
+      <UniqueIdentifier>{69cad25e-8709-46c0-996d-16daa3183d6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EDSDK Files\SDK Files">
+      <UniqueIdentifier>{81857b3b-68d0-4039-8cdf-4851f3bdda2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PSREC Files\SDK Files">
+      <UniqueIdentifier>{99d447fc-bddd-4b13-b2de-11d77b6dd99b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CDSDK Files\SDK Files">
+      <UniqueIdentifier>{3a4140a5-486c-43b2-b516-e932e3d54b0a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CameraException.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DeviceProperty.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageProperty.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Variant.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CdsdkCommon.cpp">
+      <Filter>CDSDK Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PsrecCommon.cpp">
+      <Filter>PSREC Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EdsdkCommon.cpp">
+      <Filter>EDSDK Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PsrecRemoteReleaseControlImpl.cpp">
+      <Filter>PSREC Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PsrecPropertyAccess.cpp">
+      <Filter>PSREC Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EdsdkRemoteReleaseControlImpl.cpp">
+      <Filter>EDSDK Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EdsdkPropertyAccess.cpp">
+      <Filter>EDSDK Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EdsdkViewfinderImpl.cpp">
+      <Filter>EDSDK Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ShutterSpeedValue.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Instance.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CommonPropertyAccess.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageFormat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CdsdkPropertyAccess.cpp">
+      <Filter>CDSDK Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="exports\BulbReleaseControl.hpp">
+      <Filter>Exported Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="exports\CameraException.hpp">
+      <Filter>Exported Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="exports\DeviceProperty.hpp">
+      <Filter>Exported Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="exports\ImageProperty.hpp">
+      <Filter>Exported Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="exports\ImplFwd.hpp">
+      <Filter>Exported Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="exports\RemoteReleaseControl.hpp">
+      <Filter>Exported Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="exports\SourceDevice.hpp">
+      <Filter>Exported Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="exports\SourceInfo.hpp">
+      <Filter>Exported Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="exports\Variant.hpp">
+      <Filter>Exported Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="exports\Viewfinder.hpp">
+      <Filter>Exported Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BackgroundWindowThread.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CanonControlExports.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CdsdkCommon.hpp">
+      <Filter>CDSDK Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CdsdkPropertyAccess.hpp">
+      <Filter>CDSDK Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CdsdkRemoteReleaseControlImpl.hpp">
+      <Filter>CDSDK Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CdsdkSourceDeviceImpl.hpp">
+      <Filter>CDSDK Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CdsdkSourceInfoImpl.hpp">
+      <Filter>CDSDK Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CdsdkViewfinderImpl.hpp">
+      <Filter>CDSDK Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EdsdkBulbReleaseControlImpl.hpp">
+      <Filter>EDSDK Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EdsdkCommon.hpp">
+      <Filter>EDSDK Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EdsdkPropertyAccess.hpp">
+      <Filter>EDSDK Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EdsdkRemoteReleaseControlImpl.hpp">
+      <Filter>EDSDK Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EdsdkSourceDeviceImpl.hpp">
+      <Filter>EDSDK Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EdsdkSourceInfoImpl.hpp">
+      <Filter>EDSDK Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EdsdkViewfinderImpl.hpp">
+      <Filter>EDSDK Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PsrecCommon.hpp">
+      <Filter>PSREC Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PsrecPropertyAccess.hpp">
+      <Filter>PSREC Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PsrecRemoteReleaseControlImpl.hpp">
+      <Filter>PSREC Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PsrecSourceDeviceImpl.hpp">
+      <Filter>PSREC Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PsrecSourceInfoImpl.hpp">
+      <Filter>PSREC Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PsrecVarDataParser.hpp">
+      <Filter>PSREC Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PsrecViewfinderImpl.hpp">
+      <Filter>PSREC Files</Filter>
+    </ClInclude>
+    <ClInclude Include="exports\ShutterReleaseSettings.hpp">
+      <Filter>Exported Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PsrecDeviceInfo.hpp">
+      <Filter>PSREC Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BackgroundWorkerThread.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="exports\ShutterSpeedValue.hpp">
+      <Filter>Exported Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="exports\Instance.hpp">
+      <Filter>Exported Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CommonPropertyAccess.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageFormat.hpp">
+      <Filter>Exported Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="exports\ShootingMode.hpp">
+      <Filter>Exported Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Thirdparty\EDSDK\Header\EDSDK.h">
+      <Filter>EDSDK Files\SDK Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Thirdparty\EDSDK\Header\EDSDKErrors.h">
+      <Filter>EDSDK Files\SDK Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Thirdparty\EDSDK\Header\EDSDKTypes.h">
+      <Filter>EDSDK Files\SDK Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Thirdparty\PSREC\PSReCSDK\inc\prAPI.h">
+      <Filter>PSREC Files\SDK Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Thirdparty\PSREC\PSReCSDK\inc\prError.h">
+      <Filter>PSREC Files\SDK Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Thirdparty\PSREC\PSReCSDK\inc\prFuncType.h">
+      <Filter>PSREC Files\SDK Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Thirdparty\PSREC\PSReCSDK\inc\prType.h">
+      <Filter>PSREC Files\SDK Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Thirdparty\CDSDK\inc\cdAPI.h">
+      <Filter>CDSDK Files\SDK Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Thirdparty\CDSDK\inc\cdError.h">
+      <Filter>CDSDK Files\SDK Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Thirdparty\CDSDK\inc\cdEvent.h">
+      <Filter>CDSDK Files\SDK Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Thirdparty\CDSDK\inc\cdFncTyp.h">
+      <Filter>CDSDK Files\SDK Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Thirdparty\CDSDK\inc\cdType.h">
+      <Filter>CDSDK Files\SDK Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Thirdparty\CDSDK\Doc\CDSDK73UserGuide.doc">
+      <Filter>CDSDK Files\SDK Files</Filter>
+    </None>
+    <None Include="..\Thirdparty\CDSDK\Doc\CDSDK73UserGuide.pdf">
+      <Filter>CDSDK Files\SDK Files</Filter>
+    </None>
+    <None Include="..\Thirdparty\EDSDK\Document\EDSDK_API.pdf">
+      <Filter>EDSDK Files\SDK Files</Filter>
+    </None>
+    <None Include="..\Thirdparty\PSREC\Doc\PSReCSDK110eUserGuide.doc">
+      <Filter>PSREC Files\SDK Files</Filter>
+    </None>
+    <None Include="..\Thirdparty\PSREC\Doc\PSReCSDK110eUserGuide.pdf">
+      <Filter>PSREC Files\SDK Files</Filter>
+    </None>
+  </ItemGroup>
+</Project>
