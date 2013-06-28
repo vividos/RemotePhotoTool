@@ -12,9 +12,12 @@
 #include "JpegMemoryReader.hpp"
 #include <boost/bind.hpp>
 
+const double c_dGoldenRatio = 0.618;
+
 ViewFinderImageWindow::ViewFinderImageWindow()
 :m_uiResX(0),
- m_uiResY(0)
+ m_uiResY(0),
+ m_enLinesMode(linesModeNoLines)
 {
 }
 
@@ -166,6 +169,40 @@ void ViewFinderImageWindow::ScaleBitmapSize(const BITMAP& bm, int& iWidth, int& 
       iHeight = int(iWidth / dRatioBitmap);
 }
 
+void ViewFinderImageWindow::DrawLines(CDC& dc, int iWidth, int iHeight)
+{
+   // pen color is the inverse of the background color
+   int iLastDrawMode = dc.SetROP2(R2_NOTXORPEN);
+
+   CPen pen;
+   pen.CreatePen(PS_DOT, 3, RGB(0, 0, 0));
+   CPenHandle oldPen = dc.SelectPen(pen);
+
+   double dRatio1 = 1.0 / 3.0;
+   if (m_enLinesMode == linesModeGoldenRatio)
+      dRatio1 = c_dGoldenRatio;
+
+   double dRatio2 = 1.0 - dRatio1;
+
+   // horizontal lines
+   dc.MoveTo(0, int(iHeight * dRatio1));
+   dc.LineTo(iWidth-1, int(iHeight * dRatio1));
+
+   dc.MoveTo(0, int(iHeight * dRatio2));
+   dc.LineTo(iWidth-1,int(iHeight * dRatio2));
+
+   // vertical lines
+   dc.MoveTo(int(iWidth * dRatio1), 0);
+   dc.LineTo(int(iWidth * dRatio1), iHeight-1);
+
+   dc.MoveTo(int(iWidth * dRatio2), 0);
+   dc.LineTo(int(iWidth * dRatio2), iHeight-1);
+
+   dc.SelectPen(oldPen);
+
+   dc.SetROP2(iLastDrawMode);
+}
+
 LRESULT ViewFinderImageWindow::OnPaint(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
    CPaintDC dc(m_hWnd);
@@ -195,6 +232,9 @@ LRESULT ViewFinderImageWindow::OnPaint(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM 
    // blit to actual paint DC
    dc.StretchBlt(0, 0, iWidth, iHeight, memDC, 0, 0, bm.bmWidth, bm.bmHeight, SRCCOPY);
 
+   // draw lines
+   if (m_enLinesMode != linesModeNoLines)
+      DrawLines(dc, iWidth, iHeight);
    memDC.SelectBitmap(hbmT);
 
    return 0;

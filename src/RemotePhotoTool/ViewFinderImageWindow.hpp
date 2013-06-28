@@ -19,6 +19,15 @@ public:
    /// ctor
    ViewFinderImageWindow();
 
+   enum T_enLinesMode
+   {
+      linesModeNoLines = 0,
+      linesModeRuleOfThird = 1,
+      linesModeGoldenRatio = 2,
+   };
+
+   void SetLinesMode(T_enLinesMode enLinesMode){ m_enLinesMode = enLinesMode; }
+
    DECLARE_WND_CLASS_EX(NULL, CS_HREDRAW | CS_VREDRAW, COLOR_APPWORKSPACE)
 
 private:
@@ -50,6 +59,9 @@ private:
    /// scales bitmap size, according to window size
    void ScaleBitmapSize(const BITMAP& bm, int& iWidth, int& iHeight);
 
+   /// draws lines into dc
+   void DrawLines(CDC& dc, int iWidth, int iHeight);
+
 private:
 // Handler prototypes (uncomment arguments if needed):
 // LRESULT MessageHandler(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
@@ -79,4 +91,7 @@ private:
 
    /// bitmap for viewfinder
    CBitmap m_bmpViewfinder;
+
+   /// lines mode
+   T_enLinesMode m_enLinesMode;
 };
