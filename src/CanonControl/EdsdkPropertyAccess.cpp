@@ -94,6 +94,9 @@ static PropIdDisplayInfo g_aPropIdDisplayInfo[] =
          { 0x0085, _T("Faithful") },
          { 0x0086, _T("Monochrome") },
          { 0x0087, _T("Auto") },
+         { 0x0021, _T("User Style 1") }, /* kEdsPictureStyle_User1 */
+         { 0x0022, _T("User Style 2") }, /* kEdsPictureStyle_User2 */
+         { 0x0023, _T("User Style 3") }, /* kEdsPictureStyle_User3 */
          { 0x0041, _T("Computer Setting 1") },
          { 0x0042, _T("Computer Setting 2") },
          { 0x0043, _T("Computer Setting 3") },
@@ -169,6 +172,7 @@ static PropIdDisplayInfo g_aPropIdDisplayInfo[] =
    {
       kEdsPropID_Bracket,
       {
+         { 0x00, _T("Off") }, // not in manual, but also means off
          { 0x01, _T("AE bracket") },
          { 0x02, _T("ISO bracket") },
          { 0x04, _T("WB bracket") },
@@ -694,7 +698,7 @@ CString PropertyAccess::NameFromId(EdsPropertyID propertyId)
 // not in 2.12 anymore      case kEdsPropID_BodyID: pszName = _T("Body ID"); break;
    case kEdsPropID_OwnerName: pszName = _T("Owner name"); break;
    case kEdsPropID_MakerName: pszName = _T("Maker name"); break;
-   case kEdsPropID_DateTime: pszName = _T("Date / time"); break;
+   case kEdsPropID_DateTime: pszName = _T("Date / Time"); break;
    case kEdsPropID_FirmwareVersion: pszName = _T("Firmware version"); break;
    case kEdsPropID_BatteryLevel: pszName = _T("Battery level"); break;
    case kEdsPropID_CFn: pszName = _T("Cfn"); break;
