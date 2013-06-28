@@ -124,7 +124,7 @@ void ViewFinderImageWindow::CreateBitmap(CBitmapHandle& bmp)
 
       LPCVOID lpDIBBits = m_vecCurrentViewfinderData.data();
 
-      CDC dc = GetWindowDC();
+      CClientDC dc(m_hWnd);
       bmp.CreateDIBitmap(dc, lpbmih, CBM_INIT, lpDIBBits, lpbmi, DIB_RGB_COLORS);
    }
 }
@@ -203,6 +203,12 @@ void ViewFinderImageWindow::DrawLines(CDC& dc, int iWidth, int iHeight)
    dc.SetROP2(iLastDrawMode);
 }
 
+LRESULT ViewFinderImageWindow::OnEraseBkgnd(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
+{
+   // disable erasing
+   return FALSE;
+}
+
 LRESULT ViewFinderImageWindow::OnPaint(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
    CPaintDC dc(m_hWnd);
@@ -213,12 +219,7 @@ LRESULT ViewFinderImageWindow::OnPaint(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM 
       return 0;
    }
 
-   // select bitmap into memory DC
-   CDC memDC;
-   memDC.CreateCompatibleDC();
-
-   HBITMAP hbmT = memDC.SelectBitmap(m_bmpViewfinder);
-
+   // calculate bitmap size
    BITMAP bm = {0};
    GetObject(m_bmpViewfinder, sizeof(bm), &bm);
 
@@ -229,13 +230,26 @@ LRESULT ViewFinderImageWindow::OnPaint(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM 
 
    ScaleBitmapSize(bm, iWidth, iHeight);
 
-   // blit to actual paint DC
-   dc.StretchBlt(0, 0, iWidth, iHeight, memDC, 0, 0, bm.bmWidth, bm.bmHeight, SRCCOPY);
+   rcPaint = CRect(0, 0, iWidth, iHeight);
+
+   // select bitmap into bitmap DC
+   CDC bmpDC;
+   bmpDC.CreateCompatibleDC();
+
+   HBITMAP hbmT = bmpDC.SelectBitmap(m_bmpViewfinder);
+
+   // draw to memory DC
+   CMemoryDC memDC(dc, rcPaint);
+   memDC.FillSolidRect(&dc.m_ps.rcPaint, ::GetSysColor(COLOR_WINDOW));
+
+   // blit bitmap
+   memDC.StretchBlt(0, 0, iWidth, iHeight, bmpDC, 0, 0, bm.bmWidth, bm.bmHeight, SRCCOPY);
+
+   bmpDC.SelectBitmap(hbmT);
 
    // draw lines
    if (m_enLinesMode != linesModeNoLines)
-      DrawLines(dc, iWidth, iHeight);
-   memDC.SelectBitmap(hbmT);
+      DrawLines(memDC, iWidth, iHeight);
 
    return 0;
 }

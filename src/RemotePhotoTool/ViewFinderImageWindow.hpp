@@ -32,6 +32,7 @@ public:
 
 private:
    BEGIN_MSG_MAP(ViewFinderImageWindow)
+      MESSAGE_HANDLER(WM_ERASEBKGND, OnEraseBkgnd)
       MESSAGE_HANDLER(WM_PAINT, OnPaint)
       MESSAGE_HANDLER(WM_DESTROY, OnDestroy)
       MESSAGE_HANDLER(WM_VIEWFINDER_AVAIL_IMAGE, OnMessageViewfinderAvailImage)
@@ -67,6 +68,9 @@ private:
 // LRESULT MessageHandler(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 // LRESULT CommandHandler(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 // LRESULT NotifyHandler(int /*idCtrl*/, LPNMHDR /*pnmh*/, BOOL& /*bHandled*/)
+
+   /// erases background
+   LRESULT OnEraseBkgnd(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
 
    /// paints viewfinder image
    LRESULT OnPaint(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
