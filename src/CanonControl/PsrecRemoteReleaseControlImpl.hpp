@@ -79,7 +79,7 @@ public:
    {
       switch (enImagePropertyType)
       {
-      case propShootingMode:           return prPTP_DEV_PROP_EXPOSURE_MODE;
+      case propShootingMode:     return prPTP_DEV_PROP_EXPOSURE_MODE;
       case propDriveMode:        return prPTP_DEV_PROP_DRIVE_MODE;
       case propISOSpeed:         return prPTP_DEV_PROP_ISO;
       case propMeteringMode:     return prPTP_DEV_PROP_ML_WEI_MODE;
@@ -96,7 +96,7 @@ public:
       case propMaxZoomPos:       return prPTP_DEV_PROP_EZOOM_START_POS; // start of electronic zoom is max. zoom pos
       case propDigitalZoomMagnification:  ATLASSERT(false); return 0; // TODO ???
       case propAvailableShots:            ATLASSERT(false); return 0; // TODO ???
-      case propSaveTo:                    ATLASSERT(false); return 0; // TODO ???
+      case propSaveTo:           return prPTP_DEV_PROP_CAPTURE_TRANSFER_MODE;
       case propBatteryLevel:     return prPTP_DEV_PROP_BATTERY_STATUS;
       default:
          ATLASSERT(false); // unknown type

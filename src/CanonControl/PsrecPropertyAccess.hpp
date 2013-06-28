@@ -357,7 +357,7 @@ public:
       case prPTP_DEV_PROP_AF_LIGHT: pszName = _T("ON/OFF of AF assist light"); break;
       case prPTP_DEV_PROP_FLASH_QUANTITY: pszName = _T("Number of flash levels that can be set in the manual mode"); break;
       case prPTP_DEV_PROP_ROTATION_ANGLE: pszName = _T("Angle of rotation detected by the gravity sensor"); break;
-      case prPTP_DEV_PROP_ROTATION_SENCE: pszName = _T("Whether the gravity sensor is enable or disable"); break;
+      case prPTP_DEV_PROP_ROTATION_SENCE: pszName = _T("Whether the gravity sensor is enabled or disabled"); break;
       case prPTP_DEV_PROP_IMEGE_FILE_SIZE: pszName = _T("Image file size supported by the camera"); break;
       case prPTP_DEV_PROP_CAMERA_MODEL_ID: pszName = _T("Camera model ID"); break;
       }

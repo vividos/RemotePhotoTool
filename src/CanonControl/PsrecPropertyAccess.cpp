@@ -66,8 +66,8 @@ static PropIdDisplayInfo g_aPropIdDisplayInfo[] =
       prPTP_DEV_PROP_FULLVIEW_FILE_FORMAT,
       {
          { 0x00, _T("Not defined") },
-         { 0x00, _T("JPEG") },
-         { 0x00, _T("CRW") },
+         { 0x01, _T("JPEG") },
+         { 0x02, _T("CRW") },
          { 0, nullptr }
       }
    },
@@ -194,9 +194,9 @@ static PropIdDisplayInfo g_aPropIdDisplayInfo[] =
       prPTP_DEV_PROP_EZOOM,
       {
          { 0x00, _T("Off") },
-         { 0x00, _T("x2") },
-         { 0x00, _T("x4") },
-         { 0x00, _T("Smooth") },
+         { 0x01, _T("x2") },
+         { 0x02, _T("x4") },
+         { 0x03, _T("Smooth") },
          { 0, nullptr }
       }
    },
@@ -217,25 +217,45 @@ static PropIdDisplayInfo g_aPropIdDisplayInfo[] =
       }
    },
 
-#if 0
-
    {
-      xxx,
+      prPTP_DEV_PROP_AF_DISTANCE,
       {
-         { 0x0000, _T("") },
+         { 0x00, _T("Manual") },
+         { 0x01, _T("Auto") },
+         { 0x02, _T("Unknown") },
+         { 0x03, _T("Zone Focus (Close-up)") },
+         { 0x04, _T("Zone Focus (Very close)") },
+         { 0x05, _T("Zone Focus (Close)") },
+         { 0x06, _T("Zone Focus (Medium)") },
+         { 0x07, _T("Zone Focus (Far)") },
+         { 0x08, _T("Zone Focus (Reserved 1)") },
+         { 0x09, _T("Zone Focus (Reserved 2)") },
+         { 0x0a, _T("Zone Focus (Reserved 3)") },
+         { 0x0b, _T("Zone Focus (Reserved 4)") },
+         { 0xff, _T("Invalid") },
          { 0, nullptr }
       }
    },
 
-
-prPTP_DEV_PROP_AF_DISTANCE
-prPTP_DEV_PROP_FOCUS_POINT_SETTING
-#endif
+   {
+      prPTP_DEV_PROP_FOCUS_POINT_SETTING,
+      {
+         { 0x0000, _T("Invalid") },
+         { 0x1000, _T("Focusing point on center only, Manual") },
+         { 0x1001, _T("Focusing point on center only, Auto") },
+         { 0x3000, _T("Multiple focusing points, Manual") },
+         { 0x3001, _T("Multiple focusing points, Auto") },
+         { 0x3002, _T("Multiple focusing points (Right)") },
+         { 0x3003, _T("Multiple focusing points (Center)") },
+         { 0x3004, _T("Multiple focusing points (Left)") },
+         { 0, nullptr }
+      }
+   },
 
    {
       prPTP_DEV_PROP_WB_SETTING,
       {
-         { 0, _T("Auto ") },
+         { 0, _T("Auto") },
          { 1, _T("Daylight") },
          { 2, _T("Cloudy") },
          { 3, _T("Tungsten") },
@@ -290,21 +310,34 @@ prPTP_DEV_PROP_FOCUS_POINT_SETTING
       }
    },
 
+   {
+      prPTP_DEV_PROP_CONTRAST,
+      {
+         { 0xfffffffe, _T("Low 2") }, // -2
+         { 0xffffffff, _T("Low") }, // -1
+         { 0x00000000, _T("Standard") },
+         { 0x00000001, _T("High") },
+         { 0x00000002, _T("High 2") },
+         { 0, nullptr }
+      }
+   },
+
 #if 0
 
-prPTP_DEV_PROP_CONTRAST
+
+   {
+      xxx,
+      {
+         { 0x0000, _T("") },
+         { 0, nullptr }
+      }
+   },
+
+
 prPTP_DEV_PROP_COLOR_GAIN
 prPTP_DEV_PROP_SHARPNESS
 prPTP_DEV_PROP_SENSITIVITY
 prPTP_DEV_PROP_PARAMETER_SET
-prPTP_DEV_PROP_ISO
-//prPTP_DEV_PROP_AV
-//prPTP_DEV_PROP_TV
-//prPTP_DEV_PROP_EXPOSURE_COMP
-//prPTP_DEV_PROP_FLASH_COMP
-//prPTP_DEV_PROP_AEB_EXPOSURE_COMP
-//prPTP_DEV_PROP_AV_OPEN
-//prPTP_DEV_PROP_AV_MAX
 //prPTP_DEV_PROP_FOCAL_LENGTH
 //prPTP_DEV_PROP_FOCAL_LENGTH_TELE
 //prPTP_DEV_PROP_FOCAL_LENGTH_WIDE
@@ -314,6 +347,7 @@ prPTP_DEV_PROP_ISO
    {
       prPTP_DEV_PROP_CAPTURE_TRANSFER_MODE,
       {
+         // TODO G9 lists 1, 2, 3, 8..15
          { 0x0000, _T("Not defined") },
          { 0x0002, _T("Transfer Entire Image to PC") },
          { 0x0004, _T("Save Thumbnail Image to Device") },
@@ -326,11 +360,19 @@ prPTP_DEV_PROP_ISO
 prPTP_DEV_PROP_ZOOM_POS
 //prPTP_DEV_PROP_SUPPORTED_SIZE
 //prPTP_DEV_PROP_SUPPORTED_THUMB_SIZE
-//prPTP_DEV_PROP_FIRMWARE_VERSION
-//prPTP_DEV_PROP_OWNER_NAME
 //prPTP_DEV_PROP_CAMERA_TIME
-prPTP_DEV_PROP_CAMERA_OUTPUT
 #endif
+   {
+      prPTP_DEV_PROP_CAMERA_OUTPUT,
+      {
+         { 0x0000, _T("Not defined") },
+         { 0x0001, _T("LCD") },
+         { 0x0002, _T("Video OUT") },
+         { 0x0003, _T("Off") },
+         { 0, nullptr }
+      }
+   },
+
    {
       prPTP_DEV_PROP_DISP_AV,
       {
@@ -340,7 +382,7 @@ prPTP_DEV_PROP_CAMERA_OUTPUT
       }
    },
 #if 0
-//prPTP_DEV_PROP_AV_OPEN_APEX
+//
 //prPTP_DEV_PROP_EZOOM_SIZE
 prPTP_DEV_PROP_ML_SPOT_POS
 #endif
@@ -353,7 +395,7 @@ prPTP_DEV_PROP_ML_SPOT_POS
       }
    },
 #if 0
-prPTP_DEV_PROP_AV_MAX_APEX
+
 //prPTP_DEV_PROP_EZOOM_START_POS
 //prPTP_DEV_PROP_FOCAL_LENGTH_OF_TELE
 //prPTP_DEV_PROP_EZOOM_SIZE_OF_TELE
@@ -395,7 +437,6 @@ prPTP_DEV_PROP_PHOTO_EFFECT
 
 #if 0
 prPTP_DEV_PROP_IMEGE_FILE_SIZE
-//prPTP_DEV_PROP_CAMERA_MODEL_ID
 #endif
 };
 
