@@ -183,6 +183,9 @@ void CameraInfoDlg::CollectShootingModeInfos(std::shared_ptr<RemoteReleaseContro
       std::vector<ImageProperty> vecShootingModes;
       spRemoteReleaseControl->EnumImagePropertyValues(T_enImagePropertyType::propShootingMode, vecShootingModes);
 
+      if (vecShootingModes.empty())
+         cszText += _T("(No shooting modes found)\n");
+
       std::for_each(vecShootingModes.begin(), vecShootingModes.end(), [&](const ImageProperty& ip)
       {
          spRemoteReleaseControl->SetImageProperty(ip);
