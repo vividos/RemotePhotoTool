@@ -107,7 +107,7 @@ public:
 
    virtual ImageProperty MapShootingModeToImagePropertyValue(RemoteReleaseControl::T_enShootingMode enShootingMode) const override
    {
-      prUInt16 uiValue = 0;
+      prUInt8 uiValue = 0;
       switch(enShootingMode)
       {
       case RemoteReleaseControl::shootingModeP:    uiValue = 0x01; break;
@@ -121,7 +121,7 @@ public:
 
       Variant value;
       value.Set(uiValue);
-      value.SetType(Variant::typeUInt16);
+      value.SetType(Variant::typeUInt8);
 
       return ImageProperty(variantPsrec, prPTP_DEV_PROP_EXPOSURE_MODE, value, false);
    }
