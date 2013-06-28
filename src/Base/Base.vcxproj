@@ -89,6 +89,7 @@
     <ClInclude Include="ProgramOptions.hpp" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="SystemException.hpp" />
+    <ClInclude Include="Thread.hpp" />
     <ClInclude Include="Wtl.hpp" />
   </ItemGroup>
   <ItemGroup>
