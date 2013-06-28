@@ -13,6 +13,7 @@
 #include "ImageFileManager.hpp"
 #include "CameraErrorDlg.hpp"
 #include "ShutterReleaseSettings.hpp"
+#include "ShootingMode.hpp"
 #include <boost/bind.hpp>
 
 StandardPhotoModeView::StandardPhotoModeView(IPhotoModeViewHost& host) throw()
@@ -161,18 +162,18 @@ void StandardPhotoModeView::SetupImagePropertyManager()
 
 void StandardPhotoModeView::UpdateShootingModeDependentValues()
 {
-   unsigned int uiShootingModeId = m_spRemoteReleaseControl->MapImagePropertyTypeToId(propShootingMode);
-   ImageProperty shootingMode = m_spRemoteReleaseControl->GetImageProperty(uiShootingModeId);
-   unsigned int uiShootingMode = shootingMode.Value().Get<unsigned int>();
+   ShootingMode shootingMode(m_spRemoteReleaseControl);
 
-   unsigned int uiM = m_spRemoteReleaseControl->MapShootingModeToImagePropertyValue(RemoteReleaseControl::shootingModeM).Value().Get<unsigned int>();
-   unsigned int uiAv = m_spRemoteReleaseControl->MapShootingModeToImagePropertyValue(RemoteReleaseControl::shootingModeAv).Value().Get<unsigned int>();
-   unsigned int uiTv = m_spRemoteReleaseControl->MapShootingModeToImagePropertyValue(RemoteReleaseControl::shootingModeTv).Value().Get<unsigned int>();
-   unsigned int uiP = m_spRemoteReleaseControl->MapShootingModeToImagePropertyValue(RemoteReleaseControl::shootingModeP).Value().Get<unsigned int>();
+   ImageProperty currentMode = shootingMode.Current();
 
-   bool bReadOnlyAv = (uiShootingMode != uiM) && (uiShootingMode == uiTv || uiShootingMode == uiP);
-   bool bReadOnlyTv = (uiShootingMode != uiM) && (uiShootingMode == uiAv || uiShootingMode == uiP);
-   bool bReadOnlyExp = uiShootingMode == uiM;
+   bool bIsM  = currentMode.Value() == shootingMode.Manual().Value();
+   bool bIsAv = currentMode.Value() == shootingMode.Av().Value();
+   bool bIsTv = currentMode.Value() == shootingMode.Tv().Value();
+   bool bIsP  = currentMode.Value() == shootingMode.Program().Value();
+
+   bool bReadOnlyAv = !bIsM && (bIsTv || bIsP);
+   bool bReadOnlyTv = !bIsM && (bIsAv || bIsP);
+   bool bReadOnlyExp = bIsM;
 
    m_cbAperture.UpdateValuesList();
    m_cbAperture.UpdateValue();
