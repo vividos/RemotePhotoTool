@@ -9,20 +9,22 @@
 // includes
 #include "Viewfinder.hpp"
 #include "EdsdkCommon.hpp"
+#include "Asio.hpp"
 
 // forward references
-class BackgroundWorkerThread;
 class BackgroundTimer;
 
 namespace EDSDK
 {
 
 /// viewfinder impl for EDSDK
-class ViewfinderImpl: public Viewfinder
+class ViewfinderImpl:
+   public Viewfinder,
+   public std::enable_shared_from_this<ViewfinderImpl>
 {
 public:
    /// ctor
-   ViewfinderImpl(Handle hSourceDevice);
+   ViewfinderImpl(Handle hSourceDevice, boost::asio::io_service& ioService);
    /// dtor
    virtual ~ViewfinderImpl();
 
@@ -35,6 +37,9 @@ private:
    /// stops background thread
    void StopBackgroundThread();
 
+   /// stops background thread; runs in worker thread
+   void AsyncStopBackgroundThread();
+
    /// retrieves viewfinder image data
    void GetImage(std::vector<BYTE>& vecImage);
 
@@ -45,11 +50,11 @@ private:
    /// source device
    Handle m_hSourceDevice;
 
-   /// worker thread
-   std::shared_ptr<BackgroundWorkerThread> m_spWorkerThread;
+   /// background thread io service
+   boost::asio::io_service& m_ioService;
 
    /// thread that polls camera for viewfinder image
-   std::shared_ptr<BackgroundTimer> m_spViewfinderImageThread;
+   std::shared_ptr<BackgroundTimer> m_spViewfinderImageTimer;
 
    /// mutex to protect m_fnOnAvailViewfinderImage
    LightweightMutex m_mtxFnOnAvailViewfinderImage;

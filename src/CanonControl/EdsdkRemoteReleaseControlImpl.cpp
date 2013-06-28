@@ -11,7 +11,7 @@
 #include "EdsdkRemoteReleaseControlImpl.hpp"
 #include "ShutterReleaseSettings.hpp"
 #include "Filesystem.hpp"
-
+#include "Thread.hpp"
 #include "Asio.hpp"
 #include <atomic>
 
@@ -41,6 +41,8 @@ public:
       }
    }
 
+   boost::asio::io_service& GetIoService() throw() { return m_ioService; }
+
    void Post(boost::function<void()> fn)
    {
       m_ioService.post(fn);
@@ -64,6 +66,8 @@ private:
 
 void EDSDK::AsyncReleaseControlThread::Run()
 {
+   Thread::SetName(_T("AsyncReleaseControlThread"));
+
    // run message queue
    MSG msg = {0};
    while (!m_bFinished)
@@ -348,6 +352,11 @@ bool RemoteReleaseControlImpl::GetCapability(RemoteReleaseControl::T_enRemoteCap
    }
 
    return false;
+}
+
+std::shared_ptr<Viewfinder> RemoteReleaseControlImpl::StartViewfinder() const
+{
+   return std::shared_ptr<Viewfinder>(new ViewfinderImpl(m_hCamera, m_upReleaseThread->GetIoService()));
 }
 
 void RemoteReleaseControlImpl::Release(const ShutterReleaseSettings& settings)

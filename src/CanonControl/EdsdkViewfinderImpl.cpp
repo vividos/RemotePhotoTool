@@ -14,8 +14,9 @@
 
 using namespace EDSDK;
 
-ViewfinderImpl::ViewfinderImpl(Handle hSourceDevice)
-   :m_hSourceDevice(hSourceDevice)
+ViewfinderImpl::ViewfinderImpl(Handle hSourceDevice, boost::asio::io_service& ioService)
+   :m_hSourceDevice(hSourceDevice),
+   m_ioService(ioService)
 {
    // Get the output device for the live view image
    PropertyAccess p(hSourceDevice);
@@ -74,34 +75,37 @@ void ViewfinderImpl::SetAvailImageHandler(Viewfinder::T_fnOnAvailViewfinderImage
 
 void ViewfinderImpl::StartBackgroundThread()
 {
-   ATLTRACE(_T("!!! StartBackgroundThread\n"));
-   m_spViewfinderImageThread.reset(); // clear old timers
+   m_spViewfinderImageTimer.reset(); // clear old timers
 
-   // start thread that polls for viewfinder images
-   m_spWorkerThread.reset(new BackgroundWorkerThread);
-
-   m_spViewfinderImageThread.reset(
+   m_spViewfinderImageTimer.reset(
       new BackgroundTimer(
-         m_spWorkerThread->GetIoService(),
+         m_ioService,
          50, // 50 ms results in 20 fps
          boost::bind(&ViewfinderImpl::OnGetViewfinderImage, this)
          ));
 
-   m_spViewfinderImageThread->Start();
+   m_spViewfinderImageTimer->Start();
 }
 
 void ViewfinderImpl::StopBackgroundThread()
 {
-   ATLTRACE(_T("!!! StopBackgroundThread\n"));
+   if (m_spViewfinderImageTimer == nullptr)
+      return;
 
+   // Run in worker thread, since we must not block the window message processing, needed in
+   // EDSDK functions called in GetImage(). Since caller might destroy the Viewfinder class right
+   // away, use shared_from_this() to manage lifetime of this class.
+   m_ioService.post(
+      boost::bind(&ViewfinderImpl::AsyncStopBackgroundThread, shared_from_this()));
+}
+
+void ViewfinderImpl::AsyncStopBackgroundThread()
+{
    // stop timer
-   if (m_spViewfinderImageThread != nullptr)
-      m_spViewfinderImageThread->Stop();
+   if (m_spViewfinderImageTimer != nullptr)
+      m_spViewfinderImageTimer->Stop();
 
-   m_spViewfinderImageThread.reset();
-
-   // stop thread
-   m_spWorkerThread.reset();
+   m_spViewfinderImageTimer.reset();
 }
 
 void ViewfinderImpl::GetImage(std::vector<BYTE>& vecImage)
@@ -148,6 +152,6 @@ void ViewfinderImpl::OnGetViewfinderImage()
 
    LightweightMutex::LockType lock(m_mtxFnOnAvailViewfinderImage);
 
-   if (m_fnOnAvailViewfinderImage != nullptr)
+   if (!m_fnOnAvailViewfinderImage.empty())
       m_fnOnAvailViewfinderImage(vecImage);
 }

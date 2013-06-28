@@ -162,10 +162,7 @@ public:
          vecValues.push_back(ImageProperty(variantEdsdk, uiImageProperty, vecRawValues[i], bReadOnly));
    }
 
-   virtual std::shared_ptr<Viewfinder> StartViewfinder() const override
-   {
-      return std::shared_ptr<Viewfinder>(new ViewfinderImpl(m_hCamera));
-   }
+   virtual std::shared_ptr<Viewfinder> StartViewfinder() const override;
 
    virtual unsigned int NumAvailableShots() const override
    {
