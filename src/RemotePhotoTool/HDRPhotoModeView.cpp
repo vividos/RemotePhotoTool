@@ -85,6 +85,14 @@ LRESULT HDRPhotoModeView::OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*l
    return 0;
 }
 
+LRESULT HDRPhotoModeView::OnComboShutterSpeedSelChange(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+   RecalcAEBShutterSpeedList();
+   UpdateAEBShutterSpeedList();
+
+   return 0;
+}
+
 LRESULT HDRPhotoModeView::OnComboAEBBracketShotsSelChange(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
    RecalcAEBShutterSpeedList();
