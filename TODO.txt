@@ -40,7 +40,7 @@ impl HDR pano view
 impl timelapse
 impl photo stack
 * Status bar updates for all actions
-* implement view finder stage 1: zoom, scaling
+implement view finder stage 1: zoom
 implement view finder stage 2: half transparent background image, battery, number of remaining shots, histogram
 * Sort and clean up resource ids
 HDR: Set Photomatix current folder to image output folder

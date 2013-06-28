@@ -38,8 +38,17 @@ private:
    /// message arrived that new viewfinder image is available
    LRESULT OnMessageViewfinderAvailImage(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
 
+   /// creates bitmap from viewfinder data
+   void CreateBitmap(CBitmapHandle& bmp);
+
    /// sets new bitmap
    void SetBitmap(CBitmapHandle bmpViewfinder);
+
+   /// traces viewfinder fps
+   void TraceViewfinderFps();
+
+   /// scales bitmap size, according to window size
+   void ScaleBitmapSize(const BITMAP& bm, int& iWidth, int& iHeight);
 
 private:
 // Handler prototypes (uncomment arguments if needed):

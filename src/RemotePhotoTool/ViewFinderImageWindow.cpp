@@ -88,73 +88,82 @@ LRESULT ViewFinderImageWindow::OnMessageViewfinderAvailImage(UINT /*uMsg*/, WPAR
 {
    CBitmapHandle bmp;
 
-   {
-      BITMAPINFO bi = {0};
-
-      BITMAPINFOHEADER& bih = bi.bmiHeader;
-      bih.biSize = sizeof(bih);
-      bih.biBitCount = 24;
-      bih.biClrUsed = 0;
-      bih.biCompression = BI_RGB;
-      bih.biPlanes = 1;
-
-      bih.biHeight = -static_cast<LONG>(m_uiResY); // negative, since bytes represent a top-bottom DIB
-      bih.biWidth = m_uiResX;
-
-      BITMAPINFOHEADER* lpbmih = &bih;
-      BITMAPINFO* lpbmi = &bi;
-
-      {
-         LightweightMutex::LockType lock(m_mtxViewfinderData);
-
-         LPCVOID lpDIBBits = m_vecCurrentViewfinderData.data();
-
-         CDC dc = GetWindowDC();
-         bmp.CreateDIBitmap(dc, lpbmih, CBM_INIT, lpDIBBits, lpbmi, DIB_RGB_COLORS);
-      }
-   }
-
+   CreateBitmap(bmp);
    SetBitmap(bmp);
 
    // invalidate control to force redraw
    Invalidate();
 
-   {
-      static unsigned int s_uiViewfinderImageCount = 0;
-      static DWORD s_dwLastFpsTime = GetTickCount();
-
-      s_uiViewfinderImageCount++;
-
-      DWORD dwNow = GetTickCount();
-
-      DWORD dwElapsed = dwNow - s_dwLastFpsTime;
-      if (dwElapsed > 500)
-      {
-         CString cszText;
-         cszText.Format(_T("Viewfinder: %u fps"), s_uiViewfinderImageCount * 1000 / dwElapsed);
-         ATLTRACE(_T("%s\n"), cszText);
-
-         s_uiViewfinderImageCount = 0;
-         s_dwLastFpsTime = dwNow;
-      }
-   }
+   TraceViewfinderFps();
 
    return 0;
+}
+
+void ViewFinderImageWindow::CreateBitmap(CBitmapHandle& bmp)
+{
+   BITMAPINFO bi = {0};
+
+   BITMAPINFOHEADER& bih = bi.bmiHeader;
+   bih.biSize = sizeof(bih);
+   bih.biBitCount = 24;
+   bih.biClrUsed = 0;
+   bih.biCompression = BI_RGB;
+   bih.biPlanes = 1;
+
+   bih.biHeight = -static_cast<LONG>(m_uiResY); // negative, since bytes represent a top-bottom DIB
+   bih.biWidth = m_uiResX;
+
+   BITMAPINFOHEADER* lpbmih = &bih;
+   BITMAPINFO* lpbmi = &bi;
+
+   {
+      LightweightMutex::LockType lock(m_mtxViewfinderData);
+
+      LPCVOID lpDIBBits = m_vecCurrentViewfinderData.data();
+
+      CDC dc = GetWindowDC();
+      bmp.CreateDIBitmap(dc, lpbmih, CBM_INIT, lpDIBBits, lpbmi, DIB_RGB_COLORS);
+   }
 }
 
 void ViewFinderImageWindow::SetBitmap(CBitmapHandle bmpViewfinder)
 {
    m_bmpViewfinder = bmpViewfinder;
+}
 
-   if (!bmpViewfinder.IsNull())
+void ViewFinderImageWindow::TraceViewfinderFps()
+{
+   static unsigned int s_uiViewfinderImageCount = 0;
+   static DWORD s_dwLastFpsTime = GetTickCount();
+
+   s_uiViewfinderImageCount++;
+
+   DWORD dwNow = GetTickCount();
+
+   DWORD dwElapsed = dwNow - s_dwLastFpsTime;
+   if (dwElapsed > 500)
    {
-      BITMAP bm = {0};
-      GetObject(m_bmpViewfinder, sizeof(bm), &bm);
+      CString cszText;
+      cszText.Format(_T("Viewfinder: %u fps"), s_uiViewfinderImageCount * 1000 / dwElapsed);
+      ATLTRACE(_T("%s\n"), cszText);
 
-      // TODO use this to set "no stretch" mode
-      //SetWindowPos(NULL, 0, 0, bm.bmWidth, bm.bmHeight,
-      //   SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);
+      s_uiViewfinderImageCount = 0;
+      s_dwLastFpsTime = dwNow;
    }
+}
+
+void ViewFinderImageWindow::ScaleBitmapSize(const BITMAP& bm, int& iWidth, int& iHeight)
+{
+   CRect rcWindow;
+   GetClientRect(rcWindow);
+
+   double dRatioWindow = rcWindow.Height() == 0 ? 1.0 : (double(rcWindow.Width()) / rcWindow.Height());
+   double dRatioBitmap = bm.bmHeight == 0 ? 1.0 : (double(bm.bmWidth) / bm.bmHeight);
+
+   if (dRatioBitmap < dRatioWindow)
+      iWidth = int(iHeight * dRatioBitmap);
+   else
+      iHeight = int(iWidth / dRatioBitmap);
 }
 
 LRESULT ViewFinderImageWindow::OnPaint(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
@@ -163,12 +172,9 @@ LRESULT ViewFinderImageWindow::OnPaint(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM 
 
    if (m_bmpViewfinder.IsNull())
    {
-//      ATLTRACE(_T("ViewFinderImageWindow::OnPaint() called, painted black rectangle\n"));
       dc.FillSolidRect(&dc.m_ps.rcPaint, RGB(0,0,0));
       return 0;
    }
-
-//   ATLTRACE(_T("ViewFinderImageWindow::OnPaint() called, painted image\n"));
 
    // select bitmap into memory DC
    CDC memDC;
@@ -181,10 +187,13 @@ LRESULT ViewFinderImageWindow::OnPaint(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM 
 
    CRect rcPaint(dc.m_ps.rcPaint);
 
+   int iWidth = rcPaint.Width();
+   int iHeight = rcPaint.Height();
+
+   ScaleBitmapSize(bm, iWidth, iHeight);
+
    // blit to actual paint DC
-//   dc.BitBlt(0, 0, bm.bmWidth, bm.bmHeight, memDC, 0, 0, SRCCOPY);
-   dc.StretchBlt(0, 0, rcPaint.Width(), rcPaint.Height(), memDC, 0, 0, bm.bmWidth, bm.bmHeight, SRCCOPY);
-//   dc.StretchBlt(0, 0, bm.bmWidth, bm.bmHeight, memDC, 0, 0, bm.bmWidth, bm.bmHeight, SRCCOPY);
+   dc.StretchBlt(0, 0, iWidth, iHeight, memDC, 0, 0, bm.bmWidth, bm.bmHeight, SRCCOPY);
 
    memDC.SelectBitmap(hbmT);
 
