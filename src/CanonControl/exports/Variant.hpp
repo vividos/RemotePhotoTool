@@ -107,6 +107,49 @@ public:
       m_bIsArray = bIsArray;
    }
 
+   /// equality operator
+   bool operator==(const Variant& rhs) const throw()
+   {
+      if (m_enType == typeUInt32)
+         return IsValueEqual<unsigned int>(rhs);
+      else
+      if (m_enType == typeUInt8)
+         return IsValueEqual<unsigned char>(rhs);
+      else
+      {
+         ATLASSERT(false); // implement more comparison types when needed
+         return false;
+      }
+   }
+
+   // compare function
+   template <typename T>
+   bool IsValueEqual(const Variant& rhs) const throw()
+   {
+      if (m_enType != rhs.m_enType)
+         return false;
+
+      if (m_variant.empty() && rhs.m_variant.empty())
+         return true; // empty variants are equal
+
+      if ((m_variant.empty() && !rhs.m_variant.empty()) ||
+          (!m_variant.empty() && rhs.m_variant.empty()))
+         return false; // one of them is non-empty
+
+      try
+      {
+         T left = boost::any_cast<T>(m_variant);
+         T right = boost::any_cast<T>(rhs.m_variant);
+
+         return left == right;
+      }
+      catch (const boost::bad_any_cast&)
+      {
+      }
+
+      return false;
+   }
+
 private:
    /// variant value
    boost::any m_variant;
