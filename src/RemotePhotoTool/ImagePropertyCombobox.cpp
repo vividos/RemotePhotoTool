@@ -139,9 +139,11 @@ LRESULT ImagePropertyCombobox::OnSelChange(WORD /*wNotifyCode*/, WORD /*wID*/, H
 
    size_t iIndex = GetItemData(iItem);
 
+   if (iIndex >= m_vecValues.size())
+      return 0; // invalid index
+
    try
    {
-      ATLASSERT(iIndex < m_vecValues.size());
       m_spRemoteReleaseControl->SetImageProperty(m_vecValues[iIndex]);
    }
    catch(CameraException& ex)
