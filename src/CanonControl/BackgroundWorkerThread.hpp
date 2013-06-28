@@ -10,6 +10,8 @@
 #include <thread>
 #include "Asio.hpp"
 #include "Event.hpp"
+#include "Thread.hpp"
+#include "LightweightMutex.hpp"
 
 /// background worker thread
 class BackgroundWorkerThread
@@ -19,7 +21,7 @@ public:
    BackgroundWorkerThread()
       :m_ioService(1),
        m_upDefaultWork(new boost::asio::io_service::work(m_ioService)),
-       m_thread(boost::bind(&boost::asio::io_service::run, &m_ioService))
+       m_thread(boost::bind(&BackgroundWorkerThread::Run, this))
    {
    }
    /// dtor
@@ -32,6 +34,14 @@ public:
 
    /// returns asio io service
    boost::asio::io_service& GetIoService() { return m_ioService; }
+
+private:
+   /// thread function
+   void Run()
+   {
+      Thread::SetName(_T("BackgroundWorkerThread"));
+      m_ioService.run();
+   }
 
 private:
    /// io service
@@ -53,8 +63,7 @@ public:
       boost::function<void()> fnCallback)
       :m_timer(ioService),
        m_uiMilliseconds(uiMilliseconds),
-       m_fnCallback(fnCallback),
-       m_evtStopped(true, true) // manual-reset event, initially set
+       m_fnCallback(fnCallback)
    {
       ATLASSERT(fnCallback.empty() == false);
    }
@@ -73,33 +82,38 @@ public:
    /// start timer
    void Start()
    {
-      m_evtStopped.Reset();
       InitTimer();
    }
 
    /// stop timer
    void Stop()
    {
-      if (m_evtStopped.Wait(0))
-         return; // already stopped
+      LightweightMutex::LockType lock(m_mtxTimerCallback);
 
       m_timer.cancel();
 
-      m_evtStopped.Wait();
+      m_fnCallback.clear();
    }
 
 private:
    /// timer handler
    void OnTimer(const boost::system::error_code& error)
    {
-      if (error)
-      {
-         // timer was canceled
-         m_evtStopped.Set();
-         return;
-      }
+      LightweightMutex::LockType lock(m_mtxTimerCallback);
 
-      m_fnCallback();
+      if (error)
+         return; // timer was canceled
+
+      {
+         try
+         {
+            if (!m_fnCallback.empty())
+               m_fnCallback();
+         }
+         catch(...)
+         {
+         }
+      }
 
       InitTimer();
    }
@@ -118,9 +132,9 @@ private:
    /// timer interval
    unsigned int m_uiMilliseconds;
 
+   /// mutext to protect callback and timer
+   LightweightMutex m_mtxTimerCallback;
+
    /// callback to call
    boost::function<void()> m_fnCallback;
-
-   /// event to signal that timer has stopped
-   Event m_evtStopped;
 };
