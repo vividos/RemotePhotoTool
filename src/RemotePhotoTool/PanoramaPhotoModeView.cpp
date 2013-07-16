@@ -29,12 +29,23 @@ LRESULT PanoramaPhotoModeView::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LP
 
    m_spRemoteReleaseControl = m_host.StartRemoteReleaseControl(true);
 
-   // TODO default settings needed?
-   //CString cszFilename =
-   //   m_host.GetImageFileManager().NextFilename(imageTypeHDR);
-   //settings.Filename(cszFilename);
+   // set default release settings
+   try
+   {
+      ShutterReleaseSettings settings(ShutterReleaseSettings::saveToBoth);
 
-   //m_spRemoteReleaseControl->SetDefaultReleaseSettings(settings);
+      CString cszFilename =
+         m_host.GetImageFileManager().NextFilename(imageTypePano);
+      settings.Filename(cszFilename);
+
+      m_spRemoteReleaseControl->SetDefaultReleaseSettings(settings);
+   }
+   catch(CameraException& ex)
+   {
+      CameraErrorDlg dlg(_T("Error while setting default shooting settings"), ex);
+      dlg.DoModal();
+      return FALSE;
+   }
 
    StopPanorama();
 

@@ -64,16 +64,23 @@ LRESULT HDRPhotoModeView::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM 
    m_iPropertyHandlerId = m_spRemoteReleaseControl->AddPropertyEventHandler(
       boost::bind(&HDRPhotoModeView::OnUpdatedProperty, this, _1, _2));
 
-
-// TODO really? or lock UI?
    // set default release settings
-   ShutterReleaseSettings settings(ShutterReleaseSettings::saveToBoth);
+   try
+   {
+      ShutterReleaseSettings settings(ShutterReleaseSettings::saveToBoth);
 
-   CString cszFilename =
-      m_host.GetImageFileManager().NextFilename(imageTypeHDR);
-   settings.Filename(cszFilename);
+      CString cszFilename =
+         m_host.GetImageFileManager().NextFilename(imageTypeHDR);
+      settings.Filename(cszFilename);
 
-   m_spRemoteReleaseControl->SetDefaultReleaseSettings(settings);
+      m_spRemoteReleaseControl->SetDefaultReleaseSettings(settings);
+   }
+   catch(CameraException& ex)
+   {
+      CameraErrorDlg dlg(_T("Error while setting default shooting settings"), ex);
+      dlg.DoModal();
+      return FALSE;
+   }
 
    return TRUE;
 }
