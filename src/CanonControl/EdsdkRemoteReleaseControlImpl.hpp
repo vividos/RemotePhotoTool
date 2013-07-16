@@ -231,6 +231,9 @@ private:
 
    std::unique_ptr<AsyncReleaseControlThread> m_upReleaseThread;
 
+   /// mutex to synchronize access to ED-SDK when using viewfinder
+   std::shared_ptr<LightweightMutex> m_spMtxLock;
+
    /// subject of observer pattern; used for property events
    Subject<void(RemoteReleaseControl::T_enPropertyEvent, unsigned int)> m_subjectPropertyEvent;
 

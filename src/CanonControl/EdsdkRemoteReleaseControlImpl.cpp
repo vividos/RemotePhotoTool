@@ -101,6 +101,7 @@ using namespace EDSDK;
 RemoteReleaseControlImpl::RemoteReleaseControlImpl(const Handle& hCamera)
 :m_hCamera(hCamera),
  m_upReleaseThread(new AsyncReleaseControlThread),
+ m_spMtxLock(new LightweightMutex),
  m_defaultShutterReleaseSettings(ShutterReleaseSettings::saveToCamera), // default is to just save to camera
  m_evtShutterReleaseOccured(true, false) // manual-reset event
 {
@@ -356,7 +357,8 @@ bool RemoteReleaseControlImpl::GetCapability(RemoteReleaseControl::T_enRemoteCap
 
 std::shared_ptr<Viewfinder> RemoteReleaseControlImpl::StartViewfinder() const
 {
-   return std::shared_ptr<Viewfinder>(new ViewfinderImpl(m_hCamera, m_upReleaseThread->GetIoService()));
+   return std::shared_ptr<Viewfinder>(
+      new ViewfinderImpl(m_hCamera, m_upReleaseThread->GetIoService(), m_spMtxLock));
 }
 
 void RemoteReleaseControlImpl::Release(const ShutterReleaseSettings& settings)
@@ -376,12 +378,16 @@ void RemoteReleaseControlImpl::AsyncRelease(const ShutterReleaseSettings& settin
       defaultSaveTarget = m_defaultShutterReleaseSettings.SaveTarget();
    }
 
-   // set SaveTo flag
-   PropertyAccess p(m_hCamera);
-   Variant v;
-   v.Set<unsigned int>(settings.SaveTarget());
-   v.SetType(Variant::typeUInt32);
-   p.Set(kEdsPropID_SaveTo, v);
+   {
+      LightweightMutex::LockType lock(*m_spMtxLock);
+
+      // set SaveTo flag
+      PropertyAccess p(m_hCamera);
+      Variant v;
+      v.Set<unsigned int>(settings.SaveTarget());
+      v.SetType(Variant::typeUInt32);
+      p.Set(kEdsPropID_SaveTo, v);
+   }
 
    // send command
    EdsError err = EdsSendCommand(m_hCamera.Get(), kEdsCameraCommand_TakePicture, 0);

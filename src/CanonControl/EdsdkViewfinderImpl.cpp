@@ -14,9 +14,10 @@
 
 using namespace EDSDK;
 
-ViewfinderImpl::ViewfinderImpl(Handle hSourceDevice, boost::asio::io_service& ioService)
+ViewfinderImpl::ViewfinderImpl(Handle hSourceDevice, boost::asio::io_service& ioService, std::shared_ptr<LightweightMutex> spMtxLock)
    :m_hSourceDevice(hSourceDevice),
-   m_ioService(ioService)
+   m_ioService(ioService),
+   m_spMtxLock(spMtxLock)
 {
    // Get the output device for the live view image
    PropertyAccess p(hSourceDevice);
@@ -31,7 +32,10 @@ ViewfinderImpl::ViewfinderImpl(Handle hSourceDevice, boost::asio::io_service& io
 
    vDevice.Set(device);
 
-   p.Set(kEdsPropID_Evf_OutputDevice, vDevice);
+   {
+      LightweightMutex::LockType lock(*spMtxLock);
+      p.Set(kEdsPropID_Evf_OutputDevice, vDevice);
+   }
 
    // A property change event notification is issued from the camera if property settings are made successfully.
    // Start downloading of the live view image once the property change notification arrives.
@@ -56,7 +60,10 @@ ViewfinderImpl::~ViewfinderImpl()
 
    vDevice.Set(device);
 
-   p.Set(kEdsPropID_Evf_OutputDevice, vDevice);
+   {
+      LightweightMutex::LockType lock(*m_spMtxLock);
+      p.Set(kEdsPropID_Evf_OutputDevice, vDevice);
+   }
 }
 
 void ViewfinderImpl::SetAvailImageHandler(Viewfinder::T_fnOnAvailViewfinderImage fnOnAvailViewfinderImage)
@@ -110,6 +117,8 @@ void ViewfinderImpl::AsyncStopBackgroundThread()
 
 void ViewfinderImpl::GetImage(std::vector<BYTE>& vecImage)
 {
+   LightweightMutex::LockType lock(*m_spMtxLock);
+
    // create memory stream
    Handle hStream(m_hSourceDevice.GetRef());
    EdsError err = EdsCreateMemoryStream(0, &hStream);

@@ -24,7 +24,7 @@ class ViewfinderImpl:
 {
 public:
    /// ctor
-   ViewfinderImpl(Handle hSourceDevice, boost::asio::io_service& ioService);
+   ViewfinderImpl(Handle hSourceDevice, boost::asio::io_service& ioService, std::shared_ptr<LightweightMutex> spMtxLock);
    /// dtor
    virtual ~ViewfinderImpl();
 
@@ -52,6 +52,9 @@ private:
 
    /// background thread io service
    boost::asio::io_service& m_ioService;
+
+   /// lock to synchronize access to ED-SDK during viewfinder
+   std::shared_ptr<LightweightMutex> m_spMtxLock;
 
    /// thread that polls camera for viewfinder image
    std::shared_ptr<BackgroundTimer> m_spViewfinderImageTimer;
