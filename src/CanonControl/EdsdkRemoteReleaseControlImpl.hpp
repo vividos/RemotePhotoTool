@@ -57,14 +57,12 @@ public:
 
    virtual void SetDefaultReleaseSettings(const ShutterReleaseSettings& settings) override
    {
-      LightweightMutex::LockType lock(m_mtxCurrentShutterReleaseSettings);
-      m_defaultShutterReleaseSettings = settings;
+      {
+         LightweightMutex::LockType lock(m_mtxCurrentShutterReleaseSettings);
+         m_defaultShutterReleaseSettings = settings;
+      }
 
-      PropertyAccess p(m_hCamera);
-      Variant v;
-      v.Set<unsigned int>(settings.SaveTarget());
-      v.SetType(Variant::typeUInt32);
-      p.Set(kEdsPropID_SaveTo, v);
+      SetSaveToFlag(settings.SaveTarget(), true);
    }
 
    virtual int AddPropertyEventHandler(RemoteReleaseControl::T_fnOnPropertyChanged fnOnPropertyChanged) override
@@ -143,11 +141,9 @@ public:
       return ImageProperty(variantEdsdk, uiImageProperty, value, bReadOnly);
    }
 
-   virtual void SetImageProperty(const ImageProperty& imageProperty) override
-   {
-      PropertyAccess p(m_hCamera);
-      p.Set(imageProperty.Id(), imageProperty.Value());
-   }
+   virtual void SetImageProperty(const ImageProperty& imageProperty) override;
+
+   void AsyncSetImageProperty(const ImageProperty& imageProperty);
 
    virtual void EnumImagePropertyValues(unsigned int uiImageProperty, std::vector<ImageProperty>& vecValues) const override
    {
@@ -210,6 +206,10 @@ public:
       return std::shared_ptr<BulbReleaseControl>(new BulbReleaseControlImpl(m_hCamera));
    }
 
+   /// sets SaveTo flag
+   void SetSaveToFlag(ShutterReleaseSettings::T_enSaveTarget enSaveTarget, bool bAsynchronous);
+
+   /// asynchronous release method
    void AsyncRelease(const ShutterReleaseSettings& settings);
 
 private:
@@ -229,6 +229,7 @@ private:
    /// handle to camera object
    Handle m_hCamera;
 
+   /// background thread for release control
    std::unique_ptr<AsyncReleaseControlThread> m_upReleaseThread;
 
    /// mutex to synchronize access to ED-SDK when using viewfinder

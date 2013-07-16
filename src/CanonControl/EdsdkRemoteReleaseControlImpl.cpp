@@ -355,6 +355,20 @@ bool RemoteReleaseControlImpl::GetCapability(RemoteReleaseControl::T_enRemoteCap
    return false;
 }
 
+void RemoteReleaseControlImpl::SetImageProperty(const ImageProperty& imageProperty)
+{
+   m_upReleaseThread->GetIoService().post(
+      boost::bind(&RemoteReleaseControlImpl::AsyncSetImageProperty, this, imageProperty));
+}
+
+void RemoteReleaseControlImpl::AsyncSetImageProperty(const ImageProperty& imageProperty)
+{
+   LightweightMutex::LockType lock(*m_spMtxLock);
+
+   PropertyAccess p(m_hCamera);
+   p.Set(imageProperty.Id(), imageProperty.Value());
+}
+
 std::shared_ptr<Viewfinder> RemoteReleaseControlImpl::StartViewfinder() const
 {
    return std::shared_ptr<Viewfinder>(
@@ -364,6 +378,20 @@ std::shared_ptr<Viewfinder> RemoteReleaseControlImpl::StartViewfinder() const
 void RemoteReleaseControlImpl::Release(const ShutterReleaseSettings& settings)
 {
    m_upReleaseThread->Post(boost::bind(&RemoteReleaseControlImpl::AsyncRelease, this, settings));
+}
+
+void RemoteReleaseControlImpl::SetSaveToFlag(ShutterReleaseSettings::T_enSaveTarget enSaveTarget, bool bAsynchronous)
+{
+   Variant value;
+   value.Set<unsigned int>(enSaveTarget);
+   value.SetType(Variant::typeUInt32);
+
+   ImageProperty ip(variantEdsdk, kEdsPropID_SaveTo, value, true);
+
+   if (bAsynchronous)
+      SetImageProperty(ip);
+   else
+      AsyncSetImageProperty(ip);
 }
 
 void RemoteReleaseControlImpl::AsyncRelease(const ShutterReleaseSettings& settings)
@@ -378,26 +406,12 @@ void RemoteReleaseControlImpl::AsyncRelease(const ShutterReleaseSettings& settin
       defaultSaveTarget = m_defaultShutterReleaseSettings.SaveTarget();
    }
 
-   {
-      LightweightMutex::LockType lock(*m_spMtxLock);
-
-      // set SaveTo flag
-      PropertyAccess p(m_hCamera);
-      Variant v;
-      v.Set<unsigned int>(settings.SaveTarget());
-      v.SetType(Variant::typeUInt32);
-      p.Set(kEdsPropID_SaveTo, v);
-   }
+   SetSaveToFlag(settings.SaveTarget(), false); // synchronous
 
    // send command
    EdsError err = EdsSendCommand(m_hCamera.Get(), kEdsCameraCommand_TakePicture, 0);
    LOG_TRACE(_T("EdsSendCommand(%08x, TakePicture, 0) returned %08x\n"), m_hCamera.Get(), err);
    EDSDK::CheckError(_T("EdsSendCommand"), err, __FILE__, __LINE__);
-
-   // reset SaveTo flag to default // TODO move to end of capture
-//   v.Set<unsigned int>(defaultSaveTarget);
-//   v.SetType(Variant::typeUInt32);
-//   p.Set(kEdsPropID_SaveTo, v);
 }
 
 void RemoteReleaseControlImpl::OnReceivedObjectEventRequestTransfer(Handle hDirectoryItem)
@@ -435,6 +449,21 @@ void RemoteReleaseControlImpl::AsyncDownloadImage(Handle hDirectoryItem, Shutter
    ShutterReleaseSettings::T_fnOnFinishedTransfer fnHandler = settings.HandlerOnFinishedTransfer();
    if (!fnHandler.empty())
       fnHandler(settings);
+
+   // reset SaveTo flag to default
+   {
+      ShutterReleaseSettings::T_enSaveTarget defaultSaveTarget;
+      {
+         LightweightMutex::LockType lock(m_mtxCurrentShutterReleaseSettings);
+
+         // reset release settings to default
+         m_currentShutterReleaseSettings = m_defaultShutterReleaseSettings;
+
+         defaultSaveTarget = m_defaultShutterReleaseSettings.SaveTarget();
+      }
+
+      SetSaveToFlag(defaultSaveTarget, true); // asynchronous
+   }
 }
 
 void RemoteReleaseControlImpl::DownloadImage(Handle hDirectoryItem, ShutterReleaseSettings& settings)

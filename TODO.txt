@@ -46,7 +46,6 @@ implement view finder stage 2: half transparent background image, battery, numbe
 HDR: Set Photomatix current folder to image output folder
 Add current date to log filename, at start of application
 * Bug: Release while viewfinder locks application
-* Bug: Switching Photo Modes hides Liveview
 Write manual
 Multi-camera photo view
 
