@@ -10,6 +10,7 @@
 #include "Event.hpp"
 #include <thread>
 #include <boost/bind.hpp>
+#include "Thread.hpp"
 
 /// this is the background window we're starting
 template <typename TInstance>
@@ -43,6 +44,7 @@ private:
    /// thread method
    int Run()
    {
+      Thread::SetName(_T("BackgroundWindowThread"));
       // note: we don't even have to create a window, it's enough to run the message loop
 
       // start instance
@@ -54,12 +56,17 @@ private:
       for (bool bLoop = true; bLoop;)
       {
          HANDLE h = m_evtStop.Handle();
-         DWORD dwRet = ::MsgWaitForMultipleObjects(1, &h, FALSE, INFINITE, QS_ALLINPUT);
+         DWORD dwTimeout = 100;
+         DWORD dwRet = ::MsgWaitForMultipleObjects(1, &h, FALSE, dwTimeout, QS_ALLINPUT);
+
+         if (WAIT_TIMEOUT == dwRet)
+         {
+            EdsGetEvent();
+            continue;
+         }
 
          if (WAIT_OBJECT_0 == dwRet)
             bLoop = false;
-
-         LOG_TRACE(_T("NEW MESSAGES\n"));
 
          // process window messages
          MSG msg = {0};
@@ -71,7 +78,7 @@ private:
                if(!bRet)
                   break;   // WM_QUIT, exit message loop
 
-               LOG_TRACE(_T("HWND=%08x MSG=%04x\n"), msg.hwnd, msg.message);
+               //LOG_TRACE(_T("HWND=%08x MSG=%04x\n"), msg.hwnd, msg.message);
 
                ::TranslateMessage(&msg);
                ::DispatchMessage(&msg);
@@ -79,8 +86,6 @@ private:
             else
                break;
          }
-
-         LOG_TRACE(_T("MESSAGES DONE\n"));
       }
 
       // end instance

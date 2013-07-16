@@ -10,7 +10,7 @@
 #include "edsdk.h"
 #include "Instance.hpp"
 #include "CameraException.hpp"
-//#include "BackgroundWindowThread.hpp"
+#include "BackgroundWindowThread.hpp"
 #include "LightweightMutex.hpp"
 
 /// EOS Digital Camera SDK interface
@@ -38,6 +38,7 @@ public:
    ~SDKInstance() throw();
 };
 
+#define USE_BACKGROUND_THREAD
 
 /// SDK reference
 class Ref: public std::enable_shared_from_this<Ref>
@@ -45,10 +46,13 @@ class Ref: public std::enable_shared_from_this<Ref>
 public:
    /// ctor
    Ref()
-      //:m_spBackgroundThread(new BackgroundWindowThread<SDKInstance>)
-      //:m_spBackgroundThread(new BackgroundWindowThread<int>)
+#ifdef USE_BACKGROUND_THREAD
+      :m_spBackgroundThread(new BackgroundWindowThread<SDKInstance>)
+#endif
    {
-      //m_spBackgroundThread->Start();
+#ifdef USE_BACKGROUND_THREAD
+      m_spBackgroundThread->Start();
+#endif
    }
    /// dtor
    ~Ref() throw()
@@ -69,11 +73,12 @@ private:
    static EdsError EDSCALLBACK OnCameraAddedHandler(EdsVoid* inContext);
 
 private:
-   //std::shared_ptr<BackgroundWindowThread<SDKInstance>> m_spBackgroundThread;
-   //std::shared_ptr<BackgroundWindowThread<int>> m_spBackgroundThread;
-
+#ifdef USE_BACKGROUND_THREAD
+   std::shared_ptr<BackgroundWindowThread<SDKInstance>> m_spBackgroundThread;
+#else
    /// SDK instance
    SDKInstance m_instance;
+#endif
 
    /// mutex to protect m_fnOnCameraConnected
    LightweightMutex m_mtxFnOnCameraConnected;
