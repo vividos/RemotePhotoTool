@@ -39,3 +39,8 @@ src/Thirdparty/EDSDK/Dll/icc/
 src/Thirdparty/EDSDK/Document/
 src/Thirdparty/PSREC/Doc/
 src/Thirdparty/PSREC/Sample/
+
+#Ignore generated ribbon files
+src/RemotePhotoTool/res/MainFrameRibbon.bml
+src/RemotePhotoTool/res/MainFrameRibbon.h
+src/RemotePhotoTool/res/MainFrameRibbon.rc
