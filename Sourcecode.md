@@ -9,7 +9,7 @@ at least Visual Studio 2012 is needed to compile the application.
 
 The app uses classes from the Boost library where no appriopriate class from the Standard
 C++ Library could be used. The application also uses other libraries. See the
-[Credits.md](Credits.ms) file for more infos.
+[Credits.md](Credits.md) file for more infos.
 
 The app uses SDKs from Canon to connect and remote control cameras. The SDKs and documentation
 can be downloaded via the "Digital Image Developer Programme". All needed headers, libs and
