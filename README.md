@@ -65,3 +65,18 @@ Note that most cameras may work, but due to the fact that I only own an EOS 40D 
 - Powershot SX100 IS
 - Powershot A640
 - Powershot A620
+
+### Open Source ###
+
+The official website of RemotePhotoTool is:
+
+[https://github.com/vividos/RemotePhotoTool](https://github.com/vividos/RemotePhotoTool)
+
+RemotePhotoTool is licensed and distributed under the BSD license. See [License.md](License.md) for
+the whole text.
+
+Read general documentation about the source code package in this file: [Sourcecode.md](Sourcecode.md)
+
+Read the credits acknowledgement in this file: [Credits.md](Credits.md)
+
+Read the Changelog file: [Changelog.md](Changelog.md)
