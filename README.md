@@ -43,6 +43,7 @@ Note that most cameras may work, but due to the fact that I only own an EOS 40D 
 - EOS 40D (`tested and works`)
 - EOS 50D
 - EOS 60D 
+- EOS 60Da 
 - EOS 5D Mark II
 - EOS 5D Mark III
 - EOS 6D
