@@ -47,7 +47,10 @@ ViewfinderImpl::ViewfinderImpl(Handle hSourceDevice, boost::asio::io_service& io
 
 ViewfinderImpl::~ViewfinderImpl()
 {
-   StopBackgroundThread();
+   // don't stop background thread in dtor, since background thread would be stopped asynchronous,
+   // and in the dtor it's too late to use shared_from_this() there. So SetAvailImageHandler() must
+   // be called before reset()ing a shared ptr to this class.
+   //StopBackgroundThread();
 
    // clear live view flag in property
    PropertyAccess p(m_hSourceDevice);

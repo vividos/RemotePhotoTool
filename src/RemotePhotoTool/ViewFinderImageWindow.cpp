@@ -256,6 +256,11 @@ LRESULT ViewFinderImageWindow::OnPaint(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM 
 
 LRESULT ViewFinderImageWindow::OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
-   m_spViewfinder.reset();
+   if (m_spViewfinder != nullptr)
+   {
+      m_spViewfinder->SetAvailImageHandler();
+      m_spViewfinder.reset();
+   }
+
    return 0;
 }
