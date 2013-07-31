@@ -48,6 +48,9 @@ private:
    /// message arrived that new viewfinder image is available
    LRESULT OnMessageViewfinderAvailImage(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
 
+   /// decodes raw jpeg data into image and stores it for drawing
+   void DecodeJpegImage(const std::vector<BYTE>& vecImage);
+
    /// creates bitmap from viewfinder data
    void CreateBitmap(CBitmapHandle& bmp);
 

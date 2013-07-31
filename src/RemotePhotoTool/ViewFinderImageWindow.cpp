@@ -52,36 +52,7 @@ void ViewFinderImageWindow::OnAvailViewfinderImage(const std::vector<BYTE>& vecI
    //   s_dwLastCall = dwNow;
    //}
 
-   // decode jpeg image
-   {
-      //DWORD dwStart = GetTickCount();
-      JpegMemoryReader jpegReader(vecImage);
-
-      try
-      {
-         jpegReader.Read();
-      }
-      catch(...)
-      {
-         ATLTRACE(_T("!!! failed loading JPEG!\n"));
-         return;
-      }
-
-      //DWORD dwEnd = GetTickCount();
-      //ATLTRACE(_T("decoding jpg took %u ms\n"), dwEnd - dwStart);
-
-      std::vector<BYTE>& vecBitmapData = jpegReader.BitmapData();
-
-      JpegImageInfo imageInfo = jpegReader.ImageInfo();
-
-      {
-         LightweightMutex::LockType lock(m_mtxViewfinderData);
-         std::swap(m_vecCurrentViewfinderData, vecBitmapData);
-
-         m_uiResX = imageInfo.Width();
-         m_uiResY = imageInfo.Height();
-      }
-   }
+   DecodeJpegImage(vecImage);
 
    if (IsWindow())
       PostMessage(WM_VIEWFINDER_AVAIL_IMAGE);
@@ -100,6 +71,37 @@ LRESULT ViewFinderImageWindow::OnMessageViewfinderAvailImage(UINT /*uMsg*/, WPAR
    TraceViewfinderFps();
 
    return 0;
+}
+
+void ViewFinderImageWindow::DecodeJpegImage(const std::vector<BYTE>& vecImage)
+{
+   //DWORD dwStart = GetTickCount();
+   JpegMemoryReader jpegReader(vecImage);
+
+   try
+   {
+      jpegReader.Read();
+   }
+   catch(...)
+   {
+      ATLTRACE(_T("!!! failed loading JPEG!\n"));
+      return;
+   }
+
+   //DWORD dwEnd = GetTickCount();
+   //ATLTRACE(_T("decoding jpg took %u ms\n"), dwEnd - dwStart);
+
+   std::vector<BYTE>& vecBitmapData = jpegReader.BitmapData();
+
+   JpegImageInfo imageInfo = jpegReader.ImageInfo();
+
+   {
+      LightweightMutex::LockType lock(m_mtxViewfinderData);
+      std::swap(m_vecCurrentViewfinderData, vecBitmapData);
+
+      m_uiResX = imageInfo.Width();
+      m_uiResY = imageInfo.Height();
+   }
 }
 
 void ViewFinderImageWindow::CreateBitmap(CBitmapHandle& bmp)
