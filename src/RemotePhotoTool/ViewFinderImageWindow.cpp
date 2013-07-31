@@ -239,8 +239,8 @@ LRESULT ViewFinderImageWindow::OnPaint(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM 
    HBITMAP hbmT = bmpDC.SelectBitmap(m_bmpViewfinder);
 
    // draw to memory DC
-   CMemoryDC memDC(dc, rcPaint);
-   memDC.FillSolidRect(&dc.m_ps.rcPaint, ::GetSysColor(COLOR_WINDOW));
+   CMemoryDC memDC(dc, dc.m_ps.rcPaint);
+   memDC.FillSolidRect(&dc.m_ps.rcPaint, ::GetSysColor(COLOR_3DFACE));
 
    // blit bitmap
    memDC.StretchBlt(0, 0, iWidth, iHeight, bmpDC, 0, 0, bm.bmWidth, bm.bmHeight, SRCCOPY);

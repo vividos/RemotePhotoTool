@@ -47,7 +47,6 @@ Write manual
 Multi-camera photo view
 Image Property view: change values using editbox or combobox
 Copy button for error dialog
-* Bug: Redraw problem in viewfinder when resizing
 * Bug: Lockup when switching to Device or Image Properties (lockup in EdsGetPropertySize())
 * Bug: Crash when exiting app with liveview on
 * Bug: Lockup when exiting app while connected to camera (lockup in EdsCloseSession())
