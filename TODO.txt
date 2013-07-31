@@ -24,8 +24,7 @@ implement UI lock
 implement AF lock
 on protocol 0 cameras, lock UI when getting/setting property
 use EdsCreateFileStreamEx() for unicode filenames
-support custom function numbers through kEdsPropID_CFn
-* Bug: "Recording... Remaining images" on EOS display
+support custom function numbers through kEdsPropID_CFn, e.g. mirror lockup
 
 CDSDK
 -----
@@ -34,19 +33,26 @@ Implement device and image properties
 Implement viewfinder
 
 RemotePhotoTool
----------
+---------------
 Nice toolbar icons
 impl HDR pano view
 impl timelapse
 impl photo stack
-* Status bar updates for all actions
+Status bar updates for all actions
 implement view finder stage 1: zoom
 implement view finder stage 2: half transparent background image, battery, number of remaining shots, histogram
 HDR: Set Photomatix current folder to image output folder
 Add current date to log filename, at start of application
-* Bug: Release while viewfinder locks application
 Write manual
 Multi-camera photo view
+Image Property view: change values using editbox or combobox
+Copy button for error dialog
+* Bug: Redraw problem in viewfinder when resizing
+* Bug: Lockup when switching to Device or Image Properties (lockup in EdsGetPropertySize())
+* Bug: Crash when exiting app with liveview on
+* Bug: Lockup when exiting app while connected to camera (lockup in EdsCloseSession())
+* Bug: Clicking on Connect when connected to a camera locks up the application (lockup in EdsCloseSession())
+* Bug: Crash when connected to a camera and camera is switched off (exception 0x8001010D)
 
 PhotoToolCmdline
 ----------------
