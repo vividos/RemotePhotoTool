@@ -190,6 +190,9 @@
     <Image Include="res\toolbar_big.bmp">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="res\icons.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="RemotePhotoTool.rc">
