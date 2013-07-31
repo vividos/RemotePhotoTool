@@ -366,7 +366,15 @@ void RemoteReleaseControlImpl::AsyncSetImageProperty(const ImageProperty& imageP
    LightweightMutex::LockType lock(*m_spMtxLock);
 
    PropertyAccess p(m_hCamera);
-   p.Set(imageProperty.Id(), imageProperty.Value());
+   try
+   {
+      p.Set(imageProperty.Id(), imageProperty.Value());
+   }
+   catch(CameraException& ex)
+   {
+      LOG_TRACE(_T("CameraException during AsyncSetImageProperty(): %s, ImageProperty: %s, Value: %s\n"),
+         ex.Message(), imageProperty.Name().GetString(), imageProperty.AsString().GetString());
+   }
 }
 
 std::shared_ptr<Viewfinder> RemoteReleaseControlImpl::StartViewfinder() const

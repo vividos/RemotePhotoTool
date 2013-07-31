@@ -52,7 +52,6 @@ Copy button for error dialog
 * Bug: Crash when exiting app with liveview on
 * Bug: Lockup when exiting app while connected to camera (lockup in EdsCloseSession())
 * Bug: Clicking on Connect when connected to a camera locks up the application (lockup in EdsCloseSession())
-* Bug: Crash when connected to a camera and camera is switched off (exception 0x8001010D)
 
 PhotoToolCmdline
 ----------------
