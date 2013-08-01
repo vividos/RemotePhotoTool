@@ -72,23 +72,13 @@ LRESULT StandardPhotoModeView::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LP
 
 LRESULT StandardPhotoModeView::OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
-   // reset default release settings
-   if (m_spRemoteReleaseControl != nullptr)
-   {
-      ShutterReleaseSettings settings(ShutterReleaseSettings::saveToBoth);
-      try
-      {
-         m_spRemoteReleaseControl->SetDefaultReleaseSettings(settings);
-      }
-      catch(CameraException& /*ex*/)
-      {
-      }
-   }
+   // note: don't reset default release settings; must be done in new view
 
    if (m_iPropertyHandlerId != -1)
       m_spRemoteReleaseControl->RemovePropertyEventHandler(m_iPropertyHandlerId);
 
    m_upImagePropertyValueManager.reset();
+
    return 0;
 }
 
