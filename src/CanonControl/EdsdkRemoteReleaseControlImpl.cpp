@@ -15,9 +15,11 @@
 #include "Asio.hpp"
 #include <atomic>
 
+/// thread to async execute Release() and other functions
 class EDSDK::AsyncReleaseControlThread
 {
 public:
+   /// ctor
    AsyncReleaseControlThread()
       :m_ioService(1),
        m_upDefaultWork(new boost::asio::io_service::work(m_ioService)),
@@ -25,7 +27,7 @@ public:
    {
       m_upThread.reset(new std::thread(boost::bind(&AsyncReleaseControlThread::Run, this)));
    }
-
+   /// dtor
    ~AsyncReleaseControlThread() throw()
    {
       try
@@ -41,14 +43,17 @@ public:
       }
    }
 
+   /// returns io service
    boost::asio::io_service& GetIoService() throw() { return m_ioService; }
 
+   /// posts function to execute in thread
    void Post(boost::function<void()> fn)
    {
       m_ioService.post(fn);
    }
 
 private:
+   /// thread function
    void Run();
 
 private:
@@ -61,6 +66,7 @@ private:
    /// default work
    std::unique_ptr<boost::asio::io_service::work> m_upDefaultWork;
 
+   /// indicates that thread should stop
    std::atomic<bool> m_bFinished;
 };
 
