@@ -18,6 +18,9 @@
 #include <thread>
 #include <boost/bind.hpp>
 
+// forward references
+class SourceDevice;
+
 namespace EDSDK
 {
 class AsyncReleaseControlThread;
@@ -27,7 +30,7 @@ class RemoteReleaseControlImpl: public RemoteReleaseControl
 {
 public:
    /// ctor
-   RemoteReleaseControlImpl(const Handle& hCamera);
+   RemoteReleaseControlImpl(std::shared_ptr<SourceDevice> spSourceDevice, const Handle& hCamera);
 
    /// dtor
    virtual ~RemoteReleaseControlImpl() throw();
@@ -226,6 +229,9 @@ private:
    static EdsError EDSCALLBACK ProgressFunc(EdsUInt32 inPercent, EdsVoid* inContext, EdsBool* outCancel);
 
 private:
+   /// source device
+   std::shared_ptr<SourceDevice> m_spSourceDevice;
+
    /// handle to camera object
    Handle m_hCamera;
 

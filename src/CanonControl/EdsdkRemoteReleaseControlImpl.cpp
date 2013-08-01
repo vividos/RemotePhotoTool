@@ -97,8 +97,9 @@ void EDSDK::AsyncReleaseControlThread::Run()
 
 using namespace EDSDK;
 
-RemoteReleaseControlImpl::RemoteReleaseControlImpl(const Handle& hCamera)
-:m_hCamera(hCamera),
+RemoteReleaseControlImpl::RemoteReleaseControlImpl(std::shared_ptr<SourceDevice> spSourceDevice, const Handle& hCamera)
+:m_spSourceDevice(spSourceDevice),
+ m_hCamera(hCamera),
  m_upReleaseThread(new AsyncReleaseControlThread),
  m_spMtxLock(new LightweightMutex),
  m_defaultShutterReleaseSettings(ShutterReleaseSettings::saveToCamera), // default is to just save to camera

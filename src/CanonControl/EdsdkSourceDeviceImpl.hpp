@@ -96,8 +96,10 @@ public:
             false, 0, EDS_ERR_NOT_SUPPORTED, __FILE__, __LINE__);
       }
 
+      std::shared_ptr<SourceDevice> spSourceDevice = shared_from_this();
+
       // there's no dedicated function to start "remote release control" mode, just add camera ref
-      return std::shared_ptr<RemoteReleaseControl>(new RemoteReleaseControlImpl(m_hCamera));
+      return std::shared_ptr<RemoteReleaseControl>(new RemoteReleaseControlImpl(spSourceDevice, m_hCamera));
    }
 
 private:
