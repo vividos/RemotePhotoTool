@@ -425,7 +425,8 @@ void RemoteReleaseControlImpl::AsyncRelease(const ShutterReleaseSettings& settin
    // send command
    EdsError err = EdsSendCommand(m_hCamera.Get(), kEdsCameraCommand_TakePicture, 0);
    LOG_TRACE(_T("EdsSendCommand(%08x, TakePicture, 0) returned %08x\n"), m_hCamera.Get(), err);
-   EDSDK::CheckError(_T("EdsSendCommand"), err, __FILE__, __LINE__);
+   // no error checking, since we're on the background thread
+   //EDSDK::CheckError(_T("EdsSendCommand"), err, __FILE__, __LINE__);
 }
 
 void RemoteReleaseControlImpl::OnReceivedObjectEventRequestTransfer(Handle hDirectoryItem)
