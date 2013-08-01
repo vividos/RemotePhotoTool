@@ -114,7 +114,7 @@ private:
    IPhotoModeViewHost& m_host;
 
    // UI
-   
+
    /// shutter speed combobox
    ImagePropertyCombobox m_cbShutterSpeed;
 
@@ -140,6 +140,9 @@ private:
 
    /// indicates if AEB release is in progress
    bool m_bAEBInProgress;
+
+   /// indicates if viewfinder was active before start
+   bool m_bViewfinderActiveBeforeStart;
 
    /// indicates index of current shutter speed, from m_vecAEBShutterSpeedValues
    size_t m_uiCurrentAEBShutterSpeed;

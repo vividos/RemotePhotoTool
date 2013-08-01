@@ -15,6 +15,7 @@
 #include "ShutterSpeedValue.hpp"
 #include "ShootingMode.hpp"
 #include "CameraErrorDlg.hpp"
+#include "ViewFinderImageWindow.hpp"
 #include "PhotomatixInterface.hpp"
 #include <boost/bind.hpp>
 
@@ -23,6 +24,7 @@ HDRPhotoModeView::HDRPhotoModeView(IPhotoModeViewHost& host) throw()
  m_cbShutterSpeed(propTv),
  m_iPropertyHandlerId(-1),
  m_bAEBInProgress(false),
+ m_bViewfinderActiveBeforeStart(false),
  m_uiCurrentAEBShutterSpeed(0)
 {
 }
@@ -168,6 +170,16 @@ LRESULT HDRPhotoModeView::OnButtonAEB(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /
       }
    }
 
+   // disable viewfinder while shooting
+   {
+      ViewFinderImageWindow* pViewfinder = m_host.GetViewfinderWindow();
+
+      m_bViewfinderActiveBeforeStart = pViewfinder != NULL;
+
+      if (m_bViewfinderActiveBeforeStart)
+         pViewfinder->EnableUpdate(false);
+   }
+
    ReleaseAEBFirst();
 
    return 0;
@@ -181,6 +193,7 @@ LRESULT HDRPhotoModeView::OnMessageHDRAEBNext(UINT /*uMsg*/, WPARAM /*wParam*/, 
 
 LRESULT HDRPhotoModeView::OnMessageHDRAEBLast(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
+   // close viewfinder, if used at all
    m_spViewfinder.reset();
 
    m_bAEBInProgress = false;
@@ -196,6 +209,16 @@ LRESULT HDRPhotoModeView::OnMessageHDRAEBLast(UINT /*uMsg*/, WPARAM /*wParam*/, 
    m_host.SetStatusText(_T("Starting Photomatix..."));
 
    pi.RunUI(m_vecAEBFilenameList);
+
+   // enable viewfinder again when active
+   if (m_bViewfinderActiveBeforeStart)
+   {
+      ViewFinderImageWindow* pViewfinder = m_host.GetViewfinderWindow();
+      if (pViewfinder != NULL)
+         pViewfinder->EnableUpdate(true);
+
+      m_bViewfinderActiveBeforeStart = false;
+   }
 
    return 0;
 }
@@ -267,18 +290,19 @@ void HDRPhotoModeView::ReleaseAEBFirst()
    m_vecAEBFilenameList.clear();
    m_uiCurrentAEBShutterSpeed = 0;
 
-   try
+   if (!m_bViewfinderActiveBeforeStart)
    {
-      // TODO implement m_bAEBViewfinderActiveBeforeStart
-
-      // init viewfinder; this is done to speed up taking images
-      // in future it could be done with mirror lockup
-      m_spViewfinder = m_spRemoteReleaseControl->StartViewfinder();
-   }
-   catch(CameraException& ex)
-   {
-      CameraErrorDlg dlg(_T("Couldn't start viewfinder"), ex);
-      dlg.DoModal();
+      try
+      {
+         // init viewfinder; this is done to speed up taking images;
+         // in future it could be done with mirror lockup
+         m_spViewfinder = m_spRemoteReleaseControl->StartViewfinder();
+      }
+      catch(CameraException& ex)
+      {
+         CameraErrorDlg dlg(_T("Couldn't start viewfinder"), ex);
+         dlg.DoModal();
+      }
    }
 
    ReleaseAEBNext();
