@@ -96,6 +96,14 @@ private:
    /// host access
    IPhotoModeViewHost& m_host;
 
+   // model
+
+   /// source device
+   std::shared_ptr<SourceDevice> m_spSourceDevice;
+
+   /// remote release control
+   std::shared_ptr<RemoteReleaseControl> m_spRemoteReleaseControl;
+
    // UI
 
    /// image property value manager
@@ -118,12 +126,4 @@ private:
 
    /// id for property handler
    int m_iPropertyHandlerId;
-
-   // model
-
-   /// source device
-   std::shared_ptr<SourceDevice> m_spSourceDevice;
-
-   /// remote release control
-   std::shared_ptr<RemoteReleaseControl> m_spRemoteReleaseControl;
 };
