@@ -48,7 +48,6 @@ Multi-camera photo view
 Image Property view: change values using editbox or combobox
 Copy button for error dialog
 * Bug: Lockup when switching to Device or Image Properties (lockup in EdsGetPropertySize())
-* Bug: Lockup when exiting app while connected to camera (lockup in EdsCloseSession())
 * Bug: Clicking on Connect when connected to a camera locks up the application (lockup in EdsCloseSession())
 
 PhotoToolCmdline
