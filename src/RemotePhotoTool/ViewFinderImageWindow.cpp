@@ -21,6 +21,18 @@ ViewFinderImageWindow::ViewFinderImageWindow()
 {
 }
 
+void ViewFinderImageWindow::EnableUpdate(bool bEnable)
+{
+   if (bEnable)
+   {
+      if (m_spViewfinder != nullptr)
+         m_spViewfinder->SetAvailImageHandler(
+            boost::bind(&ViewFinderImageWindow::OnAvailViewfinderImage, this, _1));
+   }
+   else
+      m_spViewfinder->SetAvailImageHandler();
+}
+
 void ViewFinderImageWindow::SetViewfinder(std::shared_ptr<Viewfinder> spViewfinder)
 {
    if (spViewfinder == nullptr && m_spViewfinder != nullptr)
@@ -31,9 +43,7 @@ void ViewFinderImageWindow::SetViewfinder(std::shared_ptr<Viewfinder> spViewfind
 
    m_spViewfinder = spViewfinder;
 
-   if (m_spViewfinder != nullptr)
-      m_spViewfinder->SetAvailImageHandler(
-         boost::bind(&ViewFinderImageWindow::OnAvailViewfinderImage, this, _1));
+   EnableUpdate(true);
 }
 
 void ViewFinderImageWindow::OnAvailViewfinderImage(const std::vector<BYTE>& vecImage)

@@ -28,6 +28,9 @@ public:
 
    void SetLinesMode(T_enLinesMode enLinesMode){ m_enLinesMode = enLinesMode; }
 
+   /// enables or disables updates to the viewfinder window
+   void EnableUpdate(bool bEnable);
+
    DECLARE_WND_CLASS_EX(NULL, CS_HREDRAW | CS_VREDRAW, COLOR_APPWORKSPACE)
 
 private:
