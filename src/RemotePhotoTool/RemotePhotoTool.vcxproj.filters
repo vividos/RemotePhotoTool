@@ -226,5 +226,6 @@
     <None Include="..\..\Changelog.md" />
     <None Include="..\..\README.md" />
     <None Include="..\..\License.md" />
+    <None Include="..\..\TestCases.md" />
   </ItemGroup>
 </Project>

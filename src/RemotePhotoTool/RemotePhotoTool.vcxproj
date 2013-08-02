@@ -201,6 +201,7 @@
     <None Include="..\..\Changelog.md" />
     <None Include="..\..\License.md" />
     <None Include="..\..\README.md" />
+    <None Include="..\..\TestCases.md" />
     <None Include="res\MainFrameRibbon.bml" />
     <None Include="res\toolbar.xcf" />
     <None Include="res\toolbar_big.xcf" />

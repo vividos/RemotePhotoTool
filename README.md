@@ -75,7 +75,11 @@ The official website of RemotePhotoTool is:
 RemotePhotoTool is licensed and distributed under the BSD license. See [License.md](License.md) for
 the whole text.
 
+Test the application along with your camera model using the test cases detailed in this file: [TestCases.md](TestCases.md)
+
 Read general documentation about the source code package in this file: [Sourcecode.md](Sourcecode.md)
+
+Read the big TODO list for the application, in this file: [TODO.txt](TODO.txt)
 
 Read the credits acknowledgement in this file: [Credits.md](Credits.md)
 
