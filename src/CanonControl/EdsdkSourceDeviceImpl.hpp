@@ -28,6 +28,11 @@ public:
    /// dtor
    virtual ~SourceDeviceImpl() throw()
    {
+      // Ugly workaround: EdsCloseSession() may lock up; call EdsGetEvent() to process internal events.
+      // This should probably go into an Idle handler for the SDK.
+      for(int i=0; i<100; i++)
+         EdsGetEvent();
+
       EdsError err = EdsCloseSession(m_hCamera);
       LOG_TRACE(_T("EdsCloseSession(ref = %08x) returned %08x\n"), m_hCamera.Get(), err);
       // note: don't check error here, as we're in dtor

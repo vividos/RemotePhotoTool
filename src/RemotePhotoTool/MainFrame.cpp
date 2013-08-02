@@ -218,6 +218,8 @@ LRESULT MainFrame::OnHomeConnect(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWnd
       m_upView->DestroyView();
 
    m_upView.reset(new BlankView);
+
+   m_spRemoteReleaseControl.reset();
    m_spSourceDevice.reset();
 
    EnablePhotoModes(false);
