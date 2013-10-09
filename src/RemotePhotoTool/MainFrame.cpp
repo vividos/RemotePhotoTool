@@ -226,6 +226,8 @@ LRESULT MainFrame::OnHomeConnect(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWnd
 
    m_upView.reset(new BlankView);
 
+   ShowViewfinder(false);
+
    m_spRemoteReleaseControl.reset();
    m_spSourceDevice.reset();
 
@@ -435,7 +437,8 @@ void MainFrame::ShowViewfinder(bool bShow)
 {
    if (!bShow)
    {
-      ATLASSERT(m_upViewFinderWindow != nullptr);
+      if (m_upViewFinderWindow == nullptr)
+         return;
 
       m_splitter.SetSplitterPane(SPLIT_PANE_LEFT, m_hWndView, true);
       m_splitter.SetSinglePaneMode(SPLIT_PANE_LEFT);
@@ -443,6 +446,7 @@ void MainFrame::ShowViewfinder(bool bShow)
       m_upViewFinderWindow->SetViewfinder(std::shared_ptr<Viewfinder>());
 
       m_upViewFinderWindow->DestroyWindow();
+
       m_upViewFinderWindow.reset();
 
       return;

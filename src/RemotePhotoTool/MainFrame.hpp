@@ -106,7 +106,7 @@ private:
 
    virtual ImageFileManager& GetImageFileManager() throw() override { return *m_upImageFileManager; }
 
-   virtual ViewFinderImageWindow* GetViewfinderWindow() throw() { return m_upViewFinderWindow.get(); }
+   virtual ViewFinderImageWindow* GetViewfinderWindow() throw() override { return m_upViewFinderWindow.get(); }
 
    virtual void SetStatusText(const CString& cszText) override;
 
