@@ -1,15 +1,16 @@
 //
 // ulib - a collection of useful classes
-// Copyright (C) 2013 Michael Fink
+// Copyright (C) 2008-2013 Michael Fink
 //
-/// \file LightweightMutex.hpp lightweight mutex class
+/// \file LightweightMutex.hpp Lightweight mutex class
 //
 #pragma once
 
 // includes
 #include "MutexLock.hpp"
 
-/// a non-recursive lockable object
+/// \brief lightweight, non-recursive mutex
+/// \details a mutex that is optimized for non-contention cases
 class LightweightMutex
 {
 public:
@@ -41,7 +42,7 @@ private:
       LeaveCriticalSection(&m_cs);
    }
 
-   /// friend so that Lock class can call Lock() and Unlock()
+   // friend so that MutexLock class can call Lock() and Unlock()
    friend MutexLock<LightweightMutex>;
 
 private:

@@ -1,6 +1,6 @@
 //
 // MultiplayerOnlineGame - multiplayer game project
-// Copyright (C) 2008-2012 Michael Fink
+// Copyright (C) 2008-2013 Michael Fink
 //
 //! \file FileFinder.hpp file finder
 //

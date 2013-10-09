@@ -9,11 +9,15 @@
 // includes
 #include "Event.hpp"
 
+#ifdef WIN32
+
 #ifndef MS_VC_EXCEPTION
+/// exception code for visual studio functions
 #define MS_VC_EXCEPTION 0x406D1388
 #endif
 
 #pragma pack(push, 8)
+/// thread name info struct
 typedef struct tagTHREADNAME_INFO
 {
    DWORD dwType;     ///< Must be 0x1000.
@@ -22,6 +26,8 @@ typedef struct tagTHREADNAME_INFO
    DWORD dwFlags;    ///< Reserved for future use, must be zero.
 } THREADNAME_INFO;
 #pragma pack(pop)
+
+#endif // WIN32
 
 
 /// thread helper class
