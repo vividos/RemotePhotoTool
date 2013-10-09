@@ -8,7 +8,6 @@
 // includes
 #include "stdafx.h"
 #include "CdsdkPropertyAccess.hpp"
-#include <functional>
 
 using namespace CDSDK;
 

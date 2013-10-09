@@ -70,7 +70,7 @@ private:
    {
       LightweightMutex::LockType lock(m_mtxFnOnAvailViewfinderImage);
 
-      if (!m_fnOnAvailViewfinderImage.empty())
+      if (m_fnOnAvailViewfinderImage != nullptr)
          m_fnOnAvailViewfinderImage(std::vector<BYTE>(pData, pData + Size));
    }
 

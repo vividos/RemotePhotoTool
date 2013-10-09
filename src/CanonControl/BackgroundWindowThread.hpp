@@ -9,7 +9,6 @@
 // includes
 #include "Event.hpp"
 #include <thread>
-#include <boost/bind.hpp>
 #include "Thread.hpp"
 
 /// this is the background window we're starting
@@ -36,7 +35,7 @@ public:
    /// starts background thread
    void Start()
    {
-      m_upThread.reset(new std::thread(boost::bind(&BackgroundWindowThread::Run, this)));
+      m_upThread.reset(new std::thread(std::bind(&BackgroundWindowThread::Run, this)));
       m_evtStarted.Wait();
    }
 

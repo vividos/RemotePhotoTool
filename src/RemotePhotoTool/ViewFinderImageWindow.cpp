@@ -10,7 +10,6 @@
 #include "ViewFinderImageWindow.hpp"
 #include "Viewfinder.hpp"
 #include "JpegMemoryReader.hpp"
-#include <boost/bind.hpp>
 
 const double c_dGoldenRatio = 0.618;
 
@@ -27,7 +26,7 @@ void ViewFinderImageWindow::EnableUpdate(bool bEnable)
    {
       if (m_spViewfinder != nullptr)
          m_spViewfinder->SetAvailImageHandler(
-            boost::bind(&ViewFinderImageWindow::OnAvailViewfinderImage, this, _1));
+            std::bind(&ViewFinderImageWindow::OnAvailViewfinderImage, this, std::placeholders::_1));
    }
    else
       m_spViewfinder->SetAvailImageHandler();

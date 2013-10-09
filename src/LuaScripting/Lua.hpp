@@ -1,6 +1,7 @@
 #pragma once
 
-#include <boost/function.hpp>
+#include <functional>
+#include <memory>
 #include <vector>
 
 // forward reference
@@ -20,7 +21,7 @@ public:
 };
 
 /// c function that can be registered as binding
-typedef boost::function<std::vector<Value>(const std::vector<Value>&)> T_fnCFunction;
+typedef std::function<std::vector<Value>(const std::vector<Value>&)> T_fnCFunction;
 
 /// Lua state
 class State
@@ -42,6 +43,7 @@ public:
    Binding BindFunction(const CString& cszName, T_fnCFunction fnFunction);
 
 private:
+   /// Lua state
    std::shared_ptr<lua_State> m_spState;
 };
 

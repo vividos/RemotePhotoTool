@@ -19,5 +19,6 @@
 #include <set>
 #include <map>
 #include <memory>
+#include <functional>
 
 #include "Logging.hpp"

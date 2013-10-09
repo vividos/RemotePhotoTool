@@ -9,7 +9,6 @@
 #include "stdafx.h"
 #include "ProgramOptions.hpp"
 #include "CommandLineParser.hpp"
-#include <boost/bind.hpp>
 
 void ProgramOptions::RegisterOption(const CString& cszShortOptionChars, const CString& cszLongOption, const CString& cszHelpText, unsigned int uiArgs,
    T_fnOptionHandler fnOptionHandler)
@@ -25,7 +24,7 @@ void ProgramOptions::RegisterOption(const CString& cszShortOptionChars, const CS
    T_fnOptionHandlerSingleArg fnOptionHandler)
 {
    T_fnOptionHandler fnOptionHandler2 =
-      boost::bind(&ProgramOptions::CallSingleArgHandler, _1, fnOptionHandler);
+      std::bind(&ProgramOptions::CallSingleArgHandler, std::placeholders::_1, fnOptionHandler);
 
    RegisterOption(cszShortOptionChars, cszLongOption, cszHelpText, 1, fnOptionHandler2);
 }
@@ -33,7 +32,7 @@ void ProgramOptions::RegisterOption(const CString& cszShortOptionChars, const CS
 void ProgramOptions::RegisterOption(const CString& cszShortOptionChars, const CString& cszLongOption, const CString& cszHelpText, CString& cszArgStorage)
 {
    T_fnOptionHandlerSingleArg fnOptionHandler =
-      boost::bind(&ProgramOptions::SetStringArgStorage, _1, boost::ref(cszArgStorage));
+      std::bind(&ProgramOptions::SetStringArgStorage, std::placeholders::_1, std::ref(cszArgStorage));
 
    RegisterOption(cszShortOptionChars, cszLongOption, cszHelpText, fnOptionHandler);
 }
@@ -41,14 +40,14 @@ void ProgramOptions::RegisterOption(const CString& cszShortOptionChars, const CS
 void ProgramOptions::RegisterOption(const CString& cszShortOptionChars, const CString& cszLongOption, const CString& cszHelpText, bool& bOptionFlag)
 {
    T_fnOptionHandlerSingleArg fnOptionHandler =
-      boost::bind(&ProgramOptions::SetBoolArgStorage, boost::ref(bOptionFlag));
+      std::bind(&ProgramOptions::SetBoolArgStorage, std::ref(bOptionFlag));
 
    RegisterOption(cszShortOptionChars, cszLongOption, cszHelpText, fnOptionHandler);
 }
 
 void ProgramOptions::RegisterHelpOption()
 {
-   T_fnOptionHandler fnOptionHandler = boost::bind(&ProgramOptions::OutputHelp, this);
+   T_fnOptionHandler fnOptionHandler = std::bind(&ProgramOptions::OutputHelp, this);
 
    RegisterOption(_T("h?"), _T("help"), _T("Shows help"), 0, fnOptionHandler);
 }

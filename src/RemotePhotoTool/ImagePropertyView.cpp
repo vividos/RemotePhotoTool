@@ -11,14 +11,13 @@
 #include "ImagePropertyView.hpp"
 #include "IPhotoModeViewHost.hpp"
 #include "ImageProperty.hpp"
-#include <boost/bind.hpp>
 
 void ImagePropertyView::Init()
 {
    m_spRemoteReleaseControl = m_host.StartRemoteReleaseControl(true);
 
    m_iPropertyEventId = m_spRemoteReleaseControl->AddPropertyEventHandler(
-      boost::bind(&ImagePropertyView::OnPropertyChanged, this, _1, _2));
+      std::bind(&ImagePropertyView::OnPropertyChanged, this, std::placeholders::_1, std::placeholders::_2));
 
    InsertColumn(columnName, _T("Name"), LVCFMT_LEFT, 300);
    InsertColumn(columnValue, _T("Value"), LVCFMT_LEFT, 300);

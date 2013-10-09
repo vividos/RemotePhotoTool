@@ -9,7 +9,6 @@
 // includes
 #include <vector>
 #include <boost\function.hpp>
-#include <boost\noncopyable.hpp>
 #include "ImplFwd.hpp"
 
 // forward references
@@ -20,7 +19,7 @@ class Instance
 {
 public:
    /// callback function type for AsyncWaitForCamera()
-   typedef boost::function<void()> T_fnOnCameraAdded;
+   typedef std::function<void()> T_fnOnCameraAdded;
 
    /// enables or disables logging; default: disabled
    static void EnableLogging(bool bEnable, const CString& cszLogfilePath);

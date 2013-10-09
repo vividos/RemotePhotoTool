@@ -16,7 +16,6 @@
 #include "LightweightMutex.hpp"
 #include "Event.hpp"
 #include <thread>
-#include <boost/bind.hpp>
 
 // forward references
 class SourceDevice;

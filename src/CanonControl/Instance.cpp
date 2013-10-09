@@ -115,7 +115,7 @@ void Instance::Impl::StartPollCamera()
       new BackgroundTimer(
          m_spWorkerThread->GetIoService(),
          1000,
-         boost::bind(&Instance::Impl::PollCamera, this)
+         std::bind(&Instance::Impl::PollCamera, this)
          ));
 
    m_spCameraPollTimer->Start();
@@ -143,7 +143,7 @@ void Instance::Impl::PollCamera()
    if (uiPollNumDevices != m_uiPollNumDevices)
    {
       LightweightMutex::LockType lock(m_mtxFnOnCameraAdded);
-      if (!m_fnOnCameraAdded.empty())
+      if (m_fnOnCameraAdded != nullptr)
          m_fnOnCameraAdded();
    }
 
@@ -190,7 +190,7 @@ void Instance::OnCameraAddedHandler()
 
    Instance::T_fnOnCameraAdded fnOnCameraAdded = m_spImpl->m_fnOnCameraAdded;
 
-   if (!fnOnCameraAdded.empty())
+   if (fnOnCameraAdded != nullptr)
    try
    {
       fnOnCameraAdded();
@@ -207,9 +207,9 @@ void Instance::AsyncWaitForCamera(T_fnOnCameraAdded fnOnCameraAdded)
       m_spImpl->m_fnOnCameraAdded = fnOnCameraAdded;
    }
 
-   if (!fnOnCameraAdded.empty())
+   if (fnOnCameraAdded != nullptr)
    {
-      m_spImpl->m_spEdSdkRef->AsyncWaitForCamera(true, boost::bind(&Instance::OnCameraAddedHandler, this));
+      m_spImpl->m_spEdSdkRef->AsyncWaitForCamera(true, std::bind(&Instance::OnCameraAddedHandler, this));
 
       m_spImpl->StartPollCamera();
    }

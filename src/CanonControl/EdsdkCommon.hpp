@@ -66,7 +66,7 @@ public:
    void EnumerateDevices(std::vector<std::shared_ptr<SourceInfo>>& vecSourceDevices) const;
 
    /// starts waiting for camera
-   void AsyncWaitForCamera(bool bStart, boost::function<void()> fnOnCameraConnected = boost::function<void()>());
+   void AsyncWaitForCamera(bool bStart, std::function<void()> fnOnCameraConnected = boost::function<void()>());
 
 private:
    /// handler called when camera was added
@@ -84,7 +84,7 @@ private:
    LightweightMutex m_mtxFnOnCameraConnected;
 
    /// handler to call when camera is connected
-   boost::function<void()> m_fnOnCameraConnected;
+   std::function<void()> m_fnOnCameraConnected;
 };
 
 /// smart pointer to SDK reference

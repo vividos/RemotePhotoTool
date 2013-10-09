@@ -17,7 +17,6 @@
 #include "CameraErrorDlg.hpp"
 #include "ViewFinderImageWindow.hpp"
 #include "PhotomatixInterface.hpp"
-#include <boost/bind.hpp>
 
 HDRPhotoModeView::HDRPhotoModeView(IPhotoModeViewHost& host) throw()
 :m_host(host),
@@ -64,7 +63,7 @@ LRESULT HDRPhotoModeView::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM 
    
    // add handler for changing shutter speed
    m_iPropertyHandlerId = m_spRemoteReleaseControl->AddPropertyEventHandler(
-      boost::bind(&HDRPhotoModeView::OnUpdatedProperty, this, _1, _2));
+      std::bind(&HDRPhotoModeView::OnUpdatedProperty, this, std::placeholders::_1, std::placeholders::_2));
 
    // set default release settings
    try
@@ -315,8 +314,8 @@ void HDRPhotoModeView::ReleaseAEBNext()
 
    ShutterReleaseSettings settings(ShutterReleaseSettings::saveToBoth,
       bLastShot ?
-         boost::bind(&HDRPhotoModeView::OnFinishedTransferLastAEB, this, _1) :
-         boost::bind(&HDRPhotoModeView::OnFinishedTransferNextAEB, this, _1));
+         std::bind(&HDRPhotoModeView::OnFinishedTransferLastAEB, this, std::placeholders::_1) :
+         std::bind(&HDRPhotoModeView::OnFinishedTransferNextAEB, this, std::placeholders::_1));
 
    CString cszFilename =
       m_host.GetImageFileManager().NextFilename(imageTypeHDR, m_uiCurrentAEBShutterSpeed == 0);

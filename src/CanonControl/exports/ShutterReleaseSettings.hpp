@@ -8,7 +8,6 @@
 
 // includes
 #include <vector>
-#include <boost/function.hpp>
 
 /// shutter release settings
 class ShutterReleaseSettings
@@ -24,7 +23,7 @@ public:
    };
 
    /// handler function that is called at end of transfer
-   typedef boost::function<void(const ShutterReleaseSettings&)> T_fnOnFinishedTransfer;
+   typedef std::function<void(const ShutterReleaseSettings&)> T_fnOnFinishedTransfer;
 
    /// ctor; creates release settings
    ShutterReleaseSettings(T_enSaveTarget enSaveTarget = saveToCamera,

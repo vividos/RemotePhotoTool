@@ -15,7 +15,6 @@
 #include "Instance.hpp"
 #include "CameraException.hpp"
 #include "SourceInfo.hpp"
-#include <boost/bind.hpp>
 
 ConnectCameraDlg::ConnectCameraDlg()
 :m_iSelectedSourceDeviceIndex(-1),
@@ -79,7 +78,7 @@ LRESULT ConnectCameraDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM 
    if (m_lcCameras.GetItemCount() > 0)
       m_lcCameras.SelectItem(0);
 
-   m_instance.AsyncWaitForCamera(boost::bind(&ConnectCameraDlg::OnCameraAdded, this));
+   m_instance.AsyncWaitForCamera(std::bind(&ConnectCameraDlg::OnCameraAdded, this));
 
    return TRUE;
 }

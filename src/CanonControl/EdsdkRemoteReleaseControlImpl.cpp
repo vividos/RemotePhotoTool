@@ -25,7 +25,7 @@ public:
        m_upDefaultWork(new boost::asio::io_service::work(m_ioService)),
        m_bFinished(false)
    {
-      m_upThread.reset(new std::thread(boost::bind(&AsyncReleaseControlThread::Run, this)));
+      m_upThread.reset(new std::thread(std::bind(&AsyncReleaseControlThread::Run, this)));
    }
    /// dtor
    ~AsyncReleaseControlThread() throw()
@@ -47,7 +47,7 @@ public:
    boost::asio::io_service& GetIoService() throw() { return m_ioService; }
 
    /// posts function to execute in thread
-   void Post(boost::function<void()> fn)
+   void Post(std::function<void()> fn)
    {
       m_ioService.post(fn);
    }
@@ -364,7 +364,7 @@ bool RemoteReleaseControlImpl::GetCapability(RemoteReleaseControl::T_enRemoteCap
 void RemoteReleaseControlImpl::SetImageProperty(const ImageProperty& imageProperty)
 {
    m_upReleaseThread->GetIoService().post(
-      boost::bind(&RemoteReleaseControlImpl::AsyncSetImageProperty, this, imageProperty));
+      std::bind(&RemoteReleaseControlImpl::AsyncSetImageProperty, this, imageProperty));
 }
 
 void RemoteReleaseControlImpl::AsyncSetImageProperty(const ImageProperty& imageProperty)
@@ -391,7 +391,7 @@ std::shared_ptr<Viewfinder> RemoteReleaseControlImpl::StartViewfinder() const
 
 void RemoteReleaseControlImpl::Release(const ShutterReleaseSettings& settings)
 {
-   m_upReleaseThread->Post(boost::bind(&RemoteReleaseControlImpl::AsyncRelease, this, settings));
+   m_upReleaseThread->Post(std::bind(&RemoteReleaseControlImpl::AsyncRelease, this, settings));
 }
 
 void RemoteReleaseControlImpl::SetSaveToFlag(ShutterReleaseSettings::T_enSaveTarget enSaveTarget, bool bAsynchronous)
@@ -453,7 +453,7 @@ void RemoteReleaseControlImpl::OnReceivedObjectEventRequestTransfer(Handle hDire
    }
 
    // download image
-   m_upReleaseThread->Post(boost::bind(&RemoteReleaseControlImpl::AsyncDownloadImage, this, hDirectoryItem, settings));
+   m_upReleaseThread->Post(std::bind(&RemoteReleaseControlImpl::AsyncDownloadImage, this, hDirectoryItem, settings));
 }
 
 void RemoteReleaseControlImpl::AsyncDownloadImage(Handle hDirectoryItem, ShutterReleaseSettings& settings)
@@ -462,7 +462,7 @@ void RemoteReleaseControlImpl::AsyncDownloadImage(Handle hDirectoryItem, Shutter
 
    // call finished handler
    ShutterReleaseSettings::T_fnOnFinishedTransfer fnHandler = settings.HandlerOnFinishedTransfer();
-   if (!fnHandler.empty())
+   if (fnHandler != nullptr)
       fnHandler(settings);
 
    // reset SaveTo flag to default

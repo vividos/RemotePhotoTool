@@ -77,7 +77,7 @@ void ViewfinderImpl::SetAvailImageHandler(Viewfinder::T_fnOnAvailViewfinderImage
       m_fnOnAvailViewfinderImage = fnOnAvailViewfinderImage;
    }
 
-   if (!fnOnAvailViewfinderImage.empty())
+   if (fnOnAvailViewfinderImage != nullptr)
       StartBackgroundThread();
    else
       StopBackgroundThread();
@@ -91,7 +91,7 @@ void ViewfinderImpl::StartBackgroundThread()
       new BackgroundTimer(
          m_ioService,
          50, // 50 ms results in 20 fps
-         boost::bind(&ViewfinderImpl::OnGetViewfinderImage, this)
+         std::bind(&ViewfinderImpl::OnGetViewfinderImage, this)
          ));
 
    m_spViewfinderImageTimer->Start();
@@ -106,7 +106,7 @@ void ViewfinderImpl::StopBackgroundThread()
    // EDSDK functions called in GetImage(). Since caller might destroy the Viewfinder class right
    // away, use shared_from_this() to manage lifetime of this class.
    m_ioService.post(
-      boost::bind(&ViewfinderImpl::AsyncStopBackgroundThread, shared_from_this()));
+      std::bind(&ViewfinderImpl::AsyncStopBackgroundThread, shared_from_this()));
 }
 
 void ViewfinderImpl::AsyncStopBackgroundThread()
@@ -164,6 +164,6 @@ void ViewfinderImpl::OnGetViewfinderImage()
 
    LightweightMutex::LockType lock(m_mtxFnOnAvailViewfinderImage);
 
-   if (!m_fnOnAvailViewfinderImage.empty())
+   if (m_fnOnAvailViewfinderImage != nullptr)
       m_fnOnAvailViewfinderImage(vecImage);
 }

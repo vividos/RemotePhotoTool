@@ -242,7 +242,7 @@ void CmdlineApp::ReleaseShutter()
    Event evtPictureTaken(true, false);
    ShutterReleaseSettings settings(
       ShutterReleaseSettings::saveToHost,
-      boost::bind(&Event::Set, &evtPictureTaken));
+      std::bind(&Event::Set, &evtPictureTaken));
 
    m_spReleaseControl->SetDefaultReleaseSettings(settings);
 

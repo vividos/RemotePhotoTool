@@ -107,13 +107,13 @@ EdsError EDSCALLBACK Ref::OnCameraAddedHandler(EdsVoid* inContext)
 
    LightweightMutex::LockType lock(pT->m_mtxFnOnCameraConnected);
 
-   if (!pT->m_fnOnCameraConnected.empty())
+   if (pT->m_fnOnCameraConnected != nullptr)
       pT->m_fnOnCameraConnected();
 
    return EDS_ERR_OK;
 }
 
-void Ref::AsyncWaitForCamera(bool bStart, boost::function<void()> fnOnCameraConnected)
+void Ref::AsyncWaitForCamera(bool bStart, std::function<void()> fnOnCameraConnected)
 {
    {
       LightweightMutex::LockType lock(m_mtxFnOnCameraConnected);

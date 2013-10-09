@@ -1,6 +1,6 @@
 //
 // ulib - a collection of useful classes
-// Copyright (C) 2008,2009,2012 Michael Fink
+// Copyright (C) 2008-2013 Michael Fink
 //
 /// \file Observer.hpp observer pattern classes
 //
@@ -8,7 +8,7 @@
 
 // includes
 #include <map>
-#include <boost/function.hpp>
+#include <functional>
 
 /// \brief observer subject
 /// \details a subject can add one or more observers that will be notified
@@ -18,7 +18,7 @@ class Subject
 {
 public:
    /// function type to be called
-   typedef boost::function<T> T_fnSubject;
+   typedef std::function<T> T_fnSubject;
 
    /// map type that holds all subjects to be called
    typedef std::map<int, T_fnSubject> T_mapSubjects;
@@ -30,7 +30,7 @@ public:
    }
 
    /// adds new observer; new id is returned
-   int Add(boost::function<T> fnObserver)
+   int Add(std::function<T> fnObserver)
    {
       int iHandlerId = m_iNextId++;
       m_mapAllObserver.insert(std::make_pair(iHandlerId, fnObserver));
@@ -38,7 +38,7 @@ public:
    }
 
    /// adds new observer
-   Subject<T>& operator+=(boost::function<T> fnObserver)
+   Subject<T>& operator+=(std::function<T> fnObserver)
    {
       Add(fnObserver);
       return *this;

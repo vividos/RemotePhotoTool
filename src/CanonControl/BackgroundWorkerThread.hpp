@@ -6,7 +6,6 @@
 //
 
 // includes
-#include <boost/bind.hpp>
 #include <thread>
 #include "Asio.hpp"
 #include "Event.hpp"
@@ -17,13 +16,15 @@
 class BackgroundWorkerThread
 {
 public:
+#pragma warning(disable: 4355) // 'this' : used in base member initializer list
    /// ctor
    BackgroundWorkerThread()
       :m_ioService(1),
        m_upDefaultWork(new boost::asio::io_service::work(m_ioService)),
-       m_thread(boost::bind(&BackgroundWorkerThread::Run, this))
+       m_thread(std::bind(&BackgroundWorkerThread::Run, this))
    {
    }
+#pragma warning(default: 4355)
    /// dtor
    ~BackgroundWorkerThread()
    {
@@ -60,12 +61,12 @@ class BackgroundTimer: public std::enable_shared_from_this<BackgroundTimer>
 public:
    /// ctor
    BackgroundTimer(boost::asio::io_service& ioService, unsigned int uiMilliseconds,
-      boost::function<void()> fnCallback)
+      std::function<void()> fnCallback)
       :m_timer(ioService),
        m_uiMilliseconds(uiMilliseconds),
        m_fnCallback(fnCallback)
    {
-      ATLASSERT(fnCallback.empty() == false);
+      ATLASSERT(fnCallback != nullptr);
    }
    /// dtor
    ~BackgroundTimer() throw()
@@ -92,7 +93,7 @@ public:
 
       m_timer.cancel();
 
-      m_fnCallback.clear();
+      m_fnCallback = nullptr;
    }
 
 private:
@@ -107,8 +108,12 @@ private:
       {
          try
          {
-            if (!m_fnCallback.empty())
+            if (m_fnCallback != nullptr)
+            {
+               LOG_TRACE(_T("before timer callback\n"));
                m_fnCallback();
+               LOG_TRACE(_T("after timer callback\n"));
+            }
          }
          catch(...)
          {
@@ -122,7 +127,7 @@ private:
    void InitTimer()
    {
       m_timer.expires_from_now(boost::posix_time::milliseconds(m_uiMilliseconds));
-      m_timer.async_wait(boost::bind(&BackgroundTimer::OnTimer, shared_from_this(), _1));
+      m_timer.async_wait(std::bind(&BackgroundTimer::OnTimer, shared_from_this(), std::placeholders::_1));
    }
 
 private:
@@ -136,5 +141,5 @@ private:
    LightweightMutex m_mtxTimerCallback;
 
    /// callback to call
-   boost::function<void()> m_fnCallback;
+   std::function<void()> m_fnCallback;
 };

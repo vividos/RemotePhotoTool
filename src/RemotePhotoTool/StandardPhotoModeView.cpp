@@ -14,7 +14,6 @@
 #include "CameraErrorDlg.hpp"
 #include "ShutterReleaseSettings.hpp"
 #include "ShootingMode.hpp"
-#include <boost/bind.hpp>
 
 StandardPhotoModeView::StandardPhotoModeView(IPhotoModeViewHost& host) throw()
 :m_host(host),
@@ -45,14 +44,14 @@ LRESULT StandardPhotoModeView::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LP
    {
       // yes: wait for changes in shooting mode property
       m_iPropertyHandlerId = m_spRemoteReleaseControl->AddPropertyEventHandler(
-         boost::bind(&StandardPhotoModeView::OnUpdatedProperty, this, _1, _2));
+         std::bind(&StandardPhotoModeView::OnUpdatedProperty, this, std::placeholders::_1, std::placeholders::_2));
    }
 
    // set default release settings
    try
    {
       ShutterReleaseSettings settings(ShutterReleaseSettings::saveToBoth,
-         boost::bind(&StandardPhotoModeView::OnFinishedTransfer, this, _1));
+         std::bind(&StandardPhotoModeView::OnFinishedTransfer, this, std::placeholders::_1));
 
       CString cszFilename =
          m_host.GetImageFileManager().NextFilename(imageTypeNormal);
@@ -92,7 +91,7 @@ LRESULT StandardPhotoModeView::OnShootingModeSelChange(WORD /*wNotifyCode*/, WOR
 LRESULT StandardPhotoModeView::OnButtonRelease(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
    ShutterReleaseSettings settings(ShutterReleaseSettings::saveToBoth,
-      boost::bind(&StandardPhotoModeView::OnFinishedTransfer, this, _1));
+      std::bind(&StandardPhotoModeView::OnFinishedTransfer, this, std::placeholders::_1));
 
    CString cszFilename =
       m_host.GetImageFileManager().NextFilename(imageTypeNormal);

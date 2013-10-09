@@ -16,7 +16,6 @@
 #include "SourceDevice.hpp"
 #include "CameraException.hpp"
 #include "CameraErrorDlg.hpp"
-#include <boost/bind.hpp>
 #include "Logging.hpp"
 
 /// settings registry key (subkey "Ribbon" is used for menu band)
@@ -358,10 +357,10 @@ std::shared_ptr<RemoteReleaseControl> MainFrame::StartRemoteReleaseControl(bool 
             
             // add event handler
             m_spRemoteReleaseControl->AddStateEventHandler(
-               boost::bind(&MainFrame::OnStateEvent, this, _1, _2));
+               std::bind(&MainFrame::OnStateEvent, this, std::placeholders::_1, std::placeholders::_2));
 
             m_spRemoteReleaseControl->AddDownloadEventHandler(
-               boost::bind(&MainFrame::OnDownloadEvent, this, _1, _2));
+               std::bind(&MainFrame::OnDownloadEvent, this, std::placeholders::_1, std::placeholders::_2));
          }
          catch(CameraException& ex)
          {

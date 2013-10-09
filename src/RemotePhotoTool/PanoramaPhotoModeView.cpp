@@ -15,7 +15,6 @@
 #include "RemoteReleaseControl.hpp"
 #include "CameraErrorDlg.hpp"
 #include "HuginInterface.hpp"
-#include <boost/bind.hpp>
 
 PanoramaPhotoModeView::PanoramaPhotoModeView(IPhotoModeViewHost& host) throw()
 :m_host(host),
@@ -132,7 +131,7 @@ void PanoramaPhotoModeView::ReleasePanorama()
 {
    // called when shutter speed was changed successfully
    ShutterReleaseSettings settings(ShutterReleaseSettings::saveToBoth,
-      boost::bind(&PanoramaPhotoModeView::OnFinishedTransfer, this, _1));
+      std::bind(&PanoramaPhotoModeView::OnFinishedTransfer, this, std::placeholders::_1));
 
    bool bNewPanorama = m_vecPanoramaFilenameList.empty();
 

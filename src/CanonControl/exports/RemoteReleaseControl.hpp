@@ -91,13 +91,13 @@ public:
    ////////////////////////////////////////////////
 
    /// callback function type to call when property changed
-   typedef boost::function<void(T_enPropertyEvent, unsigned int)> T_fnOnPropertyChanged;
+   typedef std::function<void(T_enPropertyEvent, unsigned int)> T_fnOnPropertyChanged;
 
    /// callback function type to call when camera state changed
-   typedef boost::function<void(T_enStateEvent, unsigned int)> T_fnOnStateChanged;
+   typedef std::function<void(T_enStateEvent, unsigned int)> T_fnOnStateChanged;
 
    /// callback function type to call when download state changed
-   typedef boost::function<void(T_enDownloadEvent, unsigned int)> T_fnOnDownloadChanged;
+   typedef std::function<void(T_enDownloadEvent, unsigned int)> T_fnOnDownloadChanged;
 
    ////////////////////////////////////////////////
    // methods

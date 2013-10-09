@@ -9,11 +9,10 @@
 #include "stdafx.h"
 #include "ImagePropertyValueManager.hpp"
 #include "IImagePropertyControl.hpp"
-#include <boost/bind.hpp>
 
 ImagePropertyValueManager::ImagePropertyValueManager(RemoteReleaseControl& rrc)
 :m_rrc(rrc),
- m_iPropertyHandlerId(rrc.AddPropertyEventHandler(boost::bind(&ImagePropertyValueManager::OnUpdatedProperty, this, _1, _2)))
+ m_iPropertyHandlerId(rrc.AddPropertyEventHandler(std::bind(&ImagePropertyValueManager::OnUpdatedProperty, this, std::placeholders::_1, std::placeholders::_2)))
 {
 }
 

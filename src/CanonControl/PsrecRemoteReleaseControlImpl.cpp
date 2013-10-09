@@ -641,6 +641,6 @@ void RemoteReleaseControlImpl::OnFinishedDownloadImageData()
    }
 
    ShutterReleaseSettings::T_fnOnFinishedTransfer fnOnFinishedTransfer = settings.HandlerOnFinishedTransfer();
-   if (!fnOnFinishedTransfer.empty())
+   if (fnOnFinishedTransfer != nullptr)
       fnOnFinishedTransfer(settings);
 }
