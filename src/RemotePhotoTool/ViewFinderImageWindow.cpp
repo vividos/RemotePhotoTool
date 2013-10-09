@@ -42,7 +42,8 @@ void ViewFinderImageWindow::SetViewfinder(std::shared_ptr<Viewfinder> spViewfind
 
    m_spViewfinder = spViewfinder;
 
-   EnableUpdate(true);
+   if (spViewfinder != nullptr)
+      EnableUpdate(true);
 }
 
 void ViewFinderImageWindow::OnAvailViewfinderImage(const std::vector<BYTE>& vecImage)
