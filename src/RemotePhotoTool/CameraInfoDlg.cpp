@@ -181,7 +181,8 @@ void CameraInfoDlg::CollectShootingModeInfos(std::shared_ptr<RemoteReleaseContro
    {
       // switch through all shooting modes and dump
       std::vector<ImageProperty> vecShootingModes;
-      spRemoteReleaseControl->EnumImagePropertyValues(T_enImagePropertyType::propShootingMode, vecShootingModes);
+      unsigned int uiPropertyId = spRemoteReleaseControl->MapImagePropertyTypeToId(T_enImagePropertyType::propShootingMode);
+      spRemoteReleaseControl->EnumImagePropertyValues(uiPropertyId, vecShootingModes);
 
       if (vecShootingModes.empty())
          cszText += _T("(No shooting modes found)\n");
@@ -202,7 +203,7 @@ void CameraInfoDlg::CollectShootingModeDetails(std::shared_ptr<RemoteReleaseCont
 
    // get Av values
    {
-      std::vector<ImageProperty> vecAvValues;   
+      std::vector<ImageProperty> vecAvValues;
       unsigned int uiAvPropertyId = spRemoteReleaseControl->MapImagePropertyTypeToId(T_enImagePropertyType::propAv);
 
       try
