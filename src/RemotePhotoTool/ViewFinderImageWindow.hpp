@@ -8,6 +8,7 @@
 
 // includes
 #include "LightweightMutex.hpp"
+#include "Event.hpp"
 
 // forward references
 class Viewfinder;
@@ -29,7 +30,7 @@ public:
    void SetLinesMode(T_enLinesMode enLinesMode){ m_enLinesMode = enLinesMode; }
 
    /// enables or disables updates to the viewfinder window
-   void EnableUpdate(bool bEnable);
+   void EnableUpdate(bool bEnable, bool bWaitExitHandler = false);
 
    DECLARE_WND_CLASS_EX(NULL, CS_HREDRAW | CS_VREDRAW, COLOR_APPWORKSPACE)
 
@@ -87,7 +88,10 @@ private:
 private:
    /// viewfinder
    std::shared_ptr<Viewfinder> m_spViewfinder;
-   
+
+   /// event to signal that image handler has exited
+   Event m_evtHandlerExited;
+
    /// mutex to protect m_vecCurrentViewfinderData, m_uiResX and m_uiResY
    LightweightMutex m_mtxViewfinderData;
 

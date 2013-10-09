@@ -14,13 +14,14 @@
 const double c_dGoldenRatio = 0.618;
 
 ViewFinderImageWindow::ViewFinderImageWindow()
-:m_uiResX(0),
+:m_evtHandlerExited(false, false), // auto-reset event
+ m_uiResX(0),
  m_uiResY(0),
  m_enLinesMode(linesModeNoLines)
 {
 }
 
-void ViewFinderImageWindow::EnableUpdate(bool bEnable)
+void ViewFinderImageWindow::EnableUpdate(bool bEnable, bool bWaitExitHandler)
 {
    if (bEnable)
    {
@@ -29,7 +30,13 @@ void ViewFinderImageWindow::EnableUpdate(bool bEnable)
             std::bind(&ViewFinderImageWindow::OnAvailViewfinderImage, this, std::placeholders::_1));
    }
    else
+   {
+      m_evtHandlerExited.Reset();
+
       m_spViewfinder->SetAvailImageHandler();
+      if (bWaitExitHandler)
+         m_evtHandlerExited.Wait();
+   }
 }
 
 void ViewFinderImageWindow::SetViewfinder(std::shared_ptr<Viewfinder> spViewfinder)
@@ -66,6 +73,8 @@ void ViewFinderImageWindow::OnAvailViewfinderImage(const std::vector<BYTE>& vecI
 
    if (IsWindow())
       PostMessage(WM_VIEWFINDER_AVAIL_IMAGE);
+
+   m_evtHandlerExited.Set();
 }
 
 LRESULT ViewFinderImageWindow::OnMessageViewfinderAvailImage(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
