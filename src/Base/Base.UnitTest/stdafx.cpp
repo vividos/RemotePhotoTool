@@ -1,8 +1,9 @@
-// stdafx.cpp : source file that includes just the standard includes
-// Base.UnitTest.pch will be the pre-compiled header
-// stdafx.obj will contain the pre-compiled type information
+//
+// RemotePhotoTool - remote camera control software
+// Copyright (C) 2008-2013 Michael Fink
+//
+//! \file Base\Base.UnitTest\stdafx.cpp Precompiled header support
+//
 
+// includes
 #include "stdafx.h"
-
-// TODO: reference any additional headers you need in STDAFX.H
-// and not in this file
