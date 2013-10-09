@@ -385,6 +385,8 @@ Variant ImagePropertyAccess::Get(T_enImagePropertyType enImageProperty) const
 {
    Variant v;
 
+#pragma warning(disable: 4065)
+
 #define CASE_PROP_GET(PROPID) \
 //case PROPID##: v = s_##PROPID.Get(m_hSource); break;
 
@@ -449,10 +451,13 @@ void ImagePropertyAccess::Set(T_enImagePropertyType enImageProperty, Variant val
    case propSaveTo: (); break;
    case propBatteryLevel: (); break;
 */
+   default:
+      ATLASSERT(false);
+      break;
    }
 }
 
-void ImagePropertyAccess::Enum(T_enImagePropertyType enImageProperty, std::vector<Variant>& vecValues)
+void ImagePropertyAccess::Enum(T_enImagePropertyType enImageProperty, std::vector<Variant>& /*vecValues*/)
 {
 #define CASE_PROP_ENUM(PROPID) \
 //case PROPID##: s_##PROPID.Enum(m_hSource, vecValues); break;
@@ -481,6 +486,9 @@ void ImagePropertyAccess::Enum(T_enImagePropertyType enImageProperty, std::vecto
    case propSaveTo: (); break;
    case propBatteryLevel: (); break;
 */
+   default:
+      ATLASSERT(false);
+      break;
    }
 }
 
