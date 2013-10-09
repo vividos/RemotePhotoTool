@@ -97,6 +97,10 @@ LRESULT StandardPhotoModeView::OnButtonRelease(WORD /*wNotifyCode*/, WORD /*wID*
       m_host.GetImageFileManager().NextFilename(imageTypeNormal);
    settings.Filename(cszFilename);
 
+   m_host.SetStatusText(_T("Started shutter release"));
+
+   m_host.LockActionMode(true);
+
    try
    {
       m_spRemoteReleaseControl->Release(settings);
@@ -125,6 +129,8 @@ void StandardPhotoModeView::OnFinishedTransfer(const ShutterReleaseSettings& set
    cszText.Format(_T("Finished transfer: %s"), settings.Filename());
 
    m_host.SetStatusText(cszText);
+
+   m_host.LockActionMode(false);
 }
 
 void StandardPhotoModeView::SetupImagePropertyManager()

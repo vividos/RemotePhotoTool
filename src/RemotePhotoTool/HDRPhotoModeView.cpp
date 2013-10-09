@@ -192,6 +192,8 @@ LRESULT HDRPhotoModeView::OnMessageHDRAEBNext(UINT /*uMsg*/, WPARAM /*wParam*/, 
 
 LRESULT HDRPhotoModeView::OnMessageHDRAEBLast(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
+   m_host.LockActionMode(false);
+
    // close viewfinder, if used at all
    m_spViewfinder.reset();
 
@@ -285,6 +287,8 @@ void HDRPhotoModeView::UpdateAEBShutterSpeedList()
 
 void HDRPhotoModeView::ReleaseAEBFirst()
 {
+   m_host.LockActionMode(true);
+
    m_bAEBInProgress = true;
    m_vecAEBFilenameList.clear();
    m_uiCurrentAEBShutterSpeed = 0;

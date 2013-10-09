@@ -37,3 +37,6 @@
 
 /// sent when all properties have changed
 #define WM_RELEASECONTROL_ALL_PROPERTIES_CHANGED WM_APP+3
+
+/// sent to lock or unlock action mode
+#define WM_LOCK_ACTIONMODE WM_APP+4

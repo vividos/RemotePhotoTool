@@ -17,13 +17,15 @@
 #include "CameraException.hpp"
 #include "CameraErrorDlg.hpp"
 #include "Logging.hpp"
+#include "Thread.hpp"
 
 /// settings registry key (subkey "Ribbon" is used for menu band)
 LPCTSTR c_pszSettingsRegkey = _T("Software\\RemotePhotoTool");
 
 /// ctor
 MainFrame::MainFrame() throw()
-:m_settings(c_pszSettingsRegkey)
+:m_settings(c_pszSettingsRegkey),
+ m_dwUIThreadId(Thread::CurrentId())
 {
    m_settings.Load();
 
@@ -187,6 +189,12 @@ LRESULT MainFrame::OnMove(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, B
       m_downloadProgressBar.MoveWindow(&rcPane, true);
    }
 
+   return 0;
+}
+
+LRESULT MainFrame::OnLockActionMode(UINT /*uMsg*/, WPARAM wParam, LPARAM /*lParam*/, BOOL& /*bHandled*/)
+{
+   LockActionMode(wParam != 0);
    return 0;
 }
 
@@ -386,6 +394,17 @@ void MainFrame::SetStatusText(const CString& cszText)
    ::SetWindowText(m_hWndStatusBar, cszText);
 }
 
+void MainFrame::LockActionMode(bool bLock)
+{
+   if (Thread::CurrentId() != m_dwUIThreadId)
+   {
+      PostMessage(WM_LOCK_ACTIONMODE, bLock ? 1 : 0);
+      return;
+   }
+
+   EnablePhotoModes(!bLock);
+}
+
 void MainFrame::SetNewView(T_enViewType enViewType)
 {
    if (m_upView != nullptr)
@@ -498,7 +517,7 @@ void MainFrame::SetPaneWidths(int* arrWidths, int nPanes)
    m_statusBar.SetParts(m_statusBar.m_nPanes, arrWidths); 
 }
 
-void MainFrame::OnStateEvent(RemoteReleaseControl::T_enStateEvent enStateEvent, unsigned int /*uiExtraData*/)
+void MainFrame::OnStateEvent(RemoteReleaseControl::T_enStateEvent enStateEvent, unsigned int uiExtraData)
 {
    if (enStateEvent == RemoteReleaseControl::stateEventCameraShutdown)
    {
@@ -521,6 +540,18 @@ void MainFrame::OnStateEvent(RemoteReleaseControl::T_enStateEvent enStateEvent, 
 
       // show connect dialog
       PostMessage(WM_COMMAND, MAKEWPARAM(ID_HOME_CONNECT, 0));
+
+      SetStatusText(_T("Camera was shut down"));
+   }
+
+   if (enStateEvent == RemoteReleaseControl::stateEventReleaseError)
+   {
+      LockActionMode(false);
+
+      if (uiExtraData == 0x8d01) // EDSDK specific
+         SetStatusText(_T("Couldn't focus"));
+      else
+         SetStatusText(_T("Error releasing shutter"));
    }
 }
 

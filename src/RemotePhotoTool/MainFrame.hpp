@@ -67,6 +67,7 @@ private:
       MESSAGE_HANDLER(WM_DESTROY, OnDestroy)
       MESSAGE_HANDLER(WM_SIZE, OnSize)
       MESSAGE_HANDLER(WM_MOVE, OnMove)
+      MESSAGE_HANDLER(WM_LOCK_ACTIONMODE, OnLockActionMode)
       COMMAND_ID_HANDLER(ID_APP_EXIT, OnFileExit)
       COMMAND_ID_HANDLER(ID_VIEW_RIBBON, OnToggleRibbon)
       COMMAND_ID_HANDLER(ID_APP_ABOUT, OnAppAbout)
@@ -87,6 +88,7 @@ private:
    LRESULT OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& bHandled);
    LRESULT OnSize(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
    LRESULT OnMove(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
+   LRESULT OnLockActionMode(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
    LRESULT OnFileExit(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
    LRESULT OnToggleRibbon(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
    LRESULT OnAppAbout(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
@@ -107,6 +109,8 @@ private:
    virtual ViewFinderImageWindow* GetViewfinderWindow() throw() { return m_upViewFinderWindow.get(); }
 
    virtual void SetStatusText(const CString& cszText) override;
+
+   virtual void LockActionMode(bool bLock) override;
 
    /// sets up toolbar
    void SetupToolbar(HWND hWndCmdBar);
@@ -155,6 +159,9 @@ private:
 
    /// viewfinder window
    std::unique_ptr<ViewFinderImageWindow> m_upViewFinderWindow;
+
+   /// thread id of UI thread
+   DWORD m_dwUIThreadId;
 
    // model
 

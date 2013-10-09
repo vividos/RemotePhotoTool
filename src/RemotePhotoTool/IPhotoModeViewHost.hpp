@@ -33,4 +33,7 @@ public:
 
    /// sets new status text
    virtual void SetStatusText(const CString& cszText) = 0;
+
+   /// locks switching action modes
+   virtual void LockActionMode(bool bLock) = 0;
 };

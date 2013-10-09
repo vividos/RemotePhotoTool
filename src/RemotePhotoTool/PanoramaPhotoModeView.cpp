@@ -62,9 +62,7 @@ LRESULT PanoramaPhotoModeView::OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARA
 LRESULT PanoramaPhotoModeView::OnButtonStart(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
    if (!m_bStarted)
-   {
       StartPanorama();
-   }
 
    ReleasePanorama();
 
@@ -145,6 +143,8 @@ void PanoramaPhotoModeView::ReleasePanorama()
       m_vecPanoramaFilenameList.size() + 1);
    m_host.SetStatusText(cszText);
 
+   m_host.LockActionMode(true);
+
    try
    {
       m_spRemoteReleaseControl->Release(settings);
@@ -161,4 +161,6 @@ void PanoramaPhotoModeView::OnFinishedTransfer(const ShutterReleaseSettings& set
    // save panorama filename
    CString cszFilename = settings.Filename();
    m_vecPanoramaFilenameList.push_back(cszFilename);
+
+   m_host.LockActionMode(false);
 }
