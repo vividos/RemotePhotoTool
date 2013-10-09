@@ -93,6 +93,10 @@ LRESULT PanoramaPhotoModeView::OnButtonCancel(WORD /*wNotifyCode*/, WORD /*wID*/
 
 void PanoramaPhotoModeView::StartPanorama()
 {
+   HuginInterface hi(m_host.GetAppSettings().m_cszHuginPath);
+   if (!hi.IsInstalled())
+      AtlMessageBox(m_hWnd, _T("Hugin is not installed; panorama pictures will not be stitched at the end."), IDR_MAINFRAME, MB_OK);
+
    m_bStarted = true;
    m_vecPanoramaFilenameList.clear();
 
@@ -116,7 +120,7 @@ void PanoramaPhotoModeView::StartHugin()
    HuginInterface hi(m_host.GetAppSettings().m_cszHuginPath);
    if (!hi.IsInstalled())
    {
-      AtlMessageBox(m_hWnd, _T("Hugin is not installed"), IDR_MAINFRAME, MB_OK);
+      m_host.SetStatusText(_T("Finished taking panorama images"));
       return;
    }
 
