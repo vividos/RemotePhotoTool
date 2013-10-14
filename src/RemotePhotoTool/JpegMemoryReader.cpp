@@ -28,16 +28,14 @@ void JpegMemoryReader::Read()
    m_imageInfo = JpegImageInfo(m_decoder.cinfo.output_width, m_decoder.cinfo.output_height, uiPadding);
    ATLASSERT(m_decoder.cinfo.output_components == 3);
 
-   //m_vecBitmapData.resize(m_decoder.cinfo.output_width * m_decoder.cinfo.output_height * m_decoder.cinfo.output_components);
-
    std::vector<JSAMPLE> vecScanline(m_decoder.cinfo.output_width * m_decoder.cinfo.output_components);
    JSAMPROW pScanline = &vecScanline[0];
 
-	// while (scan lines remain to be read)
+   // while (scan lines remain to be read)
    unsigned int uiScanline = 0;
    while (m_decoder.HasScanlines())
    {
-	   JDIMENSION dim = jpeg_read_scanlines(&m_decoder.cinfo, &pScanline, 1);
+      JDIMENSION dim = jpeg_read_scanlines(&m_decoder.cinfo, &pScanline, 1);
       if (dim != 1)
          break;
 

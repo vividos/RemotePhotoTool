@@ -94,7 +94,10 @@ void EDSDK::AsyncReleaseControlThread::Run()
       {
          // process asio handlers, if any
          boost::system::error_code ec;
+
+         LOG_TRACE(_T("before poll_one\n"));
          m_ioService.poll_one(ec);
+         LOG_TRACE(_T("after poll_one\n"));
       }
    }
 }

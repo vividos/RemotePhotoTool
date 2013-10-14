@@ -12,11 +12,10 @@
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace BaseUnitTest
-{		
+{
 TEST_CLASS(TestCommandLineParser)
 {
 public:
-		
    /// tests CommandLineParser, empty cmdline
    TEST_METHOD(TestParser1)
    {
