@@ -58,7 +58,6 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <AdditionalOptions>/ignore:4254 /ignore:4078 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>Base.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
     </Link>
   </ItemDefinitionGroup>
@@ -70,7 +69,6 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <AdditionalOptions>/ignore:4254 /ignore:4078 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>Base.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -91,6 +89,9 @@
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Base\Base.vcxproj">
+      <Project>{3ab1bb98-d491-47db-8d93-1dab3ce88c87}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\CanonControl\CanonControl.vcxproj">
       <Project>{ce953b34-5513-4719-aead-a61f0585ab34}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>

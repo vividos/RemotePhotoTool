@@ -60,7 +60,6 @@
     <Link>
       <AdditionalLibraryDirectories>$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>/ignore:4254 /ignore:4078 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>Base.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <LinkTimeCodeGeneration />
     </Link>
   </ItemDefinitionGroup>
@@ -73,7 +72,6 @@
     <Link>
       <AdditionalLibraryDirectories>$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>/ignore:4254 /ignore:4078 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>Base.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -87,6 +85,11 @@
     </ClCompile>
     <ClCompile Include="TestCommandLineParser.cpp" />
     <ClCompile Include="TestString.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Base.vcxproj">
+      <Project>{3ab1bb98-d491-47db-8d93-1dab3ce88c87}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

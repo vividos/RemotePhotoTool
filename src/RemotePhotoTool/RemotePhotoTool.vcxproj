@@ -76,7 +76,6 @@
     </ResourceCompile>
     <Link>
       <AdditionalOptions>/ignore:4254 /ignore:4078 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>Base.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
     </Link>
   </ItemDefinitionGroup>
@@ -103,7 +102,6 @@
     </ResourceCompile>
     <Link>
       <AdditionalOptions>/ignore:4254 /ignore:4078 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>Base.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -178,6 +176,9 @@
     <ResourceCompile Include="versioninfo.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Base\Base.vcxproj">
+      <Project>{3ab1bb98-d491-47db-8d93-1dab3ce88c87}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\CanonControl\CanonControl.vcxproj">
       <Project>{ce953b34-5513-4719-aead-a61f0585ab34}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
@@ -185,6 +186,9 @@
     <ProjectReference Include="..\LuaScripting\LuaScripting.vcxproj">
       <Project>{41b565f7-f668-4425-a93d-6cabc18f6d1f}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\Thirdparty\jpeg-8d\jpeg-8d.vcxproj">
+      <Project>{5b37d937-d0f7-47be-97f7-def2dba4970a}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

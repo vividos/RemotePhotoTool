@@ -170,6 +170,11 @@
     <None Include="..\Thirdparty\PSREC\Doc\PSReCSDK110eUserGuide.doc" />
     <None Include="..\Thirdparty\PSREC\Doc\PSReCSDK110eUserGuide.pdf" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Base\Base.vcxproj">
+      <Project>{3ab1bb98-d491-47db-8d93-1dab3ce88c87}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
