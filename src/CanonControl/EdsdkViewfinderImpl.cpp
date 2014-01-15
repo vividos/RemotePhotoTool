@@ -63,10 +63,7 @@ ViewfinderImpl::~ViewfinderImpl()
 
    vDevice.Set(device);
 
-   {
-      LightweightMutex::LockType lock(*m_spMtxLock);
-      p.Set(kEdsPropID_Evf_OutputDevice, vDevice);
-   }
+   p.Set(kEdsPropID_Evf_OutputDevice, vDevice);
 }
 
 void ViewfinderImpl::SetAvailImageHandler(Viewfinder::T_fnOnAvailViewfinderImage fnOnAvailViewfinderImage)
@@ -120,6 +117,8 @@ void ViewfinderImpl::AsyncStopBackgroundThread()
 
 void ViewfinderImpl::GetImage(std::vector<BYTE>& vecImage)
 {
+   LOG_TRACE(_T("GetImage() start\n"));
+
    LightweightMutex::LockType lock(*m_spMtxLock);
 
    // create memory stream
@@ -155,6 +154,8 @@ void ViewfinderImpl::GetImage(std::vector<BYTE>& vecImage)
       const BYTE* pbData = reinterpret_cast<BYTE*>(pData);
       vecImage.assign(pbData, pbData+uiLength);
    }
+
+   LOG_TRACE(_T("GetImage() end\n"));
 }
 
 void ViewfinderImpl::OnGetViewfinderImage()

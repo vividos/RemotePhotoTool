@@ -11,6 +11,8 @@
 #include "DevicePropertyView.hpp"
 #include "SourceDevice.hpp"
 #include "DeviceProperty.hpp"
+#include "IPhotoModeViewHost.hpp"
+#include "ViewFinderImageWindow.hpp"
 
 void DevicePropertyView::Init()
 {
@@ -35,6 +37,12 @@ void DevicePropertyView::RefreshList()
 
    DeleteAllItems();
 
+   // disable viewfinder while refreshing list
+   ViewFinderImageWindow* pViewfinder = m_host.GetViewfinderWindow();
+
+   if (pViewfinder != NULL)
+      pViewfinder->EnableUpdate(false, true); // wait for viewfinder image handler to exit
+
    std::vector<unsigned int> vecDevicePropertyIds = sd.EnumDeviceProperties();
 
    for (size_t i=0, iMax = vecDevicePropertyIds.size(); i<iMax; i++)
@@ -52,6 +60,9 @@ void DevicePropertyView::RefreshList()
       cszId.Format(_T("0x%04x"), uiPropertyId);
       SetItemText(iIndex, columnId, cszId);
    }
+
+   if (pViewfinder != NULL)
+      pViewfinder->EnableUpdate(true);
 
    SetRedraw(TRUE);
 }
