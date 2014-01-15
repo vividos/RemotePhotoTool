@@ -571,7 +571,6 @@ prResponse RemoteReleaseControlImpl::OnDownloadImageData_(
       pProgress->lOffset,
       pProgress->lLength);
 
-   // TODO move code to own function
    RemoteReleaseControlImpl* pThis = reinterpret_cast<RemoteReleaseControlImpl*>(Context);
 
    pThis->m_subjectDownloadEvent.Call(RemoteReleaseControl::downloadEventInProgress, pProgress->lPercentComplete);
