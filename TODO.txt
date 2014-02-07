@@ -47,6 +47,7 @@ Multi-camera photo view
 Image Property view: change values using editbox or combobox
 Copy button for error dialog
 Add "last transferred image" view
+Show currently connected camera in title
 
 PhotoToolCmdline
 ----------------
