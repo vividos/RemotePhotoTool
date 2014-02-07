@@ -164,7 +164,11 @@ void EDSDK::MsgWaitForEvent(Event& evt)
          {
             BOOL bRet = ::GetMessage(&msg, nullptr, 0, 0);
             if(!bRet)
-               break;   // WM_QUIT, exit message loop
+            {
+               // WM_QUIT: repost message, exit loop
+               PostQuitMessage(msg.wParam);
+               break;
+            }
 
             //LOG_TRACE(_T("MsgWaitForEvent: HWND=%08x MSG=%04x\n"), msg.hwnd, msg.message);
 
