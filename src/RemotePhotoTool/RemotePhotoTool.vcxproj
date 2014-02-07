@@ -132,6 +132,7 @@
     <ClCompile Include="ViewManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\version.h" />
     <ClInclude Include="AboutDlg.hpp" />
     <ClInclude Include="App.hpp" />
     <ClInclude Include="AppSettings.hpp" />
