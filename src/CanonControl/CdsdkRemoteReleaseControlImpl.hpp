@@ -1,8 +1,8 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2013 Michael Fink
+// Copyright (C) 2008-2014 Michael Fink
 //
-//! \file CdsdkRemoteReleaseControlImpl.hpp CDSDK - RemoteReleaseControl impl
+/// \file CdsdkRemoteReleaseControlImpl.hpp CDSDK - RemoteReleaseControl impl
 //
 #pragma once
 

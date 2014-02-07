@@ -1,8 +1,8 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2013 Michael Fink
+// Copyright (C) 2008-2014 Michael Fink
 //
-//! \file ImageProperty.hpp Canon control - Image property
+/// \file ImageProperty.hpp Canon control - Image property
 //
 #pragma once
 

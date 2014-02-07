@@ -1,8 +1,8 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2013 Michael Fink
+// Copyright (C) 2008-2014 Michael Fink
 //
-//! \file BackgroundWindowThread.hpp Canon control - Background window thread
+/// \file BackgroundWindowThread.hpp Canon control - Background window thread
 //
 #pragma once
 

@@ -1,8 +1,8 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2013 Michael Fink
+// Copyright (C) 2008-2014 Michael Fink
 //
-//! \file EdsdkSourceInfoImpl.hpp EDSDK - SourceInfo impl
+/// \file EdsdkSourceInfoImpl.hpp EDSDK - SourceInfo impl
 //
 #pragma once
 

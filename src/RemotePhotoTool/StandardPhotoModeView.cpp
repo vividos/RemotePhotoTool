@@ -1,8 +1,8 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2013 Michael Fink
+// Copyright (C) 2008-2014 Michael Fink
 //
-//! \file StandardPhotoModeView.cpp View for taking standard photos
+/// \file StandardPhotoModeView.cpp View for taking standard photos
 //
 
 // includes

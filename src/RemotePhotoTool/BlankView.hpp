@@ -1,8 +1,8 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2013 Michael Fink
+// Copyright (C) 2008-2014 Michael Fink
 //
-//! \file BlankView.hpp Blank view
+/// \file BlankView.hpp Blank view
 //
 #pragma once
 

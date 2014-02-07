@@ -1,8 +1,8 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2013 Michael Fink
+// Copyright (C) 2008-2014 Michael Fink
 //
-//! \file Instance.hpp Canon control - Instance class
+/// \file Instance.hpp Canon control - Instance class
 //
 #pragma once
 

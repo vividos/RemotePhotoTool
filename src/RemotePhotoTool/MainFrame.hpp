@@ -1,8 +1,8 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2013 Michael Fink
+// Copyright (C) 2008-2014 Michael Fink
 //
-//! \file MainFrame.hpp Main application frame
+/// \file MainFrame.hpp Main application frame
 //
 #pragma once
 

@@ -1,8 +1,8 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2013 Michael Fink
+// Copyright (C) 2008-2014 Michael Fink
 //
-//! \file CanonControlExports.hpp Canon control - Exports for a dll
+/// \file CanonControlExports.hpp Canon control - Exports for a dll
 //
 
 // includes

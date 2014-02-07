@@ -1,8 +1,8 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2013 Michael Fink
+// Copyright (C) 2008-2014 Michael Fink
 //
-//! \file PsrecVarDataParser.hpp PS-ReC - variable data types parser
+/// \file PsrecVarDataParser.hpp PS-ReC - variable data types parser
 //
 #pragma once
 

@@ -1,8 +1,8 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2013 Michael Fink
+// Copyright (C) 2008-2014 Michael Fink
 //
-//! \file ShutterReleaseSettings.hpp Canon control - Shutter release settings
+/// \file ShutterReleaseSettings.hpp Canon control - Shutter release settings
 //
 #pragma once
 
