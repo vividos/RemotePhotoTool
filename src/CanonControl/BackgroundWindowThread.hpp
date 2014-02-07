@@ -10,8 +10,10 @@
 #include "Event.hpp"
 #include <thread>
 #include "Thread.hpp"
+#include "EdsdkCommon.hpp"
 
 /// this is the background window we're starting
+/// \note this class is only usable for EDSDK at the moment
 template <typename TInstance>
 class BackgroundWindowThread
 {
@@ -51,41 +53,8 @@ private:
 
       m_evtStarted.Set();
 
-      // run message queue
-      for (bool bLoop = true; bLoop;)
-      {
-         HANDLE h = m_evtStop.Handle();
-         DWORD dwTimeout = 100;
-         DWORD dwRet = ::MsgWaitForMultipleObjects(1, &h, FALSE, dwTimeout, QS_ALLINPUT);
-
-         if (WAIT_TIMEOUT == dwRet)
-         {
-            EdsGetEvent();
-            continue;
-         }
-
-         if (WAIT_OBJECT_0 == dwRet)
-            bLoop = false;
-
-         // process window messages
-         MSG msg = {0};
-         for (;;)
-         {
-            if (::PeekMessage(&msg, nullptr, 0, 0, PM_NOREMOVE))
-            {
-               BOOL bRet = ::GetMessage(&msg, nullptr, 0, 0);
-               if(!bRet)
-                  break;   // WM_QUIT, exit message loop
-
-               //LOG_TRACE(_T("HWND=%08x MSG=%04x\n"), msg.hwnd, msg.message);
-
-               ::TranslateMessage(&msg);
-               ::DispatchMessage(&msg);
-            }
-            else
-               break;
-         }
-      }
+      // run EDSDK and window message processing while waiting for stop event
+      EDSDK::MsgWaitForEvent(m_evtStop);
 
       // end instance
       m_upInst.reset();

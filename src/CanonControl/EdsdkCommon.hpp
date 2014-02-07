@@ -232,4 +232,7 @@ private:
    EdsBaseRef m_objRef;
 };
 
+/// waits for message and does window and EDSDK processing while waiting
+void MsgWaitForEvent(Event& evt);
+
 } // namespace EDSDK

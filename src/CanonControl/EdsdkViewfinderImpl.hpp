@@ -10,6 +10,7 @@
 #include "Viewfinder.hpp"
 #include "EdsdkCommon.hpp"
 #include "Asio.hpp"
+#include <atomic>
 
 // forward references
 class BackgroundTimer;
@@ -55,6 +56,12 @@ private:
 
    /// lock to synchronize access to ED-SDK during viewfinder
    std::shared_ptr<LightweightMutex> m_spMtxLock;
+
+   /// event to signal that timer has stopped
+   Event m_evtTimerStopped;
+
+   /// indicates if worker thread is in GetImage()
+   std::atomic<bool> m_bInGetImage;
 
    /// thread that polls camera for viewfinder image
    std::shared_ptr<BackgroundTimer> m_spViewfinderImageTimer;

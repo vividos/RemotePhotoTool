@@ -135,3 +135,47 @@ void Ref::AsyncWaitForCamera(bool bStart, std::function<void()> fnOnCameraConnec
       EDSDK::CheckError(_T("EdsSetCameraAddedHandler"), err, __FILE__, __LINE__);
    }
 }
+
+void EDSDK::MsgWaitForEvent(Event& evt)
+{
+   LOG_TRACE(_T("MsgWaitForEvent started\n"));
+
+   bool bEventSignaled = false;
+   do
+   {
+      HANDLE h = evt.Handle();
+      DWORD dwTimeout = 100;
+      DWORD dwRet = ::MsgWaitForMultipleObjects(1, &h, FALSE, dwTimeout, QS_ALLINPUT);
+
+      if (WAIT_TIMEOUT == dwRet)
+      {
+         EdsGetEvent();
+         continue;
+      }
+
+      if (WAIT_OBJECT_0 == dwRet)
+         bEventSignaled = true;
+
+      // process window messages
+      MSG msg = {0};
+      for (;;)
+      {
+         if (::PeekMessage(&msg, nullptr, 0, 0, PM_NOREMOVE))
+         {
+            BOOL bRet = ::GetMessage(&msg, nullptr, 0, 0);
+            if(!bRet)
+               break;   // WM_QUIT, exit message loop
+
+            //LOG_TRACE(_T("MsgWaitForEvent: HWND=%08x MSG=%04x\n"), msg.hwnd, msg.message);
+
+            ::TranslateMessage(&msg);
+            ::DispatchMessage(&msg);
+         }
+         else
+            break;
+      }
+
+   } while (!bEventSignaled);
+
+   LOG_TRACE(_T("MsgWaitForEvent finished\n"));
+}

@@ -15,9 +15,10 @@
 using namespace EDSDK;
 
 ViewfinderImpl::ViewfinderImpl(Handle hSourceDevice, boost::asio::io_service& ioService, std::shared_ptr<LightweightMutex> spMtxLock)
-   :m_hSourceDevice(hSourceDevice),
-   m_ioService(ioService),
-   m_spMtxLock(spMtxLock)
+:m_hSourceDevice(hSourceDevice),
+m_ioService(ioService),
+m_spMtxLock(spMtxLock),
+m_evtTimerStopped(true, false) // manual-reset event
 {
    // Get the output device for the live view image
    PropertyAccess p(hSourceDevice);
@@ -99,11 +100,18 @@ void ViewfinderImpl::StopBackgroundThread()
    if (m_spViewfinderImageTimer == nullptr)
       return;
 
+   m_evtTimerStopped.Reset();
+
    // Run in worker thread, since we must not block the window message processing, needed in
    // EDSDK functions called in GetImage(). Since caller might destroy the Viewfinder class right
    // away, use shared_from_this() to manage lifetime of this class.
    m_ioService.post(
       std::bind(&ViewfinderImpl::AsyncStopBackgroundThread, shared_from_this()));
+
+   if (m_bInGetImage)
+      MsgWaitForEvent(m_evtTimerStopped);
+   else
+      m_evtTimerStopped.Wait();
 }
 
 void ViewfinderImpl::AsyncStopBackgroundThread()
@@ -113,11 +121,14 @@ void ViewfinderImpl::AsyncStopBackgroundThread()
       m_spViewfinderImageTimer->Stop();
 
    m_spViewfinderImageTimer.reset();
+
+   m_evtTimerStopped.Set();
 }
 
 void ViewfinderImpl::GetImage(std::vector<BYTE>& vecImage)
 {
    LOG_TRACE(_T("GetImage() start\n"));
+   m_bInGetImage = true;
 
    LightweightMutex::LockType lock(*m_spMtxLock);
 
@@ -155,11 +166,19 @@ void ViewfinderImpl::GetImage(std::vector<BYTE>& vecImage)
       vecImage.assign(pbData, pbData+uiLength);
    }
 
+   m_bInGetImage = false;
    LOG_TRACE(_T("GetImage() end\n"));
 }
 
 void ViewfinderImpl::OnGetViewfinderImage()
 {
+   {
+      LightweightMutex::LockType lock(m_mtxFnOnAvailViewfinderImage);
+
+      if (m_fnOnAvailViewfinderImage == nullptr)
+         return;
+   }
+
    std::vector<BYTE> vecImage;
    GetImage(vecImage);
 

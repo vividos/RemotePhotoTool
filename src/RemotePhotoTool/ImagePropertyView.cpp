@@ -11,6 +11,7 @@
 #include "ImagePropertyView.hpp"
 #include "IPhotoModeViewHost.hpp"
 #include "ImageProperty.hpp"
+#include "ViewFinderImageWindow.hpp"
 
 void ImagePropertyView::Init()
 {
@@ -81,6 +82,12 @@ void ImagePropertyView::RefreshList()
 
    DeleteAllItems();
 
+   // disable viewfinder while refreshing list
+   ViewFinderImageWindow* pViewfinder = m_host.GetViewfinderWindow();
+
+   if (pViewfinder != NULL)
+      pViewfinder->EnableUpdate(false);
+
    std::vector<unsigned int> vecImagePropertyIds;
    vecImagePropertyIds = rrc.EnumImageProperties();
 
@@ -102,6 +109,9 @@ void ImagePropertyView::RefreshList()
 
       SetItemText(iIndex, columnRaw, ip.Value().ToString());
    }
+
+   if (pViewfinder != NULL)
+      pViewfinder->EnableUpdate(true);
 
    SetRedraw(TRUE);
 }

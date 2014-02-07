@@ -46,7 +46,6 @@ Write manual
 Multi-camera photo view
 Image Property view: change values using editbox or combobox
 Copy button for error dialog
-* Bug: Lockup when switching to Device or Image Properties during live view (lockup in EdsGetPropertySize())
 Add "last transferred image" view
 
 PhotoToolCmdline

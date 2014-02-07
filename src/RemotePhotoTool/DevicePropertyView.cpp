@@ -41,7 +41,7 @@ void DevicePropertyView::RefreshList()
    ViewFinderImageWindow* pViewfinder = m_host.GetViewfinderWindow();
 
    if (pViewfinder != NULL)
-      pViewfinder->EnableUpdate(false, true); // wait for viewfinder image handler to exit
+      pViewfinder->EnableUpdate(false);
 
    std::vector<unsigned int> vecDevicePropertyIds = sd.EnumDeviceProperties();
 
