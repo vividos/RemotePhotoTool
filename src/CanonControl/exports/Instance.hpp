@@ -8,7 +8,6 @@
 
 // includes
 #include <vector>
-#include <boost\function.hpp>
 #include "ImplFwd.hpp"
 
 // forward references

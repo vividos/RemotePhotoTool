@@ -66,7 +66,7 @@ public:
    void EnumerateDevices(std::vector<std::shared_ptr<SourceInfo>>& vecSourceDevices) const;
 
    /// starts waiting for camera
-   void AsyncWaitForCamera(bool bStart, std::function<void()> fnOnCameraConnected = boost::function<void()>());
+   void AsyncWaitForCamera(bool bStart, std::function<void()> fnOnCameraConnected = std::function<void()>());
 
 private:
    /// handler called when camera was added

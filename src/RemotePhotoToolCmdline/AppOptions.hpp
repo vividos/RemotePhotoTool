@@ -2,7 +2,6 @@
 
 #include "AppCommand.hpp"
 #include "ProgramOptions.hpp"
-#include <boost\bind.hpp>
 
 /// options for application
 class AppOptions: public ProgramOptions
