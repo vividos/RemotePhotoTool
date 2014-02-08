@@ -8,7 +8,6 @@
 
 // includes
 #include "ImageProperty.hpp"
-#include <boost\function.hpp>
 
 // forward references
 class ShutterReleaseSettings;
