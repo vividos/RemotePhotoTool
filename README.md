@@ -28,7 +28,11 @@ See the full Features document here: [Features.md](Features.md)
 
 ## Screenshots ##
 
-TODO
+This is the HDR Photo mode with active Viewfinder:
+ 
+![Photo mode: HDR](images/photomode-hdr.png)
+
+See more screenshots here: [Screenshots.md](Screenshots.md)
 
 ## Compatibility ##
 

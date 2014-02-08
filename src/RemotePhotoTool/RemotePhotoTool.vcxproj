@@ -208,6 +208,7 @@
     <None Include="..\..\Features.md" />
     <None Include="..\..\License.md" />
     <None Include="..\..\README.md" />
+    <None Include="..\..\Screenshots.md" />
     <None Include="..\..\Sourcecode.md" />
     <None Include="..\..\TestCases.md" />
     <None Include="res\MainFrameRibbon.bml" />
