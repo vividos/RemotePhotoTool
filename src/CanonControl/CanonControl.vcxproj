@@ -138,7 +138,6 @@
     <ClInclude Include="exports\Variant.hpp" />
     <ClInclude Include="exports\Viewfinder.hpp" />
     <ClInclude Include="BackgroundWindowThread.hpp" />
-    <ClInclude Include="CanonControlExports.hpp" />
     <ClInclude Include="ImageFormat.hpp" />
     <ClInclude Include="PsrecViewfinderImpl.hpp" />
     <ClInclude Include="stdafx.h" />
