@@ -1,11 +1,11 @@
-## Test Cases ##
+# Test Cases #
 
 This is a list of test cases for the RemotePhotoTool application. If you want to test a particular
 camera model with the application, follow the test cases and do everything described. Report back
 if something is not working, with detailed infos about camera model (the "info" text) and the
 generated log file.
 
-### Test Case 1: General application functions ###
+## Test Case 1: General application functions ##
 
 1. Start the application. The main application window must appear, and the "Connect camera" dialog
    in front of it.
@@ -32,7 +32,7 @@ generated log file.
 
 9. Click on the "File" menu band entry. Select the "Exit" option. The application must close.
 
-### Test Case 2: Connecting camera functions ###
+## Test Case 2: Connecting camera functions ##
 
 1. Start the application. The main application window must appear, and the "Connect camera" dialog
    in front of it.
@@ -60,7 +60,7 @@ generated log file.
 9. Close the application. The application must ask for confirmation to close, since you are
    connected to a camera.
 
-### Test Case 3: Viewfinder ###
+## Test Case 3: Viewfinder ##
 
 1. Connect to the camera. The "Normal Photo Mode" view must appear.
 

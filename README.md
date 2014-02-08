@@ -1,6 +1,6 @@
-## RemotePhotoTool ##
+# RemotePhotoTool #
 
-### About ###
+## About ##
 
 RemotePhotoTool is a remote image capture application for Canon based cameras. It supports taking HDR and Panorama photos.
 
@@ -12,27 +12,32 @@ PowerShot cameras: G10, G9, G7, S5 IS, S3 IS, S80, SX110 IS, SX100 IS, A640 and 
 
 See below at chapter "Compatibility" for a complete list of supported cameras.
 
-### Download ###
+## Download ##
 
 TODO set proper URL
 https://bintray.com/repo/browse/vividos/RemotePhotoTool/RemotePhotoTool-1.0.0-Setup.msi
 
-### Features ###
+## Features ##
 
 * Remote capture and transfer to PC
 * Live Viewfinder
-* Photo Modes: Normal, HDR, Panorama, HDR Panorama, Timelapse video, Photo stacking
+* Photo Modes: Normal, HDR, Panorama (planned: HDR Panorama, Timelapse video, Photo stacking)
 * Tool support for PhotoMatix 4, Hugin
 
-### Screenshots ###
+See the full Features document here: [Features.md](Features.md)
+
+## Screenshots ##
 
 TODO
 
-### Compatibility ###
+## Compatibility ##
 
-Note that most cameras may work, but due to the fact that I only own an EOS 40D and a Powershot G9, not all cameras are tested. All tested cameras are marked  `tested and works`.
+Note that most cameras may work, but due to the fact that I only own an EOS 40D and a Powershot
+G9, not all cameras are tested. All tested cameras are marked  `tested and works`. If you want
+to report a working camera, test the application with the Test Cases (see below for a link)
+and send me a message with the camera infos.
 
-#### Canon EOS camera models ####
+### Canon EOS camera models ###
 - EOS 1000D  (aka. Rebel XS, Kiss F)
 - EOS 1100D (aka. Rebel T3, Kiss X50)
 - EOS 450D (aka. Rebel Xsi, Kiss X2)
@@ -54,7 +59,7 @@ Note that most cameras may work, but due to the fact that I only own an EOS 40D 
 - EOS-1D Mark IV
 - EOS 1D X
 
-#### Canon Powershot camera models ####
+### Canon Powershot camera models ###
 - Powershot G10
 - Powershot G9 (`tested and works`)
 - Powershot G7
@@ -66,7 +71,7 @@ Note that most cameras may work, but due to the fact that I only own an EOS 40D 
 - Powershot A640
 - Powershot A620
 
-### Open Source ###
+## Open Source ##
 
 The official website of RemotePhotoTool is:
 
