@@ -50,7 +50,7 @@ struct VarDataParser
 
       prUInt32 dwRet = prUInt32(m_vecBuffer[m_uiPos]) |
          (prUInt32(m_vecBuffer[m_uiPos+1]) << 8) |
-         (prUInt32(m_vecBuffer[m_uiPos+2]) << 16) | 
+         (prUInt32(m_vecBuffer[m_uiPos+2]) << 16) |
          (prUInt32(m_vecBuffer[m_uiPos+3]) << 24);
 
       m_uiPos += 4;

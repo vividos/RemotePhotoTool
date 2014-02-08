@@ -146,7 +146,7 @@ private:
 
    /// indicates index of current shutter speed, from m_vecAEBShutterSpeedValues
    size_t m_uiCurrentAEBShutterSpeed;
-   
+
    /// shutter speed values for AEB shots
    std::vector<ImageProperty> m_vecAEBShutterSpeedValues;
 

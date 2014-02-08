@@ -47,7 +47,7 @@ public:
    /// sets new device property value
    void Set(cdDevicePropertyID propId, Variant v)
    {
-      // generate data bytes from variant 
+      // generate data bytes from variant
       std::vector<BYTE> vecData;
       GetRawCdsdk(v, propId, vecData);
       cdUInt32 size = static_cast<cdUInt32>(vecData.size());

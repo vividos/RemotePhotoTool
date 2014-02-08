@@ -76,7 +76,7 @@ void AppSettings::Store()
       if (ERROR_SUCCESS != regRoot.Create(HKEY_CURRENT_USER, m_pszSettingsRegkey))
          return;
    }
-   
+
    regRoot.SetStringValue(g_pszProjectsFolder, m_cszProjectsFolder);
    regRoot.SetDWORDValue(g_pszCurrentDateSubfolder, m_bCurrentDateSubfolder ? 1 : 0);
    regRoot.SetDWORDValue(g_pszImageTypeSubfolder, m_bImageTypeSubfolder ? 1 : 0);

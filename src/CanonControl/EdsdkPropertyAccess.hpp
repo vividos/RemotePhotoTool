@@ -58,7 +58,7 @@ public:
       EdsUInt32 size = 0;
       GetTypeAndSize(propId, iParam, dataType, size);
 
-      // then generate data bytes from variant 
+      // then generate data bytes from variant
       std::vector<BYTE> vecData;
       GetRawEdsdk(value, dataType, vecData);
 

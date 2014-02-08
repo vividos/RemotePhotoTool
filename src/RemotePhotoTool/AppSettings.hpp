@@ -15,7 +15,7 @@ public:
 
 
    // properties
-   
+
    /// projects folder
    CString m_cszProjectsFolder;
 

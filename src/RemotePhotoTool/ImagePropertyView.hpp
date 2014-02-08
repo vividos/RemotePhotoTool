@@ -53,7 +53,7 @@ private:
 private:
    /// inits image property list
    void Init();
-   
+
    /// called when property changed
    void OnPropertyChanged(RemoteReleaseControl::T_enPropertyEvent enPropertyEvent, unsigned int uiPropertyId);
 

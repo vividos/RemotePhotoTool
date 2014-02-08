@@ -23,27 +23,27 @@ struct JpegDecoder
       cinfo.err->error_exit = &OnError;
       cinfo.err->output_message = &OnOutput;
 
-   	// allocate and initialize a JPEG decompression object
+      // allocate and initialize a JPEG decompression object
       jpeg_create_decompress(&cinfo);
 
-   	// specify the source of the compressed data
+      // specify the source of the compressed data
       cinfo.src = &m_sourceManager;
    }
 
    /// dtor
    ~JpegDecoder()
    {
-	   boolean b = jpeg_finish_decompress(&cinfo);
+      boolean b = jpeg_finish_decompress(&cinfo);
       ATLVERIFY(b == TRUE); // no suspending data source
 
-	   // release the JPEG decompression object
+      // release the JPEG decompression object
       jpeg_destroy_decompress(&cinfo);
    }
 
    /// reads image info
    void ReadHeader()
    {
-	   // call jpeg_read_header() to obtain image info
+      // call jpeg_read_header() to obtain image info
       int ret = jpeg_read_header(&cinfo, TRUE);
       ATLVERIFY(ret == JPEG_HEADER_OK);
    }
@@ -51,7 +51,7 @@ struct JpegDecoder
    /// starts decompressing
    void StartDecompress()
    {
-	   boolean b = jpeg_start_decompress(&cinfo);
+      boolean b = jpeg_start_decompress(&cinfo);
       ATLVERIFY(b == TRUE); // no suspending data source
    }
 

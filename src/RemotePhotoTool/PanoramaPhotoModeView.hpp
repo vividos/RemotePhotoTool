@@ -99,7 +99,7 @@ private:
    IPhotoModeViewHost& m_host;
 
    // UI
-   
+
    /// panorama started?
    bool m_bStarted;
 

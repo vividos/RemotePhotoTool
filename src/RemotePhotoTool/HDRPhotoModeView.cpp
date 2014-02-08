@@ -60,7 +60,7 @@ LRESULT HDRPhotoModeView::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM 
 
    // init list with shutter speed values
    m_lcAEBShutterSpeedValues.InsertColumn(0, _T("Shutter speed"), LVCFMT_LEFT, 80);
-   
+
    // add handler for changing shutter speed
    m_iPropertyHandlerId = m_spRemoteReleaseControl->AddPropertyEventHandler(
       std::bind(&HDRPhotoModeView::OnUpdatedProperty, this, std::placeholders::_1, std::placeholders::_2));
@@ -231,7 +231,7 @@ void HDRPhotoModeView::RecalcAEBShutterSpeedList()
       return;
 
    size_t uiNumShots = m_cbAEBBracketedShots.GetItemData(iItem);
-   
+
    m_vecAEBShutterSpeedValues.clear();
 
    unsigned int uiShutterSpeedPropertyId =

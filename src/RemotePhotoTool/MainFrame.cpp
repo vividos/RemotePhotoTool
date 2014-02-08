@@ -204,7 +204,7 @@ LRESULT MainFrame::OnFileExit(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl
    return 0;
 }
 
-LRESULT MainFrame::OnToggleRibbon(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/) 
+LRESULT MainFrame::OnToggleRibbon(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
    ShowRibbonUI(!IsRibbonUI());
    UISetCheck(ID_VIEW_RIBBON, IsRibbonUI());
@@ -364,7 +364,7 @@ std::shared_ptr<RemoteReleaseControl> MainFrame::StartRemoteReleaseControl(bool 
             bool bAvailViewfinder = m_spRemoteReleaseControl->GetCapability(RemoteReleaseControl::capViewfinder);
 
             UIEnable(ID_VIEWFINDER_SHOW, bAvailViewfinder, true);
-            
+
             // add event handler
             m_spRemoteReleaseControl->AddStateEventHandler(
                std::bind(&MainFrame::OnStateEvent, this, std::placeholders::_1, std::placeholders::_2));
@@ -503,7 +503,7 @@ void MainFrame::EnablePhotoModes(bool bEnable)
 }
 
 void MainFrame::SetPaneWidths(int* arrWidths, int nPanes)
-{ 
+{
    // find the size of the borders
    int arrBorders[3];
    m_statusBar.GetBorders(arrBorders);
@@ -518,7 +518,7 @@ void MainFrame::SetPaneWidths(int* arrWidths, int nPanes)
       arrWidths[j] += arrBorders[2] + arrWidths[j - 1];
 
    // set the pane widths
-   m_statusBar.SetParts(m_statusBar.m_nPanes, arrWidths); 
+   m_statusBar.SetParts(m_statusBar.m_nPanes, arrWidths);
 }
 
 void MainFrame::OnStateEvent(RemoteReleaseControl::T_enStateEvent enStateEvent, unsigned int uiExtraData)

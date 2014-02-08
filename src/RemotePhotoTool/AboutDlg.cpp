@@ -14,7 +14,7 @@
 
 void AboutDlg::SetVersionText()
 {
-   CWindow scVersion = GetDlgItem(IDC_STATIC_ABOUT_VERSION);   
+   CWindow scVersion = GetDlgItem(IDC_STATIC_ABOUT_VERSION);
 
    CString cszVersion;
    scVersion.GetWindowText(cszVersion);
@@ -48,7 +48,7 @@ LRESULT AboutDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam
    SetAboutInfo();
 
    return TRUE;
-}   
+}
 
 LRESULT AboutDlg::OnCloseCmd(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {

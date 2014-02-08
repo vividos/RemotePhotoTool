@@ -301,7 +301,7 @@ union ImageFormatBitSet
    unsigned int uiValue;
 
    /// bit set
-   struct 
+   struct
    {
       // secondary image values
       EdsCompressQuality compressQuality2nd : 4; // 0-3
@@ -330,7 +330,7 @@ static LPCTSTR ImageSizeToString(EdsImageSize enSize)
    case kEdsImageSize_Middle1: return _T("M1");
    case kEdsImageSize_Middle2: return _T("M2");
    case kEdsImageSize_Small1:  return _T("S1");
-   case kEdsImageSize_Small2:  return _T("S2"); 
+   case kEdsImageSize_Small2:  return _T("S2");
    case kEdsImageSize_Small3:  return _T("S3");
    case kEdsImageSize_Unknown: return _T("unknown");
    default:

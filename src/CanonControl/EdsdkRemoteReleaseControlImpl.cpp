@@ -530,7 +530,7 @@ void RemoteReleaseControlImpl::DownloadImage(Handle hDirectoryItem, ShutterRelea
       // issue notification that download has been canceled
       EdsError err = EdsDownloadCancel(hDirectoryItem);
       LOG_TRACE(_T("EdsDownloadCancel(dirItem = %08x) returned %08x\n"), hDirectoryItem.Get(), err);
-   
+
       throw ex;
    }
 

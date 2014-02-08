@@ -68,7 +68,7 @@ void DevicePropertyAccess::SetRawCdsdk(Variant& v, unsigned int propId, std::vec
    case cdDEVICE_PROP_RAW_DEVELOP_FACULTIES:
    case cdDEVICE_PROP_PARSE_FACULTIES:
    case cdDEVICE_PROP_THUMB_VALID_AREA: // this property isn't described in cdType.h, but assume it's an array
-   case 0x00000011: // the mysteriously unknown device property on my IXUS 430 
+   case 0x00000011: // the mysteriously unknown device property on my IXUS 430
       variant = std::vector<unsigned char>(vecData);
       enType = Variant::typeUInt8;
       bIsArray = true;
@@ -278,7 +278,7 @@ private:
    T_fnEnumCount m_fnEnumCount;
    T_fnEnumNext m_fnEnumNext;
    T_fnEnumRelease m_fnEnumRelease;
-   
+
 /*
    // image format
 

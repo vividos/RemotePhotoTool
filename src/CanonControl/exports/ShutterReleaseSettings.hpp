@@ -49,7 +49,7 @@ public:
    /// returns save target
    T_enSaveTarget SaveTarget() const throw() { return m_enSaveTarget; }
 
-   /// returns handler function when 
+   /// returns handler function when
    T_fnOnFinishedTransfer HandlerOnFinishedTransfer() const throw() { return m_fnOnFinishedTransfer; }
 
 private:

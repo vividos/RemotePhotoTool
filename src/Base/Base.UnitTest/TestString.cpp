@@ -113,7 +113,7 @@ public:
       Assert::IsTrue(s1.IsEmpty());
       Assert::IsTrue(s2.IsEmpty());
    }
-   
+
    /// tests GetAt()
    TEST_METHOD(TestGetAt)
    {

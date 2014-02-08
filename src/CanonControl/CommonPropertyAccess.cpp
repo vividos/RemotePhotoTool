@@ -69,7 +69,7 @@ CString FormatApexValue(Variant value)
    case 0x43: return _T("f/13");
    }
 
-   if (uiAperture >= 0x08 && 
+   if (uiAperture >= 0x08 &&
       uiAperture <= 0x70)
    {
       bool bWithFract = uiAperture <= 0x3c; // 0x3c == f/9.5
@@ -81,7 +81,7 @@ CString FormatApexValue(Variant value)
 
       // 2^0 = f/1, 2^1 = f/2, 2^6 = f/64
       double dAperture = std::pow(2.0, double(uiExp));
-      
+
       // calc factor from fraction
       double dFactor = 1.0;
       unsigned int uiApertureFract = (uiAperture - 8) & 0x0f;
@@ -262,7 +262,7 @@ CString FormatCompensationValue(Variant value, bool bIsEdsdk)
    // EDSDK = 0x18 - CDSDK
 
    unsigned int uiComp = 0;
-   
+
    if (value.Type() == Variant::typeUInt8)
       uiComp = value.Get<unsigned char>();
    else

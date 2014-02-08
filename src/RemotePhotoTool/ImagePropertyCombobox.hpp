@@ -29,7 +29,7 @@ public:
    void SetRemoteReleaseControl(std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl);
 
    // virtual methods from IImagePropertyControl
-   
+
    /// returns property id of image property managed by control
    virtual unsigned int GetPropertyId() override { return m_uiPropertyId; }
 

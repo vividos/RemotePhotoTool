@@ -52,7 +52,7 @@ public:
 
    /// callback function for object changes
    static EdsError EDSCALLBACK OnObjectChange_(EdsObjectEvent inEvent, EdsBaseRef inRef, EdsVoid *inContext);
-   
+
    // RemoteReleaseControl methods
 
    virtual bool GetCapability(RemoteReleaseControl::T_enRemoteCapability enCapability) const throw() override;

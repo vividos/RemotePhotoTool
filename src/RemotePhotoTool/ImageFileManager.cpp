@@ -70,7 +70,7 @@ void ImageFileManager::AddCurrentDate(CString& cszPath)
 void ImageFileManager::AddImageTypePath(CString& cszPath, T_enImageType enImageType, bool bStartNewSeries)
 {
    CString cszSubfolder;
-      
+
    switch (enImageType)
    {
    case imageTypeNormal:      break;
