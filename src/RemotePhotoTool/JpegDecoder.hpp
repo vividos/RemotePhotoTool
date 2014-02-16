@@ -16,7 +16,7 @@
 struct JpegDecoder
 {
    /// ctor
-   JpegDecoder(jpeg_source_mgr& sourceManager)
+   JpegDecoder(jpeg_source_mgr& sourceManager) throw()
       :m_sourceManager(sourceManager)
    {
       cinfo.err = jpeg_std_error(&m_errorManager);
@@ -31,7 +31,7 @@ struct JpegDecoder
    }
 
    /// dtor
-   ~JpegDecoder()
+   ~JpegDecoder() throw()
    {
       boolean b = jpeg_finish_decompress(&cinfo);
       ATLVERIFY(b == TRUE); // no suspending data source

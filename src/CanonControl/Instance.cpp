@@ -158,10 +158,16 @@ Instance::Instance(std::shared_ptr<Impl> spImpl)
 {
 }
 
-Instance::~Instance()
+Instance::~Instance() throw()
 {
-   // deregister camera handler
-   AsyncWaitForCamera();
+   try
+   {
+      // deregister camera handler
+      AsyncWaitForCamera();
+   }
+   catch(...)
+   {
+   }
 }
 
 Instance Instance::Get()
@@ -179,12 +185,12 @@ CString Instance::Version() const
    return cszVersionText;
 }
 
-void Instance::EnableLogging(bool bEnable, const CString& cszLogfilePath)
+void Instance::EnableLogging(bool bEnable, const CString& cszLogfilePath) throw()
 {
    LogConfigure(bEnable, cszLogfilePath);
 }
 
-void Instance::OnCameraAddedHandler()
+void Instance::OnCameraAddedHandler() throw()
 {
    LightweightMutex::LockType lock(m_spImpl->m_mtxFnOnCameraAdded);
 

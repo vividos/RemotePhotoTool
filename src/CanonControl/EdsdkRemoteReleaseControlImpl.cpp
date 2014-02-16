@@ -155,7 +155,7 @@ EdsError RemoteReleaseControlImpl::OnPropertyChange_(
    EdsPropertyEvent inEvent,
    EdsPropertyID inPropertyID,
    EdsUInt32 inParam,
-   EdsVoid* inContext)
+   EdsVoid* inContext) throw()
 {
    inParam;
    //LOG_TRACE(_T("OnPropertyChange(event = %u (%s), propId = %08x, param = %u, ctx) called\n"),
@@ -208,7 +208,7 @@ void RemoteReleaseControlImpl::OnPropertyChange(EdsPropertyEvent inEvent, EdsPro
    }
 }
 
-EdsError RemoteReleaseControlImpl::OnStateChange_(EdsStateEvent inEvent, EdsUInt32 inEventData, EdsVoid *inContext)
+EdsError RemoteReleaseControlImpl::OnStateChange_(EdsStateEvent inEvent, EdsUInt32 inEventData, EdsVoid *inContext) throw()
 {
    LOG_TRACE(_T("OnStateChange(event = %u (%s), eventData = %08x, ctx) called\n"),
       inEvent,
@@ -258,7 +258,7 @@ void RemoteReleaseControlImpl::OnStateChange(EdsStateEvent inEvent, EdsUInt32 in
    }
 }
 
-EdsError RemoteReleaseControlImpl::OnObjectChange_(EdsObjectEvent inEvent, EdsBaseRef inRef, EdsVoid *inContext)
+EdsError RemoteReleaseControlImpl::OnObjectChange_(EdsObjectEvent inEvent, EdsBaseRef inRef, EdsVoid *inContext) throw()
 {
    LOG_TRACE(_T("OnObjectChange(event = %u (%s), inRef = %08x, ctx) called\n"),
       inEvent,

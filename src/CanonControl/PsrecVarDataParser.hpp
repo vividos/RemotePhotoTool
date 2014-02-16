@@ -19,7 +19,7 @@ struct VarDataParser
    }
 
    /// returns buffer
-   std::vector<BYTE>& GetBuffer() { return m_vecBuffer; }
+   std::vector<BYTE>& GetBuffer() throw() { return m_vecBuffer; }
 
    /// reads unsigned 8-bit value
    prUInt8 ReadUint8()

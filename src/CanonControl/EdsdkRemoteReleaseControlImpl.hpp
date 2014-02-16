@@ -39,19 +39,19 @@ public:
       EdsPropertyEvent inEvent,
       EdsPropertyID inPropertyID,
       EdsUInt32 inParam,
-      EdsVoid* inContext);
+      EdsVoid* inContext) throw();
 
    /// called on property changes
    void OnPropertyChange(EdsPropertyEvent inEvent, EdsPropertyID inPropertyID) throw();
 
    /// callback function for state changes
-   static EdsError EDSCALLBACK OnStateChange_(EdsStateEvent inEvent, EdsUInt32 inEventData, EdsVoid *inContext);
+   static EdsError EDSCALLBACK OnStateChange_(EdsStateEvent inEvent, EdsUInt32 inEventData, EdsVoid *inContext) throw();
 
    /// called on state changes
    void OnStateChange(EdsStateEvent inEvent, EdsUInt32 inEventData) throw();
 
    /// callback function for object changes
-   static EdsError EDSCALLBACK OnObjectChange_(EdsObjectEvent inEvent, EdsBaseRef inRef, EdsVoid *inContext);
+   static EdsError EDSCALLBACK OnObjectChange_(EdsObjectEvent inEvent, EdsBaseRef inRef, EdsVoid *inContext) throw();
 
    // RemoteReleaseControl methods
 

@@ -24,7 +24,7 @@ public:
    typedef std::map<int, T_fnSubject> T_mapSubjects;
 
    /// ctor
-   Subject()
+   Subject() throw()
       :m_iNextId(1)
    {
    }
@@ -79,7 +79,7 @@ public:
    }
 
    /// removes all observer
-   void Clear()
+   void Clear() throw()
    {
       m_mapAllObserver.clear();
    }

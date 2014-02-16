@@ -256,7 +256,7 @@ void RemoteReleaseControlImpl::Release(const ShutterReleaseSettings& settings)
    StartImageDownload(m_hReleaseImage, true);
 }
 
-LPCTSTR RemoteReleaseControlImpl::EventNameFromCode(prUInt16 uiEventCode)
+LPCTSTR RemoteReleaseControlImpl::EventNameFromCode(prUInt16 uiEventCode) throw()
 {
    switch (uiEventCode)
    {
@@ -499,7 +499,7 @@ void RemoteReleaseControlImpl::OnEventPropertyChanged(prUInt16 propId, bool bAls
    }
 }
 
-void RemoteReleaseControlImpl::OnEventStateChanged(prUInt16 code)
+void RemoteReleaseControlImpl::OnEventStateChanged(prUInt16 code) throw()
 {
    RemoteReleaseControl::T_enStateEvent enStateEvent =
       RemoteReleaseControl::stateEventInvalid;

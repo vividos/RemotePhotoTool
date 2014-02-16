@@ -41,7 +41,7 @@ App::App(HINSTANCE hInstance)
    ATLASSERT(SUCCEEDED(hRes));
 }
 
-App::~App()
+App::~App() throw()
 {
    _Module.Term();
    ::CoUninitialize();

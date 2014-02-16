@@ -16,9 +16,15 @@ ImagePropertyValueManager::ImagePropertyValueManager(RemoteReleaseControl& rrc)
 {
 }
 
-ImagePropertyValueManager::~ImagePropertyValueManager()
+ImagePropertyValueManager::~ImagePropertyValueManager() throw()
 {
-   m_rrc.RemovePropertyEventHandler(m_iPropertyHandlerId);
+   try
+   {
+      m_rrc.RemovePropertyEventHandler(m_iPropertyHandlerId);
+   }
+   catch(...)
+   {
+   }
 }
 
 void ImagePropertyValueManager::UpdateProperty(unsigned int uiValue)

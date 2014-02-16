@@ -78,7 +78,7 @@ public:
    void GetRawCdsdk(const Variant& v, unsigned int propId, std::vector<unsigned char>& vecData);
 
    /// returns name for property id
-   static CString NameFromId(unsigned int propId);
+   static CString NameFromId(unsigned int propId) throw();
 
    /// returns display value from property id
    static CString ValueFromId(unsigned int /*propId*/, Variant value);

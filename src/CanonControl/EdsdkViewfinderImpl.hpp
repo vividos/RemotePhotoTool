@@ -27,7 +27,7 @@ public:
    /// ctor
    ViewfinderImpl(Handle hSourceDevice, boost::asio::io_service& ioService, std::shared_ptr<LightweightMutex> spMtxLock);
    /// dtor
-   virtual ~ViewfinderImpl();
+   virtual ~ViewfinderImpl() throw();
 
    virtual void SetAvailImageHandler(Viewfinder::T_fnOnAvailViewfinderImage fnOnAvailViewfinderImage) override;
 

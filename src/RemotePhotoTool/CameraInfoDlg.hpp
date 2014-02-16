@@ -19,7 +19,7 @@ class CameraInfoDlg :
 {
 public:
    /// ctor
-   CameraInfoDlg(SourceDevice& sourceDevice)
+   CameraInfoDlg(SourceDevice& sourceDevice) throw()
       :m_sourceDevice(sourceDevice)
    {
    }

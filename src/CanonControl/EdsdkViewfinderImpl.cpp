@@ -46,25 +46,31 @@ m_evtTimerStopped(true, false) // manual-reset event
    // note: don't bother downloading viewfinder images until handler is set
 }
 
-ViewfinderImpl::~ViewfinderImpl()
+ViewfinderImpl::~ViewfinderImpl() throw()
 {
-   // don't stop background thread in dtor, since background thread would be stopped asynchronous,
-   // and in the dtor it's too late to use shared_from_this() there. So SetAvailImageHandler() must
-   // be called before reset()ing a shared ptr to this class.
-   //StopBackgroundThread();
+   try
+   {
+      // don't stop background thread in dtor, since background thread would be stopped asynchronous,
+      // and in the dtor it's too late to use shared_from_this() there. So SetAvailImageHandler() must
+      // be called before reset()ing a shared ptr to this class.
+      //StopBackgroundThread();
 
-   // clear live view flag in property
-   PropertyAccess p(m_hSourceDevice);
+      // clear live view flag in property
+      PropertyAccess p(m_hSourceDevice);
 
-   Variant vDevice = p.Get(kEdsPropID_Evf_OutputDevice);
-   ATLASSERT(vDevice.Type() == Variant::typeUInt32);
+      Variant vDevice = p.Get(kEdsPropID_Evf_OutputDevice);
+      ATLASSERT(vDevice.Type() == Variant::typeUInt32);
 
-   unsigned int device = vDevice.Get<unsigned int>();
-   device &= ~kEdsEvfOutputDevice_PC;
+      unsigned int device = vDevice.Get<unsigned int>();
+      device &= ~kEdsEvfOutputDevice_PC;
 
-   vDevice.Set(device);
+      vDevice.Set(device);
 
-   p.Set(kEdsPropID_Evf_OutputDevice, vDevice);
+      p.Set(kEdsPropID_Evf_OutputDevice, vDevice);
+   }
+   catch(...)
+   {
+   }
 }
 
 void ViewfinderImpl::SetAvailImageHandler(Viewfinder::T_fnOnAvailViewfinderImage fnOnAvailViewfinderImage)

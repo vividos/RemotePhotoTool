@@ -152,37 +152,37 @@ public:
    }
 
    /// returns pointer to base ref; non-const version
-   EdsBaseRef* operator&()
+   EdsBaseRef* operator&() throw()
    {
       return &m_objRef;
    }
 
    /// returns base ref
-   operator EdsBaseRef()
+   operator EdsBaseRef() throw()
    {
       return m_objRef;
    }
 
    /// returns base ref; const version
-   operator EdsBaseRef() const
+   operator EdsBaseRef() const throw()
    {
       return m_objRef;
    }
 
    /// returns pointer to base ref
-   operator EdsBaseRef*()
+   operator EdsBaseRef*() throw()
    {
       return &m_objRef;
    }
 
    /// returns base ref
-   EdsBaseRef Get()
+   EdsBaseRef Get() throw()
    {
       return m_objRef;
    }
 
    /// returns base ref; const version
-   EdsBaseRef Get() const
+   EdsBaseRef Get() const throw()
    {
       return m_objRef;
    }
@@ -216,7 +216,7 @@ private:
       //LOG_TRACE(_T("EdsRelease(%08x) returned %i\n"), m_objRef, uiCount);
       if (uiCount == 0xFFFFFFFF)
       {
-         throw CameraException(_T("EdsRetain"),
+         throw CameraException(_T("EdsRelease"),
             false,
             EDS_CMP_ID_CLIENT_COMPONENTID,
             EDS_ERR_INTERNAL_ERROR,
@@ -233,6 +233,6 @@ private:
 };
 
 /// waits for message and does window and EDSDK processing while waiting
-void MsgWaitForEvent(Event& evt);
+void MsgWaitForEvent(Event& evt) throw();
 
 } // namespace EDSDK

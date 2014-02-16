@@ -23,7 +23,7 @@ public:
    }
 
    /// dtor
-   ~FileFinder()
+   ~FileFinder() throw()
    {
       if (m_hFind != INVALID_HANDLE_VALUE)
          ATLVERIFY(TRUE == ::FindClose(m_hFind));
@@ -56,7 +56,7 @@ public:
    }
 
    /// returns complete filename of current file entry
-   CString Filename() const
+   CString Filename() const throw()
    {
       CString cszName = m_cszBaseFolder + m_findData.cFileName;
       if (IsFolder())
@@ -65,7 +65,7 @@ public:
    }
 
    /// retrieves next file entry
-   bool Next()
+   bool Next() throw()
    {
       ATLASSERT(IsValid() == true);
       return TRUE == ::FindNextFile(m_hFind, &m_findData);

@@ -1,6 +1,6 @@
 //
 // ulib - a collection of useful classes
-// Copyright (C) 2008,2012 Michael Fink
+// Copyright (C) 2008,2012,2014 Michael Fink
 //
 /// \file ErrorMessage.hpp Win32 error message
 //
@@ -16,13 +16,13 @@ class ErrorMessage
 {
 public:
    /// ctor; takes a win32 error code
-   ErrorMessage(DWORD dwError = GetLastError())
+   ErrorMessage(DWORD dwError = GetLastError()) throw()
       :m_dwError(dwError)
    {
    }
 
    /// Returns formatted error message
-   CString Get()
+   CString Get() throw()
    {
       LPVOID lpMsgBuf = NULL;
       ::FormatMessage(

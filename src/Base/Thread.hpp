@@ -36,7 +36,7 @@ class Thread
 public:
    /// sets thread name for current or specified thread
    /// \note from http://msdn.microsoft.com/en-us/library/xcb2z8hs.aspx
-   static void SetName(LPCTSTR pszThreadName, DWORD dwThreadId = DWORD(-1))
+   static void SetName(LPCTSTR pszThreadName, DWORD dwThreadId = DWORD(-1)) throw()
    {
 #ifdef WIN32
       USES_CONVERSION;
@@ -58,7 +58,7 @@ public:
    }
 
    /// returns current thread id
-   static DWORD CurrentId()
+   static DWORD CurrentId() throw()
    {
       return ::GetCurrentThreadId();
    }

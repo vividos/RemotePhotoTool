@@ -77,18 +77,6 @@ public:
    /// enumerates possible property values
    void Enum(EdsPropertyID propId, std::vector<Variant>& vecValues, bool& bReadOnly)
    {
-      //ATLASSERT(propId == kEdsPropID_AEMode ||
-      //   propId == kEdsPropID_AEModeSelect ||
-      //   propId == kEdsPropID_ISOSpeed ||
-      //   propId == kEdsPropID_MeteringMode ||
-      //   propId == kEdsPropID_Av ||
-      //   propId == kEdsPropID_Tv ||
-      //   propId == kEdsPropID_ExposureCompensation ||
-      //   propId == kEdsPropID_WhiteBalance ||
-      //   propId == kEdsPropID_DriveMode ||
-      //   propId == kEdsPropID_ImageQuality ||
-      //   propId == kEdsPropID_Evf_OutputDevice);
-
       // note: since all properties that can be retrieved are of type UInt8, assume that
       EdsPropertyDesc propDesc = {0};
       EdsError err = EdsGetPropertyDesc(m_h, propId, &propDesc);
@@ -147,7 +135,7 @@ public:
    }
 
    /// returns if property is available
-   bool IsPropertyAvail(unsigned int uiPropId) const
+   bool IsPropertyAvail(unsigned int uiPropId) const throw()
    {
       // check if property exists by retrieving type and size
       EdsDataType dataType = kEdsDataType_Unknown;
@@ -172,7 +160,7 @@ public:
    static CString FormatImageFormatValue(unsigned int uiValue);
 
    /// maps property type to property id
-   static EdsPropertyID MapToPropertyID(T_enImagePropertyType enProperty)
+   static EdsPropertyID MapToPropertyID(T_enImagePropertyType enProperty) throw()
    {
       switch(enProperty)
       {
@@ -202,7 +190,7 @@ public:
    }
 
    /// returns name from property id
-   static CString NameFromId(EdsPropertyID propertyId);
+   static CString NameFromId(EdsPropertyID propertyId) throw();
 
    /// formats display text from id and value
    static CString DisplayTextFromIdAndValue(EdsPropertyID /*propertyId*/, Variant value);

@@ -26,11 +26,17 @@ public:
    }
 #pragma warning(default: 4355)
    /// dtor
-   ~BackgroundWorkerThread()
+   ~BackgroundWorkerThread() throw()
    {
-      m_upDefaultWork.reset();
-      m_ioService.stop();
-      m_thread.join();
+      try
+      {
+         m_upDefaultWork.reset();
+         m_ioService.stop();
+         m_thread.join();
+      }
+      catch(...)
+      {
+      }
    }
 
    /// returns asio io service

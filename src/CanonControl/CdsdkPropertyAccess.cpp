@@ -105,7 +105,7 @@ void DevicePropertyAccess::GetRawCdsdk(const Variant& v, unsigned int propId, st
    }
 }
 
-CString DevicePropertyAccess::NameFromId(unsigned int propId)
+CString DevicePropertyAccess::NameFromId(unsigned int propId) throw()
 {
    cdDevicePropertyID devicePropId = static_cast<cdDevicePropertyID>(propId);
 

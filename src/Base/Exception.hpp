@@ -26,7 +26,7 @@ public:
    }
 
    /// returns exception message
-   CString Message() const throw(){ return m_cszMessage; }
+   CString Message() const throw() { return m_cszMessage; }
 
    /// returns source file where the exception occured
    CString SourceFile() const throw() { return m_cszSourceFile; }

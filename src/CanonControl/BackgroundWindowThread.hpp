@@ -25,12 +25,18 @@ public:
    {
    }
    /// dtor
-   ~BackgroundWindowThread()
+   ~BackgroundWindowThread() throw()
    {
       if (m_upThread != nullptr)
       {
-         m_evtStop.Set();
-         m_upThread->join();
+         try
+         {
+            m_evtStop.Set();
+            m_upThread->join();
+         }
+         catch(...)
+         {
+         }
       }
    }
 

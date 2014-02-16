@@ -19,7 +19,7 @@ public:
    /// ctor
    ImagePropertyValueManager(RemoteReleaseControl& rrc);
    /// dtor
-   ~ImagePropertyValueManager();
+   ~ImagePropertyValueManager() throw();
 
    /// adds control to manager
    void AddControl(IImagePropertyControl& rControl)

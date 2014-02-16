@@ -32,13 +32,20 @@ CString ImageProperty::AsString() const throw()
 
 CString ImageProperty::ValueAsString(Variant value) const throw()
 {
-   switch(m_enSDKVariant)
+   try
    {
-   case variantCdsdk: return CDSDK::ImagePropertyAccess::ValueFromId(m_uiImageProperty, value);
-   case variantEdsdk: return EDSDK::PropertyAccess::DisplayTextFromIdAndValue(m_uiImageProperty, value);
-   case variantPsrec: return PSREC::PropertyAccess::DisplayTextFromIdAndValue(static_cast<prUInt16>(m_uiImageProperty & 0xFFFF), value);
-   default:
-      ATLASSERT(false);
-      return CString(_T("???"));
+      switch(m_enSDKVariant)
+      {
+      case variantCdsdk: return CDSDK::ImagePropertyAccess::ValueFromId(m_uiImageProperty, value);
+      case variantEdsdk: return EDSDK::PropertyAccess::DisplayTextFromIdAndValue(m_uiImageProperty, value);
+      case variantPsrec: return PSREC::PropertyAccess::DisplayTextFromIdAndValue(static_cast<prUInt16>(m_uiImageProperty & 0xFFFF), value);
+      default:
+         ATLASSERT(false);
+         return CString(_T("???"));
+      }
+   }
+   catch(const CameraException& ex)
+   {
+      return CString(_T("exception during value formatting: ") + ex.Message());
    }
 }

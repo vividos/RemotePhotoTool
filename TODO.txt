@@ -4,8 +4,7 @@ replace logging with Boost Log v2
 write documentation for CanonControl library
 remove TODOs
 Viewfinder: implement image on TFT and/or PC
-make all dtors throw()
-replace throw() with nothrow (?)
+replace throw() with noexcept
 
 PSREC
 -----

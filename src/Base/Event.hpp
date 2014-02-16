@@ -53,7 +53,7 @@ public:
    }
 
    /// returns internal event handle
-   HANDLE Handle(){ return m_spEvent != NULL ? m_spEvent.get() : INVALID_HANDLE_VALUE; }
+   HANDLE Handle() const throw() { return m_spEvent != NULL ? m_spEvent.get() : INVALID_HANDLE_VALUE; }
 
 private:
    /// event handle

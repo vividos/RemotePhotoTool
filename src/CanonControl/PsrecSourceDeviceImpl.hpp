@@ -51,18 +51,16 @@ public:
    }
 
    /// dtor
-   virtual ~SourceDeviceImpl()
+   virtual ~SourceDeviceImpl() throw()
    {
       // disconnect from camera
       prResponse err = PR_DisconnectCamera(m_hCamera);
       LOG_TRACE(_T("PR_DisconnectCamera(%08x) returned %08x\n"), m_hCamera, err);
-      CheckError(_T("PR_DisconnectCamera"), err, __FILE__, __LINE__);
 
       // may return prINVALID_FN_CALL when SDK wasn't initialized
       // may return prINVALID_HANDLE when specified handle is invalid
       err = PR_DestroyCameraObject(m_hCamera);
       LOG_TRACE(_T("PR_DestroyCameraObject(%08x) returned %08x\n"), m_hCamera, err);
-      CheckError(_T("PR_DestroyCameraObject"), err, __FILE__, __LINE__);
    }
 
    virtual bool GetDeviceCapability(SourceDevice::T_enDeviceCapability enDeviceCapability) const override

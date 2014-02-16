@@ -15,7 +15,7 @@ class Variant
 {
 public:
    /// ctor; creates invalid type
-   Variant();
+   Variant() throw();
 
    /// possible variant types
    enum VariantType
@@ -97,7 +97,7 @@ public:
    void SetType(VariantType enType) throw() { m_enType = enType; }
 
    /// formats variant type as string
-   static CString TypeAsString(VariantType vt);
+   static CString TypeAsString(VariantType vt) throw();
 
    /// sets raw variant value
    void SetRaw(boost::any& variant, VariantType enType, bool bIsArray)

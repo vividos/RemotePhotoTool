@@ -77,7 +77,7 @@ public:
    bool OutputHelp();
 
    /// helper function for outputting to console; can directly be used in call to RegisterOutputHandler()
-   static void OutputConsole(const CString& cszText);
+   static void OutputConsole(const CString& cszText) throw();
 
 private:
    /// parses command line

@@ -196,7 +196,7 @@ public:
 
 private:
    /// translates from event code to event name
-   static LPCTSTR EventNameFromCode(prUInt16 uiEventCode);
+   static LPCTSTR EventNameFromCode(prUInt16 uiEventCode) throw();
 
    /// camera event handler
    static prResponse prSTDCALL OnCameraEvent_(prHandle hCamera, prContext Context, prVoid* pEventData);
@@ -211,7 +211,7 @@ private:
    void OnEventPropertyChanged(prUInt16 propId, bool bAlsoUpdateDescription);
 
    /// called when camera state has changed
-   void OnEventStateChanged(prUInt16 code);
+   void OnEventStateChanged(prUInt16 code) throw();
 
    /// starts download of image or thumbnail (async transfer)
    void StartImageDownload(prObjectHandle hObject, bool bFullView);

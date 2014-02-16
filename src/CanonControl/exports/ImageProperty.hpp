@@ -61,13 +61,13 @@ public:
    CString ValueAsString(Variant value) const throw();
 
    /// inequality operator
-   bool operator!=(const ImageProperty& rhs) const
+   bool operator!=(const ImageProperty& rhs) const throw()
    {
       return !this->operator==(rhs);
    }
 
    /// equality operator
-   bool operator==(const ImageProperty& rhs) const
+   bool operator==(const ImageProperty& rhs) const throw()
    {
       return Id() == rhs.Id() &&
          AsString() == rhs.AsString();

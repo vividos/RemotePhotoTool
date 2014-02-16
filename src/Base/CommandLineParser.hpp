@@ -12,13 +12,13 @@ class CommandLineParser
 {
 public:
    /// parses single long command line string
-   CommandLineParser(const CString& cszText = GetCommandLine());
+   CommandLineParser(const CString& cszText = GetCommandLine()) throw();
 
    /// parses _tmain parameter
-   CommandLineParser(int argc, TCHAR* argv[]);
+   CommandLineParser(int argc, TCHAR* argv[]) throw();
 
    /// returns next parameter
-   bool GetNext(CString& cszNextParam);
+   bool GetNext(CString& cszNextParam) throw();
 
 private:
    /// command line
