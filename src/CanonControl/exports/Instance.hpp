@@ -8,7 +8,6 @@
 
 // includes
 #include <vector>
-#include "ImplFwd.hpp"
 
 // forward references
 class SourceInfo;
