@@ -9,7 +9,6 @@
 // includes
 #include "IPhotoModeView.hpp"
 #include <vector>
-#include <memory> // for std::auto_ptr
 
 // forward references
 class IPhotoModeViewHost;
