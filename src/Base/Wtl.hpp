@@ -1,6 +1,6 @@
 //
 // ulib - a collection of useful classes
-// Copyright (C) 2009,2012 Michael Fink
+// Copyright (C) 2009,2012,2014 Michael Fink
 //
 /// \file Wtl.hpp configuration for WTL 8 or higher
 //
@@ -21,6 +21,10 @@
 // WTL9 thinks when sysinfoapi.h was included, then VersionHelpers.h is also available; correct this here
 #undef _SYSINFOAPI_H_
 
+// ignore prefast warnings in WTL header files
+#pragma prefast(push)
+#pragma prefast(disable: 6001 6011 6387 6509 6518 28252)
+
 // WTL includes
 #include <atlapp.h>
 extern CAppModule _Module; ///< app module
@@ -32,6 +36,8 @@ extern CAppModule _Module; ///< app module
 #include <shellapi.h> // needed for ShellExecute, used in atlctrlx.h
 #include <atlctrlx.h>
 #include <atlddx.h>
+
+#pragma prefast(pop)
 
 // undef the macros so that std::min and std::max work as they should be
 #undef min

@@ -13,8 +13,14 @@
 // asio but no winsock init
 #define BOOST_ASIO_DETAIL_IMPL_WINSOCK_INIT_IPP
 
+// ignore prefast warnings in Boost.Asio header files
+#pragma prefast(push)
+#pragma prefast(disable: 6011 6387)
+
 // includes
 #include <boost/asio.hpp>
+
+#pragma prefast(pop)
 
 // asio but no winsock init
 
