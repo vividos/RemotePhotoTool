@@ -51,7 +51,7 @@ private:
 
       CString cszDetails;
       cszDetails.Format(_T("Function [%s]\r\nComponent Id [%02x]\r\nError Id [%04x]"),
-         m_cszFunction,
+         m_cszFunction.GetString(),
          m_uiComponentId >> 24,
          m_uiErrorId);
 

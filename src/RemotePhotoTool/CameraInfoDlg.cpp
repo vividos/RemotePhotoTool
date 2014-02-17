@@ -29,7 +29,7 @@ LRESULT CameraInfoDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*l
    }
    catch(CameraException& ex)
    {
-      cszText.AppendFormat(_T("\nException while collecting camera info: %s\n"), ex.Message());
+      cszText.AppendFormat(_T("\nException while collecting camera info: %s\n"), ex.Message().GetString());
    }
 
    cszText.Replace(_T("\n"), _T("\r\n"));
@@ -79,12 +79,12 @@ void CameraInfoDlg::CollectDeviceProperties(CString& cszText)
          DeviceProperty p = m_sourceDevice.GetDeviceProperty(uiPropertyId);
 
          cszText.AppendFormat(_T("Property %s (%08x): [%s]\n"),
-            p.Name(), uiPropertyId, p.AsString());
+            p.Name().GetString(), uiPropertyId, p.AsString().GetString());
       }
       catch(CameraException& ex)
       {
          cszText.AppendFormat(_T("Error while evaluating property %08x: %s\n"),
-            vecProperties[i], ex.Message());
+            vecProperties[i], ex.Message().GetString());
       }
    }
 
@@ -140,11 +140,11 @@ void CameraInfoDlg::CollectImageProperties(std::shared_ptr<RemoteReleaseControl>
       ImageProperty ip = spRemoteReleaseControl->GetImageProperty(uiPropertyId);
 
       cszText.AppendFormat(_T("Image property \"%s\" (%04x)%s: %s (%s)\n"),
-         ip.Name(),
+         ip.Name().GetString(),
          uiPropertyId,
          ip.IsReadOnly() ? _T(" [read-only]") : _T(""),
-         ip.Value().ToString(),
-         ip.AsString());
+         ip.Value().ToString().GetString(),
+         ip.AsString().GetString());
 
       std::vector<ImageProperty> vecValues;
       spRemoteReleaseControl->EnumImagePropertyValues(vecImageProperties[i], vecValues);
@@ -153,8 +153,8 @@ void CameraInfoDlg::CollectImageProperties(std::shared_ptr<RemoteReleaseControl>
       {
          const ImageProperty& ip2 = vecValues[j];
          cszText.AppendFormat(_T("   Valid value: %s (%s)\n"),
-            ip2.Value().ToString(),
-            ip.ValueAsString(ip2.Value()));
+            ip2.Value().ToString().GetString(),
+            ip.ValueAsString(ip2.Value()).GetString());
       }
    }
 
@@ -199,7 +199,7 @@ void CameraInfoDlg::CollectShootingModeInfos(std::shared_ptr<RemoteReleaseContro
 void CameraInfoDlg::CollectShootingModeDetails(std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
    const ImageProperty& shootingMode, CString& cszText)
 {
-   cszText.AppendFormat(_T("Shooting mode: %s\n"), shootingMode.AsString());
+   cszText.AppendFormat(_T("Shooting mode: %s\n"), shootingMode.AsString().GetString());
 
    // get Av values
    {
@@ -212,7 +212,7 @@ void CameraInfoDlg::CollectShootingModeDetails(std::shared_ptr<RemoteReleaseCont
       }
       catch(const CameraException& ex)
       {
-         cszText.AppendFormat(_T("Exception while enumerating Av values: %s\n"), ex.Message());
+         cszText.AppendFormat(_T("Exception while enumerating Av values: %s\n"), ex.Message().GetString());
       }
 
       if (!vecAvValues.empty())
@@ -222,7 +222,7 @@ void CameraInfoDlg::CollectShootingModeDetails(std::shared_ptr<RemoteReleaseCont
          {
             const ImageProperty& val = vecAvValues[i];
 
-            cszText.AppendFormat(_T("%s%s"), i==0 ? _T("") : _T(", "), val.AsString());
+            cszText.AppendFormat(_T("%s%s"), i==0 ? _T("") : _T(", "), val.AsString().GetString());
          }
          cszText += _T("\n");
       }
@@ -239,7 +239,7 @@ void CameraInfoDlg::CollectShootingModeDetails(std::shared_ptr<RemoteReleaseCont
       }
       catch(const CameraException& ex)
       {
-         cszText.AppendFormat(_T("Exception while enumerating Tv values: %s\n"), ex.Message());
+         cszText.AppendFormat(_T("Exception while enumerating Tv values: %s\n"), ex.Message().GetString());
       }
 
       if (!vecTvValues.empty())
@@ -249,7 +249,7 @@ void CameraInfoDlg::CollectShootingModeDetails(std::shared_ptr<RemoteReleaseCont
          {
             const ImageProperty& val = vecTvValues[i];
 
-            cszText.AppendFormat(_T("%s%s"), i==0 ? _T("") : _T(", "), val.AsString());
+            cszText.AppendFormat(_T("%s%s"), i==0 ? _T("") : _T(", "), val.AsString().GetString());
          }
          cszText += _T("\n");
       }
@@ -266,7 +266,7 @@ void CameraInfoDlg::CollectShootingModeDetails(std::shared_ptr<RemoteReleaseCont
       }
       catch(const CameraException& ex)
       {
-         cszText.AppendFormat(_T("Exception while enumerating exposure compensation values: %s\n"), ex.Message());
+         cszText.AppendFormat(_T("Exception while enumerating exposure compensation values: %s\n"), ex.Message().GetString());
       }
 
       if (!vecEcValues.empty())
@@ -276,7 +276,7 @@ void CameraInfoDlg::CollectShootingModeDetails(std::shared_ptr<RemoteReleaseCont
          {
             const ImageProperty& val = vecEcValues[i];
 
-            cszText.AppendFormat(_T("%s%s"), i==0 ? _T("") : _T(", "), val.AsString());
+            cszText.AppendFormat(_T("%s%s"), i==0 ? _T("") : _T(", "), val.AsString().GetString());
          }
          cszText += _T("\n");
       }

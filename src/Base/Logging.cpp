@@ -65,7 +65,7 @@ void LogTrace(LPCTSTR pszFormat, ...)
       if (s_bPreviousIncompleteLine)
       {
          // append to line
-         _ftprintf(fd, _T("%s"), cszText);
+         _ftprintf(fd, _T("%s"), cszText.GetString());
       }
       else
       {
@@ -84,9 +84,9 @@ void LogTrace(LPCTSTR pszFormat, ...)
          }
 
          _ftprintf(fd, _T("%s [%08x] %s"),
-            cszDateTime,
+            cszDateTime.GetString(),
             GetCurrentThreadId(),
-            cszText);
+            cszText.GetString());
       }
 
       fflush(fd);

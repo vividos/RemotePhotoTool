@@ -98,8 +98,8 @@ void Ref::AddVersionText(CString& cszVersionText) const
          cszModuleName = cszModuleName.Mid(iPos+1);
 
       CString cszTemp;
-      cszTemp.Format(_T("   %ls: %ls\n"),
-         cszModuleName,
+      cszTemp.Format(_T("   %s: %ls\n"),
+         cszModuleName.GetString(),
          versionInfo.Version);
 
       // version numbers are separated with comma; use points instead

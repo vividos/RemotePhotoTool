@@ -330,7 +330,7 @@ void HDRPhotoModeView::ReleaseAEBNext()
    cszText.Format(_T("Taking picture %u of %u with shutter speed %s"),
       m_uiCurrentAEBShutterSpeed + 1,
       m_vecAEBShutterSpeedValues.size(),
-      m_vecAEBShutterSpeedValues[m_uiCurrentAEBShutterSpeed].AsString());
+      m_vecAEBShutterSpeedValues[m_uiCurrentAEBShutterSpeed].AsString().GetString());
    m_host.SetStatusText(cszText);
 
    try

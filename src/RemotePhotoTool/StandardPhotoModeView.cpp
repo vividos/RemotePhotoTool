@@ -126,7 +126,7 @@ void StandardPhotoModeView::OnUpdatedProperty(RemoteReleaseControl::T_enProperty
 void StandardPhotoModeView::OnFinishedTransfer(const ShutterReleaseSettings& settings)
 {
    CString cszText;
-   cszText.Format(_T("Finished transfer: %s"), settings.Filename());
+   cszText.Format(_T("Finished transfer: %s"), settings.Filename().GetString());
 
    m_host.SetStatusText(cszText);
 
