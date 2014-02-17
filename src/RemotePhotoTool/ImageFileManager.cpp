@@ -128,7 +128,7 @@ void ImageFileManager::FindLastUsedFilename()
 
    std::sort(vecAllFolders.begin(), vecAllFolders.end());
 
-   for (std::vector<CString>::const_reverse_iterator iter = vecAllFolders.rbegin(); iter != vecAllFolders.rend(); iter++)
+   for (std::vector<CString>::const_reverse_iterator iter = vecAllFolders.rbegin(); iter != vecAllFolders.rend(); ++iter)
    {
       std::vector<CString> vecAllImageFiles =
          FindAllInPath(*iter, _T("IMG_*.*"), false, true);

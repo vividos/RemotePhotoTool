@@ -119,7 +119,7 @@ public:
       std::vector<unsigned int> vecData;
 
       // just put the device property id's into the vector
-      for (; iter != stop; iter++)
+      for (; iter != stop; ++iter)
          vecData.push_back(*iter);
 
       return vecData;

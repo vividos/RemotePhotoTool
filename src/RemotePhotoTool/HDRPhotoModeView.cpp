@@ -47,7 +47,7 @@ LRESULT HDRPhotoModeView::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM 
       for (size_t i=3; i<13; i+= 2)
       {
          CString cszText;
-         cszText.Format(_T("%u shots"), i);
+         cszText.Format(_T("%Iu shots"), i);
          int iItem = m_cbAEBBracketedShots.AddString(cszText);
          m_cbAEBBracketedShots.SetItemData(iItem, i);
       }
@@ -327,7 +327,7 @@ void HDRPhotoModeView::ReleaseAEBNext()
 
    // set status text
    CString cszText;
-   cszText.Format(_T("Taking picture %u of %u with shutter speed %s"),
+   cszText.Format(_T("Taking picture %Iu of %Iu with shutter speed %s"),
       m_uiCurrentAEBShutterSpeed + 1,
       m_vecAEBShutterSpeedValues.size(),
       m_vecAEBShutterSpeedValues[m_uiCurrentAEBShutterSpeed].AsString().GetString());

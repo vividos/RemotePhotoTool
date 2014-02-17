@@ -332,7 +332,7 @@ void MainFrame::SetupStatusBar()
 {
    // added WS_CLIPCHILDREN to default styles
    CreateSimpleStatusBar(
-      ATL_IDS_IDLEMESSAGE, WS_CHILD | WS_VISIBLE | WS_CLIPCHILDREN | WS_CLIPSIBLINGS | SBARS_SIZEGRIP | WS_CLIPCHILDREN);
+      ATL_IDS_IDLEMESSAGE, WS_CHILD | WS_VISIBLE | WS_CLIPCHILDREN | WS_CLIPSIBLINGS | SBARS_SIZEGRIP);
 
    m_statusBar.SubclassWindow(m_hWndStatusBar);
 

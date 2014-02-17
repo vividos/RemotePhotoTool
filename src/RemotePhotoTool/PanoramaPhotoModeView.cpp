@@ -143,7 +143,7 @@ void PanoramaPhotoModeView::ReleasePanorama()
 
    // set status text
    CString cszText;
-   cszText.Format(_T("Taking picture; already took %u pictures."),
+   cszText.Format(_T("Taking picture; already took %Iu pictures."),
       m_vecPanoramaFilenameList.size() + 1);
    m_host.SetStatusText(cszText);
 
