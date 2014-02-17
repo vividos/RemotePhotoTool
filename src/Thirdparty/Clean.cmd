@@ -21,3 +21,5 @@ del %OUTDIR%PRLIB.dll > nul
 del %OUTDIR%PRSDK.dll > nul
 del %OUTDIR%psCamDat.dll > nul
 del %OUTDIR%Ucs32P.dll > nul
+del %OUTDIR%lua.properties > nul
+del %OUTDIR%SciLexer.dll > nul

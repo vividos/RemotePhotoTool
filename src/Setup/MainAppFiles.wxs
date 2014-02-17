@@ -29,5 +29,13 @@
       </Component>
 
     </ComponentGroup>
+
+    <ComponentGroup Id="ScintillaFiles">
+       <Component Id="SciLexerDll" Guid="F024868C-B467-4A54-BA44-35D2B1039991" Directory="INSTALLDIR">
+         <File Id="SciLexerDll" Name="SciLexer.dll" DiskId="1" KeyPath="yes" Source="$(var.SourceFolder)\SciLexer.dll" />
+         <File Id="LuaProperties" Name="lua.properties" DiskId="1" KeyPath="no" Source="$(var.SourceFolder)\lua.properties" />
+       </Component>	
+    </ComponentGroup>
+	
   </Fragment>
 </Wix>
