@@ -18,6 +18,9 @@
 #  define max(x,y) (x) > (y) ? (x) : (y)
 #endif
 
+// WTL9 thinks when sysinfoapi.h was included, then VersionHelpers.h is also available; correct this here
+#undef _SYSINFOAPI_H_
+
 // WTL includes
 #include <atlapp.h>
 extern CAppModule _Module; ///< app module
