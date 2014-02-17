@@ -37,6 +37,12 @@ library is licensed under a custom free license. The license needs use to state:
 
 - [http://ijg.org/](http://ijg.org/ "Independent JPEG Group") 
 
+### Lua ###
+
+The application uses the Lua programming language. Lua is licensed under the terms of the MIT license.
+
+http://www.lua.org/license.html
+
 ### Scintilla ###
 
 The application uses the Scintilla source code editing component. The component is licensed under a custom license that permits use in any free project or commercial product. 
