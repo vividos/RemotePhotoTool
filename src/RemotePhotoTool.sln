@@ -3,7 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Express 2012 for Windows Desktop
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RemotePhotoTool", "RemotePhotoTool\RemotePhotoTool.vcxproj", "{CDEDF8B5-A808-4995-97EB-1289A84FF7ED}"
 	ProjectSection(ProjectDependencies) = postProject
-		{5B37D937-D0F7-47BE-97F7-DEF2DBA4970A} = {5B37D937-D0F7-47BE-97F7-DEF2DBA4970A}
 		{F6F15874-951D-4B12-8136-AC27FE6E1215} = {F6F15874-951D-4B12-8136-AC27FE6E1215}
 		{3AB1BB98-D491-47DB-8D93-1DAB3CE88C87} = {3AB1BB98-D491-47DB-8D93-1DAB3CE88C87}
 	EndProjectSection
@@ -26,8 +25,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LuaScripting", "LuaScriptin
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Thirdparty", "Thirdparty\Thirdparty.vcxproj", "{F6F15874-951D-4B12-8136-AC27FE6E1215}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "jpeg-8d", "Thirdparty\jpeg-8d\jpeg-8d.vcxproj", "{5B37D937-D0F7-47BE-97F7-DEF2DBA4970A}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Setup", "Setup\Setup.vcxproj", "{E17A8E22-25B3-4E5E-AC27-C354B1C68CC6}"
 	ProjectSection(ProjectDependencies) = postProject
 		{F6F15874-951D-4B12-8136-AC27FE6E1215} = {F6F15874-951D-4B12-8136-AC27FE6E1215}
@@ -41,6 +38,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Base.UnitTest", "Base\Base.
 	ProjectSection(ProjectDependencies) = postProject
 		{3AB1BB98-D491-47DB-8D93-1DAB3CE88C87} = {3AB1BB98-D491-47DB-8D93-1DAB3CE88C87}
 	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "jpeg-9a", "Thirdparty\jpeg-9a\jpeg-9a.vcxproj", "{1A81D718-3886-4CD5-8F10-4946BF4D6355}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -68,10 +67,6 @@ Global
 		{F6F15874-951D-4B12-8136-AC27FE6E1215}.Debug|Win32.Build.0 = Debug|Win32
 		{F6F15874-951D-4B12-8136-AC27FE6E1215}.Release|Win32.ActiveCfg = Release|Win32
 		{F6F15874-951D-4B12-8136-AC27FE6E1215}.Release|Win32.Build.0 = Release|Win32
-		{5B37D937-D0F7-47BE-97F7-DEF2DBA4970A}.Debug|Win32.ActiveCfg = Debug|Win32
-		{5B37D937-D0F7-47BE-97F7-DEF2DBA4970A}.Debug|Win32.Build.0 = Debug|Win32
-		{5B37D937-D0F7-47BE-97F7-DEF2DBA4970A}.Release|Win32.ActiveCfg = Release|Win32
-		{5B37D937-D0F7-47BE-97F7-DEF2DBA4970A}.Release|Win32.Build.0 = Release|Win32
 		{E17A8E22-25B3-4E5E-AC27-C354B1C68CC6}.Debug|Win32.ActiveCfg = Debug|Win32
 		{E17A8E22-25B3-4E5E-AC27-C354B1C68CC6}.Debug|Win32.Build.0 = Debug|Win32
 		{E17A8E22-25B3-4E5E-AC27-C354B1C68CC6}.Release|Win32.ActiveCfg = Release|Win32
@@ -84,6 +79,10 @@ Global
 		{D3090E18-FA86-4729-AA12-F1CDEE98C067}.Debug|Win32.Build.0 = Debug|Win32
 		{D3090E18-FA86-4729-AA12-F1CDEE98C067}.Release|Win32.ActiveCfg = Release|Win32
 		{D3090E18-FA86-4729-AA12-F1CDEE98C067}.Release|Win32.Build.0 = Release|Win32
+		{1A81D718-3886-4CD5-8F10-4946BF4D6355}.Debug|Win32.ActiveCfg = Debug|Win32
+		{1A81D718-3886-4CD5-8F10-4946BF4D6355}.Debug|Win32.Build.0 = Debug|Win32
+		{1A81D718-3886-4CD5-8F10-4946BF4D6355}.Release|Win32.ActiveCfg = Release|Win32
+		{1A81D718-3886-4CD5-8F10-4946BF4D6355}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -66,7 +66,7 @@
       <ProxyFileName>RemotePhotoTool_p.c</ProxyFileName>
     </Midl>
     <ClCompile>
-      <AdditionalIncludeDirectories>..\Base;..\CanonControl\exports;..\Thirdparty;..\Thirdparty\jpeg-8d;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Base;..\CanonControl\exports;..\Thirdparty;..\Thirdparty\jpeg-9a;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WINDOWS;STRICT;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ResourceCompile>
@@ -92,7 +92,7 @@
       <ProxyFileName>RemotePhotoTool_p.c</ProxyFileName>
     </Midl>
     <ClCompile>
-      <AdditionalIncludeDirectories>..\Base;..\CanonControl\exports;..\Thirdparty;..\Thirdparty\jpeg-8d;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Base;..\CanonControl\exports;..\Thirdparty;..\Thirdparty\jpeg-9a;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WINDOWS;STRICT;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ResourceCompile>
@@ -188,8 +188,8 @@
       <Project>{41b565f7-f668-4425-a93d-6cabc18f6d1f}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="..\Thirdparty\jpeg-8d\jpeg-8d.vcxproj">
-      <Project>{5b37d937-d0f7-47be-97f7-def2dba4970a}</Project>
+    <ProjectReference Include="..\Thirdparty\jpeg-9a\jpeg-9a.vcxproj">
+      <Project>{1a81d718-3886-4cd5-8f10-4946bf4d6355}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
