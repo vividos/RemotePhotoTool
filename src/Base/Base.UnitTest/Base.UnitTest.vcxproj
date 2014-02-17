@@ -38,7 +38,7 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\boost.props" />
     <Import Project="..\..\atl71-x86.props" />
-    <Import Project="..\..\wtl81.props" />
+    <Import Project="..\..\wtl90.props" />
     <Import Project="..\..\RemotePhotoTool-Debug.props" />
     <Import Project="..\..\CppUnitTest.props" />
   </ImportGroup>
@@ -46,7 +46,7 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\boost.props" />
     <Import Project="..\..\atl71-x86.props" />
-    <Import Project="..\..\wtl81.props" />
+    <Import Project="..\..\wtl90.props" />
     <Import Project="..\..\RemotePhotoTool-Release.props" />
     <Import Project="..\..\CppUnitTest.props" />
   </ImportGroup>
