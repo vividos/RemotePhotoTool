@@ -1421,7 +1421,7 @@ public:
 	void SetTabWidth( int tabWidth )
 	{
 		ATLASSERT(::IsWindow(m_hWnd));
-		::SendMessage( m_hWnd, SCI_SETTABWIDTH, tabWidth );
+		::SendMessage( m_hWnd, SCI_SETTABWIDTH, tabWidth, 0L );
 	}
 
 	bool GetUseTabs() const
