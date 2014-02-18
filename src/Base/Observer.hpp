@@ -54,7 +54,7 @@ public:
    void Call()
    {
       T_mapSubjects::const_iterator iter = m_mapAllObserver.begin(), stop = m_mapAllObserver.end();
-      for (; iter != stop; iter++)
+      for (; iter != stop; ++iter)
          (iter->second)();
    }
 
@@ -63,7 +63,7 @@ public:
    void Call(T1 param1)
    {
       T_mapSubjects::const_iterator iter = m_mapAllObserver.begin(), stop = m_mapAllObserver.end();
-      for (; iter != stop; iter++)
+      for (; iter != stop; ++iter)
          (iter->second)(param1);
    }
 
@@ -72,7 +72,7 @@ public:
    void Call(T1 param1, T2 param2)
    {
       T_mapSubjects::const_iterator iter = m_mapAllObserver.begin(), stop = m_mapAllObserver.end();
-      for (; iter != stop; iter++)
+      for (; iter != stop; ++iter)
       {
          (iter->second)(param1, param2);
       }
