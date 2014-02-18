@@ -44,3 +44,4 @@ src/Thirdparty/PSREC/Sample/
 src/RemotePhotoTool/res/MainFrameRibbon.bml
 src/RemotePhotoTool/res/MainFrameRibbon.h
 src/RemotePhotoTool/res/MainFrameRibbon.rc
+src/cppcheck/cppcheck.txt

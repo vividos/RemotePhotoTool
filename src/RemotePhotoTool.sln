@@ -41,6 +41,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Base.UnitTest", "Base\Base.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "jpeg-9a", "Thirdparty\jpeg-9a\jpeg-9a.vcxproj", "{1A81D718-3886-4CD5-8F10-4946BF4D6355}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cppcheck", "cppcheck\cppcheck.vcxproj", "{36163BCB-F4DA-472D-A77B-73D2BC5F42AD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -83,6 +85,10 @@ Global
 		{1A81D718-3886-4CD5-8F10-4946BF4D6355}.Debug|Win32.Build.0 = Debug|Win32
 		{1A81D718-3886-4CD5-8F10-4946BF4D6355}.Release|Win32.ActiveCfg = Release|Win32
 		{1A81D718-3886-4CD5-8F10-4946BF4D6355}.Release|Win32.Build.0 = Release|Win32
+		{36163BCB-F4DA-472D-A77B-73D2BC5F42AD}.Debug|Win32.ActiveCfg = Debug|Win32
+		{36163BCB-F4DA-472D-A77B-73D2BC5F42AD}.Debug|Win32.Build.0 = Debug|Win32
+		{36163BCB-F4DA-472D-A77B-73D2BC5F42AD}.Release|Win32.ActiveCfg = Release|Win32
+		{36163BCB-F4DA-472D-A77B-73D2BC5F42AD}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
