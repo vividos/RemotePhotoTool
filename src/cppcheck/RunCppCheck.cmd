@@ -20,4 +20,4 @@ REM --std=c++11         Language (syntax)%
 REM --enable=all        Enable warnings
 REM --template vs       Output format for warnings
 REM --check-config
-cppcheck.exe ..\Base\ ..\CanonControl\ ..\RemotePhotoTool\ -I ..\Base\ -I ..\CanonControl\exports\ -i ..\Thirdparty -DWIN32 -D_WINDOWS -DNDEBUG -D__cplusplus --suppressions-list=cppcheck-suppress.txt -j 4 --platform=win32W --language=c++ --std=c++11 %FORMAT% --enable=all --template vs 2> %OUTFILE%
+cppcheck.exe ..\Base\ ..\CanonControl\ ..\RemotePhotoTool\ -I ..\Base\ -I ..\LuaScripting\ -I ..\CanonControl\exports\ -i ..\Thirdparty -i ..\LuaScripting\lua-5.2.3 -DWIN32 -D_WINDOWS -DNDEBUG -D__cplusplus --suppressions-list=cppcheck-suppress.txt -j 4 --platform=win32W --language=c++ --std=c++11 %FORMAT% --enable=all --template vs 2> %OUTFILE%
