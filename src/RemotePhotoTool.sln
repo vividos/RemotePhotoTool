@@ -43,6 +43,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "jpeg-9a", "Thirdparty\jpeg-
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cppcheck", "cppcheck\cppcheck.vcxproj", "{36163BCB-F4DA-472D-A77B-73D2BC5F42AD}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "doxygen", "doxygen\doxygen.vcxproj", "{10CD38AC-6B91-4905-9F9A-64645928B807}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -89,6 +91,10 @@ Global
 		{36163BCB-F4DA-472D-A77B-73D2BC5F42AD}.Debug|Win32.Build.0 = Debug|Win32
 		{36163BCB-F4DA-472D-A77B-73D2BC5F42AD}.Release|Win32.ActiveCfg = Release|Win32
 		{36163BCB-F4DA-472D-A77B-73D2BC5F42AD}.Release|Win32.Build.0 = Release|Win32
+		{10CD38AC-6B91-4905-9F9A-64645928B807}.Debug|Win32.ActiveCfg = Default|Win32
+		{10CD38AC-6B91-4905-9F9A-64645928B807}.Debug|Win32.Build.0 = Default|Win32
+		{10CD38AC-6B91-4905-9F9A-64645928B807}.Release|Win32.ActiveCfg = Default|Win32
+		{10CD38AC-6B91-4905-9F9A-64645928B807}.Release|Win32.Build.0 = Default|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
