@@ -48,7 +48,7 @@ HWND ScriptingPhotoModeView::CreateView(HWND hWndParent)
    return hWndSplitter;
 }
 
-BOOL ScriptingPhotoModeView::PreTranslateMessage(MSG* pMsg)
+BOOL ScriptingPhotoModeView::PreTranslateMessage(MSG* /*pMsg*/)
 {
    return FALSE;
 }
