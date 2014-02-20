@@ -21,6 +21,7 @@
 
 // forward references
 class SourceDevice;
+class ScriptingPhotoModeView;
 
 /// \brief application main frame
 /// \details uses ribbon for commands
@@ -55,7 +56,28 @@ private:
    /// called when message loop is idle
    virtual BOOL OnIdle();
 
+   /// updates all controls
+   void UIUpdateAll();
+
+   // Ribbon Controls and map
+   CRibbonRecentItemsCtrl<ID_RIBBON_RECENT_FILES> m_mru;
+
+   friend CRibbonImpl<MainFrame>;
+
+   BEGIN_RIBBON_CONTROL_MAP(MainFrame)
+      RIBBON_CONTROL(m_mru)
+   END_RIBBON_CONTROL_MAP()
+
    BEGIN_UPDATE_UI_MAP(MainFrame)
+      UPDATE_ELEMENT(ID_EDIT_UNDO,     UPDUI_MENUPOPUP | UPDUI_TOOLBAR)
+      UPDATE_ELEMENT(ID_EDIT_CUT,      UPDUI_MENUPOPUP | UPDUI_TOOLBAR)
+      UPDATE_ELEMENT(ID_EDIT_COPY,     UPDUI_MENUPOPUP | UPDUI_TOOLBAR)
+      UPDATE_ELEMENT(ID_EDIT_PASTE,    UPDUI_MENUPOPUP | UPDUI_TOOLBAR)
+      UPDATE_ELEMENT(ID_EDIT_CLEAR,    UPDUI_MENUPOPUP | UPDUI_TOOLBAR)
+      UPDATE_ELEMENT(ID_EDIT_SELECT_ALL, UPDUI_MENUPOPUP | UPDUI_TOOLBAR)
+      UPDATE_ELEMENT(ID_EDIT_FIND,     UPDUI_MENUPOPUP | UPDUI_TOOLBAR)
+      UPDATE_ELEMENT(ID_EDIT_REPEAT,   UPDUI_MENUPOPUP | UPDUI_TOOLBAR)
+      UPDATE_ELEMENT(ID_EDIT_REPLACE,  UPDUI_MENUPOPUP | UPDUI_TOOLBAR)
       UPDATE_ELEMENT(ID_VIEW_RIBBON, UPDUI_MENUPOPUP | UPDUI_RIBBON)
       UPDATE_ELEMENT(ID_VIEWFINDER_SHOW, UPDUI_MENUPOPUP | UPDUI_RIBBON)
       UPDATE_ELEMENT(ID_TAB_HOME, UPDUI_RIBBON)
@@ -69,13 +91,19 @@ private:
       MESSAGE_HANDLER(WM_MOVE, OnMove)
       MESSAGE_HANDLER(WM_LOCK_ACTIONMODE, OnLockActionMode)
       COMMAND_ID_HANDLER(ID_APP_EXIT, OnFileExit)
-      COMMAND_ID_HANDLER(ID_VIEW_RIBBON, OnToggleRibbon)
       COMMAND_ID_HANDLER(ID_APP_ABOUT, OnAppAbout)
+      COMMAND_ID_HANDLER(ID_FILE_NEW, OnFileNew)
+      COMMAND_ID_HANDLER(ID_FILE_OPEN, OnFileOpen)
+      COMMAND_ID_HANDLER(ID_FILE_SAVE, OnFileSave)
+      COMMAND_ID_HANDLER(ID_FILE_SAVE_AS, OnFileSaveAs)
+      COMMAND_RANGE_HANDLER(ID_FILE_MRU_FIRST, ID_FILE_MRU_LAST, OnFileRecent)
+      COMMAND_ID_HANDLER(ID_VIEW_RIBBON, OnToggleRibbon)
       COMMAND_ID_HANDLER(ID_HOME_CONNECT, OnHomeConnect)
       COMMAND_ID_HANDLER(ID_HOME_SETTINGS, OnHomeSettings)
       COMMAND_RANGE_HANDLER(ID_PHOTO_MODE_NORMAL, ID_PHOTO_MODE_IMAGE_PROPERTIES, OnPhotoMode)
       COMMAND_ID_HANDLER(ID_VIEWFINDER_SHOW, OnViewfinderShow)
       CHAIN_MSG_MAP(BaseClass)
+      if (uMsg == WM_COMMAND) ChainScriptingViewCommandMessage(hWnd, uMsg, wParam, lParam, lResult);
    END_MSG_MAP()
 
 // Handler prototypes (uncomment arguments if needed):
@@ -97,6 +125,12 @@ private:
    LRESULT OnPhotoMode(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
    LRESULT OnViewfinderShow(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 
+   LRESULT OnFileNew(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   LRESULT OnFileOpen(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   LRESULT OnFileSave(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   LRESULT OnFileSaveAs(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   LRESULT OnFileRecent(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+
 private:
    // virtual methods from IPhotoModeViewHost
 
@@ -112,8 +146,14 @@ private:
 
    virtual void LockActionMode(bool bLock) override;
 
+   /// sets up command bar
+   void SetupCmdBar();
+
+   /// sets up ribbon bar
+   void SetupRibbonBar();
+
    /// sets up toolbar
-   void SetupToolbar(HWND hWndCmdBar);
+   void SetupToolbar();
 
    /// sets up status bar
    void SetupStatusBar();
@@ -129,6 +169,27 @@ private:
 
    /// sets status bar pane widths
    void SetPaneWidths(int* arrWidths, int nPanes);
+
+   /// returns scripting view (nullptr when not visible)
+   ScriptingPhotoModeView* GetScriptingView() throw();
+
+   /// chain WM_COMMAND message to scripting view (when visible)
+   BOOL ChainScriptingViewCommandMessage(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT& lResult);
+
+   /// opens scripting view (when not already active)
+   void EnsureScriptingView();
+
+   /// carries out "file | new" operation
+   void DoFileNew();
+
+   /// carries out "file | open" operation
+   bool DoFileOpen(LPCTSTR lpstrFileName, LPCTSTR lpstrFileTitle);
+
+   /// carries out "file | save as" operation
+   bool DoFileSaveAs();
+
+   /// updates window title
+   void UpdateTitle();
 
    /// state event handler
    void OnStateEvent(RemoteReleaseControl::T_enStateEvent enStateEvent, unsigned int uiExtraData);
@@ -162,6 +223,9 @@ private:
 
    /// thread id of UI thread
    DWORD m_dwUIThreadId;
+
+   /// when showing the scripting view, this tracks if the currently open file has been modified
+   bool m_bScriptingFileModified;
 
    // model
 

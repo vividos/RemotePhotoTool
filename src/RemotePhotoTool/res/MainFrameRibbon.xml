@@ -19,6 +19,8 @@
     <Command Name="wtl_APP_ABOUT" Symbol="ID_APP_ABOUT" Id="0xE140"/>
     <Command Name="wtl_APP_EXIT" Symbol="ID_APP_EXIT" Id="0xE141"/>
 
+    <Command Name="RecentFiles" Symbol="ID_RIBBON_RECENT_FILES" LabelTitle="Recent Files" />
+
     <!-- Tabs -->
     <Command Name="TabHome" Symbol="ID_TAB_HOME" LabelTitle="Home" />
     <!-- Command Name="TabCamera" Symbol="ID_TAB_CAMERA" LabelTitle="Camera" / -->
