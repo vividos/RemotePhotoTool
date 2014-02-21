@@ -5,6 +5,7 @@ write documentation for CanonControl library
 remove TODOs
 Viewfinder: implement image on TFT and/or PC
 replace throw() with noexcept
+replace USES_CONVERSION with CStringA/W
 
 PSREC
 -----
@@ -24,6 +25,7 @@ implement AF lock
 on protocol 0 cameras, lock UI when getting/setting property
 use EdsCreateFileStreamEx() for unicode filenames
 support custom function numbers through kEdsPropID_CFn, e.g. mirror lockup
+add reading out of number of all shots taken
 
 CDSDK
 -----
@@ -34,11 +36,13 @@ Implement viewfinder
 RemotePhotoTool
 ---------------
 Nice toolbar icons
-impl HDR pano view
-impl timelapse
-impl photo stack
-implement view finder stage 1: zoom
-implement view finder stage 2: half transparent background image, battery, number of remaining shots, histogram
+implement HDR pano photo view
+implement timelapse shooting, video output
+implement photo stacking, focus stacking, CombineZP
+implement view finder stage 1: zoom, focus, white balance, helper lines
+implement view finder stage 2: battery, number of remaining shots, auto rotate, image format
+implement view finder stage 3: half transparent background image, histogram
+implement previous images browser
 HDR: Set Photomatix current folder to image output folder
 Add current date to log filename, at start of application
 Write manual
@@ -47,6 +51,17 @@ Image Property view: change values using editbox or combobox
 Copy button for error dialog
 Add "last transferred image" view
 Show currently connected camera in title
+Add std::set_terminate() handler, crash dumping
+Add Bulb mode shooting when supported
+Add multi-language support
+Add option to switch off backlight
+Real tablet mode: big combobox fonts, scaling dialogs according to system settings, etc.
+Implement photo booth mode, including printing
+Add option to change energy saving options (to prevent shutting down during operation)
+Store IPTC data in every image taken
+Add geotagging for PCs that have a GPS receiver built in
+Add photo mode with motion detection using viewfinder to take photos (e.g. for wildlife photography)
+Show zebra pattern for overexposed areas of viewfinder image
 
 PhotoToolCmdline
 ----------------
