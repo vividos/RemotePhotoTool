@@ -1,10 +1,11 @@
 #include "StdAfx.h"
 #include "Lua.hpp"
 
-extern "C"
+#include <lua.h>
+#include <lauxlib.h>
+
 {
-   #include <lua.h>
-   #include <lauxlib.h>
+   return *this;
 }
 
 using Lua::State;

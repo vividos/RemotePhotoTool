@@ -45,6 +45,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cppcheck", "cppcheck\cppche
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "doxygen", "doxygen\doxygen.vcxproj", "{10CD38AC-6B91-4905-9F9A-64645928B807}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lua", "LuaScripting\lua-5.2.3\Lua.vcxproj", "{24EA638C-0F97-48FA-82D1-7DBA2832C1DC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -95,6 +97,10 @@ Global
 		{10CD38AC-6B91-4905-9F9A-64645928B807}.Debug|Win32.Build.0 = Default|Win32
 		{10CD38AC-6B91-4905-9F9A-64645928B807}.Release|Win32.ActiveCfg = Default|Win32
 		{10CD38AC-6B91-4905-9F9A-64645928B807}.Release|Win32.Build.0 = Default|Win32
+		{24EA638C-0F97-48FA-82D1-7DBA2832C1DC}.Debug|Win32.ActiveCfg = Debug|Win32
+		{24EA638C-0F97-48FA-82D1-7DBA2832C1DC}.Debug|Win32.Build.0 = Debug|Win32
+		{24EA638C-0F97-48FA-82D1-7DBA2832C1DC}.Release|Win32.ActiveCfg = Release|Win32
+		{24EA638C-0F97-48FA-82D1-7DBA2832C1DC}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
