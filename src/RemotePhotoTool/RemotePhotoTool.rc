@@ -237,6 +237,7 @@ BEGIN
 END
 
 
+
 //
 // String Table resources
 //
@@ -248,6 +249,22 @@ BEGIN
     IDR_WIA_DESC                  "Remote control camera and take photos"
     ID_APP_ABOUT                  "Display program information, version number and copyright\nAbout"
     ID_APP_EXIT                   "Quit the application; prompts to save documents\nExit"
+    ID_FILE_NEW                   "Create a new document\nNew"
+    ID_FILE_OPEN                  "Open an existing document\nOpen"
+    ID_FILE_CLOSE                 "Close the active document\nClose"
+    ID_FILE_SAVE                  "Save the active document\nSave"
+    ID_FILE_SAVE_AS               "Save the active document with a new name\nSave As"
+    ID_EDIT_CLEAR                 "Erase the selection\nErase"
+    ID_EDIT_CLEAR_ALL             "Erase everything\nErase All"
+    ID_EDIT_COPY                  "Copy the selection and put it on the Clipboard\nCopy"
+    ID_EDIT_CUT                   "Cut the selection and put it on the Clipboard\nCut"
+    ID_EDIT_FIND                  "Find the specified text\nFind"
+    ID_EDIT_PASTE                 "Insert Clipboard contents\nPaste"
+    ID_EDIT_REPEAT                "Repeat the last find\nFind Next"
+    ID_EDIT_REPLACE               "Replace specific text with different text\nReplace"
+    ID_EDIT_SELECT_ALL            "Select the entire document\nSelect All"
+    ID_EDIT_UNDO                  "Undo the last action\nUndo"
+    ID_EDIT_REDO                  "Redo the previously undone action\nRedo"
     ATL_IDS_SCSIZE                "Change the window size"
     ATL_IDS_SCMOVE                "Change the window position"
     ATL_IDS_SCMINIMIZE            "Reduce the window to an icon"
@@ -257,6 +274,7 @@ BEGIN
     ATL_IDS_SCCLOSE               "Close the active window and prompts to save the documents"
     ATL_IDS_SCRESTORE             "Restore the window to normal size"
     ATL_IDS_IDLEMESSAGE           "Ready"
+    ATL_IDS_MRU_FILE              "Open this document"
     ID_HOME_CONNECT               "Connects to camera\nConnect"
     ID_HOME_SETTINGS              "Shows settings dialog\nSettings"
     ID_PHOTO_MODE_NORMAL          "Starts normal photo mode\nNormal mode"

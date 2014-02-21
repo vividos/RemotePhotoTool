@@ -60,3 +60,5 @@
 #define ID_PHOTO_MODE_DEVICE_PROPERTIES         32777
 #define ID_PHOTO_MODE_IMAGE_PROPERTIES          32778
 #define ID_VIEWFINDER_SHOW                      32779
+#define ID_SCRIPT_RUN                           32780
+#define ID_SCRIPT_STOP                          32781
