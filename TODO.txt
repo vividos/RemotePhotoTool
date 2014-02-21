@@ -5,7 +5,6 @@ write documentation for CanonControl library
 remove TODOs
 Viewfinder: implement image on TFT and/or PC
 replace throw() with noexcept
-replace USES_CONVERSION with CStringA/W
 
 PSREC
 -----

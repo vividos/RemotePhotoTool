@@ -39,11 +39,11 @@ public:
    static void SetName(LPCTSTR pszThreadName, DWORD dwThreadId = DWORD(-1)) throw()
    {
 #ifdef WIN32
-      USES_CONVERSION;
+      CStringA cszaThreadName;
 
       THREADNAME_INFO info;
       info.dwType = 0x1000;
-      info.szName = T2CA(pszThreadName);
+      info.szName = cszaThreadName.GetString();
       info.dwThreadID = dwThreadId;
       info.dwFlags = 0;
 

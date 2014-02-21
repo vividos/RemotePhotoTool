@@ -91,7 +91,6 @@ void DevicePropertyAccess::GetRawCdsdk(const Variant& v, unsigned int propId, st
    case cdDEVICE_PROP_FIRMWARE_VERSION:
       ATLASSERT(v.Type() == Variant::typeString);
       {
-         USES_CONVERSION;
          CString cszText = v.Get<CString>();
          CStringA cszaText = cszText;
          LPCSTR pszaText = cszaText.GetString();

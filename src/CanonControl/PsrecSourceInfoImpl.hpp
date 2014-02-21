@@ -31,8 +31,7 @@ public:
 
    virtual CString Name() const override
    {
-      USES_CONVERSION;
-      CString cszName(W2CT(reinterpret_cast<LPCWSTR>(m_deviceInfo.ModelName)));
+      CString cszName(reinterpret_cast<LPCWSTR>(m_deviceInfo.ModelName));
       return cszName;
    }
 

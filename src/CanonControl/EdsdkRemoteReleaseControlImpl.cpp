@@ -506,8 +506,7 @@ void RemoteReleaseControlImpl::DownloadImage(Handle hDirectoryItem, ShutterRelea
       // create file stream for transfer destination
       Handle hStream(hDirectoryItem.GetRef());
 
-      USES_CONVERSION;
-      err = EdsCreateFileStream(T2CA(cszFilename),
+      err = EdsCreateFileStream(CStringA(cszFilename),
          kEdsFileCreateDisposition_CreateAlways,
          kEdsAccess_ReadWrite, &hStream);
       LOG_TRACE(_T("EdsCreateFileStream(dirItem = %08x, &dirItemInfo) returned %08x\n"), hDirectoryItem.Get(), err);

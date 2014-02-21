@@ -26,7 +26,6 @@ void State::LoadFile(const CString& /*cszFilename*/)
 
 void State::LoadSourceString(const CString& /*cszLuaSource*/)
 {
-//   USES_CONVERSION;
    // TODO impl
 }
 
