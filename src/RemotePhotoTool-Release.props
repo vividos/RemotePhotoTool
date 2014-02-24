@@ -4,7 +4,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <IntDir>$(SolutionDir)..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
-    <_PropertySheetDisplayName>PhotoTool-Release</_PropertySheetDisplayName>
+    <_PropertySheetDisplayName>RemotePhotoTool-Release</_PropertySheetDisplayName>
     <OutDir>$(SolutionDir)..\bin\$(Configuration)\</OutDir>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
