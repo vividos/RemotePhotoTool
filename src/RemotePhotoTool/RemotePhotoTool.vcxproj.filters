@@ -19,15 +19,18 @@
     <Filter Include="Documentation Files">
       <UniqueIdentifier>{bab5f1a3-91b2-41a0-9262-0eb42826f866}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Photo Mode Header Files">
+      <UniqueIdentifier>{afceb1f4-88b3-4766-bf68-13af894dc10d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Photo Mode Source Files">
+      <UniqueIdentifier>{24d370cc-c4da-44a2-acb8-54c29744c00e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AboutDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CameraInfoDlg.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DevicePropertyView.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="HuginInterface.cpp">
@@ -54,9 +57,6 @@
     <ClCompile Include="ViewFinderImageWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="StandardPhotoModeView.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ConnectCameraDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -69,26 +69,32 @@
     <ClCompile Include="ImagePropertyValueManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ImagePropertyView.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="AppSettings.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ImageFileManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="HDRPhotoModeView.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PanoramaPhotoModeView.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="App.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DevicePropertyView.cpp">
+      <Filter>Source Files\Photo Mode Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImagePropertyView.cpp">
+      <Filter>Source Files\Photo Mode Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PanoramaPhotoModeView.cpp">
+      <Filter>Source Files\Photo Mode Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="ScriptingPhotoModeView.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Photo Mode Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StandardPhotoModeView.cpp">
+      <Filter>Source Files\Photo Mode Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HDRPhotoModeView.cpp">
+      <Filter>Source Files\Photo Mode Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -96,9 +102,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CameraInfoDlg.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DevicePropertyView.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="HuginInterface.hpp">
@@ -128,15 +131,6 @@
     <ClInclude Include="AboutDlg.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="IPhotoModeView.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="StandardPhotoModeView.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IPhotoModeViewHost.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ViewFinderImageWindow.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -158,9 +152,6 @@
     <ClInclude Include="ImagePropertyValueManager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ImagePropertyView.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="AppSettings.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -176,20 +167,35 @@
     <ClInclude Include="res\MainFrameRibbon.h">
       <Filter>Resource Files\Generated Files</Filter>
     </ClInclude>
-    <ClInclude Include="HDRPhotoModeView.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PanoramaPhotoModeView.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="App.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\version.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DevicePropertyView.hpp">
+      <Filter>Header Files\Photo Mode Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HDRPhotoModeView.hpp">
+      <Filter>Header Files\Photo Mode Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ImagePropertyView.hpp">
+      <Filter>Header Files\Photo Mode Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PanoramaPhotoModeView.hpp">
+      <Filter>Header Files\Photo Mode Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="ScriptingPhotoModeView.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Photo Mode Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StandardPhotoModeView.hpp">
+      <Filter>Header Files\Photo Mode Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IPhotoModeViewHost.hpp">
+      <Filter>Header Files\Photo Mode Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IPhotoModeView.hpp">
+      <Filter>Header Files\Photo Mode Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
