@@ -524,11 +524,12 @@ void RemoteReleaseControlImpl::DownloadImage(Handle hDirectoryItem, ShutterRelea
          hDirectoryItem.Get(), dirItemInfo.size, hStream.Get(), err);
       EDSDK::CheckError(_T("EdsDownload"), err, __FILE__, __LINE__);
    }
-   catch(CameraException& ex)
+   catch(CameraException& /*ex*/)
    {
       // issue notification that download has been canceled
       EdsError err = EdsDownloadCancel(hDirectoryItem);
       LOG_TRACE(_T("EdsDownloadCancel(dirItem = %08x) returned %08x\n"), hDirectoryItem.Get(), err);
+      // TODO log exception
 
       throw;
    }

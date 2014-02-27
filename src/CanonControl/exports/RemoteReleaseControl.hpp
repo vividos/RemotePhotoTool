@@ -156,7 +156,7 @@ public:
    virtual void SetImageProperty(const ImageProperty& imageProperty) = 0;
 
    /// enumerates possible values of given image property
-   virtual void EnumImagePropertyValues(unsigned int uiImagePropertyType, std::vector<ImageProperty>& vecValues) const = 0;
+   virtual void EnumImagePropertyValues(unsigned int uiImagePropertyId, std::vector<ImageProperty>& vecValues) const = 0;
 
    ////////////////////////////////////////////////
    // viewfinder
