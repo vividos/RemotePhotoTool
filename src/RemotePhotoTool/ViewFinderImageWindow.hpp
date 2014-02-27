@@ -20,14 +20,21 @@ public:
    /// ctor
    ViewFinderImageWindow();
 
+   /// lines mode types
    enum T_enLinesMode
    {
       linesModeNoLines = 0,
       linesModeRuleOfThird = 1,
       linesModeGoldenRatio = 2,
+
+      linesModeMax = linesModeGoldenRatio
    };
 
-   void SetLinesMode(T_enLinesMode enLinesMode){ m_enLinesMode = enLinesMode; }
+   /// sets lines mode
+   void SetLinesMode(T_enLinesMode enLinesMode) throw() { m_enLinesMode = enLinesMode; }
+
+   /// sets if histogram is shown
+   void ShowHistogram(bool bShowHistogram) throw() { m_bShowHistogram = bShowHistogram; }
 
    /// enables or disables updates to the viewfinder window
    void EnableUpdate(bool bEnable);
@@ -105,4 +112,7 @@ private:
 
    /// lines mode
    T_enLinesMode m_enLinesMode;
+
+   /// indicates if histogram is shown
+   bool m_bShowHistogram;
 };

@@ -96,6 +96,9 @@
     <ClCompile Include="HDRPhotoModeView.cpp">
       <Filter>Source Files\Photo Mode Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ViewFinderView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BlankView.hpp">
@@ -196,6 +199,9 @@
     </ClInclude>
     <ClInclude Include="IPhotoModeView.hpp">
       <Filter>Header Files\Photo Mode Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewFinderView.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -15,7 +15,7 @@
 #include "ShutterSpeedValue.hpp"
 #include "ShootingMode.hpp"
 #include "CameraErrorDlg.hpp"
-#include "ViewFinderImageWindow.hpp"
+#include "ViewFinderView.hpp"
 #include "PhotomatixInterface.hpp"
 
 HDRPhotoModeView::HDRPhotoModeView(IPhotoModeViewHost& host) throw()
@@ -171,7 +171,7 @@ LRESULT HDRPhotoModeView::OnButtonAEB(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /
 
    // disable viewfinder while shooting
    {
-      ViewFinderImageWindow* pViewfinder = m_host.GetViewfinderWindow();
+      ViewFinderView* pViewfinder = m_host.GetViewFinderView();
 
       m_bViewfinderActiveBeforeStart = pViewfinder != NULL;
 
@@ -214,7 +214,7 @@ LRESULT HDRPhotoModeView::OnMessageHDRAEBLast(UINT /*uMsg*/, WPARAM /*wParam*/, 
    // enable viewfinder again when active
    if (m_bViewfinderActiveBeforeStart)
    {
-      ViewFinderImageWindow* pViewfinder = m_host.GetViewfinderWindow();
+      ViewFinderView* pViewfinder = m_host.GetViewFinderView();
       if (pViewfinder != NULL)
          pViewfinder->EnableUpdate(true);
 

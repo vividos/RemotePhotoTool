@@ -130,6 +130,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="ViewFinderImageWindow.cpp" />
+    <ClCompile Include="ViewFinderView.cpp" />
     <ClCompile Include="ViewManager.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -164,6 +165,7 @@
     <ClInclude Include="StandardPhotoModeView.hpp" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="ViewFinderImageWindow.hpp" />
+    <ClInclude Include="ViewFinderView.hpp" />
     <ClInclude Include="ViewManager.hpp" />
     <ClInclude Include="resource.h" />
   </ItemGroup>

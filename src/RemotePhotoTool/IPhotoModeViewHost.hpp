@@ -9,7 +9,7 @@
 // forward references
 class RemoteReleaseControl;
 class ImageFileManager;
-class ViewFinderImageWindow;
+class ViewFinderView;
 class AppSettings;
 
 /// host interface for photo mode views
@@ -28,8 +28,8 @@ public:
    /// returns image file manager
    virtual ImageFileManager& GetImageFileManager() throw() = 0;
 
-   /// returns viewfinder window (or nullptr if not active)
-   virtual ViewFinderImageWindow* GetViewfinderWindow() throw() = 0;
+   /// returns viewfinder view (or nullptr if not active)
+   virtual ViewFinderView* GetViewFinderView() throw() = 0;
 
    /// sets new status text
    virtual void SetStatusText(const CString& cszText) = 0;

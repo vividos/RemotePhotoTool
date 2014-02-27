@@ -12,7 +12,7 @@
 #include "SourceDevice.hpp"
 #include "DeviceProperty.hpp"
 #include "IPhotoModeViewHost.hpp"
-#include "ViewFinderImageWindow.hpp"
+#include "ViewFinderView.hpp"
 
 void DevicePropertyView::Init()
 {
@@ -38,7 +38,7 @@ void DevicePropertyView::RefreshList()
    DeleteAllItems();
 
    // disable viewfinder while refreshing list
-   ViewFinderImageWindow* pViewfinder = m_host.GetViewfinderWindow();
+   ViewFinderView* pViewfinder = m_host.GetViewFinderView();
 
    if (pViewfinder != NULL)
       pViewfinder->EnableUpdate(false);

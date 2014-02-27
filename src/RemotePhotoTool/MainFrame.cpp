@@ -281,7 +281,7 @@ LRESULT MainFrame::OnPhotoMode(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/,
 
 LRESULT MainFrame::OnViewfinderShow(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
-   bool bViewfinderActive = m_upViewFinderWindow != nullptr;
+   bool bViewfinderActive = m_upViewFinderView != nullptr;
    ShowViewfinder(!bViewfinderActive);
    return 0;
 }
@@ -663,9 +663,9 @@ void MainFrame::SetNewView(T_enViewType enViewType)
    m_hWndView = m_upView->CreateView(m_splitter);
    m_splitter.SetSplitterPane(SPLIT_PANE_LEFT, m_hWndView, true);
 
-   if (m_upViewFinderWindow != nullptr)
+   if (m_upViewFinderView != nullptr)
    {
-      m_splitter.SetSplitterPanes(m_hWndView, *m_upViewFinderWindow);
+      m_splitter.SetSplitterPanes(m_hWndView, *m_upViewFinderView);
       m_splitter.SetSinglePaneMode(SPLIT_PANE_NONE);
    }
    else
@@ -682,17 +682,17 @@ void MainFrame::ShowViewfinder(bool bShow)
 {
    if (!bShow)
    {
-      if (m_upViewFinderWindow == nullptr)
+      if (m_upViewFinderView == nullptr)
          return;
 
       m_splitter.SetSplitterPane(SPLIT_PANE_LEFT, m_hWndView, true);
       m_splitter.SetSinglePaneMode(SPLIT_PANE_LEFT);
 
-      m_upViewFinderWindow->SetViewfinder(std::shared_ptr<Viewfinder>());
+      m_upViewFinderView->SetViewfinder(std::shared_ptr<Viewfinder>());
 
-      m_upViewFinderWindow->DestroyWindow();
+      m_upViewFinderView->DestroyWindow();
 
-      m_upViewFinderWindow.reset();
+      m_upViewFinderView.reset();
 
       return;
    }
@@ -705,17 +705,17 @@ void MainFrame::ShowViewfinder(bool bShow)
    if (!bAvailViewfinder)
       return; // viewfinder not avail; button should be disabled already, though
 
-   if (m_upViewFinderWindow != nullptr)
-      m_upViewFinderWindow->SetViewfinder(std::shared_ptr<Viewfinder>());
+   if (m_upViewFinderView != nullptr)
+      m_upViewFinderView->SetViewfinder(std::shared_ptr<Viewfinder>());
 
-   m_upViewFinderWindow.reset(new ViewFinderImageWindow);
-   m_upViewFinderWindow->Create(m_splitter);
+   m_upViewFinderView.reset(new ViewFinderView(m_spRemoteReleaseControl));
+   m_upViewFinderView->Create(m_splitter);
 
    try
    {
       std::shared_ptr<Viewfinder> spViewfinder = m_spRemoteReleaseControl->StartViewfinder();
 
-      m_upViewFinderWindow->SetViewfinder(spViewfinder);
+      m_upViewFinderView->SetViewfinder(spViewfinder);
    }
    catch(CameraException& ex)
    {
@@ -723,7 +723,7 @@ void MainFrame::ShowViewfinder(bool bShow)
       dlg.DoModal();
    }
 
-   m_splitter.SetSplitterPanes(m_hWndView, *m_upViewFinderWindow);
+   m_splitter.SetSplitterPanes(m_hWndView, *m_upViewFinderView);
    m_splitter.SetSinglePaneMode(SPLIT_PANE_NONE);
    m_splitter.SetSplitterPosPct(30);
 }
@@ -799,7 +799,7 @@ void MainFrame::OnStateEvent(RemoteReleaseControl::T_enStateEvent enStateEvent, 
    if (enStateEvent == RemoteReleaseControl::stateEventCameraShutdown)
    {
       // quit viewfinder
-      if (m_upViewFinderWindow != nullptr)
+      if (m_upViewFinderView != nullptr)
          ShowViewfinder(false);
 
       // quit remote release

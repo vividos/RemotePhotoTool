@@ -11,7 +11,7 @@
 #include "ImagePropertyView.hpp"
 #include "IPhotoModeViewHost.hpp"
 #include "ImageProperty.hpp"
-#include "ViewFinderImageWindow.hpp"
+#include "ViewFinderView.hpp"
 
 void ImagePropertyView::Init()
 {
@@ -83,7 +83,7 @@ void ImagePropertyView::RefreshList()
    DeleteAllItems();
 
    // disable viewfinder while refreshing list
-   ViewFinderImageWindow* pViewfinder = m_host.GetViewfinderWindow();
+   ViewFinderView* pViewfinder = m_host.GetViewFinderView();
 
    if (pViewfinder != NULL)
       pViewfinder->EnableUpdate(false);

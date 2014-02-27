@@ -12,7 +12,7 @@
 #include "IPhotoModeView.hpp"
 #include "IPhotoModeViewHost.hpp"
 #include "ViewManager.hpp"
-#include "ViewFinderImageWindow.hpp"
+#include "ViewFinderView.hpp"
 #include "AppSettings.hpp"
 #include "ImageFileManager.hpp"
 #include "RemoteReleaseControl.hpp"
@@ -140,7 +140,7 @@ private:
 
    virtual ImageFileManager& GetImageFileManager() throw() override { return *m_upImageFileManager; }
 
-   virtual ViewFinderImageWindow* GetViewfinderWindow() throw() override { return m_upViewFinderWindow.get(); }
+   virtual ViewFinderView* GetViewFinderView() throw() override { return m_upViewFinderView.get(); }
 
    virtual void SetStatusText(const CString& cszText) override;
 
@@ -218,8 +218,8 @@ private:
    /// view window handle
    HWND m_hWndView;
 
-   /// viewfinder window
-   std::unique_ptr<ViewFinderImageWindow> m_upViewFinderWindow;
+   /// viewfinder view
+   std::unique_ptr<ViewFinderView> m_upViewFinderView;
 
    /// thread id of UI thread
    DWORD m_dwUIThreadId;

@@ -16,7 +16,8 @@ const double c_dGoldenRatio = 0.618;
 ViewFinderImageWindow::ViewFinderImageWindow()
 :m_uiResX(0),
  m_uiResY(0),
- m_enLinesMode(linesModeNoLines)
+ m_enLinesMode(linesModeNoLines),
+ m_bShowHistogram(false)
 {
 }
 

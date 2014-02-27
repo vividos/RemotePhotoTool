@@ -16,6 +16,7 @@
 #define IDD_SETTINGS                            262
 #define IDD_CONNECT_CAMERA                      263
 #define IDD_PHOTOMODE_HDR_FORM                  264
+#define IDD_VIEWFINDER_FORM                     265
 #define IDC_STATIC_ABOUT_VERSION                1024
 #define IDC_STATIC_ABOUT_INFO                   1025
 #define IDC_LIST_CAMERA                         1026
@@ -48,6 +49,15 @@
 #define IDC_BUTTON_PANORAMA_STOP                1053
 #define IDC_BUTTON_PANORAMA_START               1054
 #define IDC_BUTTON_PANORAMA_CANCEL              1055
+#define IDC_BUTTON_VIEWFINDER_AUTOFOCUS         1056
+#define IDC_BUTTON_VIEWFINDER_AUTOWHITEBALANCE  1057
+#define IDC_BUTTON_ZOOM_OUT                     1058
+#define IDC_SLIDER_ZOOM                         1059
+#define IDC_BUTTON_ZOOM_IN                      1060
+#define IDC_COMBO_VIEWFINDER_LINESMODE          1061
+#define IDC_BUTTON_VIEWFINDER_HISTOGRAM         1062
+#define IDC_BUTTON_PREV_IMAGEVIEWER             1063
+#define IDC_STATIC_VIEWFINDER_FRAME             1064
 #define ID_HOME_CONNECT                         32768
 #define ID_HOME_SETTINGS                        32769
 #define ID_PHOTO_MODE_NORMAL                    32770
