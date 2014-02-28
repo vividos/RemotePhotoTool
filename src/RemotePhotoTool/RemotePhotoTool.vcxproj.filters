@@ -19,27 +19,30 @@
     <Filter Include="Documentation Files">
       <UniqueIdentifier>{bab5f1a3-91b2-41a0-9262-0eb42826f866}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Photo Mode Header Files">
+    <Filter Include="Photo Mode Files">
       <UniqueIdentifier>{afceb1f4-88b3-4766-bf68-13af894dc10d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Photo Mode Source Files">
+    <Filter Include="Photo Mode Files\Header Files">
+      <UniqueIdentifier>{f10072d1-f62a-4beb-aaec-4bd69ee5d2f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Photo Mode Files\Source Files">
       <UniqueIdentifier>{24d370cc-c4da-44a2-acb8-54c29744c00e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI Files">
+      <UniqueIdentifier>{f73f3bf8-b518-453f-8626-7f91ac7402db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI Files\Header Files">
+      <UniqueIdentifier>{7e7bf856-b3ba-40ce-9b3c-23740ebf2234}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI Files\Source Files">
+      <UniqueIdentifier>{d39a5d87-cdd2-4d73-a375-c067ab92044d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AboutDlg.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CameraInfoDlg.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="HuginInterface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="JpegMemoryReader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MainFrame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PhotomatixInterface.cpp">
@@ -52,18 +55,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ViewManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ViewFinderImageWindow.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ConnectCameraDlg.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SettingsDlg.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ImagePropertyCombobox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ImagePropertyValueManager.cpp">
@@ -79,38 +70,50 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DevicePropertyView.cpp">
-      <Filter>Source Files\Photo Mode Source Files</Filter>
+      <Filter>Photo Mode Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ImagePropertyView.cpp">
-      <Filter>Source Files\Photo Mode Source Files</Filter>
+      <Filter>Photo Mode Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PanoramaPhotoModeView.cpp">
-      <Filter>Source Files\Photo Mode Source Files</Filter>
+      <Filter>Photo Mode Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ScriptingPhotoModeView.cpp">
-      <Filter>Source Files\Photo Mode Source Files</Filter>
+      <Filter>Photo Mode Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="StandardPhotoModeView.cpp">
-      <Filter>Source Files\Photo Mode Source Files</Filter>
+      <Filter>Photo Mode Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="HDRPhotoModeView.cpp">
-      <Filter>Source Files\Photo Mode Source Files</Filter>
+      <Filter>Photo Mode Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AboutDlg.cpp">
+      <Filter>UI Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraInfoDlg.cpp">
+      <Filter>UI Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ConnectCameraDlg.cpp">
+      <Filter>UI Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImagePropertyCombobox.cpp">
+      <Filter>UI Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MainFrame.cpp">
+      <Filter>UI Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SettingsDlg.cpp">
+      <Filter>UI Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewFinderImageWindow.cpp">
+      <Filter>UI Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ViewFinderView.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>UI Files\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BlankView.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CameraInfoDlg.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="HuginInterface.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Icons.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="JpegMemoryReader.hpp">
@@ -127,27 +130,6 @@
     </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MainFrame.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AboutDlg.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ViewFinderImageWindow.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CameraErrorDlg.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ConnectCameraDlg.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SettingsDlg.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ImagePropertyCombobox.hpp">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="IImagePropertyControl.hpp">
       <Filter>Header Files</Filter>
@@ -177,31 +159,61 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DevicePropertyView.hpp">
-      <Filter>Header Files\Photo Mode Header Files</Filter>
+      <Filter>Photo Mode Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="HDRPhotoModeView.hpp">
-      <Filter>Header Files\Photo Mode Header Files</Filter>
+      <Filter>Photo Mode Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ImagePropertyView.hpp">
-      <Filter>Header Files\Photo Mode Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PanoramaPhotoModeView.hpp">
-      <Filter>Header Files\Photo Mode Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ScriptingPhotoModeView.hpp">
-      <Filter>Header Files\Photo Mode Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="StandardPhotoModeView.hpp">
-      <Filter>Header Files\Photo Mode Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IPhotoModeViewHost.hpp">
-      <Filter>Header Files\Photo Mode Header Files</Filter>
+      <Filter>Photo Mode Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="IPhotoModeView.hpp">
-      <Filter>Header Files\Photo Mode Header Files</Filter>
+      <Filter>Photo Mode Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IPhotoModeViewHost.hpp">
+      <Filter>Photo Mode Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PanoramaPhotoModeView.hpp">
+      <Filter>Photo Mode Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptingPhotoModeView.hpp">
+      <Filter>Photo Mode Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StandardPhotoModeView.hpp">
+      <Filter>Photo Mode Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MainFrame.hpp">
+      <Filter>UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SettingsDlg.hpp">
+      <Filter>UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewFinderImageWindow.hpp">
+      <Filter>UI Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ViewFinderView.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Icons.hpp">
+      <Filter>UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ConnectCameraDlg.hpp">
+      <Filter>UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraInfoDlg.hpp">
+      <Filter>UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraErrorDlg.hpp">
+      <Filter>UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BlankView.hpp">
+      <Filter>UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AboutDlg.hpp">
+      <Filter>UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ImagePropertyCombobox.hpp">
+      <Filter>UI Files\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
