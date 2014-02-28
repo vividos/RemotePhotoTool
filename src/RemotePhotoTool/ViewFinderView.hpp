@@ -47,7 +47,7 @@ private:
    // message map
    BEGIN_MSG_MAP(ViewFinderView)
       MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
-      NOTIFY_HANDLER(IDC_COMBO_VIEWFINDER_LINESMODE, CBN_SELCHANGE, OnComboLinesModeSelChange)
+      COMMAND_HANDLER(IDC_COMBO_VIEWFINDER_LINESMODE, CBN_SELENDOK, OnComboLinesModeSelEndOk)
       MESSAGE_HANDLER(WM_HSCROLL, OnHScroll)
       COMMAND_HANDLER(IDC_BUTTON_VIEWFINDER_AUTOFOCUS, BN_CLICKED, OnBnClickedAutoFocus)
       COMMAND_HANDLER(IDC_BUTTON_VIEWFINDER_AUTOWHITEBALANCE, BN_CLICKED, OnBnClickedAutoWhiteBalance)
@@ -66,7 +66,7 @@ private:
 
    LRESULT OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
    LRESULT OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
-   LRESULT OnComboLinesModeSelChange(int /*idCtrl*/, LPNMHDR /*pnmh*/, BOOL& /*bHandled*/);
+   LRESULT OnComboLinesModeSelEndOk(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
    LRESULT OnHScroll(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
    LRESULT OnBnClickedAutoFocus(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
    LRESULT OnBnClickedAutoWhiteBalance(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);

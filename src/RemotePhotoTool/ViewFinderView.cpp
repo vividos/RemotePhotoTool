@@ -59,7 +59,7 @@ LRESULT ViewFinderView::OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lPa
    return 0;
 }
 
-LRESULT ViewFinderView::OnComboLinesModeSelChange(int /*idCtrl*/, LPNMHDR /*pnmh*/, BOOL& /*bHandled*/)
+LRESULT ViewFinderView::OnComboLinesModeSelEndOk(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
    int iSel = m_cbLinesMode.GetCurSel();
    if (iSel == CB_ERR)
