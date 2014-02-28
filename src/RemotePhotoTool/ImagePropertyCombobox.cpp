@@ -90,9 +90,12 @@ void ImagePropertyCombobox::UpdateValue()
 {
    ATLASSERT(m_spRemoteReleaseControl != nullptr);
 
+   CString cszPropertyName;
+
    try
    {
       ImageProperty val = m_spRemoteReleaseControl->GetImageProperty(m_uiPropertyId);
+      cszPropertyName = val.Name();
 
       // no descriptions available?
       if (m_vecValues.empty())
@@ -121,7 +124,12 @@ void ImagePropertyCombobox::UpdateValue()
    }
    catch(CameraException& ex)
    {
-      CameraErrorDlg dlg(_T("Couldn't get value for image property"), ex);
+      CString cszText(_T("Couldn't get value for image property"));
+
+      if (!cszPropertyName.IsEmpty())
+         cszText.AppendFormat(_T(": %s"), cszPropertyName.GetString());
+
+      CameraErrorDlg dlg(cszText, ex);
       dlg.DoModal();
    }
 }
