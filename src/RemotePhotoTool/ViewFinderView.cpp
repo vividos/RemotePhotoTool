@@ -10,6 +10,8 @@
 #include "resource.h"
 #include "ViewFinderView.hpp"
 #include "RemoteReleaseControl.hpp"
+#include "CameraException.hpp"
+#include "CameraErrorDlg.hpp"
 
 ViewFinderView::ViewFinderView(std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl)
 :m_spRemoteReleaseControl(spRemoteReleaseControl),
@@ -86,14 +88,38 @@ LRESULT ViewFinderView::OnHScroll(UINT /*uMsg*/, WPARAM wParam, LPARAM /*lParam*
 
 LRESULT ViewFinderView::OnBnClickedAutoFocus(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
-   m_spRemoteReleaseControl->SendCommand(RemoteReleaseControl::commandAdjustFocus);
+   try
+   {
+      EnableUpdate(false);
+
+      m_spRemoteReleaseControl->SendCommand(RemoteReleaseControl::commandAdjustFocus);
+
+      EnableUpdate(true);
+   }
+   catch(CameraException& ex)
+   {
+      CameraErrorDlg dlg(_T("Error while adjusting focus"), ex);
+      dlg.DoModal();
+   }
 
    return 0;
 }
 
 LRESULT ViewFinderView::OnBnClickedAutoWhiteBalance(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
-   m_spRemoteReleaseControl->SendCommand(RemoteReleaseControl::commandAdjustWhiteBalance);
+   try
+   {
+      EnableUpdate(false);
+
+      m_spRemoteReleaseControl->SendCommand(RemoteReleaseControl::commandAdjustWhiteBalance);
+
+      EnableUpdate(true);
+   }
+   catch(CameraException& ex)
+   {
+      CameraErrorDlg dlg(_T("Error while adjusting focus"), ex);
+      dlg.DoModal();
+   }
 
    return 0;
 }
