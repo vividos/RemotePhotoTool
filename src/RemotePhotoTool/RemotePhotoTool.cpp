@@ -13,6 +13,8 @@
 #pragma warning(suppress: 28251)
 int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR lpstrCmdLine, int nCmdShow)
 {
+   App::InitCrashReporter();
+
    App app(hInstance);
    return app.Run(lpstrCmdLine, nCmdShow);
 }

@@ -15,6 +15,9 @@ public:
    /// dtor
    ~App() throw();
 
+   /// inits crash reporter
+   static void InitCrashReporter();
+
    /// runs application
    int Run(LPCTSTR lpstrCmdLine = NULL, int nCmdShow = SW_SHOWDEFAULT);
 

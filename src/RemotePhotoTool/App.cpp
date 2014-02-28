@@ -12,6 +12,7 @@
 #include "Filesystem.hpp"
 #include "resource.h"
 #include "MainFrame.hpp"
+#include "CrashReporter.hpp"
 #include <crtdbg.h>
 #include <wia.h>
 
@@ -46,6 +47,21 @@ App::~App() throw()
 {
    _Module.Term();
    ::CoUninitialize();
+}
+
+void App::InitCrashReporter()
+{
+   CString cszFolder = App_GetAppDataFolder(appDataUserNonRoaming) + _T("\\RemotePhotoTool\\");
+
+   if (!Directory_Exists(cszFolder))
+      CreateDirectory(cszFolder, NULL);
+
+   cszFolder += _T("crashdumps\\");
+
+   if (!Directory_Exists(cszFolder))
+      CreateDirectory(cszFolder, NULL);
+
+   CrashReporter::Init(cszFolder);
 }
 
 int App::Run(LPCTSTR /*lpstrCmdLine*/, int nCmdShow)
