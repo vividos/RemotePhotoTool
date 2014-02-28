@@ -38,7 +38,7 @@ public:
    void EnumerateDevices(std::vector<std::shared_ptr<SourceInfo>>& vecSourceDevices) const;
 
    /// call this when idle, e.g. in your message loop, to do background processing
-   void OnIdle();
+   static void OnIdle();
 
 private:
    class Impl;

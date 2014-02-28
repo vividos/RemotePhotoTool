@@ -236,5 +236,5 @@ void Instance::EnumerateDevices(std::vector<std::shared_ptr<SourceInfo>>& vecSou
 
 void Instance::OnIdle()
 {
-   m_spImpl->m_spEdSdkRef->OnIdle();
+   EDSDK::Ref::OnIdle();
 }
