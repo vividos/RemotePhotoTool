@@ -37,6 +37,9 @@ public:
    /// enumerates all devices
    void EnumerateDevices(std::vector<std::shared_ptr<SourceInfo>>& vecSourceDevices) const;
 
+   /// call this when idle, e.g. in your message loop, to do background processing
+   void OnIdle();
+
 private:
    class Impl;
 

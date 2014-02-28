@@ -56,6 +56,8 @@ BOOL MainFrame::PreTranslateMessage(MSG* pMsg)
 
 BOOL MainFrame::OnIdle()
 {
+   Instance::Get().OnIdle();
+
    UIUpdateToolBar();
    UIUpdateAll();
    return FALSE;

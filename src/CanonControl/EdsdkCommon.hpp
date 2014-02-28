@@ -68,6 +68,9 @@ public:
    /// starts waiting for camera
    void AsyncWaitForCamera(bool bStart, std::function<void()> fnOnCameraConnected = std::function<void()>());
 
+   /// called to do idle processing
+   static void OnIdle();
+
 private:
    /// handler called when camera was added
    static EdsError EDSCALLBACK OnCameraAddedHandler(EdsVoid* inContext);

@@ -233,3 +233,8 @@ void Instance::EnumerateDevices(std::vector<std::shared_ptr<SourceInfo>>& vecSou
    m_spImpl->m_spEdSdkRef->EnumerateDevices(vecSourceDevices);
    m_spImpl->m_spPsRecRef->EnumerateDevices(vecSourceDevices);
 }
+
+void Instance::OnIdle()
+{
+   m_spImpl->m_spEdSdkRef->OnIdle();
+}

@@ -136,6 +136,13 @@ void Ref::AsyncWaitForCamera(bool bStart, std::function<void()> fnOnCameraConnec
    }
 }
 
+void Ref::OnIdle()
+{
+   EdsError err = EdsGetEvent();
+   if (err != EDS_ERR_OK)
+      LOG_TRACE(_T("EdsGetEvent() returned %08x\n"), err);
+}
+
 void EDSDK::MsgWaitForEvent(Event& evt)
 {
    LOG_TRACE(_T("MsgWaitForEvent started\n"));
@@ -149,7 +156,7 @@ void EDSDK::MsgWaitForEvent(Event& evt)
 
       if (WAIT_TIMEOUT == dwRet)
       {
-         EdsGetEvent();
+         EDSDK::Ref::OnIdle();
          continue;
       }
 
