@@ -62,6 +62,12 @@
     <ClInclude Include="Thread.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CrashReporter.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Path.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -77,6 +83,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ProgramOptions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CrashReporter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Path.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

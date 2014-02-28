@@ -77,6 +77,7 @@
     <ClInclude Include="Asio.hpp" />
     <ClInclude Include="Atl.hpp" />
     <ClInclude Include="CommandLineParser.hpp" />
+    <ClInclude Include="CrashReporter.hpp" />
     <ClInclude Include="ErrorMessage.hpp" />
     <ClInclude Include="Event.hpp" />
     <ClInclude Include="Exception.hpp" />
@@ -86,6 +87,7 @@
     <ClInclude Include="Logging.hpp" />
     <ClInclude Include="MutexLock.hpp" />
     <ClInclude Include="Observer.hpp" />
+    <ClInclude Include="Path.hpp" />
     <ClInclude Include="ProgramOptions.hpp" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="SystemException.hpp" />
@@ -94,8 +96,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CommandLineParser.cpp" />
+    <ClCompile Include="CrashReporter.cpp" />
     <ClCompile Include="Filesystem.cpp" />
     <ClCompile Include="Logging.cpp" />
+    <ClCompile Include="Path.cpp" />
     <ClCompile Include="ProgramOptions.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
