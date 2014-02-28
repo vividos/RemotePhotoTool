@@ -8,6 +8,7 @@
 
 // includes
 #include <vector>
+#include <shlobj.h>
 
 /// combines two path parts
 CString Path_Combine(const CString& cszPath1, const CString& cszPath2) throw();
@@ -24,8 +25,16 @@ bool File_Exists(const CString& cszPath) throw();
 /// returns current app filename
 CString App_GetFilename() throw();
 
+/// app data folder type
+enum T_enAppDataFolderType
+{
+   appDataAllUsers = CSIDL_COMMON_APPDATA,      ///< All Users\Application Data
+   appDataUser = CSIDL_APPDATA,                 ///< <user name>\Application Data
+   appDataUserNonRoaming = CSIDL_LOCAL_APPDATA  ///< <user name>\Local Settings\Applicaiton Data (non roaming)
+};
+
 /// returns app data folder
-CString App_GetAppDataFolder(bool bMachineWide) throw();
+CString App_GetAppDataFolder(T_enAppDataFolderType enAppDataFolderType) throw();
 
 /// gets all files and folders in a given path
 std::vector<CString> FindAllInPath(const CString& cszPath, const CString& cszFileSpec, bool bFindFolders, bool bRecursive) throw();

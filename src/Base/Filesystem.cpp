@@ -54,14 +54,16 @@ CString App_GetFilename()
    return cszFilename;
 }
 
-CString App_GetAppDataFolder(bool bMachineWide)
+CString App_GetAppDataFolder(T_enAppDataFolderType enAppDataFolderType)
 {
+   ATLASSERT(enAppDataFolderType == CSIDL_COMMON_APPDATA ||
+      enAppDataFolderType == CSIDL_LOCAL_APPDATA ||
+      enAppDataFolderType == CSIDL_APPDATA);
+
    CString cszAppData;
 
-   // CSIDL_APPDATA - user-dependent app data folder
-   // CSIDL_COMMON_APPDATA - machine-wide app data folder
    SHGetFolderPath(NULL,
-      bMachineWide ? CSIDL_COMMON_APPDATA : CSIDL_APPDATA,
+      int(enAppDataFolderType),
       NULL, SHGFP_TYPE_CURRENT,
       cszAppData.GetBuffer(MAX_PATH));
    cszAppData.ReleaseBuffer();
