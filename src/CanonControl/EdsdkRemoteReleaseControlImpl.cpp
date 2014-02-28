@@ -322,7 +322,7 @@ bool RemoteReleaseControlImpl::GetCapability(RemoteReleaseControl::T_enRemoteCap
          break;
 
       case RemoteReleaseControl::capZoomControl:
-         return false; // zoom isn't supported with ED-SDK // TODO really?
+         return true;
 
       case RemoteReleaseControl::capViewfinder:
          {
@@ -346,8 +346,7 @@ bool RemoteReleaseControlImpl::GetCapability(RemoteReleaseControl::T_enRemoteCap
          return true; // can always release while viewfinder, if we have one at all
 
       case RemoteReleaseControl::capAFLock:
-         return false; // TODO really?
-         break;
+         return true;
 
       default:
          ATLASSERT(false);
