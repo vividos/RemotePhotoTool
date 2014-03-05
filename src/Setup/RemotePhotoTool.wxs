@@ -98,6 +98,9 @@
       WixUIBannerBmp  Top banner 493 × 58
       WixUIDialogBmp  Background bitmap used on the welcome and completion dialogs 493 × 312
       -->
+    <UI>
+      <ProgressText Action="ExecuteAction">System is being prepared for setup...</ProgressText>
+    </UI>
 
     <!-- upgrade stuff -->
 
