@@ -116,9 +116,7 @@ private:
          {
             if (m_fnCallback != nullptr)
             {
-               LOG_TRACE(_T("before timer callback\n"));
                m_fnCallback();
-               LOG_TRACE(_T("after timer callback\n"));
             }
          }
          catch(...)
