@@ -121,6 +121,7 @@
     <ClInclude Include="..\Thirdparty\PSREC\PSReCSDK\inc\prError.h" />
     <ClInclude Include="..\Thirdparty\PSREC\PSReCSDK\inc\prFuncType.h" />
     <ClInclude Include="..\Thirdparty\PSREC\PSReCSDK\inc\prType.h" />
+    <ClInclude Include="BackgroundTimer.hpp" />
     <ClInclude Include="BackgroundWorkerThread.hpp" />
     <ClInclude Include="CommonPropertyAccess.hpp" />
     <ClInclude Include="exports\BulbReleaseControl.hpp" />

@@ -14,6 +14,7 @@
 #include "PsrecCommon.hpp"
 #include "LightweightMutex.hpp"
 #include "BackgroundWorkerThread.hpp"
+#include "BackgroundTimer.hpp"
 
 
 // Instance::Impl

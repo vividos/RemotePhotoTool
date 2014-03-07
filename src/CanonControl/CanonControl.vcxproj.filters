@@ -244,6 +244,9 @@
     <ClInclude Include="..\Thirdparty\CDSDK\inc\cdType.h">
       <Filter>CDSDK Files\SDK Files</Filter>
     </ClInclude>
+    <ClInclude Include="BackgroundTimer.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Thirdparty\CDSDK\Doc\CDSDK73UserGuide.doc">

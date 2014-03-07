@@ -10,7 +10,7 @@
 #include "stdafx.h"
 #include "EdsdkViewfinderImpl.hpp"
 #include "EdsdkPropertyAccess.hpp"
-#include "BackgroundWorkerThread.hpp"
+#include "BackgroundTimer.hpp"
 
 using namespace EDSDK;
 
