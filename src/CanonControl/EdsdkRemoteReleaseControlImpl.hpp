@@ -64,7 +64,7 @@ public:
          m_defaultShutterReleaseSettings = settings;
       }
 
-      SetSaveToFlag(settings.SaveTarget(), true);
+      SetSaveToFlag(settings.SaveTarget(), false);
    }
 
    virtual int AddPropertyEventHandler(RemoteReleaseControl::T_fnOnPropertyChanged fnOnPropertyChanged) override
