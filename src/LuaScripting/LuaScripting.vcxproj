@@ -67,6 +67,7 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CameraScriptProcessor.cpp" />
     <ClCompile Include="Lua.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -74,6 +75,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CameraScriptProcessor.hpp" />
     <ClInclude Include="Lua.hpp" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
