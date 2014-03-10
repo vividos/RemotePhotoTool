@@ -16,7 +16,7 @@ See below at chapter "Compatibility" for a complete list of supported cameras.
 
 Download and install this package to get RemotePhotoTool:
 
-- [RemotePhotoTool-1.0.0-Setup.msi](https://github.com/vividos/RemotePhotoTool/releases/download/remotephototool-1.0.0/RemotePhotoTool-1.0.0-Setup.msi): RemotePhotoTool 1.0.0 Build 100, Windows Installer (5808 kb)
+- [RemotePhotoTool-1.1.0-Setup.msi](https://github.com/vividos/RemotePhotoTool/releases/download/remotephototool-1.1.0/RemotePhotoTool-1.1.0-Setup.msi): RemotePhotoTool 1.1.0 Build 101, Windows Installer (6228 kb)
 
 On Windows 7 and above you usually don't need additional drivers for Canon cameras.
 
