@@ -53,6 +53,7 @@
       <ComponentGroupRef Id="EdsdkFiles" />
       <ComponentGroupRef Id="PsrecFiles" />
       <!-- ComponentGroupRef Id="CdsdkFiles" / -->
+      <ComponentGroupRef Id="ScintillaFiles" />
 
     </Feature>
 
