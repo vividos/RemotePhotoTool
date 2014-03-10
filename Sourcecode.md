@@ -137,3 +137,21 @@ folder you installed the WiX Toolset. Add the path to the `"bin"` folder to the 
 
 Just open the file `"src\RemotePhotoTool.sln"` and select `"Release"` and `"Win32"` in the toolbar.
 Rebuild the application and run it.
+
+## Release check list ##
+
+Here's a checklist of what to do before each release:
+
+- Update version number in version.h
+- Update Changelog.md file with all changes since last release
+- Check all Documentation files for needed updates, especially Features.md
+- Check in or stash all changes
+- Build all projects in Win32 | Release
+- Fix cppcheck errors and /analyze warnings
+- Test built .msi setup if it installs properly
+- Do a short smoke test with available cameras
+- Fix all errors, check them in and push all changes
+- Tag the git repository with tag "remotephototool-x.y.z" and push the tag
+- Add a release and upload result .msi file, to releases on github.com
+- Adjust README.md with link to new release and push it
+- Done

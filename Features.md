@@ -15,9 +15,14 @@
 - Display of all device and image properties
   - Image properties are updated live when they change
 - Live Viewfinder support
+  - Auto focus, auto white balance functions
+  - Zoom in/out for supported cameras
+  - Helper lines (for rule of thirds and golden ratio)
 - Support for third party applications
   - Hugin for Panorama stitching
   - Photomatix Pro for HDR image generation
 - Support for many Canon camera models (PowerShot, EOS, see full list in [README.md](Readme.md))
 - Registers an Auto-Play handler to open the app when a camera is connected
-- Thorough logging for bug hunting
+- Debugging facilities
+  - Thorough logging for bug hunting
+  - Creating crash dump files when application has crashed

@@ -4,7 +4,7 @@
 
 ![Connect to camera](images/connect-camera.png)
 
-Shows cameras connected to the PC. 
+Shows cameras connected to the PC.
 
 ## Camera infos ##
 
@@ -34,7 +34,7 @@ Panorama photo mode. Allows taking several panorama photos. When stopped, the Hu
 
 ![Device properties](images/device-properties.png)
 
-Shows all device properties of connected device. 
+Shows all device properties of connected device.
 
 ## Image properties ##
 
