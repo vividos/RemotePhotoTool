@@ -467,7 +467,7 @@ void MainFrame::UpdateTitle()
 
       // app title + scripting file title
       cszTitle.AppendFormat(_T(" - [%s%s]"),
-         pView->GetFilePath(),
+         pView->GetFilePath().GetString(),
          m_bScriptingFileModified ? _T("*") : _T(""));
    }
    else
@@ -476,7 +476,7 @@ void MainFrame::UpdateTitle()
    {
       // app title + camera model name
       cszTitle.AppendFormat(_T(" - %s"),
-         m_spSourceDevice->ModelName());
+         m_spSourceDevice->ModelName().GetString());
    }
 
    // just app title

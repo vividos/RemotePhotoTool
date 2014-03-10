@@ -159,7 +159,7 @@ bool ScriptingPhotoModeView::QueryClose()
    CWindow wndMain(GetParent());
 
    CString cszText;
-   cszText.Format(_T("Save changes to %s ?"), m_cszFileTitle);
+   cszText.Format(_T("Save changes to %s ?"), m_cszFileTitle.GetString());
 
    int iRet = wndMain.MessageBox(cszText, _T("RemotePhotoTool"), MB_YESNOCANCEL | MB_ICONEXCLAMATION);
 
