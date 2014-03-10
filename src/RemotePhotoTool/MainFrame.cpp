@@ -332,6 +332,8 @@ LRESULT MainFrame::OnFileSave(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl
       {
          m_mru.AddToList(pView->GetFilePath());
          m_mru.WriteToRegistry(c_pszSettingsRegkey);
+
+         UpdateTitle();
       }
       else
       {
