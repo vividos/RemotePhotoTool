@@ -9,8 +9,6 @@
 #include "StdAfx.h"
 #include "JpegMemoryReader.hpp"
 
-#pragma comment(lib, "jpeg-8d.lib")
-
 void JpegMemoryReader::Read()
 {
    m_decoder.ReadHeader();
