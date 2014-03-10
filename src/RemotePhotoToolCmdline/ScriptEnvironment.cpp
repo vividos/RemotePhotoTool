@@ -15,5 +15,5 @@ void ScriptEnvironment::Run(const CString& cszFilename)
 {
    m_luaState.LoadFile(cszFilename);
 
-   m_luaState.CallFunction(_T("Main"), std::vector<Lua::Value>());
+   m_luaState.CallFunction(_T("Main"), 0, std::vector<Lua::Value>());
 }
