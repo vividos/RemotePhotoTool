@@ -9,16 +9,18 @@
 -->
 <Include xmlns="http://schemas.microsoft.com/wix/2006/wi">
 
+  <!-- Note: when creating a new version, update the version block, and use a new ProductId below -->
+  
   <?include BuildNumber.wxi ?>
 
   <!-- version -->
   <?define MajorVersion = "1" ?>
-  <?define MinorVersion = "0" ?>
+  <?define MinorVersion = "1" ?>
   <?define SubVersion = "0" ?>
   <?define Version = "$(var.MajorVersion).$(var.MinorVersion).$(var.SubVersion).$(var.BuildNumber)" ?>
 
   <!-- settings -->
-  <?define ProductId = "b6b16a3c-3c08-4311-ba2d-3b6f7a77045d" ?>
+  <?define ProductId = "d3a10848-1a25-4de2-b7d3-14c41155a9f7" ?>
   <?define ProductName = "RemotePhotoTool" ?>
   <?define ProductNameVersion = "RemotePhotoTool $(var.MajorVersion).$(var.MinorVersion).$(var.SubVersion) Build $(var.BuildNumber)" ?>
   <?define UpgradeCode = "4b6144a9-117d-4418-8097-3ef4e6a6eb93" ?>

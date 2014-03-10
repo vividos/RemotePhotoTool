@@ -142,7 +142,7 @@ Rebuild the application and run it.
 
 Here's a checklist of what to do before each release:
 
-- Update version number in version.h
+- Update version number in version.h and Config.wxi
 - Update Changelog.md file with all changes since last release
 - Check all Documentation files for needed updates, especially Features.md
 - Check in or stash all changes
