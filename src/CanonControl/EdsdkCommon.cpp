@@ -139,7 +139,7 @@ void Ref::AsyncWaitForCamera(bool bStart, std::function<void()> fnOnCameraConnec
 void Ref::OnIdle()
 {
    EdsError err = EdsGetEvent();
-   if (err != EDS_ERR_OK)
+   if (err != EDS_ERR_OK && err != EDS_ERR_INTERNAL_ERROR)
       LOG_TRACE(_T("EdsGetEvent() returned %08x\n"), err);
 }
 
