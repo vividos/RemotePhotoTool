@@ -78,9 +78,6 @@
     <ClCompile Include="PanoramaPhotoModeView.cpp">
       <Filter>Photo Mode Files\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ScriptingPhotoModeView.cpp">
-      <Filter>Photo Mode Files\Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="StandardPhotoModeView.cpp">
       <Filter>Photo Mode Files\Source Files</Filter>
     </ClCompile>
@@ -174,9 +171,6 @@
       <Filter>Photo Mode Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PanoramaPhotoModeView.hpp">
-      <Filter>Photo Mode Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ScriptingPhotoModeView.hpp">
       <Filter>Photo Mode Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="StandardPhotoModeView.hpp">

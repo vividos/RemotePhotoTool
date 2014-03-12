@@ -18,7 +18,6 @@
 #include "CameraErrorDlg.hpp"
 #include "Logging.hpp"
 #include "Thread.hpp"
-#include "ScriptingPhotoModeView.hpp"
 
 /// settings registry key (subkey "Ribbon" is used for menu band)
 LPCTSTR c_pszSettingsRegkey = _T("Software\\RemotePhotoTool");
@@ -26,8 +25,7 @@ LPCTSTR c_pszSettingsRegkey = _T("Software\\RemotePhotoTool");
 /// ctor
 MainFrame::MainFrame() throw()
 :m_settings(c_pszSettingsRegkey),
- m_dwUIThreadId(Thread::CurrentId()),
- m_bScriptingFileModified(false)
+ m_dwUIThreadId(Thread::CurrentId())
 {
    m_settings.Load();
 
@@ -59,7 +57,6 @@ BOOL MainFrame::OnIdle()
    Instance::OnIdle();
 
    UIUpdateToolBar();
-   UIUpdateAll();
    return FALSE;
 }
 
@@ -288,189 +285,10 @@ LRESULT MainFrame::OnViewfinderShow(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*h
    return 0;
 }
 
-LRESULT MainFrame::OnFileNew(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
-{
-   DoFileNew();
-
-   return 0;
-}
-
-LRESULT MainFrame::OnFileOpen(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
-{
-   CFileDialog dlg(TRUE, NULL, _T(""), OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, g_pszLuaScriptingFilter);
-   int iRet = dlg.DoModal();
-
-   if (iRet == IDOK)
-   {
-      ScriptingPhotoModeView* pView = GetScriptingView();
-
-      bool bRet = pView != nullptr && pView->QueryClose();
-      if (!bRet)
-      {
-         if (!DoFileSaveAs())
-            return 0;
-      }
-
-      if (DoFileOpen(dlg.m_ofn.lpstrFile, dlg.m_ofn.lpstrFileTitle))
-      {
-         m_mru.AddToList(dlg.m_ofn.lpstrFile);
-         m_mru.WriteToRegistry(c_pszSettingsRegkey);
-      }
-   }
-   return 0;
-}
-
-LRESULT MainFrame::OnFileSave(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
-{
-   ScriptingPhotoModeView* pView = GetScriptingView();
-   if (pView == nullptr)
-      return 0;
-
-   if (!pView->GetFilePath().IsEmpty())
-   {
-      if(pView->SaveFile(pView->GetFilePath()))
-      {
-         m_mru.AddToList(pView->GetFilePath());
-         m_mru.WriteToRegistry(c_pszSettingsRegkey);
-
-         UpdateTitle();
-      }
-      else
-      {
-         MessageBox(_T("Error writing file!\n"));
-      }
-   }
-   else
-   {
-      DoFileSaveAs();
-   }
-
-   return 0;
-}
-
-LRESULT MainFrame::OnFileSaveAs(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
-{
-   DoFileSaveAs();
-
-   return 0;
-}
-
-LRESULT MainFrame::OnFileRecent(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
-{
-   ScriptingPhotoModeView* pView = GetScriptingView();
-
-   // check if we have to save the current one
-   bool bRet = pView != nullptr && !pView->QueryClose();
-   if (bRet)
-   {
-      if (!pView->DoFileSaveAs())
-         return 0;
-   }
-
-   // get file name from the MRU list
-   CString cszFile;
-   if (m_mru.GetFromList(wID, cszFile))
-   {
-      // find file name without the path
-      // TODO replace with: CSting cszFileName = Path_GetFileName(cszFile);
-      CString cszFileName = cszFile;
-      for (int i = lstrlen(cszFile) - 1; i >= 0; i--)
-      {
-         if (cszFile[i] == '\\')
-         {
-            cszFileName = cszFile.Mid(i + 1);
-            break;
-         }
-      }
-
-      // open file
-      if (DoFileOpen(cszFile, cszFileName))
-         m_mru.MoveToTop(wID);
-      else
-         m_mru.RemoveFromList(wID);
-      m_mru.WriteToRegistry(c_pszSettingsRegkey);
-   }
-   else
-   {
-      ::MessageBeep(MB_ICONERROR);
-   }
-
-   return 0;
-}
-
-void MainFrame::DoFileNew()
-{
-   ScriptingPhotoModeView* pView = GetScriptingView();
-
-   if (pView == nullptr || pView->QueryClose())
-   {
-      EnsureScriptingView();
-
-      pView = GetScriptingView();
-      ATLASSERT(pView != nullptr);
-      if (pView == nullptr)
-         return;
-
-      pView->Init(_T("Untitled.lua"), _T("Untitled"));
-      pView->SetContent(_T("-- Lua test")); // TODO load template
-      UpdateTitle();
-   }
-}
-
-bool MainFrame::DoFileOpen(LPCTSTR lpstrFileName, LPCTSTR lpstrFileTitle)
-{
-   EnsureScriptingView();
-
-   ScriptingPhotoModeView* pView = GetScriptingView();
-   ATLASSERT(pView != nullptr);
-   if (pView == nullptr)
-      return 0;
-
-   bool bRet = pView->LoadFile(lpstrFileName);
-   if (bRet)
-   {
-      pView->Init(lpstrFileName, lpstrFileTitle);
-      UpdateTitle();
-   }
-   else
-      MessageBox(_T("Error reading file!\n"));
-
-   return bRet;
-}
-
-bool MainFrame::DoFileSaveAs()
-{
-   ScriptingPhotoModeView* pView = GetScriptingView();
-   if (pView == nullptr)
-      return false;
-
-   bool bRet = pView->DoFileSaveAs();
-   if (bRet)
-   {
-      UpdateTitle();
-
-      m_mru.AddToList(pView->GetFilePath());
-      m_mru.WriteToRegistry(c_pszSettingsRegkey);
-   }
-
-   return bRet;
-}
-
 void MainFrame::UpdateTitle()
 {
    CString cszTitle(MAKEINTRESOURCE(IDR_MAINFRAME));
 
-   ScriptingPhotoModeView* pView = GetScriptingView();
-   if (pView != nullptr)
-   {
-      m_bScriptingFileModified = pView->IsModified();
-
-      // app title + scripting file title
-      cszTitle.AppendFormat(_T(" - [%s%s]"),
-         pView->GetFilePath().GetString(),
-         m_bScriptingFileModified ? _T("*") : _T(""));
-   }
-   else
    // connected?
    if (IsConnected())
    {
@@ -559,40 +377,6 @@ void MainFrame::SetupStatusBar()
    // set status bar pane widths using local workaround
    int arrWidths[] = { 0, 150 };
    SetPaneWidths(arrWidths, sizeof(arrWidths) / sizeof(int));
-}
-
-void MainFrame::UIUpdateAll()
-{
-   ScriptingPhotoModeView* pView = GetScriptingView();
-   if (pView != nullptr)
-   {
-      UIEnable(ID_EDIT_PASTE, pView->CanPaste());
-      UIEnable(ID_EDIT_UNDO, pView->CanUndo());
-      UIEnable(ID_EDIT_REDO, pView->CanRedo());
-
-      bool bSel = pView->IsTextSelected();
-		UIEnable(ID_EDIT_CUT, bSel);
-		UIEnable(ID_EDIT_COPY, bSel);
-		UIEnable(ID_EDIT_CLEAR, bSel);
-
-      UIEnable(ID_FILE_SAVE, pView->IsModified());
-      UIEnable(ID_FILE_SAVE_AS, pView->IsModified());
-
-	   bool bModified = pView->IsModified();
-	   if (bModified != m_bScriptingFileModified)
-	   {
-		   m_bScriptingFileModified = bModified;
-		   UpdateTitle();
-	   }
-   }
-   else
-   {
-      UIEnable(ID_EDIT_PASTE, FALSE);
-      UIEnable(ID_EDIT_UNDO, FALSE);
-      UIEnable(ID_EDIT_REDO, FALSE);
-      UIEnable(ID_FILE_SAVE, FALSE);
-      UIEnable(ID_FILE_SAVE_AS, FALSE);
-   }
 }
 
 std::shared_ptr<RemoteReleaseControl> MainFrame::StartRemoteReleaseControl(bool bStart)
@@ -768,34 +552,6 @@ void MainFrame::SetPaneWidths(int* arrWidths, int nPanes)
 
    // set the pane widths
    m_statusBar.SetParts(m_statusBar.m_nPanes, arrWidths);
-}
-
-ScriptingPhotoModeView* MainFrame::GetScriptingView() throw()
-{
-   ScriptingPhotoModeView* pView = dynamic_cast<ScriptingPhotoModeView*>(m_upView.get());
-   return pView;
-}
-
-BOOL MainFrame::ChainScriptingViewCommandMessage(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT& lResult)
-{
-   ScriptingPhotoModeView* pView = GetScriptingView();
-
-   if (pView == nullptr)
-      return FALSE;
-
-   return pView->ProcessWindowMessage(hWnd, uMsg, wParam, lParam, lResult);
-}
-
-void MainFrame::EnsureScriptingView()
-{
-   if (GetScriptingView() == nullptr)
-   {
-      SetNewView(viewScripting);
-      ATLASSERT(GetScriptingView() != nullptr);
-
-      //UIEnable(ID_TAB_SCRIPTING, TRUE);
-      //SendMessage(WM_COMMAND, ID_TAB_SCRIPTING, 0);
-   }
 }
 
 void MainFrame::OnStateEvent(RemoteReleaseControl::T_enStateEvent enStateEvent, unsigned int uiExtraData)

@@ -49,6 +49,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LuaScripting.UnitTest", "Lu
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lua", "LuaScripting\lua-5.2.3\Lua.vcxproj", "{24EA638C-0F97-48FA-82D1-7DBA2832C1DC}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RemoteScriptingEditor", "RemoteScriptingEditor\RemoteScriptingEditor.vcxproj", "{4A6E0938-3C68-44A8-A94A-EA879801D3D5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -107,6 +109,10 @@ Global
 		{24EA638C-0F97-48FA-82D1-7DBA2832C1DC}.Debug|Win32.Build.0 = Debug|Win32
 		{24EA638C-0F97-48FA-82D1-7DBA2832C1DC}.Release|Win32.ActiveCfg = Release|Win32
 		{24EA638C-0F97-48FA-82D1-7DBA2832C1DC}.Release|Win32.Build.0 = Release|Win32
+		{4A6E0938-3C68-44A8-A94A-EA879801D3D5}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4A6E0938-3C68-44A8-A94A-EA879801D3D5}.Debug|Win32.Build.0 = Debug|Win32
+		{4A6E0938-3C68-44A8-A94A-EA879801D3D5}.Release|Win32.ActiveCfg = Release|Win32
+		{4A6E0938-3C68-44A8-A94A-EA879801D3D5}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

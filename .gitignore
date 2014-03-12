@@ -45,3 +45,6 @@ src/RemotePhotoTool/res/MainFrameRibbon.bml
 src/RemotePhotoTool/res/MainFrameRibbon.h
 src/RemotePhotoTool/res/MainFrameRibbon.rc
 src/cppcheck/cppcheck.txt
+src/RemoteScriptingEditor/res/Ribbon.bml
+src/RemoteScriptingEditor/res/Ribbon.h
+src/RemoteScriptingEditor/res/Ribbon.rc
