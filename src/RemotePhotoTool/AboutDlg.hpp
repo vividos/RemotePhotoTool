@@ -2,7 +2,7 @@
 // RemotePhotoTool - remote camera control software
 // Copyright (C) 2008-2014 Michael Fink
 //
-/// \file AboutDlg.hpp About dialog
+/// \file RemotePhotoTool\AboutDlg.hpp About dialog for remote photo tool
 //
 #pragma once
 
