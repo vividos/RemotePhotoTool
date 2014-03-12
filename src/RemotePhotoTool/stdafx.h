@@ -9,20 +9,8 @@
 // compile for Windows 7 target to have Ribbon code available
 #define _WIN32_WINNT _WIN32_WINNT_WIN7
 
+// WTL includes
 #include "Wtl.hpp"
-
-// additional WTL includes
-#define _WTL_NO_WTYPES
-
-// ignore prefast warnings in atlribbon.h header file
-#pragma prefast(push)
-#pragma prefast(disable: 6011 6509 6518)
-
-#define max(x,y) ((x) > (y) ? (y) : (x))
-#include <atlribbon.h>
-#undef max
-
-#pragma prefast(pop)
 
 // Standard C++ Library includes
 #include <vector>

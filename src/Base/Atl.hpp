@@ -11,6 +11,7 @@
 // exclude rarely-used stuff from Windows headers
 #define WIN32_LEAN_AND_MEAN
 #define VC_EXTRALEAN
+#define ATL_NO_LEAN_AND_MEAN
 
 // no min-max macors, we use std::min / std::max instead
 #define NOMINMAX
@@ -23,14 +24,11 @@
 #include <atlbase.h>
 #include <atlstr.h>
 #define _WTL_NO_CSTRING // don't use WTL CString
+#define _WTL_NO_WTYPES
 #include <atltypes.h>
 #include <atlwin.h>
 
 #pragma prefast(pop)
-
-// undef the macros so that std::min and std::max work as they should be
-#undef min
-#undef max
 
 // link to static ATL libs
 #ifdef _DEBUG
@@ -38,4 +36,30 @@
 #else
    #pragma comment(lib, "atls.lib")
 #endif
-#pragma comment(lib, "atlthunk.lib")
+
+#if (_ATL_VER < 0x0800)
+   #pragma comment(linker, "/NODEFAULTLIB:atlthunk.lib")
+
+   namespace ATL
+   {
+      inline void * __stdcall __AllocStdCallThunk()
+      {
+         return ::HeapAlloc(::GetProcessHeap(), 0, sizeof(_stdcallthunk));
+      }
+
+      inline void __stdcall __FreeStdCallThunk(void *p)
+      {
+         ::HeapFree(::GetProcessHeap(), 0, p);
+      }
+   };
+#else
+    // for _stdcallthunk
+    #include <atlstdthunk.h>
+
+// for #pragma prefast
+    #ifndef _PREFAST_
+      #pragma warning(disable:4068)
+    #endif
+
+    #pragma comment(lib, "atlthunk.lib")
+#endif

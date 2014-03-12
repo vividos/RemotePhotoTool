@@ -36,6 +36,7 @@ extern CAppModule _Module; ///< app module
 #include <shellapi.h> // needed for ShellExecute, used in atlctrlx.h
 #include <atlctrlx.h>
 #include <atlddx.h>
+#include <atlribbon.h>
 
 #pragma prefast(pop)
 
