@@ -9,6 +9,10 @@
     <LibraryPath>D:\devel\packages\atl71\lib\i386;$(LibraryPath)</LibraryPath>
     <_PropertySheetDisplayName>atl71-x86</_PropertySheetDisplayName>
   </PropertyGroup>
-  <ItemDefinitionGroup />
+  <ItemDefinitionGroup>
+    <Link>
+      <AdditionalOptions>/ignore:4254 /ignore:4078 %(AdditionalOptions)</AdditionalOptions>
+    </Link>
+  </ItemDefinitionGroup>
   <ItemGroup />
 </Project>
