@@ -236,11 +236,11 @@ FuncData& FuncData::GetSelf(lua_State* L)
 
    FuncData** ppFuncData = reinterpret_cast<FuncData**>(p);
    if (ppFuncData == nullptr)
-      throw Lua::Exception(_T("function call without allocated FuncData"), L);
+      throw Lua::Exception(_T("function call without allocated FuncData"), L, __FILE__, __LINE__);
 
    FuncData* pFuncData = *ppFuncData;
    if (pFuncData == nullptr)
-      throw Lua::Exception(_T("function call without set FuncData"), L);
+      throw Lua::Exception(_T("function call without set FuncData"), L, __FILE__, __LINE__);
 
    return *pFuncData;
 }
@@ -274,7 +274,7 @@ int FuncData::OnFunctionGarbageCollect(lua_State* L)
 
    FuncData** ppFuncData = reinterpret_cast<FuncData**>(p);
    if (ppFuncData == nullptr)
-      throw Lua::Exception(_T("garbage collecting c closure without allocated FuncData"), L);
+      throw Lua::Exception(_T("garbage collecting c closure without allocated FuncData"), L, __FILE__, __LINE__);
 
    delete *ppFuncData;
    *ppFuncData = nullptr;
@@ -459,7 +459,7 @@ std::vector<Value> Table::CallFunction(const CString& cszName,
 
    lua_getfield(L, m_iStackIndex, CStringA(cszName).GetString());
    if (!lua_isfunction(L, -1))
-      throw Lua::Exception(_T("function not found: ") + cszName, L);
+      throw Lua::Exception(_T("function not found: ") + cszName, L, __FILE__, __LINE__);
 
    // add table as first argument
    lua_pushvalue(L, m_iStackIndex);
@@ -519,7 +519,7 @@ std::vector<Value> State::CallFunction(const CString& cszName, int iResults, con
 
    lua_getglobal(L, CStringA(cszName).GetString());
    if (!lua_isfunction(L, -1))
-      throw Lua::Exception(_T("function not found: ") + cszName, L);
+      throw Lua::Exception(_T("function not found: ") + cszName, L, __FILE__, __LINE__);
 
    std::for_each(vecParam.begin(), vecParam.end(), [&](const Value& value){ value.Push(*this); });
 
@@ -553,7 +553,7 @@ Table State::GetTable(const CString& cszName)
 
    lua_getglobal(L, CStringA(cszName).GetString());
    if (!lua_istable(L, -1))
-      throw Lua::Exception(_T("table not found: ") + cszName, L);
+      throw Lua::Exception(_T("table not found: ") + cszName, L, __FILE__, __LINE__);
 
    return Table(*this, -1, true);
 }
@@ -565,7 +565,7 @@ int State::OnLuaPanic(lua_State* L)
    CString cszErrorMessage = lua_tostring(L, -1);
    ATLTRACE(_T("Lua Panic: %s\n"), cszErrorMessage.GetString());
 
-   throw Lua::Exception(cszErrorMessage, L);
+   throw Lua::Exception(cszErrorMessage, L, __FILE__, __LINE__);
 }
 
 void State::TraceStack(lua_State* L)

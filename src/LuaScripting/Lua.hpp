@@ -29,14 +29,18 @@ class Exception: public ::Exception
 
 public:
    /// ctor; with message
-   Exception(const CString& cszMessage, lua_State* L)
-      :Base(MessageFromState(cszMessage, L), "", 0)
+   Exception(const CString& cszMessage, lua_State* L, LPCSTR pszaFile, UINT uiLine)
+      :Base(MessageFromState(cszMessage, L), pszaFile, uiLine),
+       m_cszLuaErrorMessage(cszMessage),
+       m_cszLuaSourceFile(pszaFile),
+       m_uiLuaLineNumber(uiLine)
    {
    }
 
    /// ctor; with message and Lua error string
    Exception(const CString& cszMessage, LPCSTR pszaLuaError, lua_State* L)
-      :Base(MessageFromState(cszMessage, L), "", 0)
+      :Base(MessageFromState(cszMessage, L), "", 0),
+       m_uiLuaLineNumber(0)
    {
       ParseLuaError(pszaLuaError);
    }
