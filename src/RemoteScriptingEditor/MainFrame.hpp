@@ -8,6 +8,7 @@
 
 // includes
 #include "LuaScriptEditorView.hpp"
+#include "CameraScriptProcessor.hpp"
 
 /// \brief application main frame
 /// \details uses ribbon for commands
@@ -70,6 +71,8 @@ private:
       COMMAND_ID_HANDLER(ID_FILE_SAVE_AS, OnFileSaveAs)
       COMMAND_RANGE_HANDLER(ID_FILE_MRU_FIRST, ID_FILE_MRU_LAST, OnFileRecent)
       COMMAND_ID_HANDLER(ID_VIEW_RIBBON, OnViewRibbon)
+      COMMAND_ID_HANDLER(ID_SCRIPT_RUN, OnScriptRun)
+      COMMAND_ID_HANDLER(ID_SCRIPT_STOP, OnScriptStop)
       CHAIN_MSG_MAP(CRibbonFrameWindowImpl<MainFrame>)
       CHAIN_MSG_MAP_MEMBER(m_view)
    END_MSG_MAP()
@@ -90,6 +93,8 @@ private:
    LRESULT OnFileRecent(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
    LRESULT OnViewRibbon(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
    LRESULT OnAppAbout(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   LRESULT OnScriptRun(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   LRESULT OnScriptStop(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 
    /// sets up command bar
    void SetupCmdBar();
@@ -115,11 +120,17 @@ private:
    /// carries out "file | open" operation
    bool DoFileOpen(LPCTSTR lpstrFileName, LPCTSTR lpstrFileTitle);
 
+   /// carries out "file | save" operation
+   bool DoFileSave();
+
    /// carries out "file | save as" operation
    bool DoFileSaveAs();
 
    /// updates window title
    void UpdateTitle();
+
+   /// called when debug string is output
+   void OnOutputDebugString(const CString& cszText);
 
 private:
    // UI
@@ -144,6 +155,9 @@ private:
 
 
    // model
+
+   /// camera script processor
+   CameraScriptProcessor m_processor;
 
    /// when showing the scripting view, this tracks if the currently open file has been modified
    bool m_bScriptingFileModified;

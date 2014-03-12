@@ -12,6 +12,7 @@
 #include "AboutDlg.hpp"
 #include "LuaScriptEditorView.hpp"
 #include "MainFrame.hpp"
+#include "Lua.hpp"
 
 extern LPCTSTR g_pszLuaScriptingFilter;
 
@@ -27,6 +28,8 @@ LPCTSTR c_pszSettingsRegkey = _T("Software\\RemoteScriptingEditor");
 MainFrame::MainFrame() throw()
 :m_bScriptingFileModified(false)
 {
+   m_processor.SetOutputDebugStringHandler(
+      std::bind(&MainFrame::OnOutputDebugString, this, std::placeholders::_1));
 }
 
 BOOL MainFrame::PreTranslateMessage(MSG* pMsg)
@@ -142,24 +145,7 @@ LRESULT MainFrame::OnFileOpen(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl
 
 LRESULT MainFrame::OnFileSave(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
-   if (!m_view.GetFilePath().IsEmpty())
-   {
-      if (m_view.Save(m_view.GetFilePath()))
-      {
-         m_mru.AddToList(m_view.GetFilePath());
-         m_mru.WriteToRegistry(c_pszSettingsRegkey);
-
-         UpdateTitle();
-      }
-      else
-      {
-         MessageBox(_T("Error writing file!\n"));
-      }
-   }
-   else
-   {
-      DoFileSaveAs();
-   }
+   DoFileSave();
 
    return 0;
 }
@@ -219,6 +205,47 @@ LRESULT MainFrame::OnViewRibbon(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndC
    return 0;
 }
 
+LRESULT MainFrame::OnScriptRun(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+   if (!DoFileSave())
+      return 0;
+
+   {
+      CString cszText;
+      cszText.Format(_T("Start executing file %s...\n\n"),
+         m_view.GetFilePath().GetString());
+
+      m_ecOutputWindow.SetText(CStringA(cszText));
+   }
+
+   m_processor.Stop();
+
+   try
+   {
+      m_processor.LoadScript(m_view.GetFilePath());
+
+      m_processor.Run();
+   }
+   catch (const Lua::Exception& ex)
+   {
+      CString cszText;
+      cszText.Format(_T("%s(%u): %s"),
+         ex.LuaSourceFile().GetString(),
+         ex.LuaLineNumber(),
+         ex.LuaErrorMessage().GetString());
+
+      OnOutputDebugString(cszText);
+   }
+
+   return 0;
+}
+
+LRESULT MainFrame::OnScriptStop(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+   m_processor.Stop();
+   return 0;
+}
+
 void MainFrame::DoFileNew()
 {
    if (m_view.QueryClose())
@@ -241,6 +268,31 @@ bool MainFrame::DoFileOpen(LPCTSTR lpstrFileName, LPCTSTR lpstrFileTitle)
       MessageBox(_T("Error reading file!\n"));
 
    return bRet;
+}
+
+bool MainFrame::DoFileSave()
+{
+   if (!m_view.GetFilePath().IsEmpty())
+   {
+      if (m_view.Save(m_view.GetFilePath()))
+      {
+         m_mru.AddToList(m_view.GetFilePath());
+         m_mru.WriteToRegistry(c_pszSettingsRegkey);
+
+         UpdateTitle();
+      }
+      else
+      {
+         MessageBox(_T("Error writing file!\n"));
+         return false;
+      }
+   }
+   else
+   {
+      return DoFileSaveAs();
+   }
+
+   return true;
 }
 
 bool MainFrame::DoFileSaveAs()
@@ -389,7 +441,14 @@ void MainFrame::SetupOutputPane()
    m_ecOutputWindow.StyleSetFont(STYLE_DEFAULT, "Courier New");
    m_ecOutputWindow.StyleSetSize(STYLE_DEFAULT, 11);
    m_ecOutputWindow.SetLexer(SCLEX_LUA);
-   m_ecOutputWindow.SetReadOnly(true);
 
-   m_ecOutputWindow.SetText("Ready.");
+   m_ecOutputWindow.SetText("Ready.\n");
+}
+
+void MainFrame::OnOutputDebugString(const CString& cszText)
+{
+   CStringA cszaText(cszText);
+   m_ecOutputWindow.AppendText(cszaText.GetString(), cszaText.GetLength());
+
+   m_ecOutputWindow.ScrollToLine(m_ecOutputWindow.GetLineCount());
 }
