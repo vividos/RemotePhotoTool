@@ -53,7 +53,7 @@
       </ComponentGroup>
      <!-- ***************************************** -->
 
-     <!-- ComponentGroup Id="CdsdkFiles">
+     <ComponentGroup Id="CdsdkFiles">
        <Component Id="CDPROCMN.exe" Guid="{875023FC-C08A-45AB-A144-DE2C69A79C58}" Directory="INSTALLDIR">
          <File Id="CDPROCMN.exe" Name="CDPROCMN.exe" DiskId="1" KeyPath="yes" Source="$(var.SourceFolder)\CDPROCMN.exe" />
        </Component>
@@ -93,7 +93,7 @@
        <Component Id="CDPROC.exe" Guid="{EE96D10F-0F1D-432E-9628-11F273D6741E}" Directory="INSTALLDIR">
          <File Id="CDPROC.exe" Name="CDPROC.exe" DiskId="1" KeyPath="yes" Source="$(var.SourceFolder)\CDPROC.exe" />
        </Component>
-     </ComponentGroup -->
+     </ComponentGroup>
      <!-- ***************************************** -->
 
    </Fragment>

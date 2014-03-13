@@ -10,7 +10,7 @@
 #include "Instance.hpp"
 #include "EdsdkCommon.hpp"
 #include "CdsdkCommon.hpp"
-//#include "CdsdkSourceInfoImpl.hpp"
+#include "CdsdkSourceInfoImpl.hpp"
 #include "PsrecCommon.hpp"
 #include "LightweightMutex.hpp"
 #include "BackgroundWorkerThread.hpp"
@@ -75,7 +75,7 @@ private:
 // static members
 
 std::weak_ptr<EDSDK::Ref> Instance::Impl::m_wpEdSdkRef;
-//std::weak_ptr<CDSDK::Ref> Instance::m_wpCdSdkRef;
+std::weak_ptr<CDSDK::Ref> Instance::Impl::m_wpCdSdkRef;
 std::weak_ptr<PSREC::Ref> Instance::Impl::m_wpPsRecRef;
 
 
@@ -85,10 +85,9 @@ std::shared_ptr<Instance::Impl> Instance::Impl::Get()
    if (spEdSdkRef == nullptr)
       m_wpEdSdkRef = spEdSdkRef = EDSDK::RefSp(new EDSDK::Ref);
 
-   CDSDK::RefSp spCdSdkRef;
-   //CDSDK::RefSp spCdSdkRef = m_wpCdSdkRef.lock();
-   //if (spCdSdkRef == nullptr)
-   //   m_wpCdSdkRef = spCdSdkRef = CDSDK::RefSp(new CDSDK::Ref);
+   CDSDK::RefSp spCdSdkRef = m_wpCdSdkRef.lock();
+   if (spCdSdkRef == nullptr)
+      m_wpCdSdkRef = spCdSdkRef = CDSDK::RefSp(new CDSDK::Ref);
 
    PSREC::RefSp spPsRecRef = m_wpPsRecRef.lock();
    if (spPsRecRef == nullptr)
@@ -135,8 +134,8 @@ void Instance::Impl::PollCamera()
 {
    std::vector<std::shared_ptr<SourceInfo>> vecSourceDevices;
 
-   //// note: CDSDK shows wait cursor for a small time
-   //m_spCdSdkRef->EnumerateDevices(vecSourceDevices);
+   // note: CDSDK shows wait cursor for a small time
+   m_spCdSdkRef->EnumerateDevices(vecSourceDevices);
    m_spPsRecRef->EnumerateDevices(vecSourceDevices);
 
    size_t uiPollNumDevices = vecSourceDevices.size();
@@ -181,7 +180,7 @@ CString Instance::Version() const
    CString cszVersionText;
    m_spImpl->m_spEdSdkRef->AddVersionText(cszVersionText);
    m_spImpl->m_spPsRecRef->AddVersionText(cszVersionText);
-   //m_spImpl->m_spCdSdkRef->AddVersionText(cszVersionText);
+   m_spImpl->m_spCdSdkRef->AddVersionText(cszVersionText);
 
    return cszVersionText;
 }
@@ -230,7 +229,7 @@ void Instance::AsyncWaitForCamera(T_fnOnCameraAdded fnOnCameraAdded)
 
 void Instance::EnumerateDevices(std::vector<std::shared_ptr<SourceInfo>>& vecSourceDevices) const
 {
-   //m_spImpl->m_spCdSdkRef->EnumerateDevices(vecSourceDevices);
+   m_spImpl->m_spCdSdkRef->EnumerateDevices(vecSourceDevices);
    m_spImpl->m_spEdSdkRef->EnumerateDevices(vecSourceDevices);
    m_spImpl->m_spPsRecRef->EnumerateDevices(vecSourceDevices);
 }

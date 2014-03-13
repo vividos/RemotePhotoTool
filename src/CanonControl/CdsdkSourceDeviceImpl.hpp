@@ -11,7 +11,7 @@
 #include "CdsdkCommon.hpp"
 #include "CdsdkRemoteReleaseControlImpl.hpp"
 #include "CdsdkPropertyAccess.hpp"
-#include "CdsdkDevicePropertyImpl.hpp"
+//#include "CdsdkDevicePropertyImpl.hpp"
 
 namespace CDSDK
 {

@@ -65,7 +65,7 @@
     <Lib>
       <AdditionalOptions>/IGNORE:4006 /IGNORE:4221 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalLibraryDirectories>$(SolutionDir)\Thirdparty\CDSDK\lib;$(SolutionDir)\Thirdparty\EDSDK\Library;$(SolutionDir)\Thirdparty\PSREC\PSReCSDK\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>edsdk.lib;prsdk.lib</AdditionalDependencies>
+      <AdditionalDependencies>edsdk.lib;prsdk.lib;cdsdk.lib</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -79,7 +79,7 @@
     <Lib>
       <AdditionalOptions>/IGNORE:4006 /IGNORE:4221 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalLibraryDirectories>$(SolutionDir)\Thirdparty\CDSDK\lib;$(SolutionDir)\Thirdparty\EDSDK\Library;$(SolutionDir)\Thirdparty\PSREC\PSReCSDK\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>edsdk.lib;prsdk.lib</AdditionalDependencies>
+      <AdditionalDependencies>edsdk.lib;prsdk.lib;cdsdk.lib</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -102,10 +102,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Variant.cpp" />
-    <ClCompile Include="CdsdkCommon.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="CdsdkCommon.cpp" />
     <ClCompile Include="PsrecCommon.cpp" />
   </ItemGroup>
   <ItemGroup>

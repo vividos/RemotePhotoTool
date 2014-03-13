@@ -27,7 +27,6 @@ add reading out of number of all shots taken
 
 CDSDK
 -----
-Reactivate code
 Implement device and image properties
 Implement viewfinder
 
