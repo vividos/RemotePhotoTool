@@ -121,8 +121,8 @@ private:
    /// instance:asyncWaitForCamera(callbackFunction)
    std::vector<Lua::Value> InstanceAsyncWaitForCamera(const std::vector<Lua::Value>& vecParams)
    {
-      if (vecParams.size() != 1)
-         throw Lua::Exception(_T("instance:asyncWaitForCamera() needs callback parameter"), GetState().GetState());
+      if (vecParams.size() != 1 && vecParams.size() != 2)
+         throw Lua::Exception(_T("instance:asyncWaitForCamera() needs callback parameter"), GetState().GetState(), __FILE__, __LINE__);
 
       // TODO
 
