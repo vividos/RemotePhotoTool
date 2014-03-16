@@ -83,7 +83,10 @@
     <ClCompile Include="ImageFormat.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CdsdkPropertyAccess.cpp">
+    <ClCompile Include="CdsdkDevicePropertyAccess.cpp">
+      <Filter>CDSDK Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CdsdkImagePropertyAccess.cpp">
       <Filter>CDSDK Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -125,9 +128,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CdsdkCommon.hpp">
-      <Filter>CDSDK Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CdsdkPropertyAccess.hpp">
       <Filter>CDSDK Files</Filter>
     </ClInclude>
     <ClInclude Include="CdsdkRemoteReleaseControlImpl.hpp">
@@ -246,6 +246,12 @@
     </ClInclude>
     <ClInclude Include="BackgroundTimer.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CdsdkDevicePropertyAccess.hpp">
+      <Filter>CDSDK Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CdsdkImagePropertyAccess.hpp">
+      <Filter>CDSDK Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

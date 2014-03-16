@@ -10,8 +10,7 @@
 #include "SourceDevice.hpp"
 #include "CdsdkCommon.hpp"
 #include "CdsdkRemoteReleaseControlImpl.hpp"
-#include "CdsdkPropertyAccess.hpp"
-//#include "CdsdkDevicePropertyImpl.hpp"
+#include "CdsdkDevicePropertyAccess.hpp"
 
 namespace CDSDK
 {
@@ -34,7 +33,6 @@ public:
    {
       cdError err = CDCloseSource(m_hSource);
       LOG_TRACE(_T("CDCloseSource(%08x) returned %08x\n"), m_hSource, err);
-      //CheckError(_T("CDCloseSource"), err, __FILE__, __LINE__);
    }
 
    virtual bool GetDeviceCapability(SourceDevice::T_enDeviceCapability enDeviceCapability) const override

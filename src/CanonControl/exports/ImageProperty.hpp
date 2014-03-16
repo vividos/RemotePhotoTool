@@ -33,6 +33,7 @@ enum T_enImagePropertyType
    propAvailableShots = 16, ///< number of available shots
    propSaveTo = 17,
    propBatteryLevel = 18,
+   propImageFormat = 19,
 
    propUnknown = 100
 };

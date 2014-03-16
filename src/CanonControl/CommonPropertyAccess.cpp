@@ -9,6 +9,27 @@
 #include "stdafx.h"
 #include "CommonPropertyAccess.hpp"
 
+static unsigned int GetUnsignedIntValue(const Variant value)
+{
+   unsigned int uiValue = 0;
+
+   if (value.Type() == Variant::typeUInt8)
+      uiValue = value.Get<unsigned char>();
+   else
+   if (value.Type() == Variant::typeUInt16)
+      uiValue = value.Get<unsigned short>();
+   else
+   if (value.Type() == Variant::typeUInt32)
+      uiValue = value.Get<unsigned int>();
+   else
+   if (value.Type() == Variant::typeInt32)
+      uiValue = static_cast<unsigned int>(value.Get<int>());
+   else
+      ATLASSERT(false);
+
+   return uiValue;
+}
+
 bool FormatValueById(PropIdDisplayInfo* aDispInfo, size_t uiDispInfoSize, unsigned int propertyId, Variant value, CString& cszValue)
 {
    for (size_t i=0; i<uiDispInfoSize; i++)
@@ -18,20 +39,7 @@ bool FormatValueById(PropIdDisplayInfo* aDispInfo, size_t uiDispInfoSize, unsign
 
       const PropIdPossibleValues* possibleValues = aDispInfo[i].possibleValues;
 
-      unsigned int uiValue = 0;
-      if (value.Type() == Variant::typeUInt8)
-         uiValue = value.Get<unsigned char>();
-      else
-      if (value.Type() == Variant::typeUInt16)
-         uiValue = value.Get<unsigned short>();
-      else
-      if (value.Type() == Variant::typeUInt32)
-         uiValue = value.Get<unsigned int>();
-      else
-      if (value.Type() == Variant::typeInt32)
-         uiValue = static_cast<unsigned int>(value.Get<int>());
-      else
-         ATLASSERT(false);
+      unsigned int uiValue = GetUnsignedIntValue(value);
 
       for (size_t j=0; possibleValues[j].pszText != nullptr; j++)
       {
@@ -53,17 +61,17 @@ bool FormatValueById(PropIdDisplayInfo* aDispInfo, size_t uiDispInfoSize, unsign
 
 CString FormatApexValue(Variant value)
 {
-   unsigned int uiAperture = 0;
-
-   if (value.Type() == Variant::typeUInt16)
-      uiAperture = value.Get<unsigned short>();
-   else
-   if (value.Type() == Variant::typeUInt32)
-      uiAperture = value.Get<unsigned int>();
+   unsigned int uiAperture = GetUnsignedIntValue(value);
 
    // special values
    switch(uiAperture)
    {
+   case 0x0000: return _T("No lens");
+   case 0xffff: return _T("N/A");
+   case 0x7fff: return _T("Open");
+   case 0x7ffe: return _T("Av max");
+
+      // values that would be calculated wrong by below algorithm
    case 0x25: return _T("f/3.5");
    case 0x33: return _T("f/6.3");
    case 0x43: return _T("f/13");
@@ -121,13 +129,7 @@ CString FormatApexValue(Variant value)
 
 CString FormatShutterSpeedValue(Variant value)
 {
-   unsigned int uiShutterSpeed = 0;;
-
-   if (value.Type() == Variant::typeUInt16)
-      uiShutterSpeed = value.Get<unsigned short>();
-   else
-   if (value.Type() == Variant::typeUInt32)
-      uiShutterSpeed = value.Get<unsigned int>();
+   unsigned int uiShutterSpeed = GetUnsignedIntValue(value);
 
    switch(uiShutterSpeed)
    {
@@ -206,6 +208,7 @@ CString FormatShutterSpeedValue(Variant value)
    case 0x9c: return _T("1/6000");
    case 0x9d: return _T("1/64000");
    case 0xa0: return _T("1/8000");
+   case 0xffff: return _T("N/A");
 
    default:
       ATLASSERT(false);
@@ -217,13 +220,7 @@ CString FormatShutterSpeedValue(Variant value)
 
 CString FormatIsoValue(Variant value)
 {
-   unsigned int uiIso = 0;
-
-   if (value.Type() == Variant::typeUInt16)
-      uiIso = value.Get<unsigned short>();
-   else
-   if (value.Type() == Variant::typeUInt32)
-      uiIso = value.Get<unsigned int>();
+   unsigned int uiIso = GetUnsignedIntValue(value);
 
    switch(uiIso)
    {
@@ -233,6 +230,9 @@ CString FormatIsoValue(Variant value)
    case 0x38: return _T("25");
    case 0x43: return _T("64");
    case 0x45: return _T("80");
+   case 0xffff:
+   case 0xffffffff:
+      return _T("Invalid");
    default:
       if (uiIso >= 0x48 && uiIso <= 0x78)
       {
@@ -261,13 +261,7 @@ CString FormatCompensationValue(Variant value, bool bIsEdsdk)
    // PSREC is the same as CDSDK
    // EDSDK = 0x18 - CDSDK
 
-   unsigned int uiComp = 0;
-
-   if (value.Type() == Variant::typeUInt8)
-      uiComp = value.Get<unsigned char>();
-   else
-   if (value.Type() == Variant::typeUInt32)
-      uiComp = value.Get<unsigned int>();
+   unsigned int uiComp = GetUnsignedIntValue(value);
 
    int iValue = bIsEdsdk ? int(char(uiComp)) : 0x18 - int(uiComp);
    if (iValue == 0)

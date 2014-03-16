@@ -83,7 +83,8 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="CdsdkPropertyAccess.cpp" />
+    <ClCompile Include="CdsdkDevicePropertyAccess.cpp" />
+    <ClCompile Include="CdsdkImagePropertyAccess.cpp" />
     <ClCompile Include="CommonPropertyAccess.cpp" />
     <ClCompile Include="ImageFormat.cpp" />
     <ClCompile Include="Instance.cpp" />
@@ -120,6 +121,7 @@
     <ClInclude Include="..\Thirdparty\PSREC\PSReCSDK\inc\prType.h" />
     <ClInclude Include="BackgroundTimer.hpp" />
     <ClInclude Include="BackgroundWorkerThread.hpp" />
+    <ClInclude Include="CdsdkDevicePropertyAccess.hpp" />
     <ClInclude Include="CommonPropertyAccess.hpp" />
     <ClInclude Include="exports\BulbReleaseControl.hpp" />
     <ClInclude Include="exports\Instance.hpp" />
@@ -140,7 +142,7 @@
     <ClInclude Include="PsrecViewfinderImpl.hpp" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="CdsdkCommon.hpp" />
-    <ClInclude Include="CdsdkPropertyAccess.hpp" />
+    <ClInclude Include="CdsdkImagePropertyAccess.hpp" />
     <ClInclude Include="CdsdkRemoteReleaseControlImpl.hpp" />
     <ClInclude Include="CdsdkSourceDeviceImpl.hpp" />
     <ClInclude Include="CdsdkSourceInfoImpl.hpp" />

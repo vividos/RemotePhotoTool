@@ -9,7 +9,7 @@
 // includes
 #include "RemoteReleaseControl.hpp"
 #include "CdsdkCommon.hpp"
-#include "CdsdkPropertyAccess.hpp"
+#include "CdsdkImagePropertyAccess.hpp"
 #include "CdsdkViewfinderImpl.hpp"
 #include "Observer.hpp"
 
@@ -24,7 +24,8 @@ class RemoteReleaseControlImpl: public RemoteReleaseControl
 public:
    /// ctor
    RemoteReleaseControlImpl(std::shared_ptr<SourceDeviceImpl> spSourceDevice)
-      :m_spSourceDevice(spSourceDevice)
+      :m_spSourceDevice(spSourceDevice),
+       m_uiBatteryLevel(BATTERY_LEVEL_NORMAL)
    {
    }
 
@@ -36,7 +37,6 @@ public:
       // may return cdINVALID_HANDLE, cdINVALID_FN_CALL
       cdError err = CDExitReleaseControl(hSource);
       LOG_TRACE(_T("CDExitReleaseControl(%08x) returned %08x\n"), hSource, err);
-//      CheckError(_T("CDExitReleaseControl"), err, __FILE__, __LINE__); // as dtor is throw()
    }
 
    /// returns source device
@@ -83,9 +83,9 @@ public:
             ATLASSERT(false);
          }
       }
-      catch(const CameraException& e)
+      catch(const CameraException& ex)
       {
-         e; // TODO logging
+         LOG_TRACE(_T("CameraException during GetCapability: %s\n"), ex.Message());
       }
       return false;
    }
@@ -125,34 +125,67 @@ public:
       m_subjectDownloadEvent.Remove(iHandlerId);
    }
 
-   virtual unsigned int MapImagePropertyTypeToId(T_enImagePropertyType /*enImagePropertyType*/) const override
+   virtual unsigned int MapImagePropertyTypeToId(T_enImagePropertyType enImagePropertyType) const override
    {
-      // TODO
-      return 0;
+      return ImagePropertyAccess::MapToPropertyID(enImagePropertyType);
    }
 
-   virtual ImageProperty MapShootingModeToImagePropertyValue(RemoteReleaseControl::T_enShootingMode /*enShootingMode*/) const override
+   virtual ImageProperty MapShootingModeToImagePropertyValue(RemoteReleaseControl::T_enShootingMode enShootingMode) const override
    {
-      // TODO
-      return GetImageProperty(0);
+      cdShootingMode shootingMode = cdSHOOTING_MODE_INVALID;
+      switch (enShootingMode)
+      {
+      case RemoteReleaseControl::shootingModeP:    shootingMode = cdSHOOTING_MODE_PROGRAM; break;
+      case RemoteReleaseControl::shootingModeTv:   shootingMode = cdSHOOTING_MODE_TV; break;
+      case RemoteReleaseControl::shootingModeAv:   shootingMode = cdSHOOTING_MODE_AV; break;
+      case RemoteReleaseControl::shootingModeM:    shootingMode = cdSHOOTING_MODE_MANUAL; break;
+      default:
+         ATLASSERT(false);
+         break;
+      }
+
+      Variant value;
+      value.Set(shootingMode);
+      value.SetType(Variant::typeUInt16);
+
+      return ImageProperty(variantCdsdk, MapImagePropertyTypeToId(propShootingMode), value, true);
    }
 
    virtual std::vector<unsigned int> EnumImageProperties() const override
    {
-      // TODO
-      return std::vector<unsigned int>();
+      cdHSource hSource = GetSource();
+
+      ImagePropertyAccess p(hSource);
+
+      return p.EnumImageProperties();
    }
 
    virtual ImageProperty GetImageProperty(unsigned int uiImageProperty) const override
    {
+      // special case: since battery level can only be obtained by listening to events,
+      // return the last known battery level here
+      if (uiImageProperty == MapImagePropertyTypeToId(propBatteryLevel))
+      {
+         Variant value;
+
+         value.Set(m_uiBatteryLevel);
+         value.SetType(Variant::typeUInt32);
+
+         return ImageProperty(variantCdsdk, uiImageProperty, value, true);
+      }
+
+      // special case: propSaveTo flag
+      if (uiImageProperty == MapImagePropertyTypeToId(propSaveTo))
+      {
+         // TODO
+      }
+
       // get value
       cdHSource hSource = GetSource();
       ImagePropertyAccess p(hSource);
-      // Note: static_cast is wrong here
-      Variant value = p.Get(static_cast<T_enImagePropertyType>(uiImageProperty));
 
-      // TODO
-      bool bReadOnly = false;
+      Variant value = p.Get(uiImageProperty);
+      bool bReadOnly = p.IsReadOnly(uiImageProperty);
 
       // return in image property object
       return ImageProperty(variantCdsdk, uiImageProperty, value, bReadOnly);
@@ -160,26 +193,21 @@ public:
 
    virtual void SetImageProperty(const ImageProperty& imageProperty) override
    {
-      // set new value
       cdHSource hSource = GetSource();
       ImagePropertyAccess p(hSource);
 
-      // Note: static_cast is wrong here
-      p.Set(static_cast<T_enImagePropertyType>(imageProperty.Id()), imageProperty.Value());
+      p.Set(imageProperty.Id(), imageProperty.Value());
    }
 
    virtual void EnumImagePropertyValues(unsigned int uiImageProperty, std::vector<ImageProperty>& vecValues) const override
    {
-      // TODO
       cdHSource hSource = GetSource();
       ImagePropertyAccess p(hSource);
 
       std::vector<Variant> vecRawValues;
-      // Note: static_cast is wrong here
-      p.Enum(static_cast<T_enImagePropertyType>(uiImageProperty), vecRawValues);
+      p.Enum(uiImageProperty, vecRawValues);
 
-      // TODO
-      bool bReadOnly = false;
+      bool bReadOnly = p.IsReadOnly(uiImageProperty);
 
       for (size_t i=0,iMax=vecRawValues.size(); i<iMax; i++)
          vecValues.push_back(ImageProperty(variantCdsdk, uiImageProperty, vecRawValues[i], bReadOnly));
@@ -193,51 +221,7 @@ public:
 
       return std::shared_ptr<Viewfinder>(new ViewfinderImpl(m_spSourceDevice));
    }
-/*
-   static ShootingMode MapShootingMode(cdShootingMode usShootingMode)
-   {
-      // map modes to predefined ones
-      ShootingMode::T_enShootingMode enShootingMode = ShootingMode::shootingModeNA;
-      switch (usShootingMode)
-      {
-      case cdSHOOTING_MODE_AUTO:    enShootingMode = ShootingMode::shootingModeAuto; break;
-      case cdSHOOTING_MODE_PROGRAM: enShootingMode = ShootingMode::shootingModeProgram; break;
-      case cdSHOOTING_MODE_TV:      enShootingMode = ShootingMode::shootingModeTv; break;
-      case cdSHOOTING_MODE_AV:      enShootingMode = ShootingMode::shootingModeAv; break;
-      case cdSHOOTING_MODE_MANUAL:  enShootingMode = ShootingMode::shootingModeManual; break;
-      case cdSHOOTING_MODE_A_DEP:   enShootingMode = ShootingMode::shootingModeAutoDep; break;
 
-      case cdSHOOTING_MODE_NIGHT_SCENE:   enShootingMode = ShootingMode::shootingModeNightScenePortrait; break;
-      case cdSHOOTING_MODE_PORTRAIT:      enShootingMode = ShootingMode::shootingModePortrait; break;
-      case cdSHOOTING_MODE_MACRO:         enShootingMode = ShootingMode::shootingModeCloseUp; break;
-      case cdSHOOTING_MODE_FLASH_OFF:     enShootingMode = ShootingMode::shootingModeFlashOff; break;
-      }
-
-      return ShootingMode(enShootingMode);
-   }
-
-   static cdShootingMode UnmapShootingMode(ShootingMode shootingMode)
-   {
-      cdShootingMode usShootingMode = cdSHOOTING_MODE_INVALID;
-
-      switch (shootingMode.Value())
-      {
-      case ShootingMode::shootingModeAuto:      usShootingMode = cdSHOOTING_MODE_AUTO;        break;
-      case ShootingMode::shootingModeProgram:   usShootingMode = cdSHOOTING_MODE_PROGRAM;     break;
-      case ShootingMode::shootingModeTv:        usShootingMode = cdSHOOTING_MODE_TV;          break;
-      case ShootingMode::shootingModeAv:        usShootingMode = cdSHOOTING_MODE_AV;          break;
-      case ShootingMode::shootingModeManual:    usShootingMode = cdSHOOTING_MODE_MANUAL;      break;
-      case ShootingMode::shootingModeAutoDep:   usShootingMode = cdSHOOTING_MODE_A_DEP;       break;
-
-      case ShootingMode::shootingModeNightScenePortrait:     usShootingMode = cdSHOOTING_MODE_NIGHT_SCENE;   break;
-      case ShootingMode::shootingModePortrait:               usShootingMode = cdSHOOTING_MODE_PORTRAIT;      break;
-      case ShootingMode::shootingModeCloseUp:                usShootingMode = cdSHOOTING_MODE_MACRO;         break;
-      case ShootingMode::shootingModeFlashOff:               usShootingMode = cdSHOOTING_MODE_FLASH_OFF;     break;
-      }
-
-      return usShootingMode;
-   }
-*/
    virtual unsigned int NumAvailableShots() const override
    {
       cdHSource hSource = GetSource();
@@ -283,6 +267,9 @@ private:
 
    /// subject of observer pattern; used for download events
    Subject<void(RemoteReleaseControl::T_enDownloadEvent, unsigned int)> m_subjectDownloadEvent;
+
+   /// last known battery level, severity and type
+   unsigned int m_uiBatteryLevel;
 };
 
 } // namespace CDSDK

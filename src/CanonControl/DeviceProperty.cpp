@@ -8,7 +8,7 @@
 // includes
 #include "stdafx.h"
 #include "DeviceProperty.hpp"
-#include "CdsdkPropertyAccess.hpp"
+#include "CdsdkDevicePropertyAccess.hpp"
 #include "EdsdkPropertyAccess.hpp"
 #include "PsrecPropertyAccess.hpp"
 
@@ -36,7 +36,7 @@ CString DeviceProperty::ValueAsString(Variant value) const throw()
    {
       switch(m_enSDKVariant)
       {
-      case variantCdsdk: return CDSDK::DevicePropertyAccess::ValueFromId(m_uiPropertyId, value);
+      case variantCdsdk: return CDSDK::DevicePropertyAccess::DisplayTextFromIdAndValue(m_uiPropertyId, value);
       case variantEdsdk: return EDSDK::PropertyAccess::DisplayTextFromIdAndValue(static_cast<EdsPropertyID>(m_uiPropertyId), value);
       case variantPsrec: return PSREC::PropertyAccess::DisplayTextFromIdAndValue(static_cast<prUInt16>(m_uiPropertyId & 0xFFFF), value);
       default:

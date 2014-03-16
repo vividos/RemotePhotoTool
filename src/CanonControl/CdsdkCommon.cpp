@@ -88,7 +88,7 @@ void Ref::EnumerateDevices(std::vector<std::shared_ptr<SourceInfo>>& vecSourceDe
    cdUInt32 uiCount = 0;
    cdHEnum hEnum = 0;
 
-   // may return cdINVALID_PARAMETER
+   // may return cdINVALID_PARAMETER, or any exception code
    cdError err = CDEnumDeviceReset_SEH(1, &hEnum);
    LOG_TRACE(_T("CDEnumDeviceReset(1, %08x) returned %08x\n"), hEnum, err);
    CheckError(_T("CDEnumDeviceReset"), err, __FILE__, __LINE__);
