@@ -73,9 +73,7 @@
       <TypeLibraryName>$(IntDir)/RemoteScriptingEditor.tlb</TypeLibraryName>
       <DllDataFileName />
     </Midl>
-    <Link>
-      <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
-    </Link>
+    <Link />
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>

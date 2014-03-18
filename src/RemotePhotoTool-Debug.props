@@ -33,7 +33,7 @@
       <AdditionalLibraryDirectories>$(SolutionDir)\..\lib\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
-      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+      <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
     </Link>
     <BuildLog>
       <Path>$(SolutionDir)..\intermediate\$(Configuration)\$(ProjectName)\$(MSBuildProjectName).log</Path>

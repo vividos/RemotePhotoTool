@@ -59,7 +59,6 @@
     </ClCompile>
     <Link>
       <AdditionalOptions>/ignore:4254 /ignore:4078 %(AdditionalOptions)</AdditionalOptions>
-      <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
