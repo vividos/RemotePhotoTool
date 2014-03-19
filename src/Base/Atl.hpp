@@ -17,8 +17,10 @@
 #define NOMINMAX
 
 // ignore prefast warnings in ATL header files
-#pragma prefast(push)
-#pragma prefast(disable: 6001 6011 6101 6386 6387 6506 6509 6518 28251 28252 28253 28302)
+#ifdef _PREFAST_
+#pragma warning(push)
+#pragma warning(disable: 6001 6011 6101 6386 6387 6506 6509 6518 28251 28252 28253 28302)
+#endif
 
 // ATL includes
 #include <atlbase.h>
@@ -28,7 +30,9 @@
 #include <atltypes.h>
 #include <atlwin.h>
 
-#pragma prefast(pop)
+#ifdef _PREFAST_
+#pragma warning(pop)
+#endif
 
 // link to static ATL libs
 #ifdef _DEBUG
@@ -53,13 +57,13 @@
       }
    };
 #else
-    // for _stdcallthunk
-    #include <atlstdthunk.h>
+   // for _stdcallthunk
+   #include <atlstdthunk.h>
 
-// for #pragma prefast
-    #ifndef _PREFAST_
-      #pragma warning(disable:4068)
-    #endif
+   // for #pragma prefast
+   #ifndef _PREFAST_
+   #pragma warning(disable:4068)
+   #endif
 
-    #pragma comment(lib, "atlthunk.lib")
+   #pragma comment(lib, "atlthunk.lib")
 #endif

@@ -18,12 +18,11 @@
 #  define max(x,y) (x) > (y) ? (x) : (y)
 #endif
 
-// WTL9 thinks when sysinfoapi.h was included, then VersionHelpers.h is also available; correct this here
-#undef _SYSINFOAPI_H_
-
 // ignore prefast warnings in WTL header files
-#pragma prefast(push)
-#pragma prefast(disable: 6001 6011 6387 6509 6518 28252)
+#ifdef _PREFAST_
+#pragma warning(push)
+#pragma warning(disable: 6001 6011 6387 6509 6518 28252)
+#endif
 
 // WTL includes
 #include <atlapp.h>
@@ -36,9 +35,12 @@ extern CAppModule _Module; ///< app module
 #include <shellapi.h> // needed for ShellExecute, used in atlctrlx.h
 #include <atlctrlx.h>
 #include <atlddx.h>
+#include <atlsplit.h>
 #include <atlribbon.h>
 
-#pragma prefast(pop)
+#ifdef _PREFAST_
+#pragma warning(pop)
+#endif
 
 // undef the macros so that std::min and std::max work as they should be
 #undef min
