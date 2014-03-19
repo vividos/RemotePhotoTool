@@ -17,7 +17,8 @@ namespace CDSDK
 class SourceDeviceImpl;
 
 /// viewfinder impl for CDSDK
-class ViewfinderImpl: public Viewfinder
+// TODO use CDSelectViewfinderCameraOutput
+class ViewfinderImpl : public Viewfinder
 {
 public:
    /// ctor
@@ -35,46 +36,39 @@ public:
 
 #pragma warning(push)
 #pragma warning(disable: 4311) // 'reinterpret_cast' : pointer truncation from 'P' to 'T'
+      cdContext context = reinterpret_cast<cdContext>(this);
+#pragma warning(pop)
+
+      // may return cdINVALID_HANDLE, cdNOT_SUPPORTED
       cdError err = CDStartViewfinder(GetSource(),
          1, // format; 0 = JPEG, 1 = Bitmap
          &ViewfinderImpl::ViewfinderCallback,
-         reinterpret_cast<cdContext>(this));
-#pragma warning(pop)
+         context);
 
-      LOG_TRACE(_T("CDStartViewfinder(%08x, 1 (BMP), &CallbackFunc, ctx=%08x) returned %08x\n"),
+      LOG_TRACE(_T("CDStartViewfinder(%08x, 1 (BMP), &CallbackFunc, context=%08x) returned %08x\n"),
          GetSource(), this, err);
       CheckError(_T("CDStartViewfinder"), err, __FILE__, __LINE__);
    }
 
    /// dtor
-   ~ViewfinderImpl()
+   virtual ~ViewfinderImpl() throw()
    {
+      // disable handler
+      SetAvailImageHandler(Viewfinder::T_fnOnAvailViewfinderImage());
+
+      // may return cdINVALID_HANDLE, cdINVALID_FN_CALL
       cdError err = CDTermViewfinder(GetSource());
       LOG_TRACE(_T("CDTermViewfinder(%08x) returned %08x\n"), GetSource(), err);
-      CheckError(_T("CDTermViewfinder"), err, __FILE__, __LINE__);
    }
 
    virtual void SetAvailImageHandler(Viewfinder::T_fnOnAvailViewfinderImage fnOnAvailViewfinderImage) override
    {
-      // TODO implement
+      LightweightMutex::LockType lock(m_mtxFnOnAvailViewfinderImage);
+
+      m_fnOnAvailViewfinderImage = fnOnAvailViewfinderImage;
    }
 
-   // check cdRELEASE_CONTROL_CAP_ABORT_VIEWFINDER if viewfinder has to be terminated to take a picture
-
-   // CDSelectViewfinderCameraOutput
-   // CDActViewfinderAutoFunctions
-
-   /// called when new viewfinder image is available
-   void OnViewfinderImage(const std::vector<BYTE>& vecData, bool /*bFormatIsJpeg*/) // TODO remove bFormatIsJpeg again?
-   {
-      // try to get hold of mutex
-      LightweightMutex::LockType lock(m_mtxBuffer);
-
-      m_vecCurrentData.assign(vecData.begin(), vecData.end());
-
-      //m_evtNewData.Set();
-   }
-
+private:
    /// callback function called when new viewfinder image is available
    static cdUInt32 __stdcall ViewfinderCallback(
       cdVoid* pBuf,        // Pointer to the buffer that contains one frame of Viewfinder data.
@@ -107,6 +101,15 @@ public:
       return 0;
    }
 
+   /// called when new viewfinder image is available
+   void OnViewfinderImage(const std::vector<BYTE>& vecData, bool /*bFormatIsJpeg*/)
+   {
+      LightweightMutex::LockType lock(m_mtxFnOnAvailViewfinderImage);
+
+      if (m_fnOnAvailViewfinderImage)
+         m_fnOnAvailViewfinderImage(vecData);
+   }
+
    /// returns source
    cdHSource GetSource() const throw();
 
@@ -114,14 +117,14 @@ private:
    /// source device
    std::shared_ptr<SourceDeviceImpl> m_spSourceDevice;
 
-   /// lock for current image buffer
-   LightweightMutex m_mtxBuffer;
-
-   /// current viewfinder data
-   std::vector<BYTE> m_vecCurrentData;
-
    /// last tick where viewfinder image was retrieved
    DWORD m_dwLastViewfinderCallbackTick;
+
+   /// mutex to protect m_fnOnAvailViewfinderImage
+   LightweightMutex m_mtxFnOnAvailViewfinderImage;
+
+   /// viewfinder image handler
+   Viewfinder::T_fnOnAvailViewfinderImage m_fnOnAvailViewfinderImage;
 };
 
 } // namespace CDSDK
