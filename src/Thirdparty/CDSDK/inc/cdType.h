@@ -4,7 +4,7 @@
 
 #ifdef _MSC_VER
 #	if	900 <= _MSC_VER
-	#	pragma message( "push, _CD_TYPE_H_PACK_, 1" )
+	//#	pragma message( "push, _CD_TYPE_H_PACK_, 1" )
 	#	pragma pack( push, _CD_TYPE_H_PACK_, 1 )
 	#	pragma warning( disable : 4250 4355 4244 4005)
 #	endif	/* 900 <= _MSC_VER */
@@ -3337,7 +3337,7 @@ typedef cdUInt32 cdSTDCALL cdViewfinderCallbackFunction (
 
 #ifdef _MSC_VER
 #	if	900 <= _MSC_VER
-	#	pragma message( "pop, _CD_TYPE_H_PACK_" )
+	//#	pragma message( "pop, _CD_TYPE_H_PACK_" )
 	#	pragma warning( default : 4250 4355 4244 4005) 
 	#	pragma pack( pop, _CD_TYPE_H_PACK_ )
 #	endif	/* 900 <= _MSC_VER */
