@@ -7,8 +7,9 @@
 #pragma once
 
 // includes
+#pragma warning(push)
 #include "cdAPI.h"
-#include "cdType.h"
+#pragma warning(pop)
 #include "SourceInfo.hpp"
 #include <vector>
 

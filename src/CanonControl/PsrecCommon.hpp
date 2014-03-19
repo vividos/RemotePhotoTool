@@ -7,8 +7,9 @@
 #pragma once
 
 // includes
+#pragma warning(push)
 #include "prAPI.h"
-#include "prType.h"
+#pragma warning(pop)
 #include "SourceInfo.hpp"
 #include "CameraException.hpp"
 
