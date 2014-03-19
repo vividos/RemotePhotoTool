@@ -29,7 +29,6 @@ enum T_enImagePropertyType
    propAFDistance = 12,
    propCurrentZoomPos = 13,     ///< current zoom pos; get/set only when capZoomControl is true
    propMaxZoomPos = 14,         ///< max. zoom position; get only; min. zoom position is 0
-   propDigitalZoomMagnification = 15,
    propAvailableShots = 16, ///< number of available shots
    propSaveTo = 17,
    propBatteryLevel = 18,

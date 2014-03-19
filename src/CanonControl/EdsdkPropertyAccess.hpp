@@ -179,7 +179,6 @@ public:
       case propAFDistance:             return kEdsPropID_Unknown;
       case propCurrentZoomPos:         return kEdsPropID_Unknown;
       case propMaxZoomPos:             return kEdsPropID_Unknown;
-      case propDigitalZoomMagnification: return kEdsPropID_Unknown;
       case propAvailableShots:         return kEdsPropID_AvailableShots;
       case propSaveTo:                 return kEdsPropID_SaveTo;
       case propBatteryLevel:           return kEdsPropID_BatteryQuality;

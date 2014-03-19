@@ -94,7 +94,6 @@ public:
       case propAFDistance:       return prPTP_DEV_PROP_AF_DISTANCE;
       case propCurrentZoomPos:   return prPTP_DEV_PROP_ZOOM_POS;
       case propMaxZoomPos:       return prPTP_DEV_PROP_EZOOM_START_POS; // start of electronic zoom is max. zoom pos
-      case propDigitalZoomMagnification:  ATLASSERT(false); return 0; // TODO ???
       case propAvailableShots:            ATLASSERT(false); return 0; // TODO ???
       case propSaveTo:           return prPTP_DEV_PROP_CAPTURE_TRANSFER_MODE;
       case propBatteryLevel:     return prPTP_DEV_PROP_BATTERY_STATUS;
