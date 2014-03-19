@@ -21,6 +21,7 @@
 
 // Boost includes
 #define BOOST_DATE_TIME_NO_LIB
+#include <boost/noncopyable.hpp>
 
 // app wide window message
 

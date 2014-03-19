@@ -10,6 +10,7 @@
 #include "EdsdkCommon.hpp"
 #include "Variant.hpp"
 #include "ImageProperty.hpp"
+#include <boost/noncopyable.hpp>
 
 namespace EDSDK
 {
@@ -20,7 +21,7 @@ namespace EDSDK
 #define kEdsPropID_ShutterCounter 0x00000022
 
 /// combined image or device property access
-class PropertyAccess
+class PropertyAccess : public boost::noncopyable
 {
 public:
    /// ctor

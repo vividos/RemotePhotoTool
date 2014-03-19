@@ -12,7 +12,8 @@
 /// settings dialog
 class SettingsDlg :
    public CDialogImpl<SettingsDlg>,
-   public CWinDataExchange<SettingsDlg>
+   public CWinDataExchange<SettingsDlg>,
+   public boost::noncopyable
 {
 public:
    /// ctor

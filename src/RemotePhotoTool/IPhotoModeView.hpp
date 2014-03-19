@@ -10,7 +10,7 @@
 #include "SourceDevice.hpp"
 
 /// Interface for photo mode views
-class IPhotoModeView
+class IPhotoModeView : public boost::noncopyable
 {
 public:
    /// dtor

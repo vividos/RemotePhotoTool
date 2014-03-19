@@ -13,7 +13,7 @@
 /// \brief JPEG file format decoder/decompressor
 /// \details uses Independent JPEG Group's jpeg library
 /// \see http://www.ijg.org/
-struct JpegDecoder
+struct JpegDecoder : public boost::noncopyable
 {
    /// ctor
    JpegDecoder(jpeg_source_mgr& sourceManager) throw()

@@ -35,7 +35,7 @@ private:
 };
 
 /// JPEG memory reader
-class JpegMemoryReader
+class JpegMemoryReader : public boost::noncopyable
 {
 public:
    /// ctor

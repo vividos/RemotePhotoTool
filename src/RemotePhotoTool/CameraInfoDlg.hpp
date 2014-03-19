@@ -15,7 +15,8 @@ class RemoteReleaseControl;
 class CameraInfoDlg :
    public CDialogImpl<CameraInfoDlg>,
    public CDialogResize<CameraInfoDlg>,
-   public CWinDataExchange<CameraInfoDlg>
+   public CWinDataExchange<CameraInfoDlg>,
+   public boost::noncopyable
 {
 public:
    /// ctor

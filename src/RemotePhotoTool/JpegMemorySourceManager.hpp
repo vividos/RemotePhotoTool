@@ -11,7 +11,9 @@
 #include <vector>
 
 /// source manager to read JPEG file from memory
-class JpegMemorySourceManager: public jpeg_source_mgr
+class JpegMemorySourceManager:
+   public jpeg_source_mgr,
+   public boost::noncopyable
 {
 public:
    /// ctor
