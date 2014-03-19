@@ -9,7 +9,8 @@
 #include "stdafx.h"
 #include "CommonPropertyAccess.hpp"
 
-static unsigned int GetUnsignedIntValue(const Variant value)
+/// returns unsigned integer value from variant
+static unsigned int GetUnsignedIntValue(const Variant& value)
 {
    unsigned int uiValue = 0;
 
