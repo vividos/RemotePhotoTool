@@ -25,6 +25,10 @@ public:
    }
 
 private:
+   MutexLock(const MutexLock&) = delete;
+   MutexLock& operator=(const MutexLock&) = delete;
+
+private:
    /// locked object
    T& m_mutex;
 };
@@ -46,6 +50,10 @@ public:
    {
       m_mutex.Lock();
    }
+
+private:
+   MutexUnLocker(const MutexUnLocker&) = delete;
+   MutexUnLocker& operator=(const MutexUnLocker&) = delete;
 
 private:
    /// unlocked object
