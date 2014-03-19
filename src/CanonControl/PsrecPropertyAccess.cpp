@@ -377,7 +377,7 @@ prPTP_DEV_PROP_ZOOM_POS
       prPTP_DEV_PROP_DISP_AV,
       {
          { 0x0000, _T("1/3 Level") },
-         { 0x0001, _T("One-tenth the value of prPTP_DEV_PROP_AV_MAX_APEX") },
+         { 0x0001, _T("1/10th Av value") },
          { 0, nullptr }
       }
    },
@@ -390,7 +390,7 @@ prPTP_DEV_PROP_ML_SPOT_POS
       prPTP_DEV_PROP_DISP_AV_MAX,
       {
          { 0x0000, _T("1/3 Level") },
-         { 0x0001, _T("One-tenth the value of prPTP_DEV_PROP_AV_MAX_APEX") },
+         { 0x0001, _T("1/10th Av value") },
          { 0, nullptr }
       }
    },
