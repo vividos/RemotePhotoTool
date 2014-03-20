@@ -34,7 +34,7 @@
     <Media Id="1" Cabinet="data1.cab" EmbedCab="yes" />
 
     <Directory Id="TARGETDIR" Name="SourceDir">
-      <Merge Id="VCRedist" SourceFile="$(env.CommonProgramFiles)\Merge Modules\Microsoft_VC110_CRT_x86.msm" DiskId="1" Language="0" />
+      <Merge Id="VCRedist" SourceFile="$(env.CommonProgramFiles)\Merge Modules\Microsoft_VC120_CRT_x86.msm" DiskId="1" Language="0" />
       <Directory Id="ProgramFilesFolder">
         <Directory Id="MainAppFolder" Name="$(var.ProductName)">
           <Directory Id="INSTALLDIR" Name=".">
