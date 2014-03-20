@@ -500,7 +500,7 @@ public:
       cdImageSize imageSize = static_cast<cdImageSize>(vecValues[1]);
 
       cdError err = CDSetImageFormatAttribute(hSource, compQuality, imageSize);
-      ATLTRACE(_T("CDSetImageFormatAttribute(%08x, quality = %04x, size = %04x \"%s\") returned %08x\n"),
+      LOG_TRACE(_T("CDSetImageFormatAttribute(%08x, quality = %04x, size = %04x \"%s\") returned %08x\n"),
          hSource, compQuality, imageSize,
          ImagePropertyAccess::FormatImageFormatValue(value).GetString(),
          err);
@@ -512,7 +512,7 @@ public:
    {
       cdHEnum hEnum = 0;
       cdError err = CDEnumImageFormatAttributeReset(hSource, &hEnum);
-      ATLTRACE(_T("CDEnumImageFormatAttributeReset(%08x, &hEnum = %08x) returned %08x\n"), hSource, hEnum, err);
+      LOG_TRACE(_T("CDEnumImageFormatAttributeReset(%08x, &hEnum = %08x) returned %08x\n"), hSource, hEnum, err);
       CheckError(_T("CDEnumImageFormatAttributeReset"), err, __FILE__, __LINE__);
 
       for (; vecValues.size() < 100;)
@@ -530,7 +530,7 @@ public:
          value.SetArray(vecRawValues);
          value.SetType(Variant::typeUInt16);
 
-         ATLTRACE(_T("CDEnumImageFormatAttributeNext(%08x, &quality = %04x, &size = %04x \"%s\") returned %08x\n"),
+         LOG_TRACE(_T("CDEnumImageFormatAttributeNext(%08x, &quality = %04x, &size = %04x \"%s\") returned %08x\n"),
             hEnum, compQuality, imageSize,
             ImagePropertyAccess::FormatImageFormatValue(value).GetString(),
             err);
@@ -544,7 +544,7 @@ public:
       }
 
       err = CDEnumImageFormatAttributeRelease(hEnum);
-      ATLTRACE(_T("CDEnumImageFormatAttributeRelease(%08x) returned %08x\n"), hEnum, err);
+      LOG_TRACE(_T("CDEnumImageFormatAttributeRelease(%08x) returned %08x\n"), hEnum, err);
       CheckError(_T("CDEnumImageFormatAttributeRelease"), err, __FILE__, __LINE__);
    }
 };
@@ -659,6 +659,7 @@ Variant ImagePropertyAccess::Get(unsigned int uiPropId) const
       {
          cdUInt32 numShots = 0;
 
+         // may return cdINVALID_HANDLE, cdINVALID_PARAMETER
          cdError err = CDGetNumAvailableShot(m_hSource, &numShots);
          LOG_TRACE(_T("CDGetNumAvailableShot(source = %08x, &numShots = %08x) returned %08x\n"),
             m_hSource, numShots, err);
@@ -805,7 +806,7 @@ void ImagePropertyAccess::EnumAvailReleaseSettings(std::vector<unsigned int>& ve
 
    // may return cdINVALID_HANDLE, cdINVALID_PARAMETER
    cdError err = CDEnumRelCamSettingReset(m_hSource, &hEnum);
-   ATLTRACE(_T("CDEnumRelCamSettingReset(%08x, &hEnum = %08x) returned %08x\n"), m_hSource, hEnum, err);
+   LOG_TRACE(_T("CDEnumRelCamSettingReset(%08x, &hEnum = %08x) returned %08x\n"), m_hSource, hEnum, err);
    CheckError(_T("CDEnumRelCamSettingReset"), err, __FILE__, __LINE__);
 
    for (unsigned int uiCount = 0; uiCount < 200; uiCount++)
@@ -814,7 +815,7 @@ void ImagePropertyAccess::EnumAvailReleaseSettings(std::vector<unsigned int>& ve
 
       // may return cdINVALID_HANDLE, cdINVALID_PARAMETER, cdENUM_NA
       err = CDEnumRelCamSettingNext(hEnum, &relCamSetting);
-      ATLTRACE(_T("CDEnumRelCamSettingNext(%08x, &relCamSetting = { propId = %08x \"%s\", readOnly = %s}) returned %08x\n"),
+      LOG_TRACE(_T("CDEnumRelCamSettingNext(%08x, &relCamSetting = { propId = %08x \"%s\", readOnly = %s}) returned %08x\n"),
          hEnum,
          relCamSetting.SettingID,
          ImagePropertyAccess::NameFromId(relCamSetting.SettingID).GetString(),
@@ -831,7 +832,7 @@ void ImagePropertyAccess::EnumAvailReleaseSettings(std::vector<unsigned int>& ve
 
    // may return cdINVALID_HANDLE, cdINVALID_FN_CALL
    err = CDEnumRelCamSettingRelease(hEnum);
-   ATLTRACE(_T("CDEnumRelCamSettingRelease(%08x) returned %08x\n"), hEnum, err);
+   LOG_TRACE(_T("CDEnumRelCamSettingRelease(%08x) returned %08x\n"), hEnum, err);
    CheckError(_T("CDEnumRelCamSettingRelease"), err, __FILE__, __LINE__);
 }
 
@@ -843,7 +844,7 @@ Variant ImagePropertyAccess::GetReleaseSetting(cdRelCamSettingID propId) const
    // may return cdINVALID_HANDLE, cdINVALID_PARAMETER, cdINVALID_POINTER, cdNOT_SUPPORTED,
    // cdINVALID_ID
    cdError err = CDGetRelCamSettingData(m_hSource, propId, &uiBufferSize, NULL);
-   ATLTRACE(_T("CDGetRelCamSettingData(%08x, propId = %08x, &size = %u, data = null) returned %08x\n"),
+   LOG_TRACE(_T("CDGetRelCamSettingData(%08x, propId = %08x, &size = %u, data = null) returned %08x\n"),
       m_hSource, propId, uiBufferSize, err);
    CheckError(_T("CDGetRelCamSettingData"), err, __FILE__, __LINE__);
 
@@ -852,7 +853,7 @@ Variant ImagePropertyAccess::GetReleaseSetting(cdRelCamSettingID propId) const
    ATLASSERT(uiBufferSize == vecData.size());
 
    err = CDGetRelCamSettingData(m_hSource, propId, &uiBufferSize, &vecData[0]);
-   ATLTRACE(_T("CDGetRelCamSettingData(%08x, propId = %08x, size = %u, data = {...}) returned %08x\n"),
+   LOG_TRACE(_T("CDGetRelCamSettingData(%08x, propId = %08x, size = %u, data = {...}) returned %08x\n"),
       m_hSource, propId, vecData.size(), err);
    CheckError(_T("CDGetRelCamSettingData"), err, __FILE__, __LINE__);
 
@@ -870,7 +871,7 @@ void ImagePropertyAccess::SetReleaseSetting(cdRelCamSettingID propId, Variant va
    // may return cdINVALID_HANDLE, cdINVALID_PARAMETER, cdINVALID_POINTER, cdNOT_SUPPORTED,
    // cdINVALID_ID
    cdError err = CDSetRelCamSettingData(m_hSource, propId, vecData.size(), vecData.data());
-   ATLTRACE(_T("CDSetRelCamSettingData(%08x, propId = %08x, data = { %u bytes }) returned %08x\n"),
+   LOG_TRACE(_T("CDSetRelCamSettingData(%08x, propId = %08x, data = { %u bytes }) returned %08x\n"),
       m_hSource, propId, vecData.size(), err);
    CheckError(_T("CDSetRelCamSettingData"), err, __FILE__, __LINE__);
 }
@@ -881,7 +882,7 @@ void ImagePropertyAccess::EnumReleaseSettingValues(cdRelCamSettingID propId, std
    cdUInt32 uiBufSize = 0;
 
    cdError err = CDEnumRelCamSettingDataReset(m_hSource, propId, &hEnum, &uiBufSize);
-   ATLTRACE(_T("CDEnumRelCamSettingDataReset(%08x, propId = %08x, &hEnum = %08x, &bufSize = %u) returned %08x\n"),
+   LOG_TRACE(_T("CDEnumRelCamSettingDataReset(%08x, propId = %08x, &hEnum = %08x, &bufSize = %u) returned %08x\n"),
       m_hSource, propId, hEnum, uiBufSize, err);
    CheckError(_T("CDEnumRelCamSettingDataReset"), err, __FILE__, __LINE__);
 
@@ -890,7 +891,7 @@ void ImagePropertyAccess::EnumReleaseSettingValues(cdRelCamSettingID propId, std
    for (unsigned int uiCount = 0; uiCount < 100; uiCount++)
    {
       err = CDEnumRelCamSettingDataNext(hEnum, uiBufSize, &vecData[0]);
-      ATLTRACE(_T("CDEnumRelCamSettingDataNext(%08x, &buffer) returned %08x\n"),
+      LOG_TRACE(_T("CDEnumRelCamSettingDataNext(%08x, &buffer) returned %08x\n"),
          hEnum, err);
 
       if ((err & cdERROR_ERRORID_MASK) == cdENUM_NA)
@@ -906,7 +907,7 @@ void ImagePropertyAccess::EnumReleaseSettingValues(cdRelCamSettingID propId, std
    }
 
    err = CDEnumRelCamSettingDataRelease(hEnum);
-   ATLTRACE(_T("CDEnumRelCamSettingDataRelease(%08x) returned %08x\n"), hEnum, err);
+   LOG_TRACE(_T("CDEnumRelCamSettingDataRelease(%08x) returned %08x\n"), hEnum, err);
    CheckError(_T("CDEnumRelCamSettingDataRelease"), err, __FILE__, __LINE__);
 }
 
