@@ -74,6 +74,9 @@
       <DllDataFileName />
     </Midl>
     <Link />
+    <Link>
+      <DelayLoadDLLs>propsys.dll;dwmapi.dll</DelayLoadDLLs>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -100,6 +103,9 @@
       <DllDataFileName />
     </Midl>
     <Link />
+    <Link>
+      <DelayLoadDLLs>propsys.dll;dwmapi.dll</DelayLoadDLLs>
+    </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="MainFrame.cpp" />
