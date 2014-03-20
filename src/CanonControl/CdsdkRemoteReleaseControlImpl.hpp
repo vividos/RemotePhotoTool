@@ -10,7 +10,6 @@
 #include "RemoteReleaseControl.hpp"
 #include "CdsdkCommon.hpp"
 #include "CdsdkImagePropertyAccess.hpp"
-#include "CdsdkViewfinderImpl.hpp"
 #include "Observer.hpp"
 
 namespace CDSDK
@@ -23,72 +22,15 @@ class RemoteReleaseControlImpl: public RemoteReleaseControl
 {
 public:
    /// ctor
-   RemoteReleaseControlImpl(std::shared_ptr<SourceDeviceImpl> spSourceDevice)
-      :m_spSourceDevice(spSourceDevice),
-       m_uiBatteryLevel(BATTERY_LEVEL_NORMAL)
-   {
-   }
+   RemoteReleaseControlImpl(std::shared_ptr<SourceDeviceImpl> spSourceDevice);
 
    /// dtor
-   virtual ~RemoteReleaseControlImpl() throw()
-   {
-      cdHSource hSource = GetSource();
-
-      // may return cdINVALID_HANDLE, cdINVALID_FN_CALL
-      cdError err = CDExitReleaseControl(hSource);
-      LOG_TRACE(_T("CDExitReleaseControl(%08x) returned %08x\n"), hSource, err);
-   }
+   virtual ~RemoteReleaseControlImpl() throw();
 
    /// returns source device
    cdHSource GetSource() const throw();
 
-   virtual bool GetCapability(RemoteReleaseControl::T_enRemoteCapability enCapability) const throw() override
-   {
-      try
-      {
-         cdReleaseControlFaculty faculty = 0;
-         cdError err = CDGetReleaseControlFaculty(GetSource(), &faculty);
-         LOG_TRACE(_T("CDGetReleaseControlFaculty(%08x, &faculty) returned %08x\n"), GetSource(), err);
-         CheckError(_T("CDGetReleaseControlFaculty"), err, __FILE__, __LINE__);
-
-         switch (enCapability)
-         {
-         case RemoteReleaseControl::capChangeShootingParameter:
-            return (faculty & cdRELEASE_CONTROL_CAP_SETPRM) != 0;
-
-         case RemoteReleaseControl::capChangeShootingMode:
-            return (faculty & cdRELEASE_CONTROL_CAP_SETPRM) != 0;
-
-         case RemoteReleaseControl::capZoomControl:
-            return (faculty & cdRELEASE_CONTROL_CAP_ZOOM) != 0;
-
-         case RemoteReleaseControl::capViewfinder:
-            // Not all camera models support the Viewfinder function. Cameras that support Viewfinder
-            // are those cameras for which the cdRELEASE_CONTROL_CAP_VIEWFINDER bit is set. Obtain the
-            // value by executing CDGetDevicePropertyData using cdDEVICE_PROP_RELEASE_CONTROL_CAP.
-            // note: in remote release mode, CDGetReleaseControlFaculty can also be used
-            return (faculty & cdRELEASE_CONTROL_CAP_VIEWFINDER) != 0;
-
-         case RemoteReleaseControl::capReleaseWhileViewfinder:
-            // If cdRELEASE_CONTROL_CAP_ABORT_VIEWFINDER bit is set in the connected camera model as a
-            // value that can be obtained by executing CDGetDevicePropertyData with
-            // cdDEVICE_PROP_RELEASE_CONTROL_CAP, and you are shooting with the Viewfinder using the
-            // CDRelease function, you must stop Viewfinder first.
-            return (faculty & cdRELEASE_CONTROL_CAP_ABORT_VIEWFINDER) == 0;
-
-         case RemoteReleaseControl::capAFLock:
-            return (faculty & cdRELEASE_CONTROL_CAP_AF_LOCK) != 0;
-
-         default:
-            ATLASSERT(false);
-         }
-      }
-      catch(const CameraException& ex)
-      {
-         LOG_TRACE(_T("CameraException during GetCapability: %s\n"), ex.Message());
-      }
-      return false;
-   }
+   virtual bool GetCapability(RemoteReleaseControl::T_enRemoteCapability enCapability) const throw() override;
 
    virtual void SetDefaultReleaseSettings(const ShutterReleaseSettings& /*settings*/) override
    {
@@ -130,26 +72,7 @@ public:
       return ImagePropertyAccess::MapToPropertyID(enImagePropertyType);
    }
 
-   virtual ImageProperty MapShootingModeToImagePropertyValue(RemoteReleaseControl::T_enShootingMode enShootingMode) const override
-   {
-      cdShootingMode shootingMode = cdSHOOTING_MODE_INVALID;
-      switch (enShootingMode)
-      {
-      case RemoteReleaseControl::shootingModeP:    shootingMode = cdSHOOTING_MODE_PROGRAM; break;
-      case RemoteReleaseControl::shootingModeTv:   shootingMode = cdSHOOTING_MODE_TV; break;
-      case RemoteReleaseControl::shootingModeAv:   shootingMode = cdSHOOTING_MODE_AV; break;
-      case RemoteReleaseControl::shootingModeM:    shootingMode = cdSHOOTING_MODE_MANUAL; break;
-      default:
-         ATLASSERT(false);
-         break;
-      }
-
-      Variant value;
-      value.Set(shootingMode);
-      value.SetType(Variant::typeUInt16);
-
-      return ImageProperty(variantCdsdk, MapImagePropertyTypeToId(propShootingMode), value, true);
-   }
+   virtual ImageProperty MapShootingModeToImagePropertyValue(RemoteReleaseControl::T_enShootingMode enShootingMode) const override;
 
    virtual std::vector<unsigned int> EnumImageProperties() const override
    {
@@ -160,44 +83,9 @@ public:
       return p.EnumImageProperties();
    }
 
-   virtual ImageProperty GetImageProperty(unsigned int uiImageProperty) const override
-   {
-      // special case: since battery level can only be obtained by listening to events,
-      // return the last known battery level here
-      if (uiImageProperty == MapImagePropertyTypeToId(propBatteryLevel))
-      {
-         Variant value;
+   virtual ImageProperty GetImageProperty(unsigned int uiImageProperty) const override;
 
-         value.Set(m_uiBatteryLevel);
-         value.SetType(Variant::typeUInt32);
-
-         return ImageProperty(variantCdsdk, uiImageProperty, value, true);
-      }
-
-      // special case: propSaveTo flag
-      if (uiImageProperty == MapImagePropertyTypeToId(propSaveTo))
-      {
-         // TODO
-      }
-
-      // get value
-      cdHSource hSource = GetSource();
-      ImagePropertyAccess p(hSource);
-
-      Variant value = p.Get(uiImageProperty);
-      bool bReadOnly = p.IsReadOnly(uiImageProperty);
-
-      // return in image property object
-      return ImageProperty(variantCdsdk, uiImageProperty, value, bReadOnly);
-   }
-
-   virtual void SetImageProperty(const ImageProperty& imageProperty) override
-   {
-      cdHSource hSource = GetSource();
-      ImagePropertyAccess p(hSource);
-
-      p.Set(imageProperty.Id(), imageProperty.Value());
-   }
+   virtual void SetImageProperty(const ImageProperty& imageProperty) override;
 
    virtual void EnumImagePropertyValues(unsigned int uiImageProperty, std::vector<ImageProperty>& vecValues) const override
    {
@@ -213,51 +101,44 @@ public:
          vecValues.push_back(ImageProperty(variantCdsdk, uiImageProperty, vecRawValues[i], bReadOnly));
    }
 
-   virtual std::shared_ptr<Viewfinder> StartViewfinder() const override
-   {
-      if (!GetCapability(RemoteReleaseControl::capViewfinder))
-         throw CameraException(_T("RemoteReleaseControl::StartViewfinder"),
-            false, cdERROR_CLIENT_COMPONENTID, cdNOT_SUPPORTED, __FILE__, __LINE__);
+   virtual std::shared_ptr<Viewfinder> StartViewfinder() const override;
 
-      return std::shared_ptr<Viewfinder>(new ViewfinderImpl(m_spSourceDevice));
-   }
+   virtual unsigned int NumAvailableShots() const override;
 
-   virtual unsigned int NumAvailableShots() const override
-   {
-      cdHSource hSource = GetSource();
+   virtual void SendCommand(RemoteReleaseControl::T_enCameraCommand /*enCameraCommand*/) override;
 
-      cdUInt32 uiAvailShots = 0;
+   virtual void Release(const ShutterReleaseSettings& /*settings*/) override;
 
-      cdError err = CDGetNumAvailableShot(hSource, &uiAvailShots);
-      ATLTRACE(_T("CDGetNumAvailableShot(%08x, &shots = %u) returned %08x\n"), hSource, uiAvailShots, err);
-      CheckError(_T("CDGetNumAvailableShot"), err, __FILE__, __LINE__);
+   virtual std::shared_ptr<BulbReleaseControl> StartBulb(const ShutterReleaseSettings& /*settings*/) override;
 
-      return uiAvailShots;
-   }
+private:
+   /// release event callback
+   static cdUInt32 cdSTDCALL OnReleaseEventCallback_(
+      cdReleaseEventID EventID, const void* pData, cdUInt32 DataSize, cdContext Context);
 
-   virtual void SendCommand(RemoteReleaseControl::T_enCameraCommand /*enCameraCommand*/) override
-   {
-      // TODO implement
-   }
+   /// release event callback handler
+   void OnReleaseEventCallback(cdReleaseEventID EventID);
 
-   virtual void Release(const ShutterReleaseSettings& /*settings*/) override
-   {
-      // TODO implement
-   }
+   /// event callback
+   static cdUInt32 cdSTDCALL OnEventCallback_(
+      cdEventID EventID, const void* pData, cdUInt32 DataSize, cdContext Context);
 
-   virtual std::shared_ptr<BulbReleaseControl> StartBulb(const ShutterReleaseSettings& /*settings*/) override
-   {
-      // bulb not supported by CDSDK
-      throw CameraException(_T("RemoteReleaseControl::StartBulb"),
-         false,
-         cdERROR_CDSDK_COMPONENTID,
-         cdNOT_SUPPORTED,
-         __FILE__, __LINE__);
-   }
+   /// event callback handler
+   void OnEventCallback(cdEventID eventId);
+
+   /// progress callback
+   static cdUInt32 cdSTDCALL OnProgressCallback_(cdUInt32 Progress,
+      cdProgressStatus Status, cdContext Context);
+
+   /// progress callback handler; returns true to continue progress
+   bool OnProgressCallback(cdUInt32 Progress, cdProgressStatus Status);
 
 private:
    /// source device
    std::shared_ptr<SourceDeviceImpl> m_spSourceDevice;
+
+   /// event callback handle
+   cdHandle m_hEventCallback;
 
    /// subject of observer pattern; used for property events
    Subject<void(RemoteReleaseControl::T_enPropertyEvent, unsigned int)> m_subjectPropertyEvent;
@@ -270,6 +151,9 @@ private:
 
    /// last known battery level, severity and type
    unsigned int m_uiBatteryLevel;
+
+   /// current 
+   cdRelDataKind m_uiRelDataKind;
 };
 
 } // namespace CDSDK

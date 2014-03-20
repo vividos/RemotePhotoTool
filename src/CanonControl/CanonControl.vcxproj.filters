@@ -89,6 +89,9 @@
     <ClCompile Include="CdsdkImagePropertyAccess.cpp">
       <Filter>CDSDK Files</Filter>
     </ClCompile>
+    <ClCompile Include="CdsdkRemoteReleaseControlImpl.cpp">
+      <Filter>CDSDK Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="exports\BulbReleaseControl.hpp">

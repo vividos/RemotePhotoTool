@@ -85,6 +85,7 @@
   <ItemGroup>
     <ClCompile Include="CdsdkDevicePropertyAccess.cpp" />
     <ClCompile Include="CdsdkImagePropertyAccess.cpp" />
+    <ClCompile Include="CdsdkRemoteReleaseControlImpl.cpp" />
     <ClCompile Include="CommonPropertyAccess.cpp" />
     <ClCompile Include="ImageFormat.cpp" />
     <ClCompile Include="Instance.cpp" />

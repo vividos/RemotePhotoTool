@@ -670,8 +670,9 @@ Variant ImagePropertyAccess::Get(unsigned int uiPropId) const
       }
       break;
 
-   // note: propSaveTo is a special case, since the value can't be retrieved, only set
-   // note: propBatteryLevel is a special case and is handled in RemoteReleaseControlImpl
+   // note: propSaveTo is a special case, since the value can't be retrieved.
+   // note: propBatteryLevel is a special case, since the value is only sent via event.
+   // Getting both values is handled in RemoteReleaseControlImpl
 
    CASE_PROP_GET(propImageFormat)
 

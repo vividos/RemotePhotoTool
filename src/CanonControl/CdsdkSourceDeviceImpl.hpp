@@ -10,6 +10,7 @@
 #include "SourceDevice.hpp"
 #include "CdsdkCommon.hpp"
 #include "CdsdkRemoteReleaseControlImpl.hpp"
+#include "CdsdkViewfinderImpl.hpp"
 #include "CdsdkDevicePropertyAccess.hpp"
 
 namespace CDSDK
@@ -125,16 +126,12 @@ public:
    {
       if (!GetDeviceCapability(capRemoteReleaseControl))
       {
-         // throw an error code of 7, which means "not supported"
-         throw CameraException(_T("SourceDevice::EnterReleaseControl"), false, 0, 7, __FILE__, __LINE__);
+         // throw a "not supported" error
+         throw CameraException(_T("SourceDevice::EnterReleaseControl"), false,
+            cdERROR_CDSDK_COMPONENTID, cdNOT_SUPPORTED, __FILE__, __LINE__);
       }
 
-      // may return cdINVALID_HANDLE, cdNOT_SUPPORTED, cdINVALID_PARAMETER
-      cdError err = CDEnterReleaseControl(m_hSource, nullptr, 0);
-      LOG_TRACE(_T("CDEnterReleaseControl(%08x, nullptr, 0) returned %08x\n"), m_hSource, err);
-      CheckError(_T("CDEnterReleaseControl"), err, __FILE__, __LINE__);
-
-      std::shared_ptr<SourceDeviceImpl> spSourceDevice = this->shared_from_this();
+      std::shared_ptr<SourceDeviceImpl> spSourceDevice = shared_from_this();
 
       return std::shared_ptr<RemoteReleaseControl>(new RemoteReleaseControlImpl(spSourceDevice));
    }

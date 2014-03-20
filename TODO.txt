@@ -27,8 +27,7 @@ add reading out of number of all shots taken
 
 CDSDK
 -----
-Implement device and image properties
-Implement viewfinder
+Test cameras
 
 RemotePhotoTool
 ---------------

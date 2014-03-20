@@ -11,6 +11,7 @@
 #include "cdAPI.h"
 #pragma warning(pop)
 #include "SourceInfo.hpp"
+#include "CameraException.hpp"
 #include <vector>
 
 /// Canon Digital Camera SDK interface
