@@ -25,6 +25,7 @@
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v120_xp</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -53,56 +54,30 @@
       <PreprocessorDefinitions>WIN32;_WINDOWS;STRICT;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\Base;..\CanonControl\exports;..\Thirdparty;..\Thirdparty\Scintilla\include;..\LuaScripting;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
-    <Link />
+    <Link>
+      <DelayLoadDLLs>propsys.dll;dwmapi.dll</DelayLoadDLLs>
+    </Link>
     <ResourceCompile>
       <Culture>0x0409</Culture>
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
-    <Midl>
-      <MkTypLibCompatible>false</MkTypLibCompatible>
-      <TargetEnvironment>Win32</TargetEnvironment>
-      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <HeaderFileName>RemoteScriptingEditor.h</HeaderFileName>
-      <InterfaceIdentifierFileName>RemoteScriptingEditor_i.c</InterfaceIdentifierFileName>
-      <ProxyFileName>RemoteScriptingEditor_p.c</ProxyFileName>
-      <GenerateStublessProxies>true</GenerateStublessProxies>
-      <TypeLibraryName>$(IntDir)/RemoteScriptingEditor.tlb</TypeLibraryName>
-      <DllDataFileName />
-    </Midl>
-    <Link />
-    <Link>
-      <DelayLoadDLLs>propsys.dll;dwmapi.dll</DelayLoadDLLs>
-    </Link>
+    <Midl />
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <ExceptionHandling />
-      <DebugInformationFormat />
       <PreprocessorDefinitions>WIN32;_WINDOWS;STRICT;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\Base;..\CanonControl\exports;..\Thirdparty;..\Thirdparty\Scintilla\include;..\LuaScripting;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
-    <Link />
+    <Link>
+      <DelayLoadDLLs>propsys.dll;dwmapi.dll</DelayLoadDLLs>
+    </Link>
     <ResourceCompile>
       <Culture>0x0409</Culture>
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
-    <Midl>
-      <MkTypLibCompatible>false</MkTypLibCompatible>
-      <TargetEnvironment>Win32</TargetEnvironment>
-      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <HeaderFileName>RemoteScriptingEditor.h</HeaderFileName>
-      <InterfaceIdentifierFileName>RemoteScriptingEditor_i.c</InterfaceIdentifierFileName>
-      <ProxyFileName>RemoteScriptingEditor_p.c</ProxyFileName>
-      <GenerateStublessProxies>true</GenerateStublessProxies>
-      <TypeLibraryName>$(IntDir)/RemoteScriptingEditor.tlb</TypeLibraryName>
-      <DllDataFileName />
-    </Midl>
-    <Link />
-    <Link>
-      <DelayLoadDLLs>propsys.dll;dwmapi.dll</DelayLoadDLLs>
-    </Link>
+    <Midl />
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="MainFrame.cpp" />
