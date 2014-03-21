@@ -82,6 +82,7 @@ StackChecker::~StackChecker()
 {
    int iStackDepth = lua_absindex(m_L, -1);
    ATLASSERT(m_iStackDepth == iStackDepth);
+   iStackDepth;
 }
 
 //
@@ -603,6 +604,8 @@ void State::TraceUpvalues(lua_State* L)
 
 void State::TraceValue(lua_State* L, int iIndex, int iStackDepth)
 {
+   iStackDepth;
+
    CString cszType(lua_typename(L, lua_type(L, iIndex)));
 
    CString cszContent(_T("???"));
