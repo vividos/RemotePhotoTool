@@ -5,6 +5,7 @@ write documentation for CanonControl library
 remove TODOs
 Viewfinder: implement image on TFT and/or PC
 replace throw() with noexcept
+reorganize using ShutterReleaseSettings only as default value
 
 PSREC
 -----
@@ -56,10 +57,15 @@ Add geotagging for PCs that have a GPS receiver built in
 Add photo mode with motion detection using viewfinder to take photos (e.g. for wildlife photography)
 Show zebra pattern for overexposed areas of viewfinder image
 
-PhotoToolCmdline
+RemotePhotoToolCmdline
 ----------------
 implement opening by index, {0}
 fix crashes in EDSDK: call EdsGetEvent() often
+
+RemoteScriptingEditor
+---------------------
+Add proper toolbar
+Implement all bindings from CanonControl
 
 Setup
 -----
