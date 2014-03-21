@@ -357,6 +357,10 @@ void MainFrame::SetupToolbar()
       tb.HideButton(ID_PHOTO_MODE_TIMELAPSE, true);
       tb.HideButton(ID_PHOTO_MODE_PHOTOSTACK, true);
       tb.HideButton(ID_PHOTO_MODE_SCRIPTING, true);
+
+      bool bRibbonUI = RunTimeHelper::IsRibbonUIAvailable();
+      if (!bRibbonUI)
+         tb.HideButton(ID_VIEW_RIBBON, true);
    }
 }
 
