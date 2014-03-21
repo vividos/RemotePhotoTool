@@ -3,6 +3,11 @@
 Note: For the complete changelog, including internal changes, you can always go to
 the git sourcecode repository at [https://github.com/vividos/RemotePhotoTool](https://github.com/vividos/RemotePhotoTool).
 
+## 2014-xx-xx: Version 1.2.0 Build 10x ##
+
+Fixed starting the application under Windows XP. Also fixed updating photo mode icons on
+toolbar when not connected.
+
 ## 2014-03-10: Version 1.1.0 Build 101 ##
 
 Added viewfinder controls, including auto focus, auto white balance, zoom in/out,
