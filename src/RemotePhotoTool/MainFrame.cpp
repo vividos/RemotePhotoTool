@@ -338,6 +338,24 @@ void MainFrame::SetupRibbonBar()
    menu.DeleteMenu(ID_PHOTO_MODE_SCRIPTING, MF_BYCOMMAND);
 }
 
+/// sets button text for toolbar button
+void SetToolbarButtonText(CToolBarCtrl& tb, int iId, LPCTSTR pszText)
+{
+   TBBUTTONINFO info = { 0 };
+   info.cbSize = sizeof(info);
+   info.dwMask = TBIF_STYLE;
+
+   ATLVERIFY(TRUE == tb.GetButtonInfo(iId, &info));
+
+   info.fsStyle |= BTNS_SHOWTEXT;
+
+   info.dwMask |= TBIF_TEXT;
+   info.pszText = const_cast<LPWSTR>(pszText);
+   info.cchText = _tcslen(pszText);
+
+   ATLVERIFY(TRUE == tb.SetButtonInfo(iId, &info));
+}
+
 void MainFrame::SetupToolbar()
 {
    CreateSimpleReBar(ATL_SIMPLE_REBAR_NOBORDER_STYLE);
@@ -351,8 +369,10 @@ void MainFrame::SetupToolbar()
       AddSimpleReBarBand(hWndToolBar, NULL, TRUE);
       UIAddToolBar(hWndToolBar);
 
-      // remove some menus of functions currently not supported
       CToolBarCtrl tb(hWndToolBar);
+      tb.SetExtendedStyle(TBSTYLE_EX_MIXEDBUTTONS); // needed for BTNS_SHOWTEXT
+
+      // remove some menus of functions currently not supported
       tb.HideButton(ID_PHOTO_MODE_HDR_PANO, true);
       tb.HideButton(ID_PHOTO_MODE_TIMELAPSE, true);
       tb.HideButton(ID_PHOTO_MODE_PHOTOSTACK, true);
@@ -361,6 +381,9 @@ void MainFrame::SetupToolbar()
       bool bRibbonUI = RunTimeHelper::IsRibbonUIAvailable();
       if (!bRibbonUI)
          tb.HideButton(ID_VIEW_RIBBON, true);
+
+      //SetToolbarButtonText(tb, ID_HOME_CONNECT, _T("Connect"));
+      //SetToolbarButtonText(tb, ID_HOME_SETTINGS, _T("Settings"));
    }
 }
 
