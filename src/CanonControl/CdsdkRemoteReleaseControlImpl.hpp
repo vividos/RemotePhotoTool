@@ -10,7 +10,9 @@
 #include "RemoteReleaseControl.hpp"
 #include "CdsdkCommon.hpp"
 #include "CdsdkImagePropertyAccess.hpp"
+#include "ShutterReleaseSettings.hpp"
 #include "Observer.hpp"
+#include "LightweightMutex.hpp"
 
 namespace CDSDK
 {
@@ -32,9 +34,11 @@ public:
 
    virtual bool GetCapability(RemoteReleaseControl::T_enRemoteCapability enCapability) const throw() override;
 
-   virtual void SetDefaultReleaseSettings(const ShutterReleaseSettings& /*settings*/) override
+   virtual void SetReleaseSettings(const ShutterReleaseSettings& settings) override
    {
-      // TODO
+      LightweightMutex::LockType lock(m_mtxShutterReleaseSettings);
+
+      m_shutterReleaseSettings = settings;
    }
 
    virtual int AddPropertyEventHandler(RemoteReleaseControl::T_fnOnPropertyChanged fnOnPropertyChanged) override
@@ -107,9 +111,9 @@ public:
 
    virtual void SendCommand(RemoteReleaseControl::T_enCameraCommand /*enCameraCommand*/) override;
 
-   virtual void Release(const ShutterReleaseSettings& /*settings*/) override;
+   virtual void Release() override;
 
-   virtual std::shared_ptr<BulbReleaseControl> StartBulb(const ShutterReleaseSettings& /*settings*/) override;
+   virtual std::shared_ptr<BulbReleaseControl> StartBulb() override;
 
 private:
    /// release event callback
@@ -136,6 +140,12 @@ private:
 private:
    /// source device
    std::shared_ptr<SourceDeviceImpl> m_spSourceDevice;
+
+   /// mutex to protect m_shutterReleaseSettings
+   LightweightMutex m_mtxShutterReleaseSettings;
+
+   /// shutter release settings
+   ShutterReleaseSettings m_shutterReleaseSettings;
 
    /// event callback handle
    cdHandle m_hEventCallback;

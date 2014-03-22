@@ -57,11 +57,11 @@ public:
 
    virtual bool GetCapability(RemoteReleaseControl::T_enRemoteCapability enCapability) const throw() override;
 
-   virtual void SetDefaultReleaseSettings(const ShutterReleaseSettings& settings) override
+   virtual void SetReleaseSettings(const ShutterReleaseSettings& settings) override
    {
       {
-         LightweightMutex::LockType lock(m_mtxCurrentShutterReleaseSettings);
-         m_defaultShutterReleaseSettings = settings;
+         LightweightMutex::LockType lock(m_mtxShutterReleaseSettings);
+         m_shutterReleaseSettings = settings;
       }
 
       SetSaveToFlag(settings.SaveTarget(), false);
@@ -199,12 +199,10 @@ public:
       EDSDK::CheckError(_T("EdsSendCommand"), err, __FILE__, __LINE__);
    }
 
-   virtual void Release(const ShutterReleaseSettings& settings) override;
+   virtual void Release() override;
 
-   virtual std::shared_ptr<BulbReleaseControl> StartBulb(const ShutterReleaseSettings& /*settings*/) override
+   virtual std::shared_ptr<BulbReleaseControl> StartBulb() override
    {
-      // TODO set release settings
-
       return std::shared_ptr<BulbReleaseControl>(new BulbReleaseControlImpl(m_hCamera));
    }
 
@@ -212,7 +210,7 @@ public:
    void SetSaveToFlag(ShutterReleaseSettings::T_enSaveTarget enSaveTarget, bool bAsynchronous);
 
    /// asynchronous release method
-   void AsyncRelease(const ShutterReleaseSettings& settings);
+   void AsyncRelease();
 
 private:
    /// called when transfer request is received
@@ -249,15 +247,11 @@ private:
    /// subject of observer pattern; used for download events
    Subject<void(RemoteReleaseControl::T_enDownloadEvent, unsigned int)> m_subjectDownloadEvent;
 
+   /// mutex for locking m_shutterReleaseSettings
+   LightweightMutex m_mtxShutterReleaseSettings;
 
-   /// mutex for locking m_currentShutterReleaseSettings and m_defaultShutterReleaseSettings
-   LightweightMutex m_mtxCurrentShutterReleaseSettings;
-
-   /// current shutter release settings
-   ShutterReleaseSettings m_currentShutterReleaseSettings;
-
-   /// default shutter release settings
-   ShutterReleaseSettings m_defaultShutterReleaseSettings;
+   /// shutter release settings
+   ShutterReleaseSettings m_shutterReleaseSettings;
 
    /// event that gets set when a shutter release occured; used in Release()
    Event m_evtShutterReleaseOccured;

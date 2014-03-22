@@ -11,7 +11,6 @@
 #include "CdsdkRemoteReleaseControlImpl.hpp"
 #include "CdsdkViewfinderImpl.hpp"
 #include "CameraException.hpp"
-#include "ShutterReleaseSettings.hpp"
 
 using namespace CDSDK;
 
@@ -217,7 +216,7 @@ void RemoteReleaseControlImpl::SendCommand(RemoteReleaseControl::T_enCameraComma
    CheckError(_T("CDActViewfinderAutoFunctions"), err, __FILE__, __LINE__);
 }
 
-void RemoteReleaseControlImpl::Release(const ShutterReleaseSettings& settings)
+void RemoteReleaseControlImpl::Release()
 {
    // TODO check cdRELEASE_CONTROL_CAP_ABORT_VIEWFINDER if viewfinder has to be terminated to take a picture
 
@@ -249,7 +248,11 @@ void RemoteReleaseControlImpl::Release(const ShutterReleaseSettings& settings)
    CheckError(_T("CDRelease"), err, __FILE__, __LINE__);
 
    // read data
-   CStringA cszaFilename = settings.Filename();
+   CStringA cszaFilename;
+   {
+      LightweightMutex::LockType lock(m_mtxShutterReleaseSettings);
+      cszaFilename = m_shutterReleaseSettings.Filename();
+   }
 
    cdReleaseImageInfo imageInfo = {0};
    cdStgMedium stgMedium;
@@ -273,7 +276,7 @@ void RemoteReleaseControlImpl::Release(const ShutterReleaseSettings& settings)
    }
 }
 
-std::shared_ptr<BulbReleaseControl> RemoteReleaseControlImpl::StartBulb(const ShutterReleaseSettings& /*settings*/)
+std::shared_ptr<BulbReleaseControl> RemoteReleaseControlImpl::StartBulb()
 {
    // bulb not supported by CDSDK
    throw CameraException(_T("RemoteReleaseControl::StartBulb"),

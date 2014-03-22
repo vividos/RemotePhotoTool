@@ -37,7 +37,7 @@ LRESULT PanoramaPhotoModeView::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LP
          m_host.GetImageFileManager().NextFilename(imageTypePano);
       settings.Filename(cszFilename);
 
-      m_spRemoteReleaseControl->SetDefaultReleaseSettings(settings);
+      m_spRemoteReleaseControl->SetReleaseSettings(settings);
    }
    catch(CameraException& ex)
    {
@@ -141,6 +141,8 @@ void PanoramaPhotoModeView::ReleasePanorama()
       m_host.GetImageFileManager().NextFilename(imageTypePano, bNewPanorama);
    settings.Filename(cszFilename);
 
+   m_spRemoteReleaseControl->SetReleaseSettings(settings);
+
    // set status text
    CString cszText;
    cszText.Format(_T("Taking picture; already took %Iu pictures."),
@@ -151,7 +153,7 @@ void PanoramaPhotoModeView::ReleasePanorama()
 
    try
    {
-      m_spRemoteReleaseControl->Release(settings);
+      m_spRemoteReleaseControl->Release();
    }
    catch(CameraException& ex)
    {

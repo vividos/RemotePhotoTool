@@ -109,7 +109,7 @@ RemoteReleaseControlImpl::RemoteReleaseControlImpl(std::shared_ptr<SourceDevice>
  m_hCamera(hCamera),
  m_upReleaseThread(new AsyncReleaseControlThread),
  m_spMtxLock(new LightweightMutex),
- m_defaultShutterReleaseSettings(ShutterReleaseSettings::saveToCamera), // default is to just save to camera
+ m_shutterReleaseSettings(ShutterReleaseSettings::saveToCamera), // default is to just save to camera
  m_evtShutterReleaseOccured(true, false) // manual-reset event
 {
    LOG_TRACE(_T("Start registering event handler\n"));
@@ -389,9 +389,9 @@ std::shared_ptr<Viewfinder> RemoteReleaseControlImpl::StartViewfinder() const
       new ViewfinderImpl(m_hCamera, m_upReleaseThread->GetIoService(), m_spMtxLock));
 }
 
-void RemoteReleaseControlImpl::Release(const ShutterReleaseSettings& settings)
+void RemoteReleaseControlImpl::Release()
 {
-   m_upReleaseThread->Post(std::bind(&RemoteReleaseControlImpl::AsyncRelease, this, settings));
+   m_upReleaseThread->Post(std::bind(&RemoteReleaseControlImpl::AsyncRelease, this));
 }
 
 void RemoteReleaseControlImpl::SetSaveToFlag(ShutterReleaseSettings::T_enSaveTarget enSaveTarget, bool bAsynchronous)
@@ -408,19 +408,18 @@ void RemoteReleaseControlImpl::SetSaveToFlag(ShutterReleaseSettings::T_enSaveTar
       AsyncSetImageProperty(ip);
 }
 
-void RemoteReleaseControlImpl::AsyncRelease(const ShutterReleaseSettings& settings)
+void RemoteReleaseControlImpl::AsyncRelease()
 {
    m_evtShutterReleaseOccured.Reset();
 
    // set new settings
-   ShutterReleaseSettings::T_enSaveTarget defaultSaveTarget;
+   ShutterReleaseSettings::T_enSaveTarget saveTarget;
    {
-      LightweightMutex::LockType lock(m_mtxCurrentShutterReleaseSettings);
-      m_currentShutterReleaseSettings = settings;
-      defaultSaveTarget = m_defaultShutterReleaseSettings.SaveTarget();
+      LightweightMutex::LockType lock(m_mtxShutterReleaseSettings);
+      saveTarget = m_shutterReleaseSettings.SaveTarget();
    }
 
-   SetSaveToFlag(settings.SaveTarget(), false); // synchronous
+   SetSaveToFlag(saveTarget, false); // synchronous
 
    // send command
    EdsError err = EdsSendCommand(m_hCamera.Get(), kEdsCameraCommand_TakePicture, 0);
@@ -433,15 +432,9 @@ void RemoteReleaseControlImpl::OnReceivedObjectEventRequestTransfer(Handle hDire
 {
    // received an event request; put current shutter release settings into queue
    ShutterReleaseSettings settings;
-
-   ShutterReleaseSettings::T_enSaveTarget defaultSaveTarget;
    {
-      LightweightMutex::LockType lock(m_mtxCurrentShutterReleaseSettings);
-      settings = m_currentShutterReleaseSettings;
-
-      // reset release settings to default
-      m_currentShutterReleaseSettings = m_defaultShutterReleaseSettings;
-      defaultSaveTarget = m_defaultShutterReleaseSettings.SaveTarget();
+      LightweightMutex::LockType lock(m_mtxShutterReleaseSettings);
+      settings = m_shutterReleaseSettings;
    }
 
    // only save to camera? then return now
@@ -464,21 +457,6 @@ void RemoteReleaseControlImpl::AsyncDownloadImage(Handle hDirectoryItem, Shutter
    ShutterReleaseSettings::T_fnOnFinishedTransfer fnHandler = settings.HandlerOnFinishedTransfer();
    if (fnHandler != nullptr)
       fnHandler(settings);
-
-   // reset SaveTo flag to default
-   {
-      ShutterReleaseSettings::T_enSaveTarget defaultSaveTarget;
-      {
-         LightweightMutex::LockType lock(m_mtxCurrentShutterReleaseSettings);
-
-         // reset release settings to default
-         m_currentShutterReleaseSettings = m_defaultShutterReleaseSettings;
-
-         defaultSaveTarget = m_defaultShutterReleaseSettings.SaveTarget();
-      }
-
-      SetSaveToFlag(defaultSaveTarget, true); // asynchronous
-   }
 }
 
 void RemoteReleaseControlImpl::DownloadImage(Handle hDirectoryItem, ShutterReleaseSettings& settings)

@@ -105,8 +105,8 @@ public:
    /// returns capability in remote capture mode
    virtual bool GetCapability(T_enRemoteCapability enRemoteCapability) const throw() = 0;
 
-   /// sets default release settings; used when user presses shutter release on camera
-   virtual void SetDefaultReleaseSettings(const ShutterReleaseSettings& settings) = 0;
+   /// sets default release settings; used when calling Release(), or user presses shutter release on camera
+   virtual void SetReleaseSettings(const ShutterReleaseSettings& settings) = 0;
 
    ////////////////////////////////////////////////
    // events
@@ -176,8 +176,8 @@ public:
    virtual void SendCommand(T_enCameraCommand enCameraCommand) = 0;
 
    /// presses the shutter release, taking a photo using the set properties and given shutter release settings
-   virtual void Release(const ShutterReleaseSettings& settings) = 0;
+   virtual void Release() = 0;
 
    /// starts bulb release; only supported when GetCapability(capBulbMode) returned true
-   virtual std::shared_ptr<BulbReleaseControl> StartBulb(const ShutterReleaseSettings& settings) = 0;
+   virtual std::shared_ptr<BulbReleaseControl> StartBulb() = 0;
 };

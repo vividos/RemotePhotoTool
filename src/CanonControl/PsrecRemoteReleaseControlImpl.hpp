@@ -36,13 +36,12 @@ public:
 
    virtual bool GetCapability(RemoteReleaseControl::T_enRemoteCapability enCapability) const throw() override;
 
-   virtual void SetDefaultReleaseSettings(const ShutterReleaseSettings& settings) override
+   virtual void SetReleaseSettings(const ShutterReleaseSettings& settings) override
    {
-      LightweightMutex::LockType lock(m_mtxCurrentShutterReleaseSettings);
-      m_defaultShutterReleaseSettings = settings;
-      //m_currentShutterReleaseSettings = settings;
+      LightweightMutex::LockType lock(m_mtxShutterReleaseSettings);
+      m_shutterReleaseSettings = settings;
 
-      // TODO write to camera; needed?
+      // TODO write to camera
    }
 
    virtual int AddPropertyEventHandler(RemoteReleaseControl::T_fnOnPropertyChanged fnOnPropertyChanged) override
@@ -183,10 +182,10 @@ public:
    virtual void SendCommand(RemoteReleaseControl::T_enCameraCommand enCameraCommand) override;
 
    /// releases the camera shutter; blocks until image transfer is started
-   virtual void Release(const ShutterReleaseSettings& settings) override;
+   virtual void Release() override;
 
    /// starts bulb mode, which is not supported by PSREC
-   virtual std::shared_ptr<BulbReleaseControl> StartBulb(const ShutterReleaseSettings& /*settings*/) override
+   virtual std::shared_ptr<BulbReleaseControl> StartBulb() override
    {
       // bulb not supported by PSREC
       throw CameraException(_T("PSREC::RemoteReleaseControl::StartBulb"),
@@ -241,14 +240,11 @@ private:
    /// device info; from source device
    std::shared_ptr<DeviceInfo> m_spDeviceInfo;
 
-   /// mutex for locking m_currentShutterReleaseSettings and m_defaultShutterReleaseSettings
-   LightweightMutex m_mtxCurrentShutterReleaseSettings;
-
-   /// current shutter release settings
-   ShutterReleaseSettings m_currentShutterReleaseSettings;
+   /// mutex for locking m_shutterReleaseSettings
+   LightweightMutex m_mtxShutterReleaseSettings;
 
    /// default shutter release settings
-   ShutterReleaseSettings m_defaultShutterReleaseSettings;
+   ShutterReleaseSettings m_shutterReleaseSettings;
 
    /// event that is set when image is ready after calling Release()
    Event m_evtReleaseImageReady;

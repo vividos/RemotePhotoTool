@@ -57,7 +57,7 @@ LRESULT StandardPhotoModeView::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LP
          m_host.GetImageFileManager().NextFilename(imageTypeNormal);
       settings.Filename(cszFilename);
 
-      m_spRemoteReleaseControl->SetDefaultReleaseSettings(settings);
+      m_spRemoteReleaseControl->SetReleaseSettings(settings);
    }
    catch(CameraException& ex)
    {
@@ -97,13 +97,15 @@ LRESULT StandardPhotoModeView::OnButtonRelease(WORD /*wNotifyCode*/, WORD /*wID*
       m_host.GetImageFileManager().NextFilename(imageTypeNormal);
    settings.Filename(cszFilename);
 
+   m_spRemoteReleaseControl->SetReleaseSettings(settings);
+
    m_host.SetStatusText(_T("Started shutter release"));
 
    m_host.LockActionMode(true);
 
    try
    {
-      m_spRemoteReleaseControl->Release(settings);
+      m_spRemoteReleaseControl->Release();
    }
    catch(CameraException& ex)
    {

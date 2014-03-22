@@ -74,7 +74,7 @@ LRESULT HDRPhotoModeView::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM 
          m_host.GetImageFileManager().NextFilename(imageTypeHDR);
       settings.Filename(cszFilename);
 
-      m_spRemoteReleaseControl->SetDefaultReleaseSettings(settings);
+      m_spRemoteReleaseControl->SetReleaseSettings(settings);
    }
    catch(CameraException& ex)
    {
@@ -325,6 +325,8 @@ void HDRPhotoModeView::ReleaseAEBNext()
       m_host.GetImageFileManager().NextFilename(imageTypeHDR, m_uiCurrentAEBShutterSpeed == 0);
    settings.Filename(cszFilename);
 
+   m_spRemoteReleaseControl->SetReleaseSettings(settings);
+
    // set status text
    CString cszText;
    cszText.Format(_T("Taking picture %Iu of %Iu with shutter speed %s"),
@@ -337,7 +339,7 @@ void HDRPhotoModeView::ReleaseAEBNext()
    {
       m_spRemoteReleaseControl->SetImageProperty(m_vecAEBShutterSpeedValues[m_uiCurrentAEBShutterSpeed]);
 
-      m_spRemoteReleaseControl->Release(settings);
+      m_spRemoteReleaseControl->Release();
 
       m_uiCurrentAEBShutterSpeed++;
    }

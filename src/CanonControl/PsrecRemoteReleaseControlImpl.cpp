@@ -208,7 +208,7 @@ void RemoteReleaseControlImpl::SendCommand(RemoteReleaseControl::T_enCameraComma
    CheckError(_T("PR_RC_DoAeAfAwb"), err, __FILE__, __LINE__);
 }
 
-void RemoteReleaseControlImpl::Release(const ShutterReleaseSettings& settings)
+void RemoteReleaseControlImpl::Release()
 {
    // if another transfer is in progress, wait for completion
    if (m_evtReleaseImageTransferInProgress.Wait(0))
@@ -216,12 +216,15 @@ void RemoteReleaseControlImpl::Release(const ShutterReleaseSettings& settings)
       m_evtReleaseImageTransferDone.Wait();
    }
 
-   // TODO hopefully no further request comes between waiting and setting the event below
    m_evtReleaseImageTransferInProgress.Set();
 
 
    // set save target
-   ShutterReleaseSettings::T_enSaveTarget enSaveTarget = settings.SaveTarget();
+   ShutterReleaseSettings::T_enSaveTarget enSaveTarget;
+   {
+      LightweightMutex::LockType lock(m_mtxShutterReleaseSettings);
+      enSaveTarget = m_shutterReleaseSettings.SaveTarget();
+   }
 
    PropertyAccess pa(m_hCamera);
    Variant val;
@@ -232,11 +235,6 @@ void RemoteReleaseControlImpl::Release(const ShutterReleaseSettings& settings)
    val.SetType(Variant::typeUInt16);
    pa.Set(prPTP_DEV_PROP_CAPTURE_TRANSFER_MODE, val);
 
-
-   {
-      LightweightMutex::LockType lock(m_mtxCurrentShutterReleaseSettings);
-      m_currentShutterReleaseSettings = settings;
-   }
 
 
    DWORD dwStart = GetTickCount();
@@ -387,7 +385,7 @@ void RemoteReleaseControlImpl::OnCameraEvent(const CameraEventData& eventData)
          LOG_TRACE(_T("prPTP_PUSHED_RELEASE_SW: user pressed shutter release switch\n"));
 
          // TODO another thread has to call Release() to allow PRLIB thread to continue work
-         //const ShutterReleaseSettings& settings = m_defaultShutterReleaseSettings;
+         //const ShutterReleaseSettings& settings = m_shutterReleaseSettings;
          //Release(settings);
       }
       break;
@@ -606,15 +604,13 @@ bool RemoteReleaseControlImpl::OnDownloadImageData(prProgressMsg message, prUInt
 
 void RemoteReleaseControlImpl::OnStartDownloadImageData()
 {
-   ShutterReleaseSettings settings;
+   CString cszFilename;
    {
-      LightweightMutex::LockType lock(m_mtxCurrentShutterReleaseSettings);
-      settings = m_currentShutterReleaseSettings;
+      LightweightMutex::LockType lock(m_mtxShutterReleaseSettings);
+      cszFilename = m_shutterReleaseSettings.Filename();
    }
 
    // note that settings stay the same during transfer, by locking with the two events
-
-   CString cszFilename = settings.Filename();
 
    FILE* fd = nullptr;
    errno_t err = _tfopen_s(&fd, cszFilename, _T("wb"));
@@ -635,8 +631,8 @@ void RemoteReleaseControlImpl::OnFinishedDownloadImageData()
    // notify client
    ShutterReleaseSettings settings;
    {
-      LightweightMutex::LockType lock(m_mtxCurrentShutterReleaseSettings);
-      settings = m_currentShutterReleaseSettings;
+      LightweightMutex::LockType lock(m_mtxShutterReleaseSettings);
+      settings = m_shutterReleaseSettings;
    }
 
    ShutterReleaseSettings::T_fnOnFinishedTransfer fnOnFinishedTransfer = settings.HandlerOnFinishedTransfer();
