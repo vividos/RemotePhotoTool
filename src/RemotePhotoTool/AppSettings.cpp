@@ -11,13 +11,13 @@
 #include "HuginInterface.hpp"
 #include "PhotomatixInterface.hpp"
 
-LPCTSTR g_pszProjectsFolder =       _T("ProjectsFolder");
-LPCTSTR g_pszCurrentDateSubfolder = _T("CurrentDateSubfolder");
-LPCTSTR g_pszImageTypeSubfolder =   _T("ImageTypeSubfolder");
-LPCTSTR g_pszPhotomatixPath =       _T("PhotomatixPath");
-LPCTSTR g_pszHuginPath =            _T("HuginPath");
-LPCTSTR g_pszLogging =              _T("Logging");
-LPCTSTR g_pszLogfilePath =          _T("LogfilePath");
+LPCTSTR g_pszProjectsFolder =       _T("ProjectsFolder");         ///< projects folder
+LPCTSTR g_pszCurrentDateSubfolder = _T("CurrentDateSubfolder");   ///< "current date subfolder" checked
+LPCTSTR g_pszImageTypeSubfolder =   _T("ImageTypeSubfolder");     ///< "image type subfolder" checked
+LPCTSTR g_pszPhotomatixPath =       _T("PhotomatixPath");   ///< Photomatix path
+LPCTSTR g_pszHuginPath =            _T("HuginPath");        ///< Hugin path
+LPCTSTR g_pszLogging =              _T("Logging");          ///< "Logging" checked
+LPCTSTR g_pszLogfilePath =          _T("LogfilePath");      ///< Logging path
 
 /// reads string value from registry
 void ReadStringValue(CRegKey& regKey, LPCTSTR pszName, UINT uiMaxLength, CString& cszValue)

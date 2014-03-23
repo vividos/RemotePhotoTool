@@ -1,3 +1,11 @@
+//
+// RemotePhotoTool - remote camera control software
+// Copyright (C) 2008-2014 Michael Fink
+//
+/// \file CmdlineApp.cpp Command line app
+//
+
+// includes
 #include "stdafx.h"
 #include "CmdlineApp.hpp"
 #include "Exception.hpp"

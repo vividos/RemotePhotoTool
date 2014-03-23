@@ -11,11 +11,11 @@
 
 // min and max macros are used in atlcom.h, etc., so temporarily define them here
 #ifndef min
-#  define min(x,y) (x) < (y) ? (x) : (y)
+#  define min(x,y) (x) < (y) ? (x) : (y) ///< temporary define of min()
 #endif
 
 #ifndef max
-#  define max(x,y) (x) > (y) ? (x) : (y)
+#  define max(x,y) (x) > (y) ? (x) : (y) ///< temporary define of min()
 #endif
 
 // ignore prefast warnings in WTL header files

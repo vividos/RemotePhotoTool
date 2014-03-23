@@ -6,7 +6,7 @@
 //
 #pragma once
 
-// compile for Windows 7 target to have Ribbon code available
+/// compile for Windows 7 target to have Ribbon code available
 #define _WIN32_WINNT _WIN32_WINNT_WIN7
 
 // WTL includes
@@ -20,7 +20,7 @@
 #include <functional>
 
 // Boost includes
-#define BOOST_DATE_TIME_NO_LIB
+#define BOOST_DATE_TIME_NO_LIB ///< don't link against Boost.DateTime
 #include <boost/noncopyable.hpp>
 
 // app wide window message

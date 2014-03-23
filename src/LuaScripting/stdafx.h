@@ -1,11 +1,12 @@
-// stdafx.h : include file for standard system include files,
-// or project specific include files that are used frequently, but
-// are changed infrequently
 //
-
+// RemotePhotoTool - remote camera control software
+// Copyright (C) 2008-2014 Michael Fink
+//
+/// \file LuaScripting\stdafx.h Precompiled header support
+//
 #pragma once
 
-// compile for Windows XP target
+/// compile for Windows XP target
 #include <WinSDKVer.h>
 #define _WIN32_WINNT _WIN32_WINNT_WINXP
 #include <SDKDDKVer.h>

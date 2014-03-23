@@ -28,9 +28,9 @@ CString App_GetFilename() throw();
 /// app data folder type
 enum T_enAppDataFolderType
 {
-   appDataAllUsers = CSIDL_COMMON_APPDATA,      ///< All Users\Application Data
-   appDataUser = CSIDL_APPDATA,                 ///< <user name>\Application Data
-   appDataUserNonRoaming = CSIDL_LOCAL_APPDATA  ///< <user name>\Local Settings\Applicaiton Data (non roaming)
+   appDataAllUsers = CSIDL_COMMON_APPDATA,      ///< `All Users\Application Data`
+   appDataUser = CSIDL_APPDATA,                 ///< `<user name>\Application Data`
+   appDataUserNonRoaming = CSIDL_LOCAL_APPDATA  ///< `<user name>\Local Settings\Applicaiton Data` (non roaming)
 };
 
 /// returns app data folder

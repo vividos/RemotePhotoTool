@@ -1,3 +1,11 @@
+//
+// RemotePhotoTool - remote camera control software
+// Copyright (C) 2008-2014 Michael Fink
+//
+/// \file AppOptions.cpp Command line app options
+//
+
+// includes
 #include "stdafx.h"
 #include "AppOptions.hpp"
 

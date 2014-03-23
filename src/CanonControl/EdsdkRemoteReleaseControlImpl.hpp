@@ -145,8 +145,6 @@ public:
 
    virtual void SetImageProperty(const ImageProperty& imageProperty) override;
 
-   void AsyncSetImageProperty(const ImageProperty& imageProperty);
-
    virtual void EnumImagePropertyValues(unsigned int uiImageProperty, std::vector<ImageProperty>& vecValues) const override
    {
       PropertyAccess p(m_hCamera);
@@ -205,6 +203,9 @@ public:
    {
       return std::shared_ptr<BulbReleaseControl>(new BulbReleaseControlImpl(m_hCamera));
    }
+
+   /// async method to set image property (called in worker thread by SetImageProperty)
+   void AsyncSetImageProperty(const ImageProperty& imageProperty);
 
    /// sets SaveTo flag
    void SetSaveToFlag(ShutterReleaseSettings::T_enSaveTarget enSaveTarget, bool bAsynchronous);

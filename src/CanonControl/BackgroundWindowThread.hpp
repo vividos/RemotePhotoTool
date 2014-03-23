@@ -12,6 +12,7 @@
 #include "Thread.hpp"
 #include "EdsdkCommon.hpp"
 
+/// \brief background window thread
 /// this is the background window we're starting
 /// \note this class is only usable for EDSDK at the moment
 template <typename TInstance>

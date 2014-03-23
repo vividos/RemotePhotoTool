@@ -1,8 +1,12 @@
-// PhotoToolCmdline.cpp : Defines the entry point for the console application.
+//
+// RemotePhotoTool - remote camera control software
+// Copyright (C) 2008-2014 Michael Fink
+//
+/// \file RemotePhotoToolCmdline\stdafx.cpp Precompiled header support
 //
 
+// includes
 #include "stdafx.h"
-//#include "Viewfinder.hpp"
 #include "CmdlineApp.hpp"
 
 #if 0
@@ -82,6 +86,7 @@ void ListRemoteCapabilities(std::shared_ptr<RemoteReleaseControl> spReleaseContr
 }
 #endif
 
+/// command line app main function
 int _tmain(int argc, _TCHAR* argv[])
 {
    CmdlineApp app;

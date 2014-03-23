@@ -181,8 +181,10 @@ Value Value::FromStack(State& state, int iIndex)
 // FuncData
 //
 
+/// C++ function data (stored as user data in State)
 struct FuncData
 {
+   /// ctor
    FuncData(State& state, T_fnCFunction fn)
       :m_state(state),
        m_fn(fn)

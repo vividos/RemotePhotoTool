@@ -44,12 +44,19 @@ private:
       COMMAND_ID_HANDLER(IDC_BUTTON_SETTINGS_DETECT_HUGIN, OnBtnDetectHugin)
    END_MSG_MAP()
 
+   /// called when dialog is being shown
    LRESULT OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
+   /// called when OK or Cancel button is pressed
    LRESULT OnCloseCmd(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   /// called when button to select Projects folder is pressed
    LRESULT OnBtnProjectsFolder(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   /// called when checkbox "Logging" is changed
    LRESULT OnCheckLogFolder(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   /// called when button to select Log folder is pressed
    LRESULT OnBtnLogFolder(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   /// called when button "Detect" for Photomatix is pressed
    LRESULT OnBtnDetectPhotomatix(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   /// called when button "Detect" for Hugin is pressed
    LRESULT OnBtnDetectHugin(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 
    /// selects new log folder

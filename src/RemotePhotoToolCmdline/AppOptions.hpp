@@ -1,9 +1,16 @@
+//
+// RemotePhotoTool - remote camera control software
+// Copyright (C) 2008-2014 Michael Fink
+//
+/// \file AppOptions.hpp Command line app options
+//
 #pragma once
 
+// includes
 #include "AppCommand.hpp"
 #include "ProgramOptions.hpp"
 
-/// options for application
+/// options for command line application
 class AppOptions: public ProgramOptions
 {
 public:
@@ -11,9 +18,13 @@ public:
    AppOptions(std::vector<AppCommand>& vecCommandList);
 
 private:
+   /// command without params
    bool OnAddSimpleCommand(AppCommand::T_enCommand enCommand);
+
+   /// command with params
    bool OnAddCommandWithParam(AppCommand::T_enCommand enCommand, const std::vector<CString>& vecParam);
 
 private:
+   /// command list
    std::vector<AppCommand>& m_vecCommandList;
 };

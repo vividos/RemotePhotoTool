@@ -122,7 +122,7 @@ public:
       }
    }
 
-   // compare function
+   /// compare function
    template <typename T>
    bool IsValueEqual(const Variant& rhs) const throw()
    {

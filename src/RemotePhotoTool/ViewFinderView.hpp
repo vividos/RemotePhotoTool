@@ -20,11 +20,15 @@ class ViewFinderView :
    public CWinDataExchange<ViewFinderView>
 {
 public:
+   /// ctor
    ViewFinderView(std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl);
+   /// dtor
    ~ViewFinderView() throw() {}
 
+   /// dialog id
    enum { IDD = IDD_VIEWFINDER_FORM };
 
+   /// sets viewfinder
    void SetViewfinder(std::shared_ptr<Viewfinder> spViewfinder);
 
    /// enables or disables updates to the viewfinder window
@@ -64,21 +68,37 @@ private:
 // LRESULT CommandHandler(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 // LRESULT NotifyHandler(int /*idCtrl*/, LPNMHDR /*pnmh*/, BOOL& /*bHandled*/)
 
+   /// called when view is being shown
    LRESULT OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
+   /// called at destruction of view
    LRESULT OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
+   /// called when lines mode combobox is closed with a new selection
    LRESULT OnComboLinesModeSelEndOk(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   /// called when a horizontal scroll bar (the zoom trackbar) has been changed
    LRESULT OnHScroll(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
+   /// called when button Auto Focus is pressed
    LRESULT OnBnClickedAutoFocus(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   /// called when button Auto White Balance is pressed
    LRESULT OnBnClickedAutoWhiteBalance(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   /// called when zoom out button is pressed
    LRESULT OnBnClickedZoomOut(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   /// called when zoom in button is pressed
    LRESULT OnBnClickedZoomIn(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   /// called when button Histogram is pressed
    LRESULT OnBnClickedHistogram(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   /// called when button for previous images is pressed
    LRESULT OnBnClickedPreviousImageViewer(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 
+   /// sets up lines mode combobox
    void SetupLinesModeCombobox();
+
+   /// sets up viewfinder window
    void SetupViewfinderWindow();
+
+   /// sets up zoom controls
    void SetupZoomControls();
 
+   /// sets new zoom position
    void SetZoomPos(unsigned int uiPos);
 
 private:

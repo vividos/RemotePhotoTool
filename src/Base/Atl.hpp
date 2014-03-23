@@ -46,11 +46,13 @@
 
    namespace ATL
    {
+      /// allocates thunk
       inline void * __stdcall __AllocStdCallThunk()
       {
          return ::HeapAlloc(::GetProcessHeap(), 0, sizeof(_stdcallthunk));
       }
 
+      /// frees thunk
       inline void __stdcall __FreeStdCallThunk(void *p)
       {
          ::HeapFree(::GetProcessHeap(), 0, p);

@@ -17,6 +17,7 @@
 // forward references
 struct lua_State;
 
+/// Lua C++ wrapper classes
 namespace Lua
 {
 class State;

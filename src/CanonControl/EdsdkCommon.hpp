@@ -77,6 +77,7 @@ private:
 
 private:
 #ifdef USE_BACKGROUND_THREAD
+   /// background thread for SDK instance
    std::shared_ptr<BackgroundWindowThread<SDKInstance>> m_spBackgroundThread;
 #else
    /// SDK instance

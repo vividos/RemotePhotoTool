@@ -2,7 +2,7 @@
 // RemotePhotoTool - remote camera control software
 // Copyright (C) 2008-2014 Michael Fink
 //
-/// \file TestLuaState.cpp Tests for Lua::State class
+/// \file TestCameraScriptProcessor.cpp Tests for CameraScriptProcessor class
 //
 
 // includes

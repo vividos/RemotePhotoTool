@@ -207,7 +207,7 @@ static PropIdDisplayInfo g_aPropIdDisplayInfo[] =
 /// since there are some release settings in the lower area, add a large enough constant
 #define TYPE_TO_PROP_ID(x) (x+0x00010000)
 
-/// read property access
+/// \brief read property access
 /// \tparam propId image property id
 /// \tparam T type for property value
 /// \tparam defaultVal default value for property
@@ -249,7 +249,7 @@ private:
    T_fnGet m_fnGet;
 };
 
-/// read-write property access
+/// \brief read-write property access
 /// \tparam propId image property id
 /// \tparam T type for property value
 /// \tparam defaultVal default value for property
@@ -283,10 +283,14 @@ public:
    }
 
 private:
+   /// set function
    T_fnSet m_fnSet;
 };
 
-/// read-write and enum property access
+/// \brief read-write and enum property access
+/// \tparam propId image property id
+/// \tparam T type for property value
+/// \tparam defaultVal default value for property
 template <T_enImagePropertyType propId, typename T, T defaultVal>
 class PropertyAccessReadWriteEnum: public PropertyAccessReadWrite<propId, T, defaultVal>
 {
@@ -294,10 +298,10 @@ class PropertyAccessReadWriteEnum: public PropertyAccessReadWrite<propId, T, def
    typedef PropertyAccessReadWrite<propId, T, defaultVal> BaseClass;
 
 public:
-   typedef std::function<cdError(cdHSource, cdHEnum*)> T_fnEnumReset;
-   typedef std::function<cdError(cdHEnum, cdUInt32*)> T_fnEnumCount;
-   typedef std::function<cdError(cdHEnum, T*)> T_fnEnumNext;
-   typedef std::function<cdError(cdHEnum)> T_fnEnumRelease;
+   typedef std::function<cdError(cdHSource, cdHEnum*)> T_fnEnumReset;   ///< function to reset enumeration
+   typedef std::function<cdError(cdHEnum, cdUInt32*)> T_fnEnumCount;    ///< function to return count of values
+   typedef std::function<cdError(cdHEnum, T*)> T_fnEnumNext;   ///< function to get next value
+   typedef std::function<cdError(cdHEnum)> T_fnEnumRelease;    ///< function to release enumeration handle
 
    /// ctor
    PropertyAccessReadWriteEnum(T_fnGet fnGet, T_fnSet fnSet,
@@ -350,10 +354,10 @@ public:
    }
 
 private:
-   T_fnEnumReset m_fnEnumReset;
-   T_fnEnumCount m_fnEnumCount;
-   T_fnEnumNext m_fnEnumNext;
-   T_fnEnumRelease m_fnEnumRelease;
+   T_fnEnumReset m_fnEnumReset;     ///< resets enumeration
+   T_fnEnumCount m_fnEnumCount;     ///< returns count of values
+   T_fnEnumNext m_fnEnumNext;       ///< returns next value
+   T_fnEnumRelease m_fnEnumRelease; ///< releases enumeration handle
 };
 
 /// flash settings property access
@@ -549,16 +553,17 @@ public:
    }
 };
 
-// TODO remove when not used
+/// implements read-only property using PropertyAccessRead class
 #define IMPL_PROP_R(PROPID, PROPTYPE, PROPDEFVAL, PROPFUNC) \
    static PropertyAccessRead<##PROPID, ##PROPTYPE, ##PROPDEFVAL> s_##PROPID( \
    ::CDGet##PROPFUNC);
 
+/// implements read-write property using PropertyAccessReadWrite class
 #define IMPL_PROP_RW(PROPID, PROPTYPE, PROPDEFVAL, PROPFUNC) \
    static PropertyAccessReadWrite<##PROPID, ##PROPTYPE, ##PROPDEFVAL> s_##PROPID( \
    ::CDGet##PROPFUNC, ::CDSet##PROPFUNC);
 
-/// implements ReadWriteEnum property
+/// implements read-write-enum using PropertyAccessReadWriteEnum property
 #define IMPL_PROP_RWE(PROPID, PROPTYPE, PROPDEFVAL, PROPFUNC) \
    static PropertyAccessReadWriteEnum<##PROPID, ##PROPTYPE, ##PROPDEFVAL> s_##PROPID( \
    ::CDGet##PROPFUNC, ::CDSet##PROPFUNC, ::CDEnum##PROPFUNC##Reset, ::CDGet##PROPFUNC##Count, ::CDEnum##PROPFUNC##Next, ::CDEnum##PROPFUNC##Release);
@@ -569,11 +574,11 @@ IMPL_PROP_RWE(propTv, cdRemoteSetTv, cdREMOTE_SET_TV_NA, TvValue)
 IMPL_PROP_RWE(propExposureCompensation, cdCompensation, cdCOMP_NA, ExposureComp)
 IMPL_PROP_RWE(propWhiteBalance, cdWBLightSrc, cdWB_INVALID, WBSetting)
 IMPL_PROP_RWE(propDriveMode, cdDriveMode, cdDRIVE_MODE_UNKNOWN, DriveMode)
-FlashSettingsPropertyAccess s_propFlashExposureComp(false);
-FlashSettingsPropertyAccess s_propFlashMode(true);
+FlashSettingsPropertyAccess s_propFlashExposureComp(false); ///< property access for flash exposure compensation
+FlashSettingsPropertyAccess s_propFlashMode(true); ///< property access for flash mode
 IMPL_PROP_RWE(propAFDistance, cdAFDistance, cdAF_DISTANCE_AUTO, AFDistanceSetting)
 IMPL_PROP_RW(propCurrentZoomPos, cdUInt32, 0, ZoomPos)
-ImageFormatPropertyAccess s_propImageFormat;
+ImageFormatPropertyAccess s_propImageFormat; ///< property access for image format
 
 
 std::vector<unsigned int> ImagePropertyAccess::EnumImageProperties() const
@@ -607,6 +612,7 @@ Variant ImagePropertyAccess::Get(unsigned int uiPropId) const
 {
    Variant v;
 
+/// switch-case for getting a property
 #define CASE_PROP_GET(PROPID) \
    case TYPE_TO_PROP_ID(PROPID##): ATLASSERT(true == s_##PROPID.CanRead()); v = s_##PROPID.Get(m_hSource); break;
 
@@ -687,6 +693,7 @@ Variant ImagePropertyAccess::Get(unsigned int uiPropId) const
 
 void ImagePropertyAccess::Set(unsigned int uiPropId, Variant val)
 {
+/// switch-case for setting a property
 #define CASE_PROP_SET(PROPID) \
    case TYPE_TO_PROP_ID(PROPID##): ATLASSERT(true == s_##PROPID.CanWrite()); s_##PROPID.Set(m_hSource, val); break;
 
@@ -730,6 +737,7 @@ void ImagePropertyAccess::Set(unsigned int uiPropId, Variant val)
 
 void ImagePropertyAccess::Enum(unsigned int uiPropId, std::vector<Variant>& vecValues)
 {
+/// switch-case for enumerating values of a property
 #define CASE_PROP_ENUM(PROPID) \
    case TYPE_TO_PROP_ID(PROPID##): ATLASSERT(true == s_##PROPID.CanEnum()); s_##PROPID.Enum(m_hSource, vecValues); break;
 
@@ -772,6 +780,7 @@ void ImagePropertyAccess::Enum(unsigned int uiPropId, std::vector<Variant>& vecV
 
 bool ImagePropertyAccess::IsReadOnly(unsigned int uiPropId)
 {
+/// switch-case for checking if a property is read-only
 #define CASE_PROP_ISREADONLY(PROPID) \
    case TYPE_TO_PROP_ID(PROPID##): if (s_##PROPID.CanWrite()) return true;
 

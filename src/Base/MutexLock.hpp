@@ -25,8 +25,8 @@ public:
    }
 
 private:
-   MutexLock(const MutexLock&) = delete;
-   MutexLock& operator=(const MutexLock&) = delete;
+   MutexLock(const MutexLock&) = delete;              ///< removed copy ctor
+   MutexLock& operator=(const MutexLock&) = delete;   ///< removed assign op
 
 private:
    /// locked object
@@ -52,8 +52,8 @@ public:
    }
 
 private:
-   MutexUnLocker(const MutexUnLocker&) = delete;
-   MutexUnLocker& operator=(const MutexUnLocker&) = delete;
+   MutexUnLocker(const MutexUnLocker&) = delete;            ///< removed copy ctor
+   MutexUnLocker& operator=(const MutexUnLocker&) = delete; ///< removed assign op
 
 private:
    /// unlocked object
