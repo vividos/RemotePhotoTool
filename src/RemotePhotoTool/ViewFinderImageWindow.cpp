@@ -13,12 +13,22 @@
 
 const double c_dGoldenRatio = 0.618;
 
+/// number of milliseconds until zebra pattern is moved to the right
+const unsigned int c_uiZebraPatternMovementInMs = 300;
+
 ViewFinderImageWindow::ViewFinderImageWindow()
 :m_uiResX(0),
  m_uiResY(0),
  m_enLinesMode(linesModeNoLines),
+ m_bShowZebraPattern(false),
  m_bShowHistogram(false)
 {
+   SetupZebraBrush();
+}
+
+ViewFinderImageWindow::~ViewFinderImageWindow() throw()
+{
+   m_brushZebraPattern.DeleteObject();
 }
 
 void ViewFinderImageWindow::EnableUpdate(bool bEnable)
@@ -86,6 +96,21 @@ LRESULT ViewFinderImageWindow::OnMessageViewfinderAvailImage(UINT /*uMsg*/, WPAR
    return 0;
 }
 
+void ViewFinderImageWindow::SetupZebraBrush()
+{
+   const WORD c_bitsZebraPatternBrush[8] = { 0x9f, 0x3f, 0x7e, 0xfc, 0xf9, 0xf3, 0xe7, 0xcf };
+
+   CBitmap bmZebraPattern;
+   bmZebraPattern.CreateBitmap(8, 8, 1, 1, c_bitsZebraPatternBrush);
+
+   LOGBRUSH logBrush = { 0 };
+   logBrush.lbStyle = BS_PATTERN;
+   logBrush.lbHatch = (ULONG_PTR)bmZebraPattern.m_hBitmap;
+   logBrush.lbColor = RGB(192, 192, 192);
+
+   m_brushZebraPattern.CreateBrushIndirect(&logBrush);
+}
+
 void ViewFinderImageWindow::DecodeJpegImage(const std::vector<BYTE>& vecImage)
 {
    //DWORD dwStart = GetTickCount();
@@ -115,6 +140,30 @@ void ViewFinderImageWindow::DecodeJpegImage(const std::vector<BYTE>& vecImage)
       m_uiResX = imageInfo.Width();
       m_uiResY = imageInfo.Height();
    }
+}
+
+void ViewFinderImageWindow::MakeOverexposedTransparent(std::vector<BYTE>& vecBitmapData)
+{
+   ATLASSERT((vecBitmapData.size() % 3) == 0);
+
+   size_t uiValues = vecBitmapData.size() / 3;
+
+   // 0xff means fully opaque
+   std::vector<BYTE> vecTransparentBitmapData(uiValues * 4, 0xff);
+
+   for (size_t ui = 0; ui < uiValues; ui++)
+   {
+      memcpy(&vecTransparentBitmapData[ui * 4], &vecBitmapData[ui * 3], 3);
+
+      if (vecBitmapData[ui * 3 + 0] == 0xff ||
+          vecBitmapData[ui * 3 + 1] == 0xff ||
+          vecBitmapData[ui * 3 + 2] == 0xff)
+      {
+         vecTransparentBitmapData[ui * 4 + 3] = 0; // make transparent
+      }
+   }
+
+   vecBitmapData.swap(vecTransparentBitmapData);
 }
 
 void ViewFinderImageWindow::CreateBitmap(CBitmapHandle& bmp)
@@ -218,6 +267,25 @@ void ViewFinderImageWindow::DrawLines(CDC& dc, int iWidth, int iHeight)
    dc.SetROP2(iLastDrawMode);
 }
 
+void ViewFinderImageWindow::DrawZebraPattern(CDC& dc, int iWidth, int iHeight)
+{
+   // draw zebra pattern
+   HBRUSH hOldBrush = dc.SelectBrush(m_brushZebraPattern);
+
+   dc.SetBkMode(TRANSPARENT);
+   dc.SetBkColor(RGB(255, 255, 255));
+
+   // in order to move zebra pattern, set pattern brush origin
+   DWORD dwNow = GetTickCount();
+   int iOffset = (dwNow / c_uiZebraPatternMovementInMs) % 8;
+   dc.SetBrushOrg(iOffset, 0);
+
+   CRect rcImage(CPoint(0, 0), CSize(iWidth, iHeight));
+   dc.Rectangle(&rcImage);
+
+   dc.SelectBrush(hOldBrush);
+}
+
 LRESULT ViewFinderImageWindow::OnEraseBkgnd(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
    // disable erasing
@@ -258,7 +326,15 @@ LRESULT ViewFinderImageWindow::OnPaint(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM 
    memDC.FillSolidRect(&dc.m_ps.rcPaint, ::GetSysColor(COLOR_3DFACE));
 
    // blit bitmap
-   memDC.StretchBlt(0, 0, iWidth, iHeight, bmpDC, 0, 0, bm.bmWidth, bm.bmHeight, SRCCOPY);
+   if (m_bShowZebraPattern)
+   {
+      DrawZebraPattern(memDC, iWidth, iHeight);
+
+      // draw viewfinder bitmap with transparency
+      memDC.TransparentBlt(0, 0, iWidth, iHeight, bmpDC, 0, 0, bm.bmWidth, bm.bmHeight, RGB(255,255,255));
+   }
+   else
+      memDC.StretchBlt(0, 0, iWidth, iHeight, bmpDC, 0, 0, bm.bmWidth, bm.bmHeight, SRCCOPY);
 
    bmpDC.SelectBitmap(hbmT);
 

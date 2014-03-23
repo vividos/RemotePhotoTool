@@ -19,6 +19,8 @@ class ViewFinderImageWindow: public CWindowImpl<ViewFinderImageWindow>
 public:
    /// ctor
    ViewFinderImageWindow();
+   /// dtor
+   ~ViewFinderImageWindow() throw();
 
    /// lines mode types
    enum T_enLinesMode
@@ -32,6 +34,9 @@ public:
 
    /// sets lines mode
    void SetLinesMode(T_enLinesMode enLinesMode) throw() { m_enLinesMode = enLinesMode; }
+
+   /// shows zebra pattern for overexposed images
+   void ShowZebraPattern(bool bShowZebraPattern) throw() { m_bShowZebraPattern = bShowZebraPattern; }
 
    /// sets if histogram is shown
    void ShowHistogram(bool bShowHistogram) throw() { m_bShowHistogram = bShowHistogram; }
@@ -59,8 +64,14 @@ private:
    /// message arrived that new viewfinder image is available
    LRESULT OnMessageViewfinderAvailImage(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
 
+   /// sets up zebra brush
+   void SetupZebraBrush();
+
    /// decodes raw jpeg data into image and stores it for drawing
    void DecodeJpegImage(const std::vector<BYTE>& vecImage);
+
+   /// sets transparency for overexposed values in bitmap
+   void MakeOverexposedTransparent(std::vector<BYTE>& vecBitmapData);
 
    /// creates bitmap from viewfinder data
    void CreateBitmap(CBitmapHandle& bmp);
@@ -76,6 +87,9 @@ private:
 
    /// draws lines into dc
    void DrawLines(CDC& dc, int iWidth, int iHeight);
+
+   /// draws zebra pattern
+   void DrawZebraPattern(CDC& dc, int iWidth, int iHeight);
 
 private:
 // Handler prototypes (uncomment arguments if needed):
@@ -112,6 +126,12 @@ private:
 
    /// lines mode
    T_enLinesMode m_enLinesMode;
+
+   /// indicates if zebra pattern for overexposed areas are drawn
+   bool m_bShowZebraPattern;
+
+   /// brush for drawing zebra pattern
+   CBrush m_brushZebraPattern;
 
    /// indicates if histogram is shown
    bool m_bShowHistogram;
