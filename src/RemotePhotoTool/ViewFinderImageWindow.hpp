@@ -25,11 +25,11 @@ public:
    /// lines mode types
    enum T_enLinesMode
    {
-      linesModeNoLines = 0,
-      linesModeRuleOfThird = 1,
-      linesModeGoldenRatio = 2,
+      linesModeNoLines = 0,      ///< show no lines
+      linesModeRuleOfThird = 1,  ///< show lines at 1/3 points
+      linesModeGoldenRatio = 2,  ///< show lines that divide image according to golden ratio
 
-      linesModeMax = linesModeGoldenRatio
+      linesModeMax = linesModeGoldenRatio ///< max. mode value
    };
 
    /// sets lines mode

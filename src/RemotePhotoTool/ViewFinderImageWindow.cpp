@@ -10,7 +10,9 @@
 #include "ViewFinderImageWindow.hpp"
 #include "Viewfinder.hpp"
 #include "JpegMemoryReader.hpp"
+#include "Logging.hpp"
 
+/// ratio to draw lines for "golden ratio" mode
 const double c_dGoldenRatio = 0.618;
 
 /// number of milliseconds until zebra pattern is moved to the right
@@ -122,7 +124,12 @@ void ViewFinderImageWindow::DecodeJpegImage(const std::vector<BYTE>& vecImage)
    }
    catch(...)
    {
-      ATLTRACE(_T("!!! failed loading JPEG!\n"));
+      static bool s_bWarnedAboutJPEG = false;
+      if (!s_bWarnedAboutJPEG)
+      {
+         LOG_TRACE(_T("DecodeJpegImage: failed loading JPEG!\n"));
+         s_bWarnedAboutJPEG = true;
+      }
       return;
    }
 
