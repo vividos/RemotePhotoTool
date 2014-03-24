@@ -1,1 +1,0 @@
-// PhotoTool.h
