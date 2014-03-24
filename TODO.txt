@@ -5,6 +5,7 @@ write documentation for CanonControl library
 remove TODOs
 Viewfinder: implement image on TFT and/or PC
 replace throw() with noexcept
+use crash reporter in worker threads, too
 
 PSREC
 -----
@@ -60,6 +61,10 @@ RemotePhotoToolCmdline
 ----------------
 implement opening by index, {0}
 fix crashes in EDSDK: call EdsGetEvent() often
+add checking for unknown device and image properties
+add listing remote shooting capabilities
+use crash reporter
+release first version
 
 RemoteScriptingEditor
 ---------------------
