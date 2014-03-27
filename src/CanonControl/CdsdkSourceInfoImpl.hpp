@@ -42,7 +42,8 @@ public:
 
       // may return cdINVALID_PARAMETER, cdMEM_ALLOC_FAILED, cdDEVICE_NOT_FOUND, cdDEVICE_NOT_INSTALLED
       cdError err = CDOpenSource(&m_sourceInfo, &hSource);
-      LOG_TRACE(_T("CDOpenSource(&si = \"%hs\") returned %08x\n"), m_sourceInfo.Name, err);
+      LOG_TRACE(_T("CDOpenSource(&si = \"%hs\", hSource=%08x) returned %08x\n"),
+         m_sourceInfo.Name, hSource, err);
       CheckError(_T("CDOpenSource"), err, __FILE__, __LINE__);
 
       return std::shared_ptr<SourceDevice>(new SourceDeviceImpl(m_spRef, hSource));
