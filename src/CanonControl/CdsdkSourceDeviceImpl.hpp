@@ -38,24 +38,41 @@ public:
 
    virtual bool GetDeviceCapability(SourceDevice::T_enDeviceCapability enDeviceCapability) const override
    {
-      switch (enDeviceCapability)
+      try
       {
-      case SourceDevice::capRemoteReleaseControl:
+         switch (enDeviceCapability)
          {
-            DeviceProperty p = GetDeviceProperty(cdDEVICE_PROP_RELEASE_CONTROL_CAP);
-            unsigned int uiValue = p.Value().Get<unsigned int>();
+         case SourceDevice::capRemoteReleaseControl:
+            {
+               DeviceProperty p = GetDeviceProperty(cdDEVICE_PROP_RELEASE_CONTROL_CAP);
+               unsigned int uiValue = p.Value().Get<unsigned int>();
 
-            return (uiValue & 0x40000000) != 0;
+               return (uiValue & 0x40000000) != 0;
+            }
+            break;
+
+         case SourceDevice::capRemoteViewfinder:
+            // TODO implement
+            ATLASSERT(false);
+            break;
+
+         default:
+            ATLASSERT(false);
          }
-         break;
-
-      case SourceDevice::capRemoteViewfinder:
-         // TODO implement
-         ATLASSERT(false);
-         break;
-
-      default:
-         ATLASSERT(false);
+      }
+      catch (Exception& ex)
+      {
+         LOG_TRACE(_T("Exception occured in GetDeviceCapability(): %s\n"),
+            ex.Message().GetString());
+      }
+      catch (boost::bad_any_cast&)
+      {
+         LOG_TRACE(_T("boost::bad_any_cast exception occured in GetDeviceCapability()\n"));
+      }
+      catch (std::exception& ex)
+      {
+         LOG_TRACE(_T("std::exception occured in GetDeviceCapability(): %Hs\n"),
+            ex.what());
       }
       return false;
    }

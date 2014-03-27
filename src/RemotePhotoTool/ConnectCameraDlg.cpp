@@ -129,6 +129,12 @@ LRESULT ConnectCameraDlg::OnBtnInfo(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*h
    {
       std::shared_ptr<SourceDevice> spSourceDevice = GetSourceDevice();
 
+      if (spSourceDevice == nullptr)
+      {
+         AtlMessageBox(m_hWnd, _T("Couldn't open camera device!"), IDR_MAINFRAME, MB_OK);
+         return 0;
+      }
+
       CameraInfoDlg dlg(*spSourceDevice);
       dlg.DoModal();
    }
