@@ -29,7 +29,7 @@ LRESULT CameraInfoDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*l
    }
    catch(CameraException& ex)
    {
-      cszText.AppendFormat(_T("\nException while collecting camera info: %s\n"), ex.Message().GetString());
+      cszText.AppendFormat(_T("\nError while collecting camera info: %s\n"), ex.Message().GetString());
    }
 
    cszText.Replace(_T("\n"), _T("\r\n"));
@@ -69,7 +69,16 @@ void CameraInfoDlg::CollectDeviceProperties(CString& cszText)
 {
    cszText += _T("Supported device properties:\n");
 
-   std::vector<unsigned int> vecProperties = m_sourceDevice.EnumDeviceProperties();
+   std::vector<unsigned int> vecProperties;
+   try
+   {
+      vecProperties = m_sourceDevice.EnumDeviceProperties();
+   }
+   catch (CameraException& ex)
+   {
+      cszText.AppendFormat(_T("Error while enumerating device properties: %s\n"),
+         ex.Message().GetString());
+   }
 
    for (size_t i=0, iMax = vecProperties.size(); i<iMax; i++)
    {
@@ -137,24 +146,40 @@ void CameraInfoDlg::CollectImageProperties(std::shared_ptr<RemoteReleaseControl>
    {
       unsigned int uiPropertyId = vecImageProperties[i];
 
-      ImageProperty ip = spRemoteReleaseControl->GetImageProperty(uiPropertyId);
-
-      cszText.AppendFormat(_T("Image property \"%s\" (%04x)%s: %s (%s)\n"),
-         ip.Name().GetString(),
-         uiPropertyId,
-         ip.IsReadOnly() ? _T(" [read-only]") : _T(""),
-         ip.Value().ToString().GetString(),
-         ip.AsString().GetString());
-
-      std::vector<ImageProperty> vecValues;
-      spRemoteReleaseControl->EnumImagePropertyValues(vecImageProperties[i], vecValues);
-
-      for (size_t j=0, jMax=vecValues.size(); j<jMax; j++)
+      try
       {
-         const ImageProperty& ip2 = vecValues[j];
-         cszText.AppendFormat(_T("   Valid value: %s (%s)\n"),
-            ip2.Value().ToString().GetString(),
-            ip.ValueAsString(ip2.Value()).GetString());
+         ImageProperty ip = spRemoteReleaseControl->GetImageProperty(uiPropertyId);
+
+         cszText.AppendFormat(_T("Image property \"%s\" (%04x)%s: %s (%s)\n"),
+            ip.Name().GetString(),
+            uiPropertyId,
+            ip.IsReadOnly() ? _T(" [read-only]") : _T(""),
+            ip.Value().ToString().GetString(),
+            ip.AsString().GetString());
+
+         try
+         {
+            std::vector<ImageProperty> vecValues;
+            spRemoteReleaseControl->EnumImagePropertyValues(vecImageProperties[i], vecValues);
+
+            for (size_t j=0, jMax=vecValues.size(); j<jMax; j++)
+            {
+               const ImageProperty& ip2 = vecValues[j];
+               cszText.AppendFormat(_T("   Valid value: %s (%s)\n"),
+                  ip2.Value().ToString().GetString(),
+                  ip.ValueAsString(ip2.Value()).GetString());
+            }
+         }
+         catch (CameraException& ex)
+         {
+            cszText.AppendFormat(_T("Error while enumerating device property values for %08x: %s\n"),
+               uiPropertyId, ex.Message().GetString());
+         }
+      }
+      catch (CameraException& ex)
+      {
+         cszText.AppendFormat(_T("Error while getting device property %08x: %s\n"),
+            uiPropertyId, ex.Message().GetString());
       }
    }
 
@@ -165,34 +190,42 @@ void CameraInfoDlg::CollectShootingModeInfos(std::shared_ptr<RemoteReleaseContro
 {
    cszText += _T("Supported shooting modes:\n");
 
-   if (!spRemoteReleaseControl->GetCapability(RemoteReleaseControl::capChangeShootingMode))
+   try
    {
-      cszText += _T("(Switching shooting modes not supported, can only dump current mode)\n");
-
-      unsigned int uiShootingModePropertyId =
-         spRemoteReleaseControl->MapImagePropertyTypeToId(T_enImagePropertyType::propShootingMode);
-
-      // no, just dump current shooting mode
-      ImageProperty currentShootingMode = spRemoteReleaseControl->GetImageProperty(uiShootingModePropertyId);
-
-      CollectShootingModeDetails(spRemoteReleaseControl, currentShootingMode, cszText);
-   }
-   else
-   {
-      // switch through all shooting modes and dump
-      std::vector<ImageProperty> vecShootingModes;
-      unsigned int uiPropertyId = spRemoteReleaseControl->MapImagePropertyTypeToId(T_enImagePropertyType::propShootingMode);
-      spRemoteReleaseControl->EnumImagePropertyValues(uiPropertyId, vecShootingModes);
-
-      if (vecShootingModes.empty())
-         cszText += _T("(No shooting modes found)\n");
-
-      std::for_each(vecShootingModes.begin(), vecShootingModes.end(), [&](const ImageProperty& ip)
+      if (!spRemoteReleaseControl->GetCapability(RemoteReleaseControl::capChangeShootingMode))
       {
-         spRemoteReleaseControl->SetImageProperty(ip);
+         cszText += _T("(Switching shooting modes not supported, can only dump current mode)\n");
 
-         CollectShootingModeDetails(spRemoteReleaseControl, ip, cszText);
-      });
+         unsigned int uiShootingModePropertyId =
+            spRemoteReleaseControl->MapImagePropertyTypeToId(T_enImagePropertyType::propShootingMode);
+
+         // no, just dump current shooting mode
+         ImageProperty currentShootingMode = spRemoteReleaseControl->GetImageProperty(uiShootingModePropertyId);
+
+         CollectShootingModeDetails(spRemoteReleaseControl, currentShootingMode, cszText);
+      }
+      else
+      {
+      // switch through all shooting modes and dump
+         std::vector<ImageProperty> vecShootingModes;
+         unsigned int uiPropertyId = spRemoteReleaseControl->MapImagePropertyTypeToId(T_enImagePropertyType::propShootingMode);
+         spRemoteReleaseControl->EnumImagePropertyValues(uiPropertyId, vecShootingModes);
+
+         if (vecShootingModes.empty())
+            cszText += _T("(No shooting modes found)\n");
+
+         std::for_each(vecShootingModes.begin(), vecShootingModes.end(), [&](const ImageProperty& ip)
+         {
+            spRemoteReleaseControl->SetImageProperty(ip);
+
+            CollectShootingModeDetails(spRemoteReleaseControl, ip, cszText);
+         });
+      }
+   }
+   catch (CameraException& ex)
+   {
+      cszText.AppendFormat(_T("Error while enumerating shooting modes: %s\n"),
+         ex.Message().GetString());
    }
 }
 
@@ -212,7 +245,7 @@ void CameraInfoDlg::CollectShootingModeDetails(std::shared_ptr<RemoteReleaseCont
       }
       catch(const CameraException& ex)
       {
-         cszText.AppendFormat(_T("Exception while enumerating Av values: %s\n"), ex.Message().GetString());
+         cszText.AppendFormat(_T("Error while enumerating Av values: %s\n"), ex.Message().GetString());
       }
 
       if (!vecAvValues.empty())
@@ -266,7 +299,7 @@ void CameraInfoDlg::CollectShootingModeDetails(std::shared_ptr<RemoteReleaseCont
       }
       catch(const CameraException& ex)
       {
-         cszText.AppendFormat(_T("Exception while enumerating exposure compensation values: %s\n"), ex.Message().GetString());
+         cszText.AppendFormat(_T("Error while enumerating exposure compensation values: %s\n"), ex.Message().GetString());
       }
 
       if (!vecEcValues.empty())
