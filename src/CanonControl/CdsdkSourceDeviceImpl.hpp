@@ -79,9 +79,18 @@ public:
 
    virtual CString ModelName() const override
    {
-      DevicePropertyAccess p(const_cast<cdHSource&>(m_hSource));
-      Variant v = p.Get(cdDEVICE_PROP_MODEL_NAME);
-      return v.Get<CString>();
+      try
+      {
+         DevicePropertyAccess p(const_cast<cdHSource&>(m_hSource));
+         Variant v = p.Get(cdDEVICE_PROP_MODEL_NAME);
+         return v.Get<CString>();
+      }
+      catch (Exception& ex)
+      {
+         LOG_TRACE(_T("exception in ModelName(): %s"), ex.Message().GetString());
+      }
+
+      return CString();
    }
 
    virtual CString SerialNumber() const override
@@ -134,7 +143,6 @@ public:
 
    virtual DeviceProperty GetDeviceProperty(unsigned int uiPropertyId) const override
    {
-      // TODO get device property
       Variant value;
       return DeviceProperty(variantCdsdk, uiPropertyId, value, true);
    }
