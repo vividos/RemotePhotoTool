@@ -251,7 +251,7 @@ void RemoteReleaseControlImpl::OnStateChange(EdsStateEvent inEvent, EdsUInt32 in
    }
    catch(CameraException& ex)
    {
-      LOG_TRACE(_T("CameraException during StateEvent handler: %s\n"), ex.Message());
+      LOG_TRACE(_T("CameraException during StateEvent handler: %s\n"), ex.Message().GetString());
    }
    catch(...)
    {
@@ -287,7 +287,7 @@ EdsError RemoteReleaseControlImpl::OnObjectChange_(EdsObjectEvent inEvent, EdsBa
    }
    catch(CameraException& ex)
    {
-      LOG_TRACE(_T("CameraException during ObjectEvent handler: %s\n"), ex.Message());
+      LOG_TRACE(_T("CameraException during ObjectEvent handler: %s\n"), ex.Message().GetString());
    }
    catch(...)
    {
@@ -355,7 +355,7 @@ bool RemoteReleaseControlImpl::GetCapability(RemoteReleaseControl::T_enRemoteCap
    }
    catch(const CameraException& ex)
    {
-      LOG_TRACE(_T("CameraException during GetCapability(): %s\n"), ex.Message());
+      LOG_TRACE(_T("CameraException during GetCapability(): %s\n"), ex.Message().GetString());
    }
 
    return false;
@@ -379,7 +379,9 @@ void RemoteReleaseControlImpl::AsyncSetImageProperty(const ImageProperty& imageP
    catch(CameraException& ex)
    {
       LOG_TRACE(_T("CameraException during AsyncSetImageProperty(): %s, ImageProperty: %s, Value: %s\n"),
-         ex.Message(), imageProperty.Name().GetString(), imageProperty.AsString().GetString());
+         ex.Message().GetString(),
+         imageProperty.Name().GetString(),
+         imageProperty.AsString().GetString());
    }
 }
 
@@ -501,12 +503,13 @@ void RemoteReleaseControlImpl::DownloadImage(Handle hDirectoryItem, ShutterRelea
          hDirectoryItem.Get(), dirItemInfo.size, hStream.Get(), err);
       EDSDK::CheckError(_T("EdsDownload"), err, __FILE__, __LINE__);
    }
-   catch(CameraException& /*ex*/)
+   catch(CameraException& ex)
    {
+      LOG_TRACE(_T("Exception while downloading image: %s"), ex.Message().GetString());
+
       // issue notification that download has been canceled
       EdsError err = EdsDownloadCancel(hDirectoryItem);
       LOG_TRACE(_T("EdsDownloadCancel(dirItem = %08x) returned %08x\n"), hDirectoryItem.Get(), err);
-      // TODO log exception
 
       throw;
    }

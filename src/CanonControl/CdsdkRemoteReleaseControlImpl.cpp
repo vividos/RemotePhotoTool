@@ -102,7 +102,7 @@ bool RemoteReleaseControlImpl::GetCapability(RemoteReleaseControl::T_enRemoteCap
    }
    catch(const CameraException& ex)
    {
-      LOG_TRACE(_T("CameraException during GetCapability: %s\n"), ex.Message());
+      LOG_TRACE(_T("CameraException during GetCapability: %s\n"), ex.Message().GetString());
    }
    return false;
 }
