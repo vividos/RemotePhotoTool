@@ -143,7 +143,9 @@ public:
 
    virtual DeviceProperty GetDeviceProperty(unsigned int uiPropertyId) const override
    {
-      Variant value;
+      DevicePropertyAccess access(GetSource());
+      Variant value = access.Get(uiPropertyId);
+
       return DeviceProperty(variantCdsdk, uiPropertyId, value, true);
    }
 
@@ -162,7 +164,7 @@ public:
    }
 
    /// returns source
-   cdHSource& GetSource(){ return m_hSource; }
+   cdHSource GetSource() const throw() { return m_hSource; }
 
 private:
    /// source device handle
