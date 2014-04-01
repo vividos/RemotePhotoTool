@@ -14,42 +14,24 @@ class CameraException: public Exception
 {
 public:
    /// ctor
-   CameraException(const CString& cszFunction, bool bIsSpecific, unsigned int uiComponentId, unsigned int uiErrorId,
-                   LPCSTR pszFile, UINT uiLine) throw()
-      :Exception(FormatExceptionText(cszFunction, bIsSpecific, uiComponentId, uiErrorId), pszFile, uiLine),
+   CameraException(const CString& cszFunction, const CString& cszMessage,
+      unsigned int uiErrorCode, LPCSTR pszFile, UINT uiLine) throw()
+      :Exception(cszMessage, pszFile, uiLine),
        m_cszFunction(cszFunction),
-       m_bIsSpecific(bIsSpecific),
-       m_uiComponentId(uiComponentId),
-       m_uiErrorId(uiErrorId)
+       m_uiErrorCode(uiErrorCode)
    {
    }
 
    /// returns name of function where exception occured
    const CString& Function() const throw() { return m_cszFunction; }
 
-   /// indicates if error is specific
-   bool IsSpecific() const throw() { return m_bIsSpecific; }
-
-   /// returns component id
-   unsigned int ComponentId() const throw() { return m_uiComponentId; }
-
-   /// returns error id
-   unsigned int ErrorId() const throw() { return m_uiErrorId; }
-
-private:
-   /// helper function to format exception text
-   static CString FormatExceptionText(const CString& cszFunction, bool bIsSpecific, unsigned int uiComponentId, unsigned int uiErrorId);
+   /// returns error code
+   unsigned int ErrorCode() const throw() { return m_uiErrorCode; }
 
 private:
    /// function
    CString m_cszFunction;
 
-   /// specific error?
-   bool m_bIsSpecific;
-
-   /// component id
-   unsigned int m_uiComponentId;
-
-   /// error id
-   unsigned int m_uiErrorId;
+   /// error code
+   unsigned int m_uiErrorCode;
 };

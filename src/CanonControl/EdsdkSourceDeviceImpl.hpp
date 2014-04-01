@@ -98,7 +98,7 @@ public:
       {
          // throw an error code of 7, which means "not supported"
          throw CameraException(_T("SourceDevice::EnterReleaseControl"),
-            false, 0, EDS_ERR_NOT_SUPPORTED, __FILE__, __LINE__);
+            _T("Not supported"), EDS_ERR_NOT_SUPPORTED, __FILE__, __LINE__);
       }
 
       std::shared_ptr<SourceDevice> spSourceDevice = shared_from_this();

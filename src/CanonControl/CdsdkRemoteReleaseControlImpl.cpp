@@ -180,7 +180,7 @@ std::shared_ptr<Viewfinder> RemoteReleaseControlImpl::StartViewfinder() const
 {
    if (!GetCapability(RemoteReleaseControl::capViewfinder))
       throw CameraException(_T("RemoteReleaseControl::StartViewfinder"),
-         false, cdERROR_CLIENT_COMPONENTID, cdNOT_SUPPORTED, __FILE__, __LINE__);
+         _T("Not supported"), cdERROR_CLIENT_COMPONENTID | cdNOT_SUPPORTED, __FILE__, __LINE__);
 
    return std::shared_ptr<Viewfinder>(new ViewfinderImpl(m_spSourceDevice));
 }
@@ -280,7 +280,7 @@ std::shared_ptr<BulbReleaseControl> RemoteReleaseControlImpl::StartBulb()
 {
    // bulb not supported by CDSDK
    throw CameraException(_T("RemoteReleaseControl::StartBulb"),
-      false, cdERROR_CDSDK_COMPONENTID, cdNOT_SUPPORTED, __FILE__, __LINE__);
+      _T("Not supported"), cdERROR_CDSDK_COMPONENTID | cdNOT_SUPPORTED, __FILE__, __LINE__);
 }
 
 cdUInt32 cdSTDCALL RemoteReleaseControlImpl::OnReleaseEventCallback_(

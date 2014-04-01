@@ -158,8 +158,8 @@ public:
    {
       if (!GetCapability(RemoteReleaseControl::capViewfinder))
       {
-         throw CameraException(_T("RemoteReleaseControl::StartViewfinder"),
-            false, prERROR_PRSDK_COMPONENTID, prNOT_SUPPORTED, __FILE__, __LINE__);
+         throw CameraException(_T("RemoteReleaseControl::StartViewfinder"), _T("Not supported"),
+            prERROR_PRSDK_COMPONENTID | prNOT_SUPPORTED, __FILE__, __LINE__);
       }
 
       return std::shared_ptr<Viewfinder>(new ViewfinderImpl(m_spSourceDevice, m_hCamera));
@@ -188,8 +188,8 @@ public:
    virtual std::shared_ptr<BulbReleaseControl> StartBulb() override
    {
       // bulb not supported by PSREC
-      throw CameraException(_T("PSREC::RemoteReleaseControl::StartBulb"),
-         false, prERROR_PRSDK_COMPONENTID, prNOT_SUPPORTED, __FILE__, __LINE__);
+      throw CameraException(_T("PSREC::RemoteReleaseControl::StartBulb"), _T("Not supported"),
+         prERROR_PRSDK_COMPONENTID | prNOT_SUPPORTED, __FILE__, __LINE__);
    }
 
 private:

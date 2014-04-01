@@ -145,8 +145,8 @@ public:
    {
       if (!GetDeviceCapability(capRemoteReleaseControl))
       {
-         // throw an error code of 7, which means "not supported"
-         throw CameraException(_T("SourceDevice::EnterReleaseControl"), false, 0, 7, __FILE__, __LINE__);
+         throw CameraException(_T("SourceDevice::EnterReleaseControl"), _T("Not supported"),
+            prERROR_PRSDK_COMPONENTID | prNOT_SUPPORTED, __FILE__, __LINE__);
       }
 
       std::shared_ptr<SourceDeviceImpl> spSourceDevice = this->shared_from_this();

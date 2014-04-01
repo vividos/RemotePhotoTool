@@ -10,17 +10,39 @@
 #include "CdsdkCommon.hpp"
 #include "CameraException.hpp"
 #include "CdsdkSourceInfoImpl.hpp"
+#include "ErrorText.hpp"
 
 using namespace CDSDK;
 
 void CDSDK::CheckError(const CString& cszFunction, cdError err, LPCSTR pszFile, UINT uiLine)
 {
-   if (err != cdOK)
-      throw CameraException(cszFunction,
-         (err & cdERROR_ISSPECIFIC_MASK) != 0,
-         err & cdERROR_COMPONENTID_MASK,
-         err & cdERROR_ERRORID_MASK,
-         pszFile, uiLine);
+   if (err == cdOK)
+      return;
+
+   cdError componentId = err & cdERROR_COMPONENTID_MASK;
+   cdError errorId = err & cdERROR_ERRORID_MASK;
+
+   CString cszMessage;
+   cszMessage.Format(_T("Error in function \"%s\": %s, %s%s (%08x)"),
+      cszFunction.GetString(),
+      componentId == cdERROR_CLIENT_COMPONENTID ? _T("Client") :
+      componentId == cdERROR_LLSDK_COMPONENTID ? _T("LLSDK") :
+      componentId == cdERROR_HLSDK_COMPONENTID ? _T("HLSDK") :
+      componentId == cdERROR_PROPERTY_PARSING_COMPONENTID ? _T("PropertyParsing") :
+      componentId == cdERROR_VIEW_DEVELOPMENT_COMPONENTID ? _T("ViewDevelopment") :
+      componentId == cdERROR_VIEW_DECODING_COMPONENTID ? _T("ViewDecoding") :
+      componentId == cdERROR_COLOR_MAPPING_COMPONENTID ? _T("ColorMapping") :
+      componentId == cdERROR_PICTURE_COLLECTION_COMPONENTID ? _T("PictureCollection") :
+      componentId == cdERROR_SETUP_COMPONENTID ? _T("Setup") :
+      componentId == cdERROR_IWRAP_COMPONENTID ? _T("IWrap") :
+      componentId == cdERROR_PSUSD_COMPONENTID ? _T("PSUSD") :
+      componentId == cdERROR_CDSDK_COMPONENTID ? _T("CDSDK") :
+      componentId == cdERROR_RDSDK_COMPONENTID ? _T("RDSDK") :  _T("???"),
+      ErrorTextFromErrorId(errorId),
+      (err & cdERROR_ISSPECIFIC_MASK) != 0 ? _T(", IsSpecific") : _T(""),
+      err);
+
+   throw CameraException(cszFunction, cszMessage, err, pszFile, uiLine);
 }
 
 Ref::Ref()

@@ -153,9 +153,8 @@ public:
    {
       if (!GetDeviceCapability(capRemoteReleaseControl))
       {
-         // throw a "not supported" error
-         throw CameraException(_T("SourceDevice::EnterReleaseControl"), false,
-            cdERROR_CDSDK_COMPONENTID, cdNOT_SUPPORTED, __FILE__, __LINE__);
+         throw CameraException(_T("EnterReleaseControl"), _T("Not supported"),
+            cdERROR_CDSDK_COMPONENTID | cdNOT_SUPPORTED, __FILE__, __LINE__);
       }
 
       std::shared_ptr<SourceDeviceImpl> spSourceDevice = shared_from_this();

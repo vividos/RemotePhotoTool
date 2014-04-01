@@ -12,6 +12,7 @@
 #pragma warning(pop)
 #include "SourceInfo.hpp"
 #include "CameraException.hpp"
+#include "ErrorText.hpp"
 
 /// Powershot Remote Capture SDK (PS-ReC) interface
 namespace PSREC
@@ -20,12 +21,24 @@ namespace PSREC
 /// checks for error and throws CameraException when necessary
 inline void CheckError(const CString& cszFunction, prResponse err, LPCSTR pszFile, UINT uiLine)
 {
-   if (err != prOK)
-      throw CameraException(cszFunction,
-         false,
-         err & prERROR_COMPONENTID_MASK,
-         err & prERROR_ERRORID_MASK,
-         pszFile, uiLine);
+   if (err == prOK)
+      return;
+
+   prResponse componentId = err & prERROR_COMPONENTID_MASK;
+   prResponse errorId = err & prERROR_ERRORID_MASK;
+
+   CString cszMessage;
+   cszMessage.Format(_T("Error in function \"%s\": %s, %s (%08x)"),
+      cszFunction.GetString(),
+      componentId == prERROR_PTP_COMPONENTID ? _T("PTP") :
+      componentId == prERROR_PRSDK_COMPONENTID ? _T("PRSDK") :
+      componentId == prERROR_WIA_STI_COMPONENTID ? _T("WIA/STI") :
+      componentId == prERROR_WINDOWS_COMPONENTID ? _T("Windows") :
+      componentId == prERROR_COMIF_COMPONENTID ? _T("COM") : _T("???"),
+      ErrorTextFromErrorId(errorId),
+      err);
+
+   throw CameraException(cszFunction, cszMessage, err, pszFile, uiLine);
 }
 
 /// SDK reference

@@ -20,8 +20,7 @@ public:
    CameraErrorDlg(const CString& cszMessage, const CameraException& ex)
       :m_cszMessage(cszMessage),
        m_cszFunction(ex.Function()),
-       m_uiComponentId(ex.ComponentId()),
-       m_uiErrorId(ex.ErrorId())
+       m_uiErrorCode(ex.ErrorCode())
    {
    }
 
@@ -50,10 +49,9 @@ private:
       m_ecErrorMessage.SetWindowText(m_cszMessage);
 
       CString cszDetails;
-      cszDetails.Format(_T("Function [%s]\r\nComponent Id [%02x]\r\nError Id [%04x]"),
+      cszDetails.Format(_T("Function [%s]\r\nError Code [%08x]"),
          m_cszFunction.GetString(),
-         m_uiComponentId >> 24,
-         m_uiErrorId);
+         m_uiErrorCode);
 
       m_ecErrorDetails.SetWindowText(cszDetails);
 
@@ -80,9 +78,6 @@ private:
    /// error function
    CString m_cszFunction;
 
-   /// component id
-   unsigned int m_uiComponentId;
-
-   /// error id
-   unsigned int m_uiErrorId;
+   /// error code
+   unsigned int m_uiErrorCode;
 };

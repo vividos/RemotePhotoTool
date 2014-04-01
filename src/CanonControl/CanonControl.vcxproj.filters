@@ -32,9 +32,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CameraException.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="DeviceProperty.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -91,6 +88,9 @@
     </ClCompile>
     <ClCompile Include="CdsdkRemoteReleaseControlImpl.cpp">
       <Filter>CDSDK Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ErrorText.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -255,6 +255,9 @@
     </ClInclude>
     <ClInclude Include="CdsdkImagePropertyAccess.hpp">
       <Filter>CDSDK Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ErrorText.hpp">
+      <Filter>Exported Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

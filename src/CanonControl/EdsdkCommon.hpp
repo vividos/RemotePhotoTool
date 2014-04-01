@@ -12,6 +12,7 @@
 #include "CameraException.hpp"
 #include "BackgroundWindowThread.hpp"
 #include "LightweightMutex.hpp"
+#include "ErrorText.hpp"
 
 /// EOS Digital Camera SDK interface
 namespace EDSDK
@@ -20,11 +21,23 @@ namespace EDSDK
 /// checks for errors
 inline void CheckError(const CString& cszFunction, EdsError err, LPCSTR pszFile, UINT uiLine)
 {
-   if (err != EDS_ERR_OK)
-      throw CameraException(cszFunction,
-         (err & EDS_ISSPECIFIC_MASK) != 0,
-         err & EDS_COMPONENTID_MASK,
-         err & EDS_ERRORID_MASK, pszFile, uiLine);
+   if (err == EDS_ERR_OK)
+      return;
+
+   EdsError componentId = err & EDS_COMPONENTID_MASK;
+   EdsError errorId = err & EDS_ERRORID_MASK;
+
+   CString cszMessage;
+   cszMessage.Format(_T("Error in function \"%s\": %s, %s%s (%08x)"),
+      cszFunction.GetString(),
+      componentId == EDS_CMP_ID_CLIENT_COMPONENTID ? _T("Client") :
+      componentId == EDS_CMP_ID_LLSDK_COMPONENTID ? _T("LLSDK") :
+      componentId == EDS_CMP_ID_HLSDK_COMPONENTID ? _T("HLSDK") : _T("???"),
+      ErrorTextFromErrorId(errorId),
+      (err & EDS_ISSPECIFIC_MASK) != 0 ? _T(", IsSpecific") : _T(""),
+      err);
+
+   throw CameraException(cszFunction, cszMessage, err, pszFile, uiLine);
 }
 
 /// SDK instance
@@ -202,11 +215,8 @@ private:
       //LOG_TRACE(_T("EdsRetain(%08x) returned %i\n"), h.m_objRef, uiCount);
       if (uiCount == 0xFFFFFFFF)
       {
-         throw CameraException(_T("EdsRetain"),
-            false,
-            EDS_CMP_ID_CLIENT_COMPONENTID,
-            EDS_ERR_INTERNAL_ERROR,
-            __FILE__, __LINE__);
+         throw CameraException(_T("EdsRetain"), "Internal error",
+            EDS_CMP_ID_CLIENT_COMPONENTID | EDS_ERR_INTERNAL_ERROR, __FILE__, __LINE__);
       }
    }
 
@@ -220,11 +230,8 @@ private:
       //LOG_TRACE(_T("EdsRelease(%08x) returned %i\n"), m_objRef, uiCount);
       if (uiCount == 0xFFFFFFFF)
       {
-         throw CameraException(_T("EdsRelease"),
-            false,
-            EDS_CMP_ID_CLIENT_COMPONENTID,
-            EDS_ERR_INTERNAL_ERROR,
-            __FILE__, __LINE__);
+         throw CameraException(_T("EdsRelease"), "Internal error",
+            EDS_CMP_ID_CLIENT_COMPONENTID | EDS_ERR_INTERNAL_ERROR, __FILE__, __LINE__);
       }
    }
 
