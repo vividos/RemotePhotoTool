@@ -90,12 +90,12 @@ void Ref::EnumerateDevices(std::vector<std::shared_ptr<SourceInfo>>& vecSourceDe
 
    // may return cdINVALID_PARAMETER, or any exception code
    cdError err = CDEnumDeviceReset_SEH(1, &hEnum);
-   LOG_TRACE(_T("CDEnumDeviceReset(1, %08x) returned %08x\n"), hEnum, err);
+   if (err != cdOK) LOG_TRACE(_T("CDEnumDeviceReset(1, %08x) returned %08x\n"), hEnum, err);
    CheckError(_T("CDEnumDeviceReset"), err, __FILE__, __LINE__);
 
    // returns cdINVALID_HANDLE, cdINVALID_PARAMETER
    err = CDGetDeviceCount(hEnum, &uiCount);
-   LOG_TRACE(_T("CDGetDeviceCount(%08x, &count = %u) returned %08x\n"), hEnum, uiCount, err);
+   if (err != cdOK) LOG_TRACE(_T("CDGetDeviceCount(%08x, &count = %u) returned %08x\n"), hEnum, uiCount, err);
    CheckError(_T("CDGetDeviceCount"), err, __FILE__, __LINE__);
 
    for (cdUInt32 ui=0; ui<uiCount; ui++)
@@ -106,17 +106,28 @@ void Ref::EnumerateDevices(std::vector<std::shared_ptr<SourceInfo>>& vecSourceDe
 
       // may return cdINVALID_PARAMETER, cdINVALID_HANDLE, cdENUM_NA
       err = CDEnumDeviceNext(hEnum, &si);
-      LOG_TRACE(_T("CDEnumDeviceNext(%08x, &si = \"%hs\") returned %08x\n"), hEnum, si.Name, err);
       if ((err & cdERROR_ERRORID_MASK) == cdENUM_NA)
          break; // done
 
+      if (err != cdOK) LOG_TRACE(_T("CDEnumDeviceNext(%08x, &si = \"%hs\") returned %08x\n"), hEnum, si.Name, err);
+
       CheckError(_T("CDEnumDeviceNext"), err, __FILE__, __LINE__);
+
+      LOG_TRACE(_T("device %u, ModelName=%hs, InternalName=%hs, PortType=%s\n"),
+         ui,
+         si.Name,
+         si.NameInOS,
+         si.PortType == cdPORT_TYPE_NO_PORT ? _T("None") :
+         si.PortType == cdPORT_TYPE_STI ? _T("STI") :
+         si.PortType == cdPORT_TYPE_WIA ? _T("WIA") :
+         si.PortType == cdPORT_TYPE_ANY ? _T("Any") : _T("???")
+         );
 
       vecSourceDevices.push_back(spImpl);
    }
 
    // may return cdINVALID_HANDLE, cdINVALID_FN_CALL
    err = CDEnumDeviceRelease(hEnum);
-   LOG_TRACE(_T("CDEnumDeviceRelease(%08x) returned %08x\n"), hEnum, err);
+   if (err != cdOK) LOG_TRACE(_T("CDEnumDeviceRelease(%08x) returned %08x\n"), hEnum, err);
    CheckError(_T("CDEnumDeviceRelease"), err, __FILE__, __LINE__);
 }

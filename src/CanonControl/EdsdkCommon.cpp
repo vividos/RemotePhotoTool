@@ -71,12 +71,12 @@ void Ref::EnumerateDevices(std::vector<std::shared_ptr<SourceInfo>>& vecSourceDe
    Handle hCameraListRef;
 
    EdsError err = EdsGetCameraList(&hCameraListRef);
-   LOG_TRACE(_T("EdsGetCameraList(&ref = %08x) returned %08x\n"), hCameraListRef.Get(), err);
+   if (err != EDS_ERR_OK) LOG_TRACE(_T("EdsGetCameraList(&ref = %08x) returned %08x\n"), hCameraListRef.Get(), err);
    CheckError(_T("EdsGetCameraList"), err, __FILE__, __LINE__);
 
    EdsUInt32 uiCount = 0;
    err = EdsGetChildCount(hCameraListRef, &uiCount);
-   LOG_TRACE(_T("EdsGetChildCount(ref = %08x, count = %u) returned %08x\n"),
+   if (err != EDS_ERR_OK) LOG_TRACE(_T("EdsGetChildCount(ref = %08x, count = %u) returned %08x\n"),
       hCameraListRef.Get(), uiCount, err);
    CheckError(_T("EdsGetChildCount"), err, __FILE__, __LINE__);
 
@@ -85,16 +85,27 @@ void Ref::EnumerateDevices(std::vector<std::shared_ptr<SourceInfo>>& vecSourceDe
       EDSDK::Handle hCameraRef(const_cast<Ref*>(this)->shared_from_this());
 
       EdsGetChildAtIndex(hCameraListRef, static_cast<EdsInt32>(ui), &hCameraRef);
-      LOG_TRACE(_T("EdsGetChildAtIndex(ref = %08x, idx = %u, &camRef = %08x) returned %08x\n"),
+      if (err != EDS_ERR_OK) LOG_TRACE(_T("EdsGetChildAtIndex(ref = %08x, idx = %u, &camRef = %08x) returned %08x\n"),
          hCameraListRef.Get(), ui, hCameraRef.Get(), err);
       EDSDK::CheckError(_T("EdsGetChildAtIndex"), err, __FILE__, __LINE__);
 
       std::shared_ptr<EDSDK::SourceInfoImpl> spImpl(new EDSDK::SourceInfoImpl(hCameraRef));
 
-      err = EdsGetDeviceInfo(hCameraRef, &spImpl->GetDeviceInfo());
-      LOG_TRACE(_T("EdsGetDeviceInfo(ref = %08x, &name = \"%hs\") returned %08x\n"),
-         hCameraRef.Get(), spImpl->GetDeviceInfo().szDeviceDescription, err);
+      EdsDeviceInfo& deviceInfo = spImpl->GetDeviceInfo();
+
+      err = EdsGetDeviceInfo(hCameraRef, &deviceInfo);
+      if (err != EDS_ERR_OK) LOG_TRACE(_T("EdsGetDeviceInfo(ref = %08x, &name = \"%hs\") returned %08x\n"),
+         hCameraRef.Get(), deviceInfo.szDeviceDescription, err);
       EDSDK::CheckError(_T("EdsGetDeviceInfo"), err, __FILE__, __LINE__);
+
+      LOG_TRACE(_T("device %u, Desc=%hs, Port=%hs, PortType=%s\n"),
+         ui,
+         deviceInfo.szDeviceDescription,
+         deviceInfo.szPortName,
+         deviceInfo.deviceSubType == 0x00 ? _T("WIA") :
+         deviceInfo.deviceSubType == 0x01 ? _T("Canon PTP") :
+         deviceInfo.deviceSubType == 0x02 ? _T("Canon PTP-IP") : _T("???")
+         );
 
       vecSourceDevices.push_back(spImpl);
    }
@@ -124,14 +135,14 @@ void Ref::AsyncWaitForCamera(bool bStart, std::function<void()> fnOnCameraConnec
    if (bStart)
    {
       EdsError err = EdsSetCameraAddedHandler(&Ref::OnCameraAddedHandler, this);
-      LOG_TRACE(_T("EdsSetCameraAddedHandler(&handler, this) returned %08x\n"), err);
+      if (err != EDS_ERR_OK) LOG_TRACE(_T("EdsSetCameraAddedHandler(&handler, this) returned %08x\n"), err);
       EDSDK::CheckError(_T("EdsSetCameraAddedHandler"), err, __FILE__, __LINE__);
    }
    else
    {
       // stop waiting for camera
       EdsError err = EdsSetCameraAddedHandler(nullptr, nullptr);
-      LOG_TRACE(_T("EdsSetCameraAddedHandler(nullptr, nullptr) returned %08x\n"), err);
+      if (err != EDS_ERR_OK) LOG_TRACE(_T("EdsSetCameraAddedHandler(nullptr, nullptr) returned %08x\n"), err);
       EDSDK::CheckError(_T("EdsSetCameraAddedHandler"), err, __FILE__, __LINE__);
    }
 }

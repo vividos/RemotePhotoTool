@@ -131,7 +131,7 @@ void Ref::EnumerateDevices(std::vector<std::shared_ptr<SourceInfo>>& vecSourceDe
 
    // may return prINVALID_FN_CALL, prINVALID_PARAMETER, prMEM_ALLOC_FAILED, prINSUFFICIENT_BUFFER, prINTERNAL_ERROR or @ERR
    err = PR_GetDeviceList(&uiSize, pDeviceList);
-   if (uiSize != 4 || err != prOK) // only log non-empty lists
+   if (uiSize != 4 && err != prOK) // only log non-empty lists
       LOG_TRACE(_T("PR_GetDeviceList(size = %u, buffer) returned %08x\n"), uiSize, err);
    CheckError(_T("PR_GetDeviceList"), err, __FILE__, __LINE__);
 
@@ -140,10 +140,10 @@ void Ref::EnumerateDevices(std::vector<std::shared_ptr<SourceInfo>>& vecSourceDe
    {
       prDeviceInfoTable& deviceInfo = deviceList.DeviceInfo[ui];
 
-      LOG_TRACE(_T("device %u, InternalName=%ls, ModelName=%ls, Generation=%u, ModelID=%08x, PortType=%s\n"),
+      LOG_TRACE(_T("device %u, ModelName=%ls, InternalName=%ls, Generation=%u, ModelID=%08x, PortType=%s\n"),
          ui,
-         deviceInfo.DeviceInternalName,
          deviceInfo.ModelName,
+         deviceInfo.DeviceInternalName,
          prSUB_GENERATION_CAMERA(deviceInfo.Generation),
          deviceInfo.ModelID,
          deviceInfo.PortType == 0x01 ? _T("WIA") : deviceInfo.PortType == 0x02 ? _T("STI") : _T("???")
