@@ -47,13 +47,17 @@ public:
                DeviceProperty p = GetDeviceProperty(cdDEVICE_PROP_RELEASE_CONTROL_CAP);
                unsigned int uiValue = p.Value().Get<unsigned int>();
 
-               return (uiValue & 0x40000000) != 0;
+               return (uiValue & cdRELEASE_CONTROL_CAP_SUPPORT) != 0;
             }
             break;
 
          case SourceDevice::capRemoteViewfinder:
-            // TODO implement
-            ATLASSERT(false);
+            {
+               DeviceProperty p = GetDeviceProperty(cdDEVICE_PROP_RELEASE_CONTROL_CAP);
+               unsigned int uiValue = p.Value().Get<unsigned int>();
+
+               return (uiValue & cdRELEASE_CONTROL_CAP_VIEWFINDER) != 0;
+            }
             break;
 
          default:
@@ -149,7 +153,11 @@ public:
       DevicePropertyAccess access(GetSource());
       Variant value = access.Get(uiPropertyId);
 
-      return DeviceProperty(variantCdsdk, uiPropertyId, value, true);
+      bool bReadWrite =
+         uiPropertyId == cdDEVICE_PROP_TIME ||
+         uiPropertyId == cdDEVICE_PROP_OWNER_NAME;
+
+      return DeviceProperty(variantCdsdk, uiPropertyId, value, !bReadWrite);
    }
 
    virtual std::shared_ptr<RemoteReleaseControl> EnterReleaseControl() override

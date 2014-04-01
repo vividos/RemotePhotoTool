@@ -17,7 +17,6 @@ using namespace CDSDK;
 RemoteReleaseControlImpl::RemoteReleaseControlImpl(std::shared_ptr<SourceDeviceImpl> spSourceDevice)
 :m_spSourceDevice(spSourceDevice),
 m_hEventCallback(0),
-m_uiBatteryLevel(BATTERY_LEVEL_NORMAL),
 m_uiRelDataKind(cdREL_KIND_PICT_TO_PC)
 {
    // check: pointers (e.g. this) must fit into cdContext; may not work on 64-bit
@@ -130,18 +129,6 @@ ImageProperty RemoteReleaseControlImpl::MapShootingModeToImagePropertyValue(Remo
 
 ImageProperty RemoteReleaseControlImpl::GetImageProperty(unsigned int uiImageProperty) const
 {
-   // special case: since battery level can only be obtained by listening to events,
-   // return the last known battery level here
-   if (uiImageProperty == MapImagePropertyTypeToId(propBatteryLevel))
-   {
-      Variant value;
-
-      value.Set(m_uiBatteryLevel);
-      value.SetType(Variant::typeUInt32);
-
-      return ImageProperty(variantCdsdk, uiImageProperty, value, true);
-   }
-
    // special case: propSaveTo flag
    if (uiImageProperty == MapImagePropertyTypeToId(propSaveTo))
    {
@@ -160,7 +147,6 @@ ImageProperty RemoteReleaseControlImpl::GetImageProperty(unsigned int uiImagePro
    Variant value = p.Get(uiImageProperty);
    bool bReadOnly = p.IsReadOnly(uiImageProperty);
 
-   // return in image property object
    return ImageProperty(variantCdsdk, uiImageProperty, value, bReadOnly);
 }
 
@@ -399,7 +385,6 @@ void RemoteReleaseControlImpl::OnEventCallback(cdEventID eventId)
    switch (realEventId)
    {
    case cdEVENT_BATTERY_LEVEL_CHANGED:
-      // TODO store new battery level
       m_subjectPropertyEvent.Call(RemoteReleaseControl::propEventPropertyChanged,
          MapImagePropertyTypeToId(T_enImagePropertyType::propBatteryLevel));
       break;

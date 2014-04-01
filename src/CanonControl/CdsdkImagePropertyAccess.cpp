@@ -8,12 +8,12 @@
 // includes
 #include "stdafx.h"
 #include "CdsdkImagePropertyAccess.hpp"
+#include "CdsdkDevicePropertyAccess.hpp"
+#include "CommonPropertyAccess.hpp"
 
 using namespace CDSDK;
 
-#include "CommonPropertyAccess.hpp"
-
-/// all property descriptions for CDSDK
+/// all image property descriptions for CDSDK
 static PropIdDisplayInfo g_aPropIdDisplayInfo[] =
 {
    {
@@ -211,24 +211,28 @@ static PropIdDisplayInfo g_aPropIdDisplayInfo[] =
 template <typename T>
 Variant::VariantType VariantTypeFromType(T = 0);
 
+/// template specialisation for unsigned char
 template <>
 Variant::VariantType VariantTypeFromType(unsigned char)
 {
    return Variant::typeUInt8;
 }
 
+/// template specialisation for unsigned short
 template <>
 Variant::VariantType VariantTypeFromType(unsigned short)
 {
    return Variant::typeUInt16;
 }
 
+/// template specialisation for unsigned int
 template <>
 Variant::VariantType VariantTypeFromType(unsigned int)
 {
    return Variant::typeUInt32;
 }
 
+/// template specialisation for unsigned long
 template <>
 Variant::VariantType VariantTypeFromType(unsigned long)
 {
@@ -349,13 +353,13 @@ public:
       // start enumerating
       cdHEnum hEnum = 0;
       cdError err = m_fnEnumReset(hSource, &hEnum);
-      LOG_TRACE(_T("PropertyAccess::Enum::Reset(source = %08x, propId = %04x, &hEnum = %08x) returned %08x\n"), hSource, propId, hEnum, err);
+      if (err != cdOK) LOG_TRACE(_T("PropertyAccess::Enum::Reset(source = %08x, propId = %04x, &hEnum = %08x) returned %08x\n"), hSource, propId, hEnum, err);
       CheckError(_T("PropertyAccess::Enum::Reset"), err, __FILE__, __LINE__);
 
       // get count
       cdUInt32 uiCount = 0;
       err = m_fnEnumCount(hEnum, &uiCount);
-      LOG_TRACE(_T("PropertyAccess::Enum::Count(hEnum = %08x, &count = %u) returned %08x\n"), hEnum, uiCount, err);
+      if (err != cdOK) LOG_TRACE(_T("PropertyAccess::Enum::Count(hEnum = %08x, &count = %u) returned %08x\n"), hEnum, uiCount, err);
       CheckError(_T("PropertyAccess::Enum::Count"), err, __FILE__, __LINE__);
 
       // get all values
@@ -363,10 +367,11 @@ public:
       {
          T val = defaultVal;
          err = m_fnEnumNext(hEnum, &val);
-         LOG_TRACE(_T("PropertyAccess::Enum::Next(hEnum = %08x, &value = %04x) returned %08x\n"), hEnum, val, err);
 
          if ((err & cdERROR_ERRORID_MASK) == cdENUM_NA)
             break; // end of list
+
+         if (err != cdOK) LOG_TRACE(_T("PropertyAccess::Enum::Next(hEnum = %08x, &value = %04x) returned %08x\n"), hEnum, val, err);
 
          CheckError(_T("PropertyAccess::Enum::Next"), err, __FILE__, __LINE__);
 
@@ -379,7 +384,7 @@ public:
       }
 
       err = m_fnEnumRelease(hEnum);
-      LOG_TRACE(_T("PropertyAccess::Enum::Release(hEnum = %08x) returned %08x\n"), hEnum, err);
+      if (err != cdOK) LOG_TRACE(_T("PropertyAccess::Enum::Release(hEnum = %08x) returned %08x\n"), hEnum, err);
       CheckError(_T("PropertyAccess::Enum::Release"), err, __FILE__, __LINE__);
    }
 
@@ -447,13 +452,13 @@ public:
       // start enumerating
       cdHEnum hEnum = 0;
       cdError err = CDEnumFlashSettingReset(hSource, &hEnum);
-      LOG_TRACE(_T("CDEnumFlashSettingReset(source = %08x, &hEnum = %08x) returned %08x\n"), hSource, hEnum, err);
+      if (err != cdOK) LOG_TRACE(_T("CDEnumFlashSettingReset(source = %08x, &hEnum = %08x) returned %08x\n"), hSource, hEnum, err);
       CheckError(_T("CDEnumFlashSettingReset"), err, __FILE__, __LINE__);
 
       // get count
       cdUInt32 uiCount = 0;
       err = CDGetFlashSettingCount(hEnum, &uiCount);
-      LOG_TRACE(_T("CDGetFlashSettingCount(hEnum = %08x, &count = %u) returned %08x\n"), hEnum, uiCount, err);
+      if (err != cdOK) LOG_TRACE(_T("CDGetFlashSettingCount(hEnum = %08x, &count = %u) returned %08x\n"), hEnum, uiCount, err);
       CheckError(_T("CDGetFlashSettingCount"), err, __FILE__, __LINE__);
 
       // get all values
@@ -462,11 +467,11 @@ public:
          cdFlashMode flashMode = 0;
 
          err = CDEnumFlashSettingNext(hEnum, &flashMode);
-         LOG_TRACE(_T("CDEnumFlashSettingNext(hEnum = %08x, &flashMode = %04x) returned %08x\n"),
-            hEnum, flashMode, err);
-
          if ((err & cdERROR_ERRORID_MASK) == cdENUM_NA)
             break; // end of list
+
+         if (err != cdOK) LOG_TRACE(_T("CDEnumFlashSettingNext(hEnum = %08x, &flashMode = %04x) returned %08x\n"),
+            hEnum, flashMode, err);
 
          CheckError(_T("CDEnumFlashSettingNext"), err, __FILE__, __LINE__);
 
@@ -479,7 +484,7 @@ public:
       }
 
       err = CDEnumFlashSettingRelease(hEnum);
-      LOG_TRACE(_T("CDEnumFlashSettingRelease(hEnum = %08x) returned %08x\n"), hEnum, err);
+      if (err != cdOK) LOG_TRACE(_T("CDEnumFlashSettingRelease(hEnum = %08x) returned %08x\n"), hEnum, err);
       CheckError(_T("CDEnumFlashSettingRelease"), err, __FILE__, __LINE__);
    }
 
@@ -546,7 +551,7 @@ public:
    {
       cdHEnum hEnum = 0;
       cdError err = CDEnumImageFormatAttributeReset(hSource, &hEnum);
-      LOG_TRACE(_T("CDEnumImageFormatAttributeReset(%08x, &hEnum = %08x) returned %08x\n"), hSource, hEnum, err);
+      if (err != cdOK) LOG_TRACE(_T("CDEnumImageFormatAttributeReset(%08x, &hEnum = %08x) returned %08x\n"), hSource, hEnum, err);
       CheckError(_T("CDEnumImageFormatAttributeReset"), err, __FILE__, __LINE__);
 
       for (; vecValues.size() < 100;)
@@ -564,13 +569,13 @@ public:
          value.SetArray(vecRawValues);
          value.SetType(Variant::typeUInt16);
 
-         LOG_TRACE(_T("CDEnumImageFormatAttributeNext(%08x, &quality = %04x, &size = %04x \"%s\") returned %08x\n"),
+         if ((err & cdERROR_ERRORID_MASK) == cdENUM_NA)
+            break; // end of list
+
+         if (err != cdOK) LOG_TRACE(_T("CDEnumImageFormatAttributeNext(%08x, &quality = %04x, &size = %04x \"%s\") returned %08x\n"),
             hEnum, compQuality, imageSize,
             ImagePropertyAccess::FormatImageFormatValue(value).GetString(),
             err);
-
-         if ((err & cdERROR_ERRORID_MASK) == cdENUM_NA)
-            break; // end of list
 
          CheckError(_T("CDEnumImageFormatAttributeNext"), err, __FILE__, __LINE__);
 
@@ -578,7 +583,7 @@ public:
       }
 
       err = CDEnumImageFormatAttributeRelease(hEnum);
-      LOG_TRACE(_T("CDEnumImageFormatAttributeRelease(%08x) returned %08x\n"), hEnum, err);
+      if (err != cdOK) LOG_TRACE(_T("CDEnumImageFormatAttributeRelease(%08x) returned %08x\n"), hEnum, err);
       CheckError(_T("CDEnumImageFormatAttributeRelease"), err, __FILE__, __LINE__);
    }
 };
@@ -707,8 +712,14 @@ Variant ImagePropertyAccess::Get(unsigned int uiPropId) const
       break;
 
    // note: propSaveTo is a special case, since the value can't be retrieved.
-   // note: propBatteryLevel is a special case, since the value is only sent via event.
-   // Getting both values is handled in RemoteReleaseControlImpl
+   // Getting the value is handled in RemoteReleaseControlImpl
+
+   case TYPE_TO_PROP_ID(propBatteryLevel):
+      {
+         DevicePropertyAccess access(m_hSource);
+         v = access.Get(cdDEVICE_PROP_BATTERY_STATUS);
+      }
+      break;
 
    CASE_PROP_GET(propImageFormat)
 
@@ -846,7 +857,7 @@ void ImagePropertyAccess::EnumAvailReleaseSettings(std::vector<unsigned int>& ve
 
    // may return cdINVALID_HANDLE, cdINVALID_PARAMETER
    cdError err = CDEnumRelCamSettingReset(m_hSource, &hEnum);
-   LOG_TRACE(_T("CDEnumRelCamSettingReset(%08x, &hEnum = %08x) returned %08x\n"), m_hSource, hEnum, err);
+   if (err != cdOK) LOG_TRACE(_T("CDEnumRelCamSettingReset(%08x, &hEnum = %08x) returned %08x\n"), m_hSource, hEnum, err);
    CheckError(_T("CDEnumRelCamSettingReset"), err, __FILE__, __LINE__);
 
    for (unsigned int uiCount = 0; uiCount < 200; uiCount++)
@@ -855,15 +866,19 @@ void ImagePropertyAccess::EnumAvailReleaseSettings(std::vector<unsigned int>& ve
 
       // may return cdINVALID_HANDLE, cdINVALID_PARAMETER, cdENUM_NA
       err = CDEnumRelCamSettingNext(hEnum, &relCamSetting);
-      LOG_TRACE(_T("CDEnumRelCamSettingNext(%08x, &relCamSetting = { propId = %08x \"%s\", readOnly = %s}) returned %08x\n"),
+      if ((err & cdERROR_ERRORID_MASK) == cdENUM_NA)
+         break; // end of list
+
+      if (err != cdOK) LOG_TRACE(_T("CDEnumRelCamSettingNext(%08x, &relCamSetting = { propId = %08x \"%s\", readOnly = %s}) returned %08x\n"),
          hEnum,
          relCamSetting.SettingID,
          ImagePropertyAccess::NameFromId(relCamSetting.SettingID).GetString(),
          (relCamSetting.Access & cdATTRIB_WRITE) != 0 ? _T("false") : _T("true"),
          err);
 
-      if ((err & cdERROR_ERRORID_MASK) == cdENUM_NA)
-         break; // end of list
+      LOG_TRACE(_T("Available release setting: \"%s\" (%08x)\n"),
+         ImagePropertyAccess::NameFromId(relCamSetting.SettingID).GetString(),
+         relCamSetting.SettingID);
 
       CheckError(_T("CDEnumRelCamSettingNext"), err, __FILE__, __LINE__);
 
@@ -872,7 +887,7 @@ void ImagePropertyAccess::EnumAvailReleaseSettings(std::vector<unsigned int>& ve
 
    // may return cdINVALID_HANDLE, cdINVALID_FN_CALL
    err = CDEnumRelCamSettingRelease(hEnum);
-   LOG_TRACE(_T("CDEnumRelCamSettingRelease(%08x) returned %08x\n"), hEnum, err);
+   if (err != cdOK) LOG_TRACE(_T("CDEnumRelCamSettingRelease(%08x) returned %08x\n"), hEnum, err);
    CheckError(_T("CDEnumRelCamSettingRelease"), err, __FILE__, __LINE__);
 }
 
@@ -883,7 +898,7 @@ Variant ImagePropertyAccess::GetReleaseSetting(cdRelCamSettingID propId) const
 
    // may return cdINVALID_HANDLE, cdINVALID_PARAMETER, cdINVALID_POINTER, cdNOT_SUPPORTED,
    // cdINVALID_ID
-   cdError err = CDGetRelCamSettingData(m_hSource, propId, &uiBufferSize, NULL);
+   cdError err = CDGetRelCamSettingData(m_hSource, propId, &uiBufferSize, nullptr);
    LOG_TRACE(_T("CDGetRelCamSettingData(%08x, propId = %08x, &size = %u, data = null) returned %08x\n"),
       m_hSource, propId, uiBufferSize, err);
    CheckError(_T("CDGetRelCamSettingData"), err, __FILE__, __LINE__);
@@ -922,7 +937,7 @@ void ImagePropertyAccess::EnumReleaseSettingValues(cdRelCamSettingID propId, std
    cdUInt32 uiBufSize = 0;
 
    cdError err = CDEnumRelCamSettingDataReset(m_hSource, propId, &hEnum, &uiBufSize);
-   LOG_TRACE(_T("CDEnumRelCamSettingDataReset(%08x, propId = %08x, &hEnum = %08x, &bufSize = %u) returned %08x\n"),
+   if (err != cdOK) LOG_TRACE(_T("CDEnumRelCamSettingDataReset(%08x, propId = %08x, &hEnum = %08x, &bufSize = %u) returned %08x\n"),
       m_hSource, propId, hEnum, uiBufSize, err);
    CheckError(_T("CDEnumRelCamSettingDataReset"), err, __FILE__, __LINE__);
 
@@ -931,11 +946,11 @@ void ImagePropertyAccess::EnumReleaseSettingValues(cdRelCamSettingID propId, std
    for (unsigned int uiCount = 0; uiCount < 100; uiCount++)
    {
       err = CDEnumRelCamSettingDataNext(hEnum, uiBufSize, &vecData[0]);
-      LOG_TRACE(_T("CDEnumRelCamSettingDataNext(%08x, &buffer) returned %08x\n"),
-         hEnum, err);
-
       if ((err & cdERROR_ERRORID_MASK) == cdENUM_NA)
          break; // end of list
+
+      if (err != cdOK) LOG_TRACE(_T("CDEnumRelCamSettingDataNext(%08x, &buffer) returned %08x\n"),
+         hEnum, err);
 
       CheckError(_T("CDEnumRelCamSettingDataNext"), err, __FILE__, __LINE__);
 
@@ -947,7 +962,7 @@ void ImagePropertyAccess::EnumReleaseSettingValues(cdRelCamSettingID propId, std
    }
 
    err = CDEnumRelCamSettingDataRelease(hEnum);
-   LOG_TRACE(_T("CDEnumRelCamSettingDataRelease(%08x) returned %08x\n"), hEnum, err);
+   if (err != cdOK) LOG_TRACE(_T("CDEnumRelCamSettingDataRelease(%08x) returned %08x\n"), hEnum, err);
    CheckError(_T("CDEnumRelCamSettingDataRelease"), err, __FILE__, __LINE__);
 }
 

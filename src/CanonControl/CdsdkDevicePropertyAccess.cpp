@@ -8,8 +8,24 @@
 // includes
 #include "stdafx.h"
 #include "CdsdkDevicePropertyAccess.hpp"
+#include "CommonPropertyAccess.hpp"
 
 using namespace CDSDK;
+
+/// all device property descriptions for CDSDK
+static PropIdDisplayInfo g_aPropIdDisplayInfo[] =
+{
+   {
+      cdDEVICE_PROP_BATTERY_STATUS,
+      {
+         { BATTERY_LEVEL_NORMAL, _T("Normal") },
+         { BATTERY_LEVEL_WEAK, _T("Weak") },
+         { BATTERY_LEVEL_SAFETY_LOW, _T("Safety low") },
+         { BATTERY_LEVEL_LB, _T("LB") },
+         { 0, nullptr }
+      }
+   },
+};
 
 Variant DevicePropertyAccess::Get(cdDevicePropertyID propId) const
 {
@@ -74,12 +90,16 @@ void DevicePropertyAccess::SetRawCdsdk(Variant& v, unsigned int propId, std::vec
    {
       // uint32
    case cdDEVICE_PROP_MODEL_ID:
+   case cdDEVICE_PROP_SLIDE_SHOW_CAP: // cdSlideShowCap
    case cdDEVICE_PROP_DPOF_CAP:
    case cdDEVICE_PROP_RELEASE_CONTROL_CAP:
+   case cdDEVICE_PROP_RAW_DEVELOP_FACULTIES: // cdRawDevelopFaculty
+   case cdDEVICE_PROP_PARSE_FACULTIES: // cdParseFaculty
+   case cdDEVICE_PROP_TIME: // cdTime
    case cdDEVICE_PROP_BATTERY_STATUS:
-      // assuming little endian here...
       ATLASSERT(vecData.size() >= 4);
       {
+         // little endian
          unsigned int uiValue =
             static_cast<unsigned int>(vecData[0]) |
             (static_cast<unsigned int>(vecData[1]) << 8) |
@@ -112,15 +132,7 @@ void DevicePropertyAccess::SetRawCdsdk(Variant& v, unsigned int propId, std::vec
       enType = Variant::typeString;
       break;
 
-      // cdTime
-   case cdDEVICE_PROP_TIME:
-      // TODO
-      //break;
-
       // custom data, as array of uint8
-   case cdDEVICE_PROP_SLIDE_SHOW_CAP:
-   case cdDEVICE_PROP_RAW_DEVELOP_FACULTIES:
-   case cdDEVICE_PROP_PARSE_FACULTIES:
    case cdDEVICE_PROP_THUMB_VALID_AREA: // this property isn't described in cdType.h, but assume it's an array
    case cdDEVICE_PROP_UNKNOWN1:
       variant = std::vector<unsigned char>(vecData);
@@ -192,15 +204,32 @@ CString DevicePropertyAccess::DisplayTextFromIdAndValue(unsigned int propId, Var
 {
    cdDevicePropertyID devicePropId = static_cast<cdDevicePropertyID>(propId);
 
-   CString cszValue = _T("???");
+   CString cszText;
+
    switch (devicePropId)
    {
-      // TODO add special cases
-   case 0:
+   case cdDEVICE_PROP_TIME: // cdTime
+      {
+         cdTime time = value.Get<cdTime>();
+
+         FILETIME fileTime = { 0 };
+         ATLVERIFY(TRUE == DosDateTimeToFileTime(HIWORD(time), LOWORD(time), &fileTime));
+
+         SYSTEMTIME systemTime = { 0 };
+         ATLVERIFY(TRUE == FileTimeToSystemTime(&fileTime, &systemTime));
+
+         // TODO
+         //GetDateFormat(MAKELCID(LANG_ENGLISH, SUBLANG_ENGLISH_US), 0, &systemTime, _T(""), cszValue.GetBuffer(32), 32);
+         //cszValue.ReleaseBuffer();
+      }
+      break;
+
    default:
-      cszValue = value.ToString();
+      if (!FormatValueById(g_aPropIdDisplayInfo, sizeof(g_aPropIdDisplayInfo) / sizeof(*g_aPropIdDisplayInfo),
+         propId, value, cszText))
+         cszText = value.ToString();
       break;
    }
 
-   return cszValue;
+   return cszText;
 }

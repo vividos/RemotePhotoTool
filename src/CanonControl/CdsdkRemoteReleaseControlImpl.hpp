@@ -159,9 +159,6 @@ private:
    /// subject of observer pattern; used for download events
    Subject<void(RemoteReleaseControl::T_enDownloadEvent, unsigned int)> m_subjectDownloadEvent;
 
-   /// last known battery level, severity and type
-   unsigned int m_uiBatteryLevel;
-
    /// current 
    cdRelDataKind m_uiRelDataKind;
 };
