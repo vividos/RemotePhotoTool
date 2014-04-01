@@ -51,7 +51,7 @@ CString CameraInfoDlg::CollectCameraInfo()
    // check if device supports remote release control
    if (!m_sourceDevice.GetDeviceCapability(SourceDevice::capRemoteReleaseControl))
    {
-      cszText += _T("Camera doesn't remote release control");
+      cszText += _T("Camera doesn't support remote release control");
       return cszText;
    }
 
