@@ -3,8 +3,6 @@
 #endif
 
 #define IDR_MAINFRAME                           128
-#define IDR_PANE_PROGRESS                       129
-#define IDR_WIA_DESC                            130
 #define IDB_ICONS                               131
 #define IDB_BIGICONS                            132
 #define IDD_PHOTOMODE_STANDARD_FORM             256
@@ -70,5 +68,5 @@
 #define ID_PHOTO_MODE_DEVICE_PROPERTIES         32777
 #define ID_PHOTO_MODE_IMAGE_PROPERTIES          32778
 #define ID_VIEWFINDER_SHOW                      32779
-#define ID_SCRIPT_RUN                           32780
-#define ID_SCRIPT_STOP                          32781
+#define IDR_PANE_PROGRESS                       40000
+#define IDR_WIA_DESC                            40001

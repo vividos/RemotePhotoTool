@@ -149,7 +149,7 @@ public:
             prERROR_PRSDK_COMPONENTID | prNOT_SUPPORTED, __FILE__, __LINE__);
       }
 
-      std::shared_ptr<SourceDeviceImpl> spSourceDevice = this->shared_from_this();
+      std::shared_ptr<SourceDeviceImpl> spSourceDevice = shared_from_this();
 
       return std::shared_ptr<RemoteReleaseControl>(new RemoteReleaseControlImpl(m_hCamera, spSourceDevice));
    }
