@@ -8,7 +8,6 @@
 // includes
 #include "stdafx.h"
 #include "ImageProperty.hpp"
-#include "CdsdkDevicePropertyAccess.hpp"
 #include "CdsdkImagePropertyAccess.hpp"
 #include "EdsdkPropertyAccess.hpp"
 #include "PsrecPropertyAccess.hpp"
@@ -17,7 +16,7 @@ CString ImageProperty::Name() const throw()
 {
    switch(m_enSDKVariant)
    {
-   case variantCdsdk: return CDSDK::DevicePropertyAccess::NameFromId(m_uiImageProperty);
+   case variantCdsdk: return CDSDK::ImagePropertyAccess::NameFromId(m_uiImageProperty);
    case variantEdsdk: return EDSDK::PropertyAccess::NameFromId(m_uiImageProperty);
    case variantPsrec: return PSREC::PropertyAccess::NameFromId(static_cast<prUInt16>(m_uiImageProperty & 0xFFFF));
    default:
