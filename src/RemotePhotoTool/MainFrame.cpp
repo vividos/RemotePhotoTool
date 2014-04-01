@@ -46,7 +46,7 @@ MainFrame::~MainFrame() throw()
 
 BOOL MainFrame::PreTranslateMessage(MSG* pMsg)
 {
-   if(m_upView->PreTranslateMessage(pMsg))
+   if (m_upView != nullptr && m_upView->PreTranslateMessage(pMsg))
       return TRUE;
 
    return BaseClass::PreTranslateMessage(pMsg);
@@ -476,6 +476,14 @@ void MainFrame::SetNewView(T_enViewType enViewType)
    m_upView->SetSourceDevice(m_spSourceDevice);
 
    m_hWndView = m_upView->CreateView(m_splitter);
+   if (m_hWndView == nullptr)
+   {
+      m_upView.reset();
+
+      PostMessage(WM_COMMAND, MAKEWPARAM(ID_HOME_CONNECT, 0), 0);
+      return;
+   }
+
    m_splitter.SetSplitterPane(SPLIT_PANE_LEFT, m_hWndView, true);
 
    if (m_upViewFinderView != nullptr)

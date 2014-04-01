@@ -31,6 +31,12 @@ LRESULT StandardPhotoModeView::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LP
    DoDataExchange(DDX_LOAD);
 
    m_spRemoteReleaseControl = m_host.StartRemoteReleaseControl(true);
+   if (m_spRemoteReleaseControl == nullptr)
+   {
+      AtlMessageBox(m_hWnd, _T("Couldn't start remote release control."), IDR_MAINFRAME, MB_OK);
+      DestroyWindow();
+      return 0;
+   }
 
    SetupImagePropertyManager();
 

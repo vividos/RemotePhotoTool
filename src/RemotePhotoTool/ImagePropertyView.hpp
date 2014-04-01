@@ -52,7 +52,7 @@ private:
 
 private:
    /// inits image property list
-   void Init();
+   bool Init();
 
    /// called when property changed
    void OnPropertyChanged(RemoteReleaseControl::T_enPropertyEvent enPropertyEvent, unsigned int uiPropertyId);
@@ -69,7 +69,8 @@ private:
    {
       HWND hwnd = BaseClass::Create(hWndParent, rcDefault/*, NULL, WS_VISIBLE | LVS_REPORT*/);
 
-      Init();
+      if (!Init())
+         return nullptr;
 
       return hwnd;
    }

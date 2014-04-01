@@ -13,9 +13,15 @@
 #include "ImageProperty.hpp"
 #include "ViewFinderView.hpp"
 
-void ImagePropertyView::Init()
+bool ImagePropertyView::Init()
 {
    m_spRemoteReleaseControl = m_host.StartRemoteReleaseControl(true);
+   if (m_spRemoteReleaseControl == nullptr)
+   {
+      AtlMessageBox(m_hWnd, _T("Couldn't start remote release control."), IDR_MAINFRAME, MB_OK);
+      DestroyWindow();
+      return false;
+   }
 
    m_iPropertyEventId = m_spRemoteReleaseControl->AddPropertyEventHandler(
       std::bind(&ImagePropertyView::OnPropertyChanged, this, std::placeholders::_1, std::placeholders::_2));
@@ -31,6 +37,8 @@ void ImagePropertyView::Init()
    SetExtendedListViewStyle(dwExStyle, dwExStyle);
 
    RefreshList();
+
+   return true;
 }
 
 void ImagePropertyView::DestroyView()
