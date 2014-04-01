@@ -18,7 +18,7 @@
 namespace CDSDK
 {
 
-/// checks for CDSDK error
+/// checks for CDSDK error and throws exception
 void CheckError(const CString& cszFunction, cdError err, LPCSTR pszFile, UINT uiLine);
 
 /// SDK reference

@@ -95,6 +95,13 @@ bool RemoteReleaseControlImpl::GetCapability(RemoteReleaseControl::T_enRemoteCap
       case RemoteReleaseControl::capAFLock:
          return (faculty & cdRELEASE_CONTROL_CAP_AF_LOCK) != 0;
 
+      case RemoteReleaseControl::capBulbMode:
+         // bulb mode generally not supported by CDSDK
+         return false;
+
+      case RemoteReleaseControl::capUILock:
+         return false;
+
       default:
          ATLASSERT(false);
       }
@@ -160,6 +167,20 @@ void RemoteReleaseControlImpl::SetImageProperty(const ImageProperty& imageProper
    // special case: propSaveTo flag
    if (imageProperty.Id() == MapImagePropertyTypeToId(propSaveTo))
       m_uiRelDataKind = imageProperty.Value().Get<cdRelDataKind>();
+}
+
+void RemoteReleaseControlImpl::EnumImagePropertyValues(unsigned int uiImageProperty, std::vector<ImageProperty>& vecValues) const
+{
+   cdHSource hSource = GetSource();
+   ImagePropertyAccess p(hSource);
+
+   std::vector<Variant> vecRawValues;
+   p.Enum(uiImageProperty, vecRawValues);
+
+   bool bReadOnly = p.IsReadOnly(uiImageProperty);
+
+   for (size_t i = 0, iMax = vecRawValues.size(); i<iMax; i++)
+      vecValues.push_back(ImageProperty(variantCdsdk, uiImageProperty, vecRawValues[i], bReadOnly));
 }
 
 std::shared_ptr<Viewfinder> RemoteReleaseControlImpl::StartViewfinder() const
@@ -400,7 +421,7 @@ void RemoteReleaseControlImpl::OnEventCallback(cdEventID eventId)
    if (cdEVENT_SEVERITY_SHUTDOWN == severityId)
       m_subjectStateEvent.Call(RemoteReleaseControl::stateEventCameraShutdown, 0);
 }
-//cdProgressCallbackFunction
+
 cdUInt32 cdSTDCALL RemoteReleaseControlImpl::OnProgressCallback_(cdUInt32 Progress,
    cdProgressStatus Status, cdContext Context)
 {

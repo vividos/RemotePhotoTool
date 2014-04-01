@@ -91,25 +91,13 @@ public:
 
    virtual void SetImageProperty(const ImageProperty& imageProperty) override;
 
-   virtual void EnumImagePropertyValues(unsigned int uiImageProperty, std::vector<ImageProperty>& vecValues) const override
-   {
-      cdHSource hSource = GetSource();
-      ImagePropertyAccess p(hSource);
-
-      std::vector<Variant> vecRawValues;
-      p.Enum(uiImageProperty, vecRawValues);
-
-      bool bReadOnly = p.IsReadOnly(uiImageProperty);
-
-      for (size_t i=0,iMax=vecRawValues.size(); i<iMax; i++)
-         vecValues.push_back(ImageProperty(variantCdsdk, uiImageProperty, vecRawValues[i], bReadOnly));
-   }
+   virtual void EnumImagePropertyValues(unsigned int uiImageProperty, std::vector<ImageProperty>& vecValues) const override;
 
    virtual std::shared_ptr<Viewfinder> StartViewfinder() const override;
 
    virtual unsigned int NumAvailableShots() const override;
 
-   virtual void SendCommand(RemoteReleaseControl::T_enCameraCommand /*enCameraCommand*/) override;
+   virtual void SendCommand(RemoteReleaseControl::T_enCameraCommand enCameraCommand) override;
 
    virtual void Release() override;
 
