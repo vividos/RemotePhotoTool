@@ -19,6 +19,7 @@ public:
    /// ctor
    CameraErrorDlg(const CString& cszMessage, const CameraException& ex)
       :m_cszMessage(cszMessage),
+       m_cszExMessage(ex.Message()),
        m_cszFunction(ex.Function()),
        m_uiErrorCode(ex.ErrorCode())
    {
@@ -49,9 +50,10 @@ private:
       m_ecErrorMessage.SetWindowText(m_cszMessage);
 
       CString cszDetails;
-      cszDetails.Format(_T("Function [%s]\r\nError Code [%08x]"),
+      cszDetails.Format(_T("Function [%s]\r\nError Code [%08x]\r\nMessage [%s]"),
          m_cszFunction.GetString(),
-         m_uiErrorCode);
+         m_uiErrorCode,
+         m_cszExMessage.GetString());
 
       m_ecErrorDetails.SetWindowText(cszDetails);
 
@@ -72,8 +74,11 @@ private:
    /// error details edit control
    CEdit m_ecErrorDetails;
 
-   /// error message
+   /// dialog message
    CString m_cszMessage;
+
+   /// exception message
+   CString m_cszExMessage;
 
    /// error function
    CString m_cszFunction;
