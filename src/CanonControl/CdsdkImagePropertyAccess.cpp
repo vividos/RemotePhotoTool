@@ -207,6 +207,36 @@ static PropIdDisplayInfo g_aPropIdDisplayInfo[] =
 /// since there are some release settings in the lower area, add a large enough constant
 #define TYPE_TO_PROP_ID(x) (x+0x00010000)
 
+/// template to determine variant type from template type
+template <typename T>
+Variant::VariantType VariantTypeFromType(T = 0);
+
+template <>
+Variant::VariantType VariantTypeFromType(unsigned char)
+{
+   return Variant::typeUInt8;
+}
+
+template <>
+Variant::VariantType VariantTypeFromType(unsigned short)
+{
+   return Variant::typeUInt16;
+}
+
+template <>
+Variant::VariantType VariantTypeFromType(unsigned int)
+{
+   return Variant::typeUInt32;
+}
+
+template <>
+Variant::VariantType VariantTypeFromType(unsigned long)
+{
+   static_assert(sizeof(unsigned long) == 4, "unsigned long must be 4 bytes large to be correct here");
+   return Variant::typeUInt32;
+}
+
+
 /// \brief read property access
 /// \tparam propId image property id
 /// \tparam T type for property value
@@ -239,7 +269,7 @@ public:
 
       Variant value;
       value.Set<T>(val);
-      value.SetType(Variant::typeUInt16);
+      value.SetType(VariantTypeFromType<T>());
 
       return value;
    }
@@ -342,8 +372,8 @@ public:
 
          // add to list
          Variant value;
-         value.Set<cdUInt16>(val);
-         value.SetType(Variant::typeUInt16);
+         value.Set<T>(val);
+         value.SetType(VariantTypeFromType<T>());
 
          vecValues.push_back(value);
       }
@@ -672,7 +702,7 @@ Variant ImagePropertyAccess::Get(unsigned int uiPropId) const
          CheckError(_T("CDGetNumAvailableShot"), err, __FILE__, __LINE__);
 
          v.Set<cdUInt32>(numShots);
-         v.SetType(Variant::typeUInt16);
+         v.SetType(Variant::typeUInt32);
       }
       break;
 
