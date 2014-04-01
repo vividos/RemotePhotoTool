@@ -87,7 +87,7 @@ public:
       }
       catch (Exception& ex)
       {
-         LOG_TRACE(_T("exception in ModelName(): %s"), ex.Message().GetString());
+         LOG_TRACE(_T("exception in ModelName(): %s\n"), ex.Message().GetString());
       }
 
       return CString();
