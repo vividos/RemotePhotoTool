@@ -128,6 +128,14 @@ void CameraInfoDlg::CollectCapabilities(std::shared_ptr<RemoteReleaseControl> sp
    cszText += spRemoteReleaseControl->GetCapability(RemoteReleaseControl::capAFLock) ? _T("Yes") : _T("NO");
    cszText += _T("\n");
 
+   cszText += _T("- can use Bulb mode: ");
+   cszText += spRemoteReleaseControl->GetCapability(RemoteReleaseControl::capBulbMode) ? _T("Yes") : _T("NO");
+   cszText += _T("\n");
+
+   cszText += _T("- can lock/unlock user interface: ");
+   cszText += spRemoteReleaseControl->GetCapability(RemoteReleaseControl::capUILock) ? _T("Yes") : _T("NO");
+   cszText += _T("\n");
+
    cszText += _T("\n");
 }
 
