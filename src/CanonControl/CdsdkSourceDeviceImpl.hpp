@@ -123,7 +123,10 @@ public:
 
          // may return cdINVALID_PARAMETER, cdINVALID_HANDLE, cdENUM_NA
          err = CDEnumDevicePropertyNext(hEnum, &deviceProperty);
-         LOG_TRACE(_T("CDEnumDevicePropertyNext(%08x, &propId = %08x) returned %08x\n"), hEnum, deviceProperty.DevPropID, err);
+         LOG_TRACE(_T("CDEnumDevicePropertyNext(%08x, &propId = %08x \"%s\") returned %08x\n"),
+            hEnum, deviceProperty.DevPropID,
+            DevicePropertyAccess::NameFromId(deviceProperty.DevPropID).GetString(),
+            err);
          if ((err & cdERROR_ERRORID_MASK) == cdENUM_NA)
             break;
 
