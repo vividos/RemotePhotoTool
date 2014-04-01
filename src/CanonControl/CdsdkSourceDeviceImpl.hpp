@@ -109,7 +109,7 @@ public:
 
       // may return cdINVALID_PARAMETER, cdINVALID_HANDLE
       cdError err = CDEnumDevicePropertyReset(m_hSource, 0, &hEnum);
-      LOG_TRACE(_T("CDEnumDevicePropertyReset(%08x) returned %08x\n"), m_hSource, err);
+      if (err != cdOK) LOG_TRACE(_T("CDEnumDevicePropertyReset(%08x) returned %08x\n"), m_hSource, err);
       CheckError(_T("CDEnumDeviceReset"), err, __FILE__, __LINE__);
 
       // get count of properties
@@ -117,7 +117,7 @@ public:
 
       // returns cdINVALID_HANDLE, cdINVALID_PARAMETER
       err = CDGetDevicePropertyCount(hEnum, &count);
-      LOG_TRACE(_T("CDGetDevicePropertyCount(%08x, &count = %u) returned %08x\n"), hEnum, count, err);
+      if (err != cdOK) LOG_TRACE(_T("CDGetDevicePropertyCount(%08x, &count = %u) returned %08x\n"), hEnum, count, err);
       CheckError(_T("CDGetDevicePropertyCount"), err, __FILE__, __LINE__);
 
       std::vector<unsigned int> vecData;
@@ -127,14 +127,19 @@ public:
 
          // may return cdINVALID_PARAMETER, cdINVALID_HANDLE, cdENUM_NA
          err = CDEnumDevicePropertyNext(hEnum, &deviceProperty);
-         LOG_TRACE(_T("CDEnumDevicePropertyNext(%08x, &propId = %08x \"%s\") returned %08x\n"),
-            hEnum, deviceProperty.DevPropID,
-            DevicePropertyAccess::NameFromId(deviceProperty.DevPropID).GetString(),
-            err);
          if ((err & cdERROR_ERRORID_MASK) == cdENUM_NA)
             break;
 
+         if (err != cdOK) LOG_TRACE(_T("CDEnumDevicePropertyNext(%08x, &propId = %08x \"%s\") returned %08x\n"),
+            hEnum, deviceProperty.DevPropID,
+            DevicePropertyAccess::NameFromId(deviceProperty.DevPropID).GetString(),
+            err);
+
          CheckError(_T("CDEnumDevicePropertyNext"), err, __FILE__, __LINE__);
+
+         LOG_TRACE(_T("Available device property: \"%s\" (%08x)\n"),
+            DevicePropertyAccess::NameFromId(deviceProperty.DevPropID).GetString(),
+            deviceProperty.DevPropID);
 
          vecData.push_back(deviceProperty.DevPropID);
       }
@@ -142,7 +147,7 @@ public:
       // end enumerating
       // may return cdINVALID_HANDLE, cdINVALID_FN_CALL
       err = CDEnumDevicePropertyRelease(hEnum);
-      LOG_TRACE(_T("CDEnumDevicePropertyRelease(%08x) returned %08x\n"), hEnum, err);
+      if (err != cdOK) LOG_TRACE(_T("CDEnumDevicePropertyRelease(%08x) returned %08x\n"), hEnum, err);
       CheckError(_T("CDEnumDevicePropertyRelease"), err, __FILE__, __LINE__);
 
       return vecData;

@@ -876,7 +876,7 @@ void ImagePropertyAccess::EnumAvailReleaseSettings(std::vector<unsigned int>& ve
          (relCamSetting.Access & cdATTRIB_WRITE) != 0 ? _T("false") : _T("true"),
          err);
 
-      LOG_TRACE(_T("Available release setting: \"%s\" (%08x)\n"),
+      LOG_TRACE(_T("Available image property: \"%s\" (%08x)\n"),
          ImagePropertyAccess::NameFromId(relCamSetting.SettingID).GetString(),
          relCamSetting.SettingID);
 
