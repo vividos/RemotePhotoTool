@@ -142,6 +142,9 @@ bool RemoteReleaseControlImpl::GetCapability(RemoteReleaseControl::T_enRemoteCap
          // bulb mode generally not supported by PSREC
          return false;
 
+      case RemoteReleaseControl::capUILock:
+         return false;
+
       default:
          ATLASSERT(false);
       }

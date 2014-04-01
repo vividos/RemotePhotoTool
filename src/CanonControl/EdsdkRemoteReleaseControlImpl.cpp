@@ -348,6 +348,15 @@ bool RemoteReleaseControlImpl::GetCapability(RemoteReleaseControl::T_enRemoteCap
       case RemoteReleaseControl::capAFLock:
          return true;
 
+      case RemoteReleaseControl::capBulbMode:
+         // we can't find out here if Bulb is supported;
+         // enum Tv values instead and check if Bulb appears, set Bulb mode and call StartBulb()
+         return true;
+
+      case RemoteReleaseControl::capUILock:
+         // generally supported through kEdsCameraStatusCommand_UILock command
+         return true;
+
       default:
          ATLASSERT(false);
          break;
