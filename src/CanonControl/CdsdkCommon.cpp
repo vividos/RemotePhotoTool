@@ -135,15 +135,37 @@ void Ref::EnumerateDevices(std::vector<std::shared_ptr<SourceInfo>>& vecSourceDe
 
       CheckError(_T("CDEnumDeviceNext"), err, __FILE__, __LINE__);
 
-      LOG_TRACE(_T("device %u, ModelName=%hs, InternalName=%hs, PortType=%s\n"),
+      CString cszDetails;
+      switch (si.PortType)
+      {
+      case cdPORT_TYPE_STI:
+         cszDetails.Format(_T(", DataType=%s, DeviceInternalName=%ls"),
+            si.u.STI.DataType == cdDEV_DATA_TYPE_UNKNOWN ? _T("Unknown") :
+            si.u.STI.DataType == cdDEV_DATA_TYPE_UNDECIDED ? _T("Undecided") :
+            si.u.STI.DataType == cdDEV_DATA_TYPE_1 ? _T("Type 1") :
+            si.u.STI.DataType == cdDEV_DATA_TYPE_2 ? _T("Type 2") : _T("???"),
+            si.u.STI.DeviceInternalName);
+         break;
+
+      case cdPORT_TYPE_WIA:
+         cszDetails.Format(_T(", DataType=%s, DeviceID=%ls"),
+            si.u.WIA.DataType == cdDEV_DATA_TYPE_UNKNOWN ? _T("Unknown") :
+            si.u.WIA.DataType == cdDEV_DATA_TYPE_UNDECIDED ? _T("Undecided") :
+            si.u.WIA.DataType == cdDEV_DATA_TYPE_1 ? _T("Type 1") :
+            si.u.WIA.DataType == cdDEV_DATA_TYPE_2 ? _T("Type 2") : _T("???"),
+            si.u.WIA.pDIPDevID);
+         break;
+      };
+
+      LOG_TRACE(_T("device %u, ModelName=%hs, InternalName=%hs, PortType=%s%s\n"),
          ui,
          si.Name,
          si.NameInOS,
          si.PortType == cdPORT_TYPE_NO_PORT ? _T("None") :
          si.PortType == cdPORT_TYPE_STI ? _T("STI") :
          si.PortType == cdPORT_TYPE_WIA ? _T("WIA") :
-         si.PortType == cdPORT_TYPE_ANY ? _T("Any") : _T("???")
-         );
+         si.PortType == cdPORT_TYPE_ANY ? _T("Any") : _T("???"),
+         cszDetails.GetString());
 
       vecSourceDevices.push_back(spImpl);
    }
