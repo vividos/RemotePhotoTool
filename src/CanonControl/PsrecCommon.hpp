@@ -35,7 +35,7 @@ inline void CheckError(const CString& cszFunction, prResponse err, LPCSTR pszFil
       componentId == prERROR_WIA_STI_COMPONENTID ? _T("WIA/STI") :
       componentId == prERROR_WINDOWS_COMPONENTID ? _T("Windows") :
       componentId == prERROR_COMIF_COMPONENTID ? _T("COM") : _T("???"),
-      ErrorTextFromErrorId(errorId),
+      ErrorTextFromErrorId(errorId, true),
       err);
 
    throw CameraException(cszFunction, cszMessage, err, pszFile, uiLine);

@@ -9,4 +9,4 @@
 /// \brief returns error text from error id
 /// \details since all Canon SDKs use the same error ids (when masked), this function
 /// returns the text for all SDKs.
-LPCTSTR ErrorTextFromErrorId(unsigned int uiErrorId);
+LPCTSTR ErrorTextFromErrorId(unsigned int uiErrorId, bool bIsPsrec = false);
