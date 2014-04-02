@@ -210,7 +210,7 @@ CString DevicePropertyAccess::DisplayTextFromIdAndValue(unsigned int propId, Var
    {
    case cdDEVICE_PROP_TIME: // cdTime
       {
-         cdTime time = value.Get<cdTime>();
+         cdTime time = value.Get<unsigned int>();
 
          FILETIME fileTime = { 0 };
          ATLVERIFY(TRUE == DosDateTimeToFileTime(HIWORD(time), LOWORD(time), &fileTime));

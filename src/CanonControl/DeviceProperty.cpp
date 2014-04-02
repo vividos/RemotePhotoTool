@@ -44,8 +44,12 @@ CString DeviceProperty::ValueAsString(Variant value) const throw()
          return CString(_T("???"));
       }
    }
-   catch(const CameraException& ex)
+   catch (const CameraException& ex)
    {
       return CString(_T("exception during value formatting: ") + ex.Message());
+   }
+   catch (const boost::bad_any_cast&)
+   {
+      return CString(_T("bad_any_cast exception during value formatting"));
    }
 }
