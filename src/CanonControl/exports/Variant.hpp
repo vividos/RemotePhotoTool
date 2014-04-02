@@ -56,6 +56,14 @@ public:
       m_bIsArray = false;
    }
 
+   template <>
+   void Set(const unsigned long& val)
+   {
+      static_assert(sizeof(unsigned long) == sizeof(unsigned int),
+         "this only works when unsigned long and unsigned int have the same size");
+      Set<unsigned int>(val);
+   }
+
    /// returns value
    template <typename T>
    T Get() const
@@ -70,6 +78,13 @@ public:
    {
       ATLASSERT(m_bIsArray == false);
       return boost::any_cast<CString>(m_variant);
+   }
+
+   /// returns unsigned long value
+   template <>
+   unsigned long Get() const
+   {
+      return Get<unsigned int>();
    }
 
    // array get/set
