@@ -8,6 +8,14 @@ the git sourcecode repository at [https://github.com/vividos/RemotePhotoTool](ht
 Fixed starting the application under Windows XP. Also fixed updating photo mode icons on
 toolbar when not connected.
 
+Added support for CD-SDK Canon SDK, potentially supporting many more cameras up to
+2005-06-30. See [SupportedCameras.md](SupportedCameras.md) for all camera models supported.
+
+Note: Unfortunately those cameras require installing a WIA driver from Canon, and they only
+work on Windows XP. As I don't own an XP computer anymore, I could only do limited tests with
+an old Powershot G2. Please report any issues when using those cameras!
+Also note that the official support for Windows XP from Microsoft expires at 2014-04-08.
+
 ## 2014-03-10: Version 1.1.0 Build 101 ##
 
 Added viewfinder controls, including auto focus, auto white balance, zoom in/out,
