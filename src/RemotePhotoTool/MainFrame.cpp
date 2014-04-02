@@ -29,11 +29,7 @@ MainFrame::MainFrame() throw()
 {
    m_settings.Load();
 
-   // set up logging
-   Instance::EnableLogging(m_settings.m_bLogging, m_settings.m_cszLogfilePath);
-
-   LOG_TRACE(_T("************************************************************\n"));
-   LOG_TRACE(_T("RemotePhotoTool started.\n"));
+   SetupLogging();
 
    m_upImageFileManager.reset(new ImageFileManager(m_settings));
 }
@@ -239,11 +235,16 @@ LRESULT MainFrame::OnHomeConnect(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWnd
 
 LRESULT MainFrame::OnHomeSettings(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
+   bool bPrevLogging = m_settings.m_bLogging;
+
    SettingsDlg dlg(m_settings);
    int iRet = dlg.DoModal();
    if (iRet == IDOK)
    {
       m_settings.Store();
+
+      if (!bPrevLogging && m_settings.m_bLogging)
+         SetupLogging();
 
       m_upImageFileManager.reset(new ImageFileManager(m_settings));
    }
@@ -283,6 +284,15 @@ LRESULT MainFrame::OnViewfinderShow(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*h
    bool bViewfinderActive = m_upViewFinderView != nullptr;
    ShowViewfinder(!bViewfinderActive);
    return 0;
+}
+
+void MainFrame::SetupLogging()
+{
+   // set up logging
+   Instance::EnableLogging(m_settings.m_bLogging, m_settings.m_cszLogfilePath);
+
+   LOG_TRACE(_T("************************************************************\n"));
+   LOG_TRACE(_T("RemotePhotoTool started.\n"));
 }
 
 void MainFrame::UpdateTitle()

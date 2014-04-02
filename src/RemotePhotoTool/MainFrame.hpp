@@ -140,6 +140,9 @@ private:
 
    virtual void LockActionMode(bool bLock) override;
 
+   /// sets up logging
+   void SetupLogging();
+
    /// sets up command bar
    void SetupCmdBar();
 
