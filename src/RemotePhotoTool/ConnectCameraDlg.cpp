@@ -93,7 +93,7 @@ LRESULT ConnectCameraDlg::OnCloseCmd(WORD /*wNotifyCode*/, WORD wID, HWND /*hWnd
       ATLASSERT(m_iSelectedSourceDeviceIndex != -1);
    }
 
-   // deregister handler
+   // unregister handler
    m_instance.AsyncWaitForCamera();
 
    EndDialog(wID);
@@ -119,6 +119,9 @@ LRESULT ConnectCameraDlg::OnBtnRefresh(WORD /*wNotifyCode*/, WORD /*wID*/, HWND 
 
 LRESULT ConnectCameraDlg::OnBtnInfo(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
+   // unregister handler
+   m_instance.AsyncWaitForCamera();
+
    // get device index of selected device
    int iItem = m_lcCameras.GetSelectedIndex();
    m_iSelectedSourceDeviceIndex = static_cast<int>(m_lcCameras.GetItemData(iItem));
@@ -129,20 +132,20 @@ LRESULT ConnectCameraDlg::OnBtnInfo(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*h
    {
       std::shared_ptr<SourceDevice> spSourceDevice = GetSourceDevice();
 
-      if (spSourceDevice == nullptr)
+      if (spSourceDevice != nullptr)
       {
-         AtlMessageBox(m_hWnd, _T("Couldn't open camera device!"), IDR_MAINFRAME, MB_OK);
-         return 0;
+         CameraInfoDlg dlg(*spSourceDevice);
+         dlg.DoModal();
       }
-
-      CameraInfoDlg dlg(*spSourceDevice);
-      dlg.DoModal();
    }
    catch(const CameraException& ex)
    {
       CameraErrorDlg dlg(_T("Couldn't get camera info"), ex);
       dlg.DoModal();
    }
+
+   // re-register handler
+   m_instance.AsyncWaitForCamera(std::bind(&ConnectCameraDlg::OnCameraAdded, this));
 
    return 0;
 }
