@@ -218,9 +218,15 @@ CString DevicePropertyAccess::DisplayTextFromIdAndValue(unsigned int propId, Var
          SYSTEMTIME systemTime = { 0 };
          ATLVERIFY(TRUE == FileTimeToSystemTime(&fileTime, &systemTime));
 
-         // TODO
-         //GetDateFormat(MAKELCID(LANG_ENGLISH, SUBLANG_ENGLISH_US), 0, &systemTime, _T(""), cszValue.GetBuffer(32), 32);
-         //cszValue.ReleaseBuffer();
+         CString cszDate;
+         GetDateFormat(LOCALE_USER_DEFAULT, 0, &systemTime, _T("yyyy'-'MM'-'dd"), cszDate.GetBuffer(32), 32);
+         cszDate.ReleaseBuffer();
+
+         CString cszTime;
+         GetTimeFormat(LOCALE_USER_DEFAULT, 0, &systemTime, _T(" HH':'mm':'ss"), cszTime.GetBuffer(32), 32);
+         cszTime.ReleaseBuffer();
+
+         cszText = cszDate + cszTime;
       }
       break;
 
