@@ -25,6 +25,25 @@ static PropIdDisplayInfo g_aPropIdDisplayInfo[] =
          { 0, nullptr }
       }
    },
+
+   {
+      cdDEVICE_PROP_SLIDE_SHOW_CAP,
+      {
+         { 0, _T("N/A") },
+         { cdSLIDE_SHOW_CAP_CANON_FORMAT, _T("Canon format slide show file") },
+         { cdSLIDE_SHOW_CAP_DPOF, _T("DPOF slide show file") },
+         { 0, nullptr }
+      }
+   },
+
+   {
+      cdDEVICE_PROP_PARSE_FACULTIES,
+      {
+         { 0, _T("N/A") },
+         { cdPARSE_SET_PROP_IN_CAMERA, _T("Supports modifying properties") },
+         { 0, nullptr }
+      }
+   },
 };
 
 Variant DevicePropertyAccess::Get(cdDevicePropertyID propId) const

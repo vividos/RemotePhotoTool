@@ -13,11 +13,26 @@
 
 using namespace CDSDK;
 
+/// converts property type enum (T_enImagePropertyType) to property id.
+/// since there are some release settings in the lower area, add a large enough constant
+#define TYPE_TO_PROP_ID(x) (x+0x00010000)
+
+
 /// all image property descriptions for CDSDK
 static PropIdDisplayInfo g_aPropIdDisplayInfo[] =
 {
    {
       cdREL_SET_SELF_TIMER,
+      {
+         { 0, _T("Off") },
+         { 1, _T("On") },
+         { 0xff, _T("Invalid") },
+         { 0, nullptr }
+      }
+   },
+
+   {
+      cdREL_SET_BEEP,
       {
          { 0, _T("Off") },
          { 1, _T("On") },
@@ -180,8 +195,6 @@ static PropIdDisplayInfo g_aPropIdDisplayInfo[] =
       {
          { 0, _T("Enable") },
          { 1, _T("Disable") },
-         { 2, _T("") },
-         { 3, _T("") },
          { 0xffff, _T("Not available") },
          { 0, nullptr }
       }
@@ -200,12 +213,139 @@ static PropIdDisplayInfo g_aPropIdDisplayInfo[] =
          { 0, nullptr }
       }
    },
+
+   {
+      TYPE_TO_PROP_ID(propShootingMode),
+      {
+         { cdSHOOTING_MODE_INVALID, _T("Invalid") },
+         { cdSHOOTING_MODE_AUTO, _T("Auto") },
+         { cdSHOOTING_MODE_PROGRAM, _T("Program") },
+         { cdSHOOTING_MODE_TV, _T("Tv") },
+         { cdSHOOTING_MODE_AV, _T("Av") },
+         { cdSHOOTING_MODE_MANUAL, _T("Manual") },
+         { cdSHOOTING_MODE_A_DEP, _T("A Dep") },
+         { cdSHOOTING_MODE_M_DEP, _T("M Dep") },
+         { cdSHOOTING_MODE_BULB, _T("Bulb") },
+         { cdSHOOTING_MODE_MANUAL_2, _T("Manual 2") },
+         { cdSHOOTING_MODE_FAR_SCENE, _T("Far scene") },
+         { cdSHOOTING_MODE_FAST_SHUTTER, _T("Fast shutter") },
+         { cdSHOOTING_MODE_SLOW_SHUTTER, _T("Show shutter") },
+         { cdSHOOTING_MODE_NIGHT_SCENE, _T("Night scene") },
+         { cdSHOOTING_MODE_GRAY_SCALE, _T("Grayscale") },
+         { cdSHOOTING_MODE_SEPIA, _T("Sepia") },
+         { cdSHOOTING_MODE_PORTRAIT, _T("Portrait") },
+         { cdSHOOTING_MODE_SPOT, _T("Spot") },
+         { cdSHOOTING_MODE_MACRO, _T("Macro") },
+         { cdSHOOTING_MODE_BW, _T("B/W") },
+         { cdSHOOTING_MODE_PANFOCUS, _T("Pan focus") },
+         { cdSHOOTING_MODE_VIVID, _T("Vivid") },
+         { cdSHOOTING_MODE_NEUTRAL, _T("Neutral") },
+         { cdSHOOTING_MODE_FLASH_OFF, _T("Flash off") },
+         { cdSHOOTING_MODE_LONG_SHUTTER, _T("Long shutter") },
+         { cdSHOOTING_MODE_SUPER_MACRO, _T("Super macro") },
+         { cdSHOOTING_MODE_FOLIAGE, _T("Foilage") },
+         { cdSHOOTING_MODE_INDOOR, _T("Indoor") },
+         { cdSHOOTING_MODE_FIREWORKS, _T("Fireworks") },
+         { cdSHOOTING_MODE_BEACH, _T("Beach") },
+         { cdSHOOTING_MODE_UNDERWATER, _T("Underwater") },
+         { cdSHOOTING_MODE_SNOW, _T("Snow") },
+         { cdSHOOTING_MODE_KIDS_AND_PETS, _T("Kids and pets") },
+         { cdSHOOTING_MODE_NIGHT_SNAPSHOT, _T("Night snapshot") },
+         { cdSHOOTING_MODE_DIGITAL_MACRO, _T("Digital macro") },
+         { cdSHOOTING_MODE_MYCOLORS, _T("My colors") },
+         { cdSHOOTING_MODE_PHOTO_IN_MOVIE, _T("Photo in movie") },
+         { 0, nullptr }
+      }
+   },
+
+   {
+      TYPE_TO_PROP_ID(propWhiteBalance),
+      {
+         { cdWB_ATCAPTURE, _T("As shot value") },
+         { cdWB_BY_POS, _T("White Point position") },
+         { cdWB_USE_COEFFICIENT, _T("WB coefficient") },
+         { cdWB_INVALID, _T("Invalid value") },
+         { cdWB_AUTO, _T("Auto") },
+         { cdWB_DAY_LIGHT, _T("Daylight") },
+         { cdWB_CLOUDY, _T("Cloudy") },
+         { cdWB_TUNGSTEN, _T("Tungsten") },
+         { cdWB_FLUORESCENT, _T("Fluorescent") },
+         { cdWB_FLASH, _T("Flash") },
+         { cdWB_CUSTOM, _T("Custom") },
+         { cdWB_BW, _T("B/W") },
+         { cdWB_SHADE, _T("Shade for Type B  (and Type C)") },
+         { cdWB_KELVIN, _T("Kelvin for Type B  (and Type C)") },
+         { cdWB_PCSET1, _T("PC Set1 for Type B") },
+         { cdWB_PCSET2, _T("PC Set2 for Type B") },
+         { cdWB_PCSET3, _T("PC Set3 for Type B") },
+         { cdWB_FLUORESCENT_H, _T("Fluorescent H") },
+         { cdWB_CUSTOM_1, _T("Custom 1") },
+         { cdWB_CUSTOM_2, _T("Custom 2") },
+         { 0, nullptr }
+      }
+   },
+
+   {
+      TYPE_TO_PROP_ID(propDriveMode),
+      {
+         { cdDRIVE_MODE_UNKNOWN, _T("Unknown") },
+         { cdDRIVE_MODE_SINGLE, _T("Single") },
+         { cdDRIVE_MODE_CONT, _T("Continuous") },
+         { cdDRIVE_MODE_MOVIE, _T("Movie") },
+         { cdDRIVE_MODE_CONT_SPEED_PRIORITY, _T("Continuous; speed priority") },
+         { cdDRIVE_MODE_CONT_LOW, _T("Continuous; low") },
+         { cdDRIVE_MODE_CONT_HIGHT, _T("Continuous; high") },
+         { cdDRIVE_MODE_SELFTIMER, _T("Self timer") },
+         { 0, nullptr }
+      }
+   },
+
+   {
+      TYPE_TO_PROP_ID(propFlashMode),
+      {
+         { cdFLASH_MODE_OFF, _T("Off") },
+         { cdFLASH_MODE_AUTO, _T("Auto") },
+         { cdFLASH_MODE_ON, _T("On") },
+         { cdFLASH_MODE_RED_EYE, _T("Red eye") },
+         { cdFLASH_MODE_SLOW_SYNC, _T("Slow sync") },
+         { cdFLASH_MODE_AUTO_PLUS_RED_EYE, _T("Auto + Red eye") },
+         { cdFLASH_MODE_ON_PLUS_RED_EYE, _T("On + Red eye") },
+         { 0, nullptr }
+      }
+   },
+
+   {
+      TYPE_TO_PROP_ID(propAFDistance),
+      {
+         { cdAF_DISTANCE_MANUAL, _T("Manual") },
+         { cdAF_DISTANCE_AUTO, _T("Auto") },
+         { cdAF_DISTANCE_UNKNOWN, _T("Unknown") },
+         { cdAF_DISTANCE_CLOSE_UP, _T("Close up") },
+         { cdAF_DISTANCE_VERY_CLOSE, _T("Very close") },
+         { cdAF_DISTANCE_CLOSE, _T("Close") },
+         { cdAF_DISTANCE_MIDDLE, _T("Middle") },
+         { cdAF_DISTANCE_FAR, _T("Far") },
+         { cdAF_DISTANCE_PAN_FOCUS, _T("Pan focus") },
+         { cdAF_DISTANCE_SUPER_MACRO, _T("Super macro") },
+         { cdAF_DISTANCE_INFINITY, _T("Infinity") },
+         { cdAF_DISTANCE_SUPER_MACRO_0CM, _T("Super macro 0 cm") },
+         { cdAF_DISTANCE_NA, _T("N/A") },
+         { 0, nullptr }
+      }
+   },
+
+   {
+      TYPE_TO_PROP_ID(propSaveTo),
+      {
+         { cdREL_KIND_THUMB_TO_PC, _T("Thumbnail to PC") },
+         { cdREL_KIND_PICT_TO_PC, _T("Image to PC") },
+         { cdREL_KIND_THUMB_TO_CAM, _T("Thumbnail on camera") },
+         { cdREL_KIND_PICT_TO_CAM, _T("Image on camera") },
+         { 0, nullptr }
+      }
+   },
 };
 
-
-/// converts property type enum (T_enImagePropertyType) to property id.
-/// since there are some release settings in the lower area, add a large enough constant
-#define TYPE_TO_PROP_ID(x) (x+0x00010000)
 
 /// template to determine variant type from template type
 template <typename T>
@@ -1235,6 +1375,7 @@ CString ImagePropertyAccess::DisplayTextFromIdAndValue(unsigned int propId, Vari
    case cdREL_SET_FLASH_COMP:
    case cdREL_SET_AEB_EXPOSURE_COMP:
    case TYPE_TO_PROP_ID(propExposureCompensation):
+   case TYPE_TO_PROP_ID(propFlashExposureComp):
       cszText = FormatCompensationValue(value, false);
       break;
 
