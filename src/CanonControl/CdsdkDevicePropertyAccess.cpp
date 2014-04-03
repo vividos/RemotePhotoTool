@@ -115,12 +115,14 @@ void DevicePropertyAccess::SetRawCdsdk(Variant& v, unsigned int propId, std::vec
    case cdDEVICE_PROP_ROTATION_CAP:
       ATLASSERT(vecData.size() >= 1);
       variant = static_cast<bool>(vecData[0] != 0);
+      enType = Variant::typeBool;
       break;
 
       // uint8
    case cdDEVICE_PROP_DIRECT_TRANSFER_STATUS:
       ATLASSERT(vecData.size() >= 1);
       variant = static_cast<unsigned char>(vecData[0]);
+      enType = Variant::typeUInt8;
       break;
 
       // String

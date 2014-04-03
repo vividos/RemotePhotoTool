@@ -268,7 +268,8 @@ public:
       T val = defaultVal;
 
       cdError err = m_fnGet(hSource, &val);
-      LOG_TRACE(_T("PropertyAccess::Get(propId = %04x, source = %08x, &val = %04x) returned %08x\n"), propId, hSource, val, err);
+      LOG_TRACE(_T("PropertyAccess::Get(propId = %04x \"%s\", source = %08x, &val = %04x) returned %08x\n"),
+         propId, ImagePropertyAccess::NameFromId(propId), hSource, val, err);
       CheckError(_T("PropertyAccess::Get"), err, __FILE__, __LINE__);
 
       Variant value;
@@ -312,7 +313,8 @@ public:
       T val = value.Get<T>();
 
       cdError err = m_fnSet(hSource, val);
-      LOG_TRACE(_T("PropertyAccess::Set(source = %08x, propId = %04x, value = %04x) returned %08x\n"), hSource, propId, val, err);
+      LOG_TRACE(_T("PropertyAccess::Set(source = %08x, propId = %04x \"%s\", value = %04x) returned %08x\n"),
+         hSource, propId, ImagePropertyAccess::NameFromId(propId), val, err);
       CheckError(_T("PropertyAccess::Set"), err, __FILE__, __LINE__);
    }
 
@@ -353,7 +355,8 @@ public:
       // start enumerating
       cdHEnum hEnum = 0;
       cdError err = m_fnEnumReset(hSource, &hEnum);
-      if (err != cdOK) LOG_TRACE(_T("PropertyAccess::Enum::Reset(source = %08x, propId = %04x, &hEnum = %08x) returned %08x\n"), hSource, propId, hEnum, err);
+      if (err != cdOK) LOG_TRACE(_T("PropertyAccess::Enum::Reset(source = %08x, propId = %04x \"%s\", &hEnum = %08x) returned %08x\n"),
+         hSource, propId, ImagePropertyAccess::NameFromId(propId), hEnum, err);
       CheckError(_T("PropertyAccess::Enum::Reset"), err, __FILE__, __LINE__);
 
       // get count
@@ -724,7 +727,8 @@ Variant ImagePropertyAccess::Get(unsigned int uiPropId) const
    CASE_PROP_GET(propImageFormat)
 
    default:
-      ATLASSERT(false);
+      // might be a release setting
+      v = GetReleaseSetting(uiPropId);
       break;
    }
 #undef CASE_PROP_GET
@@ -770,7 +774,8 @@ void ImagePropertyAccess::Set(unsigned int uiPropId, Variant val)
    CASE_PROP_SET(propImageFormat)
 
    default:
-      ATLASSERT(false);
+      // might be a release setting
+      SetReleaseSetting(uiPropId, val);
       break;
    }
 #undef CASE_PROP_SET
@@ -937,8 +942,8 @@ void ImagePropertyAccess::EnumReleaseSettingValues(cdRelCamSettingID propId, std
    cdUInt32 uiBufSize = 0;
 
    cdError err = CDEnumRelCamSettingDataReset(m_hSource, propId, &hEnum, &uiBufSize);
-   if (err != cdOK) LOG_TRACE(_T("CDEnumRelCamSettingDataReset(%08x, propId = %08x, &hEnum = %08x, &bufSize = %u) returned %08x\n"),
-      m_hSource, propId, hEnum, uiBufSize, err);
+   if (err != cdOK) LOG_TRACE(_T("CDEnumRelCamSettingDataReset(%08x, propId = %08x \"%s\", &hEnum = %08x, &bufSize = %u) returned %08x\n"),
+      m_hSource, propId, ImagePropertyAccess::NameFromId(propId), hEnum, uiBufSize, err);
    CheckError(_T("CDEnumRelCamSettingDataReset"), err, __FILE__, __LINE__);
 
    std::vector<BYTE> vecData(uiBufSize, 0);
@@ -1243,6 +1248,10 @@ CString ImagePropertyAccess::DisplayTextFromIdAndValue(unsigned int propId, Vari
 
    case cdREL_SET_KELVIN_VALUE:
       cszText.Format(_T("%u K"), value.Get<cdUInt16>());
+      break;
+
+   case TYPE_TO_PROP_ID(propImageFormat):
+      cszText = FormatImageFormatValue(value);
       break;
 
    default:

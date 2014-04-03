@@ -64,7 +64,7 @@ bool RemoteReleaseControlImpl::GetCapability(RemoteReleaseControl::T_enRemoteCap
    {
       cdReleaseControlFaculty faculty = 0;
       cdError err = CDGetReleaseControlFaculty(GetSource(), &faculty);
-      LOG_TRACE(_T("CDGetReleaseControlFaculty(%08x, &faculty) returned %08x\n"), GetSource(), err);
+      LOG_TRACE(_T("CDGetReleaseControlFaculty(%08x, &faculty = %08x) returned %08x\n"), GetSource(), faculty, err);
       CheckError(_T("CDGetReleaseControlFaculty"), err, __FILE__, __LINE__);
 
       switch (enCapability)
