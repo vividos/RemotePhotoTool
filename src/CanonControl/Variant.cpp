@@ -35,6 +35,18 @@ CString Variant::ToString() const
          }
          break;
 
+      case typeUInt16:
+         {
+            CString cszTemp;
+            std::vector<unsigned short> vecData = GetArray<unsigned short>();
+            for (size_t i = 0, iMax = vecData.size(); i<iMax; i++)
+            {
+               cszTemp.Format(_T("%s%04x"), i == 0 ? _T("") : _T(" "), vecData[i]);
+               cszValue += cszTemp;
+            }
+         }
+         break;
+
       case typeUInt32:
          {
             CString cszTemp;
@@ -99,6 +111,10 @@ CString Variant::ToString() const
       cszValue.Format(_T("%08x"), Get<unsigned int>());
       break;
 
+   case typeDouble:
+      cszValue.Format(_T("%f"), Get<double>());
+      break;
+
    case typeInvalid:
       cszValue = _T("invalid type");
       break;
@@ -106,7 +122,6 @@ CString Variant::ToString() const
    case typeInt64:
    case typeUInt64:
    case typeFloat:
-   case typeDouble:
    case typeByteBlock:
    case typeRational:
    case typePoint:
