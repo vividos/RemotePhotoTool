@@ -29,6 +29,8 @@ add reading out of number of all shots taken
 CDSDK
 -----
 Test cameras
+implement TODOs from source files
+when camera release button is pressed, start taking image in background thread
 
 RemotePhotoTool
 ---------------
@@ -58,7 +60,7 @@ Add photo mode with motion detection using viewfinder to take photos (e.g. for w
 Show zebra pattern for overexposed areas of viewfinder image
 
 RemotePhotoToolCmdline
-----------------
+----------------------
 implement opening by index, {0}
 fix crashes in EDSDK: call EdsGetEvent() often
 add checking for unknown device and image properties
@@ -70,6 +72,8 @@ RemoteScriptingEditor
 ---------------------
 Add proper toolbar
 Implement all bindings from CanonControl
+Implement running and stopping scripts
+Implement debugging scripts
 
 Setup
 -----
