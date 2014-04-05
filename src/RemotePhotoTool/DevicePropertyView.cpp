@@ -13,6 +13,7 @@
 #include "DeviceProperty.hpp"
 #include "IPhotoModeViewHost.hpp"
 #include "ViewFinderView.hpp"
+#include "CameraException.hpp"
 
 void DevicePropertyView::Init()
 {
@@ -48,17 +49,30 @@ void DevicePropertyView::RefreshList()
    for (size_t i=0, iMax = vecDevicePropertyIds.size(); i<iMax; i++)
    {
       unsigned int uiPropertyId = vecDevicePropertyIds[i];
-      DeviceProperty dp = sd.GetDeviceProperty(uiPropertyId);
+      int iIndex = -1;
+      try
+      {
+         DeviceProperty dp = sd.GetDeviceProperty(uiPropertyId);
 
-      int iIndex = InsertItem(GetItemCount(), dp.Name());
+         iIndex = InsertItem(GetItemCount(), dp.Name());
 
-      SetItemText(iIndex, columnValue, dp.AsString());
-      SetItemText(iIndex, columnType, Variant::TypeAsString(dp.Value().Type()));
-      SetItemText(iIndex, columnReadOnly, dp.IsReadOnly() ? _T("yes") : _T("no"));
+         SetItemText(iIndex, columnValue, dp.AsString());
+         SetItemText(iIndex, columnType, Variant::TypeAsString(dp.Value().Type()));
+         SetItemText(iIndex, columnReadOnly, dp.IsReadOnly() ? _T("yes") : _T("no"));
+      }
+      catch(const CameraException& ex)
+      {
+         iIndex = InsertItem(GetItemCount(), _T("???"));
 
-      CString cszId;
-      cszId.Format(_T("0x%04x"), uiPropertyId);
-      SetItemText(iIndex, columnId, cszId);
+         SetItemText(iIndex, columnValue, ex.Message());
+      }
+
+      if (iIndex != -1)
+      {
+         CString cszId;
+         cszId.Format(_T("0x%04x"), uiPropertyId);
+         SetItemText(iIndex, columnId, cszId);
+      }
    }
 
    if (pViewfinder != NULL)
