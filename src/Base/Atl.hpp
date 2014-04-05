@@ -41,7 +41,8 @@
    #pragma comment(lib, "atls.lib")
 #endif
 
-#if (_ATL_VER < 0x0800)
+#if (_ATL_VER <= 0x0800)
+   // Visual C++ 2013 Express
    #pragma comment(linker, "/NODEFAULTLIB:atlthunk.lib")
 
    namespace ATL
@@ -59,13 +60,8 @@
       }
    };
 #else
+   // Visual C++ 2013 Professional and above
+
    // for _stdcallthunk
    #include <atlstdthunk.h>
-
-   // for #pragma prefast
-   #ifndef _PREFAST_
-   #pragma warning(disable:4068)
-   #endif
-
-   #pragma comment(lib, "atlthunk.lib")
 #endif
