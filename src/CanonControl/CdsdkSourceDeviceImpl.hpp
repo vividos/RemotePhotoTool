@@ -40,28 +40,24 @@ public:
    {
       try
       {
+         cdReleaseControlFaculty faculty = 0;
+         cdError err = CDGetReleaseControlFaculty(GetSource(), &faculty);
+         LOG_TRACE(_T("CDGetReleaseControlFaculty(%08x, &faculty = %08x) returned %08x\n"), GetSource(), faculty, err);
+         CheckError(_T("CDGetReleaseControlFaculty"), err, __FILE__, __LINE__);
+
          switch (enDeviceCapability)
          {
          case SourceDevice::capRemoteReleaseControl:
-            {
-               DeviceProperty p = GetDeviceProperty(cdDEVICE_PROP_RELEASE_CONTROL_CAP);
-               unsigned int uiValue = p.Value().Get<unsigned int>();
-
-               return (uiValue & cdRELEASE_CONTROL_CAP_SUPPORT) != 0;
-            }
+            return (faculty & cdRELEASE_CONTROL_CAP_SUPPORT) != 0;
             break;
 
          case SourceDevice::capRemoteViewfinder:
-            {
-               DeviceProperty p = GetDeviceProperty(cdDEVICE_PROP_RELEASE_CONTROL_CAP);
-               unsigned int uiValue = p.Value().Get<unsigned int>();
-
-               return (uiValue & cdRELEASE_CONTROL_CAP_VIEWFINDER) != 0;
-            }
+            return (faculty & cdRELEASE_CONTROL_CAP_VIEWFINDER) != 0;
             break;
 
          default:
             ATLASSERT(false);
+            break;
          }
       }
       catch (Exception& ex)
@@ -78,6 +74,7 @@ public:
          LOG_TRACE(_T("std::exception occured in GetDeviceCapability(): %Hs\n"),
             ex.what());
       }
+
       return false;
    }
 

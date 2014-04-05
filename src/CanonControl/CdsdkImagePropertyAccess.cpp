@@ -1147,99 +1147,45 @@ bool ImagePropertyAccess::IsReadOnlyReleaseSetting(cdRelCamSettingID propId) con
    return false;
 }
 
-void ImagePropertyAccess::SetRawCdsdk(Variant& value, unsigned int propId, const std::vector<unsigned char>& vecData) const
+void ImagePropertyAccess::SetRawCdsdk(Variant& value, unsigned int /*propId*/, const std::vector<unsigned char>& vecData) const
 {
-   switch (propId)
+   // 4-byte unsigned int
+   if (vecData.size() == 4)
    {
-      //case cdREL_SET_AV_OPEN:
-
-#if 0
-      // 4-byte unsigned int
-      if (vecData.size() == 4)
-      {
-         ATLASSERT(vecData.size() == 4);
-         unsigned int uiValue =
-            static_cast<unsigned int>(vecData[0]) |
-            (static_cast<unsigned int>(vecData[1]) << 8) |
-            (static_cast<unsigned int>(vecData[2]) << 16) |
-            (static_cast<unsigned int>(vecData[3]) << 24);
-         value.Set(uiValue);
-         value.Type(Variant::typeUInt32);
-      }
-      break;
-#endif
-
-   case cdREL_SET_SELF_TIMER:
-   case cdREL_SET_FOCUS_POINT:
-   case cdREL_SET_PARAMETER_SET:
-   case cdREL_SET_ISO_SPEED_RATINGS:
-   case cdREL_SET_AV_MAX:
-   case cdREL_SET_FOCAL_LENGTH:
-   case cdREL_SET_FOCAL_LENGTH_TELE:
-   case cdREL_SET_FOCAL_LENGTH_WIDE:
-   case cdREL_SET_FOCAL_LENGTH_DENOMINATOR:
-   case cdREL_SET_DISP_AV:
-   case cdREL_SET_AV_OPEN_APEX:
-   case cdREL_SET_EZOOM_SIZE:
-   case cdREL_SET_FOCAL_ML_SPOT_POS:
-   case cdREL_SET_DISP_AV_MAX:
-   case cdREL_SET_AV_MAX_APEX:
-   case cdREL_SET_FOCAL_LENGTH_OF_TELE:
-   case cdREL_SET_EZOOM_SIZE_TELE:
-   case cdREL_SET_PHOTO_EFFECT:
-   case cdREL_SET_AF_LIGHT:
-   case cdREL_SET_FLASH_QUANTITY_COUNT:
-   case cdREL_SET_FLASH_QUANTITY:
-   case cdREL_SET_ROTATION_ANGLE:
-   case cdREL_SET_ROTATION_SENSE:
-   case cdREL_SET_KELVIN_VALUE:
-   case cdREL_SET_COLOR_MATRIX:
-      if (vecData.size() == 2)
-      {
-         // 2-byte unsigned int
-         ATLASSERT(vecData.size() == 2);
-         unsigned short usValue =
-            static_cast<unsigned int>(vecData[0]) |
-            (static_cast<unsigned int>(vecData[1]) << 8);
-
-         value.Set(usValue);
-         value.SetType(Variant::typeUInt16);
-      }
-      break;
-
-   case cdREL_SET_BEEP:
-   case cdREL_SET_EZOOM:
-   case cdREL_SET_MLWEI_MODE:
-   case cdREL_SET_SLOW_SHUTTER:
-   case cdREL_SET_AF_MODE:
-   case cdREL_SET_CONTRAST:
-   case cdREL_SET_COLOR_GAIN:
-   case cdREL_SET_SHARPNESS:
-   case cdREL_SET_FLASH_COMP:
-   case cdREL_SET_AEB_EXPOSURE_COMP:
-   case cdREL_SET_EF_LENS_ID:
-      if (vecData.size() == 1)
-      {
-         // byte
-         ATLASSERT(vecData.size() == 1);
-         unsigned short usValue =
-            static_cast<unsigned int>(vecData[0]) |
-            (static_cast<unsigned int>(vecData[1]) << 8);
-
-         value.Set(usValue);
-         value.SetType(Variant::typeUInt8);
-      }
-      break;
-
-   default:
-      // just store array of bytes
-      value.SetArray<unsigned char>(vecData);
-      value.SetType(Variant::typeUInt8);
-      break;
+      ATLASSERT(vecData.size() == 4);
+      unsigned int uiValue =
+         static_cast<unsigned int>(vecData[0]) |
+         (static_cast<unsigned int>(vecData[1]) << 8) |
+         (static_cast<unsigned int>(vecData[2]) << 16) |
+         (static_cast<unsigned int>(vecData[3]) << 24);
+      value.Set(uiValue);
+      value.SetType(Variant::typeUInt32);
    }
-
-   if (value.Type() == Variant::typeInvalid)
+   else
+   if (vecData.size() == 2)
    {
+      // 2-byte unsigned int
+      ATLASSERT(vecData.size() == 2);
+      unsigned short usValue =
+         static_cast<unsigned int>(vecData[0]) |
+         (static_cast<unsigned int>(vecData[1]) << 8);
+
+      value.Set(usValue);
+      value.SetType(Variant::typeUInt16);
+   }
+   else
+   if (vecData.size() == 1)
+   {
+      // byte
+      ATLASSERT(vecData.size() == 1);
+      unsigned char usValue = vecData[0];
+
+      value.Set(usValue);
+      value.SetType(Variant::typeUInt8);
+   }
+   else
+   {
+      // just store array of bytes
       value.SetArray<unsigned char>(vecData);
       value.SetType(Variant::typeUInt8);
    }

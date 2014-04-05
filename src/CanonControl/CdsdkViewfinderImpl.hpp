@@ -41,7 +41,7 @@ public:
 
       // may return cdINVALID_HANDLE, cdNOT_SUPPORTED
       cdError err = CDStartViewfinder(GetSource(),
-         1, // format; 0 = JPEG, 1 = Bitmap
+         0, // format; 0 = JPEG, 1 = Bitmap
          &ViewfinderImpl::ViewfinderCallback,
          context);
 

@@ -248,7 +248,7 @@ void RemoteReleaseControlImpl::Release()
       &numData);
 
    LOG_TRACE(_T("CDRelease(%08x, sync = %s, &ProgressCallback, context, ")
-      _T("ProgReportPeriodically, &numData = %U) returned %08x\n"),
+      _T("ProgReportPeriodically, &numData = %u) returned %08x\n"),
       hSource,
       bSync ? _T("true") : _T("false"),
       numData, err);
