@@ -65,13 +65,20 @@ void ShutterSpeedValue::SetAndCheckNewRaw(unsigned int uiValue)
       [uiValue](const ImageProperty& prop)
       {
          unsigned int uiRawValue = 0;
-         if (prop.Value().Type() == Variant::typeUInt16)
-            uiRawValue = prop.Value().Get<unsigned short>();
-         else
-         if (prop.Value().Type() == Variant::typeUInt32)
-            uiRawValue = prop.Value().Get<unsigned int>();
-         else
-            ATLASSERT(false);
+         try
+         {
+            if (prop.Value().Type() == Variant::typeUInt16)
+               uiRawValue = prop.Value().Get<unsigned short>();
+            else
+            if (prop.Value().Type() == Variant::typeUInt32)
+               uiRawValue = prop.Value().Get<unsigned int>();
+            else
+               ATLASSERT(false);
+         }
+         catch(...)
+         {
+            return false;
+         }
 
          return uiRawValue == uiValue;
       });
