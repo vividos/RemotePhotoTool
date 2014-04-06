@@ -294,11 +294,11 @@ prResponse prSTDCALL RemoteReleaseControlImpl::OnCameraEvent_(prHandle hCamera, 
       EventNameFromCode(eventData.m_uiEventCode),
       eventData.m_vecParams.size());
 
-   LOG_TRACE(_T("   Parameters:"));
+   CString cszParams(_T("   Parameters:"));
    for (size_t i=0,iMax=eventData.m_vecParams.size(); i<iMax; i++)
-      LOG_TRACE(_T(" %08x"), eventData.m_vecParams[i]);
+      cszParams.AppendFormat(_T(" %08x"), eventData.m_vecParams[i]);
 
-   LOG_TRACE(_T("\n"));
+   LOG_TRACE(_T("%s\n"), cszParams.GetString());
 
    pThis->OnCameraEvent(eventData);
 
