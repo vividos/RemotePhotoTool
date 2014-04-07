@@ -40,13 +40,18 @@ public:
 #pragma warning(pop)
 
       // may return cdINVALID_HANDLE, cdNOT_SUPPORTED
+      cdUInt32 format = 0; // 0 = JPEG, 1 = Bitmap
       cdError err = CDStartViewfinder(GetSource(),
-         0, // format; 0 = JPEG, 1 = Bitmap
+         format,
          &ViewfinderImpl::ViewfinderCallback,
          context);
 
-      LOG_TRACE(_T("CDStartViewfinder(%08x, 1 (BMP), &CallbackFunc, context=%08x) returned %08x\n"),
-         GetSource(), this, err);
+      LOG_TRACE(_T("CDStartViewfinder(source = %08x, %u (%s), &CallbackFunc, context=%08x) returned %08x\n"),
+         GetSource(),
+         format,
+         format == 0 ? _T("JPEG") :
+         format == 1 ? _T("BMP") : _T("???"),
+         this, err);
       CheckError(_T("CDStartViewfinder"), err, __FILE__, __LINE__);
    }
 
