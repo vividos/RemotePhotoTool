@@ -58,12 +58,24 @@ Cameras supported by "CD-SDK 7.3". This includes all cameras released before 200
 Some models support remote capture and live viewfinder. Note that the cameras are only
 supported on Windows XP. You may need to install a WIA driver for your camera before it
 is recognized by Windows. When unsure how to connect, set the mode dial to "Play", as if
-to watch images. All cameras are connected using a USB cable.
+to review images. All cameras are connected using a USB cable.
+
+Notes:
+
+- Some models may not support enumerating image formats; these are the PowerShot,
+  IXY DIGITAL, and DIGITAL IXUS models issued prior to the PowerShot G3, S45, S230, IXY
+  DIGITAL 320, DIGITAL IXUS v3.
+
+- PowerShot S10 and S20 models don't support remote release control (they may support file
+  retrieval in the future).
+
+- Camera settings can't be controlled for the IXY DIGITAL, DIGITAL IXUS, and PowerShot
+  S100 models.
 
 **Powershot G series**
 
 - Powershot G1
-- Powershot G2
+- Powershot G2 (`tested and works`)
 - Powershot G3
 - Powershot G5
 - Powershot G6
