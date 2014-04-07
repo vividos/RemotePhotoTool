@@ -243,37 +243,45 @@ void HDRPhotoModeView::RecalcAEBShutterSpeedList()
    unsigned int uiShutterSpeedPropertyId =
       m_spRemoteReleaseControl->MapImagePropertyTypeToId(T_enImagePropertyType::propTv);
 
-   ImageProperty currentShutterSpeed = m_spRemoteReleaseControl->GetImageProperty(uiShutterSpeedPropertyId);
-
-   ShutterSpeedValue shutterSpeedBase(currentShutterSpeed, m_spRemoteReleaseControl);
-   ShutterSpeedValue shutterDown = shutterSpeedBase, shutterUp = shutterSpeedBase;
-
-   for (size_t ui = 1; ui <= uiNumShots; ui++)
+   try
    {
-      if (ui == 1)
-      {
-         m_vecAEBShutterSpeedValues.push_back(shutterSpeedBase.Value());
-      }
-      else
-      if ((ui & 1) == 0) // even: 2, 4, 6, ...
-      {
-         ShutterSpeedValue prev = shutterDown;
-         shutterDown.Subtract2EV();
+      ImageProperty currentShutterSpeed = m_spRemoteReleaseControl->GetImageProperty(uiShutterSpeedPropertyId);
 
-         // limit
-         if (prev != shutterDown)
-            m_vecAEBShutterSpeedValues.push_back(shutterDown.Value());
-      }
-      else
-      if ((ui & 1) == 1) // odd: 3, 5, 7, ...
-      {
-         ShutterSpeedValue prev = shutterUp;
-         shutterUp.Add2EV();
+      ShutterSpeedValue shutterSpeedBase(currentShutterSpeed, m_spRemoteReleaseControl);
+      ShutterSpeedValue shutterDown = shutterSpeedBase, shutterUp = shutterSpeedBase;
 
-         // limit
-         if (prev != shutterUp)
-            m_vecAEBShutterSpeedValues.push_back(shutterUp.Value());
+      for (size_t ui = 1; ui <= uiNumShots; ui++)
+      {
+         if (ui == 1)
+         {
+            m_vecAEBShutterSpeedValues.push_back(shutterSpeedBase.Value());
+         }
+         else
+         if ((ui & 1) == 0) // even: 2, 4, 6, ...
+         {
+            ShutterSpeedValue prev = shutterDown;
+            shutterDown.Subtract2EV();
+
+            // limit
+            if (prev != shutterDown)
+               m_vecAEBShutterSpeedValues.push_back(shutterDown.Value());
+         }
+         else
+         if ((ui & 1) == 1) // odd: 3, 5, 7, ...
+         {
+            ShutterSpeedValue prev = shutterUp;
+            shutterUp.Add2EV();
+
+            // limit
+            if (prev != shutterUp)
+               m_vecAEBShutterSpeedValues.push_back(shutterUp.Value());
+         }
       }
+   }
+   catch(CameraException& ex)
+   {
+      CameraErrorDlg dlg(_T("Couldn't get shutter speed values"), ex);
+      dlg.DoModal();
    }
 }
 
