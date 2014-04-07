@@ -57,8 +57,8 @@ Variant DevicePropertyAccess::Get(cdDevicePropertyID propId) const
    // may return cdINVALID_PARAMETER, cdINVALID_HANDLE, cdINVALID_POINTER, cdINVALID_ID,
    // cdPROPERTIES_UNAVAILABLE
    cdError err = CDGetDevicePropertyData(m_hSource, propId, &size, &vecData[0], 0);
-   LOG_TRACE(_T("CDGetDevicePropertyData(%08x, propId = %08x, &size = %u, buffer, 0) returned %08x\n"),
-      m_hSource, propId, size, err);
+   if (err != cdOK) LOG_TRACE(_T("CDGetDevicePropertyData(%08x, propId = %08x \"%s\", &size = %u, buffer, 0) returned %08x\n"),
+      m_hSource, propId, NameFromId(propId).GetString(), size, err);
    CheckError(_T("CDGetDevicePropertyData"), err, __FILE__, __LINE__);
 
    // convert to variant
@@ -91,8 +91,8 @@ cdUInt32 DevicePropertyAccess::GetSize(cdDevicePropertyID propId) const
    // may return cdINVALID_PARAMETER, cdINVALID_HANDLE, cdINVALID_POINTER, cdINVALID_ID,
    // cdPROPERTIES_UNAVAILABLE
    cdError err = CDGetDevicePropertyData(m_hSource, propId, &size, nullptr, 0);
-   LOG_TRACE(_T("CDGetDevicePropertyData(%08x, propId = %08x, &size = %u, nullptr, 0) returned %08x\n"),
-      m_hSource, propId, size, err);
+   if (err != cdOK) LOG_TRACE(_T("CDGetDevicePropertyData(%08x, propId = %08x \"%s\", &size = %u, nullptr, 0) returned %08x\n"),
+      m_hSource, propId, NameFromId(propId).GetString(), size, err);
    CheckError(_T("CDGetDevicePropertyData"), err, __FILE__, __LINE__);
 
    return size;
@@ -203,7 +203,7 @@ CString DevicePropertyAccess::NameFromId(unsigned int propId) throw()
    case cdDEVICE_PROP_MODEL_ID:                 pszName = _T("Camera model ID"); break;
    case cdDEVICE_PROP_MODEL_NAME:               pszName = _T("Camera model name"); break;
    case cdDEVICE_PROP_SLIDE_SHOW_CAP:           pszName = _T("Slide show capacity"); break;
-   case cdDEVICE_PROP_UPLOAD_FILE_CAP:          pszName = _T("CDAddPicture support"); break;
+   case cdDEVICE_PROP_UPLOAD_FILE_CAP:          pszName = _T("Picture upload support"); break;
    case cdDEVICE_PROP_ROTATION_CAP:             pszName = _T("Image rotation support"); break;
    case cdDEVICE_PROP_DPOF_CAP:                 pszName = _T("Supported DPOF version number"); break;
    case cdDEVICE_PROP_THUMB_VALID_AREA:         pszName = _T("Valid area in the DCF thumbnail data"); break;
