@@ -92,7 +92,7 @@ CString Variant::ToString() const
       break;
 
    case typeUInt8:
-      cszValue.Format(_T("%u"), Get<unsigned char>());
+      cszValue.Format(_T("%02x"), Get<unsigned char>());
       break;
 
    case typeInt16:
@@ -100,7 +100,7 @@ CString Variant::ToString() const
       break;
 
    case typeUInt16:
-      cszValue.Format(_T("%u"), Get<unsigned short>());
+      cszValue.Format(_T("%04x"), Get<unsigned short>());
       break;
 
    case typeInt32:
