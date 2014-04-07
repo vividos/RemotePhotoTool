@@ -227,10 +227,18 @@ CString FormatIsoValue(Variant value)
    {
    case 0x00: return _T("Auto");
    case 0x28: return _T("6");
+   case 0x2b: return _T("8");
+   case 0x2d: return _T("10");
    case 0x30: return _T("12");
+   case 0x33: return _T("16");
+   case 0x35: return _T("20");
    case 0x38: return _T("25");
+   case 0x3b: return _T("32");
+   case 0x3d: return _T("40");
+   case 0x40: return _T("50");
    case 0x43: return _T("64");
    case 0x45: return _T("80");
+   case 0xff:
    case 0xffff:
    case 0xffffffff:
       return _T("Invalid");
@@ -267,6 +275,8 @@ CString FormatCompensationValue(Variant value, bool bIsEdsdk)
    int iValue = bIsEdsdk ? int(char(uiComp)) : 0x18 - int(uiComp);
    if (iValue == 0)
       return _T("0");
+   if (iValue == 0xff)
+      return _T("N/A");
 
    int iFract = std::abs(iValue) & 7; // first 3 bits
    int iInt = std::abs(iValue) / 8;
