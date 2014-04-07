@@ -104,6 +104,16 @@ public:
    virtual std::shared_ptr<BulbReleaseControl> StartBulb() override;
 
 private:
+   /// returns context value used by callback functions
+   cdContext GetContext() const throw()
+   {
+#pragma warning(push)
+#pragma warning(disable: 4311) // 'reinterpret_cast' : pointer truncation from 'P' to 'T'
+      cdContext context = reinterpret_cast<cdContext>(this);
+      return context;
+#pragma warning(pop)
+   }
+
    /// release event callback
    static cdUInt32 cdSTDCALL OnReleaseEventCallback_(
       cdReleaseEventID EventID, const void* pData, cdUInt32 DataSize, cdContext Context);
@@ -147,8 +157,11 @@ private:
    /// subject of observer pattern; used for download events
    Subject<void(RemoteReleaseControl::T_enDownloadEvent, unsigned int)> m_subjectDownloadEvent;
 
-   /// current 
+   /// current "save to" target
    cdRelDataKind m_uiRelDataKind;
+
+   /// release control faculty value
+   cdReleaseControlFaculty m_releaseControlFaculty;
 };
 
 } // namespace CDSDK

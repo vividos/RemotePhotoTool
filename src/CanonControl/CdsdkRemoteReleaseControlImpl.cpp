@@ -17,26 +17,27 @@ using namespace CDSDK;
 RemoteReleaseControlImpl::RemoteReleaseControlImpl(std::shared_ptr<SourceDeviceImpl> spSourceDevice)
 :m_spSourceDevice(spSourceDevice),
 m_hEventCallback(0),
-m_uiRelDataKind(cdREL_KIND_PICT_TO_PC)
+m_uiRelDataKind(cdREL_KIND_PICT_TO_PC),
+m_releaseControlFaculty(0)
 {
    // check: pointers (e.g. this) must fit into cdContext; may not work on 64-bit
    static_assert(sizeof(cdContext) == sizeof(void*), "this pointer must fit into cdContext");
 
-#pragma warning(push)
-#pragma warning(disable: 4311) // 'reinterpret_cast' : pointer truncation from 'P' to 'T'
-   cdContext context = reinterpret_cast<cdContext>(this);
-#pragma warning(pop)
-
    cdHSource hSource = spSourceDevice->GetSource();
 
    // may return cdINVALID_HANDLE, cdNOT_SUPPORTED, cdINVALID_PARAMETER
-   cdError err = CDEnterReleaseControl(hSource, OnReleaseEventCallback_, context);
+   cdError err = CDEnterReleaseControl(hSource, OnReleaseEventCallback_, GetContext());
    LOG_TRACE(_T("CDEnterReleaseControl(%08x, &ReleaseEventCallback, context) returned %08x\n"), hSource, err);
    CheckError(_T("CDEnterReleaseControl"), err, __FILE__, __LINE__);
 
+   // may return cdINVALID_HANDLE
+   err = CDGetReleaseControlFaculty(GetSource(), &m_releaseControlFaculty);
+   LOG_TRACE(_T("CDGetReleaseControlFaculty(%08x, &faculty = %08x) returned %08x\n"), GetSource(), m_releaseControlFaculty, err);
+   CheckError(_T("CDGetReleaseControlFaculty"), err, __FILE__, __LINE__);
+
    // may return cdINVALID_PARAMETER, cdINVALID_FN_CALL
    err = CDRegisterEventCallbackFunction(hSource,
-      &RemoteReleaseControlImpl::OnEventCallback_, context, &m_hEventCallback);
+      &RemoteReleaseControlImpl::OnEventCallback_, GetContext(), &m_hEventCallback);
    LOG_TRACE(_T("CDRegisterEventCallbackFunction(%08x, &EventCallback, context, &hEvent = %08x) returned %08x\n"),
       hSource, m_hEventCallback, err);
    CheckError(_T("CDRegisterEventCallbackFunction"), err, __FILE__, __LINE__);
@@ -62,38 +63,33 @@ bool RemoteReleaseControlImpl::GetCapability(RemoteReleaseControl::T_enRemoteCap
 {
    try
    {
-      cdReleaseControlFaculty faculty = 0;
-      cdError err = CDGetReleaseControlFaculty(GetSource(), &faculty);
-      LOG_TRACE(_T("CDGetReleaseControlFaculty(%08x, &faculty = %08x) returned %08x\n"), GetSource(), faculty, err);
-      CheckError(_T("CDGetReleaseControlFaculty"), err, __FILE__, __LINE__);
-
       switch (enCapability)
       {
       case RemoteReleaseControl::capChangeShootingParameter:
-         return (faculty & cdRELEASE_CONTROL_CAP_SETPRM) != 0;
+         return (m_releaseControlFaculty & cdRELEASE_CONTROL_CAP_SETPRM) != 0;
 
       case RemoteReleaseControl::capChangeShootingMode:
-         return (faculty & cdRELEASE_CONTROL_CAP_SETPRM) != 0;
+         return (m_releaseControlFaculty & cdRELEASE_CONTROL_CAP_SETPRM) != 0;
 
       case RemoteReleaseControl::capZoomControl:
-         return (faculty & cdRELEASE_CONTROL_CAP_ZOOM) != 0;
+         return (m_releaseControlFaculty & cdRELEASE_CONTROL_CAP_ZOOM) != 0;
 
       case RemoteReleaseControl::capViewfinder:
          // Not all camera models support the Viewfinder function. Cameras that support Viewfinder
          // are those cameras for which the cdRELEASE_CONTROL_CAP_VIEWFINDER bit is set. Obtain the
          // value by executing CDGetDevicePropertyData using cdDEVICE_PROP_RELEASE_CONTROL_CAP.
          // note: in remote release mode, CDGetReleaseControlFaculty can also be used
-         return (faculty & cdRELEASE_CONTROL_CAP_VIEWFINDER) != 0;
+         return (m_releaseControlFaculty & cdRELEASE_CONTROL_CAP_VIEWFINDER) != 0;
 
       case RemoteReleaseControl::capReleaseWhileViewfinder:
          // If cdRELEASE_CONTROL_CAP_ABORT_VIEWFINDER bit is set in the connected camera model as a
          // value that can be obtained by executing CDGetDevicePropertyData with
          // cdDEVICE_PROP_RELEASE_CONTROL_CAP, and you are shooting with the Viewfinder using the
          // CDRelease function, you must stop Viewfinder first.
-         return (faculty & cdRELEASE_CONTROL_CAP_ABORT_VIEWFINDER) == 0;
+         return (m_releaseControlFaculty & cdRELEASE_CONTROL_CAP_ABORT_VIEWFINDER) == 0;
 
       case RemoteReleaseControl::capAFLock:
-         return (faculty & cdRELEASE_CONTROL_CAP_AF_LOCK) != 0;
+         return (m_releaseControlFaculty & cdRELEASE_CONTROL_CAP_AF_LOCK) != 0;
 
       case RemoteReleaseControl::capBulbMode:
          // bulb mode generally not supported by CDSDK
@@ -231,19 +227,13 @@ void RemoteReleaseControlImpl::Release()
 
    // release the shutter
    bool bSync = true;
-
-#pragma warning(push)
-#pragma warning(disable: 4311) // 'reinterpret_cast' : pointer truncation from 'P' to 'T'
-   cdContext context = reinterpret_cast<cdContext>(this);
-#pragma warning(pop)
-
    cdUInt32 numData = 0;
 
    // may return cdINVALID_HANDLE, cdINVALID_PARAMETER, cdDEVICE_NOT_RELEASED, cdOPERATION_CANCELLED
    cdError err = CDRelease(hSource,
       bSync,
       &RemoteReleaseControlImpl::OnProgressCallback_,
-      context,
+      GetContext(),
       cdPROG_REPORT_PERIODICALLY,
       &numData);
 
@@ -271,7 +261,7 @@ void RemoteReleaseControlImpl::Release()
       // may return cdINVALID_HANDLE, cdINVALID_PARAMETER, cdINVALID_FN_CALL, cdOPERATION_CANCELLED
       err = CDGetReleasedData(hSource,
          &RemoteReleaseControlImpl::OnProgressCallback_,
-         context,
+         GetContext(),
          cdPROG_REPORT_PERIODICALLY,
          &imageInfo,
          &stgMedium);
@@ -425,8 +415,8 @@ void RemoteReleaseControlImpl::OnEventCallback(cdEventID eventId)
 cdUInt32 cdSTDCALL RemoteReleaseControlImpl::OnProgressCallback_(cdUInt32 Progress,
    cdProgressStatus Status, cdContext Context)
 {
-   LOG_TRACE(_T("OnProgressCallback(progress = %u%%, status = %s, context) called\n"),
-      Progress,
+   LOG_TRACE(_T("OnProgressCallback(progress = %u%%, status = %08x (%s), context) called\n"),
+      Progress, Status,
       Status == cdSTATUS_TRANSFER ? _T("StatusTransfer") :
       Status == cdSTATUS_CONVERT ? _T("StausConvert") :
       Status == cdSTATUS_DEVELOPMENT ? _T("StatusDevelopment") : _T("???"));
