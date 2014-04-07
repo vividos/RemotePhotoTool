@@ -66,6 +66,19 @@ public:
    /// retrieves raw data from variant value
    void GetRawCdsdk(const Variant& value, unsigned int propId, std::vector<unsigned char>& vecData) const;
 
+   // special camera model functions
+
+   CString CameraModel() const throw();
+
+   /// adds shooting mode values for specific cameras
+   void AddCameraModelShootingMode(std::vector<Variant>& vecValues);
+
+   /// adds Av values for specific cameras
+   void AddCameraModelAvValues(std::vector<Variant>& vecValues);
+
+   /// adds Tv values for specific cameras
+   void AddCameraModelTvValues(std::vector<Variant>& vecValues);
+
    // mappings
 
    /// maps property type to property id
@@ -78,6 +91,12 @@ public:
 
    /// converts property value to string
    static CString DisplayTextFromIdAndValue(unsigned int propId, Variant value);
+
+   /// formats focus point value
+   static LPCTSTR FormatFocusPoint(const Variant& value);
+
+   /// formats parameter set value
+   static CString FormatParameterSet(const Variant& value);
 
    /// formats image format value
    static CString FormatImageFormatValue(const Variant& value);
