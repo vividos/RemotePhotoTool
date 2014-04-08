@@ -1037,9 +1037,9 @@ void ImagePropertyAccess::Enum(unsigned int uiPropId, std::vector<Variant>& vecV
 
 bool ImagePropertyAccess::IsReadOnly(unsigned int uiPropId)
 {
-/// switch-case for checking if a property is read-only
+   /// switch-case for checking if a property is read-only
 #define CASE_PROP_ISREADONLY(PROPID) \
-   case TYPE_TO_PROP_ID(PROPID##): if (s_##PROPID.CanWrite()) return true;
+   case TYPE_TO_PROP_ID(PROPID##): return s_##PROPID.CanWrite();
 
    switch (uiPropId)
    {
@@ -1062,9 +1062,11 @@ bool ImagePropertyAccess::IsReadOnly(unsigned int uiPropId)
    case TYPE_TO_PROP_ID(propSaveTo): return false;
    case TYPE_TO_PROP_ID(propBatteryLevel): return true;
    CASE_PROP_ISREADONLY(propImageFormat)
+   default:
+      return IsReadOnlyReleaseSetting(uiPropId);
    }
 
-   return false;
+   return true;
 }
 
 void ImagePropertyAccess::EnumAvailReleaseSettings(std::vector<unsigned int>& vecPropIds) const
@@ -1302,7 +1304,7 @@ CString ImagePropertyAccess::CameraModel() const throw()
    try
    {
       DevicePropertyAccess devicePropAccess(m_hSource);
-      cszModel = Get(cdDEVICE_PROP_MODEL_NAME).Get<CString>();
+      cszModel = devicePropAccess.Get(cdDEVICE_PROP_MODEL_NAME).Get<CString>();
    }
    catch (...)
    {
@@ -1602,6 +1604,12 @@ CString ImagePropertyAccess::DisplayTextFromIdAndValue(unsigned int propId, Vari
       break;
 
       // values simply formatted as numeric
+   case cdREL_SET_EZOOM_SIZE:
+   case cdREL_SET_EZOOM_SIZE_TELE:
+   case cdREL_SET_FOCAL_LENGTH:
+   case cdREL_SET_FOCAL_LENGTH_TELE:
+   case cdREL_SET_FOCAL_LENGTH_WIDE:
+   case cdREL_SET_FOCAL_LENGTH_DENOMINATOR:
    case TYPE_TO_PROP_ID(propCurrentZoomPos):
    case TYPE_TO_PROP_ID(propMaxZoomPos):
    case TYPE_TO_PROP_ID(propAvailableShots):
