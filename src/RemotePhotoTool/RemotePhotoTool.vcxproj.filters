@@ -274,6 +274,9 @@
     <None Include="..\..\Screenshots.md">
       <Filter>Documentation Files</Filter>
     </None>
+    <None Include="..\..\SupportedCameras.md">
+      <Filter>Documentation Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\TODO.txt">

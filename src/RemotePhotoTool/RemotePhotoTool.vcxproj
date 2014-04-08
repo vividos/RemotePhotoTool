@@ -209,6 +209,7 @@
     <None Include="..\..\README.md" />
     <None Include="..\..\Screenshots.md" />
     <None Include="..\..\Sourcecode.md" />
+    <None Include="..\..\SupportedCameras.md" />
     <None Include="..\..\TestCases.md" />
     <None Include="res\MainFrameRibbon.bml" />
     <None Include="res\toolbar.xcf" />
