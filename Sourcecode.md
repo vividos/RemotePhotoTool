@@ -4,7 +4,7 @@ This document describes how the source code of RemotePhotoTool is organized.
 
 ## Source code ##
 
-The application is developed using C++. Features from C++11 are used where possible. This means that at least Visual Studio 2012 is needed to compile the application.
+The application is developed using C++. Features from C++11 are used where possible. This means that at least Visual Studio 2013 is needed to compile the application.
 
 The app uses classes from the Boost library where no appriopriate class from the Standard
 C++ Library could be used. The application also uses other libraries. See the
@@ -27,12 +27,18 @@ building the app):
 The `"src"` folder has the following structure:
 
 - Base: Contains a base static library with classes common to several other of my projects
+- Base.UnitTest: Unit tests for Base library.
 - CanonControl: Contains a static library to control the various cameras. See below for details.
+- cppcheck: Tool project to run installed cppcheck tool on all source code to check for coding errors.
+- doxygen: Tool project to run doxygen tool on all source code to generate source documentation.
+- Lua: Contains Lua C sourcecode.
 - LuaScripting: Contains a static library to enable scripting of remote controlling cameras.
+- LuaScripting.UnitTest: Unit tests for LuaScripting library.
 - RemotePhotoTool: The main application.
 - RemotePhotoToolCmdline: Command line application to remote control a camera.
+- RemoteScriptingEditor: Lua scripting editor to debug scripts to remote control a camera.
 - Setup: Contains the setup project.
-- Thirdparty: Contains all third party code, including the SDKs and the JPEG library
+- Thirdparty: Contains all third party code, including the SDKs and the JPEG library.
 
 ### CanonControl ###
 
@@ -58,18 +64,18 @@ programs "Hugin" (for panorama stitching) and "Photomatix Pro" (for HDR generati
 
 # Installation of components #
 
-## Visual Studio 2012 ##
+## Visual Studio 2013 ##
 
-Install Visual Studio 2012. Any version will do, including Visual Studio 2012 Express for Windows
+Install Visual Studio 2013. Any version will do, including Visual Studio 2013 Express for Windows
 Desktop, which I use. When installed into the default folders, the example batch files can be used
 to build the application.
 
 When prompt (or manually via menu "Tools > Extensions and Updates"), update the Visual Studio
-to "Update 3" (or any later).
+to "Update 1" (or any later).
 
 ## ATL 7.1 ##
 
-If you're using Visual Studio 2012 Express, you need to get ATL 7.1 to properly link the
+If you're using Visual Studio 2013 Express, you need to get ATL 7.1 to properly link the
 application. If you're using the Professional or above version of Visual Studio, you don't need
 to do this.
 
@@ -88,19 +94,20 @@ with the path of the folder you just used. There are two folders to adjust, one 
 folder, beneath the <IncludePath> tag, and one is the `"lib\i386"` subfolder beneath the
 `<LibraryPath>` tag.
 
-## WTL 8.1 ##
+## WTL 9.0 ##
 
-The application uses WTL, on top of ATL, for the user interface. Download WTL 8.1.12085 (or any
+The application uses WTL, on top of ATL, for the user interface. Download WTL 9.0.4035 (or any
 later version) from this website:
 http://sourceforge.net/projects/wtl/
 
-You need to click on "Browse all files" and select WTL 8.1 to get to the proper folder. Here's
+You need to click on "Browse all files" and select WTL 9.0 to get to the proper folder. Here's
 a link to the version I use:
-http://sourceforge.net/projects/wtl/files/WTL%208.1/WTL%208.1.12085/
+http://sourceforge.net/projects/wtl/files/WTL%209.0/WTL%209.0.4035/
 
 Extract the contents of the zip archive in to a new folder. Navigate into the "AppWiz" folder and
 double-click the file `"setup110x.js"` (when using Visual Studio Express) or `"setup110.js"` (when
-using any version above Express).
+using any version above Express). Newer versions of WTL only have one `"setup.js"` file. Click this
+to install WTL for any of your installed Visual Studio versions.
 
 ## Boost ##
 
@@ -112,13 +119,13 @@ subfolder beneath the `<Link>` tag.
 You also need to build (parts of) Boost to get to link the application correctly. You can use the
 following command line commands (e.g. in a .cmd file) to compile Boost:
 
-    call "C:\Program Files (x86)\Microsoft Visual Studio 11.0\Common7\Tools\vsvars32.bat"
-    call .\bootstrap.bat vc11
+    call "C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\Tools\vsvars32.bat"
+    call .\bootstrap.bat vc12
     
-    b2 toolset=msvc-11.0 -j4 --with-system --with-thread --with-chrono runtime-link=shared link=static threading=multi stage
+    b2 toolset=msvc-12.0 -j4 --with-system runtime-link=shared link=static threading=multi stage
 
-This should generate the appropriate lib files in the `"stage\lib"` folder, for the libraries
-Boost.System, Boost.Thread and Boost.Chrono.
+This should generate the appropriate lib files in the `"stage\lib"` folder, for the library
+Boost.System.
 
 ## WiX 3.7 ##
 
