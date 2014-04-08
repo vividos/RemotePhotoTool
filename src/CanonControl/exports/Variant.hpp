@@ -56,6 +56,7 @@ public:
       m_bIsArray = false;
    }
 
+   /// sets value; specialized for unsigned long type
    template <>
    void Set(const unsigned long& val)
    {

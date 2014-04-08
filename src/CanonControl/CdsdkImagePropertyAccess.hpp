@@ -68,6 +68,7 @@ public:
 
    // special camera model functions
 
+   /// returns camera model; for the AddCameraModel*() methods
    CString CameraModel() const throw();
 
    /// adds shooting mode values for specific cameras
