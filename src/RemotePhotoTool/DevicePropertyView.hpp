@@ -43,6 +43,7 @@ private:
       columnType = 2,
       columnReadOnly = 3,
       columnId = 4,
+      columnRaw = 5,
    };
 
 private:

@@ -22,6 +22,7 @@ void DevicePropertyView::Init()
    InsertColumn(columnType, _T("Type"), LVCFMT_LEFT, 100);
    InsertColumn(columnReadOnly, _T("Read-only"), LVCFMT_LEFT, 80);
    InsertColumn(columnId, _T("Id"), LVCFMT_LEFT, 80);
+   InsertColumn(columnRaw, _T("Raw"), LVCFMT_LEFT, 80);
 
    DWORD dwExStyle = LVS_EX_GRIDLINES | LVS_EX_FULLROWSELECT;
    SetExtendedListViewStyle(dwExStyle, dwExStyle);
@@ -59,6 +60,7 @@ void DevicePropertyView::RefreshList()
          SetItemText(iIndex, columnValue, dp.AsString());
          SetItemText(iIndex, columnType, Variant::TypeAsString(dp.Value().Type()));
          SetItemText(iIndex, columnReadOnly, dp.IsReadOnly() ? _T("yes") : _T("no"));
+         SetItemText(iIndex, columnRaw, dp.Value().ToString());
       }
       catch(const CameraException& ex)
       {
@@ -70,7 +72,7 @@ void DevicePropertyView::RefreshList()
       if (iIndex != -1)
       {
          CString cszId;
-         cszId.Format(_T("0x%04x"), uiPropertyId);
+         cszId.Format(_T("0x%08x"), uiPropertyId);
          SetItemText(iIndex, columnId, cszId);
       }
    }
