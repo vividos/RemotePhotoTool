@@ -61,51 +61,46 @@ RemoteReleaseControlImpl::~RemoteReleaseControlImpl() throw()
 
 bool RemoteReleaseControlImpl::GetCapability(RemoteReleaseControl::T_enRemoteCapability enCapability) const throw()
 {
-   try
+   switch (enCapability)
    {
-      switch (enCapability)
-      {
-      case RemoteReleaseControl::capChangeShootingParameter:
-         return (m_releaseControlFaculty & cdRELEASE_CONTROL_CAP_SETPRM) != 0;
+   case RemoteReleaseControl::capChangeShootingParameter:
+      return (m_releaseControlFaculty & cdRELEASE_CONTROL_CAP_SETPRM) != 0;
 
-      case RemoteReleaseControl::capChangeShootingMode:
-         return (m_releaseControlFaculty & cdRELEASE_CONTROL_CAP_SETPRM) != 0;
+   case RemoteReleaseControl::capChangeShootingMode:
+      return (m_releaseControlFaculty & cdRELEASE_CONTROL_CAP_SETPRM) != 0;
 
-      case RemoteReleaseControl::capZoomControl:
-         return (m_releaseControlFaculty & cdRELEASE_CONTROL_CAP_ZOOM) != 0;
+   case RemoteReleaseControl::capZoomControl:
+      return (m_releaseControlFaculty & cdRELEASE_CONTROL_CAP_ZOOM) != 0;
 
-      case RemoteReleaseControl::capViewfinder:
-         // Not all camera models support the Viewfinder function. Cameras that support Viewfinder
-         // are those cameras for which the cdRELEASE_CONTROL_CAP_VIEWFINDER bit is set. Obtain the
-         // value by executing CDGetDevicePropertyData using cdDEVICE_PROP_RELEASE_CONTROL_CAP.
-         // note: in remote release mode, CDGetReleaseControlFaculty can also be used
-         return (m_releaseControlFaculty & cdRELEASE_CONTROL_CAP_VIEWFINDER) != 0;
+   case RemoteReleaseControl::capViewfinder:
+      // Not all camera models support the Viewfinder function. Cameras that support Viewfinder
+      // are those cameras for which the cdRELEASE_CONTROL_CAP_VIEWFINDER bit is set. Obtain the
+      // value by executing CDGetDevicePropertyData using cdDEVICE_PROP_RELEASE_CONTROL_CAP.
+      // note: in remote release mode, CDGetReleaseControlFaculty can also be used
+      return (m_releaseControlFaculty & cdRELEASE_CONTROL_CAP_VIEWFINDER) != 0;
 
-      case RemoteReleaseControl::capReleaseWhileViewfinder:
-         // If cdRELEASE_CONTROL_CAP_ABORT_VIEWFINDER bit is set in the connected camera model as a
-         // value that can be obtained by executing CDGetDevicePropertyData with
-         // cdDEVICE_PROP_RELEASE_CONTROL_CAP, and you are shooting with the Viewfinder using the
-         // CDRelease function, you must stop Viewfinder first.
-         return (m_releaseControlFaculty & cdRELEASE_CONTROL_CAP_ABORT_VIEWFINDER) == 0;
+   case RemoteReleaseControl::capReleaseWhileViewfinder:
+      // If cdRELEASE_CONTROL_CAP_ABORT_VIEWFINDER bit is set in the connected camera model as a
+      // value that can be obtained by executing CDGetDevicePropertyData with
+      // cdDEVICE_PROP_RELEASE_CONTROL_CAP, and you are shooting with the Viewfinder using the
+      // CDRelease function, you must stop Viewfinder first.
+      return (m_releaseControlFaculty & cdRELEASE_CONTROL_CAP_ABORT_VIEWFINDER) == 0;
 
-      case RemoteReleaseControl::capAFLock:
-         return (m_releaseControlFaculty & cdRELEASE_CONTROL_CAP_AF_LOCK) != 0;
+   case RemoteReleaseControl::capAFLock:
+      return (m_releaseControlFaculty & cdRELEASE_CONTROL_CAP_AF_LOCK) != 0;
 
-      case RemoteReleaseControl::capBulbMode:
-         // bulb mode generally not supported by CDSDK
-         return false;
+   case RemoteReleaseControl::capBulbMode:
+      // bulb mode generally not supported by CDSDK
+      return false;
 
-      case RemoteReleaseControl::capUILock:
-         return false;
+   case RemoteReleaseControl::capUILock:
+      return false;
 
-      default:
-         ATLASSERT(false);
-      }
+   default:
+      ATLASSERT(false);
+      break;
    }
-   catch(const CameraException& ex)
-   {
-      LOG_TRACE(_T("CameraException during GetCapability: %s\n"), ex.Message().GetString());
-   }
+
    return false;
 }
 
