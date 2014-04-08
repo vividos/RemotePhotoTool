@@ -23,9 +23,10 @@ class SourceDeviceImpl:
 {
 public:
    /// ctor
-   SourceDeviceImpl(RefSp spRef, cdHSource hSource)
+   SourceDeviceImpl(RefSp spRef, cdHSource hSource, const CString& cszModelName)
       :m_spRef(spRef),
-       m_hSource(hSource)
+       m_hSource(hSource),
+       m_cszModelName(cszModelName)
    {
    }
 
@@ -80,23 +81,13 @@ public:
 
    virtual CString ModelName() const override
    {
-      try
-      {
-         DevicePropertyAccess p(const_cast<cdHSource&>(m_hSource));
-         Variant v = p.Get(cdDEVICE_PROP_MODEL_NAME);
-         return v.Get<CString>();
-      }
-      catch (Exception& ex)
-      {
-         LOG_TRACE(_T("exception in ModelName(): %s\n"), ex.Message().GetString());
-      }
-
-      return CString();
+      return m_cszModelName;
    }
 
    virtual CString SerialNumber() const override
    {
-      return CString();
+      // there's no serial number property on CDSDK
+      return _T("N/A");
    }
 
    virtual std::vector<unsigned int> EnumDeviceProperties() const override
@@ -184,6 +175,9 @@ private:
 
    /// SDK ref
    RefSp m_spRef;
+
+   /// model name
+   CString m_cszModelName;
 };
 
 inline cdHSource RemoteReleaseControlImpl::GetSource() const throw()

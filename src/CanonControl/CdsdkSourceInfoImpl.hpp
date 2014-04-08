@@ -46,7 +46,7 @@ public:
          m_sourceInfo.Name, hSource, err);
       CheckError(_T("CDOpenSource"), err, __FILE__, __LINE__);
 
-      return std::shared_ptr<SourceDevice>(new SourceDeviceImpl(m_spRef, hSource));
+      return std::shared_ptr<SourceDevice>(new SourceDeviceImpl(m_spRef, hSource, Name()));
    }
 
    /// returns source info
