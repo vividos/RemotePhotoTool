@@ -12,6 +12,7 @@
 #include "IPhotoModeViewHost.hpp"
 #include "ImageProperty.hpp"
 #include "ViewFinderView.hpp"
+#include "CameraException.hpp"
 
 bool ImagePropertyView::Init()
 {
@@ -71,11 +72,18 @@ void ImagePropertyView::UpdateProperty(unsigned int uiImagePropertyId)
       if (uiPropertyId != uiImagePropertyId)
          continue;
 
-      ImageProperty ip = rrc.GetImageProperty(uiPropertyId);
+      try
+      {
+         ImageProperty ip = rrc.GetImageProperty(uiPropertyId);
 
-      SetItemText(iIndex, columnValue, ip.AsString());
-      SetItemText(iIndex, columnReadOnly, ip.IsReadOnly() ? _T("yes") : _T("no"));
-      SetItemText(iIndex, columnRaw, ip.Value().ToString());
+         SetItemText(iIndex, columnValue, ip.AsString());
+         SetItemText(iIndex, columnReadOnly, ip.IsReadOnly() ? _T("yes") : _T("no"));
+         SetItemText(iIndex, columnRaw, ip.Value().ToString());
+      }
+      catch (const CameraException& ex)
+      {
+         SetItemText(iIndex, columnValue, ex.Message());
+      }
    }
 
    SetRedraw(TRUE);
@@ -102,20 +110,30 @@ void ImagePropertyView::RefreshList()
    for (size_t i=0, iMax = vecImagePropertyIds.size(); i<iMax; i++)
    {
       unsigned int uiPropertyId = vecImagePropertyIds[i];
-      ImageProperty ip = rrc.GetImageProperty(uiPropertyId);
 
-      int iIndex = InsertItem(GetItemCount(), ip.Name());
-      SetItemData(iIndex, uiPropertyId);
+      try
+      {
+         ImageProperty ip = rrc.GetImageProperty(uiPropertyId);
 
-      SetItemText(iIndex, columnValue, ip.AsString());
-      SetItemText(iIndex, columnType, Variant::TypeAsString(ip.Value().Type()));
-      SetItemText(iIndex, columnReadOnly, ip.IsReadOnly() ? _T("yes") : _T("no"));
+         int iIndex = InsertItem(GetItemCount(), ip.Name());
+         SetItemData(iIndex, uiPropertyId);
 
-      CString cszId;
-      cszId.Format(_T("0x%04x"), uiPropertyId);
-      SetItemText(iIndex, columnId, cszId);
+         SetItemText(iIndex, columnValue, ip.AsString());
+         SetItemText(iIndex, columnType, Variant::TypeAsString(ip.Value().Type()));
+         SetItemText(iIndex, columnReadOnly, ip.IsReadOnly() ? _T("yes") : _T("no"));
 
-      SetItemText(iIndex, columnRaw, ip.Value().ToString());
+         CString cszId;
+         cszId.Format(_T("0x%08x"), uiPropertyId);
+         SetItemText(iIndex, columnId, cszId);
+
+         SetItemText(iIndex, columnRaw, ip.Value().ToString());
+      }
+      catch (const CameraException& ex)
+      {
+         int iIndex = InsertItem(GetItemCount(), _T("???"));
+
+         SetItemText(iIndex, columnValue, ex.Message());
+      }
    }
 
    if (pViewfinder != NULL)
