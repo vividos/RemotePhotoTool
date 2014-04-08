@@ -244,12 +244,18 @@ void RemoteReleaseControlImpl::Release()
       numData, err);
    CheckError(_T("CDRelease"), err, __FILE__, __LINE__);
 
-   // read data
-   CStringA cszaFilename;
+   // only save to camera? then return now
+   ShutterReleaseSettings settings;
    {
       LightweightMutex::LockType lock(m_mtxShutterReleaseSettings);
-      cszaFilename = m_shutterReleaseSettings.Filename();
+      settings = m_shutterReleaseSettings;
    }
+
+   if (settings.SaveTarget() == ShutterReleaseSettings::saveToCamera)
+      return;
+
+   // read data
+   CStringA cszaFilename = settings.Filename();
 
    cdReleaseImageInfo imageInfo = {0};
    cdStgMedium stgMedium;
@@ -271,6 +277,11 @@ void RemoteReleaseControlImpl::Release()
          hSource, err);
       CheckError(_T("CDGetReleasedData"), err, __FILE__, __LINE__);
    }
+
+   // call finished handler
+   ShutterReleaseSettings::T_fnOnFinishedTransfer fnHandler = settings.HandlerOnFinishedTransfer();
+   if (fnHandler != nullptr)
+      fnHandler(settings);
 }
 
 std::shared_ptr<BulbReleaseControl> RemoteReleaseControlImpl::StartBulb()
