@@ -272,11 +272,12 @@ CString FormatCompensationValue(Variant value, bool bIsEdsdk)
 
    unsigned int uiComp = GetUnsignedIntValue(value);
 
+   if (!bIsEdsdk && uiComp == 0xff)
+      return _T("N/A");
+
    int iValue = bIsEdsdk ? int(char(uiComp)) : 0x18 - int(uiComp);
    if (iValue == 0)
       return _T("0");
-   if (iValue == 0xff)
-      return _T("N/A");
 
    int iFract = std::abs(iValue) & 7; // first 3 bits
    int iInt = std::abs(iValue) / 8;
