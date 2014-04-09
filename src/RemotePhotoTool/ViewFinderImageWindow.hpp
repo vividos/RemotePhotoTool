@@ -9,6 +9,7 @@
 // includes
 #include "LightweightMutex.hpp"
 #include "Event.hpp"
+#include "resource.h"
 
 // forward references
 class Viewfinder;
@@ -52,6 +53,7 @@ private:
       MESSAGE_HANDLER(WM_PAINT, OnPaint)
       MESSAGE_HANDLER(WM_DESTROY, OnDestroy)
       MESSAGE_HANDLER(WM_VIEWFINDER_AVAIL_IMAGE, OnMessageViewfinderAvailImage)
+      COMMAND_ID_HANDLER(IDC_CHECK_VIEWFINDER_SHOW_OVEREXPOSED, OnCheckViewfinderShowOverexposed)
    END_MSG_MAP()
 
    /// sets viewfinder object
@@ -63,6 +65,9 @@ private:
 
    /// message arrived that new viewfinder image is available
    LRESULT OnMessageViewfinderAvailImage(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
+
+   // called when "show overexposed areas" button-checkbox is changed
+   LRESULT OnCheckViewfinderShowOverexposed(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 
    /// sets up zebra brush
    void SetupZebraBrush();

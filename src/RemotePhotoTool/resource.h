@@ -53,9 +53,10 @@
 #define IDC_SLIDER_ZOOM                         1059
 #define IDC_BUTTON_ZOOM_IN                      1060
 #define IDC_COMBO_VIEWFINDER_LINESMODE          1061
-#define IDC_BUTTON_VIEWFINDER_HISTOGRAM         1062
-#define IDC_BUTTON_PREV_IMAGEVIEWER             1063
-#define IDC_STATIC_VIEWFINDER_FRAME             1064
+#define IDC_CHECK_VIEWFINDER_SHOW_OVEREXPOSED   1062
+#define IDC_BUTTON_VIEWFINDER_HISTOGRAM         1063
+#define IDC_BUTTON_PREV_IMAGEVIEWER             1064
+#define IDC_STATIC_VIEWFINDER_FRAME             1065
 #define ID_HOME_CONNECT                         32768
 #define ID_HOME_SETTINGS                        32769
 #define ID_PHOTO_MODE_NORMAL                    32770
