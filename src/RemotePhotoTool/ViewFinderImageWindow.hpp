@@ -66,7 +66,7 @@ private:
    /// message arrived that new viewfinder image is available
    LRESULT OnMessageViewfinderAvailImage(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
 
-   // called when "show overexposed areas" button-checkbox is changed
+   /// called when "show overexposed areas" button-checkbox is changed
    LRESULT OnCheckViewfinderShowOverexposed(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 
    /// sets up zebra brush
