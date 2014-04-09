@@ -149,16 +149,18 @@ Rebuild the application and run it.
 
 Here's a checklist of what to do before each release:
 
-- Update version number in version.h and Config.wxi
+- Update version number in version.h
+- Update version number and ProductId in Config.wxi, and BuildNumber in BuildNumber.wxi
 - Update Changelog.md file with all changes since last release
 - Check all Documentation files for needed updates, especially Features.md
 - Check in or stash all changes
 - Build all projects in Win32 | Release
-- Fix cppcheck errors and /analyze warnings
+- Fix cppcheck errors and doxygen warnings
+- Compile all project with /analyze and fix all warnings
 - Test built .msi setup if it installs properly
 - Do a short smoke test with available cameras
 - Fix all errors, check them in and push all changes
 - Tag the git repository with tag "remotephototool-x.y.z" and push the tag
 - Add a release and upload result .msi file, to releases on github.com
-- Adjust README.md with link to new release and push it
+- Adjust README.md and index.html with link to new release and push it
 - Done
