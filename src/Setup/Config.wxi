@@ -15,12 +15,12 @@
 
   <!-- version -->
   <?define MajorVersion = "1" ?>
-  <?define MinorVersion = "1" ?>
+  <?define MinorVersion = "2" ?>
   <?define SubVersion = "0" ?>
   <?define Version = "$(var.MajorVersion).$(var.MinorVersion).$(var.SubVersion).$(var.BuildNumber)" ?>
 
   <!-- settings -->
-  <?define ProductId = "d3a10848-1a25-4de2-b7d3-14c41155a9f7" ?>
+  <?define ProductId = "9a53400d-bce5-467e-9f5c-1a3d23f27b7b" ?>
   <?define ProductName = "RemotePhotoTool" ?>
   <?define ProductNameVersion = "RemotePhotoTool $(var.MajorVersion).$(var.MinorVersion).$(var.SubVersion) Build $(var.BuildNumber)" ?>
   <?define UpgradeCode = "4b6144a9-117d-4418-8097-3ef4e6a6eb93" ?>
