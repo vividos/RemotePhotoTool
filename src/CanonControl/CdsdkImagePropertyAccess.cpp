@@ -1466,7 +1466,7 @@ void ImagePropertyAccess::AddCameraModelAvValues(std::vector<Variant>& vecValues
    if (bAddOpen)
    {
       Variant val;
-      val.Set(cdREMOTE_SET_AV_Open);
+      val.Set<cdRemoteSetAv>(cdREMOTE_SET_AV_Open);
       val.SetType(Variant::typeUInt16);
       vecValues.push_back(val);
    }
