@@ -15,7 +15,7 @@ implement prPTP_PUSHED_RELEASE_SW by using another thread to call Release()
 implement new state events in T_enStateEvent
 support focus lock, PR_RC_FocusLock
 implement ImageFormat class
-* Test functionality
+Test functionality
 
 EDSDK
 -----
@@ -57,7 +57,6 @@ Add option to change energy saving options (to prevent shutting down during oper
 Store IPTC data in every image taken
 Add geotagging for PCs that have a GPS receiver built in
 Add photo mode with motion detection using viewfinder to take photos (e.g. for wildlife photography)
-Show zebra pattern for overexposed areas of viewfinder image
 
 RemotePhotoToolCmdline
 ----------------------
