@@ -1,28 +1,35 @@
 ## RemotePhotoTool Features ##
 
 - Remotely take photos from the PC
-  - or even use the camera's release button or a remote release
+  - or even use the camera's release button or a remote shutter release
 - Transfer and store them on the connected PC
   - using folders with dates, to order the images
   - using special subfolders for HDR and Panorama images
-- Touch-friendly UI (for those with touch displays)
+- Touch-friendly UI (for users with touch displays)
 - Adjust common settings for the camera
 - Collect general infos about connected camera, including device properties
 - Support different photo modes, including:
   - Normal photo mode
-  - HDR mode (takes n different photos in a row)
-  - Panorama mode (takes n photos and stitch them together)
+  - HDR mode (takes N different photos in a row and processes them via Photomatix)
+  - Panorama mode (takes N photos and stitches them together via Hugin)
 - Display of all device and image properties
   - Image properties are updated live when they change
 - Live Viewfinder support
   - Auto focus, auto white balance functions
   - Zoom in/out for supported cameras
   - Helper lines (for rule of thirds and golden ratio)
-- Support for third party applications
+  - Show overexposed areas by showing a Zebra style pattern
+- Support for third party applications:
   - Hugin for Panorama stitching
   - Photomatix Pro for HDR image generation
-- Support for many Canon camera models (PowerShot, EOS, see full list in [README.md](Readme.md))
+- Support for many Canon camera models (EOS, PowerShot, see full list in [SupportedCameras.md](SupportedCameras.md))
 - Registers an Auto-Play handler to open the app when a camera is connected
 - Debugging facilities
-  - Thorough logging for bug hunting
+  - Thorough logging for error analysis and bug hunting
   - Creating crash dump files when application has crashed
+- Supported operating systems:
+  - Windows XP
+  - Windows Vista
+  - Windows 7 32-bit/64-bit
+  - Windows 8
+  - Windows 8.1

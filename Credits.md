@@ -6,10 +6,13 @@ in this document.
 ## Camera SDKs ##
 
 The application uses the Canon EOS Digital SDK (ED-SDK). It is licensed under the
-"Digital Image Developer Programme". 
+"Digital Image Developer Programme".
 
 The application uses the Canon PowerShot Remote Capture Software Development Kit
-(PS-ReC). It is licensed under the "Digital Image Developer Programme". 
+(PS-ReC). It is licensed under the "Digital Image Developer Programme".
+
+The application uses the Canon Digital Camera Software Development Kit (CD-SDK)
+It is licensed under the "Digital Image Developer Programme".
 
 - [http://www.didp.canon-europa.com/](http://www.didp.canon-europa.com/) 
 
