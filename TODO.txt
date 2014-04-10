@@ -14,6 +14,7 @@ implement AF Lock -> shutter half press to focus
 implement prPTP_PUSHED_RELEASE_SW by using another thread to call Release()
 implement new state events in T_enStateEvent
 support focus lock, PR_RC_FocusLock
+support taking/transferring CRW raw images
 implement ImageFormat class
 Test functionality
 
@@ -73,6 +74,7 @@ Add proper toolbar
 Implement all bindings from CanonControl
 Implement running and stopping scripts
 Implement debugging scripts
+Implement find/replace dialogs
 
 Setup
 -----
