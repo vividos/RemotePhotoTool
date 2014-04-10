@@ -39,41 +39,33 @@ public:
 
    virtual bool GetDeviceCapability(SourceDevice::T_enDeviceCapability enDeviceCapability) const override
    {
+      cdReleaseControlFaculty faculty = 0;
       try
       {
-         cdReleaseControlFaculty faculty = 0;
          cdError err = CDGetReleaseControlFaculty(GetSource(), &faculty);
          LOG_TRACE(_T("CDGetReleaseControlFaculty(%08x, &faculty = %08x) returned %08x\n"), GetSource(), faculty, err);
          CheckError(_T("CDGetReleaseControlFaculty"), err, __FILE__, __LINE__);
-
-         switch (enDeviceCapability)
-         {
-         case SourceDevice::capRemoteReleaseControl:
-            return (faculty & cdRELEASE_CONTROL_CAP_SUPPORT) != 0;
-            break;
-
-         case SourceDevice::capRemoteViewfinder:
-            return (faculty & cdRELEASE_CONTROL_CAP_VIEWFINDER) != 0;
-            break;
-
-         default:
-            ATLASSERT(false);
-            break;
-         }
       }
-      catch (Exception& ex)
+      catch (const CameraException& ex)
       {
-         LOG_TRACE(_T("Exception occured in GetDeviceCapability(): %s\n"),
-            ex.Message().GetString());
+         LOG_TRACE(_T("CameraException occured in GetDeviceCapability(): %s\n"), ex.Message().GetString());
       }
-      catch (boost::bad_any_cast&)
+      catch (...)
       {
-         LOG_TRACE(_T("boost::bad_any_cast exception occured in GetDeviceCapability()\n"));
+         LOG_TRACE(_T("exception occured in GetDeviceCapability()\n"));
       }
-      catch (std::exception& ex)
+
+      switch (enDeviceCapability)
       {
-         LOG_TRACE(_T("std::exception occured in GetDeviceCapability(): %Hs\n"),
-            ex.what());
+      case SourceDevice::capRemoteReleaseControl:
+         return (faculty & cdRELEASE_CONTROL_CAP_SUPPORT) != 0;
+
+      case SourceDevice::capRemoteViewfinder:
+         return (faculty & cdRELEASE_CONTROL_CAP_VIEWFINDER) != 0;
+
+      default:
+         ATLASSERT(false);
+         break;
       }
 
       return false;
