@@ -22,6 +22,10 @@ Download and install this package to get RemotePhotoTool:
 
 On Windows 7 and above you usually don't need additional drivers for Canon cameras.
 
+Note that on Windows XP you may need to install Windows Installer 4.5 to successfully install the RemotePhotoTool
+setup package. You can download the proper package here:
+[WindowsXP-KB942288-v3-x86.exe](http://www.microsoft.com/en-us/download/details.aspx?id=8483), 3.2 MB.
+
 ## Features ##
 
 * Remote capture and transfer to PC
