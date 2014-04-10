@@ -74,6 +74,9 @@ public:
 
       /// adjusts white balance
       commandAdjustWhiteBalance = 1,
+
+      /// adjusts exposure
+      commandAdjustExposure = 2,
    };
 
    /// shooting mode type

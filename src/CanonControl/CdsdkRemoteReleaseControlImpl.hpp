@@ -19,6 +19,18 @@ namespace CDSDK
 
 class SourceDeviceImpl;
 
+// These types and constants are not documented in CDSDK, but were discovered in the C# project
+// "Canon SDK wrapper for CDSDK and PRSDK", authors Benjamin Liedblad & Christian Graus,
+// available on CodeProject:
+// http://www.codeproject.com/Articles/17344/A-wrapper-for-the-canon-CDSDK-and-PRSDK-for-remote
+
+/// AE, AF, AWB reset flag type
+typedef cdUInt32 cdAeAfAwbResetFlag;
+
+const cdAeAfAwbResetFlag cdAEAFAWB_RESET_AE = 0x00000001; ///< AE reset
+const cdAeAfAwbResetFlag cdAEAFAWB_RESET_AF = 0x00000002; ///< AF reset
+const cdAeAfAwbResetFlag cdAEAFAWB_RESET_AWB = 0x00000004; ///< AWB reset
+
 /// remote release control impl for CDSDK
 class RemoteReleaseControlImpl: public RemoteReleaseControl
 {

@@ -199,13 +199,20 @@ unsigned int RemoteReleaseControlImpl::NumAvailableShots() const
 
 void RemoteReleaseControlImpl::SendCommand(RemoteReleaseControl::T_enCameraCommand enCameraCommand)
 {
-   if (enCameraCommand != commandAdjustFocus)
-      return;
+   // the description of the SDK says to use the magic value 7 here
+   cdAeAfAwbResetFlag activateFlag = 0;
+
+   switch (enCameraCommand)
+   {
+   case RemoteReleaseControl::commandAdjustFocus: activateFlag |= cdAEAFAWB_RESET_AF; break;
+   case RemoteReleaseControl::commandAdjustWhiteBalance: activateFlag |= cdAEAFAWB_RESET_AWB; break;
+   case RemoteReleaseControl::commandAdjustExposure: activateFlag |= cdAEAFAWB_RESET_AE; break;
+   default:
+      ATLASSERT(false);
+      break;
+   }
 
    cdHSource hSource = GetSource();
-
-   // the description of the SDK says to use the magic value 7 here
-   cdUInt32 activateFlag = 7;
 
    // may return cdINVALID_HANDLE, cdNOT_SUPPORTED, cdINVALID_PARAMETER
    cdError err = CDActViewfinderAutoFunctions(hSource, activateFlag);

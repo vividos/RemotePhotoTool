@@ -195,7 +195,9 @@ void RemoteReleaseControlImpl::SendCommand(RemoteReleaseControl::T_enCameraComma
       resetFlag = prptpAEAFAWB_RESET_AWB;
       break;
 
-   // TODO support prptpAEAFAWB_RESET_AE ?
+   case RemoteReleaseControl::commandAdjustExposure:
+      resetFlag = prptpAEAFAWB_RESET_AE;
+      break;
 
    default:
       ATLASSERT(false);

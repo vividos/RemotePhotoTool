@@ -182,6 +182,9 @@ public:
          uiCommand = kEdsCameraCommand_DoClickWBEvf;
          break;
 
+      case commandAdjustExposure: // not supported
+         break;
+
       // TODO support kEdsCameraCommand_DriveLensEvf ?
 
       default:
