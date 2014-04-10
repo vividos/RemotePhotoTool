@@ -1604,16 +1604,19 @@ CString ImagePropertyAccess::DisplayTextFromIdAndValue(unsigned int propId, Vari
       break;
 
       // values simply formatted as numeric
+   case TYPE_TO_PROP_ID(propCurrentZoomPos):
+   case TYPE_TO_PROP_ID(propMaxZoomPos):
+   case TYPE_TO_PROP_ID(propAvailableShots):
+      cszText.Format(_T("%u"), value.Get<unsigned int>());
+      break;
+
    case cdREL_SET_EZOOM_SIZE:
    case cdREL_SET_EZOOM_SIZE_TELE:
    case cdREL_SET_FOCAL_LENGTH:
    case cdREL_SET_FOCAL_LENGTH_TELE:
    case cdREL_SET_FOCAL_LENGTH_WIDE:
    case cdREL_SET_FOCAL_LENGTH_DENOMINATOR:
-   case TYPE_TO_PROP_ID(propCurrentZoomPos):
-   case TYPE_TO_PROP_ID(propMaxZoomPos):
-   case TYPE_TO_PROP_ID(propAvailableShots):
-      cszText.Format(_T("%u"), value.Get<unsigned int>());
+      cszText.Format(_T("%u"), value.Get<unsigned short>());
       break;
 
    default:
