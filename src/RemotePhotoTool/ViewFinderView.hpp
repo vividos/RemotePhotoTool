@@ -59,6 +59,7 @@ private:
       COMMAND_HANDLER(IDC_BUTTON_ZOOM_IN, BN_CLICKED, OnBnClickedZoomIn)
       COMMAND_HANDLER(IDC_BUTTON_VIEWFINDER_HISTOGRAM, BN_CLICKED, OnBnClickedHistogram)
       COMMAND_HANDLER(IDC_BUTTON_PREV_IMAGEVIEWER, BN_CLICKED, OnBnClickedPreviousImageViewer)
+      COMMAND_HANDLER(IDC_CHECK_VIEWFINDER_SHOW_OVEREXPOSED, BN_CLICKED, OnCheckViewfinderShowOverexposed)
       CHAIN_MSG_MAP(CDialogResize<ViewFinderView>)
       REFLECT_NOTIFICATIONS() // to make sure superclassed controls get notification messages
    END_MSG_MAP()
@@ -88,6 +89,8 @@ private:
    LRESULT OnBnClickedHistogram(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
    /// called when button for previous images is pressed
    LRESULT OnBnClickedPreviousImageViewer(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   /// called when "show overexposed areas" button-checkbox is changed
+   LRESULT OnCheckViewfinderShowOverexposed(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 
    /// sets up lines mode combobox
    void SetupLinesModeCombobox();

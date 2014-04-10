@@ -168,6 +168,16 @@ LRESULT ViewFinderView::OnBnClickedPreviousImageViewer(WORD /*wNotifyCode*/, WOR
    return 0;
 }
 
+LRESULT ViewFinderView::OnCheckViewfinderShowOverexposed(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+   CButton btn(GetDlgItem(IDC_CHECK_VIEWFINDER_SHOW_OVEREXPOSED));
+   bool bChecked = btn.GetCheck() == BST_CHECKED;
+
+   m_upViewFinderWindow->ShowZebraPattern(bChecked);
+
+   return 0;
+}
+
 void ViewFinderView::SetupZoomControls()
 {
    unsigned int uiPropertyId = m_spRemoteReleaseControl->MapImagePropertyTypeToId(T_enImagePropertyType::propCurrentZoomPos);

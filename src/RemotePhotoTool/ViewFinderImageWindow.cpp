@@ -98,16 +98,6 @@ LRESULT ViewFinderImageWindow::OnMessageViewfinderAvailImage(UINT /*uMsg*/, WPAR
    return 0;
 }
 
-LRESULT ViewFinderImageWindow::OnCheckViewfinderShowOverexposed(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
-{
-   CButton btn(GetDlgItem(IDC_CHECK_VIEWFINDER_SHOW_OVEREXPOSED));
-   bool bChecked = btn.GetCheck() == BST_CHECKED;
-
-   ShowZebraPattern(bChecked);
-
-   return 0;
-}
-
 void ViewFinderImageWindow::SetupZebraBrush()
 {
    const WORD c_bitsZebraPatternBrush[8] = { 0x9f, 0x3f, 0x7e, 0xfc, 0xf9, 0xf3, 0xe7, 0xcf };
