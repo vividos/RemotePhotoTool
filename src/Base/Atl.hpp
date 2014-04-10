@@ -41,27 +41,16 @@
    #pragma comment(lib, "atls.lib")
 #endif
 
-#if (_ATL_VER <= 0x0800)
-   // Visual C++ 2013 Express
-   #pragma comment(linker, "/NODEFAULTLIB:atlthunk.lib")
-
-   namespace ATL
-   {
-      /// allocates thunk
-      inline void * __stdcall __AllocStdCallThunk()
-      {
-         return ::HeapAlloc(::GetProcessHeap(), 0, sizeof(_stdcallthunk));
-      }
-
-      /// frees thunk
-      inline void __stdcall __FreeStdCallThunk(void *p)
-      {
-         ::HeapFree(::GetProcessHeap(), 0, p);
-      }
-   };
-#else
-   // Visual C++ 2013 Professional and above
-
-   // for _stdcallthunk
-   #include <atlstdthunk.h>
+#if (_ATL_VER < 0x0800)
+#error ATL 8.0 or higher is needed!
 #endif
+
+// for _stdcallthunk
+#include <atlstdthunk.h>
+
+// for #pragma prefast
+#ifndef _PREFAST_
+#pragma warning(disable:4068)
+#endif
+
+#pragma comment(lib, "atlthunk.lib")
