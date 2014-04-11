@@ -3,7 +3,7 @@
 Note: For the complete changelog, including internal changes, you can always go to
 the git sourcecode repository at [https://github.com/vividos/RemotePhotoTool](https://github.com/vividos/RemotePhotoTool).
 
-## 2014-04-??: Version 1.2.0 Build 114 ##
+## 2014-04-11: Version 1.2.0 Build 114 ##
 
 Implemented showing overexposed areas in viewfinder by showing a Zebra style pattern. The
 function is switchable.
