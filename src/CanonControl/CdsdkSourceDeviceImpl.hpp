@@ -28,6 +28,10 @@ public:
        m_hSource(hSource),
        m_cszModelName(cszModelName)
    {
+      // It seems that for some cameras (e.g. my PowerShot G2) it is necessary to enumerate device
+      // properties once before reading release control faculty value.
+      EnumDeviceProperties();
+      ReadReleaseControlFaculty();
    }
 
    /// dtor
@@ -39,36 +43,13 @@ public:
 
    virtual bool GetDeviceCapability(SourceDevice::T_enDeviceCapability enDeviceCapability) const override
    {
-      cdReleaseControlFaculty faculty = 0;
-      try
-      {
-         // Getting the release control faculty doesn't seem to work some times, before CDEnterReleaseControl() is
-         // called. So we try CDGetReleaseControlFaculty first, then we try to get the device property.
-         cdError err = CDGetReleaseControlFaculty(GetSource(), &faculty);
-         LOG_TRACE(_T("CDGetReleaseControlFaculty(%08x, &faculty = %08x) returned %08x\n"), GetSource(), faculty, err);
-
-         if (err != cdOK)
-         {
-            DevicePropertyAccess access(GetSource());
-            faculty = access.Get(cdDEVICE_PROP_RELEASE_CONTROL_CAP).Get<unsigned int>();
-         }
-      }
-      catch (const CameraException& ex)
-      {
-         LOG_TRACE(_T("CameraException occured in GetDeviceCapability(): %s\n"), ex.Message().GetString());
-      }
-      catch (...)
-      {
-         LOG_TRACE(_T("exception occured in GetDeviceCapability()\n"));
-      }
-
       switch (enDeviceCapability)
       {
       case SourceDevice::capRemoteReleaseControl:
-         return (faculty & cdRELEASE_CONTROL_CAP_SUPPORT) != 0;
+         return (m_faculty & cdRELEASE_CONTROL_CAP_SUPPORT) != 0;
 
       case SourceDevice::capRemoteViewfinder:
-         return (faculty & cdRELEASE_CONTROL_CAP_VIEWFINDER) != 0;
+         return (m_faculty & cdRELEASE_CONTROL_CAP_VIEWFINDER) != 0;
 
       default:
          ATLASSERT(false);
@@ -165,6 +146,35 @@ public:
       return std::shared_ptr<RemoteReleaseControl>(new RemoteReleaseControlImpl(spSourceDevice));
    }
 
+   /// reads release control faculty value
+   void ReadReleaseControlFaculty()
+   {
+      m_faculty = 0;
+      try
+      {
+         // Getting the release control faculty doesn't seem to work some times, before CDEnterReleaseControl() is
+         // called. So we try CDGetReleaseControlFaculty first, then we try to get the device property.
+         cdError err = CDGetReleaseControlFaculty(GetSource(), &m_faculty);
+         LOG_TRACE(_T("CDGetReleaseControlFaculty(%08x, &faculty = %08x) returned %08x\n"), GetSource(), m_faculty, err);
+
+         if (err != cdOK)
+         {
+            DevicePropertyAccess access(GetSource());
+            m_faculty = access.Get(cdDEVICE_PROP_RELEASE_CONTROL_CAP).Get<unsigned int>();
+         }
+      }
+      catch (const CameraException& ex)
+      {
+         LOG_TRACE(_T("CameraException occured in ReadReleaseControlFaculty(): %s\n"), ex.Message().GetString());
+         m_faculty = 0;
+      }
+      catch (...)
+      {
+         LOG_TRACE(_T("exception occured in ReadReleaseControlFaculty()\n"));
+         m_faculty = 0;
+      }
+   }
+
    /// returns source
    cdHSource GetSource() const throw() { return m_hSource; }
 
@@ -177,6 +187,9 @@ private:
 
    /// model name
    CString m_cszModelName;
+
+   /// release control faculty
+   cdReleaseControlFaculty m_faculty;
 };
 
 inline cdHSource RemoteReleaseControlImpl::GetSource() const throw()
