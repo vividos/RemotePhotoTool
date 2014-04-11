@@ -1039,7 +1039,7 @@ bool ImagePropertyAccess::IsReadOnly(unsigned int uiPropId)
 {
    /// switch-case for checking if a property is read-only
 #define CASE_PROP_ISREADONLY(PROPID) \
-   case TYPE_TO_PROP_ID(PROPID##): return s_##PROPID.CanWrite();
+   case TYPE_TO_PROP_ID(PROPID##): return !s_##PROPID.CanWrite();
 
    switch (uiPropId)
    {
