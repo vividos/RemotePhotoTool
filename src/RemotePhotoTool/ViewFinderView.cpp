@@ -39,12 +39,6 @@ LRESULT ViewFinderView::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*
 
    DlgResize_Init(false, false);
 
-   if (!m_spRemoteReleaseControl->GetCapability(RemoteReleaseControl::capAFLock))
-   {
-      GetDlgItem(IDC_BUTTON_VIEWFINDER_AUTOFOCUS).EnableWindow(FALSE);
-      GetDlgItem(IDC_BUTTON_VIEWFINDER_AUTOWHITEBALANCE).EnableWindow(FALSE);
-   }
-
    SetupZoomControls();
    SetupLinesModeCombobox();
    SetupViewfinderWindow();
