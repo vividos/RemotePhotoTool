@@ -101,6 +101,7 @@
       -->
     <UI>
       <ProgressText Action="ExecuteAction">System is being prepared for setup...</ProgressText>
+      <ProgressText Action="InstallInitialize">Setup is being initialized...</ProgressText>
     </UI>
 
     <!-- upgrade stuff -->
