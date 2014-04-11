@@ -42,9 +42,16 @@ public:
       cdReleaseControlFaculty faculty = 0;
       try
       {
+         // Getting the release control faculty doesn't seem to work some times, before CDEnterReleaseControl() is
+         // called. So we try CDGetReleaseControlFaculty first, then we try to get the device property.
          cdError err = CDGetReleaseControlFaculty(GetSource(), &faculty);
          LOG_TRACE(_T("CDGetReleaseControlFaculty(%08x, &faculty = %08x) returned %08x\n"), GetSource(), faculty, err);
-         CheckError(_T("CDGetReleaseControlFaculty"), err, __FILE__, __LINE__);
+
+         if (err != cdOK)
+         {
+            DevicePropertyAccess access(GetSource());
+            faculty = access.Get(cdDEVICE_PROP_RELEASE_CONTROL_CAP).Get<unsigned int>();
+         }
       }
       catch (const CameraException& ex)
       {
