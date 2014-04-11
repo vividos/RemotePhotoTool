@@ -576,8 +576,13 @@ void MainFrame::EnablePhotoModes(bool bEnable)
    UIEnable(ID_PHOTO_MODE_DEVICE_PROPERTIES, bEnable);
    UIEnable(ID_PHOTO_MODE_IMAGE_PROPERTIES, bEnable);
 
-   if (!bEnable)
-      UIEnable(ID_VIEWFINDER_SHOW, bEnable);
+   if (bEnable)
+   {
+      bool bViewFinderAvail = m_spSourceDevice->GetDeviceCapability(SourceDevice::capRemoteViewfinder);
+      UIEnable(ID_VIEWFINDER_SHOW, bViewFinderAvail);
+   }
+   else
+      UIEnable(ID_VIEWFINDER_SHOW, false);
 }
 
 void MainFrame::SetPaneWidths(int* arrWidths, int nPanes)
