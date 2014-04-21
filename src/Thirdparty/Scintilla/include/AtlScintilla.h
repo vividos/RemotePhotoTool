@@ -63,7 +63,7 @@ public:
 	void SetSavePoint()
 	{
 		ATLASSERT(::IsWindow(m_hWnd));
-		::SendMessage( m_hWnd, SCI_SETTEXT, 0, 0L );
+		::SendMessage( m_hWnd, SCI_SETSAVEPOINT, 0, 0L );
 	}
 
 	int GetLine( int line, char * text ) const
