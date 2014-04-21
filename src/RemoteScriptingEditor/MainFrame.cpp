@@ -68,11 +68,16 @@ LRESULT MainFrame::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/,
       UISetCheck(ID_VIEW_RIBBON, bRibbonUI);
    }
 
+   DoFileNew();
+
    return 0;
 }
 
 LRESULT MainFrame::OnClose(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& bHandled)
 {
+   if (!m_view.QueryClose())
+      return 0;
+
    bHandled = false; // let app process message
 
    if (RunTimeHelper::IsRibbonUIAvailable())
@@ -250,8 +255,9 @@ void MainFrame::DoFileNew()
 {
    if (m_view.QueryClose())
    {
-      m_view.Init(_T("Untitled.lua"), _T("Untitled"));
+      m_view.Init(_T(""), _T("Untitled.lua"));
       m_view.SetText(""); // TODO load template
+      m_view.SetSavePoint();
       UpdateTitle();
    }
 }
@@ -313,16 +319,13 @@ void MainFrame::UpdateTitle()
 {
    CString cszTitle(MAKEINTRESOURCE(IDR_MAINFRAME));
 
-   {
-      m_bScriptingFileModified = m_view.GetModify();
+   m_bScriptingFileModified = m_view.GetModify();
 
-      // app title + scripting file title
-      cszTitle.AppendFormat(_T(" - [%s%s]"),
-         m_view.GetFilePath().GetString(),
-         m_bScriptingFileModified ? _T("*") : _T(""));
-   }
+   // app title + scripting file title
+   cszTitle.AppendFormat(_T(" - [%s%s]"),
+      m_view.GetFilePath().GetString(),
+      m_bScriptingFileModified ? _T("*") : _T(""));
 
-   // just app title
    SetWindowText(cszTitle);
 }
 
