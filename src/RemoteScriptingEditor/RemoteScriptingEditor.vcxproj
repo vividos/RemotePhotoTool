@@ -80,6 +80,7 @@
     <Midl />
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="App.cpp" />
     <ClCompile Include="MainFrame.cpp" />
     <ClCompile Include="RemoteScriptingEditor.cpp" />
     <ClCompile Include="LuaScriptEditorView.cpp" />
@@ -90,6 +91,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AboutDlg.hpp" />
+    <ClInclude Include="App.hpp" />
     <ClInclude Include="MainFrame.hpp" />
     <ClInclude Include="LuaScriptEditorView.hpp" />
     <ClInclude Include="resource.h" />

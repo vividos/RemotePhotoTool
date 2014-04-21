@@ -2,7 +2,7 @@
 // RemotePhotoTool - remote camera control software
 // Copyright (C) 2008-2014 Michael Fink
 //
-/// \file App.cpp Application
+/// \file RemotePhotoTool/App.cpp Application
 //
 
 // includes
@@ -18,7 +18,7 @@
 
 #pragma comment(lib, "wiaguid.lib")
 
- /// WTL app model
+/// WTL app module
 CAppModule _Module;
 
 App::App(HINSTANCE hInstance)

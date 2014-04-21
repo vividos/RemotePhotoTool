@@ -2,7 +2,7 @@
 // RemotePhotoTool - remote camera control software
 // Copyright (C) 2008-2014 Michael Fink
 //
-/// \file RemotePhotoTool/App.hpp Application
+/// \file RemoteScriptingEditor/App.hpp Application
 //
 #pragma once
 
@@ -20,11 +20,4 @@ public:
 
    /// runs application
    int Run(LPCTSTR lpstrCmdLine = NULL, int nCmdShow = SW_SHOWDEFAULT);
-
-private:
-   /// parses command line; returns true when app should be started
-   bool ParseCommandLine();
-
-   /// registers app as WIA handler
-   void RegisterWIAHandler(bool bRegister);
 };

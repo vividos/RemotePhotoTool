@@ -1,54 +1,19 @@
-// RemoteScriptingEditor.cpp : main source file for RemoteScriptingEditor.exe
+//
+// RemotePhotoTool - remote camera control software
+// Copyright (C) 2008-2014 Michael Fink
+//
+/// \file RemoteScriptingEditor.cpp RemoteScriptingEditor main function
 //
 
+// includes
 #include "stdafx.h"
-#include "res\Ribbon.h"
-#include "resource.h"
-#include "MainFrame.hpp"
+#include "App.hpp"
 
-CAppModule _Module;
-
-int Run(LPTSTR /*lpstrCmdLine*/ = NULL, int nCmdShow = SW_SHOWDEFAULT)
-{
-   CMessageLoop theLoop;
-   _Module.AddMessageLoop(&theLoop);
-
-   MainFrame wndMain;
-
-   if(wndMain.CreateEx() == NULL)
-   {
-      ATLTRACE(_T("Main window creation failed!\n"));
-      return 0;
-   }
-
-   wndMain.ShowWindow(nCmdShow);
-
-   int nRet = theLoop.Run();
-
-   _Module.RemoveMessageLoop();
-   return nRet;
-}
-
+/// main function
 int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR lpstrCmdLine, int nCmdShow)
 {
-   HRESULT hRes = ::CoInitialize(NULL);
-   // If you are running on NT 4.0 or higher you can use the following call instead to 
-   // make the EXE free threaded. This means that calls come in on a random RPC thread.
-   //	HRESULT hRes = ::CoInitializeEx(NULL, COINIT_MULTITHREADED);
-   ATLASSERT(SUCCEEDED(hRes));
+   App::InitCrashReporter();
 
-   // this resolves ATL window thunking problem when Microsoft Layer for Unicode (MSLU) is used
-   ::DefWindowProc(NULL, 0, 0, 0L);
-
-   AtlInitCommonControls(ICC_COOL_CLASSES | ICC_BAR_CLASSES);	// add flags to support other controls
-
-   hRes = _Module.Init(NULL, hInstance);
-   ATLASSERT(SUCCEEDED(hRes));
-
-   int nRet = Run(lpstrCmdLine, nCmdShow);
-
-   _Module.Term();
-   ::CoUninitialize();
-
-   return nRet;
+   App app(hInstance);
+   return app.Run(lpstrCmdLine, nCmdShow);
 }
