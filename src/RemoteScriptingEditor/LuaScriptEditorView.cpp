@@ -15,8 +15,11 @@ LPCTSTR g_pszLuaScriptingFilter =
    _T("All Files (*.*)\0*.*\0")
    _T("");
 
-BOOL LuaScriptEditorView::PreTranslateMessage(MSG* /*pMsg*/)
+BOOL LuaScriptEditorView::PreTranslateMessage(MSG* pMsg)
 {
+   if (FindReplaceClass::PreTranslateMessage(pMsg))
+      return TRUE;
+
    return FALSE;
 }
 
@@ -100,9 +103,4 @@ bool LuaScriptEditorView::QueryClose()
    }
 
    return true;
-}
-
-bool LuaScriptEditorView::IsTextSelected() const
-{
-   return GetSelectionStart() < GetSelectionEnd();
 }
