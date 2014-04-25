@@ -205,8 +205,7 @@ void RemoteReleaseControlImpl::SendCommand(RemoteReleaseControl::T_enCameraComma
       return;
    }
 
-   if (resetFlag == 0)
-      return;
+   ATLASSERT(resetFlag == 0); // shouldn't be 0, since we have set the value above
 
    // may return prINVALID_FN_CALL, prINVALID_HANDLE, prMEM_ALLOC_FAILED or @ERR
    prResponse err = PR_RC_DoAeAfAwb(m_hCamera, resetFlag);
@@ -563,10 +562,6 @@ prResponse RemoteReleaseControlImpl::OnDownloadImageData_(
    prContext      Context,
    prProgress*    pProgress)
 {
-   bool bCanceled = false; // TODO move to member variable, to allow canceling transfer
-   if (bCanceled)
-      return prOPERATION_CANCELLED;
-
    LOG_TRACE(_T("PSREC::OnDownloadImageData handler called\n"));
    LOG_TRACE(_T("   message=%08x, status=%08x, percent=%u%%, offset=%08x, length=%08x\n"),
       pProgress->lMessage,
