@@ -49,7 +49,7 @@
     <NMakeReBuildCommandLine>call clean.cmd "$(OutDir)"
 call build.cmd "$(OutDir)"</NMakeReBuildCommandLine>
     <NMakeCleanCommandLine>call clean.cmd "$(OutDir)"</NMakeCleanCommandLine>
-    <NMakeOutput>$(OutDir)cdDcd.dll, $(OutDir)cdDvlp.dll, $(OutDir)cdParse.dll, $(OutDir)CDPROC.exe, $(OutDir)CDPROCMN.exe, $(OutDir)CDPTPCLS.dll, $(OutDir)CDPTPCLT.dll, $(OutDir)CDRAPCLS.dll, $(OutDir)CDSDK.dll, $(OutDir)DPPDLL.dll, $(OutDir)DPPLibCom.dll, $(OutDir)DPPRSC.dll, $(OutDir)EDSDK.dll, $(OutDir)EdsImage.dll, $(OutDir)EWatch.exe, $(OutDir)GetPicture.exe, $(OutDir)IWrap.dll, $(OutDir)MLib.dll, $(OutDir)PRLIB.dll, $(OutDir)PRSDK.dll, $(OutDir)psCamDat.dll, $(OutDir)Ucs32P.dll, $(OutDir)lua.properties, $(OutDir)SciLexer.dll</NMakeOutput>
+    <NMakeOutput>$(OutDir)SciLexer.dll</NMakeOutput>
     <NMakePreprocessorDefinitions>WIN32;_DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -58,7 +58,7 @@ call build.cmd "$(OutDir)"</NMakeReBuildCommandLine>
     <NMakeReBuildCommandLine>call clean.cmd "$(OutDir)"
 call build.cmd "$(OutDir)"</NMakeReBuildCommandLine>
     <NMakeCleanCommandLine>call clean.cmd "$(OutDir)"</NMakeCleanCommandLine>
-    <NMakeOutput>$(OutDir)cdDcd.dll, $(OutDir)cdDvlp.dll, $(OutDir)cdParse.dll, $(OutDir)CDPROC.exe, $(OutDir)CDPROCMN.exe, $(OutDir)CDPTPCLS.dll, $(OutDir)CDPTPCLT.dll, $(OutDir)CDRAPCLS.dll, $(OutDir)CDSDK.dll, $(OutDir)DPPDLL.dll, $(OutDir)DPPLibCom.dll, $(OutDir)DPPRSC.dll, $(OutDir)EDSDK.dll, $(OutDir)EdsImage.dll, $(OutDir)EWatch.exe, $(OutDir)GetPicture.exe, $(OutDir)IWrap.dll, $(OutDir)MLib.dll, $(OutDir)PRLIB.dll, $(OutDir)PRSDK.dll, $(OutDir)psCamDat.dll, $(OutDir)Ucs32P.dll, $(OutDir)lua.properties, $(OutDir)SciLexer.dll</NMakeOutput>
+    <NMakeOutput>$(OutDir)SciLexer.dll</NMakeOutput>
     <NMakePreprocessorDefinitions>WIN32;NDEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
   </PropertyGroup>
   <ItemDefinitionGroup>
