@@ -39,7 +39,13 @@ public:
          LocalFree(lpMsgBuf);
       }
 
-      cszErrorMessage.TrimRight(_T("\r\n"));
+      try
+      {
+         cszErrorMessage.TrimRight(_T("\r\n"));
+      }
+      catch (...)
+      {
+      }
 
       return cszErrorMessage;
    }

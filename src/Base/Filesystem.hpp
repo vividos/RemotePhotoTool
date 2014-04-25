@@ -11,10 +11,10 @@
 #include <shlobj.h>
 
 /// combines two path parts
-CString Path_Combine(const CString& cszPath1, const CString& cszPath2) throw();
+CString Path_Combine(const CString& cszPath1, const CString& cszPath2);
 
 /// returns directory part of path (without filename)
-CString Path_GetDirectoryName(const CString& cszPath) throw();
+CString Path_GetDirectoryName(const CString& cszPath);
 
 /// checks if a directory exists
 bool Directory_Exists(const CString& cszPath) throw();
@@ -23,7 +23,7 @@ bool Directory_Exists(const CString& cszPath) throw();
 bool File_Exists(const CString& cszPath) throw();
 
 /// returns current app filename
-CString App_GetFilename() throw();
+CString App_GetFilename();
 
 /// app data folder type
 enum T_enAppDataFolderType
@@ -34,7 +34,7 @@ enum T_enAppDataFolderType
 };
 
 /// returns app data folder
-CString App_GetAppDataFolder(T_enAppDataFolderType enAppDataFolderType) throw();
+CString App_GetAppDataFolder(T_enAppDataFolderType enAppDataFolderType);
 
 /// gets all files and folders in a given path
-std::vector<CString> FindAllInPath(const CString& cszPath, const CString& cszFileSpec, bool bFindFolders, bool bRecursive) throw();
+std::vector<CString> FindAllInPath(const CString& cszPath, const CString& cszFileSpec, bool bFindFolders, bool bRecursive);

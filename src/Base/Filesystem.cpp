@@ -32,13 +32,13 @@ CString Path_GetDirectoryName(const CString& cszPath)
    return cszPath.Left(iPos+1);
 }
 
-bool Directory_Exists(const CString& cszPath)
+bool Directory_Exists(const CString& cszPath) throw()
 {
    DWORD dwAttr = GetFileAttributes(cszPath);
    return (dwAttr != INVALID_FILE_ATTRIBUTES) && ((dwAttr & FILE_ATTRIBUTE_DIRECTORY) != 0);
 }
 
-bool File_Exists(const CString& cszPath)
+bool File_Exists(const CString& cszPath) throw()
 {
    DWORD dwAttr = GetFileAttributes(cszPath);
    return (dwAttr != INVALID_FILE_ATTRIBUTES) && ((dwAttr & FILE_ATTRIBUTE_DIRECTORY) == 0);

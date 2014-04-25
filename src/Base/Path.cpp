@@ -22,7 +22,7 @@ bool Path::Canonicalize()
    return bRet != FALSE;
 }
 
-Path Path::Combine(const CString& cszPart2) throw()
+Path Path::Combine(const CString& cszPart2)
 {
    CString cszPart1 = m_cszPath;
 
@@ -31,7 +31,7 @@ Path Path::Combine(const CString& cszPart2) throw()
    return Path(cszPart1 + cszPart2);
 }
 
-CString Path::FilenameAndExt() const throw()
+CString Path::FilenameAndExt() const
 {
    int iPos = m_cszPath.ReverseFind(Path::SeparatorCh);
    if (iPos == -1)
@@ -40,7 +40,7 @@ CString Path::FilenameAndExt() const throw()
    return m_cszPath.Mid(iPos+1);
 }
 
-CString Path::FilenameOnly() const throw()
+CString Path::FilenameOnly() const
 {
    int iPos = m_cszPath.ReverseFind(Path::SeparatorCh);
 

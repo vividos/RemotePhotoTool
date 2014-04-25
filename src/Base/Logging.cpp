@@ -20,7 +20,7 @@ static std::atomic<bool> s_bLoggingActive = false;
 /// log filename
 CString s_cszLogFilename;
 
-void LogConfigure(bool bEnable, const CString& cszLogfilePath) throw()
+void LogConfigure(bool bEnable, const CString& cszLogfilePath)
 {
    s_bLoggingActive = bEnable;
 

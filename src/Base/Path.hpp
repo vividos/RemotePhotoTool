@@ -35,10 +35,10 @@ public:
    // getters
 
    /// returns filename and extension
-   CString FilenameAndExt() const throw();
+   CString FilenameAndExt() const;
 
    /// returns filename without extension
-   CString FilenameOnly() const throw();
+   CString FilenameOnly() const;
 
    /// returns if path represents a file and if it exists
    bool FileExists() const throw();
@@ -52,13 +52,13 @@ public:
    bool Canonicalize();
 
    /// combine path with given second part and return new path
-   Path Combine(const CString& cszPart2) throw();
+   Path Combine(const CString& cszPart2);
 
    /// adds a backslash at the end of the path
-   static void AddEndingBackslash(CString& cszPath) throw();
+   static void AddEndingBackslash(CString& cszPath);
 
    /// combine both path parts and return new path
-   static Path Combine(const CString& cszPart1, const CString& cszPart2) throw()
+   static Path Combine(const CString& cszPart1, const CString& cszPart2)
    {
       Path part1(cszPart1);
       return part1.Combine(cszPart2);

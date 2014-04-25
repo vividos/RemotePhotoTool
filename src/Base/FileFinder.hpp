@@ -56,7 +56,7 @@ public:
    }
 
    /// returns complete filename of current file entry
-   CString Filename() const throw()
+   CString Filename() const
    {
       CString cszName = m_cszBaseFolder + m_findData.cFileName;
       if (IsFolder())
