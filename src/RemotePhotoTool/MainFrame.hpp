@@ -36,7 +36,7 @@ class MainFrame :
 
 public:
    /// ctor
-   MainFrame() throw();
+   MainFrame();
    /// dtor
    virtual ~MainFrame() throw();
 
