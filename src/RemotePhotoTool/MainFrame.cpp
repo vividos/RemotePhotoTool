@@ -24,7 +24,8 @@ LPCTSTR c_pszSettingsRegkey = _T("Software\\RemotePhotoTool");
 
 /// ctor
 MainFrame::MainFrame() throw()
-:m_settings(c_pszSettingsRegkey),
+:m_hWndView(nullptr),
+ m_settings(c_pszSettingsRegkey),
  m_dwUIThreadId(Thread::CurrentId())
 {
    m_settings.Load();

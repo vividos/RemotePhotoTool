@@ -67,6 +67,7 @@ RemoteReleaseControlImpl::RemoteReleaseControlImpl(prHandle hCamera, std::shared
  m_evtReleaseImageReady(false, false), // auto-reset event
  m_evtReleaseImageTransferInProgress(true, false), // manual-reset event
  m_evtReleaseImageTransferDone(true, false), // manual-reset event
+ m_hReleaseImage(0),
  m_fdImageTransfer(nullptr)
 {
    // may return prINVALID_FN_CALL, prINVALID_HANDLE, prMEM_ALLOC_FAILED or @ERR

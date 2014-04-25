@@ -65,7 +65,11 @@ struct DevicePropDesc: public DeviceValueParser
 public:
    /// ctor; reads property description from camera
    DevicePropDesc(prHandle hCamera, prUInt16 propId, bool bParseValues = false)
-      :m_bParseValues(bParseValues)
+      :m_uiDevicePropCode(0),
+      m_uiDataType(0),
+      m_uiGetSet(0),
+      m_uiFormat(0),
+      m_bParseValues(bParseValues)
    {
       // determine size
       prUInt32 uiSize = 0;

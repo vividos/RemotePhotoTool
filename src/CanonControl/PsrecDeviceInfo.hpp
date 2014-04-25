@@ -20,6 +20,10 @@ struct DeviceInfo: public VarDataParser
 {
    /// ctor; reads device info
    DeviceInfo(prHandle hCamera)
+      :m_uiStandardVersion(0),
+      m_uiVendorExtensionID(0),
+      m_uiVendorExtensionVersion(0),
+      m_uiFunctionMode(0)
    {
       // get size of buffer
       prUInt32 uiSize = 0;
