@@ -42,7 +42,7 @@ public:
    void GetRawCdsdk(const Variant& v, unsigned int propId, std::vector<unsigned char>& vecData);
 
    /// returns name for property id
-   static CString NameFromId(unsigned int propId) throw();
+   static LPCTSTR NameFromId(unsigned int propId) throw();
 
    /// returns display text from property id and value
    static CString DisplayTextFromIdAndValue(unsigned int propId, Variant value);

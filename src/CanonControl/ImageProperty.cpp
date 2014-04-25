@@ -14,14 +14,24 @@
 
 CString ImageProperty::Name() const throw()
 {
-   switch(m_enSDKVariant)
+   try
    {
-   case variantCdsdk: return CDSDK::ImagePropertyAccess::NameFromId(m_uiImageProperty);
-   case variantEdsdk: return EDSDK::PropertyAccess::NameFromId(m_uiImageProperty);
-   case variantPsrec: return PSREC::PropertyAccess::NameFromId(static_cast<prUInt16>(m_uiImageProperty & 0xFFFF));
-   default:
-      ATLASSERT(false);
-      return CString(_T("???"));
+      CString cszName = _T("???");
+
+      switch(m_enSDKVariant)
+      {
+      case variantCdsdk: cszName = CDSDK::ImagePropertyAccess::NameFromId(m_uiImageProperty);
+      case variantEdsdk: cszName = EDSDK::PropertyAccess::NameFromId(m_uiImageProperty);
+      case variantPsrec: cszName = PSREC::PropertyAccess::NameFromId(static_cast<prUInt16>(m_uiImageProperty & 0xFFFF));
+      default:
+         ATLASSERT(false);
+      }
+
+      return cszName;
+   }
+   catch (...)
+   {
+      return CString();
    }
 }
 
@@ -47,5 +57,13 @@ CString ImageProperty::ValueAsString(Variant value) const throw()
    catch(const CameraException& ex)
    {
       return CString(_T("exception during value formatting: ") + ex.Message());
+   }
+   catch (const boost::bad_any_cast&)
+   {
+      return CString(_T("bad_any_cast exception during value formatting"));
+   }
+   catch (...)
+   {
+      return CString();
    }
 }

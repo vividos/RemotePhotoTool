@@ -58,7 +58,7 @@ Variant DevicePropertyAccess::Get(cdDevicePropertyID propId) const
    // cdPROPERTIES_UNAVAILABLE
    cdError err = CDGetDevicePropertyData(m_hSource, propId, &size, &vecData[0], 0);
    if (err != cdOK) LOG_TRACE(_T("CDGetDevicePropertyData(%08x, propId = %08x \"%s\", &size = %u, buffer, 0) returned %08x\n"),
-      m_hSource, propId, NameFromId(propId).GetString(), size, err);
+      m_hSource, propId, NameFromId(propId), size, err);
    CheckError(_T("CDGetDevicePropertyData"), err, __FILE__, __LINE__);
 
    // convert to variant
@@ -92,7 +92,7 @@ cdUInt32 DevicePropertyAccess::GetSize(cdDevicePropertyID propId) const
    // cdPROPERTIES_UNAVAILABLE
    cdError err = CDGetDevicePropertyData(m_hSource, propId, &size, nullptr, 0);
    if (err != cdOK) LOG_TRACE(_T("CDGetDevicePropertyData(%08x, propId = %08x \"%s\", &size = %u, nullptr, 0) returned %08x\n"),
-      m_hSource, propId, NameFromId(propId).GetString(), size, err);
+      m_hSource, propId, NameFromId(propId), size, err);
    CheckError(_T("CDGetDevicePropertyData"), err, __FILE__, __LINE__);
 
    return size;
@@ -192,7 +192,7 @@ void DevicePropertyAccess::GetRawCdsdk(const Variant& v, unsigned int propId, st
    }
 }
 
-CString DevicePropertyAccess::NameFromId(unsigned int propId) throw()
+LPCTSTR DevicePropertyAccess::NameFromId(unsigned int propId) throw()
 {
    cdDevicePropertyID devicePropId = static_cast<cdDevicePropertyID>(propId);
 

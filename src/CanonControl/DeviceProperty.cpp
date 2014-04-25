@@ -14,14 +14,24 @@
 
 CString DeviceProperty::Name() const throw()
 {
-   switch(m_enSDKVariant)
+   try
    {
-   case variantCdsdk: return CDSDK::DevicePropertyAccess::NameFromId(m_uiPropertyId);
-   case variantEdsdk: return EDSDK::PropertyAccess::NameFromId(static_cast<EdsPropertyID>(m_uiPropertyId));
-   case variantPsrec: return PSREC::PropertyAccess::NameFromId(static_cast<prUInt16>(m_uiPropertyId & 0xFFFF));
-   default:
-      ATLASSERT(false);
-      return CString(_T("???"));
+      CString cszName = _T("???");
+
+      switch(m_enSDKVariant)
+      {
+      case variantCdsdk: cszName = CDSDK::DevicePropertyAccess::NameFromId(m_uiPropertyId);
+      case variantEdsdk: cszName = EDSDK::PropertyAccess::NameFromId(static_cast<EdsPropertyID>(m_uiPropertyId));
+      case variantPsrec: cszName = PSREC::PropertyAccess::NameFromId(static_cast<prUInt16>(m_uiPropertyId & 0xFFFF));
+      default:
+         ATLASSERT(false);
+      }
+
+      return cszName;
+   }
+   catch (...)
+   {
+      return CString();
    }
 }
 
@@ -51,5 +61,9 @@ CString DeviceProperty::ValueAsString(Variant value) const throw()
    catch (const boost::bad_any_cast&)
    {
       return CString(_T("bad_any_cast exception during value formatting"));
+   }
+   catch (...)
+   {
+      return CString();
    }
 }

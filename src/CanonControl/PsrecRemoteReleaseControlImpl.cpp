@@ -114,19 +114,29 @@ bool RemoteReleaseControlImpl::GetCapability(RemoteReleaseControl::T_enRemoteCap
          return di.m_setEventsSupported.find(prPTP_DEVICE_PROP_CHANGED) != di.m_setEventsSupported.end();
 
       case RemoteReleaseControl::capChangeShootingMode:
+         try
          {
             // check image property
             DevicePropDesc desc(m_hCamera, prPTP_DEV_PROP_EXPOSURE_MODE, false);
 
             return desc.IsSetAllowed();
          }
+         catch (...)
+         {
+            return false;
+         }
 
       case RemoteReleaseControl::capZoomControl:
+         try
          {
             // check image property
             DevicePropDesc desc(m_hCamera, prPTP_DEV_PROP_ZOOM_POS, false);
 
             return desc.IsSetAllowed();
+         }
+         catch (...)
+         {
+            return false;
          }
 
       case RemoteReleaseControl::capViewfinder:

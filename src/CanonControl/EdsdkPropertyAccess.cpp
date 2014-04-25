@@ -688,7 +688,7 @@ void PropertyAccess::GetRawEdsdk(const Variant& v, unsigned int datatype, std::v
 }
 
 
-CString PropertyAccess::NameFromId(EdsPropertyID propertyId)
+LPCTSTR PropertyAccess::NameFromId(EdsPropertyID propertyId) throw()
 {
    LPCTSTR pszName = _T("???");
 

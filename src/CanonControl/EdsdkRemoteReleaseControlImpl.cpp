@@ -330,7 +330,14 @@ bool RemoteReleaseControlImpl::GetCapability(RemoteReleaseControl::T_enRemoteCap
 
             std::vector<Variant> vecValues;
             bool bReadOnly = false;
-            p.Enum(kEdsPropID_Evf_OutputDevice, vecValues, bReadOnly);
+            try
+            {
+               p.Enum(kEdsPropID_Evf_OutputDevice, vecValues, bReadOnly);
+            }
+            catch (...)
+            {
+               vecValues.clear();
+            }
 
             // if it contains kEdsEvfOutputDevice_PC, viewfinder is possible
             bool bFound = false;

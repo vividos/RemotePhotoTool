@@ -88,13 +88,13 @@ public:
    // formatting
 
    /// converts image property to name
-   static CString NameFromId(unsigned int propId);
+   static LPCTSTR NameFromId(unsigned int propId) throw();
 
    /// converts property value to string
    static CString DisplayTextFromIdAndValue(unsigned int propId, Variant value);
 
    /// formats focus point value
-   static LPCTSTR FormatFocusPoint(const Variant& value);
+   static LPCTSTR FormatFocusPoint(const Variant& value) throw();
 
    /// formats parameter set value
    static CString FormatParameterSet(const Variant& value);

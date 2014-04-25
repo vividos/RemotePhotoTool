@@ -137,7 +137,7 @@ CString Variant::ToString() const
    return cszValue;
 }
 
-CString Variant::TypeAsString(VariantType vt) throw()
+LPCTSTR Variant::TypeAsString(VariantType vt) throw()
 {
    switch(vt)
    {

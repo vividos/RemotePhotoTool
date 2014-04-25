@@ -190,7 +190,7 @@ public:
    }
 
    /// returns name from property id
-   static CString NameFromId(EdsPropertyID propertyId) throw();
+   static LPCTSTR NameFromId(EdsPropertyID propertyId) throw();
 
    /// formats display text from id and value
    static CString DisplayTextFromIdAndValue(EdsPropertyID /*propertyId*/, Variant value);

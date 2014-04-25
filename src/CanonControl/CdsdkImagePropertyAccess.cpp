@@ -1090,12 +1090,12 @@ void ImagePropertyAccess::EnumAvailReleaseSettings(std::vector<unsigned int>& ve
       if (err != cdOK) LOG_TRACE(_T("CDEnumRelCamSettingNext(hEnum = %08x, &relCamSetting = { propId = %08x \"%s\", readOnly = %s}) returned %08x\n"),
          hEnum,
          relCamSetting.SettingID,
-         NameFromId(relCamSetting.SettingID).GetString(),
+         NameFromId(relCamSetting.SettingID),
          (relCamSetting.Access & cdATTRIB_WRITE) != 0 ? _T("false") : _T("true"),
          err);
 
       LOG_TRACE(_T("Available image property: \"%s\" (%08x)\n"),
-         NameFromId(relCamSetting.SettingID).GetString(),
+         NameFromId(relCamSetting.SettingID),
          relCamSetting.SettingID);
 
       CheckError(_T("CDEnumRelCamSettingNext"), err, __FILE__, __LINE__);
@@ -1118,7 +1118,7 @@ Variant ImagePropertyAccess::GetReleaseSetting(cdRelCamSettingID propId) const
    // cdINVALID_ID
    cdError err = CDGetRelCamSettingData(m_hSource, propId, &uiBufferSize, nullptr);
    if (err != cdOK) LOG_TRACE(_T("CDGetRelCamSettingData(source = %08x, propId = %08x \"%s\", &size = %u, data = null) returned %08x\n"),
-      m_hSource, propId, NameFromId(propId).GetString(), uiBufferSize, err);
+      m_hSource, propId, NameFromId(propId), uiBufferSize, err);
    CheckError(_T("CDGetRelCamSettingData"), err, __FILE__, __LINE__);
 
    // retrieve data
@@ -1127,7 +1127,7 @@ Variant ImagePropertyAccess::GetReleaseSetting(cdRelCamSettingID propId) const
 
    err = CDGetRelCamSettingData(m_hSource, propId, &uiBufferSize, &vecData[0]);
    if (err != cdOK) LOG_TRACE(_T("CDGetRelCamSettingData(source = %08x, propId = %08x \"%s\", size = %u, data = {...}) returned %08x\n"),
-      m_hSource, propId, NameFromId(propId).GetString(), vecData.size(), err);
+      m_hSource, propId, NameFromId(propId), vecData.size(), err);
    CheckError(_T("CDGetRelCamSettingData"), err, __FILE__, __LINE__);
 
    Variant value;
@@ -1145,7 +1145,7 @@ void ImagePropertyAccess::SetReleaseSetting(cdRelCamSettingID propId, Variant va
    // cdINVALID_ID
    cdError err = CDSetRelCamSettingData(m_hSource, propId, vecData.size(), vecData.data());
    LOG_TRACE(_T("CDSetRelCamSettingData(source = %08x, propId = %08x \"%s\", data = { %u bytes }) returned %08x\n"),
-      m_hSource, propId, NameFromId(propId).GetString(), vecData.size(), err);
+      m_hSource, propId, NameFromId(propId), vecData.size(), err);
    CheckError(_T("CDSetRelCamSettingData"), err, __FILE__, __LINE__);
 }
 
@@ -1156,7 +1156,7 @@ void ImagePropertyAccess::EnumReleaseSettingValues(cdRelCamSettingID propId, std
 
    cdError err = CDEnumRelCamSettingDataReset(m_hSource, propId, &hEnum, &uiBufSize);
    if (err != cdOK) LOG_TRACE(_T("CDEnumRelCamSettingDataReset(source = %08x, propId = %08x \"%s\", &hEnum = %08x, &bufSize = %u) returned %08x\n"),
-      m_hSource, propId, NameFromId(propId).GetString(), hEnum, uiBufSize, err);
+      m_hSource, propId, NameFromId(propId), hEnum, uiBufSize, err);
    CheckError(_T("CDEnumRelCamSettingDataReset"), err, __FILE__, __LINE__);
 
    std::vector<BYTE> vecData(uiBufSize, 0);
@@ -1483,7 +1483,7 @@ unsigned int ImagePropertyAccess::MapToPropertyID(T_enImagePropertyType enProper
    return TYPE_TO_PROP_ID(static_cast<unsigned int>(enPropertyType));
 }
 
-CString ImagePropertyAccess::NameFromId(unsigned int propId)
+LPCTSTR ImagePropertyAccess::NameFromId(unsigned int propId) throw()
 {
    LPCTSTR pszName = _T("???");
    switch (propId)
@@ -1629,7 +1629,7 @@ CString ImagePropertyAccess::DisplayTextFromIdAndValue(unsigned int propId, Vari
    return cszText;
 }
 
-LPCTSTR ImagePropertyAccess::FormatFocusPoint(const Variant& value)
+LPCTSTR ImagePropertyAccess::FormatFocusPoint(const Variant& value) throw()
 {
    cdUInt16 focusPoint = value.Get<cdUInt16>();
    if ((focusPoint & 0xF000) == cdREL_VAL_FOCUS_POINT_NA)

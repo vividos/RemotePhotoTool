@@ -100,13 +100,13 @@ public:
 
          if (err != cdOK) LOG_TRACE(_T("CDEnumDevicePropertyNext(%08x, &propId = %08x \"%s\") returned %08x\n"),
             hEnum, deviceProperty.DevPropID,
-            DevicePropertyAccess::NameFromId(deviceProperty.DevPropID).GetString(),
+            DevicePropertyAccess::NameFromId(deviceProperty.DevPropID),
             err);
 
          CheckError(_T("CDEnumDevicePropertyNext"), err, __FILE__, __LINE__);
 
          LOG_TRACE(_T("Available device property: \"%s\" (%08x)\n"),
-            DevicePropertyAccess::NameFromId(deviceProperty.DevPropID).GetString(),
+            DevicePropertyAccess::NameFromId(deviceProperty.DevPropID),
             deviceProperty.DevPropID);
 
          vecData.push_back(deviceProperty.DevPropID);

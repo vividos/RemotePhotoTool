@@ -297,7 +297,7 @@ public:
    }
 
    /// converts from property id to property name
-   static CString NameFromId(prUInt16 propertyId) throw()
+   static LPCTSTR NameFromId(prUInt16 propertyId) throw()
    {
       LPCTSTR pszName = _T("???");
       switch (propertyId)

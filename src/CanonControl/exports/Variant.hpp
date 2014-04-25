@@ -113,7 +113,7 @@ public:
    void SetType(VariantType enType) throw() { m_enType = enType; }
 
    /// formats variant type as string
-   static CString TypeAsString(VariantType vt) throw();
+   static LPCTSTR TypeAsString(VariantType vt) throw();
 
    /// sets raw variant value
    void SetRaw(boost::any& variant, VariantType enType, bool bIsArray)
