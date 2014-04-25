@@ -30,7 +30,14 @@ CString Lua::Exception::MessageFromState(const CString& cszMessage, lua_State* L
       if (iRet == 0)
          break;
 
-      lua_getinfo(L, "S", &debug);
+      struct lua_longjmp;
+      try
+      {
+         lua_getinfo(L, "S", &debug);
+      }
+      catch (lua_longjmp*)
+      {
+      }
 
       // TODO format info
       //debug.source
@@ -45,11 +52,18 @@ CString Lua::Exception::MessageFromState(const CString& cszMessage, lua_State* L
    //   lua_pop(L, 1);
    //}
 
-   cszInfo.Trim();
+   try
+   {
+      cszInfo.Trim();
 
-   CString cszText;
-   cszText.Format(_T("Lua error: %s in %s"), cszMessage.GetString(), cszInfo.GetString());
-   return cszText;
+      CString cszText;
+      cszText.Format(_T("Lua error: %s in %s"), cszMessage.GetString(), cszInfo.GetString());
+      return cszText;
+   }
+   catch (...)
+   {
+      return CString();
+   }
 }
 
 void Lua::Exception::ParseLuaError(LPCSTR pszaText)
@@ -355,7 +369,15 @@ Table::~Table() throw()
       if (m_cszName.IsEmpty())
          ; // TODO what to do?
       else
-         lua_setglobal(L, CStringA(m_cszName));
+      {
+         try
+         {
+            lua_setglobal(L, CStringA(m_cszName));
+         }
+         catch (...)
+         {
+         }
+      }
    }
    else
    if (m_bTemporary)
