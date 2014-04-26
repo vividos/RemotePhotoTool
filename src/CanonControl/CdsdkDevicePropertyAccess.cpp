@@ -234,10 +234,12 @@ CString DevicePropertyAccess::DisplayTextFromIdAndValue(unsigned int propId, Var
          cdTime time = value.Get<unsigned int>();
 
          FILETIME fileTime = { 0 };
-         ATLVERIFY(TRUE == DosDateTimeToFileTime(HIWORD(time), LOWORD(time), &fileTime));
+         BOOL bRet = DosDateTimeToFileTime(HIWORD(time), LOWORD(time), &fileTime);
+         ATLASSERT(TRUE == bRet); bRet;
 
          SYSTEMTIME systemTime = { 0 };
-         ATLVERIFY(TRUE == FileTimeToSystemTime(&fileTime, &systemTime));
+         bRet = FileTimeToSystemTime(&fileTime, &systemTime);
+         ATLASSERT(TRUE == bRet);
 
          CString cszDate;
          GetDateFormat(LOCALE_USER_DEFAULT, 0, &systemTime, _T("yyyy'-'MM'-'dd"), cszDate.GetBuffer(32), 32);

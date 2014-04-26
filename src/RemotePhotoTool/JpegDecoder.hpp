@@ -34,7 +34,7 @@ struct JpegDecoder : public boost::noncopyable
    ~JpegDecoder() throw()
    {
       boolean b = jpeg_finish_decompress(&cinfo);
-      ATLVERIFY(b == TRUE); // no suspending data source
+      ATLASSERT(b == TRUE); b; // no suspending data source
 
       // release the JPEG decompression object
       jpeg_destroy_decompress(&cinfo);
@@ -45,14 +45,20 @@ struct JpegDecoder : public boost::noncopyable
    {
       // call jpeg_read_header() to obtain image info
       int ret = jpeg_read_header(&cinfo, TRUE);
-      ATLVERIFY(ret == JPEG_HEADER_OK);
+      ATLASSERT(ret == JPEG_HEADER_OK);
+
+      if (ret != JPEG_HEADER_OK)
+         throw Exception(_T("jpeg_read_header failed"), __FILE__, __LINE__);
    }
 
    /// starts decompressing
    void StartDecompress()
    {
       boolean b = jpeg_start_decompress(&cinfo);
-      ATLVERIFY(b == TRUE); // no suspending data source
+      ATLASSERT(b == TRUE); // no suspending data source
+
+      if (b == FALSE)
+         throw Exception(_T("jpeg_start_decompress failed"), __FILE__, __LINE__);
    }
 
    /// returns if there still are scanlines available

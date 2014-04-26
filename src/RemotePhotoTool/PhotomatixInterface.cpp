@@ -43,9 +43,10 @@ void PhotomatixInterface::RunUI(const std::vector<CString>& vecImageFilenames)
    CString cszCurrentDirectory(m_cszInstallPath);
    cszCurrentDirectory.TrimRight(_T('\\'));
 
-   ATLVERIFY(TRUE == ::CreateProcess(NULL,
+   BOOL bRet = ::CreateProcess(NULL,
       const_cast<LPTSTR>(static_cast<LPCTSTR>(cszCommandLine)),
-      NULL, NULL, FALSE, 0, NULL, cszCurrentDirectory, &startupInfo, &processInfo));
+      NULL, NULL, FALSE, 0, NULL, cszCurrentDirectory, &startupInfo, &processInfo);
+   ATLASSERT(TRUE == bRet); bRet;
 }
 
 void PhotomatixInterface::Detect()

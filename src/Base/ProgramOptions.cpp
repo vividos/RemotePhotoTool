@@ -114,7 +114,8 @@ void ProgramOptions::Parse(LPCTSTR pszCommandLine)
 void ProgramOptions::Parse(CommandLineParser& parser)
 {
    // must contain at least one param
-   ATLVERIFY(true == parser.GetNext(m_cszExecutable));
+   bool bRet = parser.GetNext(m_cszExecutable);
+   ATLASSERT(true == bRet); bRet;
 
    CString cszArg;
    while (parser.GetNext(cszArg))

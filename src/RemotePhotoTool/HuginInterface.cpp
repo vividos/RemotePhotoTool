@@ -43,9 +43,10 @@ void HuginInterface::RunUI(const std::vector<CString>& vecImageFilenames)
    CString cszCurrentDirectory(m_cszInstallPath);
    cszCurrentDirectory.TrimRight(_T('\\'));
 
-   ATLVERIFY(TRUE == ::CreateProcess(NULL,
+   BOOL bRet = ::CreateProcess(NULL,
       const_cast<LPTSTR>(static_cast<LPCTSTR>(cszCommandLine)),
-      NULL, NULL, FALSE, 0, NULL, cszCurrentDirectory, &startupInfo, &processInfo));
+      NULL, NULL, FALSE, 0, NULL, cszCurrentDirectory, &startupInfo, &processInfo);
+   ATLASSERT(TRUE == bRet); bRet;
 }
 
 void HuginInterface::RunStitcher(const CString& cszPtoScript, const CString& cszOutputFile)
@@ -75,9 +76,10 @@ void HuginInterface::RunStitcher(const CString& cszPtoScript, const CString& csz
    PROCESS_INFORMATION processInfo;
    ZeroMemory(&processInfo, sizeof(processInfo));
 
-   ATLVERIFY(TRUE == ::CreateProcess(NULL,
+   BOOL bRet = ::CreateProcess(NULL,
       const_cast<LPTSTR>(static_cast<LPCTSTR>(cszCommandLine)),
-      NULL, NULL, FALSE, 0, NULL, NULL, &startupInfo, &processInfo));
+      NULL, NULL, FALSE, 0, NULL, NULL, &startupInfo, &processInfo);
+   ATLASSERT(TRUE == bRet); bRet;
 }
 
 void HuginInterface::Detect()

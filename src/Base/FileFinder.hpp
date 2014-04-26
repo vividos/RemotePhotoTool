@@ -26,7 +26,10 @@ public:
    ~FileFinder() throw()
    {
       if (m_hFind != INVALID_HANDLE_VALUE)
-         ATLVERIFY(TRUE == ::FindClose(m_hFind));
+      {
+         BOOL bRet = ::FindClose(m_hFind);
+         ATLASSERT(TRUE == bRet); bRet;
+      }
    }
 
    /// indicates if any files were found
