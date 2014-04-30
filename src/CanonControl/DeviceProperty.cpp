@@ -20,9 +20,9 @@ CString DeviceProperty::Name() const throw()
 
       switch(m_enSDKVariant)
       {
-      case variantCdsdk: cszName = CDSDK::DevicePropertyAccess::NameFromId(m_uiPropertyId);
-      case variantEdsdk: cszName = EDSDK::PropertyAccess::NameFromId(static_cast<EdsPropertyID>(m_uiPropertyId));
-      case variantPsrec: cszName = PSREC::PropertyAccess::NameFromId(static_cast<prUInt16>(m_uiPropertyId & 0xFFFF));
+      case variantCdsdk: cszName = CDSDK::DevicePropertyAccess::NameFromId(m_uiPropertyId); break;
+      case variantEdsdk: cszName = EDSDK::PropertyAccess::NameFromId(static_cast<EdsPropertyID>(m_uiPropertyId)); break;
+      case variantPsrec: cszName = PSREC::PropertyAccess::NameFromId(static_cast<prUInt16>(m_uiPropertyId & 0xFFFF)); break;
       default:
          ATLASSERT(false);
       }

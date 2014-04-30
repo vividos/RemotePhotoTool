@@ -20,9 +20,9 @@ CString ImageProperty::Name() const throw()
 
       switch(m_enSDKVariant)
       {
-      case variantCdsdk: cszName = CDSDK::ImagePropertyAccess::NameFromId(m_uiImageProperty);
-      case variantEdsdk: cszName = EDSDK::PropertyAccess::NameFromId(m_uiImageProperty);
-      case variantPsrec: cszName = PSREC::PropertyAccess::NameFromId(static_cast<prUInt16>(m_uiImageProperty & 0xFFFF));
+      case variantCdsdk: cszName = CDSDK::ImagePropertyAccess::NameFromId(m_uiImageProperty); break;
+      case variantEdsdk: cszName = EDSDK::PropertyAccess::NameFromId(m_uiImageProperty); break;
+      case variantPsrec: cszName = PSREC::PropertyAccess::NameFromId(static_cast<prUInt16>(m_uiImageProperty & 0xFFFF)); break;
       default:
          ATLASSERT(false);
       }
