@@ -1308,6 +1308,7 @@ CString ImagePropertyAccess::CameraModel() const throw()
    }
    catch (...)
    {
+      LOG_TRACE(_T("unknown exception during CameraModel() call\n"));
    }
    return cszModel;
 }
@@ -1631,7 +1632,16 @@ CString ImagePropertyAccess::DisplayTextFromIdAndValue(unsigned int propId, Vari
 
 LPCTSTR ImagePropertyAccess::FormatFocusPoint(const Variant& value) throw()
 {
-   cdUInt16 focusPoint = value.Get<cdUInt16>();
+   cdUInt16 focusPoint = 0xFFFF;
+   try
+   {
+      focusPoint = value.Get<cdUInt16>();
+   }
+   catch (...)
+   {
+      LOG_TRACE(_T("unknown exception during FormatFocusPoint() call\n"));
+   }
+
    if ((focusPoint & 0xF000) == cdREL_VAL_FOCUS_POINT_NA)
       return _T("Invalid");
    else

@@ -59,7 +59,13 @@ public:
    virtual ~ViewfinderImpl() throw()
    {
       // disable handler
-      SetAvailImageHandler(Viewfinder::T_fnOnAvailViewfinderImage());
+      try
+      {
+         SetAvailImageHandler(Viewfinder::T_fnOnAvailViewfinderImage());
+      }
+      catch (...)
+      {
+      }
 
       // may return cdINVALID_HANDLE, cdINVALID_FN_CALL
       cdError err = CDTermViewfinder(GetSource());

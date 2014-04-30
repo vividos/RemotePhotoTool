@@ -36,7 +36,13 @@ public:
    virtual ~ViewfinderImpl() throw()
    {
       // disable handler
-      SetAvailImageHandler(Viewfinder::T_fnOnAvailViewfinderImage());
+      try
+      {
+         SetAvailImageHandler(Viewfinder::T_fnOnAvailViewfinderImage());
+      }
+      catch (...)
+      {
+      }
 
       // may return prINVALID_FN_CALL, prINVALID_HANDLE, prMEM_ALLOC_FAILED or @ERR
       prResponse err = PR_RC_TermViewFinder(m_hCamera);

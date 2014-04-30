@@ -255,6 +255,7 @@ void RemoteReleaseControlImpl::OnStateChange(EdsStateEvent inEvent, EdsUInt32 in
    }
    catch(...)
    {
+      LOG_TRACE(_T("unknown exception during StateEvent handler\n"));
    }
 }
 
@@ -291,6 +292,7 @@ EdsError RemoteReleaseControlImpl::OnObjectChange_(EdsObjectEvent inEvent, EdsBa
    }
    catch(...)
    {
+      LOG_TRACE(_T("unknown exception during ObjectEvent handler\n"));
    }
 
    LOG_TRACE(_T("OnObjectChange finished\n"));
