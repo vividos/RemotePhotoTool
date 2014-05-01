@@ -18,7 +18,7 @@
 /// WTL app module
 CAppModule _Module;
 
-App::App(HINSTANCE hInstance)
+App::App(HINSTANCE hInstance) throw()
 {
 #ifdef _DEBUG
    // turn on leak-checking
@@ -68,7 +68,7 @@ int App::Run(LPCTSTR /*lpstrCmdLine*/, int nCmdShow)
 
    MainFrame wndMain;
 
-   if (wndMain.CreateEx() == NULL)
+   if (wndMain.CreateEx() == nullptr)
    {
       ATLTRACE(_T("Main window creation failed!\n"));
       return 0;

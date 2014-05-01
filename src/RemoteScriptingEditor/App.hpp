@@ -11,7 +11,7 @@ class App
 {
 public:
    /// ctor
-   App(HINSTANCE hInstance);
+   App(HINSTANCE hInstance) throw();
    /// dtor
    ~App() throw();
 

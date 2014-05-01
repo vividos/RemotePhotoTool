@@ -12,8 +12,17 @@
 /// main function
 int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR lpstrCmdLine, int nCmdShow)
 {
-   App::InitCrashReporter();
+   try
+   {
+      App::InitCrashReporter();
 
-   App app(hInstance);
-   return app.Run(lpstrCmdLine, nCmdShow);
+      App app(hInstance);
+      return app.Run(lpstrCmdLine, nCmdShow);
+   }
+   catch (...)
+   {
+      // exception while running
+      ATLTRACE(_T("Exception while running RemoteScriptingEditor\n"));
+      return -1;
+   }
 }
