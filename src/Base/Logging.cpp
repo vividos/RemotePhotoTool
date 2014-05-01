@@ -65,11 +65,9 @@ void LogTrace(LPCTSTR pszFormat, ...) throw()
       // write to file
       {
          FILE* fd = NULL;
-         errno_t err = _tfopen_s(&fd, s_cszLogFilename.GetString(), _T("at"));
+         errno_t err = _tfopen_s(&fd, s_cszLogFilename.GetString(), _T("a+t"));
          if (err != 0 || fd == nullptr)
             return;
-
-         fseek(fd, SEEK_END, 0);
 
          if (s_bPreviousIncompleteLine)
          {
