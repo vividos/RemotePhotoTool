@@ -7,6 +7,8 @@ RemotePhotoTool is a remote image capture application for Canon based cameras. I
 This is the open source project page. For non-developer related informations, head over to:
 [http://vividos.github.io/RemotePhotoTool/](http://vividos.github.io/RemotePhotoTool/)
 
+---
+
 For a complete list of supported cameras, see [SupportedCameras.md](SupportedCameras.md).
 
 See the full Features document here: [Features.md](Features.md)
@@ -25,3 +27,8 @@ Read the big TODO list for the application, in this file: [TODO.txt](TODO.txt)
 Read the credits acknowledgement in this file: [Credits.md](Credits.md)
 
 Read the Changelog file: [Changelog.md](Changelog.md)
+
+The project is being scanned with Coverity scanner. See the project status here:
+[https://scan.coverity.com/projects/2058](https://scan.coverity.com/projects/2058 "https://scan.coverity.com/projects/2058") 
+
+![Coverity Scan Build Status](https://scan.coverity.com/projects/2058/badge.svg)
