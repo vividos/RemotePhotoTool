@@ -25,12 +25,15 @@ CString DeviceProperty::Name() const throw()
       case variantPsrec: cszName = PSREC::PropertyAccess::NameFromId(static_cast<prUInt16>(m_uiPropertyId & 0xFFFF)); break;
       default:
          ATLASSERT(false);
+         LOG_TRACE(_T("invalid SDK variant in DeviceProperty::Name()\n"));
+         break;
       }
 
       return cszName;
    }
    catch (...)
    {
+         LOG_TRACE(_T("unknown exception in DeviceProperty::Name()\n"));
       return CString();
    }
 }
@@ -51,19 +54,23 @@ CString DeviceProperty::ValueAsString(Variant value) const throw()
       case variantPsrec: return PSREC::PropertyAccess::DisplayTextFromIdAndValue(static_cast<prUInt16>(m_uiPropertyId & 0xFFFF), value);
       default:
          ATLASSERT(false);
+         LOG_TRACE(_T("invalid SDK variant in DeviceProperty::ValueAsString()\n"));
          return CString(_T("???"));
       }
    }
    catch (const CameraException& ex)
    {
-      return CString(_T("exception during value formatting: ") + ex.Message());
+      LOG_TRACE(_T("camera exception in DeviceProperty::ValueAsString(): %s\n"), ex.Message().GetString());
+      return CString();
    }
    catch (const boost::bad_any_cast&)
    {
-      return CString(_T("bad_any_cast exception during value formatting"));
+      LOG_TRACE(_T("bad_any_cast exception in DeviceProperty::ValueAsString()\n"));
+      return CString();
    }
    catch (...)
    {
+      LOG_TRACE(_T("unknown exception in DeviceProperty::ValueAsString()\n"));
       return CString();
    }
 }

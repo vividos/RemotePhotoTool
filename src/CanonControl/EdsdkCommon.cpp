@@ -154,7 +154,7 @@ void Ref::OnIdle()
       LOG_TRACE(_T("EdsGetEvent() returned %08x\n"), err);
 }
 
-void EDSDK::MsgWaitForEvent(Event& evt)
+void EDSDK::MsgWaitForEvent(Event& evt) throw()
 {
    LOG_TRACE(_T("MsgWaitForEvent started\n"));
 

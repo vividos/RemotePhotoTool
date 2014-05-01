@@ -332,14 +332,7 @@ bool RemoteReleaseControlImpl::GetCapability(RemoteReleaseControl::T_enRemoteCap
 
             std::vector<Variant> vecValues;
             bool bReadOnly = false;
-            try
-            {
-               p.Enum(kEdsPropID_Evf_OutputDevice, vecValues, bReadOnly);
-            }
-            catch (...)
-            {
-               vecValues.clear();
-            }
+            p.Enum(kEdsPropID_Evf_OutputDevice, vecValues, bReadOnly);
 
             // if it contains kEdsEvfOutputDevice_PC, viewfinder is possible
             bool bFound = false;
@@ -374,6 +367,10 @@ bool RemoteReleaseControlImpl::GetCapability(RemoteReleaseControl::T_enRemoteCap
    catch(const CameraException& ex)
    {
       LOG_TRACE(_T("CameraException during GetCapability(): %s\n"), ex.Message().GetString());
+   }
+   catch (...)
+   {
+      LOG_TRACE(_T("unknown exception during GetCapability()\n"));
    }
 
    return false;

@@ -30,18 +30,26 @@ CString Lua::Exception::MessageFromState(const CString& cszMessage, lua_State* L
       if (iRet == 0)
          break;
 
-      struct lua_longjmp;
       try
       {
          lua_getinfo(L, "S", &debug);
       }
-      catch (lua_longjmp*)
+      catch (...)
       {
+         // may throw exception of type  struct lua_longjmp
+         ATLTRACE(_T("exception during lua_getinfo()\n"));
       }
 
       // TODO format info
-      //debug.source
-      cszInfo += _T("\n");
+      try
+      {
+         //debug.source
+         cszInfo += _T("\n");
+      }
+      catch (...)
+      {
+         ATLTRACE(_T("exception during formatting debug info()\n"));
+      }
    }
 
    //for (int i=1; i<5; i++)

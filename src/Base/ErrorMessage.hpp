@@ -32,22 +32,23 @@ public:
          MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // default language
          reinterpret_cast<LPTSTR>(&lpMsgBuf), 0, NULL);
 
-      CString cszErrorMessage;
-      if (lpMsgBuf)
-      {
-         cszErrorMessage = reinterpret_cast<LPTSTR>(lpMsgBuf);
-         LocalFree(lpMsgBuf);
-      }
-
       try
       {
+         CString cszErrorMessage;
+         if (lpMsgBuf)
+         {
+            cszErrorMessage = reinterpret_cast<LPTSTR>(lpMsgBuf);
+            LocalFree(lpMsgBuf);
+         }
+
          cszErrorMessage.TrimRight(_T("\r\n"));
+
+         return cszErrorMessage;
       }
       catch (...)
       {
+         return CString();
       }
-
-      return cszErrorMessage;
    }
 
 private:
