@@ -19,10 +19,10 @@
 
 // forward references
 class SourceDevice;
+class AsyncReleaseControlThread;
 
 namespace EDSDK
 {
-class AsyncReleaseControlThread;
 
 /// remote release control implementation for EDSDK
 class RemoteReleaseControlImpl: public RemoteReleaseControl
