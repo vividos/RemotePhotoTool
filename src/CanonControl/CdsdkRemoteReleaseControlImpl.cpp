@@ -11,11 +11,13 @@
 #include "CdsdkRemoteReleaseControlImpl.hpp"
 #include "CdsdkViewfinderImpl.hpp"
 #include "CameraException.hpp"
+#include "AsyncReleaseControlThread.hpp"
 
 using namespace CDSDK;
 
 RemoteReleaseControlImpl::RemoteReleaseControlImpl(std::shared_ptr<SourceDeviceImpl> spSourceDevice)
 :m_spSourceDevice(spSourceDevice),
+m_upReleaseThread(new AsyncReleaseControlThread),
 m_hEventCallback(0),
 m_uiRelDataKind(cdREL_KIND_PICT_TO_PC),
 m_releaseControlFaculty(0)
@@ -223,6 +225,11 @@ void RemoteReleaseControlImpl::SendCommand(RemoteReleaseControl::T_enCameraComma
 
 void RemoteReleaseControlImpl::Release()
 {
+   m_upReleaseThread->Post(std::bind(&RemoteReleaseControlImpl::AsyncRelease, this));
+}
+
+void RemoteReleaseControlImpl::AsyncRelease()
+{
    // TODO check cdRELEASE_CONTROL_CAP_ABORT_VIEWFINDER if viewfinder has to be terminated to take a picture
 
    cdHSource hSource = GetSource();
@@ -343,7 +350,7 @@ void RemoteReleaseControlImpl::OnReleaseEventCallback(cdReleaseEventID EventID)
       break;
 
    case cdRELEASE_EVENT_CAM_RELEASE_ON: // Release pushed
-      // TODO start release in worker thread
+      Release();
       break;
 
    case cdRELEASE_EVENT_CHANGED_BY_UI:

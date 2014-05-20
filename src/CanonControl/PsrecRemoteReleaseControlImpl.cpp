@@ -11,6 +11,7 @@
 #include "PsrecRemoteReleaseControlImpl.hpp"
 #include "PsrecSourceDeviceImpl.hpp"
 #include "PsrecVarDataParser.hpp"
+#include "AsyncReleaseControlThread.hpp"
 
 using namespace PSREC;
 
@@ -64,6 +65,7 @@ public:
 RemoteReleaseControlImpl::RemoteReleaseControlImpl(prHandle hCamera, std::shared_ptr<SourceDeviceImpl> spSourceDevice)
 :m_spSourceDevice(spSourceDevice),
  m_hCamera(hCamera),
+ m_upReleaseThread(new AsyncReleaseControlThread),
  m_evtReleaseImageReady(false, false), // auto-reset event
  m_evtReleaseImageTransferInProgress(true, false), // manual-reset event
  m_evtReleaseImageTransferDone(true, false), // manual-reset event
@@ -224,6 +226,11 @@ void RemoteReleaseControlImpl::SendCommand(RemoteReleaseControl::T_enCameraComma
 }
 
 void RemoteReleaseControlImpl::Release()
+{
+   m_upReleaseThread->Post(std::bind(&RemoteReleaseControlImpl::AsyncRelease, this));
+}
+
+void RemoteReleaseControlImpl::AsyncRelease()
 {
    // if another transfer is in progress, wait for completion
    if (m_evtReleaseImageTransferInProgress.Wait(0))
@@ -395,13 +402,11 @@ void RemoteReleaseControlImpl::OnCameraEvent(const CameraEventData& eventData)
 
    case prPTP_PUSHED_RELEASE_SW:
       // user pushed the release
-      // note: we have to start the release ourselves, here
       {
-         LOG_TRACE(_T("prPTP_PUSHED_RELEASE_SW: user pressed shutter release switch\n"));
+         LOG_TRACE(_T("prPTP_PUSHED_RELEASE_SW: user pressed camera shutter release\n"));
 
-         // TODO another thread has to call Release() to allow PRLIB thread to continue work
-         //const ShutterReleaseSettings& settings = m_shutterReleaseSettings;
-         //Release(settings);
+         // note: we have to start the release ourselves, here
+         Release();
       }
       break;
 

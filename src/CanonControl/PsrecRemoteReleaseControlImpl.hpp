@@ -17,10 +17,12 @@
 #include "LightweightMutex.hpp"
 #include "Event.hpp"
 
+// forward references
+class AsyncReleaseControlThread;
+
 namespace PSREC
 {
 
-// forward references
 struct CameraEventData;
 class SourceDeviceImpl;
 
@@ -193,6 +195,9 @@ public:
    }
 
 private:
+   /// releases shutter; called in worker thread
+   void AsyncRelease();
+
    /// translates from event code to event name
    static LPCTSTR EventNameFromCode(prUInt16 uiEventCode) throw();
 
@@ -236,6 +241,9 @@ private:
 
    /// camera handle
    prHandle m_hCamera;
+
+   /// background thread for release control
+   std::unique_ptr<AsyncReleaseControlThread> m_upReleaseThread;
 
    /// device info; from source device
    std::shared_ptr<DeviceInfo> m_spDeviceInfo;

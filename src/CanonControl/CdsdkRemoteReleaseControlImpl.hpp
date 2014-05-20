@@ -14,6 +14,9 @@
 #include "Observer.hpp"
 #include "LightweightMutex.hpp"
 
+// forward references
+class AsyncReleaseControlThread;
+
 namespace CDSDK
 {
 
@@ -126,6 +129,9 @@ private:
 #pragma warning(pop)
    }
 
+   /// releases shutter; called in worker thread
+   void AsyncRelease();
+
    /// release event callback
    static cdUInt32 cdSTDCALL OnReleaseEventCallback_(
       cdReleaseEventID EventID, const void* pData, cdUInt32 DataSize, cdContext Context);
@@ -150,6 +156,9 @@ private:
 private:
    /// source device
    std::shared_ptr<SourceDeviceImpl> m_spSourceDevice;
+
+   /// background thread for release control
+   std::unique_ptr<AsyncReleaseControlThread> m_upReleaseThread;
 
    /// mutex to protect m_shutterReleaseSettings
    LightweightMutex m_mtxShutterReleaseSettings;
