@@ -10,15 +10,10 @@
 #include "resource.h"
 #include "PanoramaPhotoModeView.hpp"
 #include "IPhotoModeViewHost.hpp"
-#include "ImageFileManager.hpp"
-#include "ShutterReleaseSettings.hpp"
-#include "RemoteReleaseControl.hpp"
-#include "CameraErrorDlg.hpp"
-#include "HuginInterface.hpp"
 
 PanoramaPhotoModeView::PanoramaPhotoModeView(IPhotoModeViewHost& host) throw()
 :m_host(host),
- m_bStarted(false)
+m_manager(host, m_hWnd)
 {
 }
 
@@ -26,61 +21,47 @@ LRESULT PanoramaPhotoModeView::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LP
 {
    DoDataExchange(DDX_LOAD);
 
-   m_spRemoteReleaseControl = m_host.StartRemoteReleaseControl(true);
-   if (m_spRemoteReleaseControl == nullptr)
+   std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl = m_host.StartRemoteReleaseControl(true);
+   if (spRemoteReleaseControl == nullptr)
    {
       AtlMessageBox(m_hWnd, _T("Couldn't start remote release control."), IDR_MAINFRAME, MB_OK);
       DestroyWindow();
       return 0;
    }
 
-   // set default release settings
-   try
-   {
-      ShutterReleaseSettings settings(ShutterReleaseSettings::saveToBoth);
-
-      CString cszFilename =
-         m_host.GetImageFileManager().NextFilename(imageTypePano);
-      settings.Filename(cszFilename);
-
-      m_spRemoteReleaseControl->SetReleaseSettings(settings);
-   }
-   catch(CameraException& ex)
-   {
-      CameraErrorDlg dlg(_T("Error while setting default shooting settings"), ex);
-      dlg.DoModal();
+   if (!m_manager.Init(spRemoteReleaseControl))
       return FALSE;
-   }
 
    StopPanorama();
 
    return TRUE;
 }
 
+
 LRESULT PanoramaPhotoModeView::OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
    // TODO ask to cancel panorama
-   //if (!m_bStarted)
+   //if (m_manager.IsStarted())
    //   ;
    return 0;
 }
 
 LRESULT PanoramaPhotoModeView::OnButtonStart(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
-   if (!m_bStarted)
+   if (!m_manager.IsStarted())
       StartPanorama();
 
-   ReleasePanorama();
+   m_manager.ReleasePanorama();
 
    return 0;
 }
 
 LRESULT PanoramaPhotoModeView::OnButtonStop(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
-   if (!m_bStarted)
+   if (!m_manager.IsStarted())
       return 0;
 
-   StartHugin();
+   m_manager.StartHugin();
 
    StopPanorama();
 
@@ -89,7 +70,7 @@ LRESULT PanoramaPhotoModeView::OnButtonStop(WORD /*wNotifyCode*/, WORD /*wID*/, 
 
 LRESULT PanoramaPhotoModeView::OnButtonCancel(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
-   if (!m_bStarted)
+   if (!m_manager.IsStarted())
       return 0;
 
    StopPanorama();
@@ -99,12 +80,7 @@ LRESULT PanoramaPhotoModeView::OnButtonCancel(WORD /*wNotifyCode*/, WORD /*wID*/
 
 void PanoramaPhotoModeView::StartPanorama()
 {
-   HuginInterface hi(m_host.GetAppSettings().m_cszHuginPath);
-   if (!hi.IsInstalled())
-      AtlMessageBox(m_hWnd, _T("Hugin is not installed; panorama pictures will not be stitched at the end."), IDR_MAINFRAME, MB_OK);
-
-   m_bStarted = true;
-   m_vecPanoramaFilenameList.clear();
+   m_manager.StartPanorama();
 
    m_btnStart.SetWindowText(_T("&Next"));
    m_btnStop.EnableWindow(true);
@@ -113,66 +89,9 @@ void PanoramaPhotoModeView::StartPanorama()
 
 void PanoramaPhotoModeView::StopPanorama()
 {
-   m_bStarted = false;
-   m_vecPanoramaFilenameList.clear();
+   m_manager.StopPanorama();
 
    m_btnStart.SetWindowText(_T("&Start"));
    m_btnStop.EnableWindow(false);
    m_btnCancel.EnableWindow(false);
-}
-
-void PanoramaPhotoModeView::StartHugin()
-{
-   HuginInterface hi(m_host.GetAppSettings().m_cszHuginPath);
-   if (!hi.IsInstalled())
-   {
-      m_host.SetStatusText(_T("Finished taking panorama images"));
-      return;
-   }
-
-   m_host.SetStatusText(_T("Starting Hugin..."));
-
-   hi.RunUI(m_vecPanoramaFilenameList);
-}
-
-void PanoramaPhotoModeView::ReleasePanorama()
-{
-   // called when shutter speed was changed successfully
-   ShutterReleaseSettings settings(ShutterReleaseSettings::saveToBoth,
-      std::bind(&PanoramaPhotoModeView::OnFinishedTransfer, this, std::placeholders::_1));
-
-   bool bNewPanorama = m_vecPanoramaFilenameList.empty();
-
-   CString cszFilename =
-      m_host.GetImageFileManager().NextFilename(imageTypePano, bNewPanorama);
-   settings.Filename(cszFilename);
-
-   m_spRemoteReleaseControl->SetReleaseSettings(settings);
-
-   // set status text
-   CString cszText;
-   cszText.Format(_T("Taking picture; already took %Iu pictures."),
-      m_vecPanoramaFilenameList.size() + 1);
-   m_host.SetStatusText(cszText);
-
-   m_host.LockActionMode(true);
-
-   try
-   {
-      m_spRemoteReleaseControl->Release();
-   }
-   catch(CameraException& ex)
-   {
-      CameraErrorDlg dlg(_T("Couldn't release shutter"), ex);
-      dlg.DoModal();
-   }
-}
-
-void PanoramaPhotoModeView::OnFinishedTransfer(const ShutterReleaseSettings& settings)
-{
-   // save panorama filename
-   CString cszFilename = settings.Filename();
-   m_vecPanoramaFilenameList.push_back(cszFilename);
-
-   m_host.LockActionMode(false);
 }

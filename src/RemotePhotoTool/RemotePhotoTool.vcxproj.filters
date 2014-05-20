@@ -108,6 +108,9 @@
     <ClCompile Include="ViewFinderView.cpp">
       <Filter>UI Files\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PhotoModeManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HuginInterface.hpp">
@@ -208,6 +211,9 @@
     </ClInclude>
     <ClInclude Include="ImagePropertyCombobox.hpp">
       <Filter>UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PhotoModeManager.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

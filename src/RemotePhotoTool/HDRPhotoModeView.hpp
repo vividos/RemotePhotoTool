@@ -10,15 +10,10 @@
 #include "IPhotoModeView.hpp"
 #include "CameraException.hpp"
 #include "ImagePropertyCombobox.hpp"
+#include "PhotoModeManager.hpp"
 
 // forward references
 class IPhotoModeViewHost;
-
-/// message sent when next HDR image can be captured
-#define WM_HDR_AEB_NEXT (WM_USER+1)
-
-/// message sent when last HDR image was captured
-#define WM_HDR_AEB_LAST (WM_USER+2)
 
 /// view for HDR photo mode
 class HDRPhotoModeView :
@@ -99,23 +94,8 @@ private:
    /// called when property has changed
    void OnUpdatedProperty(RemoteReleaseControl::T_enPropertyEvent enPropertyEvent, unsigned int uiValue);
 
-   /// recalculates AEB shutter speed list
-   void RecalcAEBShutterSpeedList();
-
    /// updates shutter speed list
    void UpdateAEBShutterSpeedList();
-
-   /// releases remote control for first AEB image
-   void ReleaseAEBFirst();
-
-   /// releases remote control for next AEB image
-   void ReleaseAEBNext();
-
-   /// called when next AEB image has finished transfer
-   void OnFinishedTransferNextAEB(const ShutterReleaseSettings& settings);
-
-   /// called when last AEB image has finished transfer
-   void OnFinishedTransferLastAEB(const ShutterReleaseSettings& settings);
 
 private:
    /// host access
@@ -137,27 +117,11 @@ private:
 
    // model
 
+   HDRPhotoModeManager m_manager;
+
    /// source device
    std::shared_ptr<SourceDevice> m_spSourceDevice;
 
    /// remote release control
    std::shared_ptr<RemoteReleaseControl> m_spRemoteReleaseControl;
-
-   /// viewfinder
-   std::shared_ptr<Viewfinder> m_spViewfinder;
-
-   /// indicates if AEB release is in progress
-   bool m_bAEBInProgress;
-
-   /// indicates if viewfinder was active before start
-   bool m_bViewfinderActiveBeforeStart;
-
-   /// indicates index of current shutter speed, from m_vecAEBShutterSpeedValues
-   size_t m_uiCurrentAEBShutterSpeed;
-
-   /// shutter speed values for AEB shots
-   std::vector<ImageProperty> m_vecAEBShutterSpeedValues;
-
-   /// filenames of bracketed shots
-   std::vector<CString> m_vecAEBFilenameList;
 };

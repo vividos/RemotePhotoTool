@@ -9,6 +9,7 @@
 // includes
 #include "IPhotoModeView.hpp"
 #include "CameraException.hpp"
+#include "PhotoModeManager.hpp"
 
 // forward references
 class IPhotoModeViewHost;
@@ -91,23 +92,14 @@ private:
    /// stops taking panorama
    void StopPanorama();
 
-   /// starts hugin
-   void StartHugin();
-
    /// does remote release for panorama image
    void ReleasePanorama();
-
-   /// called when image transfer is finished
-   void OnFinishedTransfer(const ShutterReleaseSettings& settings);
 
 private:
    /// host access
    IPhotoModeViewHost& m_host;
 
    // UI
-
-   /// panorama started?
-   bool m_bStarted;
 
    /// start/next button
    CButton m_btnStart;
@@ -120,12 +112,9 @@ private:
 
    // model
 
+   /// manager for panorama photo mode
+   PanoramaPhotoModeManager m_manager;
+
    /// source device
    std::shared_ptr<SourceDevice> m_spSourceDevice;
-
-   /// remote release control
-   std::shared_ptr<RemoteReleaseControl> m_spRemoteReleaseControl;
-
-   /// filenames of panorama shots
-   std::vector<CString> m_vecPanoramaFilenameList;
 };

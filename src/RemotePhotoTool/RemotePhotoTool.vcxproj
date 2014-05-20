@@ -122,6 +122,7 @@
     <ClCompile Include="MainFrame.cpp" />
     <ClCompile Include="PanoramaPhotoModeView.cpp" />
     <ClCompile Include="PhotomatixInterface.cpp" />
+    <ClCompile Include="PhotoModeManager.cpp" />
     <ClCompile Include="RemotePhotoTool.cpp" />
     <ClCompile Include="SettingsDlg.cpp" />
     <ClCompile Include="StandardPhotoModeView.cpp" />
@@ -159,6 +160,7 @@
     <ClInclude Include="MainFrame.hpp" />
     <ClInclude Include="PanoramaPhotoModeView.hpp" />
     <ClInclude Include="PhotomatixInterface.hpp" />
+    <ClInclude Include="PhotoModeManager.hpp" />
     <ClInclude Include="res\MainFrameRibbon.h" />
     <ClInclude Include="SettingsDlg.hpp" />
     <ClInclude Include="StandardPhotoModeView.hpp" />
