@@ -26,6 +26,9 @@ static unsigned int GetUnsignedIntValue(const Variant& value)
    if (value.Type() == Variant::typeInt32)
       uiValue = static_cast<unsigned int>(value.Get<int>());
    else
+   if (value.Type() == Variant::typeInvalid)
+      uiValue = 0;
+   else
       ATLASSERT(false);
 
    return uiValue;
@@ -209,6 +212,7 @@ CString FormatShutterSpeedValue(Variant value)
    case 0x9c: return _T("1/6000");
    case 0x9d: return _T("1/64000");
    case 0xa0: return _T("1/8000");
+   case 0:
    case 0xffff: return _T("N/A");
 
    default:
