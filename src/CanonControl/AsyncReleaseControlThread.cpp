@@ -37,5 +37,8 @@ void AsyncReleaseControlThread::Run()
 
          m_ioService.poll_one(ec);
       }
+
+      // skip current time slice
+      Sleep(1);
    }
 }
