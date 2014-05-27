@@ -11,7 +11,6 @@ PSREC
 -----
 implement display text for all properties
 implement AF Lock -> shutter half press to focus
-implement prPTP_PUSHED_RELEASE_SW by using another thread to call Release()
 implement new state events in T_enStateEvent
 support focus lock, PR_RC_FocusLock
 support taking/transferring CRW raw images
@@ -30,7 +29,6 @@ CDSDK
 -----
 Test cameras
 implement TODOs from source files
-when camera release button is pressed, start taking image in background thread
 
 RemotePhotoTool
 ---------------
