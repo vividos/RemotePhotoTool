@@ -187,7 +187,7 @@ LRESULT MainFrame::OnToggleRibbon(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWn
 LRESULT MainFrame::OnAppAbout(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
    AboutDlg dlg;
-   dlg.DoModal();
+   dlg.DoModal(m_hWnd);
 
    return 0;
 }
@@ -239,7 +239,7 @@ LRESULT MainFrame::OnHomeSettings(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWn
    bool bPrevLogging = m_settings.m_bLogging;
 
    SettingsDlg dlg(m_settings);
-   int iRet = dlg.DoModal();
+   int iRet = dlg.DoModal(m_hWnd);
    if (iRet == IDOK)
    {
       m_settings.Store();
@@ -448,7 +448,7 @@ std::shared_ptr<RemoteReleaseControl> MainFrame::StartRemoteReleaseControl(bool 
          catch(CameraException& ex)
          {
             CameraErrorDlg dlg(_T("Couldn't start remote release connection"), ex);
-            dlg.DoModal();
+            dlg.DoModal(m_hWnd);
 
             m_spRemoteReleaseControl.reset();
          }
@@ -556,7 +556,7 @@ void MainFrame::ShowViewfinder(bool bShow)
    catch(CameraException& ex)
    {
       CameraErrorDlg dlg(_T("Couldn't start viewfinder"), ex);
-      dlg.DoModal();
+      dlg.DoModal(m_hWnd);
    }
 
    m_splitter.SetSplitterPanes(m_hWndView, *m_upViewFinderView);

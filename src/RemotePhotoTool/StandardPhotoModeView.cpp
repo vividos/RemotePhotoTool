@@ -68,7 +68,7 @@ LRESULT StandardPhotoModeView::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LP
    catch(CameraException& ex)
    {
       CameraErrorDlg dlg(_T("Error while setting default shooting settings"), ex);
-      dlg.DoModal();
+      dlg.DoModal(m_hWnd);
       return FALSE;
    }
 
@@ -116,7 +116,7 @@ LRESULT StandardPhotoModeView::OnButtonRelease(WORD /*wNotifyCode*/, WORD /*wID*
    catch(CameraException& ex)
    {
       CameraErrorDlg dlg(_T("Couldn't release shutter"), ex);
-      dlg.DoModal();
+      dlg.DoModal(m_hWnd);
    }
    return 0;
 }

@@ -93,7 +93,7 @@ LRESULT ViewFinderView::OnBnClickedAutoFocus(WORD /*wNotifyCode*/, WORD /*wID*/,
    catch(CameraException& ex)
    {
       CameraErrorDlg dlg(_T("Error while adjusting focus"), ex);
-      dlg.DoModal();
+      dlg.DoModal(m_hWnd);
    }
 
    return 0;
@@ -112,7 +112,7 @@ LRESULT ViewFinderView::OnBnClickedAutoWhiteBalance(WORD /*wNotifyCode*/, WORD /
    catch(CameraException& ex)
    {
       CameraErrorDlg dlg(_T("Error while adjusting focus"), ex);
-      dlg.DoModal();
+      dlg.DoModal(m_hWnd);
    }
 
    return 0;

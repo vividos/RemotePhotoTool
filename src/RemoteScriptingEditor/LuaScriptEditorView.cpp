@@ -69,7 +69,7 @@ bool LuaScriptEditorView::DoFileSaveAs()
       OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
       g_pszLuaScriptingFilter, m_hWnd);
 
-   int iRet = dlg.DoModal();
+   int iRet = dlg.DoModal(m_hWnd);
    if (iRet != IDOK)
       return false;
 

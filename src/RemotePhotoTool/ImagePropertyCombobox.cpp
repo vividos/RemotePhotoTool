@@ -38,7 +38,7 @@ void ImagePropertyCombobox::UpdateValuesList()
    catch(CameraException& ex)
    {
       CameraErrorDlg dlg(_T("Couldn't enumerate values for image property"), ex);
-      dlg.DoModal();
+      dlg.DoModal(m_hWnd);
    }
 
    bool bReadOnly = false;
@@ -74,7 +74,7 @@ void ImagePropertyCombobox::UpdateValuesList()
    catch(CameraException& ex)
    {
       CameraErrorDlg dlg(_T("Couldn't get current value for image property"), ex);
-      dlg.DoModal();
+      dlg.DoModal(m_hWnd);
    }
 
    // select item, in case control doesn't also get a UpdateValue() call
@@ -130,7 +130,7 @@ void ImagePropertyCombobox::UpdateValue()
          cszText.AppendFormat(_T(": %s"), cszPropertyName.GetString());
 
       CameraErrorDlg dlg(cszText, ex);
-      dlg.DoModal();
+      dlg.DoModal(m_hWnd);
    }
 }
 
@@ -157,7 +157,7 @@ LRESULT ImagePropertyCombobox::OnSelChange(WORD /*wNotifyCode*/, WORD /*wID*/, H
    catch(CameraException& ex)
    {
       CameraErrorDlg dlg(_T("Couldn't set image property"), ex);
-      dlg.DoModal();
+      dlg.DoModal(m_hWnd);
    }
 
    return 0;

@@ -41,7 +41,7 @@ LRESULT SettingsDlg::OnBtnProjectsFolder(WORD /*wNotifyCode*/, WORD /*wID*/, HWN
    CFolderDialog dlg(m_hWnd, _T("Select project folder..."), BIF_RETURNONLYFSDIRS | BIF_USENEWUI);
    dlg.SetInitialFolder(m_settings.m_cszProjectsFolder);
 
-   if (IDOK == dlg.DoModal())
+   if (IDOK == dlg.DoModal(m_hWnd))
    {
       m_settings.m_cszProjectsFolder = dlg.GetFolderPath();
       DoDataExchange(DDX_LOAD, IDC_EDIT_SETTING_PROJECTS_FOLDER);
@@ -114,7 +114,7 @@ void SettingsDlg::SelectLogFolder()
    CFolderDialog dlg(m_hWnd, _T("Select log folder..."), BIF_RETURNONLYFSDIRS | BIF_USENEWUI);
    dlg.SetInitialFolder(m_settings.m_cszLogfilePath);
 
-   if (IDOK == dlg.DoModal())
+   if (IDOK == dlg.DoModal(m_hWnd))
    {
       m_settings.m_cszLogfilePath = dlg.GetFolderPath();
       DoDataExchange(DDX_LOAD, IDC_EDIT_SETTING_LOG_FOLDER);

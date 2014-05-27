@@ -41,7 +41,7 @@ bool HDRPhotoModeManager::Init(std::shared_ptr<RemoteReleaseControl> spRemoteRel
    catch (CameraException& ex)
    {
       CameraErrorDlg dlg(_T("Error while setting shooting settings"), ex);
-      dlg.DoModal();
+      dlg.DoModal(m_hWnd);
       return false;
    }
 
@@ -76,7 +76,7 @@ bool HDRPhotoModeManager::CheckManualMode()
       catch (CameraException& ex)
       {
          CameraErrorDlg dlg(_T("Couldn't switch to Manual mode"), ex);
-         dlg.DoModal();
+         dlg.DoModal(m_hWnd);
          return false;
       }
    }
@@ -159,7 +159,7 @@ void HDRPhotoModeManager::RecalcAEBShutterSpeedList(size_t uiNumShots)
    catch (CameraException& ex)
    {
       CameraErrorDlg dlg(_T("Couldn't get shutter speed values"), ex);
-      dlg.DoModal();
+      dlg.DoModal(m_hWnd);
    }
 }
 
@@ -192,7 +192,7 @@ void HDRPhotoModeManager::ReleaseAEBFirst()
       catch (CameraException& ex)
       {
          CameraErrorDlg dlg(_T("Couldn't start viewfinder"), ex);
-         dlg.DoModal();
+         dlg.DoModal(m_hWnd);
       }
    }
 
@@ -234,7 +234,7 @@ void HDRPhotoModeManager::ReleaseAEBNext()
    catch (CameraException& ex)
    {
       CameraErrorDlg dlg(_T("Couldn't release AEB shutter"), ex);
-      dlg.DoModal();
+      dlg.DoModal(m_hWnd);
    }
 }
 
@@ -280,7 +280,7 @@ bool PanoramaPhotoModeManager::Init(std::shared_ptr<RemoteReleaseControl> spRemo
    catch (CameraException& ex)
    {
       CameraErrorDlg dlg(_T("Error while setting default shooting settings"), ex);
-      dlg.DoModal();
+      dlg.DoModal(m_hWnd);
       return false;
    }
 
@@ -346,7 +346,7 @@ void PanoramaPhotoModeManager::ReleasePanorama()
    catch (CameraException& ex)
    {
       CameraErrorDlg dlg(_T("Couldn't release shutter"), ex);
-      dlg.DoModal();
+      dlg.DoModal(m_hWnd);
    }
 }
 

@@ -113,7 +113,7 @@ LRESULT MainFrame::OnFileExit(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl
 LRESULT MainFrame::OnAppAbout(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
    AboutDlg dlg;
-   dlg.DoModal();
+   dlg.DoModal(m_hWnd);
 
    return 0;
 }
@@ -128,7 +128,7 @@ LRESULT MainFrame::OnFileNew(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*
 LRESULT MainFrame::OnFileOpen(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
    CFileDialog dlg(TRUE, NULL, _T(""), OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, g_pszLuaScriptingFilter);
-   int iRet = dlg.DoModal();
+   int iRet = dlg.DoModal(m_hWnd);
 
    if (iRet == IDOK)
    {
