@@ -183,6 +183,7 @@ public:
       case propAvailableShots:         return kEdsPropID_AvailableShots;
       case propSaveTo:                 return kEdsPropID_SaveTo;
       case propBatteryLevel:           return kEdsPropID_BatteryQuality;
+      case propImageFormat:            return kEdsPropID_ImageQuality;
       default:
          ATLASSERT(false);
          return kEdsPropID_Unknown;
