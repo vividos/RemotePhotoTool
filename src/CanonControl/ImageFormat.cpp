@@ -10,15 +10,25 @@
 #include "ImageFormat.hpp"
 #include "EdsdkPropertyAccess.hpp"
 #include "CdsdkImagePropertyAccess.hpp"
+#include "PsrecPropertyAccess.hpp"
 
 CString ImageFormat::ToString() const
 {
-   if (m_value.m_enSDKVariant == T_enSDKVariant::variantEdsdk)
+   switch (m_value.m_enSDKVariant)
+   {
+   case T_enSDKVariant::variantEdsdk:
       return EDSDK::PropertyAccess::FormatImageFormatValue(m_value.Value().Get<unsigned int>());
 
-   if (m_value.m_enSDKVariant == T_enSDKVariant::variantCdsdk)
+   case T_enSDKVariant::variantCdsdk:
       return CDSDK::ImagePropertyAccess::FormatImageFormatValue(m_value.Value());
 
-   // TODO implement for PSREC
+   case T_enSDKVariant::variantPsrec:
+      return PSREC::PropertyAccess::FormatImageFormatValue(m_value.Value());
+
+   default:
+      ATLASSERT(false);
+      break;
+   }
+
    return _T("???");
 }

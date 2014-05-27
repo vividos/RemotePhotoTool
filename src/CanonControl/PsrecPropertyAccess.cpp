@@ -440,6 +440,23 @@ prPTP_DEV_PROP_IMEGE_FILE_SIZE
 #endif
 };
 
+Variant PropertyAccess::GetImageFormatProperty() const
+{
+   std::vector<prUInt8> vecRawValues;
+
+   DevicePropDesc compQuality(m_hCamera, prPTP_DEV_PROP_COMP_QUALITY, false);
+   DevicePropDesc imageSize(m_hCamera, prPTP_DEV_PROP_IMAGE_SIZE, false);
+
+   vecRawValues.push_back(compQuality.m_varCurrentValue.Get<prUInt8>());
+   vecRawValues.push_back(imageSize.m_varCurrentValue.Get<prUInt8>());
+
+   Variant value;
+   value.SetArray(vecRawValues);
+   value.SetType(Variant::typeUInt8);
+
+   return value;
+}
+
 CString PropertyAccess::DisplayTextFromIdAndValue(prUInt16 propertyId, Variant value)
 {
    switch(propertyId)
@@ -489,6 +506,9 @@ CString PropertyAccess::DisplayTextFromIdAndValue(prUInt16 propertyId, Variant v
       }
       break;
 
+   case PSREC_PROP_IMAGE_FORMAT:
+      return FormatImageFormatValue(value);
+
    default:
       {
          CString cszText;
@@ -500,4 +520,33 @@ CString PropertyAccess::DisplayTextFromIdAndValue(prUInt16 propertyId, Variant v
    }
 
    return value.ToString();
+}
+
+CString PropertyAccess::FormatImageFormatValue(const Variant& value)
+{
+   ATLASSERT(value.IsArray() == true);
+   ATLASSERT(value.Type() == Variant::typeUInt8);
+
+   std::vector<prUInt8> vecValues = value.GetArray<prUInt8>();
+   ATLASSERT(vecValues.size() == 2);
+
+   CString cszText1;
+   {
+      prUInt8 compQuality = vecValues[0];
+      Variant vCompQuality; vCompQuality.Set(compQuality); vCompQuality.SetType(Variant::typeUInt8);
+
+      FormatValueById(g_aPropIdDisplayInfo, sizeof(g_aPropIdDisplayInfo) / sizeof(*g_aPropIdDisplayInfo),
+         prPTP_DEV_PROP_COMP_QUALITY, vCompQuality, cszText1);
+   }
+
+   CString cszText2;
+   {
+      prUInt8 imageSize = static_cast<prUInt8>(vecValues[1]);
+      Variant vImageSize; vImageSize.Set(imageSize); vImageSize.SetType(Variant::typeUInt8);
+
+      FormatValueById(g_aPropIdDisplayInfo, sizeof(g_aPropIdDisplayInfo) / sizeof(*g_aPropIdDisplayInfo),
+         prPTP_DEV_PROP_IMAGE_SIZE, vImageSize, cszText2);
+   }
+
+   return cszText1 + _T(" ") + cszText2;
 }

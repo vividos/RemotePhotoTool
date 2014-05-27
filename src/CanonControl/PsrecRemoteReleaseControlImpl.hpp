@@ -98,6 +98,7 @@ public:
       case propAvailableShots:            ATLASSERT(false); return 0; // TODO ???
       case propSaveTo:           return prPTP_DEV_PROP_CAPTURE_TRANSFER_MODE;
       case propBatteryLevel:     return prPTP_DEV_PROP_BATTERY_STATUS;
+      case propImageFormat:      return PSREC_PROP_IMAGE_FORMAT;
       default:
          ATLASSERT(false); // unknown type
          break;
@@ -128,6 +129,14 @@ public:
 
    virtual ImageProperty GetImageProperty(unsigned int uiImageProperty) const override
    {
+      if (uiImageProperty == PSREC_PROP_IMAGE_FORMAT)
+      {
+         PropertyAccess access(m_hCamera);
+         Variant value = access.GetImageFormatProperty();
+
+         return ImageProperty(variantPsrec, uiImageProperty, value, true);
+      }
+
       DevicePropDesc desc(m_hCamera, static_cast<prUInt16>(uiImageProperty), false);
 
       // return in image property object

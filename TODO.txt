@@ -15,7 +15,6 @@ implement prPTP_PUSHED_RELEASE_SW by using another thread to call Release()
 implement new state events in T_enStateEvent
 support focus lock, PR_RC_FocusLock
 support taking/transferring CRW raw images
-implement ImageFormat class
 Test functionality
 
 EDSDK

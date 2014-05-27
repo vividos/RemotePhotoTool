@@ -190,6 +190,7 @@ std::vector<unsigned int> RemoteReleaseControlImpl::EnumImageProperties() const
             PSREC::PropertyAccess::NameFromId(uiPropId));
       }
    });
+   vecProperties.push_back(PSREC_PROP_IMAGE_FORMAT);
 
    return vecProperties;
 }

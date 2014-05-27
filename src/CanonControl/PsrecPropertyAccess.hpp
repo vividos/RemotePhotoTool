@@ -13,6 +13,8 @@
 
 namespace PSREC
 {
+/// dummy property value for getting propImageFormat value
+const prUInt16 PSREC_PROP_IMAGE_FORMAT = 0x1000;
 
 /// device value parser
 struct DeviceValueParser: public VarDataParser
@@ -259,6 +261,10 @@ public:
    /// returns current value of property
    Variant Get(prUInt16 propId) const
    {
+      // special case: image format
+      if (propId == PSREC_PROP_IMAGE_FORMAT)
+         return GetImageFormatProperty();
+
       // Note: we could use PR_GetDevicePropValue here, but we have to call
       // PR_GetDevicePropDesc anyway, to find out data type; so we just use
       // the current value field then.
@@ -295,6 +301,9 @@ public:
       DevicePropDesc desc(m_hCamera, propId, true);
       vecValues = desc.m_vecAllValues;
    }
+
+   /// returns value for image format property
+   Variant GetImageFormatProperty() const;
 
    /// converts from property id to property name
    static LPCTSTR NameFromId(prUInt16 propertyId) throw()
@@ -364,6 +373,7 @@ public:
       case prPTP_DEV_PROP_ROTATION_SENCE: pszName = _T("Whether the gravity sensor is enabled or disabled"); break;
       case prPTP_DEV_PROP_IMEGE_FILE_SIZE: pszName = _T("Image file size supported by the camera"); break;
       case prPTP_DEV_PROP_CAMERA_MODEL_ID: pszName = _T("Camera model ID"); break;
+      case PSREC_PROP_IMAGE_FORMAT: pszName = _T("Image format"); break;
       }
 
       return pszName;
@@ -371,6 +381,9 @@ public:
 
    /// formats display text from id and value
    static CString DisplayTextFromIdAndValue(prUInt16 propertyId, Variant value);
+
+   /// formats image format value
+   static CString FormatImageFormatValue(const Variant& value);
 
 private:
    /// camera handle
