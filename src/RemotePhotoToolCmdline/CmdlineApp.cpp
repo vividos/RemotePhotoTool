@@ -14,7 +14,7 @@
 #include "AppOptions.hpp"
 #include "Event.hpp"
 #include <boost\bind.hpp>
-#include "ScriptEnvironment.hpp"
+#include "CameraScriptProcessor.hpp"
 #include "Instance.hpp"
 #include "SourceInfo.hpp"
 #include "SourceDevice.hpp"
@@ -261,8 +261,22 @@ void CmdlineApp::ReleaseShutter()
 
 void CmdlineApp::RunScript(const CString& cszFilename)
 {
-   ScriptEnvironment env;
-   env.Init();
+   _tprintf(_T("Loading script: %s\n"), cszFilename.GetString());
 
-   env.Run(cszFilename);
+   CameraScriptProcessor proc;
+
+   proc.SetOutputDebugStringHandler(
+      [&](const CString& cszText){
+         _tprintf(_T("%s"), cszText);
+   });
+
+   proc.LoadScript(cszFilename);
+
+   proc.Run();
+
+   _tprintf(_T("Press any key to abort running script.\n\n"));
+
+   fgetc(stdin);
+
+   proc.Stop();
 }
