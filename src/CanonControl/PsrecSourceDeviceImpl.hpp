@@ -130,13 +130,10 @@ public:
       prUInt16 propId = static_cast<prUInt16>(uiPropertyId & 0xFFFF);
 
       // get device property value
-      DevicePropDesc desc(m_hCamera, propId, false);
+      DevicePropDesc desc(m_hCamera, propId, true);
 
       DeviceProperty dp(variantPsrec, uiPropertyId, desc.m_varCurrentValue, !desc.IsSetAllowed());
-
-      // TODO needed to create PropertyAccess object here?
-      PropertyAccess pa(m_hCamera);
-      pa.Enum(propId, dp.m_vecValidValues);
+      dp.m_vecValidValues = desc.m_vecAllValues;
 
       return dp;
    }
