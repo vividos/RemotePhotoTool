@@ -32,6 +32,9 @@ struct PropIdDisplayInfo
 /// finds text for property id and given value
 bool FormatValueById(PropIdDisplayInfo* aDispInfo, size_t uiDispInfoSize, unsigned int propertyId, Variant value, CString& cszValue);
 
+/// returns unsigned integer value from variant
+unsigned int GetUnsignedIntValue(const Variant& value);
+
 /// formats aperture value
 CString FormatApexValue(Variant value);
 
