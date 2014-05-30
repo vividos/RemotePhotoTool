@@ -16,6 +16,9 @@ namespace PSREC
 /// dummy property value for getting propImageFormat value
 const prUInt16 PSREC_PROP_IMAGE_FORMAT = 0x1000;
 
+/// dummy property value for getting available shots
+const prUInt16 PSREC_PROP_AVAILABLE_SHOTS = 0x1001;
+
 /// device value parser
 struct DeviceValueParser: public VarDataParser
 {
@@ -265,6 +268,9 @@ public:
       if (propId == PSREC_PROP_IMAGE_FORMAT)
          return GetImageFormatProperty();
 
+      // must not be "available shots"; already handled in GetImageProperty()
+      ATLASSERT(propId != PSREC_PROP_AVAILABLE_SHOTS);
+
       // Note: we could use PR_GetDevicePropValue here, but we have to call
       // PR_GetDevicePropDesc anyway, to find out data type; so we just use
       // the current value field then.
@@ -374,6 +380,7 @@ public:
       case prPTP_DEV_PROP_IMEGE_FILE_SIZE: pszName = _T("Image file size supported by the camera"); break;
       case prPTP_DEV_PROP_CAMERA_MODEL_ID: pszName = _T("Camera model ID"); break;
       case PSREC_PROP_IMAGE_FORMAT: pszName = _T("Image format"); break;
+      case PSREC_PROP_AVAILABLE_SHOTS: pszName = _T("Available shots"); break;
       }
 
       return pszName;

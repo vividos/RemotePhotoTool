@@ -509,6 +509,14 @@ CString PropertyAccess::DisplayTextFromIdAndValue(prUInt16 propertyId, Variant v
    case PSREC_PROP_IMAGE_FORMAT:
       return FormatImageFormatValue(value);
 
+   case PSREC_PROP_AVAILABLE_SHOTS:
+      {
+         CString cszText;
+         cszText.Format(_T("%u"), value.Get<unsigned int>());
+         return cszText;
+      }
+      break;
+
    default:
       {
          CString cszText;

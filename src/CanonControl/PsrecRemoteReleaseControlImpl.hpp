@@ -95,7 +95,7 @@ public:
       case propAFDistance:       return prPTP_DEV_PROP_AF_DISTANCE;
       case propCurrentZoomPos:   return prPTP_DEV_PROP_ZOOM_POS;
       case propMaxZoomPos:       return prPTP_DEV_PROP_EZOOM_START_POS; // start of electronic zoom is max. zoom pos
-      case propAvailableShots:            ATLASSERT(false); return 0; // TODO ???
+      case propAvailableShots:   return PSREC_PROP_AVAILABLE_SHOTS;
       case propSaveTo:           return prPTP_DEV_PROP_CAPTURE_TRANSFER_MODE;
       case propBatteryLevel:     return prPTP_DEV_PROP_BATTERY_STATUS;
       case propImageFormat:      return PSREC_PROP_IMAGE_FORMAT;
@@ -133,6 +133,15 @@ public:
       {
          PropertyAccess access(m_hCamera);
          Variant value = access.GetImageFormatProperty();
+
+         return ImageProperty(variantPsrec, uiImageProperty, value, true);
+      }
+
+      if (uiImageProperty == PSREC_PROP_AVAILABLE_SHOTS)
+      {
+         Variant value;
+         value.Set<unsigned int>(NumAvailableShots());
+         value.SetType(Variant::typeUInt32);
 
          return ImageProperty(variantPsrec, uiImageProperty, value, true);
       }
