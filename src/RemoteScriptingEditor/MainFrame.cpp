@@ -13,6 +13,7 @@
 #include "LuaScriptEditorView.hpp"
 #include "MainFrame.hpp"
 #include "Lua.hpp"
+#include "Path.hpp"
 
 extern LPCTSTR g_pszLuaScriptingFilter;
 
@@ -176,17 +177,7 @@ LRESULT MainFrame::OnFileRecent(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/
    CString cszFile;
    if (m_mru.GetFromList(wID, cszFile))
    {
-      // find file name without the path
-      // TODO replace with: CSting cszFileName = Path_GetFileName(cszFile);
-      CString cszFileName = cszFile;
-      for (int i = lstrlen(cszFile) - 1; i >= 0; i--)
-      {
-         if (cszFile[i] == '\\')
-         {
-            cszFileName = cszFile.Mid(i + 1);
-            break;
-         }
-      }
+      CString cszFileName = Path(cszFile).FilenameAndExt();
 
       // open file
       if (DoFileOpen(cszFile, cszFileName))
