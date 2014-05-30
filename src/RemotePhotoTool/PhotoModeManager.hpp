@@ -22,6 +22,7 @@ class ShutterReleaseSettings;
 #define WM_HDR_AEB_LAST (WM_USER+2)
 
 
+/// HDR photo mode manager
 class HDRPhotoModeManager
 {
 public:
@@ -35,12 +36,16 @@ public:
    {
    }
 
+   /// inits photo manager
    bool Init(std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl);
 
+   /// returns if AEB photo taking is in progress
    bool IsStarted() const throw() { return m_bAEBInProgress; }
 
+   /// returns shutter speed values for bracketing
    const std::vector<ImageProperty>& ShutterSpeedValues() const throw() { return m_vecAEBShutterSpeedValues; }
 
+   /// checks if manual mode is switched on
    bool CheckManualMode();
 
    /// recalculates AEB shutter speed list
@@ -52,7 +57,7 @@ public:
    /// releases remote control for next AEB image
    void ReleaseAEBNext();
 
-
+   /// called on last AEB release
    void OnReleasedAEBLast();
 
 private:
@@ -66,6 +71,7 @@ private:
    /// host access
    IPhotoModeViewHost& m_host;
 
+   /// parent window
    HWND& m_hWnd;
 
    /// remote release control
@@ -91,9 +97,11 @@ private:
 };
 
 
+/// Panorama photo mode manager
 class PanoramaPhotoModeManager
 {
 public:
+   /// ctor
    PanoramaPhotoModeManager(IPhotoModeViewHost& host, HWND& hWnd)
       :m_host(host),
       m_hWnd(hWnd),
@@ -101,17 +109,22 @@ public:
    {
    }
 
+   /// inits photo manager
    bool Init(std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl);
 
+   /// returns if panorama photo taking is in progress
    bool IsStarted() const throw() { return m_bStarted; }
 
+   /// starts panorama photo taking
    void StartPanorama();
 
+   /// stops panorama photo taking
    void StopPanorama();
 
    /// starts hugin
    void StartHugin();
 
+   /// releases shutter for panorama
    void ReleasePanorama();
 
 private:

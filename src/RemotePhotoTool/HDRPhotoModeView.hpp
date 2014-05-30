@@ -117,6 +117,7 @@ private:
 
    // model
 
+   /// photo mode manager
    HDRPhotoModeManager m_manager;
 
    /// source device
