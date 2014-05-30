@@ -43,3 +43,6 @@ CString FormatIsoValue(Variant value);
 
 /// formats compensation value (exposure, flash, etc.)
 CString FormatCompensationValue(Variant value, bool bIsEdsdk);
+
+/// formats 32 bit date/time format
+CString FormatDateTime32bit(const Variant& value);

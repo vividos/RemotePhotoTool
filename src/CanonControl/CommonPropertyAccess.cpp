@@ -308,3 +308,28 @@ CString FormatCompensationValue(Variant value, bool bIsEdsdk)
 
    return cszValue;
 }
+
+CString FormatDateTime32bit(const Variant& value)
+{
+   unsigned int uiTime = GetUnsignedIntValue(value);
+
+   FILETIME fileTime = { 0 };
+   BOOL bRet = DosDateTimeToFileTime(HIWORD(uiTime), LOWORD(uiTime), &fileTime);
+   if (bRet != TRUE)
+      return _T("N/A");
+
+   SYSTEMTIME systemTime = { 0 };
+   bRet = FileTimeToSystemTime(&fileTime, &systemTime);
+   if (bRet != TRUE)
+      return _T("N/A");
+
+   CString cszDate;
+   GetDateFormat(LOCALE_USER_DEFAULT, 0, &systemTime, _T("yyyy'-'MM'-'dd"), cszDate.GetBuffer(32), 32);
+   cszDate.ReleaseBuffer();
+
+   CString cszTime;
+   GetTimeFormat(LOCALE_USER_DEFAULT, 0, &systemTime, _T(" HH':'mm':'ss"), cszTime.GetBuffer(32), 32);
+   cszTime.ReleaseBuffer();
+
+   return cszDate + cszTime;
+}

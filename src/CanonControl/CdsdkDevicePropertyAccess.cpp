@@ -230,27 +230,7 @@ CString DevicePropertyAccess::DisplayTextFromIdAndValue(unsigned int propId, Var
    switch (devicePropId)
    {
    case cdDEVICE_PROP_TIME: // cdTime
-      {
-         cdTime time = value.Get<unsigned int>();
-
-         FILETIME fileTime = { 0 };
-         BOOL bRet = DosDateTimeToFileTime(HIWORD(time), LOWORD(time), &fileTime);
-         ATLASSERT(TRUE == bRet); bRet;
-
-         SYSTEMTIME systemTime = { 0 };
-         bRet = FileTimeToSystemTime(&fileTime, &systemTime);
-         ATLASSERT(TRUE == bRet);
-
-         CString cszDate;
-         GetDateFormat(LOCALE_USER_DEFAULT, 0, &systemTime, _T("yyyy'-'MM'-'dd"), cszDate.GetBuffer(32), 32);
-         cszDate.ReleaseBuffer();
-
-         CString cszTime;
-         GetTimeFormat(LOCALE_USER_DEFAULT, 0, &systemTime, _T(" HH':'mm':'ss"), cszTime.GetBuffer(32), 32);
-         cszTime.ReleaseBuffer();
-
-         cszText = cszDate + cszTime;
-      }
+      cszText = FormatDateTime32bit(value);
       break;
 
    default:
