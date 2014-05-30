@@ -127,7 +127,7 @@ CString Variant::ToString() const
    case typePoint:
    case typeRect:
    case typeTime:
-      // TODO implement
+      // not implement
 
    default:
       ATLASSERT(false);

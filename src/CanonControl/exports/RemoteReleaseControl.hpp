@@ -175,7 +175,7 @@ public:
    /// returns number of available shots on the memory card
    virtual unsigned int NumAvailableShots() const = 0;
 
-   /// sends camera command // TODO move to Viewfinder?
+   /// sends camera command
    virtual void SendCommand(T_enCameraCommand enCameraCommand) = 0;
 
    /// presses the shutter release, taking a photo using the set properties and given shutter release settings
