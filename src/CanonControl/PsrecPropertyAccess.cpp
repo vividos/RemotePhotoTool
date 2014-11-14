@@ -12,6 +12,9 @@
 
 using namespace PSREC;
 
+/// this is not really a property supported by PSREC; see entries in g_aPropIdDisplayInfo below
+const prUInt16 prPTP_DEV_PROP_SUPPORTED_SIZE_META_IMAGEFORMAT = 0xF000;
+
 /// all property descriptions for PSREC
 static PropIdDisplayInfo g_aPropIdDisplayInfo[] =
 {
@@ -282,7 +285,7 @@ static PropIdDisplayInfo g_aPropIdDisplayInfo[] =
          { 0x00, _T("Off") },
          { 0x01, _T("Night View") },
          { 0x02, _T("On") },
-         { 0x03, _T("Not available.") },
+         { 0x03, _T("Not available") },
          { 0xFF, _T("Invalid") },
          { 0, nullptr }
       }
@@ -322,52 +325,73 @@ static PropIdDisplayInfo g_aPropIdDisplayInfo[] =
       }
    },
 
-#if 0
-
-
    {
-      xxx,
+      prPTP_DEV_PROP_COLOR_GAIN,
       {
-         { 0x0000, _T("") },
+         { 0xfffffffe, _T("Low 2") }, // -2
+         { 0xffffffff, _T("Low") }, // -1
+         { 0x00000000, _T("Standard") },
+         { 0x00000001, _T("High") },
+         { 0x00000002, _T("High 2") },
          { 0, nullptr }
       }
    },
 
+   {
+      prPTP_DEV_PROP_SHARPNESS,
+      {
+         { 0xfffffffe, _T("Low 2") }, // -2
+         { 0xffffffff, _T("Low") }, // -1
+         { 0x00000000, _T("Standard") },
+         { 0x00000001, _T("High") },
+         { 0x00000002, _T("High 2") },
+         { 0, nullptr }
+      }
+   },
 
-prPTP_DEV_PROP_COLOR_GAIN
-prPTP_DEV_PROP_SHARPNESS
-prPTP_DEV_PROP_SENSITIVITY
-prPTP_DEV_PROP_PARAMETER_SET
-//prPTP_DEV_PROP_FOCAL_LENGTH
-//prPTP_DEV_PROP_FOCAL_LENGTH_TELE
-//prPTP_DEV_PROP_FOCAL_LENGTH_WIDE
-//prPTP_DEV_PROP_FOCAL_LENGTH_DENOMI
-#endif
+   {
+      prPTP_DEV_PROP_SENSITIVITY,
+      {
+         { 0, _T("Standard") },
+         { 1, _T("Upper 1") },
+         { 2, _T("Upper 2") },
+         { 0xFF, _T("Invalid") },
+         { 0, nullptr }
+      }
+   },
+
+   {
+      prPTP_DEV_PROP_PARAMETER_SET,
+      {
+         { 0x0008, _T("Standard Development Parameters") },
+         { 0x0010, _T("Development Parameters 1") },
+         { 0x0020, _T("Development Parameters 2") },
+         { 0x0040, _T("Development Parameters 3") },
+         { 0xffff, _T("Invalid") },
+         { 0, nullptr }
+      }
+   },
 
    {
       prPTP_DEV_PROP_CAPTURE_TRANSFER_MODE,
       {
-         // TODO G9 lists 1, 2, 3, 8..15
+         // G9 lists 1, 2, 3, 8..15
          { 0x0000, _T("Not defined") },
-         { 0x0002, _T("Transfer Entire Image to PC") },
+         { 0x0001, _T("Transfer Thumbnail Image to PC") },
+         { 0x0002, _T("Transfer Full Image to PC") },
+         { 0x0003, _T("Transfer Thumbnail + Full Image to PC") },
          { 0x0004, _T("Save Thumbnail Image to Device") },
-         { 0x0008, _T("Save Entire Image to Device") },
+         { 0x0008, _T("Save Full Image to Device") },
          { 0, nullptr }
       }
    },
 
-#if 0
-prPTP_DEV_PROP_ZOOM_POS
-//prPTP_DEV_PROP_SUPPORTED_SIZE
-//prPTP_DEV_PROP_SUPPORTED_THUMB_SIZE
-//prPTP_DEV_PROP_CAMERA_TIME
-#endif
    {
       prPTP_DEV_PROP_CAMERA_OUTPUT,
       {
          { 0x0000, _T("Not defined") },
          { 0x0001, _T("LCD") },
-         { 0x0002, _T("Video OUT") },
+         { 0x0002, _T("Video Out") },
          { 0x0003, _T("Off") },
          { 0, nullptr }
       }
@@ -381,11 +405,16 @@ prPTP_DEV_PROP_ZOOM_POS
          { 0, nullptr }
       }
    },
-#if 0
-//
-//prPTP_DEV_PROP_EZOOM_SIZE
-prPTP_DEV_PROP_ML_SPOT_POS
-#endif
+
+   {
+      prPTP_DEV_PROP_ML_SPOT_POS,
+      {
+         { 0, _T("Center") }, // MlSpotPosCenter
+         { 1, _T("AutoFocus") }, // MlSpotPosAfLink
+         { 0, nullptr }
+      }
+   },
+
    {
       prPTP_DEV_PROP_DISP_AV_MAX,
       {
@@ -394,13 +423,20 @@ prPTP_DEV_PROP_ML_SPOT_POS
          { 0, nullptr }
       }
    },
-#if 0
 
-//prPTP_DEV_PROP_EZOOM_START_POS
-//prPTP_DEV_PROP_FOCAL_LENGTH_OF_TELE
-//prPTP_DEV_PROP_EZOOM_SIZE_OF_TELE
-prPTP_DEV_PROP_PHOTO_EFFECT
-#endif
+   {
+      prPTP_DEV_PROP_PHOTO_EFFECT,
+      {
+         { 0x0000, _T("Off") },
+         { 0x0001, _T("Vivid") },
+         { 0x0002, _T("Neutral") },
+         { 0x0003, _T("Soft") },
+         { 0x0004, _T("Sepia") },
+         { 0x0005, _T("Monochrome") },
+         { 0, nullptr }
+      }
+   },
+
    {
       prPTP_DEV_PROP_AF_LIGHT,
       {
@@ -410,9 +446,6 @@ prPTP_DEV_PROP_PHOTO_EFFECT
       }
    },
 
-#if 0
-//prPTP_DEV_PROP_FLASH_QUANTITY
-#endif
    {
       prPTP_DEV_PROP_ROTATION_ANGLE,
       {
@@ -435,10 +468,260 @@ prPTP_DEV_PROP_PHOTO_EFFECT
       }
    },
 
-#if 0
-prPTP_DEV_PROP_IMEGE_FILE_SIZE
-#endif
+   {
+      // this is not really a property supported by PSREC, but the image formats for
+      // a subfield of the data returned by the prPTP_DEV_PROP_SUPPORTED_SIZE property.
+      // See PSReCSDK110eUserGuide.doc for details.
+      prPTP_DEV_PROP_SUPPORTED_SIZE_META_IMAGEFORMAT,
+      {
+         { 0x00000000, _T("Not defined") },
+         { 0x00000001, _T("JPEG SuperFine Large") },
+         { 0x00000002, _T("JPEG SuperFine Middle1") },
+         { 0x00000003, _T("JPEG SuperFine Middle2") },
+         { 0x00000004, _T("JPEG SuperFine Middle") },
+         { 0x00000005, _T("JPEG SuperFine Small") },
+         { 0x00000006, _T("JPEG Fine Large") },
+         { 0x00000007, _T("JPEG Fine Middle1") },
+         { 0x00000008, _T("JPEG Fine Middle2") },
+         { 0x00000009, _T("JPEG Fine Middle") },
+         { 0x0000000A, _T("JPEG Fine Small") },
+         { 0x0000000B, _T("JPEG Normal Large") },
+         { 0x0000000C, _T("JPEG Normal Middle1") },
+         { 0x0000000D, _T("JPEG Normal Middle2") },
+         { 0x0000000E, _T("JPEG Normal Middle") },
+         { 0x0000000F, _T("JPEG Normal Small") },
+         { 0x00000010, _T("CRW Large") },
+         { 0x00000011, _T("JPEG SuperFine Middle3") },
+         { 0x00000012, _T("JPEG Fine Middle3") },
+         { 0x00000013, _T("JPEG Normal Middle3") },
+         { 0x00000014, _T("CR2 Large") },
+         { 0, nullptr }
+      }
+   }
 };
+
+Variant DeviceValueParser::ReadValue(prUInt16 uiDataType)
+{
+   Variant v;
+
+   switch (uiDataType)
+   {
+   case 0x0001: v.Set<prInt8>(ReadUint8());     v.SetType(Variant::typeInt8); break;
+   case 0x0002: v.Set<prUInt8>(ReadUint8());    v.SetType(Variant::typeUInt8); break;
+   case 0x0003: v.Set<prInt16>(ReadUint16());   v.SetType(Variant::typeInt16); break;
+   case 0x0004: v.Set<prUInt16>(ReadUint16());  v.SetType(Variant::typeUInt16); break;
+   case 0x0005: v.Set<prInt32>(ReadUint32());   v.SetType(Variant::typeInt32); break;
+   case 0x0006: v.Set<unsigned int>(ReadUint32());  v.SetType(Variant::typeUInt32); break; // prUInt32
+   case 0x4002: v.SetArray<prUInt8>(ReadUint8Array()); v.SetType(Variant::typeUInt8); break; // prUInt8 array
+   case 0x4004: v.SetArray<prUInt16>(ReadUint16Array()); v.SetType(Variant::typeUInt16); break; // prUInt16 array
+   case 0x4006: v.SetArray<unsigned int>(ReadUint32Array()); v.SetType(Variant::typeUInt32); break; // prUInt32 array
+   case 0xFFFF: // string
+      v.Set<CString>(ReadString());
+      v.SetType(Variant::typeString);
+      break;
+
+   default:
+      ATLASSERT(false);
+      break;
+   }
+
+   return v;
+}
+
+DevicePropDesc::DevicePropDesc(prHandle hCamera, prUInt16 propId, bool bParseValues)
+:m_uiDevicePropCode(0),
+m_uiDataType(0),
+m_uiGetSet(0),
+m_uiFormat(0),
+m_bParseValues(bParseValues)
+{
+   // determine size
+   prUInt32 uiSize = 0;
+   prResponse err = PR_GetDevicePropDesc(hCamera, propId, &uiSize, nullptr);
+
+   if ((err & prERROR_ERRORID_MASK) != prINSUFFICIENT_BUFFER)
+   {
+      LOG_TRACE(_T("PR_GetDevicePropDesc(handle = %08x, propid = %04x, 0, nullptr) returned %08x, buffer size %u\n"),
+         hCamera, propId, err, uiSize);
+      CheckError(_T("PR_GetDevicePropDesc"), err, __FILE__, __LINE__);
+   }
+
+   if (uiSize == 0)
+      return;
+
+   std::vector<BYTE>& vecBuffer = GetBuffer();
+   vecBuffer.resize(uiSize);
+
+   prVoid* pDevicePropDesc = reinterpret_cast<prVoid*>(&vecBuffer[0]);
+
+   // may return prINVALID_FN_CALL, prINVALID_HANDLE, prINVALID_PARAMETER, prMEM_ALLOC_FAILED, prINSUFFICIENT_BUFFER or @ERR
+   err = PR_GetDevicePropDesc(hCamera, propId, &uiSize, pDevicePropDesc);
+   LOG_TRACE(_T("PR_GetDevicePropDesc(handle = %08x, propId = %04x, size = %u, buffer) returned %08x\n"),
+      hCamera, propId, uiSize, err);
+   CheckError(_T("PR_GetDevicePropDesc"), err, __FILE__, __LINE__);
+
+   Parse();
+}
+
+void DevicePropDesc::Parse()
+{
+   m_uiDevicePropCode = ReadUint16();
+   m_uiDataType = ReadUint16();
+   m_uiGetSet = ReadUint8();
+
+   // factory default
+   m_varDefaultValue = ReadValue(m_uiDataType);
+
+   // current value
+   m_varCurrentValue = ReadValue(m_uiDataType);
+
+   if (!m_bParseValues)
+      return; // stop parsing
+
+   // format flag
+   m_uiFormat = ReadUint8();
+
+   // settable values
+   if (m_uiFormat == 0)
+      return;
+
+   // read form data
+   if (m_uiFormat == 1)
+   {
+      // range form
+      Variant varMinValue = ReadValue(m_uiDataType);
+      Variant varMaxValue = ReadValue(m_uiDataType);
+      Variant varStepSize = ReadValue(m_uiDataType);
+
+      if (varMinValue.Type() == Variant::typeUInt16)
+      {
+         prUInt16 uiMin = varMinValue.Get<prUInt16>();
+         prUInt16 uiMax = varMaxValue.Get<prUInt16>();
+         prUInt16 uiStep = varStepSize.Get<prUInt16>();
+
+         for (prUInt16 ui = uiMin; ui<uiMax; ui += uiStep)
+         {
+            Variant val;
+            val.Set<prUInt16>(ui);
+            val.SetType(Variant::typeUInt16);
+
+            m_vecAllValues.push_back(val);
+         }
+      }
+      else
+      {
+         ATLASSERT(false); // not implemented
+
+         // TODO add all values in between
+         m_vecAllValues.push_back(varMinValue);
+         m_vecAllValues.push_back(varMaxValue);
+      }
+   }
+   else
+   if (m_uiFormat == 2)
+   {
+      // enum form
+      prUInt16 uiCount = ReadUint16();
+      for (prUInt16 ui = 0; ui<uiCount; ui++)
+      {
+         Variant varValue = ReadValue(m_uiDataType);
+         m_vecAllValues.push_back(varValue);
+      }
+   }
+   else
+      throw Exception(_T("unknown FORM format in device property desc data"), __FILE__, __LINE__);
+}
+
+void DevicePropDesc::CreateValueData(Variant v, std::vector<BYTE>& vecValueData)
+{
+   switch (v.Type())
+   {
+   case Variant::typeInt8:
+      vecValueData.push_back(static_cast<BYTE>(v.Get<prInt8>()));
+      break;
+
+   case Variant::typeUInt8:
+      vecValueData.push_back(v.Get<prUInt8>());
+      break;
+
+   case Variant::typeInt16:
+   {
+      prUInt16 val = static_cast<prUInt16>(v.Get<prInt16>());
+      vecValueData.push_back(static_cast<BYTE>(val & 0xff));
+      vecValueData.push_back(static_cast<BYTE>((val >> 8) & 0xff));
+   }
+      break;
+
+   case Variant::typeUInt16:
+   {
+      prUInt16 val = v.Get<prUInt16>();
+      vecValueData.push_back(static_cast<BYTE>(val & 0xff));
+      vecValueData.push_back(static_cast<BYTE>((val >> 8) & 0xff));
+   }
+      break;
+
+   case Variant::typeInt32:
+   {
+      prUInt32 val = static_cast<prUInt32>(v.Get<prInt32>());
+      vecValueData.push_back(static_cast<BYTE>(val & 0xff));
+      vecValueData.push_back(static_cast<BYTE>((val >> 8) & 0xff));
+      vecValueData.push_back(static_cast<BYTE>((val >> 16) & 0xff));
+      vecValueData.push_back(static_cast<BYTE>((val >> 24) & 0xff));
+   }
+      break;
+
+   case Variant::typeUInt32:
+   {
+      prUInt32 val = v.Get<prUInt32>();
+      vecValueData.push_back(static_cast<BYTE>(val & 0xff));
+      vecValueData.push_back(static_cast<BYTE>((val >> 8) & 0xff));
+      vecValueData.push_back(static_cast<BYTE>((val >> 16) & 0xff));
+      vecValueData.push_back(static_cast<BYTE>((val >> 24) & 0xff));
+   }
+      break;
+
+   default:
+      ATLASSERT(false);
+      break;
+   }
+}
+
+Variant PropertyAccess::Get(prUInt16 propId) const
+{
+   // special case: image format
+   if (propId == PSREC_PROP_IMAGE_FORMAT)
+      return GetImageFormatProperty();
+
+   // must not be "available shots"; already handled in GetImageProperty()
+   ATLASSERT(propId != PSREC_PROP_AVAILABLE_SHOTS);
+
+   // Note: we could use PR_GetDevicePropValue here, but we have to call
+   // PR_GetDevicePropDesc anyway, to find out data type; so we just use
+   // the current value field then.
+   DevicePropDesc desc(m_hCamera, propId, false);
+   return desc.m_varCurrentValue;
+}
+void PropertyAccess::Set(prUInt16 propId, Variant v)
+{
+   // first, get type and size of property
+   DevicePropDesc desc(m_hCamera, propId, false);
+
+   if (!desc.IsSetAllowed())
+      throw Exception(_T("PSREC::PropertyAccess::Set: property is read-only"), __FILE__, __LINE__);
+
+   std::vector<BYTE> vecValueData;
+   desc.CreateValueData(v, vecValueData);
+
+   prUInt32 uiSize = static_cast<prUInt32>(vecValueData.size());
+   prVoid* pDeviceProperty = &vecValueData[0];
+
+   // may return prINVALID_FN_CALL, prINVALID_HANDLE, prINVALID_PARAMETER, prMEM_ALLOC_FAILED or @ERR
+   prResponse err = PR_SetDevicePropValue(m_hCamera, propId, uiSize, pDeviceProperty);
+
+   LOG_TRACE(_T("PR_SetDevicePropValue(handle = %08x, propid = %04x, size = %u, buffer) returned %08x\n"),
+      m_hCamera, propId, uiSize, err);
+   CheckError(_T("PR_SetDevicePropValue"), err, __FILE__, __LINE__);
+}
 
 Variant PropertyAccess::GetImageFormatProperty() const
 {
@@ -457,9 +740,83 @@ Variant PropertyAccess::GetImageFormatProperty() const
    return value;
 }
 
+LPCTSTR PropertyAccess::NameFromId(prUInt16 propertyId) throw()
+{
+   LPCTSTR pszName = _T("???");
+   switch (propertyId)
+   {
+   case prPTP_DEV_PROP_BUZZER: pszName = _T("Device buzzer on/off"); break;
+   case prPTP_DEV_PROP_BATTERY_KIND: pszName = _T("Battery type"); break;
+   case prPTP_DEV_PROP_BATTERY_STATUS: pszName = _T("Battery status"); break;
+   case prPTP_DEV_PROP_COMP_QUALITY: pszName = _T("Image quality"); break;
+   case prPTP_DEV_PROP_FULLVIEW_FILE_FORMAT: pszName = _T("Image type"); break;
+   case prPTP_DEV_PROP_IMAGE_SIZE: pszName = _T("Image size"); break;
+   case prPTP_DEV_PROP_SELFTIMER: pszName = _T("Self-timer"); break;
+   case prPTP_DEV_PROP_STROBE_SETTING: pszName = _T("Strobe setting"); break;
+   case prPTP_DEV_PROP_BEEP: pszName = _T("Buzzer setting"); break;
+   case prPTP_DEV_PROP_EXPOSURE_MODE: pszName = _T("Exposure mode setting"); break;
+   case prPTP_DEV_PROP_IMAGE_MODE: pszName = _T("Image mode setting"); break;
+   case prPTP_DEV_PROP_DRIVE_MODE: pszName = _T("Drive mode"); break;
+   case prPTP_DEV_PROP_EZOOM: pszName = _T("Electonic zoom setting"); break;
+   case prPTP_DEV_PROP_ML_WEI_MODE: pszName = _T("Metering method"); break;
+   case prPTP_DEV_PROP_AF_DISTANCE: pszName = _T("Search range in AF mode"); break;
+   case prPTP_DEV_PROP_FOCUS_POINT_SETTING: pszName = _T("Selection mode for focusing point"); break;
+   case prPTP_DEV_PROP_WB_SETTING: pszName = _T("White balance setting"); break;
+   case prPTP_DEV_PROP_SLOW_SHUTTER_SETTING: pszName = _T("Slow Shutter setting"); break;
+   case prPTP_DEV_PROP_AF_MODE: pszName = _T("Auto focus mode setting"); break;
+   case prPTP_DEV_PROP_IMAGE_STABILIZATION: pszName = _T("Image stabilization processing"); break;
+   case prPTP_DEV_PROP_CONTRAST: pszName = _T("Contrast"); break;
+   case prPTP_DEV_PROP_COLOR_GAIN: pszName = _T("Color Compensation"); break;
+   case prPTP_DEV_PROP_SHARPNESS: pszName = _T("Sharpness"); break;
+   case prPTP_DEV_PROP_SENSITIVITY: pszName = _T("Sensitivity"); break;
+   case prPTP_DEV_PROP_PARAMETER_SET: pszName = _T("Development parameter setting"); break;
+   case prPTP_DEV_PROP_ISO: pszName = _T("ISO value"); break;
+   case prPTP_DEV_PROP_AV: pszName = _T("Av value"); break;
+   case prPTP_DEV_PROP_TV: pszName = _T("Tv value"); break;
+   case prPTP_DEV_PROP_EXPOSURE_COMP: pszName = _T("Exposure compensation value"); break;
+   case prPTP_DEV_PROP_FLASH_COMP: pszName = _T("Flash exposure compensation value"); break;
+   case prPTP_DEV_PROP_AEB_EXPOSURE_COMP: pszName = _T("AEB exposure compensation value"); break;
+   case prPTP_DEV_PROP_AV_OPEN: pszName = _T("Open aperture value"); break;
+   case prPTP_DEV_PROP_AV_MAX: pszName = _T("Maximum aperture value"); break;
+   case prPTP_DEV_PROP_FOCAL_LENGTH: pszName = _T("Current focal distance multiplied by FocalLengthDenominator"); break;
+   case prPTP_DEV_PROP_FOCAL_LENGTH_TELE: pszName = _T("Telescopic focal length multiplied by FocalLengthDenominator"); break;
+   case prPTP_DEV_PROP_FOCAL_LENGTH_WIDE: pszName = _T("Wide-angle focus length multiplied by FocalLengthDenominator"); break;
+   case prPTP_DEV_PROP_FOCAL_LENGTH_DENOMI: pszName = _T("Focal length multiplier value"); break;
+   case prPTP_DEV_PROP_CAPTURE_TRANSFER_MODE: pszName = _T("Image transfer mode at capture"); break;
+   case prPTP_DEV_PROP_ZOOM_POS: pszName = _T("Current zoom position"); break;
+   case prPTP_DEV_PROP_SUPPORTED_SIZE: pszName = _T("Image size supported by the camera"); break;
+   case prPTP_DEV_PROP_SUPPORTED_THUMB_SIZE: pszName = _T("Thumbnail size supported by the camera"); break;
+   case prPTP_DEV_PROP_FIRMWARE_VERSION: pszName = _T("Version of the camera device firmware"); break;
+   case prPTP_DEV_PROP_CAMERA_MODEL_NAME: pszName = _T("Camera model"); break;
+   case prPTP_DEV_PROP_OWNER_NAME: pszName = _T("Owner name"); break;
+   case prPTP_DEV_PROP_CAMERA_TIME: pszName = _T("Camera time"); break;
+   case prPTP_DEV_PROP_CAMERA_OUTPUT: pszName = _T("Destination of image signal output in the Viewfinder mode"); break;
+   case prPTP_DEV_PROP_DISP_AV: pszName = _T("How to display the Av value"); break;
+   case prPTP_DEV_PROP_AV_OPEN_APEX: pszName = _T("Open aperture value"); break;
+   case prPTP_DEV_PROP_EZOOM_SIZE: pszName = _T("Horizontal size of image to be cut out from CCD image using electronic zoom"); break;
+   case prPTP_DEV_PROP_ML_SPOT_POS: pszName = _T("Spot metering position"); break;
+   case prPTP_DEV_PROP_DISP_AV_MAX: pszName = _T("How to display the maximum Av value"); break;
+   case prPTP_DEV_PROP_AV_MAX_APEX: pszName = _T("Maximum Av value"); break;
+   case prPTP_DEV_PROP_EZOOM_START_POS: pszName = _T("Zoom position at which the electronic zoom range starts"); break;
+   case prPTP_DEV_PROP_FOCAL_LENGTH_OF_TELE: pszName = _T("Focal distance at the optical telescopic end"); break;
+   case prPTP_DEV_PROP_EZOOM_SIZE_OF_TELE: pszName = _T("Horizontal size of image to be cut out from CCD image at the telescopic end of the electronic zoom range"); break;
+   case prPTP_DEV_PROP_PHOTO_EFFECT: pszName = _T("Photo effect"); break;
+   case prPTP_DEV_PROP_AF_LIGHT: pszName = _T("AF assist light"); break;
+   case prPTP_DEV_PROP_FLASH_QUANTITY: pszName = _T("Number of flash levels that can be set in the manual mode"); break;
+   case prPTP_DEV_PROP_ROTATION_ANGLE: pszName = _T("Rotation angle"); break;
+   case prPTP_DEV_PROP_ROTATION_SENCE: pszName = _T("Gravity sensor on/off"); break;
+   case prPTP_DEV_PROP_IMEGE_FILE_SIZE: pszName = _T("Image file size supported by the camera"); break;
+   case prPTP_DEV_PROP_CAMERA_MODEL_ID: pszName = _T("Camera model ID"); break;
+   case PSREC_PROP_IMAGE_FORMAT: pszName = _T("Image format"); break;
+   case PSREC_PROP_AVAILABLE_SHOTS: pszName = _T("Available shots"); break;
+   }
+
+   return pszName;
+}
+
 CString PropertyAccess::DisplayTextFromIdAndValue(prUInt16 propertyId, Variant value)
 {
-   switch(propertyId)
+   switch (propertyId)
    {
    case prPTP_DEV_PROP_SELFTIMER:
       {
@@ -505,6 +862,75 @@ CString PropertyAccess::DisplayTextFromIdAndValue(prUInt16 propertyId, Variant v
          return cszText;
       }
       break;
+
+   case prPTP_DEV_PROP_SUPPORTED_SIZE:
+      return FormatPropSupportedSize(value);
+
+   case prPTP_DEV_PROP_SUPPORTED_THUMB_SIZE:
+      {
+         std::vector<unsigned int> vecThumbSizeInfo = value.GetArray<unsigned int>();
+         if (vecThumbSizeInfo.size() < 4)
+            return _T("invalid data");
+
+         CString cszText;
+         cszText.Format(_T("Left:%u Right:%u Top:%u Bottom:%u"),
+            vecThumbSizeInfo[1],
+            vecThumbSizeInfo[2],
+            vecThumbSizeInfo[3],
+            vecThumbSizeInfo[0]);
+
+         return cszText;
+      }
+
+   case prPTP_DEV_PROP_CAMERA_TIME:
+      return FormatDateTimeEpochUTC(value);
+
+   case prPTP_DEV_PROP_FOCAL_LENGTH:
+   case prPTP_DEV_PROP_FOCAL_LENGTH_TELE:
+   case prPTP_DEV_PROP_FOCAL_LENGTH_WIDE:
+   case prPTP_DEV_PROP_FOCAL_LENGTH_DENOMI:
+   case prPTP_DEV_PROP_FOCAL_LENGTH_OF_TELE:
+      {
+         unsigned int uiValue = GetUnsignedIntValue(value);
+         CString cszText;
+         cszText.Format(_T("%u mm"), uiValue);
+         return cszText;
+      }
+
+   case prPTP_DEV_PROP_ZOOM_POS:
+   case prPTP_DEV_PROP_EZOOM_SIZE:
+   case prPTP_DEV_PROP_EZOOM_SIZE_OF_TELE:
+   case prPTP_DEV_PROP_EZOOM_START_POS:
+      {
+         unsigned int uiValue = GetUnsignedIntValue(value);
+         CString cszText;
+         cszText.Format(_T("%u"), uiValue);
+         return cszText;
+      }
+
+   case prPTP_DEV_PROP_FLASH_QUANTITY:
+      {
+         unsigned int uiValue = GetUnsignedIntValue(value);
+
+         CString cszText;
+         if (uiValue == 0xffff)
+            cszText = _T("N/A");
+         else
+            cszText.Format(_T("%u"), uiValue);
+
+         return cszText;
+      }
+
+   case prPTP_DEV_PROP_IMEGE_FILE_SIZE:
+      {
+         std::vector<unsigned int> vecFileSizes = value.GetArray<unsigned int>();
+
+         CString cszText;
+         for (size_t i = 0, iMax = vecFileSizes.size(); i < iMax; i++)
+            cszText.AppendFormat(_T("%u kb, "), vecFileSizes[i] / 1024);
+         cszText.TrimRight(_T(", "));
+         return cszText;
+      }
 
    case PSREC_PROP_IMAGE_FORMAT:
       return FormatImageFormatValue(value);
@@ -557,4 +983,37 @@ CString PropertyAccess::FormatImageFormatValue(const Variant& value)
    }
 
    return cszText1 + _T(" ") + cszText2;
+}
+
+CString PropertyAccess::FormatPropSupportedSize(const Variant& value)
+{
+   std::vector<unsigned int> vecSizeInfo = value.GetArray<unsigned int>();
+   if (vecSizeInfo.size() < 6)
+      return _T("invalid data");
+
+   CString cszFormatImage;
+
+   Variant imageFormat;
+   imageFormat.Set(vecSizeInfo[2]);
+   imageFormat.SetType(Variant::typeUInt32);
+
+   FormatValueById(g_aPropIdDisplayInfo, sizeof(g_aPropIdDisplayInfo) / sizeof(*g_aPropIdDisplayInfo),
+      prPTP_DEV_PROP_SUPPORTED_SIZE_META_IMAGEFORMAT, imageFormat, cszFormatImage);
+
+   CString cszFormatThumb;
+   imageFormat.Set(vecSizeInfo[5]);
+
+   FormatValueById(g_aPropIdDisplayInfo, sizeof(g_aPropIdDisplayInfo) / sizeof(*g_aPropIdDisplayInfo),
+      prPTP_DEV_PROP_SUPPORTED_SIZE_META_IMAGEFORMAT, imageFormat, cszFormatThumb);
+
+   CString cszText;
+   cszText.Format(_T("Image:%ux%u (%s), Thumb:%ux%u (%s)"),
+      vecSizeInfo[0],
+      vecSizeInfo[1],
+      cszFormatImage.GetString(),
+      vecSizeInfo[3],
+      vecSizeInfo[4],
+      cszFormatThumb.GetString());
+
+   return cszText;
 }

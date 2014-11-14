@@ -9,7 +9,6 @@ use crash reporter in worker threads, too
 
 PSREC
 -----
-implement display text for all properties
 implement AF Lock -> shutter half press to focus
 implement new state events in T_enStateEvent
 support focus lock, PR_RC_FocusLock
