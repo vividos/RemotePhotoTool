@@ -89,6 +89,22 @@ void CameraInfoDlg::CollectDeviceProperties(CString& cszText)
 
          cszText.AppendFormat(_T("Property %s (%08x): [%s]\n"),
             p.Name().GetString(), uiPropertyId, p.AsString().GetString());
+
+         try
+         {
+            std::vector<Variant> vecValues = p.ValidValues();
+            for (size_t i = 0, iMax = vecValues.size(); i < iMax; i++)
+            {
+               cszText.AppendFormat(_T("   Valid value: %s (%s)\n"),
+                  p.ValueAsString(vecValues[i]).GetString(),
+                  vecValues[i].ToString().GetString());
+            }
+         }
+         catch (CameraException& ex)
+         {
+            cszText.AppendFormat(_T("Error while enumerating device property values for %08x: %s\n"),
+               uiPropertyId, ex.Message().GetString());
+         }
       }
       catch(CameraException& ex)
       {
@@ -180,7 +196,7 @@ void CameraInfoDlg::CollectImageProperties(std::shared_ptr<RemoteReleaseControl>
          }
          catch (CameraException& ex)
          {
-            cszText.AppendFormat(_T("Error while enumerating device property values for %08x: %s\n"),
+            cszText.AppendFormat(_T("Error while enumerating image property values for %08x: %s\n"),
                uiPropertyId, ex.Message().GetString());
          }
       }
