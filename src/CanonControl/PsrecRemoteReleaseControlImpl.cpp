@@ -83,9 +83,7 @@ RemoteReleaseControlImpl::RemoteReleaseControlImpl(prHandle hCamera, std::shared
    LOG_TRACE(_T("PR_SetEventCallBack(%08x, this, OnCameraEvent) returned %08x\n"), hCamera, err);
    CheckError(_T("PR_SetEventCallBack"), err, __FILE__, __LINE__);
 
-   // get device info from source device so that we don't have to query every time
-   //m_spDeviceInfo = spSourceDevice->GetDeviceInfo();
-   // get device info again; when in remote release control, the list contains changeable properties
+   // get device info again; when in remote release control, the list also contains changeable properties
    m_spDeviceInfo.reset(new DeviceInfo(m_hCamera));
 }
 
@@ -169,6 +167,83 @@ bool RemoteReleaseControlImpl::GetCapability(RemoteReleaseControl::T_enRemoteCap
    return false;
 }
 
+unsigned int RemoteReleaseControlImpl::MapImagePropertyTypeToId(T_enImagePropertyType enImagePropertyType) const
+{
+   switch (enImagePropertyType)
+   {
+   case propShootingMode:     return prPTP_DEV_PROP_EXPOSURE_MODE;
+   case propDriveMode:        return prPTP_DEV_PROP_DRIVE_MODE;
+   case propISOSpeed:         return prPTP_DEV_PROP_ISO;
+   case propMeteringMode:     return prPTP_DEV_PROP_ML_WEI_MODE;
+   case propAFMode:           return prPTP_DEV_PROP_AF_MODE;
+   case propAv:               return prPTP_DEV_PROP_AV;
+   case propTv:               return prPTP_DEV_PROP_TV;
+   case propExposureCompensation: return prPTP_DEV_PROP_EXPOSURE_COMP;
+   case propFlashExposureComp: return prPTP_DEV_PROP_FLASH_COMP;
+   case propFocalLength:      return prPTP_DEV_PROP_FOCAL_LENGTH;
+   case propFlashMode:        return prPTP_DEV_PROP_STROBE_SETTING;
+   case propWhiteBalance:     return prPTP_DEV_PROP_WB_SETTING;
+   case propAFDistance:       return prPTP_DEV_PROP_AF_DISTANCE;
+   case propCurrentZoomPos:   return prPTP_DEV_PROP_ZOOM_POS;
+   case propMaxZoomPos:       return prPTP_DEV_PROP_EZOOM_START_POS; // start of electronic zoom is max. zoom pos
+   case propAvailableShots:   return PSREC_PROP_AVAILABLE_SHOTS;
+   case propSaveTo:           return prPTP_DEV_PROP_CAPTURE_TRANSFER_MODE;
+   case propBatteryLevel:     return prPTP_DEV_PROP_BATTERY_STATUS;
+   case propImageFormat:      return PSREC_PROP_IMAGE_FORMAT;
+   default:
+      ATLASSERT(false); // unknown type
+      break;
+   }
+   return 0;
+}
+
+ImageProperty RemoteReleaseControlImpl::MapShootingModeToImagePropertyValue(RemoteReleaseControl::T_enShootingMode enShootingMode) const
+{
+   prUInt8 uiValue = 0;
+   switch (enShootingMode)
+   {
+   case RemoteReleaseControl::shootingModeP:    uiValue = 0x01; break;
+   case RemoteReleaseControl::shootingModeTv:   uiValue = 0x02; break;
+   case RemoteReleaseControl::shootingModeAv:   uiValue = 0x03; break;
+   case RemoteReleaseControl::shootingModeM:    uiValue = 0x04; break;
+   default:
+      ATLASSERT(false);
+      break;
+   }
+
+   Variant value;
+   value.Set(uiValue);
+   value.SetType(Variant::typeUInt8);
+
+   return ImageProperty(variantPsrec, prPTP_DEV_PROP_EXPOSURE_MODE, value, false);
+}
+
+ImageProperty RemoteReleaseControlImpl::GetImageProperty(unsigned int uiImageProperty) const
+{
+   if (uiImageProperty == PSREC_PROP_IMAGE_FORMAT)
+   {
+      PropertyAccess access(m_hCamera);
+      Variant value = access.GetImageFormatProperty();
+
+      return ImageProperty(variantPsrec, uiImageProperty, value, true);
+   }
+
+   if (uiImageProperty == PSREC_PROP_AVAILABLE_SHOTS)
+   {
+      Variant value;
+      value.Set<unsigned int>(NumAvailableShots());
+      value.SetType(Variant::typeUInt32);
+
+      return ImageProperty(variantPsrec, uiImageProperty, value, true);
+   }
+
+   DevicePropDesc desc(m_hCamera, static_cast<prUInt16>(uiImageProperty), false);
+
+   // return in image property object
+   ImageProperty ip(variantPsrec, uiImageProperty, desc.m_varCurrentValue, !desc.IsSetAllowed());
+   return ip;
+}
+
 std::vector<unsigned int> RemoteReleaseControlImpl::EnumImageProperties() const
 {
    ATLASSERT(m_spDeviceInfo != nullptr);
@@ -183,17 +258,25 @@ std::vector<unsigned int> RemoteReleaseControlImpl::EnumImageProperties() const
       // filter out ids already in device properties
       if (parentInfo.m_setDevicePropertiesSupported.find(uiPropId) == parentInfo.m_setDevicePropertiesSupported.end())
          vecProperties.push_back(uiPropId);
-      else
-      {
-         LOG_TRACE(_T("image property ignored, already in device properties: %04x, %s\n"),
-            uiPropId,
-            PSREC::PropertyAccess::NameFromId(uiPropId));
-      }
    });
+
    vecProperties.push_back(PSREC_PROP_IMAGE_FORMAT);
    vecProperties.push_back(PSREC_PROP_AVAILABLE_SHOTS);
 
    return vecProperties;
+}
+
+unsigned int RemoteReleaseControlImpl::NumAvailableShots() const
+{
+   prUInt32 uiAvailShots = 0;
+
+   // may return prINVALID_FN_CALL, prINVALID_HANDLE, prMEM_ALLOC_FAILED, prINVALID_PARAMETER or @ERR
+   prResponse err = PR_RC_GetNumAvailableShot(m_hCamera, &uiAvailShots);
+
+   LOG_TRACE(_T("PR_RC_GetNumAvailableShot(%08x, &shots = %u) returned %08x\n"), m_hCamera, uiAvailShots, err);
+   CheckError(_T("PR_RC_GetNumAvailableShot"), err, __FILE__, __LINE__);
+
+   return uiAvailShots;
 }
 
 void RemoteReleaseControlImpl::SendCommand(RemoteReleaseControl::T_enCameraCommand enCameraCommand)
@@ -284,8 +367,8 @@ LPCTSTR RemoteReleaseControlImpl::EventNameFromCode(prUInt16 uiEventCode) throw(
    {
    case prPTP_DEVICE_PROP_CHANGED: return _T("Device property has been changed.");
    case prPTP_CAPTURE_COMPLETE: return _T("Capture has finished.");
-   case prPTP_SHUTDOWN_CF_GATE_WAS_OPENED: return _T("The Device has shut down due to the opening of the SD card cover.");
-   case prPTP_RESET_HW_ERROR: return _T("The device has generated a hardware error.");
+   case prPTP_SHUTDOWN_CF_GATE_WAS_OPENED: return _T("The camera has shut down due to the opening of the SD card cover.");
+   case prPTP_RESET_HW_ERROR: return _T("The camera has generated a hardware error.");
    case prPTP_ABORT_PC_EVF: return _T("The Viewfinder mode has been cancelled.");
    case prPTP_ENABLE_PC_EVF: return _T("The Viewfinder mode has been enabled.");
    case prPTP_FULL_VIEW_RELEASED: return _T("Transfer timing of main image data");
@@ -380,12 +463,9 @@ void RemoteReleaseControlImpl::OnCameraEvent(const CameraEventData& eventData)
          ATLASSERT(eventData.m_vecParams.size() >= 1);
 
          prObjectHandle hObject = static_cast<prObjectHandle>(eventData.m_vecParams[0]);
-         //bool bFullView = prPTP_FULL_VIEW_RELEASED == eventData.m_uiEventCode;
 
          m_hReleaseImage = hObject;
          m_evtReleaseImageReady.Set();
-
-         //StartImageDownload(hObject, bFullView);
       }
       break;
 
@@ -530,7 +610,7 @@ void RemoteReleaseControlImpl::OnEventStateChanged(prUInt16 code) throw()
       enStateEvent = RemoteReleaseControl::stateEventMemoryCardSlotOpen;
       break;
    case prPTP_RESET_HW_ERROR:
-      enStateEvent = RemoteReleaseControl::stateEventCameraShutdown;
+      enStateEvent = RemoteReleaseControl::stateEventInternalError;
       break;
    case prPTP_RC_ROTATION_ANGLE_CHANGED:
       enStateEvent = RemoteReleaseControl::stateEventRotationAngle;

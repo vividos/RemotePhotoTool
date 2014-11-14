@@ -42,8 +42,6 @@ public:
    {
       LightweightMutex::LockType lock(m_mtxShutterReleaseSettings);
       m_shutterReleaseSettings = settings;
-
-      // TODO write to camera
    }
 
    virtual int AddPropertyEventHandler(RemoteReleaseControl::T_fnOnPropertyChanged fnOnPropertyChanged) override
@@ -76,82 +74,11 @@ public:
       m_subjectDownloadEvent.Remove(iHandlerId);
    }
 
-   virtual unsigned int MapImagePropertyTypeToId(T_enImagePropertyType enImagePropertyType) const override
-   {
-      switch (enImagePropertyType)
-      {
-      case propShootingMode:     return prPTP_DEV_PROP_EXPOSURE_MODE;
-      case propDriveMode:        return prPTP_DEV_PROP_DRIVE_MODE;
-      case propISOSpeed:         return prPTP_DEV_PROP_ISO;
-      case propMeteringMode:     return prPTP_DEV_PROP_ML_WEI_MODE;
-      case propAFMode:           return prPTP_DEV_PROP_AF_MODE;
-      case propAv:               return prPTP_DEV_PROP_AV;
-      case propTv:               return prPTP_DEV_PROP_TV;
-      case propExposureCompensation: return prPTP_DEV_PROP_EXPOSURE_COMP;
-      case propFlashExposureComp: return prPTP_DEV_PROP_FLASH_COMP;
-      case propFocalLength:      return prPTP_DEV_PROP_FOCAL_LENGTH;
-      case propFlashMode:        return prPTP_DEV_PROP_STROBE_SETTING;
-      case propWhiteBalance:     return prPTP_DEV_PROP_WB_SETTING;
-      case propAFDistance:       return prPTP_DEV_PROP_AF_DISTANCE;
-      case propCurrentZoomPos:   return prPTP_DEV_PROP_ZOOM_POS;
-      case propMaxZoomPos:       return prPTP_DEV_PROP_EZOOM_START_POS; // start of electronic zoom is max. zoom pos
-      case propAvailableShots:   return PSREC_PROP_AVAILABLE_SHOTS;
-      case propSaveTo:           return prPTP_DEV_PROP_CAPTURE_TRANSFER_MODE;
-      case propBatteryLevel:     return prPTP_DEV_PROP_BATTERY_STATUS;
-      case propImageFormat:      return PSREC_PROP_IMAGE_FORMAT;
-      default:
-         ATLASSERT(false); // unknown type
-         break;
-      }
-      return 0;
-   }
+   virtual unsigned int MapImagePropertyTypeToId(T_enImagePropertyType enImagePropertyType) const override;
 
-   virtual ImageProperty MapShootingModeToImagePropertyValue(RemoteReleaseControl::T_enShootingMode enShootingMode) const override
-   {
-      prUInt8 uiValue = 0;
-      switch(enShootingMode)
-      {
-      case RemoteReleaseControl::shootingModeP:    uiValue = 0x01; break;
-      case RemoteReleaseControl::shootingModeTv:   uiValue = 0x02; break;
-      case RemoteReleaseControl::shootingModeAv:   uiValue = 0x03; break;
-      case RemoteReleaseControl::shootingModeM:    uiValue = 0x04; break;
-      default:
-         ATLASSERT(false);
-         break;
-      }
+   virtual ImageProperty MapShootingModeToImagePropertyValue(RemoteReleaseControl::T_enShootingMode enShootingMode) const override;
 
-      Variant value;
-      value.Set(uiValue);
-      value.SetType(Variant::typeUInt8);
-
-      return ImageProperty(variantPsrec, prPTP_DEV_PROP_EXPOSURE_MODE, value, false);
-   }
-
-   virtual ImageProperty GetImageProperty(unsigned int uiImageProperty) const override
-   {
-      if (uiImageProperty == PSREC_PROP_IMAGE_FORMAT)
-      {
-         PropertyAccess access(m_hCamera);
-         Variant value = access.GetImageFormatProperty();
-
-         return ImageProperty(variantPsrec, uiImageProperty, value, true);
-      }
-
-      if (uiImageProperty == PSREC_PROP_AVAILABLE_SHOTS)
-      {
-         Variant value;
-         value.Set<unsigned int>(NumAvailableShots());
-         value.SetType(Variant::typeUInt32);
-
-         return ImageProperty(variantPsrec, uiImageProperty, value, true);
-      }
-
-      DevicePropDesc desc(m_hCamera, static_cast<prUInt16>(uiImageProperty), false);
-
-      // return in image property object
-      ImageProperty ip(variantPsrec, uiImageProperty, desc.m_varCurrentValue, !desc.IsSetAllowed());
-      return ip;
-   }
+   virtual ImageProperty GetImageProperty(unsigned int uiImageProperty) const override;
 
    virtual void SetImageProperty(const ImageProperty& imageProperty) override
    {
@@ -186,18 +113,7 @@ public:
    }
 
    /// returns number of available shots on camera memory card
-   virtual unsigned int NumAvailableShots() const override
-   {
-      prUInt32 uiAvailShots = 0;
-
-      // may return prINVALID_FN_CALL, prINVALID_HANDLE, prMEM_ALLOC_FAILED, prINVALID_PARAMETER or @ERR
-      prResponse err = PR_RC_GetNumAvailableShot(m_hCamera, &uiAvailShots);
-
-      LOG_TRACE(_T("PR_RC_GetNumAvailableShot(%08x, &shots = %u) returned %08x\n"), m_hCamera, uiAvailShots, err);
-      CheckError(_T("PR_RC_GetNumAvailableShot"), err, __FILE__, __LINE__);
-
-      return uiAvailShots;
-   }
+   virtual unsigned int NumAvailableShots() const override;
 
    virtual void SendCommand(RemoteReleaseControl::T_enCameraCommand enCameraCommand) override;
 
