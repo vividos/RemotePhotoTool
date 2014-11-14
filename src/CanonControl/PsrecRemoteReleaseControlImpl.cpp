@@ -219,7 +219,7 @@ void RemoteReleaseControlImpl::SendCommand(RemoteReleaseControl::T_enCameraComma
       return;
    }
 
-   ATLASSERT(resetFlag == 0); // shouldn't be 0, since we have set the value above
+   ATLASSERT(resetFlag != 0); // shouldn't be 0, since we have set the value above
 
    // may return prINVALID_FN_CALL, prINVALID_HANDLE, prMEM_ALLOC_FAILED or @ERR
    prResponse err = PR_RC_DoAeAfAwb(m_hCamera, resetFlag);
