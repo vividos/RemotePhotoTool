@@ -49,3 +49,6 @@ CString FormatCompensationValue(Variant value, bool bIsEdsdk);
 
 /// formats 32 bit date/time format
 CString FormatDateTime32bit(const Variant& value);
+
+/// formats date/time as seconds since epoch (1970-01-01 00:00:00) in UTC
+CString FormatDateTimeEpochUTC(const Variant& value);

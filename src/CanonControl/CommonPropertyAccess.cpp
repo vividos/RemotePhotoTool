@@ -8,6 +8,7 @@
 // includes
 #include "stdafx.h"
 #include "CommonPropertyAccess.hpp"
+#include <ctime>
 
 unsigned int GetUnsignedIntValue(const Variant& value)
 {
@@ -331,4 +332,20 @@ CString FormatDateTime32bit(const Variant& value)
    cszTime.ReleaseBuffer();
 
    return cszDate + cszTime;
+}
+
+CString FormatDateTimeEpochUTC(const Variant& value)
+{
+   __time64_t time = GetUnsignedIntValue(value);
+
+   struct tm tmtime = { 0 };
+   errno_t err = ::_localtime64_s(&tmtime, &time);
+   if (err != 0)
+      return _T("invalid date/time");
+
+   CString cszText;
+   _tcsftime(cszText.GetBuffer(32), 32, _T("%Y-%m-%d %H:%M:%S"), &tmtime);
+   cszText.ReleaseBuffer();
+
+   return cszText;
 }
