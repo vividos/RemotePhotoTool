@@ -14,46 +14,48 @@
 using PSREC::Ref;
 using PSREC::CheckError;
 
-/// SDK instance
-class SDKInstance
+void PSREC::CheckError(const CString& cszFunction, prResponse err, LPCSTR pszFile, UINT uiLine)
 {
-public:
-   SDKInstance()
-   {
-      // may return prNOT_SUPPORTED when OS is not supported
-      // may return prMEM_ALLOC_FAILED when insufficient memory
-      // may return prINTERNAL_ERROR on internal error
-      // may also return Win32 error value
-      prResponse err = PR_StartSDK();
+   if (err == prOK)
+      return;
 
-      LOG_TRACE(_T("PR_StartSDK() returned %08x\n"), err);
-      CheckError(_T("PR_StartSDK"), err, __FILE__, __LINE__);
-   }
+   prResponse componentId = err & prERROR_COMPONENTID_MASK;
+   prResponse errorId = err & prERROR_ERRORID_MASK;
 
-   ~SDKInstance() throw()
-   {
-      // may return prINVALID_FN_CALL
-      // may also return Win32 error value
-      prResponse err = PR_FinishSDK();
+   CString cszMessage;
+   cszMessage.Format(_T("Error in function \"%s\": %s, %s (%08x)"),
+      cszFunction.GetString(),
+      componentId == prERROR_PTP_COMPONENTID ? _T("PTP") :
+      componentId == prERROR_PRSDK_COMPONENTID ? _T("PRSDK") :
+      componentId == prERROR_WIA_STI_COMPONENTID ? _T("WIA/STI") :
+      componentId == prERROR_WINDOWS_COMPONENTID ? _T("Windows") :
+      componentId == prERROR_COMIF_COMPONENTID ? _T("COM") : _T("???"),
+      ErrorTextFromErrorId(errorId, true),
+      err);
 
-      // can only trace here
-      LOG_TRACE(_T("PR_FinishSDK() returned %08x\n"), err);
-   }
-};
-
-/// SDK reference impl
-class PSREC::Ref::Impl: public SDKInstance//BackgroundWindowThread<SDKInstance>
-{
-public:
-};
+   throw CameraException(cszFunction, cszMessage, err, pszFile, uiLine);
+}
 
 Ref::Ref()
-:m_upImpl(new Ref::Impl)
 {
+   // may return prNOT_SUPPORTED when OS is not supported
+   // may return prMEM_ALLOC_FAILED when insufficient memory
+   // may return prINTERNAL_ERROR on internal error
+   // may also return Win32 error value
+   prResponse err = PR_StartSDK();
+
+   LOG_TRACE(_T("PR_StartSDK() returned %08x\n"), err);
+   CheckError(_T("PR_StartSDK"), err, __FILE__, __LINE__);
 }
 
 Ref::~Ref() throw()
 {
+   // may return prINVALID_FN_CALL
+   // may also return Win32 error value
+   prResponse err = PR_FinishSDK();
+
+   // can only trace here
+   LOG_TRACE(_T("PR_FinishSDK() returned %08x\n"), err);
 }
 
 void Ref::AddVersionText(CString& cszVersionText) const
