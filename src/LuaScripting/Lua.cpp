@@ -580,6 +580,15 @@ void State::AddFunction(LPCTSTR pszaName, T_fnCFunction fn)
    lua_setglobal(L, CStringA(pszaName));
 }
 
+void State::AddValue(LPCTSTR pszaName, Value value)
+{
+   lua_State* L = GetState();
+
+   value.Push(*this);
+
+   lua_setglobal(L, CStringA(pszaName));
+}
+
 Table State::GetTable(const CString& cszName)
 {
    lua_State* L = GetState();

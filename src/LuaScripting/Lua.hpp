@@ -334,6 +334,9 @@ public:
    /// adds a global function to the state
    void AddFunction(LPCTSTR pszaName, T_fnCFunction fn);
 
+   /// adds a global value to the state
+   void AddValue(LPCTSTR pszaName, Value value);
+
    /// returns an existing table
    Table GetTable(const CString& cszName);
 

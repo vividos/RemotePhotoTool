@@ -279,6 +279,24 @@ namespace LuaScriptingUnitTest
          Assert::AreEqual(vecRetval[0].Get<double>(), 42.0, 1e-6, _T("value must be 42"));
       }
 
+      TEST_METHOD(TestStateAddValue)
+      {
+         Lua::State state;
+
+         // setup
+         state.AddValue(_T("the_value"), Lua::Value(42.0));
+
+         // run
+         state.LoadSourceString(_T("function test() return the_value; end"));
+
+         // check
+         std::vector<Lua::Value> vecRetval = state.CallFunction(_T("test"), 1);
+
+         Assert::AreEqual<size_t>(1, vecRetval.size(), _T("must have returned 1 return value"));
+
+         Assert::AreEqual(vecRetval[0].Get<double>(), 42.0, 1e-6, _T("value must be 42"));
+      }
+
       TEST_METHOD(TestFunctionPushTable)
       {
          Lua::State state;
