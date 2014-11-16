@@ -483,7 +483,12 @@ void MainFrame::LockActionMode(bool bLock)
 void MainFrame::SetNewView(T_enViewType enViewType)
 {
    if (m_upView != nullptr)
+   {
+      if (!m_upView->CanClose())
+         return; // view prevented close
+
       m_upView->DestroyView();
+   }
 
    m_upView = ViewManager::CreateView(*this, enViewType);
    m_upView->SetSourceDevice(m_spSourceDevice);

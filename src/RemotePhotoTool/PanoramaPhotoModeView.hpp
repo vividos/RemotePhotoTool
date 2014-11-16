@@ -48,6 +48,8 @@ private:
 
    virtual BOOL PreTranslateMessage(MSG* pMsg) override { return CWindow::IsDialogMessage(pMsg); }
 
+   virtual bool CanClose() const override;
+
    virtual void DestroyView() override
    {
       BOOL bRet = DestroyWindow();
@@ -63,7 +65,6 @@ private:
 
    BEGIN_MSG_MAP(PanoramaPhotoModeView)
       MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
-      MESSAGE_HANDLER(WM_DESTROY, OnDestroy)
       COMMAND_ID_HANDLER(IDC_BUTTON_PANORAMA_START, OnButtonStart)
       COMMAND_ID_HANDLER(IDC_BUTTON_PANORAMA_STOP, OnButtonStop)
       COMMAND_ID_HANDLER(IDC_BUTTON_PANORAMA_CANCEL, OnButtonCancel)
@@ -77,8 +78,6 @@ private:
 
    /// called when dialog is being shown
    LRESULT OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
-   /// called at destruction of dialog
-   LRESULT OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
    /// called when button "Start" is pressed
    LRESULT OnButtonStart(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
    /// called when button "Stop" is pressed

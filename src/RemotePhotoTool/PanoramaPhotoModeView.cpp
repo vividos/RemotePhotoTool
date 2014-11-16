@@ -17,6 +17,21 @@ m_manager(host, m_hWnd)
 {
 }
 
+bool PanoramaPhotoModeView::CanClose() const
+{
+   if (!m_manager.IsStarted())
+      return true;
+
+   // ask to cancel panorama
+   int iRet = AtlMessageBox(m_hWnd, _T("A panorama shooting is in progress. Do you want to abort taking the panorama?"),
+      IDR_MAINFRAME, MB_YESNO | MB_ICONQUESTION);
+
+   if (iRet == IDNO)
+      return false;
+
+   return true;
+}
+
 LRESULT PanoramaPhotoModeView::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
    DoDataExchange(DDX_LOAD);
@@ -35,15 +50,6 @@ LRESULT PanoramaPhotoModeView::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LP
    StopPanorama();
 
    return TRUE;
-}
-
-
-LRESULT PanoramaPhotoModeView::OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
-{
-   // TODO ask to cancel panorama
-   //if (m_manager.IsStarted())
-   //   ;
-   return 0;
 }
 
 LRESULT PanoramaPhotoModeView::OnButtonStart(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)

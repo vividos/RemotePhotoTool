@@ -25,6 +25,9 @@ public:
    /// translates message
    virtual BOOL PreTranslateMessage(MSG* pMsg) = 0;
 
+   /// checks if a view can be closed
+   virtual bool CanClose() const { return true; }
+
    /// destroys view
    virtual void DestroyView() = 0;
 };
