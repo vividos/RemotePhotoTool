@@ -39,7 +39,7 @@ public:
       LOG_TRACE(_T("EdsOpenSession(ref = %08x) returned %08x\n"), m_hCamera.Get(), err);
       EDSDK::CheckError(_T("EdsOpenSession"), err, __FILE__, __LINE__);
 
-      return std::shared_ptr<SourceDevice>(new SourceDeviceImpl(m_hCamera));
+      return std::shared_ptr<SourceDevice>(new SourceDeviceImpl(m_hCamera, m_deviceInfo));
    }
 
    /// returns device info struct

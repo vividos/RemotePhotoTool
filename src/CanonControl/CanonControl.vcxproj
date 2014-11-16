@@ -88,6 +88,7 @@
     <ClCompile Include="CdsdkImagePropertyAccess.cpp" />
     <ClCompile Include="CdsdkRemoteReleaseControlImpl.cpp" />
     <ClCompile Include="CommonPropertyAccess.cpp" />
+    <ClCompile Include="EdsdkShutterCounterReader.cpp" />
     <ClCompile Include="ErrorText.cpp" />
     <ClCompile Include="ImageFormat.cpp" />
     <ClCompile Include="Instance.cpp" />
@@ -126,6 +127,7 @@
     <ClInclude Include="BackgroundWorkerThread.hpp" />
     <ClInclude Include="CdsdkDevicePropertyAccess.hpp" />
     <ClInclude Include="CommonPropertyAccess.hpp" />
+    <ClInclude Include="EdsdkShutterCounterReader.hpp" />
     <ClInclude Include="ErrorText.hpp" />
     <ClInclude Include="exports\BulbReleaseControl.hpp" />
     <ClInclude Include="exports\Instance.hpp" />

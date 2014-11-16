@@ -9,6 +9,7 @@
 // includes
 #include "SourceDevice.hpp"
 #include "EdsdkRemoteReleaseControlImpl.hpp"
+#include "EdsdkShutterCounterReader.hpp"
 
 namespace EDSDK
 {
@@ -20,8 +21,9 @@ class SourceDeviceImpl:
 {
 public:
    /// ctor
-   SourceDeviceImpl(const Handle& hCamera)
-      :m_hCamera(hCamera)
+   SourceDeviceImpl(const Handle& hCamera, const EdsDeviceInfo& deviceInfo)
+      :m_hCamera(hCamera),
+      m_deviceInfo(deviceInfo)
    {
    }
 
@@ -84,6 +86,20 @@ public:
 
    virtual DeviceProperty GetDeviceProperty(unsigned int uiPropertyId) const override
    {
+      if (uiPropertyId == kEdsPropID_ShutterCounter)
+      {
+         ShutterCounterReader reader;
+
+         unsigned int uiShutterCounter = 0;
+         reader.Read(m_deviceInfo.szPortName, uiShutterCounter);
+
+         Variant value;
+         value.Set(uiShutterCounter);
+         value.SetType(Variant::typeUInt32);
+
+         return DeviceProperty(variantEdsdk, uiPropertyId, value, true);
+      }
+
       // get value
       PropertyAccess p(m_hCamera);
       Variant value = p.Get(uiPropertyId);
@@ -110,6 +126,9 @@ public:
 private:
    /// handle to camera object
    Handle m_hCamera;
+
+   /// camera device info
+   EdsDeviceInfo m_deviceInfo;
 };
 
 } // namespace EDSDK

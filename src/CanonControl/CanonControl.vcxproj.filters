@@ -95,6 +95,9 @@
     <ClCompile Include="AsyncReleaseControlThread.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="EdsdkShutterCounterReader.cpp">
+      <Filter>EDSDK Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="exports\BulbReleaseControl.hpp">
@@ -264,6 +267,9 @@
     </ClInclude>
     <ClInclude Include="AsyncReleaseControlThread.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EdsdkShutterCounterReader.hpp">
+      <Filter>EDSDK Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

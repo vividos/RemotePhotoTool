@@ -710,6 +710,7 @@ LPCTSTR PropertyAccess::NameFromId(EdsPropertyID propertyId) throw()
    case kEdsPropID_BodyIDEx: pszName = _T("Body ID Ex"); break;
    case kEdsPropID_HDDirectoryStructure: pszName = _T("HD directory structure"); break;
    case kEdsPropID_Unknown1: pszName = _T("Unknown1"); break;
+   case kEdsPropID_ShutterCounter: pszName = _T("Shutter counter"); break;
 
       // capture properties
    case kEdsPropID_AEMode: pszName = _T("Shooting mode"); break;
@@ -854,6 +855,10 @@ CString PropertyAccess::DisplayTextFromIdAndValue(EdsPropertyID propertyId, Vari
             t.hour, t.minute, t.second,
             t.milliseconds);
       }
+      break;
+
+   case kEdsPropID_ShutterCounter:
+      cszText.Format(_T("%u"), value.Get<unsigned int>());
       break;
 
       // image properties
