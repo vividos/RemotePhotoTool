@@ -612,7 +612,6 @@ void DevicePropDesc::Parse()
       {
          ATLASSERT(false); // not implemented
 
-         // TODO add all values in between
          m_vecAllValues.push_back(varMinValue);
          m_vecAllValues.push_back(varMaxValue);
       }
