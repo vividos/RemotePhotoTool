@@ -4,7 +4,6 @@
 //
 /// \file EdsdkRemoteReleaseControlImpl.cpp EDSDK - RemoteReleaseControl impl
 //
-#pragma once
 
 // includes
 #include "stdafx.h"
@@ -411,11 +410,13 @@ void RemoteReleaseControlImpl::DownloadImage(Handle hDirectoryItem, ShutterRelea
       // create file stream for transfer destination
       Handle hStream(hDirectoryItem.GetRef());
 
-      err = EdsCreateFileStream(CStringA(cszFilename),
+      err = EdsCreateFileStreamEx(cszFilename,
          kEdsFileCreateDisposition_CreateAlways,
          kEdsAccess_ReadWrite, &hStream);
-      LOG_TRACE(_T("EdsCreateFileStream(dirItem = %08x, &dirItemInfo) returned %08x\n"), hDirectoryItem.Get(), err);
-      EDSDK::CheckError(_T("EdsCreateFileStream"), err, __FILE__, __LINE__);
+      LOG_TRACE(_T("EdsCreateFileStreamEx(\"%s\", CreateAlways, ReadWrite, &stream = %08x) returned %08x\n"),
+         cszFilename.GetString(),
+         hStream.Get(), err);
+      EDSDK::CheckError(_T("EdsCreateFileStreamEx"), err, __FILE__, __LINE__);
 
       // request progress messages
       err = EdsSetProgressCallback(hStream, ProgressFunc, kEdsProgressOption_Periodically, this);

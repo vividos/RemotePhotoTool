@@ -19,7 +19,6 @@ EDSDK
 implement DisplayTextFromIdAndValue() for all properties
 implement UI lock
 on protocol 0 cameras, lock UI when getting/setting property
-use EdsCreateFileStreamEx() for unicode filenames
 support custom function numbers through kEdsPropID_CFn, e.g. mirror lockup
 
 CDSDK
