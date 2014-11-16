@@ -158,6 +158,12 @@ void Value::Push(State& state) const
       break;
 
    case typeFunction:
+      {
+         Function func = Get<Function>();
+         func.Push();
+      }
+      break;
+
    case typeUserdata:
    default:
       ATLASSERT(false);
@@ -284,6 +290,8 @@ int FuncData::OnFunctionCall(lua_State* L)
    for (int i=1; i <= iStackDepth; i++)
       vecParams.push_back(Value::FromStack(data.m_state, i));
 
+   State::TraceUpvalues(L);
+
    // call bound function
    std::vector<Value> vecRetVals = data.m_fn(vecParams);
 
@@ -333,6 +341,13 @@ std::vector<Value> Function::Call(int iResults, const std::vector<Value>& vecPar
    lua_pop(L, 1); // remove copied function
 
    return vecResults;
+}
+
+void Function::Push()
+{
+   lua_State* L = m_state.GetState();
+
+   lua_pushvalue(L, m_iStackIndex);
 }
 
 Function::Function(State& state, int iStackIndex)

@@ -227,6 +227,9 @@ public:
    std::vector<Value> Call(int iResults = 0,
       const std::vector<Value>& vecParam = std::vector<Value>());
 
+   /// pushes function onto stack
+   void Push();
+
 private:
    friend Value;
 

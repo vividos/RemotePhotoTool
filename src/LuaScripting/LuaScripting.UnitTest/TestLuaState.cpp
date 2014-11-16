@@ -375,5 +375,121 @@ namespace LuaScriptingUnitTest
 
          Assert::AreEqual(vecRetval[0].Get<double>(), 42.0+64.0, 1e-6, _T("value must be 42+64"));
       }
+
+      TEST_METHOD(TestFunctionPushOnStack)
+      {
+         Lua::State state;
+
+         // setup
+
+         // define a function to call back
+         Lua::T_fnCFunction fnAsyncWait = [&](const std::vector<Lua::Value>& vecParams) -> std::vector<Lua::Value>
+         {
+            if (vecParams.size() != 1)
+               throw std::runtime_error("must pass exactly 1 value");
+
+            if (Lua::Value::typeFunction != vecParams[0].GetType())
+               throw std::runtime_error("must pass a function value in param 0");
+
+            Lua::Function func = vecParams[0].Get<Lua::Function>();
+
+            // add function as value
+            state.AddValue(_T("_the_handler"), vecParams[0]);
+
+            return std::vector<Lua::Value>();
+         };
+
+         Lua::T_fnCFunction fnHandler = [&](const std::vector<Lua::Value>& vecParams)-> std::vector<Lua::Value>
+         {
+            if (vecParams.size() != 1)
+               throw std::runtime_error("must pass exactly 1 value");
+
+            if (Lua::Value::typeNumber != vecParams[0].GetType())
+               throw std::runtime_error("must pass a number value in param 0");
+
+            std::vector<Lua::Value> vecRetValues;
+            vecRetValues.push_back(Lua::Value(42.0));
+
+            return vecRetValues;
+         };
+
+         state.AddFunction(_T("async_wait"), fnAsyncWait);
+         state.AddFunction(_T("handler"), fnHandler);
+
+         state.LoadSourceString(_T("function wait_completed() return _the_handler(64.0); end"));
+         state.LoadSourceString(_T("function test() async_wait(handler); end"));
+
+         // run
+         state.CallFunction(_T("test"));
+         std::vector<Lua::Value> vecRetval = state.CallFunction(_T("wait_completed"), 1);
+
+         // check
+         Assert::AreEqual<size_t>(1, vecRetval.size(), _T("must have returned 1 return value"));
+
+         Assert::AreEqual(vecRetval[0].Get<double>(), 42.0, 1e-6, _T("value must be 42.0"));
+      }
+
+      TEST_METHOD(TestFunctionPushOnTable)
+      {
+         Lua::State state;
+
+         // setup
+
+         // define a function to call back
+         Lua::T_fnCFunction fnAsyncWait = [&](const std::vector<Lua::Value>& vecParams) -> std::vector<Lua::Value>
+         {
+            if (vecParams.size() != 2)
+               throw std::runtime_error("must pass exactly 2 values");
+
+            if (Lua::Value::typeTable != vecParams[0].GetType())
+               throw std::runtime_error("must pass a table value in param 0");
+
+            if (Lua::Value::typeFunction != vecParams[1].GetType())
+               throw std::runtime_error("must pass a function value in param 1");
+
+            Lua::Table self = vecParams[0].Get<Lua::Table>();
+            Lua::Function func = vecParams[1].Get<Lua::Function>();
+
+            // add function as value
+            self.AddValue(_T("_the_handler"), vecParams[1]);
+
+            return std::vector<Lua::Value>();
+         };
+
+         Lua::T_fnCFunction fnHandler = [&](const std::vector<Lua::Value>& vecParams)-> std::vector<Lua::Value>
+         {
+            if (vecParams.size() != 2)
+               throw std::runtime_error("must pass exactly 2 values");
+
+            if (Lua::Value::typeTable != vecParams[0].GetType())
+               throw std::runtime_error("must pass a table value in param 0");
+
+            if (Lua::Value::typeNumber != vecParams[1].GetType())
+               throw std::runtime_error("must pass a number value in param 1");
+
+            std::vector<Lua::Value> vecRetValues;
+            vecRetValues.push_back(Lua::Value(42.0));
+
+            return vecRetValues;
+         };
+
+         state.LoadSourceString(_T("App = { ")
+            _T("wait_completed = function() return App:_the_handler(64.0); end, ")
+            _T("test = function() App:async_wait(App.handler); end ")
+            _T("}"));
+
+         Lua::Table table = state.GetTable(_T("App"));
+         table.AddFunction("async_wait", fnAsyncWait);
+         table.AddFunction("handler", fnHandler);
+
+         // run
+         table.CallFunction(_T("test"));
+         std::vector<Lua::Value> vecRetval = table.CallFunction(_T("wait_completed"), 1);
+
+         // check
+         Assert::AreEqual<size_t>(1, vecRetval.size(), _T("must have returned 1 return value"));
+
+         Assert::AreEqual(vecRetval[0].Get<double>(), 42.0, 1e-6, _T("value must be 42.0"));
+      }
    };
 }
