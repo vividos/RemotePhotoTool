@@ -14,7 +14,8 @@
 
 namespace EDSDK
 {
-
+/// Body ID; property was removed in EDSDK 2.12
+#define kEdsPropID_BodyID 0x00000003
 /// unknown property (available on EOS 40D)
 #define kEdsPropID_Unknown1   0x00000065
 /// shutter counter property; can't be read out with newest SDK anymore

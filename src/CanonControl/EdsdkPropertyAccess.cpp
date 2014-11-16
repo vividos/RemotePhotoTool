@@ -695,7 +695,7 @@ LPCTSTR PropertyAccess::NameFromId(EdsPropertyID propertyId) throw()
    switch (propertyId)
    {
    case kEdsPropID_ProductName: pszName = _T("Product name"); break;
-// not in 2.12 anymore      case kEdsPropID_BodyID: pszName = _T("Body ID"); break;
+   case kEdsPropID_BodyID: pszName = _T("Body ID"); break;// not in 2.12 anymore
    case kEdsPropID_OwnerName: pszName = _T("Owner name"); break;
    case kEdsPropID_MakerName: pszName = _T("Maker name"); break;
    case kEdsPropID_DateTime: pszName = _T("Date / Time"); break;
