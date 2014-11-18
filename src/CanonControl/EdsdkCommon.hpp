@@ -19,26 +19,7 @@ namespace EDSDK
 {
 
 /// checks for errors
-inline void CheckError(const CString& cszFunction, EdsError err, LPCSTR pszFile, UINT uiLine)
-{
-   if (err == EDS_ERR_OK)
-      return;
-
-   EdsError componentId = err & EDS_COMPONENTID_MASK;
-   EdsError errorId = err & EDS_ERRORID_MASK;
-
-   CString cszMessage;
-   cszMessage.Format(_T("Error in function \"%s\": %s, %s%s (%08x)"),
-      cszFunction.GetString(),
-      componentId == EDS_CMP_ID_CLIENT_COMPONENTID ? _T("Client") :
-      componentId == EDS_CMP_ID_LLSDK_COMPONENTID ? _T("LLSDK") :
-      componentId == EDS_CMP_ID_HLSDK_COMPONENTID ? _T("HLSDK") : _T("???"),
-      ErrorTextFromErrorId(errorId),
-      (err & EDS_ISSPECIFIC_MASK) != 0 ? _T(", IsSpecific") : _T(""),
-      err);
-
-   throw CameraException(cszFunction, cszMessage, err, pszFile, uiLine);
-}
+extern void CheckError(const CString& cszFunction, EdsError err, LPCSTR pszFile, UINT uiLine);
 
 /// SDK instance
 class SDKInstance
