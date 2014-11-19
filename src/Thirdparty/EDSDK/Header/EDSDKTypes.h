@@ -8,13 +8,7 @@
 *******************************************************************************
 *                                                                             *
 *   Written and developed by Canon Inc.                                       *
-*   Copyright Canon Inc. 2006-2008 All Rights Reserved                        *
-*                                                                             *
-*******************************************************************************
-*   File Update Information:                                                  *
-*     DATE      Identify    Comment                                           *
-*   -----------------------------------------------------------------------   *
-*   06-03-16    F-001       create first version.                             *
+*   Copyright Canon Inc. 2006-2014 All Rights Reserved                        *
 *                                                                             *
 ******************************************************************************/
 
@@ -997,6 +991,12 @@ typedef enum
 	kEdsAEMode_Movie			= 20,
 	kEdsAEMode_PhotoInMovie		= 21,
 	kEdsAEMode_SceneIntelligentAuto	= 22,
+	kEdsAEMode_SCN              = 25,
+	kEdsAEMode_NightScenes      = 23,
+	kEdsAEMode_BacklitScenes    = 24,
+	kEdsAEMode_Children         = 26,
+	kEdsAEMode_Food             = 27,
+	kEdsAEMode_CandlelightPortraits = 28,
 	kEdsAEMode_Unknown          = 0xffffffff,
 
 } EdsAEMode;
@@ -1021,6 +1021,8 @@ typedef enum
 {
 	kEdsEvfOutputDevice_TFT			= 1,
 	kEdsEvfOutputDevice_PC			= 2,
+	kEdsEvfOutputDevice_MOBILE		= 4,
+	kEdsEvfOutputDevice_MOBILE2		= 8,
 } EdsEvfOutputDevice;
 
 /*-----------------------------------------------------------------------------
@@ -1041,6 +1043,7 @@ typedef enum
 	Evf_AFMode_Quick = 0,
 	Evf_AFMode_Live = 1,
 	Evf_AFMode_LiveFace = 2,
+	Evf_AFMode_LiveMulti = 3,
 } EdsEvfAFMode;
 
 /*-----------------------------------------------------------------------------

@@ -14,15 +14,18 @@ All cameras support remote capture, some of them support live view and Bulb shoo
 
 - EOS 1000D  (aka. Rebel XS, Kiss F)
 - EOS 1100D (aka. Rebel T3, Kiss X50)
+- EOS 1200D (aka. Rebel T5, Kiss X70)
 - EOS 450D (aka. Rebel Xsi, Kiss X2)
 - EOS 500D (aka. Rebel T1i, Kiss X3)
 - EOS 550D (aka. Rebel T2i, Kiss X4)
 - EOS 600D (aka. Rebel T3i, Kiss X5)
 - EOS 650D (aka. Rebel T4i, Kiss X6i)
+- EOS 700D (aka. Rebel T5i, Kiss X7i)
+- EOS 100D (aka. Rebel SL1, Kiss X7)
 - EOS 40D (`tested and works`)
 - EOS 50D
-- EOS 60D 
-- EOS 60Da 
+- EOS 60D
+- EOS 60Da
 - EOS 5D Mark II
 - EOS 5D Mark III
 - EOS 6D

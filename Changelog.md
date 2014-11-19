@@ -17,6 +17,8 @@ All source code was checked with [Coverity](http://www.coverity.com/)'s source c
 found issues were subsequently fixed. Here's the link to the scan project:
 [https://scan.coverity.com/projects/2058](https://scan.coverity.com/projects/2058).
 
+Upgraded to Canon EOS Digital Camera SDK (EDSDK) 2.14, supporting new cameras EOS 700D, EOS100D.
+
 ## 2014-04-11: Version 1.2.0 Build 114 ##
 
 Implemented showing overexposed areas in viewfinder by showing a Zebra style pattern. The
