@@ -38,6 +38,7 @@ private:
       MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
       COMMAND_ID_HANDLER(IDOK, OnCloseCmd)
       COMMAND_ID_HANDLER(IDCANCEL, OnCloseCmd)
+      COMMAND_ID_HANDLER(IDC_BUTTON_COPY, OnButtonCopy)
    END_MSG_MAP()
 
    /// called on start of dialog
@@ -64,6 +65,17 @@ private:
    LRESULT OnCloseCmd(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
    {
       EndDialog(wID);
+      return 0;
+   }
+
+   /// called when Copy button is pressed
+   LRESULT OnButtonCopy(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+   {
+      int iStart = 0, iEnd = 0;
+      m_ecErrorDetails.GetSel(iStart, iEnd);
+      m_ecErrorDetails.SetSel(0, -1);
+      m_ecErrorDetails.Copy();
+      m_ecErrorDetails.SetSel(iStart, iEnd);
       return 0;
    }
 

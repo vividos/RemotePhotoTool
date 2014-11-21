@@ -38,7 +38,6 @@ HDR: Set Photomatix current folder to image output folder
 Write manual
 Multi-camera photo view
 Image Property view: change values using editbox or combobox
-Copy button for error dialog
 Add "last transferred image" view
 Add Bulb mode shooting when supported
 Add multi-language support
