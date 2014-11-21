@@ -20,6 +20,35 @@ static std::atomic<bool> s_bLoggingActive = false;
 /// log filename
 CString s_cszLogFilename;
 
+static CString LogFormatCurrentDate()
+{
+   time_t nowtime = time(&nowtime);
+
+   struct tm nowtm = { 0 };
+   errno_t err = localtime_s(&nowtm, &nowtime);
+   err; ATLASSERT(err == 0);
+
+   CString cszDate;
+   _tcsftime(cszDate.GetBuffer(256), 256, _T("%Y-%m-%d"), &nowtm);
+   cszDate.ReleaseBuffer();
+
+   return cszDate;
+}
+
+static CString LogGetCurrentDateTime()
+{
+   time_t now = time(&now);
+
+   struct tm tmNow = { 0 };
+   localtime_s(&tmNow, &now);
+
+   CString cszDateTime;
+   _tcsftime(cszDateTime.GetBuffer(64), 64, _T("%Y-%m-%dT%H:%M:%S"), &tmNow);
+   cszDateTime.ReleaseBuffer();
+
+   return cszDateTime;
+}
+
 void LogConfigure(bool bEnable, const CString& cszLogfilePath) throw()
 {
    s_bLoggingActive = bEnable;
@@ -27,12 +56,44 @@ void LogConfigure(bool bEnable, const CString& cszLogfilePath) throw()
    if (bEnable)
    try
    {
-      s_cszLogFilename = Path_Combine(cszLogfilePath, _T("Log.txt"));
+      CString cszDate = LogFormatCurrentDate();
+      s_cszLogFilename = Path_Combine(cszLogfilePath, _T("Log-") + cszDate + _T(".txt"));
    }
    catch (...)
    {
       OutputDebugString(_T("Unknown exception occured during LogConfigure() call\n"));
    }
+}
+
+/// write to file
+void LogWriteText(const CString& cszText, bool bPreviousIncompleteLine)
+{
+   FILE* fd = NULL;
+   errno_t err = _tfopen_s(&fd, s_cszLogFilename.GetString(), _T("a+t"));
+   if (err != 0 || fd == nullptr)
+      return;
+
+   if (bPreviousIncompleteLine)
+   {
+      // append to line
+      _ftprintf(fd, _T("%s"), cszText.GetString());
+   }
+   else
+   {
+      // output new line
+
+      // get current time
+      CString cszDateTime = LogGetCurrentDateTime();
+
+      _ftprintf(fd, _T("%s [%08x] %s"),
+         cszDateTime.GetString(),
+         GetCurrentThreadId(),
+         cszText.GetString());
+   }
+
+   fflush(fd);
+
+   fclose(fd);
 }
 
 void LogTrace(LPCTSTR pszFormat, ...) throw()
@@ -62,44 +123,7 @@ void LogTrace(LPCTSTR pszFormat, ...) throw()
       static LightweightMutex s_mtxLogging;
       LightweightMutex::LockType lock(s_mtxLogging);
 
-      // write to file
-      {
-         FILE* fd = NULL;
-         errno_t err = _tfopen_s(&fd, s_cszLogFilename.GetString(), _T("a+t"));
-         if (err != 0 || fd == nullptr)
-            return;
-
-         if (s_bPreviousIncompleteLine)
-         {
-            // append to line
-            _ftprintf(fd, _T("%s"), cszText.GetString());
-         }
-         else
-         {
-            // output new line
-
-            // get current time
-            CString cszDateTime;
-            {
-               time_t now = time(&now);
-
-               struct tm tmNow = {0};
-               localtime_s(&tmNow, &now);
-
-               _tcsftime(cszDateTime.GetBuffer(64), 64, _T("%Y-%m-%dT%H:%M:%S"), &tmNow);
-               cszDateTime.ReleaseBuffer();
-            }
-
-            _ftprintf(fd, _T("%s [%08x] %s"),
-               cszDateTime.GetString(),
-               GetCurrentThreadId(),
-               cszText.GetString());
-         }
-
-         fflush(fd);
-
-         fclose(fd);
-      }
+      LogWriteText(cszText, s_bPreviousIncompleteLine);
 
       {
          // check if line is complete

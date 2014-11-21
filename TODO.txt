@@ -35,7 +35,6 @@ implement view finder stage 2: battery, number of remaining shots, auto rotate, 
 implement view finder stage 3: half transparent background image, histogram
 implement previous images browser
 HDR: Set Photomatix current folder to image output folder
-Add current date to log filename, at start of application
 Write manual
 Multi-camera photo view
 Image Property view: change values using editbox or combobox
