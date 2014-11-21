@@ -130,9 +130,6 @@
     <ClInclude Include="exports\Viewfinder.hpp">
       <Filter>Exported Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BackgroundWindowThread.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>

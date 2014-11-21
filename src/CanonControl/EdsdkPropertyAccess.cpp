@@ -296,6 +296,11 @@ static PropIdDisplayInfo g_aPropIdDisplayInfo[] =
 
 Variant PropertyAccess::Get(EdsPropertyID propId, int iParam) const
 {
+   MutexTryLock<RecursiveMutex> tryLock(const_cast<Handle&>(m_h).GetRef()->SdkFunctionMutex());
+
+   while (!tryLock.Try(10))
+      EDSDK::Ref::OnIdle();
+
    // first, get type and size of property
    EdsDataType dataType = kEdsDataType_Unknown;
    EdsUInt32 size = 0;
@@ -316,6 +321,11 @@ Variant PropertyAccess::Get(EdsPropertyID propId, int iParam) const
 
 void PropertyAccess::Set(EdsPropertyID propId, Variant value, int iParam)
 {
+   MutexTryLock<RecursiveMutex> tryLock(const_cast<Handle&>(m_h).GetRef()->SdkFunctionMutex());
+
+   while (!tryLock.Try(10))
+      EDSDK::Ref::OnIdle();
+
    // first, get type and size of property
    EdsDataType dataType = kEdsDataType_Unknown;
    EdsUInt32 size = 0;
@@ -339,6 +349,11 @@ void PropertyAccess::Set(EdsPropertyID propId, Variant value, int iParam)
 
 void PropertyAccess::Enum(EdsPropertyID propId, std::vector<Variant>& vecValues, bool& bReadOnly)
 {
+   MutexTryLock<RecursiveMutex> tryLock(const_cast<Handle&>(m_h).GetRef()->SdkFunctionMutex());
+
+   while (!tryLock.Try(10))
+      EDSDK::Ref::OnIdle();
+
    // note: since all properties that can be retrieved are of type UInt8, assume that
    EdsPropertyDesc propDesc = { 0 };
    EdsError err = EdsGetPropertyDesc(m_h, propId, &propDesc);
@@ -367,6 +382,11 @@ void PropertyAccess::Enum(EdsPropertyID propId, std::vector<Variant>& vecValues,
 
 bool PropertyAccess::IsReadOnly(EdsPropertyID propId) const
 {
+   MutexTryLock<RecursiveMutex> tryLock(const_cast<Handle&>(m_h).GetRef()->SdkFunctionMutex());
+
+   while (!tryLock.Try(10))
+      EDSDK::Ref::OnIdle();
+
    EdsPropertyDesc propDesc = { 0 };
    EdsError err = EdsGetPropertyDesc(m_h, propId, &propDesc);
    //LOG_TRACE(_T("EdsGetPropertyDesc(ref = %08x, id = %04x, &numProp = %u) returned %08x\n"),
@@ -381,6 +401,11 @@ bool PropertyAccess::IsReadOnly(EdsPropertyID propId) const
 
 void PropertyAccess::GetTypeAndSize(EdsPropertyID propId, int iParam, EdsDataType& dataType, EdsUInt32& size) const
 {
+   MutexTryLock<RecursiveMutex> tryLock(const_cast<Handle&>(m_h).GetRef()->SdkFunctionMutex());
+
+   while (!tryLock.Try(10))
+      EDSDK::Ref::OnIdle();
+
    dataType = kEdsDataType_Unknown;
    size = 0;
 
@@ -396,6 +421,11 @@ void PropertyAccess::GetTypeAndSize(EdsPropertyID propId, int iParam, EdsDataTyp
 
 bool PropertyAccess::IsPropertyAvail(unsigned int uiPropId) const throw()
 {
+   MutexTryLock<RecursiveMutex> tryLock(const_cast<Handle&>(m_h).GetRef()->SdkFunctionMutex());
+
+   while (!tryLock.Try(10))
+      EDSDK::Ref::OnIdle();
+
    // check if property exists by retrieving type and size
    EdsDataType dataType = kEdsDataType_Unknown;
    EdsUInt32 size = 0;

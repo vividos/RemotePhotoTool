@@ -35,29 +35,23 @@ void EDSDK::CheckError(const CString& cszFunction, EdsError err, LPCSTR pszFile,
    throw CameraException(cszFunction, cszMessage, err, pszFile, uiLine);
 }
 
+
 //
-// SDKInstance
+// Ref
 //
 
-SDKInstance::SDKInstance()
+Ref::Ref()
 {
-   // start SDK
    EdsError err = EdsInitializeSDK();
    LOG_TRACE(_T("EdsInitializeSDK() returned %08x\n"), err);
    CheckError(_T("EdsInitializeSDK"), err, __FILE__, __LINE__);
 }
 
-SDKInstance::~SDKInstance() throw()
+Ref::~Ref() throw()
 {
-   // end SDK
    EdsError err = EdsTerminateSDK();
    LOG_TRACE(_T("EdsTerminateSDK() returned %08x\n"), err);
 }
-
-
-//
-// Ref
-//
 
 void Ref::AddVersionText(CString& cszVersionText) const
 {
@@ -170,20 +164,31 @@ void Ref::AsyncWaitForCamera(bool bStart, std::function<void()> fnOnCameraConnec
 
 void Ref::OnIdle()
 {
-   EdsError err = EdsGetEvent();
-   if (err != EDS_ERR_OK && err != EDS_ERR_INTERNAL_ERROR)
-      LOG_TRACE(_T("EdsGetEvent() returned %08x\n"), err);
+   MSG msg = { 0 };
+   while (::PeekMessage(&msg, nullptr, 0, 0, PM_NOREMOVE))
+   {
+      // don't process quit messages; should be handled by our application
+      if (msg.message == WM_QUIT)
+         break;
+
+      // EdsGetEvent() processes thread messages inside EDSDK
+      EdsError err = EdsGetEvent();
+      if (err != EDS_ERR_OK && err != EDS_ERR_INTERNAL_ERROR)
+         LOG_TRACE(_T("EdsGetEvent() returned %08x\n"), err);
+   }
 }
 
 void EDSDK::MsgWaitForEvent(Event& evt) throw()
 {
    LOG_TRACE(_T("MsgWaitForEvent started\n"));
 
-   bool bEventSignaled = false;
-   do
+   EDSDK::Ref::OnIdle();
+
+   HANDLE h = evt.Handle();
+   DWORD dwTimeout = 10;
+
+   for (;;)
    {
-      HANDLE h = evt.Handle();
-      DWORD dwTimeout = 100;
       DWORD dwRet = ::MsgWaitForMultipleObjects(1, &h, FALSE, dwTimeout, QS_ALLINPUT);
 
       if (WAIT_TIMEOUT == dwRet)
@@ -193,32 +198,10 @@ void EDSDK::MsgWaitForEvent(Event& evt) throw()
       }
 
       if (WAIT_OBJECT_0 == dwRet)
-         bEventSignaled = true;
+         break;
+   }
 
-      // process window messages
-      MSG msg = {0};
-      for (;;)
-      {
-         if (::PeekMessage(&msg, nullptr, 0, 0, PM_NOREMOVE))
-         {
-            BOOL bRet = ::GetMessage(&msg, nullptr, 0, 0);
-            if(!bRet)
-            {
-               // WM_QUIT: repost message, exit loop
-               PostQuitMessage(msg.wParam);
-               break;
-            }
-
-            //LOG_TRACE(_T("MsgWaitForEvent: HWND=%08x MSG=%04x\n"), msg.hwnd, msg.message);
-
-            ::TranslateMessage(&msg);
-            ::DispatchMessage(&msg);
-         }
-         else
-            break;
-      }
-
-   } while (!bEventSignaled);
+   EDSDK::Ref::OnIdle();
 
    LOG_TRACE(_T("MsgWaitForEvent finished\n"));
 }

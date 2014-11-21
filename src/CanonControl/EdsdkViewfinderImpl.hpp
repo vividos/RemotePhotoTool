@@ -10,6 +10,7 @@
 #include "Viewfinder.hpp"
 #include "EdsdkCommon.hpp"
 #include "Asio.hpp"
+#include "Event.hpp"
 #include <atomic>
 
 // forward references

@@ -64,7 +64,7 @@ public:
          m_shutterReleaseSettings = settings;
       }
 
-      SetSaveToFlag(settings.SaveTarget(), false);
+      SetSaveToFlag(settings.SaveTarget(), true);
    }
 
    virtual int AddPropertyEventHandler(RemoteReleaseControl::T_fnOnPropertyChanged fnOnPropertyChanged) override
@@ -182,7 +182,7 @@ public:
          uiCommand = kEdsCameraCommand_DoClickWBEvf;
          break;
 
-      case commandAdjustExposure: // not supported
+      case RemoteReleaseControl::commandAdjustExposure: // not supported
          break;
 
       // TODO support kEdsCameraCommand_DriveLensEvf ?

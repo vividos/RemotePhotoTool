@@ -4,7 +4,6 @@
 //
 /// \file EdsdkViewfinderImpl.cpp EDSDK - Viewfinder impl
 //
-#pragma once
 
 // includes
 #include "stdafx.h"
@@ -114,10 +113,12 @@ void ViewfinderImpl::StopBackgroundThread()
    m_ioService.post(
       std::bind(&ViewfinderImpl::AsyncStopBackgroundThread, shared_from_this()));
 
-   if (m_bInGetImage)
-      MsgWaitForEvent(m_evtTimerStopped);
-   else
-      m_evtTimerStopped.Wait();
+   MutexTryLock<RecursiveMutex> tryLock(m_hSourceDevice.GetRef()->SdkFunctionMutex());
+
+   while (!tryLock.Try(10))
+      EDSDK::Ref::OnIdle();
+
+   m_evtTimerStopped.Wait();
 }
 
 void ViewfinderImpl::AsyncStopBackgroundThread()
@@ -133,6 +134,11 @@ void ViewfinderImpl::AsyncStopBackgroundThread()
 
 void ViewfinderImpl::GetImage(std::vector<BYTE>& vecImage)
 {
+   MutexTryLock<RecursiveMutex> tryLock(m_hSourceDevice.GetRef()->SdkFunctionMutex());
+
+   while (!tryLock.Try(10))
+      EDSDK::Ref::OnIdle();
+
    LOG_TRACE(_T("GetImage() start\n"));
    m_bInGetImage = true;
 

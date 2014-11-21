@@ -10,9 +10,12 @@
 #include "edsdk.h"
 #include "Instance.hpp"
 #include "CameraException.hpp"
-#include "BackgroundWindowThread.hpp"
 #include "LightweightMutex.hpp"
+#include "RecursiveMutex.hpp"
 #include "ErrorText.hpp"
+
+// forward references
+class Event;
 
 /// EOS Digital Camera SDK interface
 namespace EDSDK
@@ -21,37 +24,14 @@ namespace EDSDK
 /// checks for errors
 extern void CheckError(const CString& cszFunction, EdsError err, LPCSTR pszFile, UINT uiLine);
 
-/// SDK instance
-class SDKInstance
-{
-public:
-   /// ctor
-   SDKInstance();
-
-   /// dtor
-   ~SDKInstance() throw();
-};
-
-#define USE_BACKGROUND_THREAD
-
 /// SDK reference
 class Ref: public std::enable_shared_from_this<Ref>
 {
 public:
    /// ctor
-   Ref()
-#ifdef USE_BACKGROUND_THREAD
-      :m_spBackgroundThread(new BackgroundWindowThread<SDKInstance>)
-#endif
-   {
-#ifdef USE_BACKGROUND_THREAD
-      m_spBackgroundThread->Start();
-#endif
-   }
+   Ref();
    /// dtor
-   ~Ref() throw()
-   {
-   }
+   ~Ref() throw();
 
    /// adds EDSDK version text
    void AddVersionText(CString& cszVersionText) const;
@@ -65,18 +45,16 @@ public:
    /// called to do idle processing
    static void OnIdle();
 
+   /// returns SDK function mutex
+   RecursiveMutex& SdkFunctionMutex() throw() { return m_mtxSdkFunctions; }
+
 private:
    /// handler called when camera was added
    static EdsError EDSCALLBACK OnCameraAddedHandler(EdsVoid* inContext);
 
 private:
-#ifdef USE_BACKGROUND_THREAD
-   /// background thread for SDK instance
-   std::shared_ptr<BackgroundWindowThread<SDKInstance>> m_spBackgroundThread;
-#else
-   /// SDK instance
-   SDKInstance m_instance;
-#endif
+   /// mutex to protect different threads from entering specific EDSDK functions
+   RecursiveMutex m_mtxSdkFunctions;
 
    /// mutex to protect m_fnOnCameraConnected
    LightweightMutex m_mtxFnOnCameraConnected;
