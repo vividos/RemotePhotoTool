@@ -180,13 +180,13 @@ void ViewFinderView::SetupZoomControls()
    if (!m_spRemoteReleaseControl->GetCapability(RemoteReleaseControl::capZoomControl) || m_vecAllZoomValues.empty())
    {
       GetDlgItem(IDC_BUTTON_ZOOM_OUT).EnableWindow(FALSE);
-      GetDlgItem(IDC_SLIDER_ZOOM).EnableWindow(FALSE);
+      m_tbZoom.EnableWindow(FALSE);
       GetDlgItem(IDC_BUTTON_ZOOM_IN).EnableWindow(FALSE);
 
       return;
    }
 
-   m_tbZoom.SetRange(0, m_vecAllZoomValues.size(), FALSE);
+   m_tbZoom.SetRange(0, m_vecAllZoomValues.size()-1, FALSE);
 
    // position
    ImageProperty currentPos = m_spRemoteReleaseControl->GetImageProperty(uiPropertyId);
