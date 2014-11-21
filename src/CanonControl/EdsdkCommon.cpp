@@ -25,6 +25,7 @@ void EDSDK::CheckError(const CString& cszFunction, EdsError err, LPCSTR pszFile,
    CString cszMessage;
    cszMessage.Format(_T("Error in function \"%s\": %s, %s%s (%08x)"),
       cszFunction.GetString(),
+      componentId == 0 ? _T("SDK") :
       componentId == EDS_CMP_ID_CLIENT_COMPONENTID ? _T("Client") :
       componentId == EDS_CMP_ID_LLSDK_COMPONENTID ? _T("LLSDK") :
       componentId == EDS_CMP_ID_HLSDK_COMPONENTID ? _T("HLSDK") : _T("???"),
