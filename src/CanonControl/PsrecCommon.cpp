@@ -4,7 +4,6 @@
 //
 /// \file PsrecCommon.cpp PS-ReC common header
 //
-#pragma once
 
 // includes
 #include "stdafx.h"
