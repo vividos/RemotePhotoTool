@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="1">
+    <root name="D:/Projekte/RemotePhotoTool/src"/>
+    <defines>
+        <define name="WIN32"/>
+        <define name="_WINDOWS"/>
+        <define name="STRICT"/>
+        <define name="NDEBUG"/>
+        <define name="_MSC_VER=1600"/>
+    </defines>
+    <paths>
+        <dir name="Base"/>
+        <dir name="CanonControl"/>
+        <dir name="RemotePhotoTool"/>
+        <dir name="RemotePhotoToolCmdline"/>
+        <dir name="RemoteScriptingEditor"/>
+        <dir name="LuaScripting"/>
+    </paths>
+    <exclude>
+        <path name="../Thirdparty/"/>
+    </exclude>
+    <libraries>
+        <library>windows</library>
+    </libraries>
+</project>

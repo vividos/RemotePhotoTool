@@ -67,7 +67,8 @@ type $(IntDir)cppcheck.txt</NMakeReBuildCommandLine>
     <Text Include="cppcheck-suppress.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="MultiplayerOnlineGame.cppcheck" />
+    <None Include="RemotePhotoTool.cppcheck" />
+    <None Include="RunCppCheck.cmd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
