@@ -1069,6 +1069,7 @@ CString PropertyAccess::DisplayTextFromIdAndValue(EdsPropertyID propertyId, Vari
       break;
 
    case kEdsPropID_ShutterCounter:
+   case kEdsPropID_AvailableShots:
       cszText.Format(_T("%u"), value.Get<unsigned int>());
       break;
 
@@ -1096,7 +1097,21 @@ CString PropertyAccess::DisplayTextFromIdAndValue(EdsPropertyID propertyId, Vari
             vecData[0], vecData[1]);
       }
       break;
-   //case kEdsPropID_FocalLength: // TODO
+
+   case kEdsPropID_FocalLength: // Note: only available on EdsImageRef
+      {
+         std::vector<EdsRational> vecData = value.GetArray<EdsRational>();
+         ATLASSERT(vecData.size() == 3);
+
+         if (vecData.size() != 3)
+            break;
+
+         double dFocalLength = vecData[0].denominator == 0 ? 0.0 :
+            vecData[0].numerator / vecData[0].denominator;
+
+         cszText.Format(_T("%3.1f mm"), dFocalLength);
+      }
+      break;
 
       // capture properties
 
@@ -1117,7 +1132,25 @@ CString PropertyAccess::DisplayTextFromIdAndValue(EdsPropertyID propertyId, Vari
       cszText = FormatCompensationValue(value, true);
       break;
 
-   //case kEdsPropID_FlashMode: // TODO
+   case kEdsPropID_FlashMode: // Note: only available on EdsImageRef
+      {
+         std::vector<unsigned int> vecData = value.GetArray<unsigned int>();
+         ATLASSERT(vecData.size() == 2);
+
+         if (vecData.size() != 2)
+            break;
+
+         cszText.Format(_T("%s, %s"),
+            vecData[0] == 0 ? _T("None") :
+            vecData[0] == 1 ? _T("Internal") :
+            vecData[0] == 2 ? _T("External E-TTL") :
+            vecData[0] == 3 ? _T("External A-TTL") :
+            vecData[0] == 0xFFFFFFFF ? _T("Invalid") : _T("???"),
+            vecData[1] == 0 ? _T("1st curtain") :
+            vecData[1] == 1 ? _T("2nd curtain") :
+            vecData[1] == 0xFFFFFFFF ? _T("Invalid") : _T("???"));
+      }
+      break;
 
       // viewfinder properties
 
