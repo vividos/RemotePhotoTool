@@ -89,6 +89,7 @@
     <ClInclude Include="Observer.hpp" />
     <ClInclude Include="Path.hpp" />
     <ClInclude Include="ProgramOptions.hpp" />
+    <ClInclude Include="RecursiveMutex.hpp" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="SystemException.hpp" />
     <ClInclude Include="Thread.hpp" />
