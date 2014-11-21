@@ -464,8 +464,15 @@ bool PropertyAccess::IsPropertyAvail(unsigned int uiPropId) const throw()
 
    MutexTryLock<RecursiveMutex> tryLock(const_cast<Handle&>(m_h).GetRef()->SdkFunctionMutex());
 
-   while (!tryLock.Try(10))
-      EDSDK::Ref::OnIdle();
+   try
+   {
+      while (!tryLock.Try(10))
+         EDSDK::Ref::OnIdle();
+   }
+   catch (...)
+   {
+      return false;
+   }
 
    // check if property exists by retrieving type and size
    EdsDataType dataType = kEdsDataType_Unknown;
