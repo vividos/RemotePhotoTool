@@ -71,7 +71,7 @@ Desktop, which I use. When installed into the default folders, the example batch
 to build the application.
 
 When prompt (or manually via menu "Tools > Extensions and Updates"), update the Visual Studio
-to "Update 1" (or any later).
+to "Update 4".
 
 ## ATL 7.1 ##
 
@@ -96,22 +96,20 @@ folder, beneath the <IncludePath> tag, and one is the `"lib\i386"` subfolder ben
 
 ## WTL 9.0 ##
 
-The application uses WTL, on top of ATL, for the user interface. Download WTL 9.0.4035 (or any
+The application uses WTL, on top of ATL, for the user interface. Download WTL 9.0.4140 (or any
 later version) from this website:
 http://sourceforge.net/projects/wtl/
 
 You need to click on "Browse all files" and select WTL 9.0 to get to the proper folder. Here's
 a link to the version I use:
-http://sourceforge.net/projects/wtl/files/WTL%209.0/WTL%209.0.4035/
+http://sourceforge.net/projects/wtl/files/WTL%209.0/WTL%209.0.4140%20Final/WTL90_4140_Final.zip/download
 
 Extract the contents of the zip archive in to a new folder. Navigate into the "AppWiz" folder and
-double-click the file `"setup110x.js"` (when using Visual Studio Express) or `"setup110.js"` (when
-using any version above Express). Newer versions of WTL only have one `"setup.js"` file. Click this
-to install WTL for any of your installed Visual Studio versions.
+double-click the file `"Setup.js"`.
 
 ## Boost ##
 
-Download and extract Boost 1.55 (or any later version) into a folder. For the application to compile
+Download and extract Boost 1.57 (or any later version) into a folder. For the application to compile
 you need to adjust the file `src\boost.props` with the path of the folder you just used. There are two
 folders to adjust, one is the main folder, beneath the `<ClCompile>` tag, and one is the `"stage\lib"`
 subfolder beneath the `<Link>` tag.
@@ -121,7 +119,7 @@ following command line commands (e.g. in a .cmd file) to compile Boost:
 
     call "C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\Tools\vsvars32.bat"
     call .\bootstrap.bat vc12
-    
+
     b2 toolset=msvc-12.0 -j4 --with-system runtime-link=shared link=static threading=multi stage
 
 This should generate the appropriate lib files in the `"stage\lib"` folder, for the library
