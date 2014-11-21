@@ -15,6 +15,7 @@
 #include "LightweightMutex.hpp"
 #include "BackgroundWorkerThread.hpp"
 #include "BackgroundTimer.hpp"
+#include <atlapp.h>
 
 
 // Instance::Impl
@@ -102,7 +103,9 @@ void Instance::Impl::StartPollCamera()
    {
       std::vector<std::shared_ptr<SourceInfo>> vecSourceDevices;
 
-      //m_spCdSdkRef->EnumerateDevices(vecSourceDevices);
+      if (!RunTimeHelper::IsVista())
+         m_spCdSdkRef->EnumerateDevices(vecSourceDevices);
+
       m_spPsRecRef->EnumerateDevices(vecSourceDevices);
 
       m_uiPollNumDevices = vecSourceDevices.size();
@@ -134,8 +137,11 @@ void Instance::Impl::PollCamera()
 {
    std::vector<std::shared_ptr<SourceInfo>> vecSourceDevices;
 
-   // note: CDSDK shows wait cursor for a small time
-   m_spCdSdkRef->EnumerateDevices(vecSourceDevices);
+   // Note: CDSDK shows wait cursor for a small time, so only enumerate on XP or lower
+   // since the camera would't work on Vista and above anyway.
+   if (!RunTimeHelper::IsVista())
+      m_spCdSdkRef->EnumerateDevices(vecSourceDevices);
+
    m_spPsRecRef->EnumerateDevices(vecSourceDevices);
 
    size_t uiPollNumDevices = vecSourceDevices.size();
@@ -229,7 +235,8 @@ void Instance::AsyncWaitForCamera(T_fnOnCameraAdded fnOnCameraAdded)
 
 void Instance::EnumerateDevices(std::vector<std::shared_ptr<SourceInfo>>& vecSourceDevices) const
 {
-   m_spImpl->m_spCdSdkRef->EnumerateDevices(vecSourceDevices);
+   if (!RunTimeHelper::IsVista())
+      m_spImpl->m_spCdSdkRef->EnumerateDevices(vecSourceDevices);
    m_spImpl->m_spEdSdkRef->EnumerateDevices(vecSourceDevices);
    m_spImpl->m_spPsRecRef->EnumerateDevices(vecSourceDevices);
 }
