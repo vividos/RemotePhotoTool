@@ -189,21 +189,22 @@ public:
    virtual void SendCommand(RemoteReleaseControl::T_enCameraCommand enCameraCommand) override
    {
       EdsCameraCommand uiCommand = 0;
+      EdsInt32 iParam = 0;
 
       switch (enCameraCommand)
       {
       case RemoteReleaseControl::commandAdjustFocus:
-         uiCommand = kEdsCameraCommand_DoEvfAf;
+         uiCommand = kEdsCameraCommand_PressShutterButton;
+         iParam = kEdsCameraCommand_ShutterButton_Halfway;
          break;
 
       case RemoteReleaseControl::commandAdjustWhiteBalance:
          uiCommand = kEdsCameraCommand_DoClickWBEvf;
+         // TODO put white balance x/y coordinates
          break;
 
       case RemoteReleaseControl::commandAdjustExposure: // not supported
          break;
-
-      // TODO support kEdsCameraCommand_DriveLensEvf ?
 
       default:
          ATLASSERT(false);
@@ -213,7 +214,7 @@ public:
       if (uiCommand == 0)
          return;
 
-      EdsError err = EdsSendCommand(m_hCamera.Get(), uiCommand, 0);
+      EdsError err = EdsSendCommand(m_hCamera.Get(), uiCommand, iParam);
       LOG_TRACE(_T("EdsSendCommand(%08x, command = %04x, 0) returned %08x\n"), m_hCamera.Get(), uiCommand, err);
       EDSDK::CheckError(_T("EdsSendCommand"), err, __FILE__, __LINE__);
    }
