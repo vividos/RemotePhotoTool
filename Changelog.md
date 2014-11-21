@@ -16,6 +16,8 @@ Fixed the application consuming 100% CPU on one thread (or e.g. 25% overall on a
 Fixed application locking up occasionally when changing photo view modes and/or switching on/off
 viewfinder on EOS cameras.
 
+Enabled zooming functionality on Canon EOS cameras, in viewfinder.
+
 All source code was checked with [Coverity](http://www.coverity.com/)'s source code checker. All
 found issues were subsequently fixed. Here's the link to the scan project:
 [https://scan.coverity.com/projects/2058](https://scan.coverity.com/projects/2058).

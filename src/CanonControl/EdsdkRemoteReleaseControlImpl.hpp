@@ -135,12 +135,30 @@ public:
 
    virtual ImageProperty GetImageProperty(unsigned int uiImageProperty) const override
    {
-      // get value
-      PropertyAccess p(m_hCamera);
-      Variant value = p.Get(uiImageProperty);
-      bool bReadOnly = p.IsReadOnly(uiImageProperty);
+      try
+      {
+         // get value
+         PropertyAccess p(m_hCamera);
+         Variant value = p.Get(uiImageProperty);
+         bool bReadOnly = p.IsReadOnly(uiImageProperty);
 
-      return ImageProperty(variantEdsdk, uiImageProperty, value, bReadOnly);
+         return ImageProperty(variantEdsdk, uiImageProperty, value, bReadOnly);
+      }
+      catch (...)
+      {
+         // special case: Zoom position
+         if (uiImageProperty == kEdsPropID_Evf_Zoom)
+         {
+            Variant value;
+            value.Set(m_uiCurrentZoomPos);
+            value.SetType(Variant::typeUInt32);
+
+            return ImageProperty(variantEdsdk, uiImageProperty, value, false);
+         }
+
+         // else rethrow
+         throw;
+      }
    }
 
    virtual void SetImageProperty(const ImageProperty& imageProperty) override;
@@ -259,6 +277,9 @@ private:
 
    /// event that gets set when a shutter release occured; used in Release()
    Event m_evtShutterReleaseOccured;
+
+   /// currently set zoom position (must be managed by ourselves)
+   unsigned int m_uiCurrentZoomPos;
 };
 
 } // namespace EDSDK

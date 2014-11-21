@@ -20,7 +20,8 @@ RemoteReleaseControlImpl::RemoteReleaseControlImpl(std::shared_ptr<SourceDevice>
  m_upReleaseThread(new AsyncReleaseControlThread),
  m_spMtxLock(new LightweightMutex),
  m_shutterReleaseSettings(ShutterReleaseSettings::saveToCamera), // default is to just save to camera
- m_evtShutterReleaseOccured(true, false) // manual-reset event
+ m_evtShutterReleaseOccured(true, false), // manual-reset event
+ m_uiCurrentZoomPos(kEdsEvfZoom_Fit)
 {
    LOG_TRACE(_T("Start registering event handler\n"));
 
@@ -288,6 +289,12 @@ bool RemoteReleaseControlImpl::GetCapability(RemoteReleaseControl::T_enRemoteCap
 
 void RemoteReleaseControlImpl::SetImageProperty(const ImageProperty& imageProperty)
 {
+   if (imageProperty.Id() == kEdsPropID_Evf_Zoom)
+   {
+      // also remember value in this class
+      m_uiCurrentZoomPos = imageProperty.Value().Get<unsigned int>();
+   }
+
    m_upReleaseThread->GetIoService().post(
       std::bind(&RemoteReleaseControlImpl::AsyncSetImageProperty, this, imageProperty));
 }
@@ -308,6 +315,10 @@ void RemoteReleaseControlImpl::AsyncSetImageProperty(const ImageProperty& imageP
          imageProperty.Name().GetString(),
          imageProperty.AsString().GetString());
    }
+
+   // it seems for the Zoom property no notification is sent
+   if (imageProperty.Id() == kEdsPropID_Evf_Zoom)
+      OnPropertyChange(kEdsPropertyEvent_PropertyChanged, kEdsPropID_Evf_Zoom);
 }
 
 std::shared_ptr<Viewfinder> RemoteReleaseControlImpl::StartViewfinder() const

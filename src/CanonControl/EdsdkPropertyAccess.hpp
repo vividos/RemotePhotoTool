@@ -21,6 +21,16 @@ namespace EDSDK
 /// shutter counter property; can't be read out with newest SDK anymore
 #define kEdsPropID_ShutterCounter 0x00000022
 
+// since there are no equivalent properties for retrieving some values, but MapToPropertyID()
+// should return a property id, so that PropertyAccess::Get() can return a value, define "fake"
+// property ids here.
+
+/// base value for "meta" property ids
+const EdsUInt32 kEdsPropID_Meta_Base = 0x10000000;
+
+/// max. zoom pos
+const EdsUInt32 kEdsPropID_Meta_MaxZoomPos = kEdsPropID_Meta_Base + 0;
+
 /// combined image or device property access
 class PropertyAccess : public boost::noncopyable
 {
