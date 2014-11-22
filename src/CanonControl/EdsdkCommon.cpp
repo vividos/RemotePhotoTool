@@ -166,11 +166,11 @@ void Ref::AsyncWaitForCamera(bool bStart, std::function<void()> fnOnCameraConnec
 void Ref::OnIdle()
 {
    MSG msg = { 0 };
-   while (::PeekMessage(&msg, nullptr, 0, 0, PM_NOREMOVE))
+   const unsigned int c_uiMaxMessages = 100;
+   unsigned int uiCountMessages = 0;
+   while (::PeekMessage(&msg, nullptr, 0, 0, PM_NOREMOVE) &&
+      uiCountMessages++ < c_uiMaxMessages)
    {
-      if (msg.hwnd != nullptr)
-         break; // window message; process in main loop
-
       // don't process quit messages; should be handled by our application
       if (msg.message == WM_QUIT)
          break;
