@@ -4,8 +4,6 @@ replace logging with Boost Log v2
 write documentation for CanonControl library
 remove TODOs
 Viewfinder: implement image on TFT and/or PC
-replace throw() with noexcept
-use crash reporter in worker threads, too
 
 PSREC
 -----
@@ -23,6 +21,7 @@ support custom function numbers through kEdsPropID_CFn, e.g. mirror lockup
 CDSDK
 -----
 Test cameras
+implement formatting all properties
 implement TODOs from source files
 
 RemotePhotoTool
@@ -41,7 +40,6 @@ Image Property view: change values using editbox or combobox
 Add "last transferred image" view
 Add Bulb mode shooting when supported
 Add multi-language support
-Add option to switch off backlight
 Real tablet mode: big combobox fonts, scaling dialogs according to system settings, etc.
 Implement photo booth mode, including printing
 Add option to change energy saving options (to prevent shutting down during operation)
@@ -64,7 +62,8 @@ Add proper toolbar
 Implement all bindings from CanonControl
 Implement running and stopping scripts
 Implement debugging scripts
-Implement find/replace dialogs
+Implement squiggly lines for Lua compile errors
+Implement breakpoints
 
 Setup
 -----
