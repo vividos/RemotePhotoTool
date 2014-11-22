@@ -168,6 +168,9 @@ void Ref::OnIdle()
    MSG msg = { 0 };
    while (::PeekMessage(&msg, nullptr, 0, 0, PM_NOREMOVE))
    {
+      if (msg.hwnd != nullptr)
+         break; // window message; process in main loop
+
       // don't process quit messages; should be handled by our application
       if (msg.message == WM_QUIT)
          break;
