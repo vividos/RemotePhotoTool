@@ -11,6 +11,6 @@
 -->
 <Include xmlns="http://schemas.microsoft.com/wix/2006/wi">
 
-   <?define BuildNumber = "114" ?>
+   <?define BuildNumber = "118" ?>
 
 </Include>

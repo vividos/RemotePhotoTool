@@ -3,7 +3,7 @@
 Note: For the complete changelog, including internal changes, you can always go to
 the git sourcecode repository at [https://github.com/vividos/RemotePhotoTool](https://github.com/vividos/RemotePhotoTool).
 
-## 2014-??-??: Version 1.3.0 Build ??? ##
+## 2014-11-22: Version 1.3.0 Build 118 ##
 
 It is now possible to use the camera shutter release button to trigger shooting images on Powershot
 cameras. This worked only on EOS cameras before.
