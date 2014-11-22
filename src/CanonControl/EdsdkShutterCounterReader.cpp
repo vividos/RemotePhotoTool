@@ -55,10 +55,23 @@ private:
 } // unnamed namespace
 
 ShutterCounterReader::ShutterCounterReader()
+   :m_fnEdsInitializeSDK(nullptr),
+   m_fnEdsTerminateSDK(nullptr),
+   m_fnEdsGetCameraList(nullptr),
+   m_fnEdsGetChildCount(nullptr),
+   m_fnEdsGetChildAtIndex(nullptr),
+   m_fnEdsGetDeviceInfo(nullptr),
+   m_fnEdsOpenSession(nullptr),
+   m_fnEdsCloseSession(nullptr),
+   m_fnEdsGetPropertySize(nullptr),
+   m_fnEdsGetPropertyData(nullptr),
+   m_fnEdsRelease(nullptr)
 {
    HMODULE hMod = LoadLibrary(_T("EDSDK_25.dll"));
    if (hMod != nullptr)
       m_spLibrary.reset(hMod, ::FreeLibrary);
+   else
+      return;
 
    m_fnEdsInitializeSDK = (T_fnEdsInitializeSDK)GetProcAddress(hMod, "EdsInitializeSDK");
    m_fnEdsTerminateSDK = (T_fnEdsTerminateSDK)GetProcAddress(hMod, "EdsTerminateSDK");

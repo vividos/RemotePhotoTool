@@ -232,11 +232,32 @@ void RemoteReleaseControlImpl::AsyncRelease()
 {
    // TODO check cdRELEASE_CONTROL_CAP_ABORT_VIEWFINDER if viewfinder has to be terminated to take a picture
 
-   cdHSource hSource = GetSource();
-
-   // release the shutter
-   bool bSync = true;
    cdUInt32 numData = 0;
+   ReleaseShutter(true, numData);
+
+   // only save to camera? then return now
+   ShutterReleaseSettings settings;
+   {
+      LightweightMutex::LockType lock(m_mtxShutterReleaseSettings);
+      settings = m_shutterReleaseSettings;
+   }
+
+   if (settings.SaveTarget() == ShutterReleaseSettings::saveToCamera)
+      return;
+
+   // read data
+   CStringA cszaFilename = settings.Filename();
+   ReadReleaseData(cszaFilename, numData);
+
+   // call finished handler
+   ShutterReleaseSettings::T_fnOnFinishedTransfer fnHandler = settings.HandlerOnFinishedTransfer();
+   if (fnHandler != nullptr)
+      fnHandler(settings);
+}
+
+void RemoteReleaseControlImpl::ReleaseShutter(bool bSync, cdUInt32& numData)
+{
+   cdHSource hSource = GetSource();
 
    // may return cdINVALID_HANDLE, cdINVALID_PARAMETER, cdDEVICE_NOT_RELEASED, cdOPERATION_CANCELLED
    cdError err = CDRelease(hSource,
@@ -252,29 +273,20 @@ void RemoteReleaseControlImpl::AsyncRelease()
       bSync ? _T("true") : _T("false"),
       numData, err);
    CheckError(_T("CDRelease"), err, __FILE__, __LINE__);
+}
 
-   // only save to camera? then return now
-   ShutterReleaseSettings settings;
-   {
-      LightweightMutex::LockType lock(m_mtxShutterReleaseSettings);
-      settings = m_shutterReleaseSettings;
-   }
-
-   if (settings.SaveTarget() == ShutterReleaseSettings::saveToCamera)
-      return;
-
-   // read data
-   CStringA cszaFilename = settings.Filename();
-
-   cdReleaseImageInfo imageInfo = {0};
+void RemoteReleaseControlImpl::ReadReleaseData(const CStringA& cszaFilename, cdUInt32 numData)
+{
+   cdReleaseImageInfo imageInfo = { 0 };
    cdStgMedium stgMedium;
    stgMedium.Type = cdMEMTYPE_FILE;
    stgMedium.u.lpszFileName = const_cast<char*>(cszaFilename.GetString());
 
+   cdHSource hSource = GetSource();
    for (cdUInt32 i = 0; i < numData; i++)
    {
       // may return cdINVALID_HANDLE, cdINVALID_PARAMETER, cdINVALID_FN_CALL, cdOPERATION_CANCELLED
-      err = CDGetReleasedData(hSource,
+      cdError err = CDGetReleasedData(hSource,
          &RemoteReleaseControlImpl::OnProgressCallback_,
          GetContext(),
          cdPROG_REPORT_PERIODICALLY,
@@ -286,11 +298,6 @@ void RemoteReleaseControlImpl::AsyncRelease()
          hSource, err);
       CheckError(_T("CDGetReleasedData"), err, __FILE__, __LINE__);
    }
-
-   // call finished handler
-   ShutterReleaseSettings::T_fnOnFinishedTransfer fnHandler = settings.HandlerOnFinishedTransfer();
-   if (fnHandler != nullptr)
-      fnHandler(settings);
 }
 
 std::shared_ptr<BulbReleaseControl> RemoteReleaseControlImpl::StartBulb()

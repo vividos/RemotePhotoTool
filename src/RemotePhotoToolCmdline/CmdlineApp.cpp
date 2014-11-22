@@ -276,7 +276,7 @@ void CmdlineApp::RunScript(const CString& cszFilename)
 
    _tprintf(_T("Press any key to abort running script.\n\n"));
 
-   fgetc(stdin);
+   (void)fgetc(stdin);
 
    proc.Stop();
 }

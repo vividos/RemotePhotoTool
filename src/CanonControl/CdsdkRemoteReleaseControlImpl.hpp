@@ -132,6 +132,12 @@ private:
    /// releases shutter; called in worker thread
    void AsyncRelease();
 
+   /// executes shutter release
+   void ReleaseShutter(bool bSync, cdUInt32& numData);
+
+   /// reads release data
+   void ReadReleaseData(const CStringA& cszaFilename, cdUInt32 numData);
+
    /// release event callback
    static cdUInt32 cdSTDCALL OnReleaseEventCallback_(
       cdReleaseEventID EventID, const void* pData, cdUInt32 DataSize, cdContext Context);
