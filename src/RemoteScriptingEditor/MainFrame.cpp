@@ -71,6 +71,9 @@ LRESULT MainFrame::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/,
 
    DoFileNew();
 
+   UIEnable(ID_SCRIPT_RUN, TRUE);
+   UIEnable(ID_SCRIPT_STOP, FALSE);
+
    return 0;
 }
 
@@ -206,6 +209,9 @@ LRESULT MainFrame::OnScriptRun(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCt
    if (!DoFileSave())
       return 0;
 
+   UIEnable(ID_SCRIPT_RUN, FALSE);
+   UIEnable(ID_SCRIPT_STOP, TRUE);
+
    {
       CString cszText;
       cszText.Format(_T("Start executing file %s...\n\n"),
@@ -231,6 +237,9 @@ LRESULT MainFrame::OnScriptRun(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCt
          ex.LuaErrorMessage().GetString());
 
       OnOutputDebugString(cszText);
+
+      UIEnable(ID_SCRIPT_RUN, TRUE);
+      UIEnable(ID_SCRIPT_STOP, FALSE);
    }
 
    return 0;
@@ -238,6 +247,9 @@ LRESULT MainFrame::OnScriptRun(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCt
 
 LRESULT MainFrame::OnScriptStop(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
+   UIEnable(ID_SCRIPT_RUN, TRUE);
+   UIEnable(ID_SCRIPT_STOP, FALSE);
+
    m_processor.Stop();
    return 0;
 }
