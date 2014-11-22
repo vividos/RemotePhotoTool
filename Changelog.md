@@ -5,24 +5,33 @@ the git sourcecode repository at [https://github.com/vividos/RemotePhotoTool](ht
 
 ## 2014-11-22: Version 1.3.0 Build 118 ##
 
-It is now possible to use the camera shutter release button to trigger shooting images on Powershot
-cameras. This worked only on EOS cameras before.
+This is mainly a bugfix and minor changes release.
 
-Fixed a crash when a connected camera only had low batteries and image or device properties should be
-read from the camera.
-
-Fixed the application consuming 100% CPU on one thread (or e.g. 25% overall on a quad-core CPU).
+Upgraded to Canon EOS Digital Camera SDK (EDSDK) 2.14, supporting new cameras EOS 700D, EOS100D.
 
 Fixed application locking up occasionally when changing photo view modes and/or switching on/off
 viewfinder on EOS cameras.
 
+Fixed the application consuming 100% CPU on one thread (or e.g. 25% overall on a quad-core CPU).
+
+Fixed a crash when a connected camera only had low batteries and image or device properties should be
+read from the camera.
+
+Camera properties on the "Device properties" and "Image properties" views should correctly display
+all known properties now.
+
+It is now possible to use the camera shutter release button to trigger shooting images on Powershot
+cameras. This worked only on EOS cameras before.
+
 Enabled zooming functionality on Canon EOS cameras, in viewfinder.
+
+Older Canon Powershot cameras supported by the "CD-SDK Canon SDK" are only supported and will work
+on Windows XP and below. RemotePhotoTool only checks for these cameras on the supported Windows
+versions.
 
 All source code was checked with [Coverity](http://www.coverity.com/)'s source code checker. All
 found issues were subsequently fixed. Here's the link to the scan project:
 [https://scan.coverity.com/projects/2058](https://scan.coverity.com/projects/2058).
-
-Upgraded to Canon EOS Digital Camera SDK (EDSDK) 2.14, supporting new cameras EOS 700D, EOS100D.
 
 ## 2014-04-11: Version 1.2.0 Build 114 ##
 

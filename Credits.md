@@ -14,7 +14,7 @@ The application uses the Canon PowerShot Remote Capture Software Development Kit
 The application uses the Canon Digital Camera Software Development Kit (CD-SDK)
 It is licensed under the "Digital Image Developer Programme".
 
-- [http://www.didp.canon-europa.com/](http://www.didp.canon-europa.com/) 
+- [http://www.didp.canon-europa.com/](http://www.didp.canon-europa.com/)
 
 ## Components and Libraries ##
 
@@ -42,19 +42,23 @@ library is licensed under a custom free license. The license needs use to state:
 
 ### Lua ###
 
-The application uses the Lua programming language. Lua is licensed under the terms of the MIT license.
+The application uses the Lua programming language. Lua is licensed under the terms of
+the MIT license.
 
-http://www.lua.org/license.html
+- [http://www.lua.org/](http://www.lua.org/ "Lua programm language")
+- [http://www.lua.org/license.html](http://www.lua.org/license.html "Lua MIT License")
 
 ### Scintilla ###
 
-The application uses the Scintilla source code editing component. The component is licensed under a custom license that permits use in any free project or commercial product. 
+The application uses the Scintilla source code editing component. The component is licensed
+under a custom license that permits use in any free project or commercial product.
 
 - [http://www.scintilla.org/](http://www.scintilla.org/ "Scintilla source code editing component")
 
-- [http://www.scintilla.org/License.txt](http://www.scintilla.org/License.txt "Scintilla License") 
+- [http://www.scintilla.org/License.txt](http://www.scintilla.org/License.txt "Scintilla License")
 
-The application uses the "WTL Scintilla Control Wrappers" from Programmer's Notepad by Gilad Novik. The wrapper code is licensed under the zlib license.
+The application uses the "WTL Scintilla Control Wrappers" from Programmer's Notepad by Gilad Novik.
+The wrapper code is licensed under the zlib license.
 
 - [http://www.pnotepad.org/scintilla/](http://www.pnotepad.org/scintilla/ "WTL Scintilla Control Wrappers")
 

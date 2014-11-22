@@ -16,13 +16,13 @@
   - Image properties are updated live when they change
 - Live Viewfinder support
   - Auto focus, auto white balance functions
-  - Zoom in/out for supported cameras
+  - Zoom in/out for cameras that support it
   - Helper lines (for rule of thirds and golden ratio)
-  - Show overexposed areas by showing a Zebra style pattern
+  - Show overexposed areas by showing a zebra style pattern
 - Support for third party applications:
   - Hugin for Panorama stitching
   - Photomatix Pro for HDR image generation
-- Support for many Canon camera models (EOS, PowerShot, see full list in [SupportedCameras.md](SupportedCameras.md))
+- Support for many Canon camera models (EOS, PowerShot; see full list in [SupportedCameras.md](SupportedCameras.md))
 - Registers an Auto-Play handler to open the app when a camera is connected
 - Debugging facilities
   - Thorough logging for error analysis and bug hunting

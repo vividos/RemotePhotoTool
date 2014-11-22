@@ -9,7 +9,7 @@ and send me a message with the test results and camera infos (output from the Ca
 
 ### Canon EOS camera models ###
 
-Cameras supported by "ED-SDK".
+Cameras supported by "ED-SDK 2.14".
 All cameras support remote capture, some of them support live view and Bulb shooting.
 
 - EOS 1000D  (aka. Rebel XS, Kiss F)
