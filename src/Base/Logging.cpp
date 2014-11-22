@@ -20,6 +20,7 @@ static std::atomic<bool> s_bLoggingActive = false;
 /// log filename
 CString s_cszLogFilename;
 
+/// formats current date for logging
 static CString LogFormatCurrentDate()
 {
    time_t nowtime = time(&nowtime);
@@ -35,6 +36,7 @@ static CString LogFormatCurrentDate()
    return cszDate;
 }
 
+/// formats current date/time for logging
 static CString LogGetCurrentDateTime()
 {
    time_t now = time(&now);

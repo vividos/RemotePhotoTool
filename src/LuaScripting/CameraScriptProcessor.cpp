@@ -141,7 +141,7 @@ private:
          std::bind(&Impl::SourceInfoOpen, shared_from_this(), spSourceInfo));
 
       CString cszIndex;
-      cszIndex.Format(_T("%u"), uiIndex);
+      cszIndex.Format(_T("%u"), unsigned(uiIndex));
 
       table.AddValue(cszIndex, Lua::Value(table));
    }

@@ -26,30 +26,31 @@ public:
    bool Read(LPCSTR pszDeviceId, unsigned int& uiShutterCounter) const;
 
 private:
-   typedef EdsError(EDSSTDCALL *T_fnEdsInitializeSDK)();
-   typedef EdsError(EDSSTDCALL *T_fnEdsTerminateSDK)();
-   typedef EdsError(EDSSTDCALL *T_fnEdsGetCameraList)(EdsCameraListRef*);
-   typedef EdsError(EDSSTDCALL *T_fnEdsGetChildCount)(EdsBaseRef, EdsUInt32*);
-   typedef EdsError(EDSSTDCALL *T_fnEdsGetChildAtIndex)(EdsBaseRef, EdsInt32, EdsBaseRef*);
-   typedef EdsError(EDSSTDCALL *T_fnEdsGetDeviceInfo)(EdsCameraRef, EdsDeviceInfo*);
-   typedef EdsError(EDSSTDCALL *T_fnEdsOpenSession)(EdsCameraRef);
-   typedef EdsError(EDSSTDCALL *T_fnEdsCloseSession)(EdsCameraRef);
-   typedef EdsError(EDSSTDCALL *T_fnEdsGetPropertySize)(EdsBaseRef, EdsPropertyID, EdsInt32, EdsDataType*, EdsUInt32*);
-   typedef EdsError(EDSSTDCALL *T_fnEdsGetPropertyData)(EdsBaseRef, EdsPropertyID, EdsInt32, EdsUInt32, EdsVoid*);
-   typedef EdsError(EDSSTDCALL *T_fnEdsRelease)(EdsBaseRef);
+   typedef EdsError(EDSSTDCALL *T_fnEdsInitializeSDK)(); ///< EdsInitializeSDK function type
+   typedef EdsError(EDSSTDCALL *T_fnEdsTerminateSDK)(); ///< EdsTerminateSDK function type
+   typedef EdsError(EDSSTDCALL *T_fnEdsGetCameraList)(EdsCameraListRef*); ///< EdsGetCameraList function type
+   typedef EdsError(EDSSTDCALL *T_fnEdsGetChildCount)(EdsBaseRef, EdsUInt32*); ///< EdsGetChildCount function type
+   typedef EdsError(EDSSTDCALL *T_fnEdsGetChildAtIndex)(EdsBaseRef, EdsInt32, EdsBaseRef*); ///< EdsGetChildAtIndex function type
+   typedef EdsError(EDSSTDCALL *T_fnEdsGetDeviceInfo)(EdsCameraRef, EdsDeviceInfo*); ///< EdsGetDeviceInfo function type
+   typedef EdsError(EDSSTDCALL *T_fnEdsOpenSession)(EdsCameraRef); ///< EdsOpenSession function type
+   typedef EdsError(EDSSTDCALL *T_fnEdsCloseSession)(EdsCameraRef); ///< EdsCloseSession function type
+   typedef EdsError(EDSSTDCALL *T_fnEdsGetPropertySize)(EdsBaseRef, EdsPropertyID, EdsInt32, EdsDataType*, EdsUInt32*); ///< EdsGetPropertySize function type
+   typedef EdsError(EDSSTDCALL *T_fnEdsGetPropertyData)(EdsBaseRef, EdsPropertyID, EdsInt32, EdsUInt32, EdsVoid*); ///< EdsGetPropertyData function type
+   typedef EdsError(EDSSTDCALL *T_fnEdsRelease)(EdsBaseRef); ///< EdsRelease function type
 
-   std::shared_ptr<HINSTANCE__> m_spLibrary;
-   T_fnEdsInitializeSDK m_fnEdsInitializeSDK;
-   T_fnEdsTerminateSDK m_fnEdsTerminateSDK;
-   T_fnEdsGetCameraList m_fnEdsGetCameraList;
-   T_fnEdsGetChildCount m_fnEdsGetChildCount;
-   T_fnEdsGetChildAtIndex m_fnEdsGetChildAtIndex;
-   T_fnEdsGetDeviceInfo m_fnEdsGetDeviceInfo;
-   T_fnEdsOpenSession m_fnEdsOpenSession;
-   T_fnEdsCloseSession m_fnEdsCloseSession;
-   T_fnEdsGetPropertySize m_fnEdsGetPropertySize;
-   T_fnEdsGetPropertyData m_fnEdsGetPropertyData;
-   T_fnEdsRelease m_fnEdsRelease;
+   std::shared_ptr<HINSTANCE__> m_spLibrary; ///< DLL handle to EDSDK_25.dll
+
+   T_fnEdsInitializeSDK m_fnEdsInitializeSDK;      ///< EdsInitializeSDK function
+   T_fnEdsTerminateSDK m_fnEdsTerminateSDK;        ///< EdsTerminateSDK function
+   T_fnEdsGetCameraList m_fnEdsGetCameraList;      ///< EdsGetCameraList function
+   T_fnEdsGetChildCount m_fnEdsGetChildCount;      ///< EdsGetChildCount function
+   T_fnEdsGetChildAtIndex m_fnEdsGetChildAtIndex;  ///< EdsGetChildAtIndex function
+   T_fnEdsGetDeviceInfo m_fnEdsGetDeviceInfo;      ///< EdsGetDeviceInfo function
+   T_fnEdsOpenSession m_fnEdsOpenSession;          ///< EdsOpenSession function
+   T_fnEdsCloseSession m_fnEdsCloseSession;        ///< EdsCloseSession function
+   T_fnEdsGetPropertySize m_fnEdsGetPropertySize;  ///< EdsGetPropertySize function
+   T_fnEdsGetPropertyData m_fnEdsGetPropertyData;  ///< EdsGetPropertyData function
+   T_fnEdsRelease m_fnEdsRelease;                  ///< EdsRelease function
 };
 
 } // namespace EDSDK

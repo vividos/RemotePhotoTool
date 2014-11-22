@@ -691,11 +691,10 @@ void State::TraceValue(lua_State* L, int iIndex, int iStackDepth)
    }
 
    int iHasMetatable = lua_getmetatable(L, iIndex);
-   int iLenMetatable = 0;
    if (iHasMetatable != 0)
    {
       lua_len(L, -1);
-      iLenMetatable = lua_tointeger(L, -1);
+      //int iLenMetatable = lua_tointeger(L, -1);
       lua_pop(L, 2);
    }
 

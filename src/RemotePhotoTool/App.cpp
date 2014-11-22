@@ -114,6 +114,7 @@ bool App::ParseCommandLine()
    options.RegisterOption(_T("o"), _T("open-wia"), _T("opens camera using WIA handler; <arg1>: Port, <arg2>: Guid"),
       2, [&](const std::vector<CString>& vecArgs)
    {
+      vecArgs;
       ATLASSERT(vecArgs.size() == 2);
       // just let the app start here
       return true;
