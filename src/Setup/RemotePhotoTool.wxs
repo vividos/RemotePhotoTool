@@ -72,6 +72,11 @@
                   Execute="deferred" Return="ignore"
                   HideTarget="no" Impersonate="no" />
 
+    <UI>
+      <ProgressText Action="RegisterWIAEvent">Registering Auto-Play handler</ProgressText>
+      <ProgressText Action="UnregisterWIAEvent">Unregistering Auto-Play handler</ProgressText>
+    </UI>
+
     <InstallExecuteSequence>
       <Custom Action="RegisterWIAEvent" Before="InstallFinalize">NOT Installed</Custom>
       <Custom Action="UnregisterWIAEvent" After="InstallInitialize">Installed AND NOT UPGRADINGPRODUCTCODE</Custom>
@@ -81,9 +86,9 @@
 
     <Property Id="ALLUSERS"><![CDATA[1]]></Property>
 
-    <Property Id="ARPURLINFOABOUT"><![CDATA[https://github.com/vividos/RemotePhotoTool/]]></Property>
-    <Property Id="ARPCOMMENTS"><![CDATA[For more information, please visit https://github.com/vividos/RemotePhotoTool/]]></Property>
-    <Property Id="ARPHELPLINK" Value="https://github.com/vividos/RemotePhotoTool/" />
+    <Property Id="ARPURLINFOABOUT"><![CDATA[http://vividos.github.io/RemotePhotoTool/]]></Property>
+    <Property Id="ARPCOMMENTS"><![CDATA[For more information, please visit hhttp://vividos.github.io/RemotePhotoTool/]]></Property>
+    <Property Id="ARPHELPLINK" Value="http://vividos.github.io/RemotePhotoTool/" />
 
     <Icon Id="RemotePhotoToolIcon" SourceFile="$(var.SourceFolder)\..\..\src\RemotePhotoTool\res\RemotePhotoTool.ico"/>
     <Property Id="ARPPRODUCTICON" Value="RemotePhotoToolIcon" />
