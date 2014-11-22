@@ -16,15 +16,17 @@ class IPhotoModeViewHost;
 /// view types
 enum T_enViewType
 {
-   viewStandard = 0,
-   viewHDR = 1,
-   viewPanorama = 2,
-   viewHDRPanorama = 3,
-   viewTimeLapse = 4,
-   viewPhotoStacking = 5,
-   viewScripting = 6,
-   viewDeviceProperties = 7,
-   viewImageProperties = 8,
+   viewBlank = 0,
+   viewStandard = 1,
+   viewHDR = 2,
+   viewPanorama = 3,
+   viewHDRPanorama = 4,
+   viewTimeLapse = 5,
+   viewPhotoStacking = 6,
+   viewScripting = 7,
+   viewDeviceProperties = 8,
+   viewImageProperties = 9,
+   viewPreviousImages = 10,
 };
 
 /// view manager

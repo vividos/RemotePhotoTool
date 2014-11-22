@@ -54,15 +54,28 @@ BEGIN
         MENUITEM "&Panorama", ID_PHOTO_MODE_PANO
         MENUITEM "H&DR Panorama", ID_PHOTO_MODE_HDR_PANO
         MENUITEM "&Timelapse", ID_PHOTO_MODE_TIMELAPSE
-        MENUITEM "Photo &Stack", ID_PHOTO_MODE_PHOTOSTACK
+        MENUITEM "Photo &Stacking", ID_PHOTO_MODE_PHOTOSTACK
         MENUITEM "S&cripting", ID_PHOTO_MODE_SCRIPTING
         MENUITEM "&Device Properties", ID_PHOTO_MODE_DEVICE_PROPERTIES
         MENUITEM "&Image Properties", ID_PHOTO_MODE_IMAGE_PROPERTIES
+    END
+    POPUP "&Camera"
+    BEGIN
+        MENUITEM "Release", IDC_CAMERA_RELEASE
+        POPUP "&Save to..."
+        BEGIN
+            MENUITEM "dummy", IDC_STATIC
+        END
+    END
+    POPUP "View&finder"
+    BEGIN
+        MENUITEM "&Show", ID_VIEWFINDER_SHOW
     END
     POPUP "&View"
     BEGIN
         MENUITEM "&Menu band", ID_VIEW_RIBBON
         MENUITEM "&Viewfinder", ID_VIEWFINDER_SHOW
+        MENUITEM "&Previous images", ID_PREV_IMAGES_SHOW
     END
     POPUP "&Help"
     BEGIN
@@ -256,6 +269,37 @@ BEGIN
     PUSHBUTTON      "S&top", IDC_BUTTON_PANORAMA_STOP, 61, 5, 51, 34
 END
 
+LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
+IDD_PHOTOMODE_HDR_PANORAMA_FORM DIALOGEX 0, 0, 176, 195
+STYLE DS_SETFONT | WS_VISIBLE | WS_CHILDWINDOW | WS_CLIPSIBLINGS
+FONT 8, "Ms Shell Dlg 2", 400, 0, 0
+BEGIN
+    PUSHBUTTON      "&Start", IDC_BUTTON_PANORAMA_START, 5, 5, 51, 34
+    PUSHBUTTON      "&Cancel", IDC_BUTTON_PANORAMA_CANCEL, 117, 5, 51, 34
+    PUSHBUTTON      "S&top", IDC_BUTTON_PANORAMA_STOP, 61, 5, 51, 34
+    LTEXT           "Number of bracketed shots", IDC_STATIC, 5, 72, 96, 8
+    COMBOBOX        IDC_COMBO_AEB_BRACKET_SHOTS, 5, 83, 51, 112, CBS_DROPDOWNLIST | CBS_HASSTRINGS
+    CONTROL         "", IDC_LIST_AEB_SHUTTER_SPEED_VALUES, WC_LISTVIEW, WS_TABSTOP | WS_DISABLED | WS_BORDER | LVS_ALIGNLEFT | LVS_REPORT, 5, 101, 51, 84
+    COMBOBOX        IDC_COMBO_SHUTTER_SPEED, 5, 54, 51, 231, CBS_DROPDOWNLIST | CBS_HASSTRINGS
+    LTEXT           "Tv", IDC_STATIC, 5, 44, 51, 8
+END
+
+LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
+IDD_PHOTOMODE_PHOTO_STACKING_FORM DIALOGEX 0, 0, 176, 353
+STYLE DS_SETFONT | WS_VISIBLE | WS_CHILDWINDOW | WS_CLIPSIBLINGS
+FONT 8, "Ms Shell Dlg 2", 400, 0, 0
+BEGIN
+    PUSHBUTTON      "&Start", IDC_BUTTON_PHOTO_STACKING_START, 5, 5, 51, 34
+END
+
+LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
+IDD_PHOTOMODE_TIMELAPSE_FORM DIALOGEX 0, 0, 176, 353
+STYLE DS_SETFONT | WS_VISIBLE | WS_CHILDWINDOW | WS_CLIPSIBLINGS
+FONT 8, "Ms Shell Dlg 2", 400, 0, 0
+BEGIN
+    PUSHBUTTON      "&Start", IDC_BUTTON_TIMELAPSE_START, 5, 5, 51, 34
+END
+
 
 //
 // String Table resources
@@ -284,10 +328,27 @@ BEGIN
     ID_PHOTO_MODE_PANO            "Starts Panorama photo mode\nPanorama mode"
     ID_PHOTO_MODE_HDR_PANO        "Starts HDR Panorama photo mode\nHDR Panorama mode"
     ID_PHOTO_MODE_TIMELAPSE       "Starts Timelapse photo mode\nTimelapse mode"
-    ID_PHOTO_MODE_PHOTOSTACK      "Starts Photo Stack photo mode\nPhoto Stack mode"
+    ID_PHOTO_MODE_PHOTOSTACK      "Starts Photo Stacking photo mode\nPhoto Stacking mode"
     ID_PHOTO_MODE_SCRIPTING       "Starts Scripting photo mode\nScripting mode"
     ID_PHOTO_MODE_DEVICE_PROPERTIES "Starts Device Properties view\nDevice Properties"
     ID_PHOTO_MODE_IMAGE_PROPERTIES "Starts Image Properties view\nImage Properties"
     ID_VIEW_RIBBON                "Toggles between menu band and menu\nToggle menu band"
+    ID_PREV_IMAGES_SHOW           "Shows Previous images view\nPrevious images"
+    ID_PREV_IMAGES_EXIT           "Exits Previous images view\nExit"
+    ID_PREV_IMAGES_PREV           "Shows previous image\nPrevious image"
+    ID_PREV_IMAGES_NEXT           "Shows next image\nNext image"
+    ID_PREV_IMAGES_OPEN_FOLDER    "Opens folder of image shown\nOpen folder"
+    ID_PREV_IMAGES_EDIT           "Edits shown image in associated application\nEdit image"
+    ID_CAMERA_RELEASE             "Presses the camera shutter release button\nShutter release"
     ID_VIEWFINDER_SHOW            "Shows or hides the Viewfinder window\nViewfinder"
+    ID_VIEWFINDER_AUTO_FOCUS      "Adjusts auto focus of live viewfinder\nAuto focus"
+    ID_VIEWFINDER_AUTO_WB         "Adjusts white balance of live viewfinder\nAuto white balance"
+    ID_VIEWFINDER_ZOOM_IN         "Zooms into the live viewfinder scene\nZoom in"
+    ID_VIEWFINDER_ZOOM_OUT        "Zooms out from live viewfinder scene\nZoom out"
+    ID_VIEWFINDER_SHOW_OVEREXPOSED "Toggles showing overexposed areas in live viewfinder\nOverexposed areas"
+    ID_VIEWFINDER_SHOW_OVERLAY_IMAGE "Sets half-transparent overlay image in live viewfinder\nOverlay image"
+    ID_SCRIPTING_OPEN             "Opens existing Lua scripting file\nOpen scripting file"
+    ID_SCRIPTING_RUN              "Runs currently loaded Lua script\nRun script"
+    ID_SCRIPTING_STOP             "Stops currently running Lua script\nStop script"
+    ID_SCRIPTING_EDIT             "Edits currently loaded Lua script in RemoteScriptingEditor\nEdit script"
 END

@@ -4,6 +4,7 @@
     <!-- RemotePhotoTool.rc Menu Commands-->
     <Command Name="phototool_HOME_CONNECT" Symbol="ID_HOME_CONNECT" Id="32768"/>
     <Command Name="phototool_HOME_SETTINGS" Symbol="ID_HOME_SETTINGS" Id="32769"/>
+
     <Command Name="phototool_PHOTO_MODE_NORMAL" Symbol="ID_PHOTO_MODE_NORMAL" Id="32770"/>
     <Command Name="phototool_PHOTO_MODE_HDR" Symbol="ID_PHOTO_MODE_HDR" Id="32771"/>
     <Command Name="phototool_PHOTO_MODE_PANO" Symbol="ID_PHOTO_MODE_PANO" Id="32772"/>
@@ -13,9 +14,30 @@
     <Command Name="phototool_PHOTO_MODE_SCRIPTING" Symbol="ID_PHOTO_MODE_SCRIPTING" Id="32776"/>
     <Command Name="phototool_PHOTO_MODE_DEVICE_PROPERTIES" Symbol="ID_PHOTO_MODE_DEVICE_PROPERTIES" Id="32777"/>
     <Command Name="phototool_PHOTO_MODE_IMAGE_PROPERTIES" Symbol="ID_PHOTO_MODE_IMAGE_PROPERTIES" Id="32778"/>
-    <Command Name="phototool_VIEWFINDER_SHOW" Symbol="ID_VIEWFINDER_SHOW" Id="32779"/>
-    <Command Name="wtl_VIEW_RIBBON" Symbol="ID_VIEW_RIBBON" Id="0xE804"/>
 
+    <Command Name="phototool_PREV_IMAGES_SHOW" Symbol="ID_PREV_IMAGES_SHOW" Id="32779"/>
+    <Command Name="phototool_PREV_IMAGES_EXIT" Symbol="ID_PREV_IMAGES_EXIT" Id="32780"/>
+    <Command Name="phototool_PREV_IMAGES_PREV" Symbol="ID_PREV_IMAGES_PREV" Id="32781"/>
+    <Command Name="phototool_PREV_IMAGES_NEXT" Symbol="ID_PREV_IMAGES_NEXT" Id="32782"/>
+    <Command Name="phototool_PREV_IMAGES_OPEN_FOLDER" Symbol="ID_PREV_IMAGES_OPEN_FOLDER" Id="32783"/>
+    <Command Name="phototool_PREV_IMAGES_EDIT" Symbol="ID_PREV_IMAGES_EDIT" Id="32784"/>
+
+    <Command Name="phototool_CAMERA_RELEASE" Symbol="ID_CAMERA_RELEASE" Id="32785"/>
+
+    <Command Name="phototool_VIEWFINDER_SHOW" Symbol="ID_VIEWFINDER_SHOW" Id="32786"/>
+    <Command Name="phototool_VIEWFINDER_AUTO_FOCUS" Symbol="ID_VIEWFINDER_AUTO_FOCUS" Id="32787"/>
+    <Command Name="phototool_VIEWFINDER_AUTO_WB" Symbol="ID_VIEWFINDER_AUTO_WB" Id="32788"/>
+    <Command Name="phototool_VIEWFINDER_ZOOM_IN" Symbol="ID_VIEWFINDER_ZOOM_IN" Id="32789"/>
+    <Command Name="phototool_VIEWFINDER_ZOOM_OUT" Symbol="ID_VIEWFINDER_ZOOM_OUT" Id="32790"/>
+    <Command Name="phototool_VIEWFINDER_SHOW_OVEREXPOSED" Symbol="ID_VIEWFINDER_SHOW_OVEREXPOSED" Id="32791"/>
+    <Command Name="phototool_VIEWFINDER_SHOW_OVERLAY_IMAGE" Symbol="ID_VIEWFINDER_SHOW_OVERLAY_IMAGE" Id="32792"/>
+
+    <Command Name="phototool_SCRIPTING_OPEN" Symbol="ID_SCRIPTING_OPEN" Id="32793"/>
+    <Command Name="phototool_SCRIPTING_RUN" Symbol="ID_SCRIPTING_RUN" Id="32794"/>
+    <Command Name="phototool_SCRIPTING_STOP" Symbol="ID_SCRIPTING_STOP" Id="32795"/>
+    <Command Name="phototool_SCRIPTING_EDIT" Symbol="ID_SCRIPTING_EDIT" Id="32796"/>
+
+    <Command Name="wtl_VIEW_RIBBON" Symbol="ID_VIEW_RIBBON" Id="0xE804"/>
     <Command Name="wtl_APP_ABOUT" Symbol="ID_APP_ABOUT" Id="0xE140"/>
     <Command Name="wtl_APP_EXIT" Symbol="ID_APP_EXIT" Id="0xE141"/>
 
@@ -23,36 +45,59 @@
 
     <!-- Tabs -->
     <Command Name="TabHome" Symbol="ID_TAB_HOME" LabelTitle="Home" />
+    <Command Name="TabPreviousImages" Symbol="ID_TAB_PREVIOUS_IMAGES" LabelTitle="Previous Images" />
+    <Command Name="TabContextCamera" Symbol="ID_TAB_CONTEXT_CAMERA" LabelTitle="Camera" />
+    <Command Name="TabContextViewfinder" Symbol="ID_TAB_CONTEXT_VIEWFINDER" LabelTitle="Viewfinder" />
+    <Command Name="TabContextScripting" Symbol="ID_TAB_CONTEXT_SCRIPTING" LabelTitle="Scripting" />
+
+    <!-- Tab groups -->
+    <Command Name="TabGroupContextCamera" Symbol="ID_TAB_GROUP_CONTEXT_CAMERA" LabelTitle="Camera" />
+    <Command Name="TabGroupContextViewfinder" Symbol="ID_TAB_GROUP_CONTEXT_VIEWFINDER" LabelTitle="Viewfinder" />
+    <Command Name="TabGroupContextScripting" Symbol="ID_TAB_GROUP_CONTEXT_SCRIPTING" LabelTitle="Scripting" />
 
     <!-- Groups -->
     <Command Name="GroupHome" Symbol="ID_GROUP_HOME" LabelTitle="Home" />
     <Command Name="GroupPhotoModes" Symbol="ID_GROUP_PHOTO_MODES" LabelTitle="Photo Modes" />
-    <Command Name="GroupViewFinder" Symbol="ID_GROUP_VIEWFINDER" LabelTitle="Viewfinder" />
+    <Command Name="GroupViews" Symbol="ID_GROUP_VIEWFINDER" LabelTitle="Views" />
+    <Command Name="GroupPreviousImagesExit" Symbol="ID_GROUP_PREV_IMAGES_EXIT" LabelTitle="Exit" />
+    <Command Name="GroupPreviousImagesNavigation" Symbol="ID_GROUP_PREV_IMAGES_NAVIGATION" LabelTitle="Navigation" />
+    <Command Name="GroupPreviousImagesActions" Symbol="ID_GROUP_PREV_IMAGES_ACTIONS" LabelTitle="Actions" />
+    <Command Name="GroupCameraRelease" Symbol="ID_GROUP_RELEASE" LabelTitle="Release" />
+    <Command Name="GroupCameraSettings" Symbol="ID_GROUP_CAMERA_SETTINGS" LabelTitle="Settings" />
+    <Command Name="GroupViewfinderViewfinder" Symbol="ID_GROUP_VIEWFINDER_VIEWFINDER" LabelTitle="Viewfinder" />
+    <Command Name="GroupViewfinderAdjust" Symbol="ID_GROUP_VIEWFINDER_ADJUST" LabelTitle="Adjust" />
+    <Command Name="GroupViewfinderZoom" Symbol="ID_GROUP_VIEWFINDER_ZOOM" LabelTitle="Zoom" />
+    <Command Name="GroupViewfinderShow" Symbol="ID_GROUP_VIEWFINDER_SHOW" LabelTitle="Show" />
+    <Command Name="GroupScriptingScript" Symbol="ID_GROUP_SCRIPTING_SCRIPT" LabelTitle="Script" />
+    <Command Name="GroupScriptingDebug" Symbol="ID_GROUP_SCRIPTING_DEBUG" LabelTitle="Debug" />
+    <Command Name="GroupScriptingEdit" Symbol="ID_GROUP_SCRIPTING_EDIT" LabelTitle="Edit" />
 
     <!-- App Menu, MRU list, Help button and Quick Access Toolbar -->
     <Command Name="AppMenu" Symbol="ID_RIBBON_APP_MENU"/>
-    <Command Name="SaveMore" Symbol="ID_SAVEMORE"/>
     <Command Name="QAT" Symbol="ID_RIBBON_QAT"/>
   </Application.Commands>
 
   <Application.Views>
     <Ribbon>
       <!-- Application Menu -->
-      <Ribbon.ApplicationMenu >
-        <ApplicationMenu CommandName="AppMenu" >
+      <Ribbon.ApplicationMenu>
+        <ApplicationMenu CommandName="AppMenu">
           <ApplicationMenu.RecentItems>
             <RecentItems CommandName="RecentFiles" MaxCount="16" EnablePinning="false"/>
           </ApplicationMenu.RecentItems>
 
-          <MenuGroup Class="StandardItems" >
+          <MenuGroup Class="StandardItems">
             <Button CommandName="phototool_HOME_CONNECT"/>
             <Button CommandName="phototool_HOME_SETTINGS"/>
           </MenuGroup>
-          <MenuGroup >
+          <MenuGroup>
+            <Button CommandName="phototool_PREV_IMAGES_SHOW"/>
+          </MenuGroup>
+          <MenuGroup>
             <Button CommandName="wtl_APP_EXIT"/>
           </MenuGroup>
         </ApplicationMenu>
-      </Ribbon.ApplicationMenu >
+      </Ribbon.ApplicationMenu>
 
       <!-- Help button -->
       <Ribbon.HelpButton>
@@ -64,6 +109,7 @@
         <QuickAccessToolbar CommandName="QAT">
           <QuickAccessToolbar.ApplicationDefaults>
             <Button CommandName="phototool_HOME_CONNECT"/>
+            <Button CommandName="phototool_PREV_IMAGES_SHOW"/>
           </QuickAccessToolbar.ApplicationDefaults>
         </QuickAccessToolbar>
       </Ribbon.QuickAccessToolbar>
@@ -78,30 +124,137 @@
             </ScalingPolicy>
           </Tab.ScalingPolicy>
 
-          <Group CommandName="GroupHome" SizeDefinition="ThreeButtons">
+          <Group CommandName="GroupHome" SizeDefinition="TwoButtons">
             <Button CommandName="phototool_HOME_CONNECT"/>
             <Button CommandName="phototool_HOME_SETTINGS"/>
-            <Button CommandName="wtl_VIEW_RIBBON"/>
           </Group>
 
-          <Group CommandName="GroupPhotoModes" SizeDefinition="FiveButtons">
+          <Group CommandName="GroupPhotoModes" SizeDefinition="NineButtons">
             <Button CommandName="phototool_PHOTO_MODE_NORMAL"/>
             <Button CommandName="phototool_PHOTO_MODE_HDR"/>
             <Button CommandName="phototool_PHOTO_MODE_PANO" />
-            <!-- Button CommandName="phototool_PHOTO_MODE_HDR_PANO" />
+            <Button CommandName="phototool_PHOTO_MODE_HDR_PANO" />
             <Button CommandName="phototool_PHOTO_MODE_TIMELAPSE" />
             <Button CommandName="phototool_PHOTO_MODE_PHOTOSTACK" />
-            <Button CommandName="phototool_PHOTO_MODE_SCRIPTING" / -->
+            <Button CommandName="phototool_PHOTO_MODE_SCRIPTING" />
             <Button CommandName="phototool_PHOTO_MODE_DEVICE_PROPERTIES" />
             <Button CommandName="phototool_PHOTO_MODE_IMAGE_PROPERTIES" />
           </Group>
 
-          <Group CommandName="GroupViewFinder" SizeDefinition="OneButton">
+          <Group CommandName="GroupViews" SizeDefinition="ThreeButtons">
             <Button CommandName="phototool_VIEWFINDER_SHOW"/>
+            <Button CommandName="phototool_PREV_IMAGES_SHOW"/>
+            <Button CommandName="wtl_VIEW_RIBBON"/>
+          </Group>
+        </Tab>
+
+        <Tab CommandName="TabPreviousImages" ApplicationModes="1">
+          <Tab.ScalingPolicy>
+            <ScalingPolicy>
+              <ScalingPolicy.IdealSizes>
+                <Scale Group="GroupPreviousImagesExit" Size="Large"/>
+                <Scale Group="GroupPreviousImagesNavigation" Size="Large"/>
+                <Scale Group="GroupPreviousImagesActions" Size="Large"/>
+              </ScalingPolicy.IdealSizes>
+            </ScalingPolicy>
+          </Tab.ScalingPolicy>
+
+          <Group CommandName="GroupPreviousImagesExit" SizeDefinition="OneButton" ApplicationModes="1">
+            <Button CommandName="phototool_PREV_IMAGES_EXIT"/>
+          </Group>
+
+          <Group CommandName="GroupPreviousImagesNavigation" SizeDefinition="TwoButtons" ApplicationModes="1">
+            <Button CommandName="phototool_PREV_IMAGES_PREV"/>
+            <Button CommandName="phototool_PREV_IMAGES_NEXT"/>
+          </Group>
+
+          <Group CommandName="GroupPreviousImagesActions" SizeDefinition="TwoButtons" ApplicationModes="1">
+            <Button CommandName="phototool_PREV_IMAGES_OPEN_FOLDER"/>
+            <Button CommandName="phototool_PREV_IMAGES_EDIT"/>
           </Group>
         </Tab>
 
       </Ribbon.Tabs>
+
+      <!-- Contextual tabs-->
+      <Ribbon.ContextualTabs>
+        <!-- Contextual tab "Camera" -->
+        <TabGroup CommandName="TabGroupContextCamera">
+          <Tab CommandName="TabContextCamera">
+            <Group CommandName="GroupCameraRelease" SizeDefinition="OneButton">
+              <Button CommandName="phototool_CAMERA_RELEASE"/>
+            </Group>
+            <!-- Group CommandName="GroupCameraSettings" SizeDefinition="OneButton">
+              <Button CommandName="phototool_CAMERA_SHOOTING_MODE"/>
+              <Button CommandName="phototool_CAMERA_SETTINGS_AV"/>
+              <Button CommandName="phototool_CAMERA_SETTINGS_TV"/>
+              <Button CommandName="phototool_CAMERA_SETTINGS_EXPOSURE"/>
+              <Button CommandName="phototool_CAMERA_SETTINGS_ISO"/>
+              <Button CommandName="phototool_CAMERA_SETTINGS_SAVETO"/>
+              <Button CommandName="phototool_CAMERA_SETTINGS_IMAGE_FORMAT"/>
+            </Group -->
+          </Tab>
+        </TabGroup>
+
+        <!-- Contextual tab "Viewfinder" -->
+        <TabGroup CommandName="TabGroupContextViewfinder">
+          <Tab CommandName="TabContextViewfinder">
+            <Tab.ScalingPolicy>
+              <ScalingPolicy>
+                <ScalingPolicy.IdealSizes>
+                  <Scale Group="GroupViewfinderViewfinder" Size="Large"/>
+                  <Scale Group="GroupViewfinderAdjust" Size="Large"/>
+                  <Scale Group="GroupViewfinderZoom" Size="Large"/>
+                  <Scale Group="GroupViewfinderShow" Size="Large"/>
+                </ScalingPolicy.IdealSizes>
+              </ScalingPolicy>
+            </Tab.ScalingPolicy>
+
+            <Group CommandName="GroupViewfinderViewfinder" SizeDefinition="OneButton">
+              <Button CommandName="phototool_VIEWFINDER_SHOW"/>
+            </Group>
+            <Group CommandName="GroupViewfinderAdjust" SizeDefinition="TwoButtons">
+              <Button CommandName="phototool_VIEWFINDER_AUTO_FOCUS"/>
+              <Button CommandName="phototool_VIEWFINDER_AUTO_WB"/>
+            </Group>
+            <Group CommandName="GroupViewfinderZoom" SizeDefinition="TwoButtons">
+              <Button CommandName="phototool_VIEWFINDER_ZOOM_OUT"/>
+              <Button CommandName="phototool_VIEWFINDER_ZOOM_IN"/>
+            </Group>
+            <Group CommandName="GroupViewfinderShow" SizeDefinition="TwoButtons">
+              <Button CommandName="phototool_VIEWFINDER_SHOW_OVEREXPOSED"/>
+              <Button CommandName="phototool_VIEWFINDER_SHOW_OVERLAY_IMAGE"/>
+            </Group>
+          </Tab>
+        </TabGroup>
+
+        <!-- Contextual tab "Scripting" -->
+        <TabGroup CommandName="TabGroupContextScripting">
+          <Tab CommandName="TabContextScripting">
+            <Tab.ScalingPolicy>
+              <ScalingPolicy>
+                <ScalingPolicy.IdealSizes>
+                  <Scale Group="GroupScriptingScript" Size="Large"/>
+                  <Scale Group="GroupScriptingDebug" Size="Large"/>
+                  <Scale Group="GroupScriptingEdit" Size="Large"/>
+                </ScalingPolicy.IdealSizes>
+              </ScalingPolicy>
+            </Tab.ScalingPolicy>
+
+            <Group CommandName="GroupScriptingScript" SizeDefinition="OneButton">
+              <Button CommandName="phototool_SCRIPTING_OPEN"/>
+            </Group>
+            <Group CommandName="GroupScriptingDebug" SizeDefinition="TwoButtons">
+              <Button CommandName="phototool_SCRIPTING_RUN"/>
+              <Button CommandName="phototool_SCRIPTING_STOP"/>
+            </Group>
+            <Group CommandName="GroupScriptingEdit" SizeDefinition="OneButton">
+              <Button CommandName="phototool_SCRIPTING_EDIT"/>
+            </Group>
+          </Tab>
+        </TabGroup>
+      </Ribbon.ContextualTabs>
+
     </Ribbon>
   </Application.Views>
 </Application>

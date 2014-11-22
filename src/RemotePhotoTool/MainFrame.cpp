@@ -26,7 +26,9 @@ LPCTSTR c_pszSettingsRegkey = _T("Software\\RemotePhotoTool");
 MainFrame::MainFrame()
 :m_hWndView(nullptr),
  m_settings(c_pszSettingsRegkey),
- m_dwUIThreadId(Thread::CurrentId())
+ m_dwUIThreadId(Thread::CurrentId()),
+ m_enCurrentViewType(viewBlank),
+ m_enPrevImagesSavedView(viewBlank)
 {
    m_settings.Load();
 
@@ -54,6 +56,20 @@ BOOL MainFrame::OnIdle()
    Instance::OnIdle();
 
    UIUpdateToolBar();
+
+   // enable contextual tabs
+   bool bConnected =
+      m_enCurrentViewType != viewBlank &&
+      m_enCurrentViewType != viewPreviousImages &&
+      m_spSourceDevice != nullptr;
+
+   SetRibbonContextAvail(ID_TAB_GROUP_CONTEXT_CAMERA, bConnected ?
+      UI_CONTEXTAVAILABILITY_AVAILABLE : UI_CONTEXTAVAILABILITY_NOTAVAILABLE);
+
+   bool bViewfinderActive = m_upViewFinderView != nullptr;
+   SetRibbonContextAvail(ID_TAB_GROUP_CONTEXT_VIEWFINDER, bViewfinderActive ?
+      UI_CONTEXTAVAILABILITY_AVAILABLE : UI_CONTEXTAVAILABILITY_NOTAVAILABLE);
+
    return FALSE;
 }
 
@@ -198,6 +214,7 @@ LRESULT MainFrame::OnHomeConnect(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWnd
       m_upView->DestroyView();
 
    m_upView.reset(new BlankView);
+   m_enCurrentViewType = viewBlank;
 
    ShowViewfinder(false);
 
@@ -287,6 +304,28 @@ LRESULT MainFrame::OnViewfinderShow(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*h
    return 0;
 }
 
+LRESULT MainFrame::OnPrevImagesShow(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+   m_enPrevImagesSavedView = m_enCurrentViewType;
+
+   SetNewView(T_enViewType::viewPreviousImages);
+
+   if (IsRibbonUI())
+      SetRibbonModes(UI_MAKEAPPMODE(1));
+
+   return 0;
+}
+
+LRESULT MainFrame::OnPrevImagesExit(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+   if (IsRibbonUI())
+      SetRibbonModes(UI_MAKEAPPMODE(0));
+
+   SetNewView(m_enPrevImagesSavedView);
+
+   return 0;
+}
+
 void MainFrame::SetupLogging()
 {
    // set up logging
@@ -340,13 +379,6 @@ void MainFrame::SetupRibbonBar()
    }
    else
       CMenuHandle(m_CmdBar.GetMenu()).DeleteMenu(ID_VIEW_RIBBON, MF_BYCOMMAND);
-
-   // remove some menus of functions currently not supported
-   CMenuHandle menu(m_CmdBar.GetMenu());
-   menu.DeleteMenu(ID_PHOTO_MODE_HDR_PANO, MF_BYCOMMAND);
-   menu.DeleteMenu(ID_PHOTO_MODE_TIMELAPSE, MF_BYCOMMAND);
-   menu.DeleteMenu(ID_PHOTO_MODE_PHOTOSTACK, MF_BYCOMMAND);
-   menu.DeleteMenu(ID_PHOTO_MODE_SCRIPTING, MF_BYCOMMAND);
 }
 
 /// sets button text for toolbar button
@@ -384,12 +416,6 @@ void MainFrame::SetupToolbar()
 
       CToolBarCtrl tb(hWndToolBar);
       tb.SetExtendedStyle(TBSTYLE_EX_MIXEDBUTTONS); // needed for BTNS_SHOWTEXT
-
-      // remove some menus of functions currently not supported
-      tb.HideButton(ID_PHOTO_MODE_HDR_PANO, true);
-      tb.HideButton(ID_PHOTO_MODE_TIMELAPSE, true);
-      tb.HideButton(ID_PHOTO_MODE_PHOTOSTACK, true);
-      tb.HideButton(ID_PHOTO_MODE_SCRIPTING, true);
 
       bool bRibbonUI = RunTimeHelper::IsRibbonUIAvailable();
       if (!bRibbonUI)
@@ -482,6 +508,8 @@ void MainFrame::LockActionMode(bool bLock)
 
 void MainFrame::SetNewView(T_enViewType enViewType)
 {
+   SetRibbonContextAvail(ID_TAB_GROUP_CONTEXT_SCRIPTING, UI_CONTEXTAVAILABILITY_NOTAVAILABLE);
+
    if (m_upView != nullptr)
    {
       if (!m_upView->CanClose())
@@ -512,11 +540,20 @@ void MainFrame::SetNewView(T_enViewType enViewType)
    else
       m_splitter.SetSinglePaneMode(SPLIT_PANE_LEFT);
 
-   // switch to camera ribbon tab
-   EnablePhotoModes(true);
+   bool bEnable =
+      enViewType != viewBlank &&
+      enViewType != viewPreviousImages;
+
+   EnablePhotoModes(bEnable);
+
+   bool bIsScriptingPhotoView = enViewType == viewScripting;
+   SetRibbonContextAvail(ID_TAB_GROUP_CONTEXT_SCRIPTING, bIsScriptingPhotoView ?
+      UI_CONTEXTAVAILABILITY_ACTIVE : UI_CONTEXTAVAILABILITY_NOTAVAILABLE);
 
    // force layout update so that new view gets resized properly
    UpdateLayout();
+
+   m_enCurrentViewType = enViewType;
 }
 
 void MainFrame::ShowViewfinder(bool bShow)
@@ -574,13 +611,10 @@ void MainFrame::EnablePhotoModes(bool bEnable)
    UIEnable(ID_PHOTO_MODE_NORMAL, bEnable);
    UIEnable(ID_PHOTO_MODE_HDR, bEnable);
    UIEnable(ID_PHOTO_MODE_PANO, bEnable);
-
-   // not implemented yet:
-   UIEnable(ID_PHOTO_MODE_HDR_PANO, false);
-   UIEnable(ID_PHOTO_MODE_TIMELAPSE, false);
-   UIEnable(ID_PHOTO_MODE_PHOTOSTACK, false);
-   UIEnable(ID_PHOTO_MODE_SCRIPTING, false);
-
+   UIEnable(ID_PHOTO_MODE_HDR_PANO, bEnable);
+   UIEnable(ID_PHOTO_MODE_TIMELAPSE, bEnable);
+   UIEnable(ID_PHOTO_MODE_PHOTOSTACK, bEnable);
+   UIEnable(ID_PHOTO_MODE_SCRIPTING, bEnable);
    UIEnable(ID_PHOTO_MODE_DEVICE_PROPERTIES, bEnable);
    UIEnable(ID_PHOTO_MODE_IMAGE_PROPERTIES, bEnable);
 

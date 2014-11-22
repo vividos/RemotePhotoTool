@@ -111,6 +111,21 @@
     <ClCompile Include="PhotoModeManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="HDRPanoramaPhotoModeView.cpp">
+      <Filter>Photo Mode Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PhotoStackingPhotoModeView.cpp">
+      <Filter>Photo Mode Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptingPhotoModeView.cpp">
+      <Filter>Photo Mode Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TimelapsePhotoModeView.cpp">
+      <Filter>Photo Mode Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PreviousImagesView.cpp">
+      <Filter>Photo Mode Files\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HuginInterface.hpp">
@@ -214,6 +229,21 @@
     </ClInclude>
     <ClInclude Include="PhotoModeManager.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HDRPanoramaPhotoModeView.hpp">
+      <Filter>Photo Mode Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptingPhotoModeView.hpp">
+      <Filter>Photo Mode Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TimelapsePhotoModeView.hpp">
+      <Filter>Photo Mode Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PhotoStackingPhotoModeView.hpp">
+      <Filter>Photo Mode Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PreviousImagesView.hpp">
+      <Filter>Photo Mode Files\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

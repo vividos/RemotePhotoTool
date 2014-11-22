@@ -112,6 +112,7 @@
     <ClCompile Include="CameraInfoDlg.cpp" />
     <ClCompile Include="ConnectCameraDlg.cpp" />
     <ClCompile Include="DevicePropertyView.cpp" />
+    <ClCompile Include="HDRPanoramaPhotoModeView.cpp" />
     <ClCompile Include="HDRPhotoModeView.cpp" />
     <ClCompile Include="HuginInterface.cpp" />
     <ClCompile Include="ImageFileManager.cpp" />
@@ -123,13 +124,17 @@
     <ClCompile Include="PanoramaPhotoModeView.cpp" />
     <ClCompile Include="PhotomatixInterface.cpp" />
     <ClCompile Include="PhotoModeManager.cpp" />
+    <ClCompile Include="PhotoStackingPhotoModeView.cpp" />
+    <ClCompile Include="PreviousImagesView.cpp" />
     <ClCompile Include="RemotePhotoTool.cpp" />
+    <ClCompile Include="ScriptingPhotoModeView.cpp" />
     <ClCompile Include="SettingsDlg.cpp" />
     <ClCompile Include="StandardPhotoModeView.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="TimelapsePhotoModeView.cpp" />
     <ClCompile Include="ViewFinderImageWindow.cpp" />
     <ClCompile Include="ViewFinderView.cpp" />
     <ClCompile Include="ViewManager.cpp" />
@@ -144,6 +149,7 @@
     <ClInclude Include="CameraInfoDlg.hpp" />
     <ClInclude Include="ConnectCameraDlg.hpp" />
     <ClInclude Include="DevicePropertyView.hpp" />
+    <ClInclude Include="HDRPanoramaPhotoModeView.hpp" />
     <ClInclude Include="HDRPhotoModeView.hpp" />
     <ClInclude Include="HuginInterface.hpp" />
     <ClInclude Include="Icons.hpp" />
@@ -161,10 +167,14 @@
     <ClInclude Include="PanoramaPhotoModeView.hpp" />
     <ClInclude Include="PhotomatixInterface.hpp" />
     <ClInclude Include="PhotoModeManager.hpp" />
+    <ClInclude Include="PhotoStackingPhotoModeView.hpp" />
+    <ClInclude Include="PreviousImagesView.hpp" />
     <ClInclude Include="res\MainFrameRibbon.h" />
+    <ClInclude Include="ScriptingPhotoModeView.hpp" />
     <ClInclude Include="SettingsDlg.hpp" />
     <ClInclude Include="StandardPhotoModeView.hpp" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="TimelapsePhotoModeView.hpp" />
     <ClInclude Include="ViewFinderImageWindow.hpp" />
     <ClInclude Include="ViewFinderView.hpp" />
     <ClInclude Include="ViewManager.hpp" />

@@ -62,6 +62,9 @@ private:
    END_RIBBON_CONTROL_MAP()
 
    BEGIN_UPDATE_UI_MAP(MainFrame)
+      UPDATE_ELEMENT(ID_HOME_CONNECT, UPDUI_MENUPOPUP | UPDUI_RIBBON)
+      UPDATE_ELEMENT(ID_HOME_SETTINGS, UPDUI_MENUPOPUP | UPDUI_RIBBON)
+
       UPDATE_ELEMENT(ID_PHOTO_MODE_NORMAL, UPDUI_MENUPOPUP | UPDUI_RIBBON)
       UPDATE_ELEMENT(ID_PHOTO_MODE_HDR, UPDUI_MENUPOPUP | UPDUI_RIBBON)
       UPDATE_ELEMENT(ID_PHOTO_MODE_PANO, UPDUI_MENUPOPUP | UPDUI_RIBBON)
@@ -71,9 +74,10 @@ private:
       UPDATE_ELEMENT(ID_PHOTO_MODE_SCRIPTING, UPDUI_MENUPOPUP | UPDUI_RIBBON)
       UPDATE_ELEMENT(ID_PHOTO_MODE_DEVICE_PROPERTIES, UPDUI_MENUPOPUP | UPDUI_RIBBON)
       UPDATE_ELEMENT(ID_PHOTO_MODE_IMAGE_PROPERTIES, UPDUI_MENUPOPUP | UPDUI_RIBBON)
-      UPDATE_ELEMENT(ID_VIEW_RIBBON, UPDUI_MENUPOPUP | UPDUI_RIBBON)
+
       UPDATE_ELEMENT(ID_VIEWFINDER_SHOW, UPDUI_MENUPOPUP | UPDUI_RIBBON)
-      UPDATE_ELEMENT(ID_TAB_HOME, UPDUI_RIBBON)
+      UPDATE_ELEMENT(ID_PREV_IMAGES_SHOW, UPDUI_MENUPOPUP | UPDUI_RIBBON)
+      UPDATE_ELEMENT(ID_VIEW_RIBBON, UPDUI_MENUPOPUP | UPDUI_RIBBON)
    END_UPDATE_UI_MAP()
 
    BEGIN_MSG_MAP(MainFrame)
@@ -90,6 +94,8 @@ private:
       COMMAND_ID_HANDLER(ID_HOME_SETTINGS, OnHomeSettings)
       COMMAND_RANGE_HANDLER(ID_PHOTO_MODE_NORMAL, ID_PHOTO_MODE_IMAGE_PROPERTIES, OnPhotoMode)
       COMMAND_ID_HANDLER(ID_VIEWFINDER_SHOW, OnViewfinderShow)
+      COMMAND_ID_HANDLER(ID_PREV_IMAGES_SHOW, OnPrevImagesShow)
+      COMMAND_ID_HANDLER(ID_PREV_IMAGES_EXIT, OnPrevImagesExit)
       CHAIN_MSG_MAP(BaseClass)
    END_MSG_MAP()
 
@@ -124,6 +130,10 @@ private:
    LRESULT OnPhotoMode(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
    /// called when "Viewfinder | Show" menu entry is being selected
    LRESULT OnViewfinderShow(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   /// called when "Viewfinder | Previous images" menu entry is being selected
+   LRESULT OnPrevImagesShow(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   /// called when "Previous images | Exit" menu entry is being selected
+   LRESULT OnPrevImagesExit(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 
 private:
    // virtual methods from IPhotoModeViewHost
@@ -216,4 +226,10 @@ private:
 
    /// current remote release control
    std::shared_ptr<RemoteReleaseControl> m_spRemoteReleaseControl;
+
+   /// current view type
+   T_enViewType m_enCurrentViewType;
+
+   /// view type saved when opening "previous images" view
+   T_enViewType m_enPrevImagesSavedView;
 };
