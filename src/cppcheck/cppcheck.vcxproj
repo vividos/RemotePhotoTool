@@ -46,7 +46,7 @@
 type $(IntDir)cppcheck.txt</NMakeBuildCommandLine>
     <NMakeReBuildCommandLine>call RunCppCheck.cmd "$(IntDir)"
 type $(IntDir)cppcheck.txt</NMakeReBuildCommandLine>
-    <NMakeCleanCommandLine />
+    <NMakeCleanCommandLine>del $(IntDir)cppcheck.txt &gt; nul</NMakeCleanCommandLine>
     <NMakeOutput />
     <NMakePreprocessorDefinitions>WIN32;_DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
   </PropertyGroup>
@@ -57,7 +57,7 @@ type $(IntDir)cppcheck.txt</NMakeReBuildCommandLine>
 type $(IntDir)cppcheck.txt</NMakeBuildCommandLine>
     <NMakeReBuildCommandLine>call RunCppCheck.cmd "$(IntDir)"
 type $(IntDir)cppcheck.txt</NMakeReBuildCommandLine>
-    <NMakeCleanCommandLine />
+    <NMakeCleanCommandLine>del $(IntDir)cppcheck.txt &gt; nul</NMakeCleanCommandLine>
     <NMakeOutput />
     <NMakePreprocessorDefinitions>WIN32;NDEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
   </PropertyGroup>
