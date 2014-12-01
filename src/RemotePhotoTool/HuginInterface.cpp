@@ -8,7 +8,7 @@
 // includes
 #include "StdAfx.h"
 #include "HuginInterface.hpp"
-#include "Filesystem.hpp"
+#include "Path.hpp"
 #include "Process.hpp"
 
 HuginInterface::HuginInterface(const CString& cszInstallPath)
@@ -20,7 +20,7 @@ HuginInterface::HuginInterface(const CString& cszInstallPath)
 
 void HuginInterface::RunUI(const std::vector<CString>& vecImageFilenames)
 {
-   CString cszCommandLine = Path_Combine(m_cszInstallPath, _T("hugin.exe"));
+   CString cszCommandLine = Path::Combine(m_cszInstallPath, _T("hugin.exe"));
 
    CString cszFilename;
    for (size_t i=0,iMax=vecImageFilenames.size(); i<iMax; i++)
@@ -43,7 +43,7 @@ void HuginInterface::RunUI(const std::vector<CString>& vecImageFilenames)
 
 void HuginInterface::RunStitcher(const CString& cszPtoScript, const CString& cszOutputFile)
 {
-   CString cszCommandLine = Path_Combine(m_cszInstallPath, _T("nona.exe"));
+   CString cszCommandLine = Path::Combine(m_cszInstallPath, _T("nona.exe"));
 
    CString cszFilename(cszOutputFile);
    cszFilename.TrimLeft(_T('\"'));

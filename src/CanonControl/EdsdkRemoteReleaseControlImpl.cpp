@@ -9,7 +9,7 @@
 #include "stdafx.h"
 #include "EdsdkRemoteReleaseControlImpl.hpp"
 #include "ShutterReleaseSettings.hpp"
-#include "Filesystem.hpp"
+#include "Path.hpp"
 #include "AsyncReleaseControlThread.hpp"
 
 using namespace EDSDK;
@@ -411,9 +411,8 @@ void RemoteReleaseControlImpl::DownloadImage(Handle hDirectoryItem, ShutterRelea
       EDSDK::CheckError(_T("EdsGetDirectoryItemInfo"), err, __FILE__, __LINE__);
 
       // camera tells us name of file; add to output folder here
-      CString cszFilename = settings.Filename();
-      cszFilename = Path_Combine(
-         Path_GetDirectoryName(cszFilename),
+      CString cszFilename = Path::Combine(
+         Path(settings.Filename()).DirectoryName(),
          dirItemInfo.szFileName);
 
       settings.Filename(cszFilename);

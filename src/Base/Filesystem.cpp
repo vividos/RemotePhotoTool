@@ -11,27 +11,6 @@
 #include "FileFinder.hpp"
 #include <ShlObj.h>
 
-CString Path_Combine(const CString& cszPath1, const CString& cszPath2)
-{
-   CString cszPath = cszPath1;
-
-   if (cszPath.Right(1) != _T("\\"))
-      cszPath += _T("\\");
-
-   cszPath += cszPath2;
-
-   return cszPath;
-}
-
-CString Path_GetDirectoryName(const CString& cszPath)
-{
-   int iPos = cszPath.ReverseFind(_T('\\'));
-   if (iPos == 0)
-      return CString();
-
-   return cszPath.Left(iPos+1);
-}
-
 bool Directory_Exists(const CString& cszPath) throw()
 {
    DWORD dwAttr = GetFileAttributes(cszPath);

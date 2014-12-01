@@ -31,6 +31,15 @@ Path Path::Combine(const CString& cszPart2)
    return Path(cszPart1 + cszPart2);
 }
 
+CString Path::DirectoryName() const
+{
+   int iPos = m_cszPath.ReverseFind(Path::SeparatorCh);
+   if (iPos == 0)
+      return CString();
+
+   return m_cszPath.Left(iPos + 1);
+}
+
 CString Path::FilenameAndExt() const
 {
    int iPos = m_cszPath.ReverseFind(Path::SeparatorCh);

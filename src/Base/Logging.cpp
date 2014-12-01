@@ -8,7 +8,7 @@
 // includes
 #include "stdafx.h"
 #include "Logging.hpp"
-#include "Filesystem.hpp"
+#include "Path.hpp"
 #include "LightweightMutex.hpp"
 #include <atomic>
 #include <ctime>
@@ -59,7 +59,7 @@ void LogConfigure(bool bEnable, const CString& cszLogfilePath) throw()
    try
    {
       CString cszDate = LogFormatCurrentDate();
-      s_cszLogFilename = Path_Combine(cszLogfilePath, _T("Log-") + cszDate + _T(".txt"));
+      s_cszLogFilename = Path::Combine(cszLogfilePath, _T("Log-") + cszDate + _T(".txt")).ToString();
    }
    catch (...)
    {

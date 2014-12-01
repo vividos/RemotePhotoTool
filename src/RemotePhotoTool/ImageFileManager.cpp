@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "ImageFileManager.hpp"
 #include "Filesystem.hpp"
+#include "Path.hpp"
 #include <ctime>
 #include <algorithm>
 
@@ -45,11 +46,11 @@ CString ImageFileManager::NextFilename(T_enImageType enImageType, bool bStartNew
       cszImageFilename.Format(_T("IMG_%04u.jpg"), uiImageNr);
       uiImageNr++;
 
-   } while (File_Exists(Path_Combine(cszPath, cszImageFilename)));
+   } while (File_Exists(Path::Combine(cszPath, cszImageFilename)));
 
    m_uiNextImageIndex = uiImageNr-1;
 
-   return Path_Combine(cszPath, cszImageFilename);
+   return Path::Combine(cszPath, cszImageFilename);
 }
 
 void ImageFileManager::AddCurrentDate(CString& cszPath)
@@ -64,7 +65,7 @@ void ImageFileManager::AddCurrentDate(CString& cszPath)
    _tcsftime(cszDate.GetBuffer(256), 256, _T("%Y-%m-%d"), &nowtm);
    cszDate.ReleaseBuffer();
 
-   cszPath = Path_Combine(cszPath, cszDate);
+   cszPath = Path::Combine(cszPath, cszDate).ToString();
 }
 
 void ImageFileManager::AddImageTypePath(CString& cszPath, T_enImageType enImageType, bool bStartNewSeries)
@@ -87,13 +88,13 @@ void ImageFileManager::AddImageTypePath(CString& cszPath, T_enImageType enImageT
    if (cszSubfolder.Find(_T("%u")) != -1)
       FormatNumberedImagePath(cszPath, cszSubfolder, bStartNewSeries);
 
-   cszPath = Path_Combine(cszPath, cszSubfolder);
+   cszPath = Path::Combine(cszPath, cszSubfolder).ToString();
 }
 
 void ImageFileManager::FormatNumberedImagePath(const CString& cszPath, CString& cszSubfolder, bool bStartNewSeries)
 {
    // search for current or next folder
-   CString cszSearchPathN = Path_Combine(cszPath, cszSubfolder);
+   CString cszSearchPathN = Path::Combine(cszPath, cszSubfolder);
    cszSearchPathN += _T("\\");
 
    CString cszSearchPath;
@@ -123,7 +124,7 @@ void ImageFileManager::FindLastUsedFilename()
    // find max. image number in newest subfolder; when empty, look at previous subfolder
    std::vector<CString> vecAllFolders =
       FindAllInPath(
-         Path_Combine(m_settings.m_cszProjectsFolder, _T("")),
+         Path::Combine(m_settings.m_cszProjectsFolder, _T("")),
          _T("*.*"), true, false);
 
    std::sort(vecAllFolders.begin(), vecAllFolders.end());

@@ -10,12 +10,6 @@
 #include <vector>
 #include <shlobj.h>
 
-/// combines two path parts
-CString Path_Combine(const CString& cszPath1, const CString& cszPath2);
-
-/// returns directory part of path (without filename)
-CString Path_GetDirectoryName(const CString& cszPath);
-
 /// checks if a directory exists
 bool Directory_Exists(const CString& cszPath) throw();
 

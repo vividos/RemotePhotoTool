@@ -34,11 +34,17 @@ public:
 
    // getters
 
+   /// returns directory name part of path
+   CString DirectoryName() const;
+
    /// returns filename and extension
    CString FilenameAndExt() const;
 
    /// returns filename without extension
    CString FilenameOnly() const;
+
+   /// returns path as string
+   CString ToString() const { return m_cszPath; }
 
    /// returns if path represents a file and if it exists
    bool FileExists() const throw();

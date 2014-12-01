@@ -8,7 +8,7 @@
 // includes
 #include "StdAfx.h"
 #include "PhotomatixInterface.hpp"
-#include "Filesystem.hpp"
+#include "Path.hpp"
 #include "Process.hpp"
 
 PhotomatixInterface::PhotomatixInterface(const CString& cszInstallPath)
@@ -20,7 +20,7 @@ PhotomatixInterface::PhotomatixInterface(const CString& cszInstallPath)
 
 void PhotomatixInterface::RunUI(const std::vector<CString>& vecImageFilenames)
 {
-   CString cszCommandLine = Path_Combine(m_cszInstallPath, _T("PhotomatixPro.exe"));
+   CString cszCommandLine = Path::Combine(m_cszInstallPath, _T("PhotomatixPro.exe"));
 
    CString cszFilename;
    for (size_t i=0,iMax=vecImageFilenames.size(); i<iMax; i++)
