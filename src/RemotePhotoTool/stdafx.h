@@ -12,6 +12,13 @@
 // WTL includes
 #include "Wtl.hpp"
 
+// Scintilla include
+#pragma warning(push)
+#pragma warning(disable: 4100) // unreferenced formal parameter
+#include <atlscintilla.h>
+#include <SciLexer.h>
+#pragma warning(pop)
+
 // Standard C++ Library includes
 #include <vector>
 #include <set>

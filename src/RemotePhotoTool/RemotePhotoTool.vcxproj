@@ -66,7 +66,7 @@
       <ProxyFileName>RemotePhotoTool_p.c</ProxyFileName>
     </Midl>
     <ClCompile>
-      <AdditionalIncludeDirectories>..\Base;..\CanonControl\exports;..\Thirdparty;..\Thirdparty\jpeg-9a;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Base;..\CanonControl\exports;..\LuaScripting;..\Thirdparty;..\Thirdparty\jpeg-9a;..\Thirdparty\Scintilla\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WINDOWS;STRICT;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ResourceCompile>
@@ -92,7 +92,7 @@
       <ProxyFileName>RemotePhotoTool_p.c</ProxyFileName>
     </Midl>
     <ClCompile>
-      <AdditionalIncludeDirectories>..\Base;..\CanonControl\exports;..\Thirdparty;..\Thirdparty\jpeg-9a;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Base;..\CanonControl\exports;..\LuaScripting;..\Thirdparty;..\Thirdparty\jpeg-9a;..\Thirdparty\Scintilla\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WINDOWS;STRICT;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ResourceCompile>
@@ -120,6 +120,7 @@
     <ClCompile Include="ImagePropertyValueManager.cpp" />
     <ClCompile Include="ImagePropertyView.cpp" />
     <ClCompile Include="JpegMemoryReader.cpp" />
+    <ClCompile Include="LuaScriptViewerView.cpp" />
     <ClCompile Include="MainFrame.cpp" />
     <ClCompile Include="PanoramaPhotoModeView.cpp" />
     <ClCompile Include="PhotomatixInterface.cpp" />
@@ -163,6 +164,7 @@
     <ClInclude Include="JpegDecoder.hpp" />
     <ClInclude Include="JpegMemoryReader.hpp" />
     <ClInclude Include="JpegMemorySourceManager.hpp" />
+    <ClInclude Include="LuaScriptViewerView.hpp" />
     <ClInclude Include="MainFrame.hpp" />
     <ClInclude Include="PanoramaPhotoModeView.hpp" />
     <ClInclude Include="PhotomatixInterface.hpp" />
@@ -198,6 +200,9 @@
     <ProjectReference Include="..\CanonControl\CanonControl.vcxproj">
       <Project>{ce953b34-5513-4719-aead-a61f0585ab34}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\LuaScripting\LuaScripting.vcxproj">
+      <Project>{41b565f7-f668-4425-a93d-6cabc18f6d1f}</Project>
     </ProjectReference>
     <ProjectReference Include="..\Thirdparty\jpeg-9a\jpeg-9a.vcxproj">
       <Project>{1a81d718-3886-4cd5-8f10-4946bf4d6355}</Project>

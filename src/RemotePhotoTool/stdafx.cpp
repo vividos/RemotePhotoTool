@@ -7,3 +7,6 @@
 
 // includes
 #include "stdafx.h"
+
+/// auto-registering of scintilla window class
+CScintillaAutoRegister s_ScintillaAutoRegister;

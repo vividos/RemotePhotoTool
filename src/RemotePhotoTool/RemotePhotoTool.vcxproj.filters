@@ -126,6 +126,9 @@
     <ClCompile Include="PreviousImagesView.cpp">
       <Filter>Photo Mode Files\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="LuaScriptViewerView.cpp">
+      <Filter>UI Files\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HuginInterface.hpp">
@@ -244,6 +247,9 @@
     </ClInclude>
     <ClInclude Include="PreviousImagesView.hpp">
       <Filter>Photo Mode Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LuaScriptViewerView.hpp">
+      <Filter>UI Files\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
