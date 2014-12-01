@@ -88,6 +88,7 @@
     <ClInclude Include="MutexLock.hpp" />
     <ClInclude Include="Observer.hpp" />
     <ClInclude Include="Path.hpp" />
+    <ClInclude Include="Process.hpp" />
     <ClInclude Include="ProgramOptions.hpp" />
     <ClInclude Include="RecursiveMutex.hpp" />
     <ClInclude Include="stdafx.h" />

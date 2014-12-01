@@ -9,6 +9,7 @@
 #include "StdAfx.h"
 #include "HuginInterface.hpp"
 #include "Filesystem.hpp"
+#include "Process.hpp"
 
 HuginInterface::HuginInterface(const CString& cszInstallPath)
 :m_cszInstallPath(cszInstallPath)
@@ -33,20 +34,11 @@ void HuginInterface::RunUI(const std::vector<CString>& vecImageFilenames)
       cszCommandLine += _T("\"");
    }
 
-   STARTUPINFO startupInfo;
-   ZeroMemory(&startupInfo, sizeof(startupInfo));
-   startupInfo.cb = sizeof(startupInfo);
+   Process process;
+   process.WorkingDirectory(m_cszInstallPath);
+   bool bRet = process.Create(cszCommandLine);
 
-   PROCESS_INFORMATION processInfo;
-   ZeroMemory(&processInfo, sizeof(processInfo));
-
-   CString cszCurrentDirectory(m_cszInstallPath);
-   cszCurrentDirectory.TrimRight(_T('\\'));
-
-   BOOL bRet = ::CreateProcess(NULL,
-      const_cast<LPTSTR>(static_cast<LPCTSTR>(cszCommandLine)),
-      NULL, NULL, FALSE, 0, NULL, cszCurrentDirectory, &startupInfo, &processInfo);
-   ATLASSERT(TRUE == bRet); bRet;
+   ATLASSERT(true == bRet); bRet;
 }
 
 void HuginInterface::RunStitcher(const CString& cszPtoScript, const CString& cszOutputFile)
@@ -69,17 +61,11 @@ void HuginInterface::RunStitcher(const CString& cszPtoScript, const CString& csz
    cszCommandLine += cszFilename;
    cszCommandLine += _T("\"");
 
-   STARTUPINFO startupInfo;
-   ZeroMemory(&startupInfo, sizeof(startupInfo));
-   startupInfo.cb = sizeof(startupInfo);
+   Process process;
+   process.WorkingDirectory(m_cszInstallPath);
+   bool bRet = process.Create(cszCommandLine);
 
-   PROCESS_INFORMATION processInfo;
-   ZeroMemory(&processInfo, sizeof(processInfo));
-
-   BOOL bRet = ::CreateProcess(NULL,
-      const_cast<LPTSTR>(static_cast<LPCTSTR>(cszCommandLine)),
-      NULL, NULL, FALSE, 0, NULL, NULL, &startupInfo, &processInfo);
-   ATLASSERT(TRUE == bRet); bRet;
+   ATLASSERT(true == bRet); bRet;
 }
 
 void HuginInterface::Detect()
