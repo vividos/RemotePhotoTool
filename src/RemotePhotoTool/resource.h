@@ -91,6 +91,7 @@
 #define ID_VIEWFINDER_SHOW_OVEREXPOSED          32791
 #define ID_VIEWFINDER_SHOW_OVERLAY_IMAGE        32792
 #define ID_SCRIPTING_OPEN                       32793
-#define ID_SCRIPTING_RUN                        32794
-#define ID_SCRIPTING_STOP                       32795
-#define ID_SCRIPTING_EDIT                       32796
+#define ID_SCRIPTING_RELOAD                     32794
+#define ID_SCRIPTING_RUN                        32795
+#define ID_SCRIPTING_STOP                       32796
+#define ID_SCRIPTING_EDIT                       32797

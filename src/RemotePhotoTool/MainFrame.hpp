@@ -96,6 +96,7 @@ private:
       COMMAND_ID_HANDLER(ID_VIEWFINDER_SHOW, OnViewfinderShow)
       COMMAND_ID_HANDLER(ID_PREV_IMAGES_SHOW, OnPrevImagesShow)
       COMMAND_ID_HANDLER(ID_PREV_IMAGES_EXIT, OnPrevImagesExit)
+      MESSAGE_HANDLER(WM_COMMAND, OnForwardCommandMessage)
       CHAIN_MSG_MAP(BaseClass)
    END_MSG_MAP()
 
@@ -134,6 +135,8 @@ private:
    LRESULT OnPrevImagesShow(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
    /// called when "Previous images | Exit" menu entry is being selected
    LRESULT OnPrevImagesExit(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   /// called for every WM_COMMAND message; forwards it to the photo view
+   LRESULT OnForwardCommandMessage(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
 
 private:
    // virtual methods from IPhotoModeViewHost
@@ -149,6 +152,8 @@ private:
    virtual void SetStatusText(const CString& cszText) override;
 
    virtual void LockActionMode(bool bLock) override;
+
+   virtual void EnableUI(int nID, bool bEnable) override;
 
    /// sets up logging
    void SetupLogging();
@@ -173,6 +178,9 @@ private:
 
    /// enables or disables photo modes (and live view)
    void EnablePhotoModes(bool bEnable);
+
+   /// enables or disables scripting related UI elements
+   void EnableScriptingUI(bool bScripting);
 
    /// sets status bar pane widths
    void SetPaneWidths(int* arrWidths, int nPanes);

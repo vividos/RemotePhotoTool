@@ -33,9 +33,10 @@
     <Command Name="phototool_VIEWFINDER_SHOW_OVERLAY_IMAGE" Symbol="ID_VIEWFINDER_SHOW_OVERLAY_IMAGE" Id="32792"/>
 
     <Command Name="phototool_SCRIPTING_OPEN" Symbol="ID_SCRIPTING_OPEN" Id="32793"/>
-    <Command Name="phototool_SCRIPTING_RUN" Symbol="ID_SCRIPTING_RUN" Id="32794"/>
-    <Command Name="phototool_SCRIPTING_STOP" Symbol="ID_SCRIPTING_STOP" Id="32795"/>
-    <Command Name="phototool_SCRIPTING_EDIT" Symbol="ID_SCRIPTING_EDIT" Id="32796"/>
+    <Command Name="phototool_SCRIPTING_RELOAD" Symbol="ID_SCRIPTING_RELOAD" Id="32794"/>
+    <Command Name="phototool_SCRIPTING_RUN" Symbol="ID_SCRIPTING_RUN" Id="32795"/>
+    <Command Name="phototool_SCRIPTING_STOP" Symbol="ID_SCRIPTING_STOP" Id="32796"/>
+    <Command Name="phototool_SCRIPTING_EDIT" Symbol="ID_SCRIPTING_EDIT" Id="32797"/>
 
     <Command Name="wtl_VIEW_RIBBON" Symbol="ID_VIEW_RIBBON" Id="0xE804"/>
     <Command Name="wtl_APP_ABOUT" Symbol="ID_APP_ABOUT" Id="0xE140"/>
@@ -241,8 +242,9 @@
               </ScalingPolicy>
             </Tab.ScalingPolicy>
 
-            <Group CommandName="GroupScriptingScript" SizeDefinition="OneButton">
+            <Group CommandName="GroupScriptingScript" SizeDefinition="TwoButtons">
               <Button CommandName="phototool_SCRIPTING_OPEN"/>
+              <Button CommandName="phototool_SCRIPTING_RELOAD"/>
             </Group>
             <Group CommandName="GroupScriptingDebug" SizeDefinition="TwoButtons">
               <Button CommandName="phototool_SCRIPTING_RUN"/>

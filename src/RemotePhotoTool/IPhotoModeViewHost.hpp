@@ -36,4 +36,7 @@ public:
 
    /// locks switching action modes
    virtual void LockActionMode(bool bLock) = 0;
+
+   /// enables/disables UI elements
+   virtual void EnableUI(int nID, bool bEnable) = 0;
 };

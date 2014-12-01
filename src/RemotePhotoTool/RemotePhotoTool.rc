@@ -67,16 +67,22 @@ BEGIN
             MENUITEM "dummy", IDC_STATIC
         END
     END
-    POPUP "View&finder"
+    POPUP "&Scripting"
     BEGIN
-        MENUITEM "&Show", ID_VIEWFINDER_SHOW
+        MENUITEM "&Open", ID_SCRIPTING_OPEN
+        MENUITEM "Re&load", ID_SCRIPTING_RELOAD
+        MENUITEM SEPARATOR
+        MENUITEM "&Run", ID_SCRIPTING_RUN
+        MENUITEM "&Stop", ID_SCRIPTING_STOP
+        MENUITEM SEPARATOR
+        MENUITEM "&Edit", ID_SCRIPTING_EDIT
     END
     POPUP "&View"
     BEGIN
-        MENUITEM "&Menu band", ID_VIEW_RIBBON
         MENUITEM "&Viewfinder", ID_VIEWFINDER_SHOW
         MENUITEM "&Previous images", ID_PREV_IMAGES_SHOW
-    END
+        MENUITEM "&Menu band", ID_VIEW_RIBBON
+        END
     POPUP "&Help"
     BEGIN
         MENUITEM "&About RemotePhotoTool...", ID_APP_ABOUT
@@ -348,6 +354,7 @@ BEGIN
     ID_VIEWFINDER_SHOW_OVEREXPOSED "Toggles showing overexposed areas in live viewfinder\nOverexposed areas"
     ID_VIEWFINDER_SHOW_OVERLAY_IMAGE "Sets half-transparent overlay image in live viewfinder\nOverlay image"
     ID_SCRIPTING_OPEN             "Opens existing Lua scripting file\nOpen scripting file"
+    ID_SCRIPTING_RELOAD           "Reloads currently lodaed Lua script\nReload scripting file"
     ID_SCRIPTING_RUN              "Runs currently loaded Lua script\nRun script"
     ID_SCRIPTING_STOP             "Stops currently running Lua script\nStop script"
     ID_SCRIPTING_EDIT             "Edits currently loaded Lua script in RemoteScriptingEditor\nEdit script"

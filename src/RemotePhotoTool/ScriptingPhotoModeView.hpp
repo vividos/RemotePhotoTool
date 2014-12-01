@@ -8,16 +8,16 @@
 
 // includes
 #include "IPhotoModeView.hpp"
+#include "CameraScriptProcessor.hpp"
+#include "LuaScriptViewerView.hpp"
 
 // forward references
 class IPhotoModeViewHost;
 
 /// view for scripting photo mode view
 class ScriptingPhotoModeView :
-   public CDialogImpl<ScriptingPhotoModeView>,
-   public CDialogResize<ScriptingPhotoModeView>,
-   public CWinDataExchange<ScriptingPhotoModeView>,
-   public IPhotoModeView
+   public IPhotoModeView,
+   public CSplitterWindowImpl<ScriptingPhotoModeView>
 {
 public:
    /// ctor
@@ -31,17 +31,14 @@ public:
 private:
    // virtual methods from IPhotoModeView
 
-   virtual HWND CreateView(HWND hWndParent) override
-   {
-      return CDialogImpl<ScriptingPhotoModeView>::Create(hWndParent);
-   }
+   virtual HWND CreateView(HWND hWndParent) override;
 
    virtual void SetSourceDevice(std::shared_ptr<SourceDevice> spSourceDevice) override
    {
       m_spSourceDevice = spSourceDevice;
    }
 
-   virtual BOOL PreTranslateMessage(MSG* pMsg) override { return CWindow::IsDialogMessage(pMsg); }
+   virtual BOOL PreTranslateMessage(MSG* /*pMsg*/) override { return FALSE; }
 
    virtual void DestroyView() override
    {
@@ -49,16 +46,27 @@ private:
       ATLASSERT(TRUE == bRet); bRet;
    }
 
-private:
-   // ddx map
-   BEGIN_DDX_MAP(ScriptingPhotoModeView)
-   END_DDX_MAP()
+   /// sets up output pane
+   void SetupOutputPane();
 
+   /// called when debug string is output
+   void OnOutputDebugString(const CString& cszText);
+
+   /// opens an existing script and loads it
+   void OpenScript();
+
+   /// calls to external editor to edit the file
+   void EditScript(const CString& cszFilename);
+
+private:
    // message map
    BEGIN_MSG_MAP(ScriptingPhotoModeView)
-      MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
-      MESSAGE_HANDLER(WM_DESTROY, OnDestroy)
-      REFLECT_NOTIFICATIONS() // to make sure superclassed controls get notification messages
+      COMMAND_ID_HANDLER(ID_SCRIPTING_OPEN, OnScriptingOpenScript)
+      COMMAND_ID_HANDLER(ID_SCRIPTING_RELOAD, OnScriptingReload)
+      COMMAND_ID_HANDLER(ID_SCRIPTING_RUN, OnScriptingRun)
+      COMMAND_ID_HANDLER(ID_SCRIPTING_STOP, OnScriptingStop)
+      COMMAND_ID_HANDLER(ID_SCRIPTING_EDIT, OnScriptingEditScript)
+      CHAIN_MSG_MAP(CSplitterWindowImpl<ScriptingPhotoModeView>)
    END_MSG_MAP()
 
 // Handler prototypes (uncomment arguments if needed):
@@ -66,11 +74,16 @@ private:
 // LRESULT CommandHandler(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 // LRESULT NotifyHandler(int /*idCtrl*/, LPNMHDR /*pnmh*/, BOOL& /*bHandled*/)
 
-   /// called when dialog is being shown
-   LRESULT OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
-   /// called at destruction of dialog
-   LRESULT OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
-
+   /// called when menu "Scripting | Open script" is selected
+   LRESULT OnScriptingOpenScript(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   /// called when menu "Scripting | Reload script" is selected
+   LRESULT OnScriptingReload(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   /// called when menu "Scripting | Run" is selected
+   LRESULT OnScriptingRun(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   /// called when menu "Scripting | Stop" is selected
+   LRESULT OnScriptingStop(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   /// called when menu "Scripting | Edit script" is selected
+   LRESULT OnScriptingEditScript(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 
 private:
    /// host access
@@ -84,6 +97,18 @@ private:
    /// remote release control
    std::shared_ptr<RemoteReleaseControl> m_spRemoteReleaseControl;
 
+   /// camera script processor
+   CameraScriptProcessor m_processor;
+
+
    // UI
 
+   /// script view
+   LuaScriptViewerView m_view;
+
+   /// pane container for output window
+   CPaneContainer m_pane;
+
+   /// output window
+   CScintillaWindow m_ecOutputWindow;
 };

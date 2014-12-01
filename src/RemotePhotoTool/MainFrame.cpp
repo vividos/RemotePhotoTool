@@ -107,6 +107,7 @@ LRESULT MainFrame::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/,
    UIEnable(ID_VIEWFINDER_SHOW, false);
 
    EnablePhotoModes(false);
+   EnableScriptingUI(false);
 
    // show the connect dialog
    PostMessage(WM_COMMAND, MAKEWPARAM(ID_HOME_CONNECT, 0), 0);
@@ -146,6 +147,12 @@ LRESULT MainFrame::OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/
    ATLASSERT(pLoop != nullptr);
    pLoop->RemoveMessageFilter(this);
    pLoop->RemoveIdleHandler(this);
+
+   if (m_upView != nullptr)
+   {
+      m_upView->DestroyView();
+      m_upView.reset();
+   }
 
    bHandled = false;
    return 1;
@@ -222,6 +229,7 @@ LRESULT MainFrame::OnHomeConnect(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWnd
    m_spSourceDevice.reset();
 
    EnablePhotoModes(false);
+   EnableScriptingUI(false);
 
    m_hWndView = m_upView->CreateView(m_splitter);
 
@@ -324,6 +332,16 @@ LRESULT MainFrame::OnPrevImagesExit(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*h
    SetNewView(m_enPrevImagesSavedView);
 
    return 0;
+}
+
+LRESULT MainFrame::OnForwardCommandMessage(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+{
+   ATLASSERT(uMsg == WM_COMMAND);
+
+   LRESULT lResult = ::SendMessage(m_hWndView, WM_COMMAND, wParam, lParam);
+   bHandled = false;
+
+   return lResult;
 }
 
 void MainFrame::SetupLogging()
@@ -506,6 +524,11 @@ void MainFrame::LockActionMode(bool bLock)
    EnablePhotoModes(!bLock);
 }
 
+void MainFrame::EnableUI(int nID, bool bEnable)
+{
+   UIEnable(nID, bEnable);
+}
+
 void MainFrame::SetNewView(T_enViewType enViewType)
 {
    SetRibbonContextAvail(ID_TAB_GROUP_CONTEXT_SCRIPTING, UI_CONTEXTAVAILABILITY_NOTAVAILABLE);
@@ -542,13 +565,13 @@ void MainFrame::SetNewView(T_enViewType enViewType)
 
    bool bEnable =
       enViewType != viewBlank &&
-      enViewType != viewPreviousImages;
+      enViewType != viewPreviousImages &&
+      enViewType != viewScripting;
 
    EnablePhotoModes(bEnable);
 
-   bool bIsScriptingPhotoView = enViewType == viewScripting;
-   SetRibbonContextAvail(ID_TAB_GROUP_CONTEXT_SCRIPTING, bIsScriptingPhotoView ?
-      UI_CONTEXTAVAILABILITY_ACTIVE : UI_CONTEXTAVAILABILITY_NOTAVAILABLE);
+   bool bScripting = enViewType == viewScripting;
+   EnableScriptingUI(bScripting);
 
    // force layout update so that new view gets resized properly
    UpdateLayout();
@@ -614,17 +637,32 @@ void MainFrame::EnablePhotoModes(bool bEnable)
    UIEnable(ID_PHOTO_MODE_HDR_PANO, bEnable);
    UIEnable(ID_PHOTO_MODE_TIMELAPSE, bEnable);
    UIEnable(ID_PHOTO_MODE_PHOTOSTACK, bEnable);
-   UIEnable(ID_PHOTO_MODE_SCRIPTING, bEnable);
+   UIEnable(ID_PHOTO_MODE_SCRIPTING, true); // scripting is always enabled
    UIEnable(ID_PHOTO_MODE_DEVICE_PROPERTIES, bEnable);
    UIEnable(ID_PHOTO_MODE_IMAGE_PROPERTIES, bEnable);
 
    if (bEnable)
    {
-      bool bViewFinderAvail = m_spSourceDevice->GetDeviceCapability(SourceDevice::capRemoteViewfinder);
+      bool bViewFinderAvail =
+         m_spSourceDevice != nullptr &&
+         m_spSourceDevice->GetDeviceCapability(SourceDevice::capRemoteViewfinder);
+
       UIEnable(ID_VIEWFINDER_SHOW, bViewFinderAvail);
    }
    else
       UIEnable(ID_VIEWFINDER_SHOW, false);
+}
+
+void MainFrame::EnableScriptingUI(bool bScripting)
+{
+   SetRibbonContextAvail(ID_TAB_GROUP_CONTEXT_SCRIPTING, bScripting ?
+   UI_CONTEXTAVAILABILITY_ACTIVE : UI_CONTEXTAVAILABILITY_NOTAVAILABLE);
+
+   UIEnable(ID_SCRIPTING_OPEN, bScripting);
+   UIEnable(ID_SCRIPTING_RELOAD, false); // enabled when a script is loaded
+   UIEnable(ID_SCRIPTING_RUN, bScripting);
+   UIEnable(ID_SCRIPTING_STOP, false); // always stopped
+   UIEnable(ID_SCRIPTING_EDIT, false); // enabled when a script is loaded
 }
 
 void MainFrame::SetPaneWidths(int* arrWidths, int nPanes)
@@ -661,6 +699,7 @@ void MainFrame::OnStateEvent(RemoteReleaseControl::T_enStateEvent enStateEvent, 
       m_spSourceDevice.reset();
 
       EnablePhotoModes(false);
+      EnableScriptingUI(false);
 
       UpdateTitle();
 
