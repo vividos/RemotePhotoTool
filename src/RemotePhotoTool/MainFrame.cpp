@@ -391,7 +391,6 @@ void MainFrame::SetupRibbonBar()
    if (bRibbonUI)
    {
       UIAddMenu(m_CmdBar.GetMenu(), true);
-      UIRemoveUpdateElement(ID_FILE_MRU_FIRST);
 
       CRibbonPersist(c_pszSettingsRegkey).Restore(bRibbonUI, m_hgRibbonSettings);
    }
