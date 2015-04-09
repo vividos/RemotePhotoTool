@@ -20,3 +20,5 @@
 #include <map>
 #include <memory>
 #include <functional>
+
+#define BOOST_DATE_TIME_NO_LIB

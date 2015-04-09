@@ -13,7 +13,7 @@ public:
    /// ctor
    CameraScriptProcessor();
    /// dtor
-   ~CameraScriptProcessor() throw() {}
+   virtual ~CameraScriptProcessor() throw();
 
    /// function type to output debug strings
    typedef std::function<void(const CString&)> T_fnOutputDebugString;
