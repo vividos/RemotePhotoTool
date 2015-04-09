@@ -377,6 +377,7 @@ void MainFrame::SetupRibbonBar()
    {
       UIAddMenu(m_CmdBar.GetMenu(), true);
 
+      // causes memory leak, so it should be commented out; see https://sourceforge.net/p/wtl/bugs/271/
       UIRemoveUpdateElement(ID_FILE_MRU_FIRST);
 
       CRibbonPersist(c_pszSettingsRegkey).Restore(bRibbonUI, m_hgRibbonSettings);
@@ -387,15 +388,13 @@ void MainFrame::SetupRibbonBar()
 
 void MainFrame::SetupToolbar()
 {
-   HWND hWndToolBar = CreateSimpleToolBarCtrl(m_hWnd, IDR_MAINFRAME, FALSE, ATL_SIMPLE_TOOLBAR_PANE_STYLE);
-
    CreateSimpleReBar(ATL_SIMPLE_REBAR_NOBORDER_STYLE);
-   AddSimpleReBarBand(hWndToolBar, NULL, TRUE);
    AddSimpleReBarBand(m_CmdBar);
 
+   HWND hWndToolBar = CreateSimpleToolBarCtrl(m_hWnd, IDR_MAINFRAME, FALSE, ATL_SIMPLE_TOOLBAR_PANE_STYLE);
+   AddSimpleReBarBand(hWndToolBar, NULL, TRUE);
+
    UIAddToolBar(hWndToolBar);
-   UISetCheck(ID_VIEW_TOOLBAR, 1);
-   UISetCheck(ID_VIEW_STATUS_BAR, 1);
 }
 
 void MainFrame::SetupMRUList()
