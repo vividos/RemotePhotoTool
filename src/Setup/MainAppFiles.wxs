@@ -18,6 +18,10 @@
         <File Id="RemotePhotoToolExe" Name="RemotePhotoTool.exe" DiskId="1" KeyPath="yes" Source="$(var.SourceFolder)\RemotePhotoTool.exe" />
       </Component>
 
+      <Component Id="RemoteScriptingEditorExe" Guid="77E764F1-4C03-4F32-9645-CA326579C6B9" Directory="INSTALLDIR">
+        <File Id="RemoteScriptingEditorExe" Name="RemoteScriptingEditor.exe" DiskId="1" KeyPath="yes" Source="$(var.SourceFolder)\RemoteScriptingEditor.exe" />
+      </Component>
+
       <Component Id="MainAppShortcut" Guid="5A8B18B1-9CCB-4A2B-87AC-AC8B62DCFD2D" Directory="MainAppShortcutFolder">
         <Shortcut Id="RemotePhotoToolShortcut"
            Name="$(var.ProductName)"
