@@ -14,6 +14,9 @@
 class DeviceProperty
 {
 public:
+   /// device property id
+   unsigned int Id() const throw() { return m_uiPropertyId; }
+
    /// property name
    CString Name() const throw();
 
