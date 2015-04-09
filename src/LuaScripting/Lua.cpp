@@ -20,11 +20,27 @@ using namespace Lua;
 
 CString Lua::Exception::MessageFromState(const CString& cszMessage, lua_State* L) throw()
 {
+   CString cszStackTrace = ReadStackTrace(L);
+
+   try
+   {
+      CString cszText;
+      cszText.Format(_T("Lua error: %s, in:\n%s"), cszMessage.GetString(), cszStackTrace.GetString());
+      return cszText;
+   }
+   catch (...)
+   {
+      return CString();
+   }
+}
+
+CString Lua::Exception::ReadStackTrace(lua_State* L)
+{
    CString cszInfo;
 
-   for (int iStack = 1; ; iStack++)
+   for (int iStack = 0;; iStack++)
    {
-      lua_Debug debug = {0};
+      lua_Debug debug = { 0 };
 
       int iRet = lua_getstack(L, iStack, &debug);
       if (iRet == 0)
@@ -32,7 +48,7 @@ CString Lua::Exception::MessageFromState(const CString& cszMessage, lua_State* L
 
       try
       {
-         lua_getinfo(L, "S", &debug);
+         lua_getinfo(L, "Sl", &debug);
       }
       catch (...)
       {
@@ -40,11 +56,11 @@ CString Lua::Exception::MessageFromState(const CString& cszMessage, lua_State* L
          ATLTRACE(_T("exception during lua_getinfo()\n"));
       }
 
-      // TODO format info
       try
       {
-         //debug.source
-         cszInfo += _T("\n");
+         cszInfo.AppendFormat(_T("%hs:%u\n"),
+            debug.short_src,
+            debug.currentline);
       }
       catch (...)
       {
@@ -52,26 +68,9 @@ CString Lua::Exception::MessageFromState(const CString& cszMessage, lua_State* L
       }
    }
 
-   //for (int i=1; i<5; i++)
-   //{
-   //   luaL_where(L, i);
-   //   cszInfo += lua_tostring(L, -1);
-   //   cszInfo += _T("\n");
-   //   lua_pop(L, 1);
-   //}
+   cszInfo.Trim();
 
-   try
-   {
-      cszInfo.Trim();
-
-      CString cszText;
-      cszText.Format(_T("Lua error: %s in %s"), cszMessage.GetString(), cszInfo.GetString());
-      return cszText;
-   }
-   catch (...)
-   {
-      return CString();
-   }
+   return cszInfo;
 }
 
 void Lua::Exception::ParseLuaError(LPCSTR pszaText)
@@ -604,6 +603,15 @@ void State::AddValue(LPCTSTR pszaName, Value value)
    lua_setglobal(L, CStringA(pszaName));
 }
 
+Value State::GetValue(const CString& cszName)
+{
+   lua_State* L = GetState();
+
+   lua_getglobal(L, CStringA(cszName).GetString());
+
+   return Value::FromStack(*this, -1);
+}
+
 Table State::GetTable(const CString& cszName)
 {
    lua_State* L = GetState();
@@ -613,6 +621,13 @@ Table State::GetTable(const CString& cszName)
       throw Lua::Exception(_T("table not found: ") + cszName, L, __FILE__, __LINE__);
 
    return Table(*this, -1, true);
+}
+
+void State::CollectGarbage()
+{
+   lua_State* L = GetState();
+
+   lua_gc(L, LUA_GCCOLLECT, 0);
 }
 
 int State::OnLuaPanic(lua_State* L)

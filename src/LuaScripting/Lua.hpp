@@ -64,6 +64,9 @@ private:
    /// formats message from Lua state
    static CString MessageFromState(const CString& cszMessage, lua_State* L) throw();
 
+   /// reads stack trace from Lua state
+   static CString ReadStackTrace(lua_State* L) throw();
+
    /// parses Lua message
    void ParseLuaError(LPCSTR pszaText);
 };
@@ -340,8 +343,14 @@ public:
    /// adds a global value to the state
    void AddValue(LPCTSTR pszaName, Value value);
 
+   /// returns an existing global value
+   Value GetValue(const CString& cszName);
+
    /// returns an existing table
    Table GetTable(const CString& cszName);
+
+   /// starts Lua garbage collector
+   void CollectGarbage();
 
    /// debug-traces current stack
    static void TraceStack(lua_State* L);
