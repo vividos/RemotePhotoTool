@@ -112,7 +112,9 @@ void ScriptingPhotoModeView::EditScript(const CString& cszFilename)
    process.WorkingDirectory(Path(cszFilename).DirectoryName());
    bool bRet = process.Create(cszCommandLine);
 
-   if (!bRet)
+   if (bRet)
+      WaitForSingleObject(process.ProcessHandle(), INFINITE);
+   else
       AtlMessageBox(m_hWnd, _T("Couldn't start Remote Scripting Editor."), IDR_MAINFRAME, MB_OK);
 
    return;

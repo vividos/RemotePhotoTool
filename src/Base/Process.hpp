@@ -47,6 +47,9 @@ public:
       return bRet != FALSE;
    }
 
+   /// returns process handle
+   HANDLE ProcessHandle() const throw() { return m_processInfo.hProcess; }
+
 private:
    /// startup info
    STARTUPINFO m_startupInfo;
