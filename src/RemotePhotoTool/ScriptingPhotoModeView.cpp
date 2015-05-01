@@ -38,6 +38,8 @@ HWND ScriptingPhotoModeView::CreateView(HWND hWndParent)
       WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 
    m_view.SetupSourceEditor();
+   m_view.SetReadOnly(true);
+   m_view.HideCaret();
 
    SetupOutputPane();
 
@@ -82,11 +84,15 @@ void ScriptingPhotoModeView::OpenScript()
    if (iRet != IDOK)
       return;
 
+   m_view.SetReadOnly(false);
+
    bool bRet = m_view.Load(dlg.m_ofn.lpstrFile) != FALSE;
    if (!bRet)
       return;
 
    m_view.Init(dlg.m_ofn.lpstrFile);
+   m_view.SetReadOnly(true);
+   m_view.HideCaret();
 
    m_host.EnableUI(ID_SCRIPTING_RELOAD, true);
    m_host.EnableUI(ID_SCRIPTING_EDIT, true);
