@@ -103,8 +103,26 @@
     <ResourceCompile Include="res\Ribbon.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="res\app_exit.bmp" />
+    <Image Include="res\edit_copy.bmp" />
+    <Image Include="res\edit_cut.bmp" />
+    <Image Include="res\edit_find.bmp" />
+    <Image Include="res\edit_paste.bmp" />
+    <Image Include="res\edit_redo.bmp" />
+    <Image Include="res\edit_repeat.bmp" />
+    <Image Include="res\edit_replace.bmp" />
+    <Image Include="res\edit_select_all.bmp" />
+    <Image Include="res\edit_undo.bmp" />
+    <Image Include="res\file_new.bmp" />
+    <Image Include="res\file_open.bmp" />
+    <Image Include="res\file_save.bmp" />
+    <Image Include="res\placeholder.bmp" />
     <Image Include="res\RemoteScriptingEditor.ico" />
+    <Image Include="res\script_run.bmp" />
+    <Image Include="res\script_stop.bmp" />
     <Image Include="res\toolbar.bmp" />
+    <Image Include="res\view_output.bmp" />
+    <Image Include="res\view_ribbon.bmp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="res\Ribbon.xml">
@@ -128,6 +146,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="res\edit_repeat.xcf" />
+    <None Include="res\edit_replace.xcf" />
     <None Include="res\Ribbon.bml" />
   </ItemGroup>
   <ItemGroup>

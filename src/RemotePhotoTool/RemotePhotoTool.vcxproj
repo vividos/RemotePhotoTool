@@ -183,10 +183,31 @@
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="res\app_exit.bmp" />
+    <Image Include="res\bigicons.bmp" />
+    <Image Include="res\home_connect.bmp" />
+    <Image Include="res\home_settings.bmp" />
     <Image Include="res\icons.bmp" />
+    <Image Include="res\photomode_device_properties.bmp" />
+    <Image Include="res\photomode_image_properties.bmp" />
+    <Image Include="res\photomode_scripting.bmp" />
+    <Image Include="res\placeholder.bmp" />
+    <Image Include="res\prev_images_edit.bmp" />
+    <Image Include="res\prev_images_exit.bmp" />
+    <Image Include="res\prev_images_next.bmp" />
+    <Image Include="res\prev_images_open_folder.bmp" />
+    <Image Include="res\prev_images_prev.bmp" />
+    <Image Include="res\prev_images_show.bmp" />
     <Image Include="res\RemotePhotoTool.ico" />
+    <Image Include="res\scripting_edit.bmp" />
+    <Image Include="res\scripting_open.bmp" />
+    <Image Include="res\scripting_reload.bmp" />
+    <Image Include="res\scripting_run.bmp" />
+    <Image Include="res\scripting_stop.bmp" />
     <Image Include="res\toolbar.bmp" />
     <Image Include="res\toolbar_big.bmp" />
+    <Image Include="res\viewfinder_show.bmp" />
+    <Image Include="res\view_ribbon.bmp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="RemotePhotoTool.rc" />

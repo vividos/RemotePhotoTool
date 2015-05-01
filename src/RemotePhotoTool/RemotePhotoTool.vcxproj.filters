@@ -265,6 +265,69 @@
     <Image Include="res\icons.bmp">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="res\home_connect.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\home_settings.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\app_exit.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\bigicons.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\photomode_device_properties.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\photomode_image_properties.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\photomode_scripting.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\placeholder.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\prev_images_edit.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\prev_images_exit.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\prev_images_next.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\prev_images_open_folder.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\prev_images_prev.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\prev_images_show.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\scripting_edit.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\scripting_open.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\scripting_reload.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\scripting_run.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\scripting_stop.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\view_ribbon.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\viewfinder_show.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="RemotePhotoTool.rc">
@@ -285,12 +348,6 @@
   <ItemGroup>
     <None Include="res\MainFrameRibbon.bml">
       <Filter>Resource Files\Generated Files</Filter>
-    </None>
-    <None Include="res\toolbar.xcf">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\toolbar_big.xcf">
-      <Filter>Resource Files</Filter>
     </None>
     <None Include="..\..\Changelog.md">
       <Filter>Documentation Files</Filter>
@@ -318,6 +375,12 @@
     </None>
     <None Include="..\..\SupportedCameras.md">
       <Filter>Documentation Files</Filter>
+    </None>
+    <None Include="res\toolbar.xcf">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\toolbar_big.xcf">
+      <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
