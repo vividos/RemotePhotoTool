@@ -122,6 +122,7 @@ BEGIN
     POPUP "&View"
     BEGIN
         MENUITEM "&Menu band", ID_VIEW_RIBBON
+        MENUITEM "&Output pane", ID_VIEW_OUTPUT
     END
     POPUP "&Help"
     BEGIN
@@ -239,6 +240,7 @@ BEGIN
     ID_SCRIPT_RUN                 "Runs the Lua script\nRun"
     ID_SCRIPT_STOP                "Stops the currently running Lua script\nStop"
     ID_VIEW_RIBBON                "Show or hide the ribbon\nToggle Ribbon"
+    ID_VIEW_OUTPUT                "Show or hide the output pane\nToggle Output pane"
     ATL_IDS_SCSIZE                "Change the window size"
     ATL_IDS_SCMOVE                "Change the window position"
     ATL_IDS_SCMINIMIZE            "Reduce the window to an icon"

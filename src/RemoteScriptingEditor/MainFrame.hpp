@@ -71,6 +71,7 @@ private:
       COMMAND_ID_HANDLER(ID_FILE_SAVE_AS, OnFileSaveAs)
       COMMAND_RANGE_HANDLER(ID_FILE_MRU_FIRST, ID_FILE_MRU_LAST, OnFileRecent)
       COMMAND_ID_HANDLER(ID_VIEW_RIBBON, OnViewRibbon)
+      COMMAND_ID_HANDLER(ID_VIEW_OUTPUT, OnViewOutput)
       COMMAND_ID_HANDLER(ID_SCRIPT_RUN, OnScriptRun)
       COMMAND_ID_HANDLER(ID_SCRIPT_STOP, OnScriptStop)
       CHAIN_MSG_MAP(CRibbonFrameWindowImpl<MainFrame>)
@@ -92,6 +93,7 @@ private:
    LRESULT OnFileSaveAs(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
    LRESULT OnFileRecent(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
    LRESULT OnViewRibbon(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   LRESULT OnViewOutput(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
    LRESULT OnAppAbout(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
    LRESULT OnScriptRun(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
    LRESULT OnScriptStop(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);

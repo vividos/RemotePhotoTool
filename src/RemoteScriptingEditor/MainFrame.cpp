@@ -204,6 +204,18 @@ LRESULT MainFrame::OnViewRibbon(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndC
    return 0;
 }
 
+LRESULT MainFrame::OnViewOutput(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+   // in single pane mode?
+   bool bOutputPaneVisible = m_splitter.GetSinglePaneMode() == SPLIT_PANE_LEFT;
+
+   m_splitter.SetSinglePaneMode(bOutputPaneVisible ? SPLIT_PANE_NONE : SPLIT_PANE_LEFT);
+
+   UISetCheck(ID_VIEW_OUTPUT, bOutputPaneVisible);
+
+   return 0;
+}
+
 LRESULT MainFrame::OnScriptRun(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
    if (!DoFileSave())
@@ -431,6 +443,8 @@ void MainFrame::SetupView()
    m_splitter.SetSinglePaneMode(SPLIT_PANE_NONE);
 
    m_splitter.SetSplitterPosPct(75);
+
+   UISetCheck(ID_VIEW_OUTPUT, true);
 }
 
 void MainFrame::SetupOutputPane()

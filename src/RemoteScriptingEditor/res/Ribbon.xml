@@ -27,6 +27,7 @@
     <Command Name="RecentFiles" Symbol="ID_RIBBON_RECENT_FILES" LabelTitle="Recent Files" />
 
     <Command Name="wtl_VIEW_RIBBON" Symbol="ID_VIEW_RIBBON" Id="0xE804"/>
+    <Command Name="wtl_VIEW_OUTPUT" Symbol="ID_VIEW_OUTPUT" Id="32782"/>
 
     <!-- Tabs -->
     <Command Name="TabHome" Symbol="ID_TAB_HOME" LabelTitle="Home" />
@@ -103,7 +104,7 @@
                 <Scale Group="GroupClipboard" Size="Large"/>
                 <Scale Group="GroupFind" Size="Medium"/>
                 <Scale Group="GroupRun" Size="Large"/>
-                <Scale Group="GroupView" Size="Small"/>
+                <Scale Group="GroupView" Size="Large"/>
               </ScalingPolicy.IdealSizes>
               <Scale Group="GroupFile" Size="Medium"/>
               <Scale Group="GroupFind" Size="Small"/>
@@ -209,28 +210,9 @@
             <Button CommandName="wtl_SCRIPT_STOP"/>
           </Group>
 
-          <Group CommandName="GroupView">
-            <SizeDefinition>
-              <ControlNameMap>
-                <ControlNameDefinition Name="wtl_VIEW_RIBBON"/>
-              </ControlNameMap>
-              <GroupSizeDefinition Size="Large">
-                <ControlSizeDefinition ControlName="wtl_VIEW_RIBBON"
-                                       ImageSize="Small"
-                                       IsLabelVisible="true" />
-              </GroupSizeDefinition>
-              <GroupSizeDefinition Size="Medium">
-                <ControlSizeDefinition ControlName="wtl_VIEW_RIBBON"
-                                       ImageSize="Small"
-                                       IsLabelVisible="true" />
-              </GroupSizeDefinition>
-              <GroupSizeDefinition Size="Small">
-                <ControlSizeDefinition ControlName="wtl_VIEW_RIBBON"
-                                       ImageSize="Small"
-                                       IsLabelVisible="false" />
-              </GroupSizeDefinition>
-            </SizeDefinition>
-            <CheckBox CommandName="wtl_VIEW_RIBBON"/>
+          <Group CommandName="GroupView" SizeDefinition="TwoButtons">
+            <Button CommandName="wtl_VIEW_RIBBON"/>
+            <Button CommandName="wtl_VIEW_OUTPUT"/>
           </Group>
 
         </Tab>
