@@ -77,6 +77,16 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "&Edit", ID_SCRIPTING_EDIT
     END
+    POPUP "&Previous images"
+    BEGIN
+       MENUITEM "&Close", ID_PREV_IMAGES_EXIT
+       MENUITEM SEPARATOR
+       MENUITEM "&Previous", ID_PREV_IMAGES_PREV
+       MENUITEM "&Next", ID_PREV_IMAGES_NEXT
+       MENUITEM SEPARATOR
+       MENUITEM "&Open folder", ID_PREV_IMAGES_OPEN_FOLDER
+       MENUITEM "&Edit image", ID_PREV_IMAGES_EDIT
+    END
     POPUP "&View"
     BEGIN
         MENUITEM "&Viewfinder", ID_VIEWFINDER_SHOW

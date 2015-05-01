@@ -114,6 +114,11 @@ BEGIN
         MENUITEM "Find &Next\tF3",              ID_EDIT_REPEAT
         MENUITEM "&Replace\tCtrl+R",            ID_EDIT_REPLACE
     END
+    POPUP "&Script"
+    BEGIN
+      MENUITEM "&Run\tF5", ID_SCRIPT_RUN
+      MENUITEM "&Stop\tShit+F5", ID_SCRIPT_STOP
+    END
     POPUP "&View"
     BEGIN
         MENUITEM "&Menu band", ID_VIEW_RIBBON
