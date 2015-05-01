@@ -69,7 +69,17 @@ LRESULT MainFrame::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/,
       UISetCheck(ID_VIEW_RIBBON, bRibbonUI);
    }
 
-   DoFileNew();
+   if (m_cszFilenameOpenAtStart.IsEmpty())
+      DoFileNew();
+   else
+   {
+      CString cszTitle = Path(m_cszFilenameOpenAtStart).FilenameAndExt();
+      if (DoFileOpen(m_cszFilenameOpenAtStart, cszTitle))
+      {
+         m_mru.AddToList(m_cszFilenameOpenAtStart);
+         m_mru.WriteToRegistry(c_pszSettingsRegkey);
+      }
+   }
 
    UIEnable(ID_SCRIPT_RUN, TRUE);
    UIEnable(ID_SCRIPT_STOP, FALSE);

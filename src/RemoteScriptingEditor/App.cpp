@@ -8,6 +8,7 @@
 // includes
 #include "stdafx.h"
 #include "App.hpp"
+#include "ProgramOptions.hpp"
 #include "res\Ribbon.h"
 #include "resource.h"
 #include "MainFrame.hpp"
@@ -63,10 +64,16 @@ void App::InitCrashReporter()
 
 int App::Run(LPCTSTR /*lpstrCmdLine*/, int nCmdShow)
 {
+   if (!ParseCommandLine())
+      return 0;
+
    CMessageLoop theLoop;
    _Module.AddMessageLoop(&theLoop);
 
    MainFrame wndMain;
+
+   if (!m_cszFilename.IsEmpty())
+      wndMain.OpenFileAtStart(m_cszFilename);
 
    if (wndMain.CreateEx() == nullptr)
    {
@@ -80,4 +87,26 @@ int App::Run(LPCTSTR /*lpstrCmdLine*/, int nCmdShow)
 
    _Module.RemoveMessageLoop();
    return nRet;
+}
+
+/// \retval false App should not be started
+/// \retval true App can be started
+bool App::ParseCommandLine()
+{
+   ProgramOptions options;
+
+   options.RegisterOutputHandler(&ProgramOptions::OutputConsole);
+   options.RegisterHelpOption();
+
+   options.RegisterParameterHandler([&](const CString& cszFilename)-> bool
+   {
+      // only take first filename
+      if (m_cszFilename.IsEmpty())
+         m_cszFilename = cszFilename;
+      return true;
+   });
+
+   options.Parse(GetCommandLine());
+
+   return !options.IsSelectedHelpOption();
 }

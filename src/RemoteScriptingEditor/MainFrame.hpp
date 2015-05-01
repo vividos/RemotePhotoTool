@@ -25,6 +25,12 @@ public:
    /// ctor
    MainFrame() throw();
 
+   /// sets filename of file to open at start
+   void OpenFileAtStart(const CString& cszFilename)
+   {
+      m_cszFilenameOpenAtStart = cszFilename;
+   }
+
    DECLARE_FRAME_WND_CLASS(NULL, IDR_MAINFRAME)
 
 private:
@@ -170,4 +176,7 @@ private:
 
    /// when showing the scripting view, this tracks if the currently open file has been modified
    bool m_bScriptingFileModified;
+
+   /// filename of file to open at start
+   CString m_cszFilenameOpenAtStart;
 };
