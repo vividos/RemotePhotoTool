@@ -19,23 +19,23 @@
         <Component Id="DpplibcomDll" Guid="59766A86-6C22-47DD-B4EC-31B46F5032D3" Directory="INSTALLDIR">
           <File Id="DpplibcomDll" Name="DPPLibCom.dll" DiskId="1" KeyPath="yes" Source="$(var.SourceFolder)\DPPLibCom.dll" />
         </Component>
-        
+
         <Component Id="DpprscDll" Guid="EB38BEBE-C4D6-4AA9-A4AF-7E359A44B9D5" Directory="INSTALLDIR">
           <File Id="DpprscDll" Name="DPPRSC.dll" DiskId="1" KeyPath="yes" Source="$(var.SourceFolder)\DPPRSC.dll" />
         </Component>
-        
+
         <Component Id="EdsdkDll" Guid="4832DFAB-7FD3-4D0D-A495-81799D96EC59" Directory="INSTALLDIR">
           <File Id="EdsdkDll" Name="EDSDK.dll" DiskId="1" KeyPath="yes" Source="$(var.SourceFolder)\EDSDK.dll" />
         </Component>
-        
+
         <Component Id="EdsimageDll" Guid="79300D66-2A1D-4CB9-B93D-00D7B3D78B78" Directory="INSTALLDIR">
           <File Id="EdsimageDll" Name="EdsImage.dll" DiskId="1" KeyPath="yes" Source="$(var.SourceFolder)\EdsImage.dll" />
         </Component>
-        
+
         <Component Id="MlibDll" Guid="5D0581D0-0CA8-4593-A866-678C68B2180B" Directory="INSTALLDIR">
           <File Id="MlibDll" Name="Mlib.dll" DiskId="1" KeyPath="yes" Source="$(var.SourceFolder)\Mlib.dll" />
         </Component>
-        
+
         <Component Id="Ucs32pDll" Guid="07575CA9-DD15-4454-9392-43C6CB181857" Directory="INSTALLDIR">
           <File Id="Ucs32pDll" Name="Ucs32P.dll" DiskId="1" KeyPath="yes" Source="$(var.SourceFolder)\Ucs32P.dll" />
         </Component>

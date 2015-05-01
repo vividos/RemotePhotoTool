@@ -33,7 +33,6 @@ implement photo stacking, focus stacking, CombineZP
 implement view finder stage 2: battery, number of remaining shots, auto rotate, image format
 implement view finder stage 3: half transparent background image, histogram
 implement previous images browser
-HDR: Set Photomatix current folder to image output folder
 Write manual
 Multi-camera photo view
 Image Property view: change values using editbox or combobox

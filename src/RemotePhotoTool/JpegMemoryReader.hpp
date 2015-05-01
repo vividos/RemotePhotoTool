@@ -53,7 +53,10 @@ public:
    JpegImageInfo ImageInfo() const throw() { return m_imageInfo; };
 
    /// returns decoded bitmap data (RGB bytes)
-   std::vector<BYTE>& BitmapData() { return m_vecBitmapData; }
+   std::vector<BYTE>& BitmapData() throw() { return m_vecBitmapData; }
+
+   /// returns decoded bitmap data (RGB bytes); const version
+   const std::vector<BYTE>& BitmapData() const throw() { return m_vecBitmapData; }
 
 private:
    /// called when next scanline has been decoded
