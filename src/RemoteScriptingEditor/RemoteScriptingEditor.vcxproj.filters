@@ -143,7 +143,4 @@
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Text Include="..\..\TODO.txt" />
-  </ItemGroup>
 </Project>

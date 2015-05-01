@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Express 2013 for Windows Desktop
-VisualStudioVersion = 12.0.30110.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RemotePhotoTool", "RemotePhotoTool\RemotePhotoTool.vcxproj", "{CDEDF8B5-A808-4995-97EB-1289A84FF7ED}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -52,6 +52,20 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lua", "LuaScripting\lua-5.2.3\Lua.vcxproj", "{24EA638C-0F97-48FA-82D1-7DBA2832C1DC}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RemoteScriptingEditor", "RemoteScriptingEditor\RemoteScriptingEditor.vcxproj", "{4A6E0938-3C68-44A8-A94A-EA879801D3D5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation Files", "Documentation Files", "{813AC1E1-EB65-4B6A-873F-582CBB589FBD}"
+	ProjectSection(SolutionItems) = preProject
+		..\Changelog.md = ..\Changelog.md
+		..\Credits.md = ..\Credits.md
+		..\Features.md = ..\Features.md
+		..\License.md = ..\License.md
+		..\README.md = ..\README.md
+		..\Screenshots.md = ..\Screenshots.md
+		..\Sourcecode.md = ..\Sourcecode.md
+		..\SupportedCameras.md = ..\SupportedCameras.md
+		..\TestCases.md = ..\TestCases.md
+		..\TODO.txt = ..\TODO.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

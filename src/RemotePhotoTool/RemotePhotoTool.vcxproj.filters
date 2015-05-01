@@ -16,9 +16,6 @@
     <Filter Include="Resource Files\Generated Files">
       <UniqueIdentifier>{d4f0c279-45ae-4014-b570-cda493e68a9f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Documentation Files">
-      <UniqueIdentifier>{bab5f1a3-91b2-41a0-9262-0eb42826f866}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Photo Mode Files">
       <UniqueIdentifier>{afceb1f4-88b3-4766-bf68-13af894dc10d}</UniqueIdentifier>
     </Filter>
@@ -349,43 +346,11 @@
     <None Include="res\MainFrameRibbon.bml">
       <Filter>Resource Files\Generated Files</Filter>
     </None>
-    <None Include="..\..\Changelog.md">
-      <Filter>Documentation Files</Filter>
-    </None>
-    <None Include="..\..\Credits.md">
-      <Filter>Documentation Files</Filter>
-    </None>
-    <None Include="..\..\Features.md">
-      <Filter>Documentation Files</Filter>
-    </None>
-    <None Include="..\..\License.md">
-      <Filter>Documentation Files</Filter>
-    </None>
-    <None Include="..\..\README.md">
-      <Filter>Documentation Files</Filter>
-    </None>
-    <None Include="..\..\Sourcecode.md">
-      <Filter>Documentation Files</Filter>
-    </None>
-    <None Include="..\..\TestCases.md">
-      <Filter>Documentation Files</Filter>
-    </None>
-    <None Include="..\..\Screenshots.md">
-      <Filter>Documentation Files</Filter>
-    </None>
-    <None Include="..\..\SupportedCameras.md">
-      <Filter>Documentation Files</Filter>
-    </None>
     <None Include="res\toolbar.xcf">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="res\toolbar_big.xcf">
       <Filter>Resource Files</Filter>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="..\..\TODO.txt">
-      <Filter>Documentation Files</Filter>
-    </Text>
   </ItemGroup>
 </Project>
