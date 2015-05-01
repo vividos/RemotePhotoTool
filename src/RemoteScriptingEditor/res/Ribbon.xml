@@ -200,10 +200,10 @@
               <GroupSizeDefinition Size="Small">
                 <ControlSizeDefinition ControlName="wtl_SCRIPT_RUN"
                              ImageSize="Small"
-                             IsLabelVisible="false" />
+                             IsLabelVisible="true" />
                 <ControlSizeDefinition ControlName="wtl_SCRIPT_STOP"
                              ImageSize="Small"
-                             IsLabelVisible="false" />
+                             IsLabelVisible="true" />
               </GroupSizeDefinition>
             </SizeDefinition>
             <Button CommandName="wtl_SCRIPT_RUN"/>
