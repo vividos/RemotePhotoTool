@@ -7,6 +7,7 @@
 
 // includes
 #include "stdafx.h"
+#include "resource.h"
 #include "LuaScriptEditorView.hpp"
 
 /// file open filter for Lua scripting
@@ -77,7 +78,7 @@ bool LuaScriptEditorView::DoFileSaveAs()
    if (bRet)
       Init(dlg.m_ofn.lpstrFile, dlg.m_ofn.lpstrFileTitle);
    else
-      MessageBox(_T("Error writing file!\n"));
+      AtlMessageBox(m_hWnd, _T("Error writing file!\n"), IDR_MAINFRAME, MB_OK | MB_ICONERROR);
 
    return bRet;
 }
@@ -92,7 +93,7 @@ bool LuaScriptEditorView::QueryClose()
    CString cszText;
    cszText.Format(_T("Save changes to %s ?"), m_cszFileTitle.GetString());
 
-   int iRet = wndMain.MessageBox(cszText, _T("RemotePhotoTool"), MB_YESNOCANCEL | MB_ICONEXCLAMATION);
+   int iRet = AtlMessageBox(wndMain, cszText.GetString(), IDR_MAINFRAME, MB_YESNOCANCEL | MB_ICONQUESTION);
 
    if (iRet == IDCANCEL)
       return false;

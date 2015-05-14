@@ -296,7 +296,11 @@ bool MainFrame::DoFileOpen(LPCTSTR lpstrFileName, LPCTSTR lpstrFileTitle)
       UpdateTitle();
    }
    else
-      MessageBox(_T("Error reading file!\n"));
+   {
+      CString cszText;
+      cszText.Format(_T("Error reading file!\nFilename: %s"), lpstrFileName);
+      AtlMessageBox(m_hWnd, cszText.GetString(), IDR_MAINFRAME, MB_OK | MB_ICONERROR);
+   }
 
    return bRet;
 }
@@ -314,7 +318,7 @@ bool MainFrame::DoFileSave()
       }
       else
       {
-         MessageBox(_T("Error writing file!\n"));
+         AtlMessageBox(m_hWnd, _T("Error writing file!\n"), IDR_MAINFRAME, MB_OK | MB_ICONERROR);
          return false;
       }
    }
