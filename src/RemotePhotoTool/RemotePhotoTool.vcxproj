@@ -150,6 +150,7 @@
     <ClInclude Include="CameraInfoDlg.hpp" />
     <ClInclude Include="ConnectCameraDlg.hpp" />
     <ClInclude Include="DevicePropertyView.hpp" />
+    <ClInclude Include="Exif.hpp" />
     <ClInclude Include="HDRPanoramaPhotoModeView.hpp" />
     <ClInclude Include="HDRPhotoModeView.hpp" />
     <ClInclude Include="HuginInterface.hpp" />

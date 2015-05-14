@@ -248,6 +248,9 @@
     <ClInclude Include="LuaScriptViewerView.hpp">
       <Filter>UI Files\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Exif.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\RemotePhotoTool.ico">
