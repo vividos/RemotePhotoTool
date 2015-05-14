@@ -37,6 +37,8 @@ public:
 
       if (m_spCanonControlLuaBindings != nullptr)
          m_spCanonControlLuaBindings->SetOutputDebugStringHandler(fnOutputDebugString);
+
+      m_scriptWorkerThread.SetOutputDebugStringHandler(fnOutputDebugString);
    }
 
    /// inits bindings to system functions and CanonControl

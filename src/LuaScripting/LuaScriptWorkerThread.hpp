@@ -10,6 +10,9 @@
 #include "Asio.hpp"
 #include <thread>
 #include "Thread.hpp"
+#include "CameraException.hpp"
+#include "Logging.hpp"
+#include "Lua.hpp"
 
 /// Lua script worker thread
 class LuaScriptWorkerThread
@@ -28,6 +31,15 @@ public:
    ~LuaScriptWorkerThread() throw()
    {
       Stop();
+   }
+
+   /// function type to output debug strings
+   typedef std::function<void(const CString&)> T_fnOutputDebugString;
+
+   /// sets output debug string handler
+   void SetOutputDebugStringHandler(T_fnOutputDebugString fnOutputDebugString)
+   {
+      m_fnOutputDebugString = fnOutputDebugString;
    }
 
    /// stops worker thread
@@ -61,6 +73,45 @@ private:
             m_ioService.run();
             return;
          }
+         catch (const CameraException& ex)
+         {
+            CString cszText;
+            cszText.Format(_T("%s(%u): CameraException occured in Lua script execution: %s"),
+               ex.SourceFile().GetString(),
+               ex.SourceLine(),
+               ex.Message().GetString());
+
+            LOG_TRACE(cszText);
+
+            if (m_fnOutputDebugString != nullptr)
+               m_fnOutputDebugString(cszText);
+         }
+         catch (const Lua::Exception& ex)
+         {
+            CString cszText;
+            cszText.Format(_T("%s(%u): Lua exception occured: %s"),
+               ex.LuaSourceFile().GetString(),
+               ex.LuaLineNumber(),
+               ex.LuaErrorMessage().GetString());
+
+            LOG_TRACE(cszText);
+
+            if (m_fnOutputDebugString != nullptr)
+               m_fnOutputDebugString(cszText);
+         }
+         catch (const Exception& ex)
+         {
+            CString cszText;
+            cszText.Format(_T("%s(%u): Exception occured in Lua script execution: %s"),
+               ex.SourceFile().GetString(),
+               ex.SourceLine(),
+               ex.Message().GetString());
+
+            LOG_TRACE(cszText);
+
+            if (m_fnOutputDebugString != nullptr)
+               m_fnOutputDebugString(cszText);
+         }
          catch (...)
          {
          }
@@ -79,4 +130,7 @@ private:
 
    /// background thread
    std::thread m_thread;
+
+   /// output debug string handler
+   T_fnOutputDebugString m_fnOutputDebugString;
 };
