@@ -235,7 +235,7 @@
               <Button CommandName="phototool_VIEWFINDER_ZOOM_OUT"/>
               <Button CommandName="phototool_VIEWFINDER_ZOOM_IN"/>
             </Group>
-            <Group CommandName="GroupViewfinderShow" SizeDefinition="ThreeButtons">
+            <Group CommandName="GroupViewfinderShow" SizeDefinition="TwoButtons">
               <DropDownGallery CommandName="phototool_VIEWFINDER_LINES_MODE"
                                HasLargeItems="false"
                                TextPosition="Right">
@@ -246,7 +246,8 @@
                 </DropDownGallery.MenuLayout>
               </DropDownGallery>
               <Button CommandName="phototool_VIEWFINDER_SHOW_OVEREXPOSED"/>
-              <Button CommandName="phototool_VIEWFINDER_SHOW_OVERLAY_IMAGE"/>
+              <!-- Button CommandName="phototool_VIEWFINDER_SHOW_OVERLAY_IMAGE"/ -->
+              <!-- Button CommandName="phototool_VIEWFINDER_HISTOGRAM"/ -->
             </Group>
           </Tab>
         </TabGroup>
