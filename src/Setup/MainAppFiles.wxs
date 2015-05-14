@@ -2,7 +2,7 @@
 <!--
 
   RemotePhotoTool - remote camera control software
-  Copyright (C) 2008-2014 Michael Fink
+  Copyright (C) 2008-2015 Michael Fink
 
   MainAppFiles.wxs - Main application file components (fragment)
 
@@ -30,6 +30,10 @@
            WorkingDirectory="INSTALLDIR"/>
         <RemoveFolder Id="MainAppShortcutFolder" On="uninstall"/>
         <RegistryValue Root="HKCU" Key="Software\Microsoft\$(var.ProductName)" Name="Installed" Type="integer" Value="1" KeyPath="yes"/>
+      </Component>
+
+      <Component Id="LibExifDll" Guid="49D38FCA-EB5D-4C6B-A321-1B11D5D491BE" Directory="INSTALLDIR">
+        <File Id="LibExifDll" Name="libexif.dll" DiskId="1" KeyPath="yes" Source="$(var.SourceFolder)\libexif.dll" />
       </Component>
 
     </ComponentGroup>
