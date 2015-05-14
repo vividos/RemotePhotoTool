@@ -62,6 +62,16 @@ The wrapper code is licensed under the zlib license.
 
 - [http://www.pnotepad.org/scintilla/](http://www.pnotepad.org/scintilla/ "WTL Scintilla Control Wrappers")
 
+## libexif ##
+
+The application uses the libexif library to read EXIF data from images. The component is licensed
+under the GNU Lesser General Public License Version 2.1 (LGPL).
+
+- [http://libexif.sourceforge.net/](http://libexif.sourceforge.net/ "libexif project page")
+
+[- http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html](http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+ "GNU Lesser General Public License Version 2.1 (LGPL)")
+
 ## Other ##
 
 The application uses the "famfamfam Silk icon set" created by Mark James. The icons
