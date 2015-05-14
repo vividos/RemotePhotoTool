@@ -3,6 +3,10 @@
 Note: For the complete changelog, including internal changes, you can always go to
 the git sourcecode repository at [https://github.com/vividos/RemotePhotoTool](https://github.com/vividos/RemotePhotoTool).
 
+## 2015-xx-xx: Version 1.4.0 Build 119 ##
+
+Implemented the "Previous images" view that shows all images taken with RemotePhotoTool.
+
 ## 2014-11-22: Version 1.3.0 Build 118 ##
 
 This is mainly a bugfix and minor changes release.

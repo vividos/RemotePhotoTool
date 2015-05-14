@@ -321,6 +321,9 @@ LRESULT MainFrame::OnPrevImagesShow(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*h
    if (IsRibbonUI())
       SetRibbonModes(UI_MAKEAPPMODE(1));
 
+   UIEnable(ID_PREV_IMAGES_EXIT, true);
+   UIEnable(ID_PREV_IMAGES_SHOW, false);
+
    return 0;
 }
 
@@ -331,6 +334,14 @@ LRESULT MainFrame::OnPrevImagesExit(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*h
 
    SetNewView(m_enPrevImagesSavedView);
 
+   UIEnable(ID_PREV_IMAGES_EXIT, false);
+   UIEnable(ID_PREV_IMAGES_SHOW, true);
+
+   UIEnable(ID_PREV_IMAGES_OPEN_FOLDER, false);
+   UIEnable(ID_PREV_IMAGES_EDIT, false);
+   UIEnable(ID_PREV_IMAGES_PREV, false);
+   UIEnable(ID_PREV_IMAGES_NEXT, false);
+
    return 0;
 }
 
@@ -338,7 +349,7 @@ LRESULT MainFrame::OnForwardCommandMessage(UINT uMsg, WPARAM wParam, LPARAM lPar
 {
    ATLASSERT(uMsg == WM_COMMAND);
 
-   LRESULT lResult = ::SendMessage(m_hWndView, WM_COMMAND, wParam, lParam);
+   LRESULT lResult = ::SendMessage(m_hWndView, uMsg, wParam, lParam);
    bHandled = false;
 
    return lResult;

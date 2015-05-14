@@ -43,3 +43,6 @@
 
 /// sent to lock or unlock action mode
 #define WM_LOCK_ACTIONMODE WM_APP+4
+
+/// sent to PreviousImagesView to update current image
+#define WM_PREV_IMAGES_UPDATE WM_APP + 5
