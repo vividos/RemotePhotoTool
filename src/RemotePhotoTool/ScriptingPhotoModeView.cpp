@@ -103,10 +103,13 @@ void ScriptingPhotoModeView::EditScript(const CString& cszFilename)
    if (cszFilename.IsEmpty())
       return;
 
+   CString cszEditorFilename =
+      Path::Combine(Path(App_GetFilename()).DirectoryName(), _T("RemoteScriptingEditor.exe")).ToString();
+
    CString cszCommandLine;
    cszCommandLine.Format(_T("\"%s\" \"%s\""),
-      Path::Combine(Path(App_GetFilename()).DirectoryName(), _T("RemoteScriptingEditor")),
-      cszFilename);
+      cszEditorFilename.GetString(),
+      cszFilename.GetString());
 
    Process process;
    process.WorkingDirectory(Path(cszFilename).DirectoryName());
