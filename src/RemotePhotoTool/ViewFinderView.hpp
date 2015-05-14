@@ -34,13 +34,21 @@ public:
    /// enables or disables updates to the viewfinder window
    void EnableUpdate(bool bEnable);
 
+   /// performs auto-focus action
+   void AutoFocus();
+
+   /// performs auto white balance action
+   void AutoWhiteBalance();
+
+   /// sets new lines mode
+   void SetLinesMode(ViewFinderImageWindow::T_enLinesMode enLinesMode);
+
 private:
    friend CDialogResize<ViewFinderView>;
 
    // ddx map
    BEGIN_DDX_MAP(ViewFinderView)
       DDX_CONTROL_HANDLE(IDC_SLIDER_ZOOM, m_tbZoom)
-      DDX_CONTROL_HANDLE(IDC_COMBO_VIEWFINDER_LINESMODE, m_cbLinesMode)
    END_DDX_MAP()
 
    // resize map
@@ -51,15 +59,13 @@ private:
    // message map
    BEGIN_MSG_MAP(ViewFinderView)
       MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
-      COMMAND_HANDLER(IDC_COMBO_VIEWFINDER_LINESMODE, CBN_SELENDOK, OnComboLinesModeSelEndOk)
       MESSAGE_HANDLER(WM_HSCROLL, OnHScroll)
-      COMMAND_HANDLER(IDC_BUTTON_VIEWFINDER_AUTOFOCUS, BN_CLICKED, OnBnClickedAutoFocus)
-      COMMAND_HANDLER(IDC_BUTTON_VIEWFINDER_AUTOWHITEBALANCE, BN_CLICKED, OnBnClickedAutoWhiteBalance)
-      COMMAND_HANDLER(IDC_BUTTON_ZOOM_OUT, BN_CLICKED, OnBnClickedZoomOut)
-      COMMAND_HANDLER(IDC_BUTTON_ZOOM_IN, BN_CLICKED, OnBnClickedZoomIn)
-      COMMAND_HANDLER(IDC_BUTTON_VIEWFINDER_HISTOGRAM, BN_CLICKED, OnBnClickedHistogram)
-      COMMAND_HANDLER(IDC_BUTTON_PREV_IMAGEVIEWER, BN_CLICKED, OnBnClickedPreviousImageViewer)
-      COMMAND_HANDLER(IDC_CHECK_VIEWFINDER_SHOW_OVEREXPOSED, BN_CLICKED, OnCheckViewfinderShowOverexposed)
+      COMMAND_HANDLER(ID_VIEWFINDER_AUTO_FOCUS, BN_CLICKED, OnViewfinderAutoFocus)
+      COMMAND_HANDLER(ID_VIEWFINDER_AUTO_WB, BN_CLICKED, OnViewfinderAutoWhiteBalance)
+      COMMAND_HANDLER(ID_VIEWFINDER_ZOOM_OUT, BN_CLICKED, OnViewfinderZoomOut)
+      COMMAND_HANDLER(ID_VIEWFINDER_ZOOM_IN, BN_CLICKED, OnViewfinderZoomIn)
+      COMMAND_HANDLER(ID_VIEWFINDER_HISTOGRAM, BN_CLICKED, OnViewfinderHistogram)
+      COMMAND_HANDLER(ID_VIEWFINDER_SHOW_OVEREXPOSED, BN_CLICKED, OnViewfinderShowOverexposed)
       CHAIN_MSG_MAP(CDialogResize<ViewFinderView>)
       REFLECT_NOTIFICATIONS() // to make sure superclassed controls get notification messages
    END_MSG_MAP()
@@ -73,27 +79,20 @@ private:
    LRESULT OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
    /// called at destruction of view
    LRESULT OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
-   /// called when lines mode combobox is closed with a new selection
-   LRESULT OnComboLinesModeSelEndOk(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
    /// called when a horizontal scroll bar (the zoom trackbar) has been changed
    LRESULT OnHScroll(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
    /// called when button Auto Focus is pressed
-   LRESULT OnBnClickedAutoFocus(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   LRESULT OnViewfinderAutoFocus(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
    /// called when button Auto White Balance is pressed
-   LRESULT OnBnClickedAutoWhiteBalance(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   LRESULT OnViewfinderAutoWhiteBalance(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
    /// called when zoom out button is pressed
-   LRESULT OnBnClickedZoomOut(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   LRESULT OnViewfinderZoomOut(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
    /// called when zoom in button is pressed
-   LRESULT OnBnClickedZoomIn(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   LRESULT OnViewfinderZoomIn(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
    /// called when button Histogram is pressed
-   LRESULT OnBnClickedHistogram(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
-   /// called when button for previous images is pressed
-   LRESULT OnBnClickedPreviousImageViewer(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   LRESULT OnViewfinderHistogram(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
    /// called when "show overexposed areas" button-checkbox is changed
-   LRESULT OnCheckViewfinderShowOverexposed(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
-
-   /// sets up lines mode combobox
-   void SetupLinesModeCombobox();
+   LRESULT OnViewfinderShowOverexposed(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 
    /// sets up viewfinder window
    void SetupViewfinderWindow();
@@ -110,13 +109,13 @@ private:
    /// zoom trackbar
    CTrackBarCtrl m_tbZoom;
 
-   /// lines mode combobox
-   CComboBox m_cbLinesMode;
-
    /// viewfinder window
    std::unique_ptr<ViewFinderImageWindow> m_upViewFinderWindow;
 
    // Model
+
+   /// indicates if zebra pattern is shown
+   bool m_bShowZebraPattern;
 
    /// indicates if histogram is shown
    bool m_bShowHistogram;

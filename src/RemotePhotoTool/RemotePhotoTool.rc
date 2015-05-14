@@ -87,12 +87,28 @@ BEGIN
        MENUITEM "&Open folder", ID_PREV_IMAGES_OPEN_FOLDER
        MENUITEM "&Edit image", ID_PREV_IMAGES_EDIT
     END
+    POPUP "View&finder"
+    BEGIN
+        MENUITEM "Show &Viewfinder", ID_VIEWFINDER_SHOW
+        MENUITEM "Auto &focus", ID_VIEWFINDER_AUTO_FOCUS
+        MENUITEM "Auto &white balance", ID_VIEWFINDER_AUTO_WB
+        MENUITEM "Zoom &in", ID_VIEWFINDER_ZOOM_IN
+        MENUITEM "Zoom &out", ID_VIEWFINDER_ZOOM_OUT
+        POPUP "&Lines mode"
+        BEGIN
+            MENUITEM "&No lines", ID_VIEWFINDER_LINES_MODE_NONE
+            MENUITEM "&Rule of thirds", ID_VIEWFINDER_LINES_MODE_RULEOFTHIRDS
+            MENUITEM "&Golden ratio", ID_VIEWFINDER_LINES_MODE_GOLDENRATIO
+        END
+        MENUITEM "Show overe&xposed", ID_VIEWFINDER_SHOW_OVEREXPOSED
+        MENUITEM "Show overlay i&mage", ID_VIEWFINDER_SHOW_OVERLAY_IMAGE
+    END
     POPUP "&View"
     BEGIN
         MENUITEM "&Viewfinder", ID_VIEWFINDER_SHOW
         MENUITEM "&Previous images", ID_PREV_IMAGES_SHOW
         MENUITEM "&Menu band", ID_VIEW_RIBBON
-        END
+    END
     POPUP "&Help"
     BEGIN
         MENUITEM "&About RemotePhotoTool...", ID_APP_ABOUT
@@ -155,7 +171,27 @@ ID_PREV_IMAGES_OPEN_FOLDER BITMAP        "res\\prev_images_open_folder.bmp"
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
 ID_PREV_IMAGES_EDIT BITMAP        "res\\prev_images_edit.bmp"
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
-ID_VIEWFINDER_SHOW BITMAP        "res\\viewfinder_show.bmp"
+ID_VIEWFINDER_SHOW BITMAP         "res\\viewfinder_show.bmp"
+LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
+ID_VIEWFINDER_AUTO_FOCUS BITMAP         "res\\viewfinder_auto_focus.bmp"
+LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
+ID_VIEWFINDER_AUTO_WB BITMAP         "res\\viewfinder_auto_wb.bmp"
+LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
+ID_VIEWFINDER_ZOOM_IN BITMAP         "res\\viewfinder_zoom_in.bmp"
+LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
+ID_VIEWFINDER_ZOOM_OUT BITMAP         "res\\viewfinder_zoom_out.bmp"
+LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
+ID_VIEWFINDER_LINES_MODE BITMAP         "res\\placeholder.bmp"
+LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
+ID_VIEWFINDER_LINES_MODE_NONE BITMAP         "res\\placeholder.bmp"
+LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
+ID_VIEWFINDER_LINES_MODE_RULEOFTHIRDS BITMAP         "res\\placeholder.bmp"
+LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
+ID_VIEWFINDER_LINES_MODE_GOLDENRATIO BITMAP         "res\\placeholder.bmp"
+LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
+ID_VIEWFINDER_SHOW_OVEREXPOSED BITMAP         "res\\placeholder.bmp"
+LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
+ID_VIEWFINDER_SHOW_OVERLAY_IMAGE BITMAP         "res\\placeholder.bmp"
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
 ID_SCRIPTING_OPEN BITMAP        "res\\scripting_open.bmp"
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
@@ -242,18 +278,9 @@ IDD_VIEWFINDER_FORM DIALOGEX 0, 0, 573, 292
 STYLE DS_SETFONT | WS_VISIBLE | WS_CHILDWINDOW | WS_CLIPSIBLINGS
 FONT 8, "Ms Shell Dlg 2", 400, 0, 0
 BEGIN
-    PUSHBUTTON      "Auto \n&Focus", IDC_BUTTON_VIEWFINDER_AUTOFOCUS, 5, 5, 51, 34, BS_MULTILINE
-    PUSHBUTTON      "Auto &White\nbalance", IDC_BUTTON_VIEWFINDER_AUTOWHITEBALANCE, 61, 5, 51, 34, BS_MULTILINE
-    LTEXT           "&Zoom", IDC_STATIC, 127, 7, 41, 8
-    PUSHBUTTON      "-", IDC_BUTTON_ZOOM_OUT, 127, 17, 23, 21
-    CONTROL         "", IDC_SLIDER_ZOOM, TRACKBAR_CLASS, WS_TABSTOP | TBS_AUTOTICKS, 152, 18, 87, 20, WS_EX_STATICEDGE
-    PUSHBUTTON      "+", IDC_BUTTON_ZOOM_IN, 241, 17, 23, 21
-    LTEXT           "&Lines mode", IDC_STATIC, 280, 5, 41, 8
-    COMBOBOX        IDC_COMBO_VIEWFINDER_LINESMODE, 280, 18, 70, 41, CBS_DROPDOWNLIST | CBS_HASSTRINGS
-    AUTOCHECKBOX    "&Show overexposed areas", IDC_CHECK_VIEWFINDER_SHOW_OVEREXPOSED, 355, 5, 51, 34, BS_PUSHLIKE | BS_MULTILINE
-    PUSHBUTTON      "&Histogram", IDC_BUTTON_VIEWFINDER_HISTOGRAM, 411, 5, 51, 34, NOT WS_VISIBLE | BS_MULTILINE
-    PUSHBUTTON      "Previous \n&Images", IDC_BUTTON_PREV_IMAGEVIEWER, 467, 5, 51, 34, NOT WS_VISIBLE | BS_MULTILINE
-    LTEXT           "Viewfinder image", IDC_STATIC_VIEWFINDER_FRAME, 5, 44, 563, 243, NOT WS_VISIBLE, WS_EX_STATICEDGE
+    LTEXT           "&Zoom", IDC_STATIC, 5, 5, 41, 8
+    CONTROL         "", IDC_SLIDER_ZOOM, TRACKBAR_CLASS, WS_TABSTOP | TBS_AUTOTICKS, 48, 5, 158, 20, WS_EX_STATICEDGE
+    LTEXT           "Viewfinder image", IDC_STATIC_VIEWFINDER_FRAME, 5, 30, 563, 257, NOT WS_VISIBLE, WS_EX_STATICEDGE
 END
 
 
@@ -407,8 +434,13 @@ BEGIN
     ID_VIEWFINDER_AUTO_WB         "Adjusts white balance of live viewfinder\nAuto white balance"
     ID_VIEWFINDER_ZOOM_IN         "Zooms into the live viewfinder scene\nZoom in"
     ID_VIEWFINDER_ZOOM_OUT        "Zooms out from live viewfinder scene\nZoom out"
+    ID_VIEWFINDER_LINES_MODE      "Selects helper lines mode in live viewfinder\nLines mode"
+    ID_VIEWFINDER_LINES_MODE_NONE "No lines"
+    ID_VIEWFINDER_LINES_MODE_RULEOFTHIRDS "Rule of thirds"
+    ID_VIEWFINDER_LINES_MODE_GOLDENRATIO "Golden ratio"
     ID_VIEWFINDER_SHOW_OVEREXPOSED "Toggles showing overexposed areas in live viewfinder\nOverexposed areas"
     ID_VIEWFINDER_SHOW_OVERLAY_IMAGE "Sets half-transparent overlay image in live viewfinder\nOverlay image"
+    ID_VIEWFINDER_HISTOGRAM       "Toggles showing histogram in live viewfinder\nHistogram"
     ID_SCRIPTING_OPEN             "Opens existing Lua scripting file\nOpen scripting file"
     ID_SCRIPTING_RELOAD           "Reloads currently lodaed Lua script\nReload scripting file"
     ID_SCRIPTING_RUN              "Runs currently loaded Lua script\nRun script"

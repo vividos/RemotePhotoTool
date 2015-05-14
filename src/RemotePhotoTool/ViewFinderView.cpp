@@ -15,6 +15,7 @@
 
 ViewFinderView::ViewFinderView(std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl)
 :m_spRemoteReleaseControl(spRemoteReleaseControl),
+ m_bShowZebraPattern(false),
  m_bShowHistogram(false)
 {
 }
@@ -33,6 +34,46 @@ void ViewFinderView::EnableUpdate(bool bEnable)
    m_upViewFinderWindow->EnableUpdate(bEnable);
 }
 
+void ViewFinderView::AutoFocus()
+{
+   try
+   {
+      EnableUpdate(false);
+
+      m_spRemoteReleaseControl->SendCommand(RemoteReleaseControl::commandAdjustFocus);
+
+      EnableUpdate(true);
+   }
+   catch (CameraException& ex)
+   {
+      CameraErrorDlg dlg(_T("Error while adjusting focus"), ex);
+      dlg.DoModal(m_hWnd);
+   }
+}
+
+void ViewFinderView::AutoWhiteBalance()
+{
+   try
+   {
+      EnableUpdate(false);
+
+      m_spRemoteReleaseControl->SendCommand(RemoteReleaseControl::commandAdjustWhiteBalance);
+
+      EnableUpdate(true);
+   }
+   catch (CameraException& ex)
+   {
+      CameraErrorDlg dlg(_T("Error while adjusting focus"), ex);
+      dlg.DoModal(m_hWnd);
+   }
+}
+
+void ViewFinderView::SetLinesMode(ViewFinderImageWindow::T_enLinesMode enLinesMode)
+{
+   if (enLinesMode <= ViewFinderImageWindow::linesModeMax && m_upViewFinderWindow != nullptr)
+      m_upViewFinderWindow->SetLinesMode(enLinesMode);
+}
+
 LRESULT ViewFinderView::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
    DoDataExchange(DDX_LOAD);
@@ -40,7 +81,6 @@ LRESULT ViewFinderView::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*
    DlgResize_Init(false, false);
 
    SetupZoomControls();
-   SetupLinesModeCombobox();
    SetupViewfinderWindow();
 
    return TRUE;
@@ -49,21 +89,6 @@ LRESULT ViewFinderView::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*
 LRESULT ViewFinderView::OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
    m_upViewFinderWindow.reset();
-
-   return 0;
-}
-
-LRESULT ViewFinderView::OnComboLinesModeSelEndOk(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
-{
-   int iSel = m_cbLinesMode.GetCurSel();
-   if (iSel == CB_ERR)
-      return 0;
-
-   DWORD_PTR dwData = m_cbLinesMode.GetItemData(iSel);
-   ViewFinderImageWindow::T_enLinesMode enLinesMode = static_cast<ViewFinderImageWindow::T_enLinesMode>(dwData);
-
-   if (enLinesMode <= ViewFinderImageWindow::linesModeMax && m_upViewFinderWindow != nullptr)
-      m_upViewFinderWindow->SetLinesMode(enLinesMode);
 
    return 0;
 }
@@ -80,45 +105,19 @@ LRESULT ViewFinderView::OnHScroll(UINT /*uMsg*/, WPARAM wParam, LPARAM /*lParam*
    return 0;
 }
 
-LRESULT ViewFinderView::OnBnClickedAutoFocus(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+LRESULT ViewFinderView::OnViewfinderAutoFocus(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
-   try
-   {
-      EnableUpdate(false);
-
-      m_spRemoteReleaseControl->SendCommand(RemoteReleaseControl::commandAdjustFocus);
-
-      EnableUpdate(true);
-   }
-   catch(CameraException& ex)
-   {
-      CameraErrorDlg dlg(_T("Error while adjusting focus"), ex);
-      dlg.DoModal(m_hWnd);
-   }
-
+   AutoFocus();
    return 0;
 }
 
-LRESULT ViewFinderView::OnBnClickedAutoWhiteBalance(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+LRESULT ViewFinderView::OnViewfinderAutoWhiteBalance(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
-   try
-   {
-      EnableUpdate(false);
-
-      m_spRemoteReleaseControl->SendCommand(RemoteReleaseControl::commandAdjustWhiteBalance);
-
-      EnableUpdate(true);
-   }
-   catch(CameraException& ex)
-   {
-      CameraErrorDlg dlg(_T("Error while adjusting focus"), ex);
-      dlg.DoModal(m_hWnd);
-   }
-
+   AutoWhiteBalance();
    return 0;
 }
 
-LRESULT ViewFinderView::OnBnClickedZoomOut(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+LRESULT ViewFinderView::OnViewfinderZoomOut(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
    unsigned int uiPos = static_cast<unsigned int>(m_tbZoom.GetPos());
 
@@ -133,7 +132,7 @@ LRESULT ViewFinderView::OnBnClickedZoomOut(WORD /*wNotifyCode*/, WORD /*wID*/, H
    return 0;
 }
 
-LRESULT ViewFinderView::OnBnClickedZoomIn(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+LRESULT ViewFinderView::OnViewfinderZoomIn(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
    unsigned int uiPos = static_cast<unsigned int>(m_tbZoom.GetPos());
 
@@ -148,7 +147,7 @@ LRESULT ViewFinderView::OnBnClickedZoomIn(WORD /*wNotifyCode*/, WORD /*wID*/, HW
    return 0;
 }
 
-LRESULT ViewFinderView::OnBnClickedHistogram(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+LRESULT ViewFinderView::OnViewfinderHistogram(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
    m_bShowHistogram = !m_bShowHistogram;
 
@@ -157,17 +156,11 @@ LRESULT ViewFinderView::OnBnClickedHistogram(WORD /*wNotifyCode*/, WORD /*wID*/,
    return 0;
 }
 
-LRESULT ViewFinderView::OnBnClickedPreviousImageViewer(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+LRESULT ViewFinderView::OnViewfinderShowOverexposed(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
-   return 0;
-}
+   m_bShowZebraPattern = !m_bShowZebraPattern;
 
-LRESULT ViewFinderView::OnCheckViewfinderShowOverexposed(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
-{
-   CButton btn(GetDlgItem(IDC_CHECK_VIEWFINDER_SHOW_OVEREXPOSED));
-   bool bChecked = btn.GetCheck() == BST_CHECKED;
-
-   m_upViewFinderWindow->ShowZebraPattern(bChecked);
+   m_upViewFinderWindow->ShowZebraPattern(m_bShowZebraPattern);
 
    return 0;
 }
@@ -179,9 +172,8 @@ void ViewFinderView::SetupZoomControls()
 
    if (!m_spRemoteReleaseControl->GetCapability(RemoteReleaseControl::capZoomControl) || m_vecAllZoomValues.empty())
    {
-      GetDlgItem(IDC_BUTTON_ZOOM_OUT).EnableWindow(FALSE);
+      // TODO disable zoom buttons
       m_tbZoom.EnableWindow(FALSE);
-      GetDlgItem(IDC_BUTTON_ZOOM_IN).EnableWindow(FALSE);
 
       return;
    }
@@ -198,15 +190,6 @@ void ViewFinderView::SetupZoomControls()
 
       m_tbZoom.SetPos(uiCurrentPos);
    }
-}
-
-void ViewFinderView::SetupLinesModeCombobox()
-{
-   int iItem = m_cbLinesMode.AddString(_T("No lines"));     m_cbLinesMode.SetItemData(iItem, ViewFinderImageWindow::linesModeNoLines);
-   iItem = m_cbLinesMode.AddString(_T("Rule of thirds"));   m_cbLinesMode.SetItemData(iItem, ViewFinderImageWindow::linesModeRuleOfThird);
-   iItem = m_cbLinesMode.AddString(_T("Golden ratio"));     m_cbLinesMode.SetItemData(iItem, ViewFinderImageWindow::linesModeGoldenRatio);
-
-   m_cbLinesMode.SetCurSel(0);
 }
 
 void ViewFinderView::SetupViewfinderWindow()

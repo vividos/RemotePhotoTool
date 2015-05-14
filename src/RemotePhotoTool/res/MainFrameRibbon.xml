@@ -21,22 +21,35 @@
     <Command Name="phototool_PREV_IMAGES_NEXT" Symbol="ID_PREV_IMAGES_NEXT" Id="32782"/>
     <Command Name="phototool_PREV_IMAGES_OPEN_FOLDER" Symbol="ID_PREV_IMAGES_OPEN_FOLDER" Id="32783"/>
     <Command Name="phototool_PREV_IMAGES_EDIT" Symbol="ID_PREV_IMAGES_EDIT" Id="32784"/>
+    <Command Name="phototool_PREV_IMAGES_OVERLAY_IMAGE" Symbol="ID_PREV_IMAGES_OVERLAY_IMAGE" Id="32785"/>
 
-    <Command Name="phototool_CAMERA_RELEASE" Symbol="ID_CAMERA_RELEASE" Id="32785"/>
+    <Command Name="phototool_CAMERA_RELEASE" Symbol="ID_CAMERA_RELEASE" Id="32786"/>
+    <Command Name="phototool_CAMERA_SHOOTING_MODE" Symbol="ID_CAMERA_SHOOTING_MODE"  Id="32787"/>
+    <Command Name="phototool_CAMERA_SETTINGS_AV" Symbol="ID_CAMERA_SETTINGS_AV"  Id="32788"/>
+    <Command Name="phototool_CAMERA_SETTINGS_TV" Symbol="ID_CAMERA_SETTINGS_TV"  Id="32789"/>
+    <Command Name="phototool_CAMERA_SETTINGS_EXPOSURE" Symbol="ID_CAMERA_SETTINGS_EXPOSURE"  Id="32790"/>
+    <Command Name="phototool_CAMERA_SETTINGS_ISO" Symbol="ID_CAMERA_SETTINGS_ISO"  Id="32791"/>
+    <Command Name="phototool_CAMERA_SETTINGS_SAVETO" Symbol="ID_CAMERA_SETTINGS_SAVETO"  Id="32792"/>
+    <Command Name="phototool_CAMERA_SETTINGS_IMAGE_FORMAT" Symbol="ID_CAMERA_SETTINGS_IMAGE_FORMAT"  Id="32793"/>
 
-    <Command Name="phototool_VIEWFINDER_SHOW" Symbol="ID_VIEWFINDER_SHOW" Id="32786"/>
-    <Command Name="phototool_VIEWFINDER_AUTO_FOCUS" Symbol="ID_VIEWFINDER_AUTO_FOCUS" Id="32787"/>
-    <Command Name="phototool_VIEWFINDER_AUTO_WB" Symbol="ID_VIEWFINDER_AUTO_WB" Id="32788"/>
-    <Command Name="phototool_VIEWFINDER_ZOOM_IN" Symbol="ID_VIEWFINDER_ZOOM_IN" Id="32789"/>
-    <Command Name="phototool_VIEWFINDER_ZOOM_OUT" Symbol="ID_VIEWFINDER_ZOOM_OUT" Id="32790"/>
-    <Command Name="phototool_VIEWFINDER_SHOW_OVEREXPOSED" Symbol="ID_VIEWFINDER_SHOW_OVEREXPOSED" Id="32791"/>
-    <Command Name="phototool_VIEWFINDER_SHOW_OVERLAY_IMAGE" Symbol="ID_VIEWFINDER_SHOW_OVERLAY_IMAGE" Id="32792"/>
+    <Command Name="phototool_VIEWFINDER_SHOW" Symbol="ID_VIEWFINDER_SHOW" Id="32794"/>
+    <Command Name="phototool_VIEWFINDER_AUTO_FOCUS" Symbol="ID_VIEWFINDER_AUTO_FOCUS" Id="32795"/>
+    <Command Name="phototool_VIEWFINDER_AUTO_WB" Symbol="ID_VIEWFINDER_AUTO_WB" Id="32796"/>
+    <Command Name="phototool_VIEWFINDER_ZOOM_IN" Symbol="ID_VIEWFINDER_ZOOM_IN" Id="32797"/>
+    <Command Name="phototool_VIEWFINDER_ZOOM_OUT" Symbol="ID_VIEWFINDER_ZOOM_OUT" Id="32798"/>
+    <Command Name="phototool_VIEWFINDER_LINES_MODE" Symbol="ID_VIEWFINDER_LINES_MODE" Id="32799" LabelTitle="Lines mode"/>
+    <Command Name="phototool_VIEWFINDER_LINES_MODE_NONE" Symbol="ID_VIEWFINDER_LINES_MODE_NONE" Id="32800"/>
+    <Command Name="phototool_VIEWFINDER_LINES_MODE_RULEOFTHIRDS" Symbol="ID_VIEWFINDER_LINES_MODE_RULEOFTHIRDS" Id="32801"/>
+    <Command Name="phototool_VIEWFINDER_LINES_MODE_GOLDENRATIO" Symbol="ID_VIEWFINDER_LINES_MODE_GOLDENRATIO" Id="32802"/>
+    <Command Name="phototool_VIEWFINDER_SHOW_OVEREXPOSED" Symbol="ID_VIEWFINDER_SHOW_OVEREXPOSED" Id="32803"/>
+    <Command Name="phototool_VIEWFINDER_SHOW_OVERLAY_IMAGE" Symbol="ID_VIEWFINDER_SHOW_OVERLAY_IMAGE" Id="32804"/>
+    <Command Name="phototool_VIEWFINDER_HISTOGRAM" Symbol="ID_VIEWFINDER_HISTOGRAM" Id="32805"/>
 
-    <Command Name="phototool_SCRIPTING_OPEN" Symbol="ID_SCRIPTING_OPEN" Id="32793"/>
-    <Command Name="phototool_SCRIPTING_RELOAD" Symbol="ID_SCRIPTING_RELOAD" Id="32794"/>
-    <Command Name="phototool_SCRIPTING_RUN" Symbol="ID_SCRIPTING_RUN" Id="32795"/>
-    <Command Name="phototool_SCRIPTING_STOP" Symbol="ID_SCRIPTING_STOP" Id="32796"/>
-    <Command Name="phototool_SCRIPTING_EDIT" Symbol="ID_SCRIPTING_EDIT" Id="32797"/>
+    <Command Name="phototool_SCRIPTING_OPEN" Symbol="ID_SCRIPTING_OPEN" Id="32806"/>
+    <Command Name="phototool_SCRIPTING_RELOAD" Symbol="ID_SCRIPTING_RELOAD" Id="32807"/>
+    <Command Name="phototool_SCRIPTING_RUN" Symbol="ID_SCRIPTING_RUN" Id="32808"/>
+    <Command Name="phototool_SCRIPTING_STOP" Symbol="ID_SCRIPTING_STOP" Id="32809"/>
+    <Command Name="phototool_SCRIPTING_EDIT" Symbol="ID_SCRIPTING_EDIT" Id="32810"/>
 
     <Command Name="wtl_VIEW_RIBBON" Symbol="ID_VIEW_RIBBON" Id="0xE804"/>
     <Command Name="wtl_APP_ABOUT" Symbol="ID_APP_ABOUT" Id="0xE140"/>
@@ -222,7 +235,16 @@
               <Button CommandName="phototool_VIEWFINDER_ZOOM_OUT"/>
               <Button CommandName="phototool_VIEWFINDER_ZOOM_IN"/>
             </Group>
-            <Group CommandName="GroupViewfinderShow" SizeDefinition="TwoButtons">
+            <Group CommandName="GroupViewfinderShow" SizeDefinition="ThreeButtons">
+              <DropDownGallery CommandName="phototool_VIEWFINDER_LINES_MODE"
+                               HasLargeItems="false"
+                               TextPosition="Right">
+                <DropDownGallery.MenuLayout>
+                  <VerticalMenuLayout
+                    Gripper="None"
+                    Rows="3" />
+                </DropDownGallery.MenuLayout>
+              </DropDownGallery>
               <Button CommandName="phototool_VIEWFINDER_SHOW_OVEREXPOSED"/>
               <Button CommandName="phototool_VIEWFINDER_SHOW_OVERLAY_IMAGE"/>
             </Group>

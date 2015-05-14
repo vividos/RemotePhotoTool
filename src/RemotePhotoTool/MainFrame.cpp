@@ -312,6 +312,41 @@ LRESULT MainFrame::OnViewfinderShow(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*h
    return 0;
 }
 
+/// \note Normally the ideal place for this handler would be ViewFinderView, but there is a problem:
+/// Some of the photo mode view classes have REFLECT_NOTIFICATIONS() in their message maps, and the
+/// method MainFrame::OnForwardCommandMessage() forwards WM_COMMAND messages to the photo view first,
+/// then to the viewfinder. The ribbon gallery control sends WM_COMMAND messages where lParam is set
+/// to the selection in the gallery control, and the function called in REFLECT_NOTIFICATIONS() can't
+/// handle lParam values that are not 0 or a valid window, and so gives an assertion.
+/// For this reason we handle the messages here and select the appropriate lines mode from here.
+LRESULT MainFrame::OnViewfinderLinesModeSelChanged(UI_EXECUTIONVERB verb, WORD /*wID*/, UINT uSel, BOOL& /*bHandled*/)
+{
+   if (verb == UI_EXECUTIONVERB_EXECUTE &&
+      uSel != UI_COLLECTION_INVALIDINDEX &&
+      m_upViewFinderView != nullptr)
+   {
+      ViewFinderImageWindow::T_enLinesMode enLinesMode =
+         static_cast<ViewFinderImageWindow::T_enLinesMode>(uSel);
+
+      m_upViewFinderView->SetLinesMode(enLinesMode);
+   }
+
+   return 0;
+}
+
+LRESULT MainFrame::OnViewfinderLinesModeRange(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+   ViewFinderImageWindow::T_enLinesMode enLinesMode =
+      static_cast<ViewFinderImageWindow::T_enLinesMode>(wID - ID_VIEWFINDER_LINES_MODE_NONE);
+
+   if (enLinesMode > ViewFinderImageWindow::linesModeMax)
+      return 0;
+
+   m_upViewFinderView->SetLinesMode(enLinesMode);
+
+   return 0;
+}
+
 LRESULT MainFrame::OnPrevImagesShow(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
    m_enPrevImagesSavedView = m_enCurrentViewType;
@@ -351,6 +386,9 @@ LRESULT MainFrame::OnForwardCommandMessage(UINT uMsg, WPARAM wParam, LPARAM lPar
 
    LRESULT lResult = ::SendMessage(m_hWndView, uMsg, wParam, lParam);
    bHandled = false;
+
+   if (m_upViewFinderView != nullptr)
+      m_upViewFinderView->SendMessage(uMsg, wParam, lParam);
 
    return lResult;
 }
@@ -402,6 +440,8 @@ void MainFrame::SetupRibbonBar()
    if (bRibbonUI)
    {
       UIAddMenu(m_CmdBar.GetMenu(), true);
+
+      m_cbViewfinderLinesMode.Select(0);
 
       CRibbonPersist(c_pszSettingsRegkey).Restore(bRibbonUI, m_hgRibbonSettings);
    }
@@ -596,6 +636,18 @@ void MainFrame::SetNewView(T_enViewType enViewType)
 
 void MainFrame::ShowViewfinder(bool bShow)
 {
+   UIEnable(ID_VIEWFINDER_AUTO_FOCUS, bShow);
+   UIEnable(ID_VIEWFINDER_AUTO_WB, bShow);
+   UIEnable(ID_VIEWFINDER_ZOOM_IN, bShow);
+   UIEnable(ID_VIEWFINDER_ZOOM_OUT, bShow);
+   UIEnable(ID_VIEWFINDER_LINES_MODE, bShow);
+   UIEnable(ID_VIEWFINDER_LINES_MODE_NONE, bShow);
+   UIEnable(ID_VIEWFINDER_LINES_MODE_RULEOFTHIRDS, bShow);
+   UIEnable(ID_VIEWFINDER_LINES_MODE_GOLDENRATIO, bShow);
+   UIEnable(ID_VIEWFINDER_SHOW_OVEREXPOSED, bShow);
+   UIEnable(ID_VIEWFINDER_SHOW_OVERLAY_IMAGE, bShow);
+   UIEnable(ID_VIEWFINDER_HISTOGRAM, bShow);
+
    if (!bShow)
    {
       if (m_upViewFinderView == nullptr)
@@ -642,6 +694,8 @@ void MainFrame::ShowViewfinder(bool bShow)
    m_splitter.SetSplitterPanes(m_hWndView, *m_upViewFinderView);
    m_splitter.SetSinglePaneMode(SPLIT_PANE_NONE);
    m_splitter.SetSplitterPosPct(30);
+
+   SetRibbonContextAvail(ID_TAB_GROUP_CONTEXT_VIEWFINDER, UI_CONTEXTAVAILABILITY_ACTIVE);
 }
 
 void MainFrame::EnablePhotoModes(bool bEnable)
