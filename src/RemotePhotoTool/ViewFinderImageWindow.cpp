@@ -341,7 +341,10 @@ LRESULT ViewFinderImageWindow::OnPaint(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM 
       memDC.TransparentBlt(0, 0, iWidth, iHeight, bmpDC, 0, 0, bm.bmWidth, bm.bmHeight, RGB(255,255,255));
    }
    else
+   {
+      memDC.SetStretchBltMode(COLORONCOLOR);
       memDC.StretchBlt(0, 0, iWidth, iHeight, bmpDC, 0, 0, bm.bmWidth, bm.bmHeight, SRCCOPY);
+   }
 
    bmpDC.SelectBitmap(hbmT);
 
