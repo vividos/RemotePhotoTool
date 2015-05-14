@@ -15,6 +15,7 @@
 #include "ViewFinderView.hpp"
 #include "AppSettings.hpp"
 #include "ImageFileManager.hpp"
+#include "PreviousImagesManager.hpp"
 #include "RemoteReleaseControl.hpp"
 #include <atlsplit.h>
 #include <atlctrlx.h>
@@ -147,6 +148,8 @@ private:
 
    virtual ImageFileManager& GetImageFileManager() throw() override { return *m_upImageFileManager; }
 
+   virtual PreviousImagesManager& GetPreviousImagesManager() throw() override { return m_previousImagesManager; }
+
    virtual ViewFinderView* GetViewFinderView() throw() override { return m_upViewFinderView.get(); }
 
    virtual void SetStatusText(const CString& cszText) override;
@@ -228,6 +231,9 @@ private:
 
    /// image file manager
    std::unique_ptr<ImageFileManager> m_upImageFileManager;
+
+   /// previous images manager
+   PreviousImagesManager m_previousImagesManager;
 
    /// current source device
    std::shared_ptr<SourceDevice> m_spSourceDevice;

@@ -9,6 +9,7 @@
 // forward references
 class RemoteReleaseControl;
 class ImageFileManager;
+class PreviousImagesManager;
 class ViewFinderView;
 class AppSettings;
 
@@ -27,6 +28,9 @@ public:
 
    /// returns image file manager
    virtual ImageFileManager& GetImageFileManager() throw() = 0;
+
+   /// returns previous images manager
+   virtual PreviousImagesManager& GetPreviousImagesManager() throw() = 0;
 
    /// returns viewfinder view (or nullptr if not active)
    virtual ViewFinderView* GetViewFinderView() throw() = 0;

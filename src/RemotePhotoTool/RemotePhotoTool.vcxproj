@@ -126,6 +126,7 @@
     <ClCompile Include="PhotomatixInterface.cpp" />
     <ClCompile Include="PhotoModeManager.cpp" />
     <ClCompile Include="PhotoStackingPhotoModeView.cpp" />
+    <ClCompile Include="PreviousImagesManager.cpp" />
     <ClCompile Include="PreviousImagesView.cpp" />
     <ClCompile Include="RemotePhotoTool.cpp" />
     <ClCompile Include="ScriptingPhotoModeView.cpp" />
@@ -171,6 +172,8 @@
     <ClInclude Include="PhotomatixInterface.hpp" />
     <ClInclude Include="PhotoModeManager.hpp" />
     <ClInclude Include="PhotoStackingPhotoModeView.hpp" />
+    <ClInclude Include="PreviousImageInfo.hpp" />
+    <ClInclude Include="PreviousImagesManager.hpp" />
     <ClInclude Include="PreviousImagesView.hpp" />
     <ClInclude Include="res\MainFrameRibbon.h" />
     <ClInclude Include="ScriptingPhotoModeView.hpp" />
