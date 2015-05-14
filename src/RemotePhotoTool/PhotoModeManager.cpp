@@ -255,6 +255,8 @@ void HDRPhotoModeManager::OnFinishedTransferLastAEB(const ShutterReleaseSettings
    CString cszFilename = settings.Filename();
    m_vecAEBFilenameList.push_back(cszFilename);
 
+   m_host.OnTransferredImage(cszFilename);
+
    PostMessage(m_hWnd, WM_HDR_AEB_LAST, 0, 0);
 }
 
@@ -355,6 +357,8 @@ void PanoramaPhotoModeManager::OnFinishedTransfer(const ShutterReleaseSettings& 
    // save panorama filename
    CString cszFilename = settings.Filename();
    m_vecPanoramaFilenameList.push_back(cszFilename);
+
+   m_host.OnTransferredImage(cszFilename);
 
    m_host.LockActionMode(false);
 }

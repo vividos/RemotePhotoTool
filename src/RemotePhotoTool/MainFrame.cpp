@@ -528,6 +528,11 @@ void MainFrame::EnableUI(int nID, bool bEnable)
    UIEnable(nID, bEnable);
 }
 
+void MainFrame::OnTransferredImage(const CString& cszFilename)
+{
+   m_previousImagesManager.AddNewImage(cszFilename);
+}
+
 void MainFrame::SetNewView(T_enViewType enViewType)
 {
    SetRibbonContextAvail(ID_TAB_GROUP_CONTEXT_SCRIPTING, UI_CONTEXTAVAILABILITY_NOTAVAILABLE);

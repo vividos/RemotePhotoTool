@@ -158,6 +158,8 @@ private:
 
    virtual void EnableUI(int nID, bool bEnable) override;
 
+   virtual void OnTransferredImage(const CString& cszFilename) override;
+
    /// sets up logging
    void SetupLogging();
 

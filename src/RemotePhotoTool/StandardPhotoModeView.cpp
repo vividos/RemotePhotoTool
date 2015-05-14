@@ -138,6 +138,8 @@ void StandardPhotoModeView::OnFinishedTransfer(const ShutterReleaseSettings& set
 
    m_host.SetStatusText(cszText);
 
+   m_host.OnTransferredImage(settings.Filename());
+
    m_host.LockActionMode(false);
 }
 

@@ -43,4 +43,7 @@ public:
 
    /// enables/disables UI elements
    virtual void EnableUI(int nID, bool bEnable) = 0;
+
+   /// called by photo mode view when a new image has been taken
+   virtual void OnTransferredImage(const CString& cszFilename) = 0;
 };
