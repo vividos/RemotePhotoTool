@@ -16,7 +16,8 @@
 class PreviousImageInfo
 {
 public:
-   // Note: the index must start at 0 and use contiguous indices
+   /// image info text type; used in InfoText() as index
+   /// \note the index must start at 0 and use contiguous indices
    enum T_enImageInfoType
    {
       typeAperture = 0, ///< aperture setting used for image
@@ -102,7 +103,7 @@ private:
    /// actual RGB bitmap data
    std::vector<BYTE> m_vecBitmapData;
 
-   // additional info texts
+   /// additional info texts
    std::array<CString, typeMaxValue> m_aInfoTextList;
 
    /// flat to determine if all infos of image are already loaded

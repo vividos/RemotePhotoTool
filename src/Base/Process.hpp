@@ -6,6 +6,7 @@
 //
 #pragma once
 
+/// Win32 process
 class Process
 {
 public:

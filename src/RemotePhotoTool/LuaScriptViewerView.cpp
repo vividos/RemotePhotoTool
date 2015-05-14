@@ -1,11 +1,11 @@
+//
+// RemotePhotoTool - remote camera control software
+// Copyright (C) 2008-2015 Michael Fink
+//
+/// \file LuaScriptViewerView.cpp Viewer view for Lua scripts
+//
 #include "stdafx.h"
 #include "LuaScriptViewerView.hpp"
-
-/// file open filter for Lua scripting
-//LPCTSTR g_pszLuaScriptingFilter =
-//_T("Lua Files (*.lua)\0*.lua\0")
-//_T("All Files (*.*)\0*.*\0")
-//_T("");
 
 void LuaScriptViewerView::SetupSourceEditor()
 {
