@@ -724,8 +724,8 @@ void MainFrame::EnablePhotoModes(bool bEnable)
 
 void MainFrame::EnableScriptingUI(bool bScripting)
 {
-   SetRibbonContextAvail(ID_TAB_GROUP_CONTEXT_SCRIPTING, bScripting ?
-   UI_CONTEXTAVAILABILITY_ACTIVE : UI_CONTEXTAVAILABILITY_NOTAVAILABLE);
+   SetRibbonContextAvail(ID_TAB_GROUP_CONTEXT_SCRIPTING,
+      bScripting ? UI_CONTEXTAVAILABILITY_ACTIVE : UI_CONTEXTAVAILABILITY_NOTAVAILABLE);
 
    UIEnable(ID_SCRIPTING_OPEN, bScripting);
    UIEnable(ID_SCRIPTING_RELOAD, false); // enabled when a script is loaded
