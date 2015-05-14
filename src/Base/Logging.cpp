@@ -100,8 +100,11 @@ void LogWriteText(const CString& cszText, bool bPreviousIncompleteLine)
 
 void LogTrace(LPCTSTR pszFormat, ...) throw()
 {
+#ifndef _DEBUG
+   // in release, early-quit here
    if (!s_bLoggingActive)
       return;
+#endif
 
    try
    {
@@ -118,12 +121,18 @@ void LogTrace(LPCTSTR pszFormat, ...) throw()
          cszText.Replace(_T("%"), _T("%%"));
       }
 
-      static bool s_bPreviousIncompleteLine = false;
-
       ATLTRACE(cszText);
+
+#ifdef _DEBUG
+      // in debug, quit after tracing message
+      if (!s_bLoggingActive)
+         return;
+#endif
 
       static LightweightMutex s_mtxLogging;
       LightweightMutex::LockType lock(s_mtxLogging);
+
+      static bool s_bPreviousIncompleteLine = false;
 
       LogWriteText(cszText, s_bPreviousIncompleteLine);
 
