@@ -66,6 +66,7 @@ private:
       COMMAND_HANDLER(IDC_COMBO_SHUTTER_SPEED, CBN_SELCHANGE, OnComboShutterSpeedSelChange)
       COMMAND_HANDLER(IDC_COMBO_AEB_BRACKET_SHOTS, CBN_SELCHANGE, OnComboAEBBracketShotsSelChange)
       COMMAND_ID_HANDLER(IDC_BUTTON_AEB, OnButtonAEB)
+      COMMAND_ID_HANDLER(ID_CAMERA_RELEASE, OnButtonAEB)
       MESSAGE_HANDLER(WM_HDR_AEB_NEXT, OnMessageHDRAEBNext)
       MESSAGE_HANDLER(WM_HDR_AEB_LAST, OnMessageHDRAEBLast)
       REFLECT_NOTIFICATIONS() // to make sure superclassed controls get notification messages

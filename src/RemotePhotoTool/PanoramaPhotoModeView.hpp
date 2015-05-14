@@ -68,6 +68,7 @@ private:
       COMMAND_ID_HANDLER(IDC_BUTTON_PANORAMA_START, OnButtonStart)
       COMMAND_ID_HANDLER(IDC_BUTTON_PANORAMA_STOP, OnButtonStop)
       COMMAND_ID_HANDLER(IDC_BUTTON_PANORAMA_CANCEL, OnButtonCancel)
+      COMMAND_ID_HANDLER(ID_CAMERA_RELEASE, OnButtonStart)
       REFLECT_NOTIFICATIONS() // to make sure superclassed controls get notification messages
    END_MSG_MAP()
 

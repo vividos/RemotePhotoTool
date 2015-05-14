@@ -61,7 +61,7 @@ BEGIN
     END
     POPUP "&Camera"
     BEGIN
-        MENUITEM "Release", IDC_CAMERA_RELEASE
+        MENUITEM "Release", ID_CAMERA_RELEASE
         POPUP "&Save to..."
         BEGIN
             MENUITEM "dummy", IDC_STATIC
