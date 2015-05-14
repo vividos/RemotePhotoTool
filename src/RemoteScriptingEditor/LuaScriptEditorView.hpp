@@ -205,6 +205,49 @@ public:
 
       return bRet;
    }
+
+private:
+   BEGIN_MSG_MAP(ThisClass)
+   ALT_MSG_MAP(1)
+      COMMAND_ID_HANDLER(ID_EDIT_CUT, OnEditCommand)
+      COMMAND_ID_HANDLER(ID_EDIT_COPY, OnEditCommand)
+      COMMAND_ID_HANDLER(ID_EDIT_PASTE, OnEditCommand)
+      COMMAND_ID_HANDLER(ID_EDIT_SELECT_ALL, OnEditCommand)
+      COMMAND_ID_HANDLER(ID_EDIT_UNDO, OnEditCommand)
+      COMMAND_ID_HANDLER(ID_EDIT_REDO, OnEditCommand)
+      CHAIN_MSG_MAP_ALT(BaseClass, 1)
+   END_MSG_MAP()
+
+   /// called for edit commands
+   LRESULT OnEditCommand(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& bHandled)
+   {
+      if (m_pFindReplaceDialog == nullptr)
+      {
+         bHandled = false;
+         return 0;
+      }
+
+      HWND hWndFocus = ::GetFocus();
+      if (!m_pFindReplaceDialog->IsChild(hWndFocus))
+      {
+         bHandled = false;
+         return 0;
+      }
+
+      CWindow wnd(hWndFocus);
+      switch (wID)
+      {
+      case ID_EDIT_CUT:    wnd.SendMessage(WM_CUT); break;
+      case ID_EDIT_COPY:   wnd.SendMessage(WM_COPY); break;
+      case ID_EDIT_PASTE:  wnd.SendMessage(WM_PASTE); break;
+      case ID_EDIT_SELECT_ALL:   wnd.SendMessage(EM_SETSEL, 0, -1); break;
+      case ID_EDIT_UNDO:   wnd.SendMessage(EM_UNDO); break;
+      case ID_EDIT_REDO:   wnd.SendMessage(EM_REDO); break;
+      }
+
+      return 0;
+   }
+
 };
 
 /// Lua script editor view
@@ -255,8 +298,8 @@ public:
 
 private:
    BEGIN_MSG_MAP(LuaScriptEditorView)
-      CHAIN_MSG_MAP_ALT(EditCommandsClass, 1)
       CHAIN_MSG_MAP_ALT(FindReplaceClass, 1)
+      CHAIN_MSG_MAP_ALT(EditCommandsClass, 1)
    END_MSG_MAP()
 
 // Handler prototypes (uncomment arguments if needed):
