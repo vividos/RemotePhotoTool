@@ -21,6 +21,7 @@ public:
    Impl()
    {
    }
+   /// dtor
    virtual ~Impl()
    {
       CleanupBindings();
@@ -56,6 +57,7 @@ public:
       m_spCanonControlLuaBindings->InitBindings();
    }
 
+   /// loads script file
    void LoadFile(const CString& cszFilename)
    {
       m_scriptWorkerThread.GetStrand().post([&, cszFilename]()
@@ -64,6 +66,7 @@ public:
       });
    }
 
+   /// runs script by calling Lua function App.run()
    void Run()
    {
       m_scriptWorkerThread.GetStrand().post([&]()
@@ -75,6 +78,7 @@ public:
       });
    }
 
+   /// cancels all handlers currently registered
    void CancelHandlers()
    {
       m_scriptWorkerThread.GetStrand().post([&]()
@@ -83,6 +87,7 @@ public:
       });
    }
 
+   /// cleans up bindings
    void CleanupBindings()
    {
       m_scriptWorkerThread.GetStrand().post([&]()
@@ -96,6 +101,12 @@ public:
 
          m_spCanonControlLuaBindings.reset();
       });
+   }
+
+   /// stops Lua worker thread
+   void StopThread()
+   {
+      m_scriptWorkerThread.Stop();
    }
 
 private:
@@ -143,6 +154,8 @@ CameraScriptProcessor::~CameraScriptProcessor() throw()
 
    m_spImpl->CleanupBindings();
 
+   m_spImpl->StopThread();
+
    m_spImpl.reset();
 }
 
@@ -176,4 +189,5 @@ void CameraScriptProcessor::Stop()
    ATLASSERT(m_spImpl != nullptr);
 
    m_spImpl->CancelHandlers();
+//   m_spImpl.reset();
 }

@@ -27,11 +27,18 @@ public:
    /// dtor
    ~LuaScriptWorkerThread() throw()
    {
+      Stop();
+   }
+
+   /// stops worker thread
+   void Stop() throw()
+   {
       try
       {
          m_upDefaultWork.reset();
-         m_ioService.stop();
-         m_thread.join();
+
+         if (m_thread.joinable())
+            m_thread.join();
       }
       catch (...)
       {
@@ -46,7 +53,18 @@ private:
    void Run()
    {
       Thread::SetName(_T("LuaScriptWorkerThread"));
-      m_ioService.run();
+
+      for (;;)
+      {
+         try
+         {
+            m_ioService.run();
+            return;
+         }
+         catch (...)
+         {
+         }
+      }
    }
 
 private:
