@@ -27,7 +27,6 @@
 #include <functional>
 
 // Boost includes
-#define BOOST_DATE_TIME_NO_LIB ///< don't link against Boost.DateTime
 #include <boost/noncopyable.hpp>
 
 // app wide window message

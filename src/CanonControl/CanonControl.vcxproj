@@ -60,7 +60,7 @@
     </CustomBuildStep>
     <ClCompile>
       <AdditionalIncludeDirectories>exports;..\Base;..\Thirdparty\EDSDK\Header;..\Thirdparty\CDSDK\inc;..\Thirdparty\PSREC\PSReCSDK\inc;..\Thirdparty\boost-log-2.0-RC1;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;CANONCONTROL_EXPORTS;BOOST_DATE_TIME_NO_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;CANONCONTROL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Lib>
       <AdditionalOptions>/IGNORE:4006 /IGNORE:4221 %(AdditionalOptions)</AdditionalOptions>
@@ -74,7 +74,7 @@
     </CustomBuildStep>
     <ClCompile>
       <AdditionalIncludeDirectories>exports;..\Base;..\Thirdparty\EDSDK\Header;..\Thirdparty\CDSDK\inc;..\Thirdparty\PSREC\PSReCSDK\inc;..\Thirdparty\boost-log-2.0-RC1;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;BOOST_DATE_TIME_NO_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;CANONCONTROL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Lib>
       <AdditionalOptions>/IGNORE:4006 /IGNORE:4221 %(AdditionalOptions)</AdditionalOptions>

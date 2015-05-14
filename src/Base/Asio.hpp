@@ -7,7 +7,7 @@
 #pragma once
 
 // don't link Regex and DateTime
-//#define BOOST_DATE_TIME_NO_LIB // already defined in compiler options
+#define BOOST_DATE_TIME_NO_LIB
 #define BOOST_REGEX_NO_LIB
 
 // asio but no winsock init
