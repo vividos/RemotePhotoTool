@@ -89,7 +89,8 @@ private:
    void AddSourceInfo(Lua::Table& table, size_t uiIndex, std::shared_ptr<SourceInfo> spSourceInfo);
 
    /// local sourceDevice = sourceInfo:open()
-   std::vector<Lua::Value> SourceInfoOpen(std::shared_ptr<SourceInfo> spSourceInfo);
+   std::vector<Lua::Value> SourceInfoOpen(std::shared_ptr<SourceInfo> spSourceInfo,
+      const std::vector<Lua::Value>& vecParams);
 
    // SourceDevice functions
 
@@ -120,7 +121,15 @@ private:
       const std::vector<Lua::Value>& vecParams);
 
    std::vector<Lua::Value> RemoteReleaseControlSetReleaseSettings(std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
-      const std::vector<Lua::Value>& /*vecParams*/);
+      const std::vector<Lua::Value>& vecParams);
+
+   std::vector<Lua::Value> RemoteReleaseControlEnumImageProperties(std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl);
+
+   std::vector<Lua::Value> RemoteReleaseControlGetImageProperty(std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
+      const std::vector<Lua::Value>& vecParams);
+
+   void AddImageProperty(Lua::Table& table, const ImageProperty& imageProperty,
+      std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl);
 
    std::vector<Lua::Value> RemoteReleaseControlStartViewfinder(std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl);
 
@@ -154,7 +163,13 @@ private:
    Lua::State& m_state;
 
    /// CanonControl instance
-   Instance m_instance;
+   std::unique_ptr<Instance> m_upInstance;
+
+   /// once Lua has connected to remote release control, a pointer is stored here
+   std::shared_ptr<RemoteReleaseControl> m_spRemoteRelaseControl;
+
+   /// once Lua script started viewfinder, a pointer is stored here
+   std::shared_ptr<Viewfinder> m_spViewfinder;
 
    /// strand to execute all Lua calls on
    boost::asio::io_service::strand& m_strand;

@@ -24,8 +24,7 @@ LPCTSTR c_pszSetAvailImageHandler_OnAvailImageHandler = _T("__SetAvailImageHandl
 
 CanonControlLuaBindings::CanonControlLuaBindings(Lua::State& state, boost::asio::io_service::strand& strand)
 :m_state(state),
-m_strand(strand),
-m_instance(Instance::Get())
+m_strand(strand)
 {
 }
 
@@ -37,6 +36,11 @@ CanonControlLuaBindings::~CanonControlLuaBindings()
 
 void CanonControlLuaBindings::InitBindings()
 {
+   // init of instance must be done in the same thread that actually uses camera
+   m_strand.post([&]{
+      m_upInstance.reset(new Instance(Instance::Get()));
+   });
+
    /// global Sys table
    Lua::Table sys = GetState().GetTable(_T("Sys"));
 
@@ -118,9 +122,27 @@ void CanonControlLuaBindings::InitRemoteReleaseControlConstants(Lua::Table& cons
 
 void CanonControlLuaBindings::CancelHandlers()
 {
-   m_instance.AsyncWaitForCamera();
-   // TODO cancel Viewfinder callback
+   // cancel all callbacks that may be active
+   if (m_spViewfinder != nullptr)
+   {
+      m_spViewfinder->SetAvailImageHandler();
+      m_spViewfinder.reset();
+   }
 
+   if (m_spRemoteRelaseControl != nullptr)
+   {
+      // TODO
+      //m_spRemoteRelaseControl->RemoveDownloadEventHandler();
+      m_spRemoteRelaseControl.reset();
+   }
+
+   if (m_upInstance != nullptr)
+   {
+      m_upInstance->AsyncWaitForCamera();
+      // m_upInstance isn't reset() here, since the bindings could be reused
+   }
+
+   // clean up all stored Lua values
    Lua::Value appValue = GetState().GetValue(_T("App"));
 
    if (appValue.GetType() == Lua::Value::typeTable)
@@ -137,6 +159,8 @@ void CanonControlLuaBindings::CancelHandlers()
 
 void CanonControlLuaBindings::CleanupBindings()
 {
+   m_upInstance.reset();
+
    GetState().AddValue(_T("Constants"), Lua::Value());
 
    GetState().CollectGarbage();
@@ -165,7 +189,7 @@ std::vector<Lua::Value> CanonControlLuaBindings::SysGetInstance()
 std::vector<Lua::Value> CanonControlLuaBindings::InstanceGetVersion()
 {
    std::vector<Lua::Value> vecRetValues;
-   vecRetValues.push_back(Lua::Value(m_instance.Version()));
+   vecRetValues.push_back(Lua::Value(m_upInstance->Version()));
 
    return vecRetValues;
 }
@@ -173,7 +197,7 @@ std::vector<Lua::Value> CanonControlLuaBindings::InstanceGetVersion()
 std::vector<Lua::Value> CanonControlLuaBindings::InstanceEnumerateDevices()
 {
    std::vector<std::shared_ptr<SourceInfo>> vecSourceInfo;
-   m_instance.EnumerateDevices(vecSourceInfo);
+   m_upInstance->EnumerateDevices(vecSourceInfo);
 
    std::vector<Lua::Value> vecRetValues;
 
@@ -206,14 +230,15 @@ std::vector<Lua::Value> CanonControlLuaBindings::InstanceAsyncWaitForCamera(cons
    {
       app.AddValue(c_pszAsyncWaitForCamera_OnConnectedHandler, Lua::Value());
 
-      m_instance.AsyncWaitForCamera();
+      m_upInstance->AsyncWaitForCamera();
    }
    else
    {
       app.AddValue(c_pszAsyncWaitForCamera_OnConnectedHandler, vecParams[1]);
 
-      m_instance.AsyncWaitForCamera(
-         m_strand.wrap(std::bind(&CanonControlLuaBindings::AsyncWaitForCamera_OnCameraConnected, shared_from_this())));
+      auto fnAsyncWaitForCamera = std::bind(&CanonControlLuaBindings::AsyncWaitForCamera_OnCameraConnected, shared_from_this());
+
+      m_upInstance->AsyncWaitForCamera(m_strand.wrap(fnAsyncWaitForCamera));
    }
 
    return std::vector<Lua::Value>();
@@ -255,7 +280,8 @@ void CanonControlLuaBindings::AddSourceInfo(Lua::Table& table, size_t uiIndex, s
    sourceInfo.AddValue(_T("name"), Lua::Value(spSourceInfo->Name()));
 
    sourceInfo.AddFunction("open",
-      std::bind(&CanonControlLuaBindings::SourceInfoOpen, shared_from_this(), spSourceInfo));
+      std::bind(&CanonControlLuaBindings::SourceInfoOpen, shared_from_this(),
+         spSourceInfo, std::placeholders::_1));
 
    // add our table as index 1..N of parent table; Lua uses 1-based indices
    CString cszIndex;
@@ -264,8 +290,13 @@ void CanonControlLuaBindings::AddSourceInfo(Lua::Table& table, size_t uiIndex, s
    table.AddValue(cszIndex, Lua::Value(sourceInfo));
 }
 
-std::vector<Lua::Value> CanonControlLuaBindings::SourceInfoOpen(std::shared_ptr<SourceInfo> spSourceInfo)
+std::vector<Lua::Value> CanonControlLuaBindings::SourceInfoOpen(
+   std::shared_ptr<SourceInfo> spSourceInfo,
+   const std::vector<Lua::Value>& vecParams)
 {
+   if (vecParams.size() != 1)
+      throw Lua::Exception(_T("invalid number of parameters to SourceInfo:open()"), GetState().GetState(), __FILE__, __LINE__);
+
    std::shared_ptr<SourceDevice> spSourceDevice = spSourceInfo->Open();
 
    Lua::Table sourceDevice = GetState().AddTable(_T(""));
@@ -297,7 +328,7 @@ std::vector<Lua::Value> CanonControlLuaBindings::SourceDeviceGetDeviceCapability
    const std::vector<Lua::Value>& vecParams)
 {
    if (vecParams.size() != 2)
-      throw Exception(_T("invalid number of parameters to SourceDevice:getDeviceCapability()"), __FILE__, __LINE__);
+      throw Lua::Exception(_T("invalid number of parameters to SourceDevice:getDeviceCapability()"), GetState().GetState(), __FILE__, __LINE__);
 
    SourceDevice::T_enDeviceCapability enDeviceCapability =
       static_cast<SourceDevice::T_enDeviceCapability>(vecParams[1].Get<int>());
@@ -320,13 +351,15 @@ std::vector<Lua::Value> CanonControlLuaBindings::SourceDeviceEnumDevicePropertie
    {
       Lua::Table table = GetState().AddTable(_T(""));
 
-      size_t uiIndex = 0;
+      size_t uiIndex = 1;
       std::for_each(vecDeviceProperties.begin(), vecDeviceProperties.end(), [&](unsigned int uiPropertyId){
          CString cszKey;
          cszKey.Format(_T("%u"), uiIndex++);
 
          table.AddValue(cszKey, Lua::Value(static_cast<int>(uiPropertyId)));
       });
+
+      table.AddValue(_T("length"), Lua::Value(static_cast<int>(uiIndex-1)));
 
       vecRetValues.push_back(Lua::Value(table));
    }
@@ -338,7 +371,7 @@ std::vector<Lua::Value> CanonControlLuaBindings::SourceDeviceGetDeviceProperty(s
    const std::vector<Lua::Value>& vecParams)
 {
    if (vecParams.size() != 2)
-      throw Exception(_T("invalid number of parameters to SourceDevice:getDeviceProperty()"), __FILE__, __LINE__);
+      throw Lua::Exception(_T("invalid number of parameters to SourceDevice:getDeviceProperty()"), GetState().GetState(), __FILE__, __LINE__);
 
    unsigned int uiPropertyId =
       static_cast<unsigned int>(vecParams[1].Get<int>());
@@ -368,11 +401,14 @@ void CanonControlLuaBindings::AddDeviceProperty(Lua::Table& table, const DeviceP
 std::vector<Lua::Value> CanonControlLuaBindings::SourceDeviceEnterReleaseControl(std::shared_ptr<SourceDevice> spSourceDevice)
 {
    std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl = spSourceDevice->EnterReleaseControl();
+   m_spRemoteRelaseControl = spRemoteReleaseControl;
 
    Lua::Table remoteReleaseControl = GetState().AddTable(_T(""));
    InitRemoteReleaseControlTable(spRemoteReleaseControl, remoteReleaseControl);
 
    std::vector<Lua::Value> vecRetValues;
+   vecRetValues.push_back(Lua::Value(remoteReleaseControl));
+
    return vecRetValues;
 }
 
@@ -385,7 +421,11 @@ void CanonControlLuaBindings::InitRemoteReleaseControlTable(std::shared_ptr<Remo
       std::bind(&CanonControlLuaBindings::RemoteReleaseControlSetReleaseSettings, shared_from_this(), spRemoteReleaseControl, std::placeholders::_1));
 
    // TODO event handlers
-   // TODO image property methods
+
+   remoteReleaseControl.AddFunction("enumImageProperties",
+      std::bind(&CanonControlLuaBindings::RemoteReleaseControlEnumImageProperties, shared_from_this(), spRemoteReleaseControl));
+   remoteReleaseControl.AddFunction("getImageProperty",
+      std::bind(&CanonControlLuaBindings::RemoteReleaseControlGetImageProperty, shared_from_this(), spRemoteReleaseControl, std::placeholders::_1));
 
    remoteReleaseControl.AddFunction("startViewfinder",
       std::bind(&CanonControlLuaBindings::RemoteReleaseControlStartViewfinder, shared_from_this(), spRemoteReleaseControl));
@@ -405,7 +445,7 @@ std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlGetCapabili
    const std::vector<Lua::Value>& vecParams)
 {
    if (vecParams.size() != 2)
-      throw Exception(_T("invalid number of parameters to RemoteReleaseControl:sendCommand()"), __FILE__, __LINE__);
+      throw Lua::Exception(_T("invalid number of parameters to RemoteReleaseControl:sendCommand()"), GetState().GetState(), __FILE__, __LINE__);
 
    RemoteReleaseControl::T_enRemoteCapability enCapability =
       static_cast<RemoteReleaseControl::T_enRemoteCapability>(vecParams[1].Get<int>());
@@ -426,9 +466,69 @@ std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlSetReleaseS
    return std::vector<Lua::Value>();
 }
 
+std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlEnumImageProperties(std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl)
+{
+   std::vector<unsigned int> vecImageProperties = spRemoteReleaseControl->EnumImageProperties();
+
+   std::vector<Lua::Value> vecRetValues;
+
+   if (!vecImageProperties.empty())
+   {
+      Lua::Table table = GetState().AddTable(_T(""));
+
+      size_t uiIndex = 1;
+      std::for_each(vecImageProperties.begin(), vecImageProperties.end(), [&](unsigned int uiPropertyId){
+         CString cszKey;
+         cszKey.Format(_T("%u"), uiIndex++);
+
+         table.AddValue(cszKey, Lua::Value(static_cast<int>(uiPropertyId)));
+      });
+
+      table.AddValue(_T("length"), Lua::Value(static_cast<int>(uiIndex - 1)));
+
+      vecRetValues.push_back(Lua::Value(table));
+   }
+
+   return vecRetValues;
+}
+
+std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlGetImageProperty(
+   std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
+   const std::vector<Lua::Value>& vecParams)
+{
+   if (vecParams.size() != 2)
+      throw Lua::Exception(_T("invalid number of parameters to RemoteReleaseControl:getImageProperty()"), GetState().GetState(), __FILE__, __LINE__);
+
+   unsigned int uiPropertyId =
+      static_cast<unsigned int>(vecParams[1].Get<int>());
+
+   ImageProperty imageProperty = spRemoteReleaseControl->GetImageProperty(uiPropertyId);
+
+   Lua::Table table = GetState().AddTable(_T(""));
+
+   AddImageProperty(table, imageProperty, spRemoteReleaseControl);
+
+   std::vector<Lua::Value> vecRetValues;
+   vecRetValues.push_back(Lua::Value(table));
+
+   return vecRetValues;
+}
+
+void CanonControlLuaBindings::AddImageProperty(Lua::Table& table, const ImageProperty& imageProperty,
+   std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl)
+{
+   table.AddValue(_T("id"), Lua::Value(static_cast<int>(imageProperty.Id())));
+   table.AddValue(_T("name"), Lua::Value(imageProperty.Name()));
+   table.AddValue(_T("asString"), Lua::Value(imageProperty.AsString()));
+   table.AddValue(_T("isReadOnly"), Lua::Value(imageProperty.IsReadOnly()));
+   // Value() and ValueAsString() are not called here, since Lua users
+   // can't use Variant values anyway.
+}
+
 std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlStartViewfinder(std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl)
 {
    std::shared_ptr<Viewfinder> spViewfinder = spRemoteReleaseControl->StartViewfinder();
+   m_spViewfinder = spViewfinder;
 
    Lua::Table viewfinder = GetState().AddTable(_T(""));
    InitViewfinderTable(spViewfinder, viewfinder);
@@ -453,7 +553,7 @@ std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlSendCommand
    const std::vector<Lua::Value>& vecParams)
 {
    if (vecParams.size() != 2)
-      throw Exception(_T("invalid number of parameters to RemoteReleaseControl:sendCommand()"), __FILE__, __LINE__);
+      throw Lua::Exception(_T("invalid number of parameters to RemoteReleaseControl:sendCommand()"), GetState().GetState(), __FILE__, __LINE__);
 
    RemoteReleaseControl::T_enCameraCommand enCameraCommand =
       static_cast<RemoteReleaseControl::T_enCameraCommand>(vecParams[1].Get<int>());
@@ -510,9 +610,10 @@ std::vector<Lua::Value> CanonControlLuaBindings::ViewfinderSetAvailImageHandler(
    {
       app.AddValue(c_pszSetAvailImageHandler_OnAvailImageHandler, vecParams[1]);
 
-      spViewfinder->SetAvailImageHandler(
-         m_strand.wrap(std::bind(&CanonControlLuaBindings::SetAvailImageHandler_OnAvailImageHandler,
-         shared_from_this(), std::placeholders::_1)));
+      auto fnOnAvailImage = std::bind(&CanonControlLuaBindings::SetAvailImageHandler_OnAvailImageHandler,
+         shared_from_this(), std::placeholders::_1);
+
+      spViewfinder->SetAvailImageHandler(m_strand.wrap(fnOnAvailImage));
    }
 
    return std::vector<Lua::Value>();
