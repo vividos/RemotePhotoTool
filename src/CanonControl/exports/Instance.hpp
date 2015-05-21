@@ -25,6 +25,9 @@ public:
    /// returns new camera instance
    static Instance Get();
 
+   /// copy ctor
+   Instance(const Instance& instance);
+
    /// dtor
    ~Instance() throw();
 

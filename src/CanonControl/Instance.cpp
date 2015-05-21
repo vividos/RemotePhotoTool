@@ -164,6 +164,11 @@ Instance::Instance(std::shared_ptr<Impl> spImpl)
 {
 }
 
+Instance::Instance(const Instance& instance)
+:m_spImpl(instance.m_spImpl)
+{
+}
+
 Instance::~Instance() throw()
 {
    try
