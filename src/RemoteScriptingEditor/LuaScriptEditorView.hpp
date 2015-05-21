@@ -73,8 +73,19 @@ class ScintillaEditCommands : public CEditCommands<T>
 public:
    BEGIN_MSG_MAP(ThisClass)
    ALT_MSG_MAP(1)
-      COMMAND_ID_HANDLER(ID_EDIT_REDO, OnEditRedo)
-      CHAIN_MSG_MAP_ALT(BaseClass, 1)
+      {
+         // Only perform edit commands when our window has the focus.
+         // This is done to allow multiple windows in a main frame that
+         // can copy/paste/etc. to/from.
+         HWND hWndFocus = ::GetFocus();
+         T* pT = static_cast<T*>(this);
+
+         if (pT->m_hWnd == hWndFocus)
+         {
+            COMMAND_ID_HANDLER(ID_EDIT_REDO, OnEditRedo)
+            CHAIN_MSG_MAP_ALT(BaseClass, 1)
+         }
+      }
    END_MSG_MAP()
 
    /// called for command "Edit | Redo"
