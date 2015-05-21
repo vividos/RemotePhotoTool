@@ -168,7 +168,7 @@ public:
    T Get() const
    {
       // list of allowed types; if this asserts, you're requesting the wrong type
-      static_assert( // TODO doesn't compile
+      static_assert(
          std::is_same<T, bool>::value ||
          std::is_same<T, double>::value ||
          std::is_same<T, int>::value ||
