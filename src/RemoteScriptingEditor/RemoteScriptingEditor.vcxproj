@@ -94,6 +94,7 @@
     <ClInclude Include="App.hpp" />
     <ClInclude Include="MainFrame.hpp" />
     <ClInclude Include="LuaScriptEditorView.hpp" />
+    <ClInclude Include="OutputWindow.hpp" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="res\Ribbon.h" />
     <ClInclude Include="stdafx.h" />

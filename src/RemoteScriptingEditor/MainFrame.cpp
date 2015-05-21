@@ -239,7 +239,7 @@ LRESULT MainFrame::OnScriptRun(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCt
       cszText.Format(_T("Start executing file %s...\n\n"),
          m_view.GetFilePath().GetString());
 
-      m_ecOutputWindow.SetText(CStringA(cszText));
+      m_ecOutputWindow.OutputText(cszText);
    }
 
    m_processor.Stop();
@@ -466,22 +466,14 @@ void MainFrame::SetupOutputPane()
    m_pane.SetPaneContainerExtendedStyle(PANECNT_FLATBORDER | PANECNT_NOCLOSEBUTTON);
    m_pane.Create(m_hWndClient, _T("Output"), WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN);
 
-   m_ecOutputWindow.Create(CScintillaWindow::GetWndClassName(), m_pane, rcDefault, NULL,
-      WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
+   m_ecOutputWindow.Create(m_pane);
 
    m_pane.SetClient(m_ecOutputWindow);
 
-   m_ecOutputWindow.StyleSetFont(STYLE_DEFAULT, "Courier New");
-   m_ecOutputWindow.StyleSetSize(STYLE_DEFAULT, 11);
-   m_ecOutputWindow.SetLexer(SCLEX_LUA);
-
-   m_ecOutputWindow.SetText("Ready.\n");
+   m_ecOutputWindow.OutputText(_T("Ready.\n"));
 }
 
 void MainFrame::OnOutputDebugString(const CString& cszText)
 {
-   CStringA cszaText(cszText);
-   m_ecOutputWindow.AppendText(cszaText.GetString(), cszaText.GetLength());
-
-   m_ecOutputWindow.ScrollToLine(m_ecOutputWindow.GetLineCount());
+   m_ecOutputWindow.OutputText(cszText);
 }

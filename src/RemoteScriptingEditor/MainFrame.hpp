@@ -8,6 +8,7 @@
 
 // includes
 #include "LuaScriptEditorView.hpp"
+#include "OutputWindow.hpp"
 #include "CameraScriptProcessor.hpp"
 
 /// \brief application main frame
@@ -87,8 +88,9 @@ private:
       COMMAND_ID_HANDLER(ID_VIEW_OUTPUT, OnViewOutput)
       COMMAND_ID_HANDLER(ID_SCRIPT_RUN, OnScriptRun)
       COMMAND_ID_HANDLER(ID_SCRIPT_STOP, OnScriptStop)
-      CHAIN_MSG_MAP(CRibbonFrameWindowImpl<MainFrame>)
       CHAIN_MSG_MAP_MEMBER(m_view)
+      CHAIN_MSG_MAP_MEMBER(m_ecOutputWindow)
+      CHAIN_MSG_MAP(CRibbonFrameWindowImpl<MainFrame>)
    END_MSG_MAP()
 
 // Handler prototypes (uncomment arguments if needed):
@@ -166,7 +168,7 @@ private:
    CPaneContainer m_pane;
 
    /// output window
-   CScintillaWindow m_ecOutputWindow;
+   OutputWindow m_ecOutputWindow;
 
 
    // model
