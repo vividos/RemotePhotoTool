@@ -44,7 +44,7 @@
     <_ProjectFileVersion>11.0.51106.1</_ProjectFileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>..\..\bin\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)..\bin\$(Configuration)\</OutDir>
     <NMakeBuildCommandLine>call build.cmd "$(OutDir)"</NMakeBuildCommandLine>
     <NMakeReBuildCommandLine>call clean.cmd "$(OutDir)"
 call build.cmd "$(OutDir)"</NMakeReBuildCommandLine>
@@ -53,7 +53,7 @@ call build.cmd "$(OutDir)"</NMakeReBuildCommandLine>
     <NMakePreprocessorDefinitions>WIN32;_DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>..\..\bin\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)..\bin\$(Configuration)\</OutDir>
     <NMakeBuildCommandLine>call build.cmd "$(OutDir)"</NMakeBuildCommandLine>
     <NMakeReBuildCommandLine>call clean.cmd "$(OutDir)"
 call build.cmd "$(OutDir)"</NMakeReBuildCommandLine>

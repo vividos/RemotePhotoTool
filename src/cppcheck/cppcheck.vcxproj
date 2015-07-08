@@ -40,8 +40,8 @@
     <_ProjectFileVersion>11.0.60610.1</_ProjectFileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>..\..\intermediate\$(Configuration)\$(ProjectName)\</OutDir>
-    <IntDir>..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
+    <OutDir>$(SolutionDir)..\intermediate\$(Configuration)\$(ProjectName)\</OutDir>
+    <IntDir>$(SolutionDir)..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
     <NMakeBuildCommandLine>call RunCppCheck.cmd "$(IntDir)"
 type $(IntDir)cppcheck.txt</NMakeBuildCommandLine>
     <NMakeReBuildCommandLine>call RunCppCheck.cmd "$(IntDir)"
@@ -51,8 +51,8 @@ type $(IntDir)cppcheck.txt</NMakeReBuildCommandLine>
     <NMakePreprocessorDefinitions>WIN32;_DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>..\..\intermediate\$(Configuration)\$(ProjectName)\</OutDir>
-    <IntDir>..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
+    <OutDir>$(SolutionDir)..\intermediate\$(Configuration)\$(ProjectName)\</OutDir>
+    <IntDir>$(SolutionDir)..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
     <NMakeBuildCommandLine>call RunCppCheck.cmd "$(IntDir)"
 type $(IntDir)cppcheck.txt</NMakeBuildCommandLine>
     <NMakeReBuildCommandLine>call RunCppCheck.cmd "$(IntDir)"
