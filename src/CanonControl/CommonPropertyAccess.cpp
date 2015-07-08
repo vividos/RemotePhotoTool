@@ -117,12 +117,12 @@ CString FormatApexValue(Variant value)
       // round after first digit
       dAperture += 0.05;
 
-      unsigned int uiAperture = static_cast<unsigned int>(dAperture);
+      unsigned int uiApertureInt = static_cast<unsigned int>(dAperture);
 
       CString cszAperture;
       cszAperture.Format(bWithFract ? _T("f/%u.%u") : _T("f/%u"),
-         uiAperture,
-         static_cast<unsigned int>((dAperture - uiAperture) * 10.0)
+         uiApertureInt,
+         static_cast<unsigned int>((dAperture - uiApertureInt) * 10.0)
       );
 
       return cszAperture;

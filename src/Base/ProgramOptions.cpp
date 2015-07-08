@@ -114,8 +114,8 @@ void ProgramOptions::Parse(LPCTSTR pszCommandLine)
 void ProgramOptions::Parse(CommandLineParser& parser)
 {
    // must contain at least one param
-   bool bRet = parser.GetNext(m_cszExecutable);
-   ATLASSERT(true == bRet); bRet;
+   bool bRet1 = parser.GetNext(m_cszExecutable);
+   ATLASSERT(true == bRet1); bRet1;
 
    CString cszArg;
    while (parser.GetNext(cszArg))
@@ -174,9 +174,9 @@ void ProgramOptions::Parse(CommandLineParser& parser)
                }
 
                ATLASSERT(optInfo.m_fnOptionHandler != NULL);
-               bool bRet = optInfo.m_fnOptionHandler(vecArgs);
+               bool bRet2 = optInfo.m_fnOptionHandler(vecArgs);
 
-               if (!bRet)
+               if (!bRet2)
                {
                   if (m_fnOptionOutputHandler)
                      m_fnOptionOutputHandler(CString(_T("Syntax error for option: ") + cszArg));
