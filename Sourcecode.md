@@ -64,35 +64,18 @@ programs "Hugin" (for panorama stitching) and "Photomatix Pro" (for HDR generati
 
 # Installation of components #
 
-## Visual Studio 2013 ##
+## Visual Studio Community 2015 ##
 
-Install Visual Studio 2013. Any version will do, including Visual Studio 2013 Express for Windows
-Desktop, which I use. When installed into the default folders, the example batch files can be used
-to build the application.
+Install Visual Studio 2015. Any version will do, including Visual Studio Community 2015, which
+I use. Be sure to install the "Microsoft Foundation Classes for C++" feature, that can be found
+under "Programming Languages > Visual C++" node when installing Visual Studio.
+When installed into the default folders, the example batch files can be used to build the
+application.
 
-When prompt (or manually via menu "Tools > Extensions and Updates"), update the Visual Studio
-to "Update 4".
+## ATL ##
 
-## ATL 7.1 ##
-
-If you're using Visual Studio 2013 Express, you need to get ATL 7.1 to properly link the
-application. If you're using the Professional or above version of Visual Studio, you don't need
-to do this.
-
-Get the Windows Driver Kit 7.1.0 from this website:
-[http://msdn.microsoft.com/en-US/windows/hardware/gg487428](http://msdn.microsoft.com/en-US/windows/hardware/gg487428).
-Open the .ISO file with your favourite ISO tool (I recommend 7-zip) and extract the
-following folders:
-
-- `atl71\include`
-- `atl71\lib`
-
-Put the files in a separate folder on your hard disk.
-
-For the application to compile and link properly, you need to adjust the file `src\atl71-x86.props`
-with the path of the folder you just used. There are two folders to adjust, one is the include
-folder, beneath the <IncludePath> tag, and one is the `"lib\i386"` subfolder beneath the
-`<LibraryPath>` tag.
+With previous versions, the ATL library is needed (and could be extracted from the "Windows
+Driver Kit 7.1.0"). With the Visual Studio Community 2015 version, this is no longer needed.
 
 ## WTL 9.0 ##
 
@@ -109,7 +92,7 @@ double-click the file `"Setup.js"`.
 
 ## Boost ##
 
-Download and extract Boost 1.57 (or any later version) into a folder. For the application to compile
+Download and extract Boost 1.59 (or any later version) into a folder. For the application to compile
 you need to adjust the file `src\boost.props` with the path of the folder you just used. There are two
 folders to adjust, one is the main folder, beneath the `<ClCompile>` tag, and one is the `"stage\lib"`
 subfolder beneath the `<Link>` tag.
@@ -117,10 +100,10 @@ subfolder beneath the `<Link>` tag.
 You also need to build (parts of) Boost to get to link the application correctly. You can use the
 following command line commands (e.g. in a .cmd file) to compile Boost:
 
-    call "C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\Tools\vsvars32.bat"
-    call .\bootstrap.bat vc12
+    call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\Tools\vsvars32.bat"
+    call .\bootstrap.bat vc14
 
-    b2 toolset=msvc-12.0 -j4 --with-system runtime-link=shared link=static threading=multi stage
+    b2 toolset=msvc-14.0 -j4 --with-system runtime-link=shared link=static threading=multi stage
 
 This should generate the appropriate lib files in the `"stage\lib"` folder, for the library
 Boost.System.

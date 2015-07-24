@@ -5,6 +5,8 @@ the git sourcecode repository at [https://github.com/vividos/RemotePhotoTool](ht
 
 ## 2015-xx-xx: Version 1.4.0 Build 119 ##
 
+RemotePhotoTool is now built with Visual Studio Community 2015.
+
 Implemented the "Previous images" view that shows all images taken with RemotePhotoTool.
 
 ## 2014-11-22: Version 1.3.0 Build 118 ##
