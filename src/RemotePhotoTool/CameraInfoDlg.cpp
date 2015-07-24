@@ -80,11 +80,11 @@ void CameraInfoDlg::CollectDeviceProperties(CString& cszText)
          ex.Message().GetString());
    }
 
-   for (size_t i=0, iMax = vecProperties.size(); i<iMax; i++)
+   for (size_t iProp=0, iMaxProp = vecProperties.size(); iProp<iMaxProp; iProp++)
    {
       try
       {
-         unsigned int uiPropertyId = vecProperties[i];
+         unsigned int uiPropertyId = vecProperties[iProp];
          DeviceProperty p = m_sourceDevice.GetDeviceProperty(uiPropertyId);
 
          cszText.AppendFormat(_T("Property %s (%08x): [%s]\n"),
@@ -93,11 +93,11 @@ void CameraInfoDlg::CollectDeviceProperties(CString& cszText)
          try
          {
             std::vector<Variant> vecValues = p.ValidValues();
-            for (size_t i = 0, iMax = vecValues.size(); i < iMax; i++)
+            for (size_t iValue = 0, iMaxValue = vecValues.size(); iValue < iMaxValue; iValue++)
             {
                cszText.AppendFormat(_T("   Valid value: %s (%s)\n"),
-                  p.ValueAsString(vecValues[i]).GetString(),
-                  vecValues[i].ToString().GetString());
+                  p.ValueAsString(vecValues[iValue]).GetString(),
+                  vecValues[iValue].ToString().GetString());
             }
          }
          catch (CameraException& ex)
@@ -109,7 +109,7 @@ void CameraInfoDlg::CollectDeviceProperties(CString& cszText)
       catch(CameraException& ex)
       {
          cszText.AppendFormat(_T("Error while evaluating property %08x: %s\n"),
-            vecProperties[i], ex.Message().GetString());
+            vecProperties[iProp], ex.Message().GetString());
       }
    }
 

@@ -25,8 +25,8 @@
 CmdlineApp::CmdlineApp()
 {
    _tprintf(_T("RemotePhotoTool Command-Line %s\n%s\n\n"),
-      CString(VERSIONINFO_FILEVERSION_DISPLAYSTRING),
-      CString(VERSIONINFO_COPYRIGHT));
+      _T(VERSIONINFO_FILEVERSION_DISPLAYSTRING),
+      _T(VERSIONINFO_COPYRIGHT));
 }
 
 void CmdlineApp::Run(int argc, TCHAR* argv[])
@@ -53,11 +53,11 @@ void CmdlineApp::Run(int argc, TCHAR* argv[])
       }
       catch(const CameraException& ex)
       {
-         _tprintf(_T("CameraException was thrown: \"%s\"\n"), ex.Message());
+         _tprintf(_T("CameraException was thrown: \"%s\"\n"), ex.Message().GetString());
       }
       catch(const Exception& ex)
       {
-         _tprintf(_T("Exception was thrown: \"%s\"\n"), ex.Message());
+         _tprintf(_T("Exception was thrown: \"%s\"\n"), ex.Message().GetString());
       }
    });
 }
@@ -92,7 +92,7 @@ void CmdlineApp::PrintVersionInfo()
 
    CString cszVersionInfo = inst.Version();
 
-   _tprintf(_T("%s\n"), cszVersionInfo);
+   _tprintf(_T("%s\n"), cszVersionInfo.GetString());
 }
 
 void CmdlineApp::ListDevices()
@@ -113,7 +113,7 @@ void CmdlineApp::ListDevices()
       for (size_t i=0,iMax=vecSourceDevices.size(); i<iMax; i++)
       {
          std::shared_ptr<SourceInfo> spSourceInfo = vecSourceDevices[i];
-         _tprintf(_T("Device %u: \"%s\"\n"), i+1, spSourceInfo->Name());
+         _tprintf(_T("Device %u: \"%s\"\n"), i+1, spSourceInfo->Name().GetString());
       }
    }
 
@@ -144,8 +144,8 @@ void CmdlineApp::OpenByName(const CString& cszName)
 
 void CmdlineApp::OutputDeviceInfo()
 {
-   _tprintf(_T("Device info about \"%s\"\n"), m_spSourceDevice->ModelName());
-   _tprintf(_T("Serial number \"%s\"\n"), m_spSourceDevice->SerialNumber());
+   _tprintf(_T("Device info about \"%s\"\n"), m_spSourceDevice->ModelName().GetString());
+   _tprintf(_T("Serial number \"%s\"\n"), m_spSourceDevice->SerialNumber().GetString());
 
    // output capabilities
    _tprintf(_T("Device capabilities\n"));
@@ -170,18 +170,18 @@ void CmdlineApp::ListDeviceProperties()
       DeviceProperty dp = m_spSourceDevice->GetDeviceProperty(uiPropertyId);
 
       _tprintf(_T("Property \"%s\" (%04x)%s: %s (%s)\n"),
-         dp.Name(),
+         dp.Name().GetString(),
          uiPropertyId,
          dp.IsReadOnly() ? _T(" [read-only]") : _T(""),
-         dp.Value().ToString(),
-         dp.AsString());
+         dp.Value().ToString().GetString(),
+         dp.AsString().GetString());
 
       std::vector<Variant> vecValidValues = dp.ValidValues();
       for (size_t j=0, jMax=vecValidValues.size(); j<jMax; j++)
       {
          _tprintf(_T("   Valid value: %s (%s)\n"),
-            vecValidValues[j].ToString(),
-            dp.ValueAsString(vecValidValues[j]));
+            vecValidValues[j].ToString().GetString(),
+            dp.ValueAsString(vecValidValues[j]).GetString());
       }
    }
    _tprintf(_T("\n"));
@@ -206,11 +206,11 @@ void CmdlineApp::ListImageProperties()
       ImageProperty ip = m_spReleaseControl->GetImageProperty(uiPropertyId);
 
       _tprintf(_T("Image property \"%s\" (%04x)%s: %s (%s)\n"),
-         ip.Name(),
+         ip.Name().GetString(),
          uiPropertyId,
          ip.IsReadOnly() ? _T(" [read-only]") : _T(""),
-         ip.Value().ToString(),
-         ip.AsString());
+         ip.Value().ToString().GetString(),
+         ip.AsString().GetString());
 
       std::vector<ImageProperty> vecValues;
       m_spReleaseControl->EnumImagePropertyValues(vecImageProperties[i], vecValues);
@@ -219,8 +219,8 @@ void CmdlineApp::ListImageProperties()
       {
          const ImageProperty& ip2 = vecValues[j];
          _tprintf(_T("   Valid value: %s (%s)\n"),
-            ip2.Value().ToString(),
-            ip.ValueAsString(ip2.Value()));
+            ip2.Value().ToString().GetString(),
+            ip.ValueAsString(ip2.Value()).GetString());
       }
    }
 }
@@ -267,7 +267,7 @@ void CmdlineApp::RunScript(const CString& cszFilename)
 
    proc.SetOutputDebugStringHandler(
       [&](const CString& cszText){
-         _tprintf(_T("%s"), cszText);
+         _tprintf(_T("%s"), cszText.GetString());
    });
 
    proc.LoadScript(cszFilename);
