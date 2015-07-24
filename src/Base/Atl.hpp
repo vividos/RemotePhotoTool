@@ -34,13 +34,6 @@
 #pragma warning(pop)
 #endif
 
-// link to static ATL libs
-#ifdef _DEBUG
-   #pragma comment(lib, "atlsd.lib")
-#else
-   #pragma comment(lib, "atls.lib")
-#endif
-
 #if (_ATL_VER < 0x0800)
 #error ATL 8.0 or higher is needed!
 #endif
@@ -52,5 +45,3 @@
 #ifndef _PREFAST_
 #pragma warning(disable:4068)
 #endif
-
-#pragma comment(lib, "atlthunk.lib")

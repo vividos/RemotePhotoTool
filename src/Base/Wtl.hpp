@@ -24,6 +24,13 @@
 #pragma warning(disable: 6001 6011 6387 6509 6518 28252)
 #endif
 
+// ignore warnings in WTL header files not ported to Visual Studio 2015
+#pragma warning(push)
+#pragma warning(disable: 4302) // 'type cast' : truncation from 'T1' to 'T2'
+#pragma warning(disable: 4838) // conversion from 'T1' to 'T2' requires a narrowing conversion
+#pragma warning(disable: 4091) // 'typedef ' : ignored on left of 'T1' when no variable is declared
+#pragma warning(disable: 4458) // declaration of 'var1' hides class member
+
 // WTL includes
 #include <atlapp.h>
 extern CAppModule _Module; ///< app module
@@ -37,6 +44,8 @@ extern CAppModule _Module; ///< app module
 #include <atlddx.h>
 #include <atlsplit.h>
 #include <atlribbon.h>
+
+#pragma warning(pop)
 
 #ifdef _PREFAST_
 #pragma warning(pop)

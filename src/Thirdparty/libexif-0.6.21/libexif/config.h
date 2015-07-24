@@ -96,9 +96,6 @@
 #undef inline
 #endif
 
-// Win32 only has the one with underscore
-#define snprintf _snprintf
-
 // posix extension; signed size_t
 typedef int ssize_t;
 

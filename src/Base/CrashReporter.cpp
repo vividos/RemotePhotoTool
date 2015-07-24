@@ -14,7 +14,11 @@
 #include <strsafe.h>
 #include <ctime>
 #include <memory>
+
+#pragma warning(disable: 4091) // 'typedef ': ignored on left of '' when no variable is declared
 #include <dbghelp.h>
+#pragma warning(default: 4091)
+
 #pragma comment(lib, "dbghelp.lib")
 
 /// base path for writing minidump file
