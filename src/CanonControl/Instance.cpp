@@ -15,7 +15,12 @@
 #include "LightweightMutex.hpp"
 #include "BackgroundWorkerThread.hpp"
 #include "BackgroundTimer.hpp"
-#include <atlapp.h>
+
+#pragma warning(disable: 4302) // 'type cast' : truncation from 'T1' to 'T2'
+#pragma warning(disable: 4838) // conversion from 'T1' to 'T2' requires a narrowing conversion
+#pragma warning(disable: 4091) // 'typedef ' : ignored on left of 'T1' when no variable is declared
+#pragma warning(disable: 4458) // declaration of 'var1' hides class member
+#include <atlapp.h> // for RunTimeHelper
 
 
 // Instance::Impl
