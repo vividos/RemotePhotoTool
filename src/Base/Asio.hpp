@@ -17,6 +17,9 @@
 #pragma warning(push)
 #pragma warning(disable: 6001 6011 6031 6255 6258 6386 6387)
 
+// Boost.Asio in version 1.59 outputs a warning when compiling with VS 2015
+#pragma warning(disable: 4005) // 'BOOST_ASIO_ERROR_CATEGORY_NOEXCEPT': macro redefinition
+
 // includes
 #include <boost/asio.hpp>
 
