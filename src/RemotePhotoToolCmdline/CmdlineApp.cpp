@@ -13,7 +13,6 @@
 #include "AppCommand.hpp"
 #include "AppOptions.hpp"
 #include "Event.hpp"
-#include <boost\bind.hpp>
 #include "CameraScriptProcessor.hpp"
 #include "Instance.hpp"
 #include "SourceInfo.hpp"
