@@ -1,6 +1,6 @@
 //
 // ulib - a collection of useful classes
-// Copyright (C) 2009,2012,2014 Michael Fink
+// Copyright (C) 2009,2012,2014,2015 Michael Fink
 //
 /// \file Wtl.hpp configuration for WTL 8 or higher
 //
@@ -18,14 +18,11 @@
 #  define max(x,y) (x) > (y) ? (x) : (y) ///< temporary define of min()
 #endif
 
-// ignore prefast warnings in WTL header files
-#ifdef _PREFAST_
+// ignore /analyze warnings in WTL header files
 #pragma warning(push)
-#pragma warning(disable: 6001 6011 6387 6509 6518 28252)
-#endif
+#pragma warning(disable: 6001 6011 6031 6387)
 
 // ignore warnings in WTL header files not ported to Visual Studio 2015
-#pragma warning(push)
 #pragma warning(disable: 4302) // 'type cast' : truncation from 'T1' to 'T2'
 #pragma warning(disable: 4838) // conversion from 'T1' to 'T2' requires a narrowing conversion
 #pragma warning(disable: 4091) // 'typedef ' : ignored on left of 'T1' when no variable is declared
@@ -43,13 +40,11 @@ extern CAppModule _Module; ///< app module
 #include <atlctrlx.h>
 #include <atlddx.h>
 #include <atlsplit.h>
+#if _WIN32_WINNT >= _WIN32_WINNT_WIN7
 #include <atlribbon.h>
-
-#pragma warning(pop)
-
-#ifdef _PREFAST_
-#pragma warning(pop)
 #endif
+
+#pragma warning(pop)
 
 // undef the macros so that std::min and std::max work as they should be
 #undef min

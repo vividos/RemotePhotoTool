@@ -20,7 +20,14 @@ public:
    /// ctor
    LightweightMutex() throw()
    {
-      InitializeCriticalSection(&m_cs);
+      __try
+      {
+         InitializeCriticalSection(&m_cs);
+      }
+      __except (EXCEPTION_EXECUTE_HANDLER)
+      {
+         // the function can raise STATUS_NO_MEMORY exception on Windows XP
+      }
    }
 
    /// dtor

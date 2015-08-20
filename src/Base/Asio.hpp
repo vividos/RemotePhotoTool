@@ -1,6 +1,6 @@
 //
 // MultiplayerOnlineGame - multiplayer game project
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2015 Michael Fink
 //
 /// \file Asio.hpp Boost.Asio include
 //
@@ -14,13 +14,13 @@
 #define BOOST_ASIO_DETAIL_IMPL_WINSOCK_INIT_IPP
 
 // ignore prefast warnings in Boost.Asio header files
-#pragma prefast(push)
-#pragma prefast(disable: 6011 6387)
+#pragma warning(push)
+#pragma warning(disable: 6001 6011 6031 6255 6258 6386 6387)
 
 // includes
 #include <boost/asio.hpp>
 
-#pragma prefast(pop)
+#pragma warning(pop)
 
 // asio but no winsock init
 
