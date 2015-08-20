@@ -38,6 +38,7 @@ HWND ScriptingPhotoModeView::CreateView(HWND hWndParent)
       WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN, 0);
 
    m_view.SetupSourceEditor();
+
    m_view.SetReadOnly(true);
    m_view.HideCaret();
 
@@ -87,12 +88,14 @@ void ScriptingPhotoModeView::OpenScript()
    m_view.SetReadOnly(false);
 
    bool bRet = m_view.Load(dlg.m_ofn.lpstrFile) != FALSE;
+
+   m_view.SetReadOnly(true);
+   m_view.HideCaret();
+
    if (!bRet)
       return;
 
    m_view.Init(dlg.m_ofn.lpstrFile);
-   m_view.SetReadOnly(true);
-   m_view.HideCaret();
 
    m_host.EnableUI(ID_SCRIPTING_RELOAD, true);
    m_host.EnableUI(ID_SCRIPTING_EDIT, true);
@@ -134,6 +137,9 @@ LRESULT ScriptingPhotoModeView::OnScriptingReload(WORD /*wNotifyCode*/, WORD /*w
 {
    CString cszFilename = m_view.GetFilePath();
    m_view.Load(cszFilename);
+
+   m_view.SetReadOnly(true);
+   m_view.HideCaret();
 
    return 0;
 }
@@ -193,6 +199,9 @@ LRESULT ScriptingPhotoModeView::OnScriptingEditScript(WORD /*wNotifyCode*/, WORD
    EditScript(cszFilename);
 
    m_view.Load(cszFilename);
+
+   m_view.SetReadOnly(true);
+   m_view.HideCaret();
 
    return 0;
 }
