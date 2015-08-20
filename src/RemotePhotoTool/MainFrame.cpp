@@ -586,6 +586,9 @@ void MainFrame::OnTransferredImage(const CString& cszFilename)
 
 void MainFrame::SetNewView(T_enViewType enViewType)
 {
+   if (m_enCurrentViewType == enViewType)
+      return; // already in view
+
    SetRibbonContextAvail(ID_TAB_GROUP_CONTEXT_SCRIPTING, UI_CONTEXTAVAILABILITY_NOTAVAILABLE);
 
    if (m_upView != nullptr)
