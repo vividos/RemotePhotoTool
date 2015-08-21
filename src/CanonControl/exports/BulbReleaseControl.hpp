@@ -18,4 +18,8 @@ public:
 
    /// returns elapsed time since bulb start
    virtual double ElapsedTime() const throw() = 0;
+
+   /// stops bulb method; can be used when the shared_ptr<BulbReleaseControl>
+   // cannot be destroyed, e.g. since it is held somewhere (e.g. Lua)
+   virtual void Stop() throw() = 0;
 };
