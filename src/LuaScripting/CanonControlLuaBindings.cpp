@@ -619,7 +619,7 @@ std::vector<Lua::Value> CanonControlLuaBindings::ViewfinderSetAvailImageHandler(
    return std::vector<Lua::Value>();
 }
 
-void CanonControlLuaBindings::SetAvailImageHandler_OnAvailImageHandler(const std::vector<BYTE>& /*vecImage*/)
+void CanonControlLuaBindings::SetAvailImageHandler_OnAvailImageHandler(const std::vector<BYTE>& vecImage)
 {
    Lua::Table app = GetState().GetTable(_T("App"));
 
@@ -631,7 +631,12 @@ void CanonControlLuaBindings::SetAvailImageHandler_OnAvailImageHandler(const std
    }
 
    std::vector<Lua::Value> vecParams;
-   // TODO add image bytes to vecParams
+
+   size_t uiSize = vecImage.size();
+   Lua::Userdata userdata = GetState().AddUserdata(uiSize);
+   memcpy(userdata.Data(), vecImage.data(), uiSize);
+
+   vecParams.push_back(Lua::Value(userdata));
 
    try
    {
