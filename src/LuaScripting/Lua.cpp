@@ -913,10 +913,10 @@ void State::TraceValue(lua_State* L, int iIndex, int iStackDepth)
    case LUA_TTABLE:
       {
          lua_len(L, iIndex);
-         int iLen = lua_tointeger(L, -1);
+         lua_Integer iLen = lua_tointeger(L, -1);
          lua_pop(L, 1);
 
-         cszContent.Format(_T("[table, len=%i]"), iLen);
+         cszContent.Format(_T("[table, len=%li]"), iLen);
       }
       break;
    case LUA_TFUNCTION: cszContent.Format(_T("&%p"), lua_tocfunction(L, iIndex)); break;
