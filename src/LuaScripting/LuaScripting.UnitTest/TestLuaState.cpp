@@ -214,6 +214,134 @@ namespace LuaScriptingUnitTest
          Assert::AreEqual(vecRetval[2].Get<double>(), 42.0*42.0, 1e-6, _T("value must be 42*42"));
       }
 
+      /// tests method State::AddUserdata(), and value isn't stored anywhere
+      TEST_METHOD(TestStateAddUserdataTemporary)
+      {
+         // setup
+         Lua::State state;
+
+         // run
+         {
+            Lua::Userdata userdata = state.AddUserdata(4);
+         }
+
+         // check
+         // must not crash
+      }
+
+      /// tests method State::AddUserdata() and copy ctor of Userdata
+      TEST_METHOD(TestStateUserdataCopyCtor)
+      {
+         // setup
+         Lua::State state;
+
+         // run
+         {
+            Lua::Userdata userdata = state.AddUserdata(4);
+            Lua::Userdata userdata2 = userdata; // copy ctor
+
+            Lua::Userdata userdata3 = userdata;
+            userdata3 = userdata; // assign operator
+         }
+
+         // check
+         // must not crash
+      }
+
+      /// tests method State::AddUserdata() and stores it as global value
+      TEST_METHOD(TestStateAddUserdataStoreGlobal)
+      {
+         // setup
+         Lua::State state;
+
+         const unsigned char ucValue = 42;
+
+         // run
+         {
+            Lua::Userdata userdata = state.AddUserdata(4);
+
+            userdata.Data<unsigned char>()[0] = ucValue;
+
+            state.AddValue(_T("user"), Lua::Value(userdata));
+         }
+
+         state.LoadSourceString(_T("function test() return user; end"));
+
+         std::vector<Lua::Value> vecRetval = state.CallFunction(_T("test"), 1);
+
+         // check
+         Assert::AreEqual<size_t>(1, vecRetval.size(), _T("must have returned 1 return value"));
+
+         Assert::IsTrue(Lua::Value::typeUserdata == vecRetval[0].GetType(), _T("type must be userdata"));
+
+         Lua::Userdata userdata = vecRetval[0].Get<Lua::Userdata>();
+
+         Assert::IsTrue(userdata.Data<unsigned char>()[0] == ucValue, _T("stored value must match"));
+      }
+
+      /// tests method State::AddUserdata() and stores it as value in a table
+      TEST_METHOD(TestStateAddUserdataStoreInTable)
+      {
+         // setup
+         Lua::State state;
+
+         const unsigned char ucValue = 42;
+
+         // run
+         {
+            Lua::Userdata userdata = state.AddUserdata(4);
+
+            userdata.Data<unsigned char>()[0] = ucValue;
+
+            state.AddValue(_T("user"), Lua::Value(userdata));
+         }
+
+         {
+            Lua::Value value = state.GetValue(_T("user"));
+            Lua::Userdata userdata = value.Get<Lua::Userdata>();
+
+            state.AddValue(_T("user2"), Lua::Value(userdata));
+         }
+
+         state.LoadSourceString(_T("function test() return user,user2; end"));
+
+         std::vector<Lua::Value> vecRetval = state.CallFunction(_T("test"), 2);
+
+         // check
+         Assert::AreEqual<size_t>(2, vecRetval.size(), _T("must have returned 2 return values"));
+
+         Assert::IsTrue(Lua::Value::typeUserdata == vecRetval[0].GetType(), _T("type must be userdata"));
+         Assert::IsTrue(Lua::Value::typeUserdata == vecRetval[1].GetType(), _T("type must be userdata"));
+
+         Lua::Userdata userdata1 = vecRetval[0].Get<Lua::Userdata>();
+         Lua::Userdata userdata2 = vecRetval[1].Get<Lua::Userdata>();
+
+         Assert::IsTrue(userdata1.Data() == userdata2.Data(), _T("pointer of two userdatas must be equal"));
+      }
+
+      /// tests method State::AddUserdata() and stores it as value in a table
+      TEST_METHOD(TestStateUserdataCopy)
+      {
+         // setup
+         Lua::State state;
+
+         const unsigned char ucValue = 42;
+
+         // run
+         {
+            Lua::Table table = state.AddTable(_T("abc"));
+
+            Lua::Userdata userdata = state.AddUserdata(4);
+
+            userdata.Data<unsigned char>()[0] = ucValue;
+
+            table.AddValue(_T("user"), Lua::Value(userdata));
+         }
+
+         // check
+         // must not crash
+      }
+
       TEST_METHOD(TestStateAddFunction)
       {
          Lua::State state;

@@ -154,6 +154,9 @@ public:
    /// ctor; used to wrap Table object
    explicit Value(class Table table);
 
+   /// ctor; used to wrap Userdata object
+   explicit Value(class Userdata userdata);
+
    /// ctor; used to wrap Function object
    explicit Value(class Function func);
 
@@ -175,6 +178,7 @@ public:
          std::is_same<T, CString>::value ||
          std::is_same<T, LPCTSTR>::value ||
          std::is_same<T, Table>::value ||
+         std::is_same<T, Userdata>::value ||
          std::is_same<T, Function>::value, "not an allowed type for Get<T>()");
 
       return boost::any_cast<T>(m_value);
@@ -312,6 +316,66 @@ private:
    int m_iStackIndex;
 };
 
+/// \brief Lua userdata
+/// \details represents a memory block that is managed by Lua. When creating
+/// a userdata, the size of the memory block has to be specified.
+class Userdata
+{
+public:
+   /// dtor
+   ~Userdata();
+
+   /// copy ctor
+   Userdata(const Userdata& userdata);
+
+   /// assignment operator
+   Userdata& operator=(const Userdata& userdata);
+
+   /// returns size of userdata memory block
+   size_t Size() const throw() { return m_uiSize; }
+
+   /// returns userdata memory block
+   void* Data() const throw() { return m_pUserdata;  }
+
+   /// returns userdata memory block, as typed pointer
+   template <typename T>
+   T* Data() const throw() { return reinterpret_cast<T*>(m_pUserdata); }
+
+   /// pushes userdata onto stack
+   void Push();
+
+private:
+   friend class State;
+   friend Value;
+
+   // note: these ctors can only be called by Lua::State
+
+   /// ctor; constructs new userdata object on stack, with given size
+   explicit Userdata(State& state, size_t uiSize);
+
+   /// ctor; creates userdata object from value on stack
+   explicit Userdata(State& state, int iStackIndex, bool bTemporary);
+
+private:
+   /// state the userdata belongs to
+   State& m_state;
+
+   /// raw memory block allocated by ctor
+   void* m_pUserdata;
+
+   /// size of raw memory block
+   size_t m_uiSize;
+
+   /// indicates if the userdata is currently being created
+   bool m_bCreating;
+
+   /// indicates if userdata is temporary
+   bool m_bTemporary;
+
+   /// stack index of userdata currently held (always absolute value into stack)
+   int m_iStackIndex;
+};
+
 
 /// \brief Lua state
 /// \details Helper functions to load Lua code, to call functions, to add tables and C++
@@ -336,6 +400,9 @@ public:
 
    /// adds an empty table to the state
    Table AddTable(const CString& cszName);
+
+   /// adds an unnamed userdata, with a memory block of given size
+   Userdata AddUserdata(size_t uiSize);
 
    /// adds a global function to the state
    void AddFunction(LPCTSTR pszaName, T_fnCFunction fn);

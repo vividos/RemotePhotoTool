@@ -116,12 +116,17 @@ Value::Value(Table table)
 {
 }
 
+Value::Value(Userdata userdata)
+:m_enType(typeUserdata),
+ m_value(userdata)
+{
+}
+
 Value::Value(Function func)
 :m_enType(typeFunction),
  m_value(func)
 {
 }
-
 
 void Value::Push(State& state) const
 {
@@ -164,6 +169,12 @@ void Value::Push(State& state) const
       break;
 
    case typeUserdata:
+      {
+         Userdata userdata = Get<Userdata>();
+         userdata.Push();
+      }
+      break;
+
    default:
       ATLASSERT(false);
       break;
@@ -195,6 +206,9 @@ Value Value::FromStack(State& state, int iIndex)
 
    case LUA_TFUNCTION:
       return Value(Function(state, iIndex));
+
+   case LUA_TUSERDATA:
+      return Value(Userdata(state, iIndex, false));
 
    default:
       ATLASSERT(false); // type can't be converted into Value
@@ -356,7 +370,6 @@ Function::Function(State& state, int iStackIndex)
 }
 
 
-
 //
 // Lua::Table
 //
@@ -422,7 +435,7 @@ Table::Table(const Table& table)
 
 Table& Table::operator=(const Table& table)
 {
-   m_state = table.m_state,
+   m_state = table.m_state;
    m_bCreating = table.m_bCreating;
    m_bTemporary = table.m_bTemporary;
    m_iStackIndex = table.m_iStackIndex;
@@ -438,7 +451,7 @@ Table& Table::AddValue(const CString& key, const Value& value)
 {
    lua_State* L = m_state.GetState();
 
-   ATLASSERT(lua_istable(L, m_iStackIndex) == true);
+   ATLASSERT(lua_istable(L, m_iStackIndex) != 0);
 
    value.Push(m_state);
    lua_setfield(L, m_iStackIndex, CStringA(key));
@@ -524,6 +537,120 @@ std::vector<Value> Table::CallFunction(const CString& cszName,
    return vecResults;
 }
 
+
+//
+// Lua::Userdata
+//
+
+Userdata::Userdata(State& state, size_t uiSize)
+:m_state(state),
+m_pUserdata(nullptr),
+m_uiSize(uiSize),
+m_bCreating(true),
+m_bTemporary(true),
+m_iStackIndex(-1)
+{
+   lua_State* L = m_state.GetState();
+
+   m_pUserdata = lua_newuserdata(L, uiSize);
+
+   m_iStackIndex = lua_absindex(L, -1);
+}
+
+Userdata::Userdata(State& state, int iStackIndex, bool bTemporary)
+:m_state(state),
+ m_pUserdata(nullptr),
+ m_uiSize(0),
+ m_bCreating(false),
+ m_bTemporary(bTemporary),
+ m_iStackIndex(lua_absindex(state.GetState(), iStackIndex))
+{
+   lua_State* L = m_state.GetState();
+
+   ATLASSERT(lua_isuserdata(L, m_iStackIndex) != 0);
+
+   m_pUserdata = lua_touserdata(L, m_iStackIndex);
+   m_uiSize = lua_rawlen(L, m_iStackIndex);
+}
+
+Userdata::~Userdata()
+{
+   lua_State* L = m_state.GetState();
+
+   if (m_bCreating)
+   {
+      ATLASSERT(lua_isuserdata(L, m_iStackIndex) != 0);
+      lua_remove(L, m_iStackIndex);
+   }
+   else
+      if (m_bTemporary)
+      {
+         ATLASSERT(lua_isuserdata(L, m_iStackIndex) != 0);
+         lua_remove(L, m_iStackIndex);
+      }
+}
+
+Userdata::Userdata(const Userdata& userdata)
+:m_state(userdata.m_state),
+ m_pUserdata(userdata.m_pUserdata),
+ m_uiSize(userdata.m_uiSize),
+ m_bCreating(userdata.m_bCreating),
+ m_bTemporary(userdata.m_bTemporary),
+ m_iStackIndex(userdata.m_iStackIndex)
+{
+   lua_State* L = m_state.GetState();
+   ATLASSERT(lua_isuserdata(L, m_iStackIndex) != 0);
+
+   // now that the values are copied, prevent creating or deleting the source object
+   const_cast<Userdata&>(userdata).m_bCreating = false;
+   const_cast<Userdata&>(userdata).m_bTemporary = false;
+}
+
+Userdata& Userdata::operator=(const Userdata& userdata)
+{
+   m_state = userdata.m_state;
+   m_pUserdata = userdata.m_pUserdata;
+   m_uiSize = userdata.m_uiSize;
+   m_bCreating = userdata.m_bCreating;
+   m_bTemporary = userdata.m_bTemporary;
+   m_iStackIndex = userdata.m_iStackIndex;
+
+   lua_State* L = m_state.GetState();
+   ATLASSERT(lua_isuserdata(L, m_iStackIndex) != 0);
+
+   // now that the values are copied, prevent creating or deleting the source object
+   const_cast<Userdata&>(userdata).m_bCreating = false;
+   const_cast<Userdata&>(userdata).m_bTemporary = false;
+
+   return *this;
+}
+
+void Userdata::Push()
+{
+   lua_State* L = m_state.GetState();
+
+   if (m_bCreating)
+   {
+      // nothing to do; already on the stack
+
+      m_bCreating = false;
+      m_bTemporary = false;
+   }
+   else
+   {
+      if (m_bTemporary)
+      {
+         lua_pushvalue(L, m_iStackIndex);
+         m_bTemporary = false;
+      }
+      else
+      {
+         lua_pushvalue(L, m_iStackIndex);
+      }
+   }
+}
+
+
 //
 // Lua::State
 //
@@ -583,6 +710,11 @@ std::vector<Value> State::CallFunction(const CString& cszName, int iResults, con
 Table State::AddTable(const CString& cszName)
 {
    return Table(*this, cszName);
+}
+
+Userdata State::AddUserdata(size_t uiSize)
+{
+   return Userdata(*this, uiSize);
 }
 
 void State::AddFunction(LPCTSTR pszaName, T_fnCFunction fn)
