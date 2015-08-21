@@ -158,6 +158,8 @@ private:
 
    std::vector<Lua::Value> BulbReleaseControlElapsedTime(std::shared_ptr<BulbReleaseControl> spBulbReleaseControl);
 
+   std::vector<Lua::Value> BulbReleaseControlStop(std::shared_ptr<BulbReleaseControl> spBulbReleaseControl);
+
 private:
    /// Lua state
    Lua::State& m_state;

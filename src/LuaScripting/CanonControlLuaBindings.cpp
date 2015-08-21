@@ -654,7 +654,8 @@ void CanonControlLuaBindings::InitBulbReleaseControlTable(std::shared_ptr<BulbRe
    bulbReleaseControl.AddFunction("elapsedTime",
       std::bind(&CanonControlLuaBindings::BulbReleaseControlElapsedTime, shared_from_this(), spBulbReleaseControl));
 
-   // TODO do dtor somehow?
+   bulbReleaseControl.AddFunction("stop",
+      std::bind(&CanonControlLuaBindings::BulbReleaseControlStop, shared_from_this(), spBulbReleaseControl));
 }
 
 std::vector<Lua::Value> CanonControlLuaBindings::BulbReleaseControlElapsedTime(std::shared_ptr<BulbReleaseControl> spBulbReleaseControl)
@@ -665,4 +666,11 @@ std::vector<Lua::Value> CanonControlLuaBindings::BulbReleaseControlElapsedTime(s
    vecRetValues.push_back(Lua::Value(dElapsed));
 
    return vecRetValues;
+}
+
+std::vector<Lua::Value> CanonControlLuaBindings::BulbReleaseControlStop(std::shared_ptr<BulbReleaseControl> spBulbReleaseControl)
+{
+   spBulbReleaseControl->Stop();
+
+   return std::vector<Lua::Value>();
 }
