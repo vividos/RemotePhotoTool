@@ -53,6 +53,23 @@ namespace LuaScriptingUnitTest
          Assert::Fail(_T("must throw exception"));
       }
 
+      /// tests temporary nil value handling
+      TEST_METHOD(TestValueNilTemporary)
+      {
+         // set up
+         Lua::State state;
+
+         // run
+         for (int i = 0; i < 100; i++)
+         {
+            Lua::Value value = state.GetValue("not_init");
+            Assert::IsTrue(Lua::Value::typeNil == value.GetType(), _T("type must be nil"));
+         }
+
+         // check
+         // must not overflow stack
+      }
+
       /// tests CallFunction(), without return parameters
       TEST_METHOD(TestCallFunctionNoRet)
       {

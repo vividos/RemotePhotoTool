@@ -160,6 +160,9 @@ public:
    /// ctor; used to wrap Function object
    explicit Value(class Function func);
 
+   /// ctor; used to wrap Nil object
+   explicit Value(class Nil nil);
+
    /// pushes value to stack
    void Push(State& state) const;
 
@@ -179,7 +182,8 @@ public:
          std::is_same<T, LPCTSTR>::value ||
          std::is_same<T, Table>::value ||
          std::is_same<T, Userdata>::value ||
-         std::is_same<T, Function>::value, "not an allowed type for Get<T>()");
+         std::is_same<T, Function>::value ||
+         std::is_same<T, Nil>::value, "not an allowed type for Get<T>()");
 
       return boost::any_cast<T>(m_value);
    }
@@ -192,7 +196,7 @@ public:
    }
 
    /// constructs Value object from stack entry
-   static Value FromStack(State& state, int iIndex);
+   static Value FromStack(State& state, int iIndex, bool bTemporary);
 
 protected:
    /// ctor; used to set type for derived classes
@@ -367,6 +371,47 @@ private:
    size_t m_uiSize;
 
    /// indicates if the userdata is currently being created
+   bool m_bCreating;
+
+   /// indicates if userdata is temporary
+   bool m_bTemporary;
+
+   /// stack index of userdata currently held (always absolute value into stack)
+   int m_iStackIndex;
+};
+
+/// \brief Lua nil value
+/// \details this class is used when a nil value was read from stack
+/// and needs to be managed, e.g. freed at stack end.
+class Nil
+{
+public:
+   /// dtor
+   ~Nil();
+
+   /// copy ctor
+   Nil(const Nil& nil);
+
+   /// assignment operator
+   Nil& operator=(const Nil& nil);
+
+   /// pushes nil value on stack
+   void Push();
+
+private:
+   friend class State;
+   friend Value;
+
+   // note: these ctors can only be called by Lua::State
+
+   /// ctor; creates userdata object from value on stack
+   explicit Nil(State& state, int iStackIndex, bool bTemporary);
+
+private:
+   /// state the userdata belongs to
+   State& m_state;
+
+   /// indicates if the nil value is currently being created
    bool m_bCreating;
 
    /// indicates if userdata is temporary

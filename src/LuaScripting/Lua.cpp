@@ -128,6 +128,12 @@ Value::Value(Function func)
 {
 }
 
+Value::Value(Nil nil)
+:m_enType(typeNil),
+m_value(nil)
+{
+}
+
 void Value::Push(State& state) const
 {
    lua_State* L = state.GetState();
@@ -135,7 +141,13 @@ void Value::Push(State& state) const
    switch (m_enType)
    {
    case typeNil:
-      lua_pushnil(L);
+      if (m_value.empty())
+         lua_pushnil(L);
+      else
+      {
+         Nil nil = Get<Nil>();
+         nil.Push();
+      }
       break;
 
    case typeBoolean:
@@ -181,7 +193,7 @@ void Value::Push(State& state) const
    }
 }
 
-Value Value::FromStack(State& state, int iIndex)
+Value Value::FromStack(State& state, int iIndex, bool bTemporary)
 {
    lua_State* L = state.GetState();
 
@@ -189,7 +201,7 @@ Value Value::FromStack(State& state, int iIndex)
    {
    case LUA_TNONE:
    case LUA_TNIL:
-      return Value();
+      return Value(Nil(state, iIndex, bTemporary));
       break;
 
    case LUA_TNUMBER:
@@ -202,13 +214,13 @@ Value Value::FromStack(State& state, int iIndex)
       return Value(lua_tostring(L, iIndex));
 
    case LUA_TTABLE:
-      return Value(Table(state, iIndex, false));
+      return Value(Table(state, iIndex, bTemporary));
 
    case LUA_TFUNCTION:
       return Value(Function(state, iIndex));
 
    case LUA_TUSERDATA:
-      return Value(Userdata(state, iIndex, false));
+      return Value(Userdata(state, iIndex, bTemporary));
 
    default:
       ATLASSERT(false); // type can't be converted into Value
@@ -301,7 +313,7 @@ int FuncData::OnFunctionCall(lua_State* L)
 
    std::vector<Value> vecParams;
    for (int i=1; i <= iStackDepth; i++)
-      vecParams.push_back(Value::FromStack(data.m_state, i));
+      vecParams.push_back(Value::FromStack(data.m_state, i, false));
 
    State::TraceUpvalues(L);
 
@@ -349,7 +361,7 @@ std::vector<Value> Function::Call(int iResults, const std::vector<Value>& vecPar
    // collect return values
    std::vector<Value> vecResults;
    for (int i=-iResults; i<=-1; i++)
-      vecResults.push_back(Value::FromStack(m_state, i));
+      vecResults.push_back(Value::FromStack(m_state, i, false));
 
    lua_pop(L, 1); // remove copied function
 
@@ -505,7 +517,7 @@ Value Table::GetValue(const CString& key)
 
    lua_gettable(L, -2);
 
-   return Value::FromStack(m_state, -1);
+   return Value::FromStack(m_state, -1, true);
 }
 
 std::vector<Value> Table::CallFunction(const CString& cszName,
@@ -519,7 +531,10 @@ std::vector<Value> Table::CallFunction(const CString& cszName,
 
    lua_getfield(L, m_iStackIndex, CStringA(cszName).GetString());
    if (!lua_isfunction(L, -1))
+   {
+      lua_pop(L, 1);
       throw Lua::Exception(_T("function not found: ") + cszName, L, __FILE__, __LINE__);
+   }
 
    // add table as first argument
    lua_pushvalue(L, m_iStackIndex);
@@ -532,7 +547,7 @@ std::vector<Value> Table::CallFunction(const CString& cszName,
    // collect return values
    std::vector<Value> vecResults;
    for (int i=-iResults; i<=-1; i++)
-      vecResults.push_back(Value::FromStack(m_state, i));
+      vecResults.push_back(Value::FromStack(m_state, i, false));
 
    return vecResults;
 }
@@ -650,6 +665,73 @@ void Userdata::Push()
    }
 }
 
+//
+// Lua::Nil
+//
+
+Nil::Nil(State& state, int iStackIndex, bool bTemporary)
+:m_state(state),
+m_bTemporary(bTemporary),
+m_iStackIndex(iStackIndex)
+{
+   lua_State* L = m_state.GetState();
+
+   ATLASSERT(lua_isnil(L, m_iStackIndex) == true);
+}
+
+Nil::~Nil()
+{
+   lua_State* L = m_state.GetState();
+
+   if (m_bTemporary)
+   {
+      ATLASSERT(lua_isnil(L, m_iStackIndex) == true);
+      lua_remove(L, m_iStackIndex);
+   }
+}
+
+Nil::Nil(const Nil& nil)
+:m_state(nil.m_state),
+m_bTemporary(nil.m_bTemporary),
+m_iStackIndex(nil.m_iStackIndex)
+{
+   lua_State* L = m_state.GetState();
+   ATLASSERT(lua_isnil(L, m_iStackIndex) == true);
+
+   // now that the values are copied, prevent creating or deleting the source object
+   const_cast<Nil&>(nil).m_bTemporary = false;
+}
+
+Nil& Nil::operator=(const Nil& nil)
+{
+   m_state = nil.m_state;
+   m_bTemporary = nil.m_bTemporary;
+   m_iStackIndex = nil.m_iStackIndex;
+
+   lua_State* L = m_state.GetState();
+   ATLASSERT(lua_isnil(L, m_iStackIndex) == true);
+
+   // now that the values are copied, prevent creating or deleting the source object
+   const_cast<Nil&>(nil).m_bTemporary = false;
+
+   return *this;
+}
+
+void Nil::Push()
+{
+   lua_State* L = m_state.GetState();
+
+   if (m_bTemporary)
+   {
+      lua_pushvalue(L, m_iStackIndex);
+      m_bTemporary = false;
+   }
+   else
+   {
+      lua_pushvalue(L, m_iStackIndex);
+   }
+}
+
 
 //
 // Lua::State
@@ -665,9 +747,10 @@ State::State()
 
 void State::LoadFile(const CString& cszFilename)
 {
-   CStringA cszaFilename(cszFilename);
-
    lua_State* L = GetState();
+   StackChecker checker(L);
+
+   CStringA cszaFilename(cszFilename);
 
    int iRet = luaL_dofile(L, cszaFilename.GetString());
 
@@ -677,9 +760,10 @@ void State::LoadFile(const CString& cszFilename)
 
 void State::LoadSourceString(const CString& cszLuaSource)
 {
-   CStringA cszaLuaSource(cszLuaSource);
-
    lua_State* L = GetState();
+   StackChecker checker(L);
+
+   CStringA cszaLuaSource(cszLuaSource);
 
    int iRet = luaL_dostring(L, cszaLuaSource.GetString());
 
@@ -690,10 +774,14 @@ void State::LoadSourceString(const CString& cszLuaSource)
 std::vector<Value> State::CallFunction(const CString& cszName, int iResults, const std::vector<Value>& vecParam)
 {
    lua_State* L = GetState();
+   StackChecker checker(L);
 
    lua_getglobal(L, CStringA(cszName).GetString());
    if (!lua_isfunction(L, -1))
+   {
+      lua_pop(L, 1);
       throw Lua::Exception(_T("function not found: ") + cszName, L, __FILE__, __LINE__);
+   }
 
    std::for_each(vecParam.begin(), vecParam.end(), [&](const Value& value){ value.Push(*this); });
 
@@ -702,7 +790,7 @@ std::vector<Value> State::CallFunction(const CString& cszName, int iResults, con
    // collect return values
    std::vector<Value> vecResults;
    for (int i=-iResults; i<=-1; i++)
-      vecResults.push_back(Value::FromStack(*this, i));
+      vecResults.push_back(Value::FromStack(*this, i, false));
 
    return vecResults;
 }
@@ -741,7 +829,7 @@ Value State::GetValue(const CString& cszName)
 
    lua_getglobal(L, CStringA(cszName).GetString());
 
-   return Value::FromStack(*this, -1);
+   return Value::FromStack(*this, -1, true);
 }
 
 Table State::GetTable(const CString& cszName)
@@ -750,7 +838,10 @@ Table State::GetTable(const CString& cszName)
 
    lua_getglobal(L, CStringA(cszName).GetString());
    if (!lua_istable(L, -1))
+   {
+      lua_pop(L, 1); // remove global
       throw Lua::Exception(_T("table not found: ") + cszName, L, __FILE__, __LINE__);
+   }
 
    return Table(*this, -1, true);
 }
