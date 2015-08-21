@@ -30,7 +30,12 @@ m_strand(strand)
 
 CanonControlLuaBindings::~CanonControlLuaBindings()
 {
-   CancelHandlers();
+   // when one of these asserts fail, then the user of this class
+   // forgot to call CancelHandlers(); but we cannot call it here
+   // since we need a running Lua script worker thread for this.
+   ATLASSERT(m_spRemoteRelaseControl == nullptr);
+   ATLASSERT(m_spViewfinder == nullptr);
+
    CleanupBindings();
 }
 
@@ -246,6 +251,10 @@ std::vector<Lua::Value> CanonControlLuaBindings::InstanceAsyncWaitForCamera(cons
 
 void CanonControlLuaBindings::AsyncWaitForCamera_OnCameraConnected()
 {
+   // this assertion fails when a handler is still attached to a
+   // bindings object that was destroyed earlier.
+   ATLASSERT(this != nullptr);
+
    RecursiveMutex::TryLockType lock(m_mtxAsyncWaitForCamera_InScript);
    if (!lock.Try(0))
       return; // handler is currently active, don't call it again

@@ -21,7 +21,10 @@ class ImageProperty;
 class Viewfinder;
 class BulbReleaseControl;
 
-/// Lua bindings for CanonControl library
+/// \brief Lua bindings for CanonControl library
+/// \details Provides bindings for all classes and functions in the CanonControl
+/// library. As soon as the object is destroyed, the bindings are deregistered. All
+/// callback handlers registered are reset and won't be called anymore.
 class CanonControlLuaBindings : public std::enable_shared_from_this<CanonControlLuaBindings>
 {
 public:
@@ -40,7 +43,8 @@ public:
       m_fnOutputDebugString = fnOutputDebugString;
    }
 
-   /// inits bindings to CanonControl
+   /// inits bindings to CanonControl; since the this parameter is needed in
+   /// the bindings, call this immediately after the ctor
    void InitBindings();
 
    /// cancels all handlers of async operations

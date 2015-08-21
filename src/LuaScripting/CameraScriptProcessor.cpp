@@ -24,7 +24,6 @@ public:
    /// dtor
    virtual ~Impl()
    {
-      CleanupBindings();
    }
 
    /// returns Lua state object
@@ -101,6 +100,10 @@ public:
 
          GetState().CollectGarbage();
 
+         // CanonControlLuaBindings must not be used in handlers anymore
+         ATLASSERT(m_spCanonControlLuaBindings.unique() == true);
+
+         // this calls CanonControlLuaBindings::CleanupBindings()
          m_spCanonControlLuaBindings.reset();
       });
    }
@@ -158,6 +161,8 @@ CameraScriptProcessor::~CameraScriptProcessor() throw()
 
    m_spImpl->StopThread();
 
+   // Impl must not be used in handlers anymore
+   ATLASSERT(m_spImpl.unique() == true);
    m_spImpl.reset();
 }
 
@@ -173,6 +178,7 @@ void CameraScriptProcessor::LoadScript(const CString& cszFilename)
    ATLASSERT(m_spImpl != nullptr);
 
    Stop();
+
    m_spImpl->LoadFile(cszFilename);
 }
 
@@ -191,5 +197,4 @@ void CameraScriptProcessor::Stop()
    ATLASSERT(m_spImpl != nullptr);
 
    m_spImpl->CancelHandlers();
-//   m_spImpl.reset();
 }
