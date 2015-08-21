@@ -2986,7 +2986,7 @@ public:
 		CAtlFile File;
 		if (FAILED(File.Create(szFilename,GENERIC_WRITE,FILE_SHARE_READ,CREATE_ALWAYS,0)))
 			return FALSE;
-		char szBuffer[8192];
+		char szBuffer[8192+1];
 		TextRange Tr;
 		Tr.lpstrText=szBuffer;
 		DWORD dwWritten;
@@ -2998,7 +2998,7 @@ public:
 		}
 		for (int nIndex=0,nLength=GetLength();nIndex<nLength;nIndex+=(int)dwWritten)
 		{
-			dwWritten=(DWORD)(nLength-nIndex)>sizeof(szBuffer) ? sizeof(szBuffer) : (DWORD)(nLength-nIndex);
+			dwWritten=(DWORD)(nLength-nIndex)>sizeof(szBuffer-1) ? sizeof(szBuffer-1) : (DWORD)(nLength-nIndex);
 			Tr.chrg.cpMin=nIndex;
 			Tr.chrg.cpMax=nIndex+(long)dwWritten;
 			GetTextRange(Tr);
