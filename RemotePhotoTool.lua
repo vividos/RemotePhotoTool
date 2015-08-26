@@ -224,9 +224,9 @@ App = {
 		-- TODO set release settings
 
 		-- auto focus on current view
-		remoteReleaseControl.sendCommand(Constants.RemoteReleaseControl.commandAdjustFocus);
+		remoteReleaseControl:sendCommand(Constants.RemoteReleaseControl.commandAdjustFocus);
 
-		remoteReleaseControl.release();
+		remoteReleaseControl:release();
 
 		-- wait for photo to be downloaded
 
