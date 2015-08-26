@@ -76,7 +76,7 @@ private:
          catch (const CameraException& ex)
          {
             CString cszText;
-            cszText.Format(_T("%s(%u): CameraException occured in Lua script execution: %s"),
+            cszText.Format(_T("%s(%u): CameraException occured in Lua script execution: %s\n"),
                ex.SourceFile().GetString(),
                ex.SourceLine(),
                ex.Message().GetString());
@@ -89,7 +89,7 @@ private:
          catch (const Lua::Exception& ex)
          {
             CString cszText;
-            cszText.Format(_T("%s(%u): Lua exception occured: %s"),
+            cszText.Format(_T("%s(%u): Lua exception occured: %s\n"),
                ex.LuaSourceFile().GetString(),
                ex.LuaLineNumber(),
                ex.LuaErrorMessage().GetString());
@@ -102,7 +102,7 @@ private:
          catch (const Exception& ex)
          {
             CString cszText;
-            cszText.Format(_T("%s(%u): Exception occured in Lua script execution: %s"),
+            cszText.Format(_T("%s(%u): Exception occured in Lua script execution: %s\n"),
                ex.SourceFile().GetString(),
                ex.SourceLine(),
                ex.Message().GetString());
@@ -112,8 +112,25 @@ private:
             if (m_fnOutputDebugString != nullptr)
                m_fnOutputDebugString(cszText);
          }
+         catch (const std::exception& ex)
+         {
+            CString cszText;
+            cszText.Format(_T("std::exception occured in Lua script execution: %hs\n"),
+               ex.what());
+
+            LOG_TRACE(cszText);
+
+            if (m_fnOutputDebugString != nullptr)
+               m_fnOutputDebugString(cszText);
+         }
          catch (...)
          {
+            CString cszText(_T("unknown exception occured in Lua script execution.\n"));
+
+            LOG_TRACE(cszText);
+
+            if (m_fnOutputDebugString != nullptr)
+               m_fnOutputDebugString(cszText);
          }
       }
    }
