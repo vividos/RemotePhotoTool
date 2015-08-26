@@ -228,8 +228,11 @@ LRESULT MainFrame::OnViewOutput(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndC
 
 LRESULT MainFrame::OnScriptRun(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
-   if (!DoFileSave())
-      return 0;
+   if (m_view.GetModify())
+   {
+      if (!DoFileSave())
+         return 0;
+   }
 
    UIEnable(ID_SCRIPT_RUN, FALSE);
    UIEnable(ID_SCRIPT_STOP, TRUE);
