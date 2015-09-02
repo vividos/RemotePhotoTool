@@ -301,7 +301,7 @@ private:
    explicit Table(State& state, const CString& cszName);
 
    /// ctor; creates table object from value on stack
-   explicit Table(State& state, int iStackIndex, bool bTemporary);
+   explicit Table(State& state, int iStackIndex, bool bTemporary, const CString& cszName);
 
 private:
    /// state the table belongs to

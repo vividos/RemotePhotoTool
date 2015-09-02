@@ -229,7 +229,7 @@ Value Value::FromStack(State& state, int iIndex, bool bTemporary)
       return Value(lua_tostring(L, iIndex));
 
    case LUA_TTABLE:
-      return Value(Table(state, iIndex, bTemporary));
+      return Value(Table(state, iIndex, bTemporary, CString()));
 
    case LUA_TFUNCTION:
       return Value(Function(state, iIndex));
@@ -414,8 +414,9 @@ Table::Table(State& state, const CString& cszName)
    m_iStackIndex = lua_absindex(L, -1);
 }
 
-Table::Table(State& state, int iStackIndex, bool bTemporary)
+Table::Table(State& state, int iStackIndex, bool bTemporary, const CString& cszName)
 :m_state(state),
+ m_cszName(cszName),
  m_bCreating(false),
  m_bTemporary(bTemporary),
  m_iStackIndex(lua_absindex(state.GetState(), iStackIndex))
@@ -451,6 +452,7 @@ Table::~Table() throw()
 
 Table::Table(const Table& table)
 :m_state(table.m_state),
+ m_cszName(table.m_cszName),
  m_bCreating(table.m_bCreating),
  m_bTemporary(table.m_bTemporary),
  m_iStackIndex(table.m_iStackIndex)
@@ -879,7 +881,7 @@ Table State::GetTable(const CString& cszName)
       throw Lua::Exception(_T("table not found: ") + cszName, L, __FILE__, __LINE__);
    }
 
-   return Table(*this, -1, true);
+   return Table(*this, -1, true, cszName);
 }
 
 void State::CollectGarbage()
