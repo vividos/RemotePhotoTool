@@ -53,6 +53,25 @@ namespace LuaScriptingUnitTest
          Assert::Fail(_T("must throw exception"));
       }
 
+      /// tests RequireLib() method to load built-in libraries
+      TEST_METHOD(TestStateRequireLib)
+      {
+         // setup
+         Lua::State state;
+
+         // run
+         state.RequireLib("coroutine");
+
+         // check
+         Lua::Value value = state.GetValue(_T("coroutine"));
+         Assert::IsTrue(value.GetType() == Lua::Value::typeTable, _T("type must be table"));
+
+         Lua::Table table = state.GetTable(_T("coroutine"));
+         Lua::Value funcYield = table.GetValue(_T("yield"));
+
+         Assert::IsTrue(funcYield.GetType() == Lua::Value::typeFunction, _T("type must be function"));
+      }
+
       /// tests temporary nil value handling
       TEST_METHOD(TestValueNilTemporary)
       {

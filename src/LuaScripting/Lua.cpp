@@ -11,8 +11,23 @@
 
 #include <lua.h>
 #include <lauxlib.h>
+#include <lualib.h>
 
 using namespace Lua;
+
+static const luaL_Reg loadedlibs[] = {
+   { "_G", luaopen_base },
+   { LUA_LOADLIBNAME, luaopen_package },
+   { LUA_COLIBNAME, luaopen_coroutine },
+   { LUA_TABLIBNAME, luaopen_table },
+   { LUA_IOLIBNAME, luaopen_io },
+   { LUA_OSLIBNAME, luaopen_os },
+   { LUA_STRLIBNAME, luaopen_string },
+   { LUA_MATHLIBNAME, luaopen_math },
+   { LUA_UTF8LIBNAME, luaopen_utf8 },
+   { LUA_DBLIBNAME, luaopen_debug },
+   { NULL, NULL }
+};
 
 //
 // Lua::Exception
@@ -743,6 +758,27 @@ State::State()
    m_spState.reset(L, &lua_close);
 
    lua_atpanic(L, OnLuaPanic);
+}
+
+void State::RequireLib(const char* moduleName)
+{
+   lua_State* L = GetState();
+
+   for (int i = 0; i < sizeof(loadedlibs) / sizeof(*loadedlibs); i++)
+   {
+      if (loadedlibs[i].func == nullptr)
+         break;
+
+      if (strcmp(moduleName, loadedlibs[i].name) == 0)
+      {
+         luaL_requiref(L, loadedlibs[i].name, loadedlibs[i].func, 1);
+         lua_pop(L, 1);  // remove lib from stack
+
+         return;
+      }
+   }
+
+   throw Lua::Exception(_T("unknown builtin library"), L, __FILE__, __LINE__);
 }
 
 void State::LoadFile(const CString& cszFilename)

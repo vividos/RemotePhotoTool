@@ -432,6 +432,9 @@ public:
    /// ctor
    State();
 
+   /// loads a built-in library into state
+   void RequireLib(const char* moduleName);
+
    /// loads Lua code from file
    void LoadFile(const CString& cszFilename);
 
