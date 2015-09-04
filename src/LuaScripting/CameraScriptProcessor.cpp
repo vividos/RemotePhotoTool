@@ -19,6 +19,7 @@ class CameraScriptProcessor::Impl : public std::enable_shared_from_this<CameraSc
 public:
    /// ctor
    Impl()
+      :m_enExecutionState(stateIdle)
    {
    }
    /// dtor
@@ -38,6 +39,27 @@ public:
          m_spCanonControlLuaBindings->SetOutputDebugStringHandler(fnOutputDebugString);
 
       m_scriptWorkerThread.SetOutputDebugStringHandler(fnOutputDebugString);
+   }
+
+   /// sets handler to notify about execution state changes
+   void SetExecutionStateChangedHandler(T_fnOnExecutionStateChanged fnOnExecutionStateChanged)
+   {
+      m_fnOnExecutionStateChanged = fnOnExecutionStateChanged;
+   }
+
+   /// returns current execution state
+   T_enExecutionState CurrentExecutionState() const
+   {
+      return m_enExecutionState;
+   }
+
+   /// sets new execution state
+   void CurrentExecutionState(T_enExecutionState enExecutionState)
+   {
+      m_enExecutionState = enExecutionState;
+
+      if (m_fnOnExecutionStateChanged != nullptr)
+         m_fnOnExecutionStateChanged(enExecutionState);
    }
 
    /// inits bindings to system functions and CanonControl
@@ -72,10 +94,14 @@ public:
    {
       m_scriptWorkerThread.GetStrand().post([&]()
       {
+         CurrentExecutionState(stateRunning);
+
          Lua::Table app = GetState().GetTable(_T("App"));
 
          std::vector<Lua::Value> vecParam;
          app.CallFunction(_T("run"), 0, vecParam);
+
+         CurrentExecutionState(stateIdle);
       });
    }
 
@@ -135,8 +161,14 @@ private:
    /// Lua state
    Lua::State m_state;
 
+   /// current execution state
+   T_enExecutionState m_enExecutionState;
+
    /// output debug string handler
    T_fnOutputDebugString m_fnOutputDebugString;
+
+   /// execution state changes handler
+   T_fnOnExecutionStateChanged m_fnOnExecutionStateChanged;
 
    /// bindings for CanonControl library
    std::shared_ptr<CanonControlLuaBindings> m_spCanonControlLuaBindings;
@@ -173,11 +205,33 @@ void CameraScriptProcessor::SetOutputDebugStringHandler(T_fnOutputDebugString fn
    m_spImpl->SetOutputDebugStringHandler(fnOutputDebugString);
 }
 
+void CameraScriptProcessor::SetExecutionStateChangedHandler(T_fnOnExecutionStateChanged fnOnExecutionStateChanged)
+{
+   ATLASSERT(m_spImpl != nullptr);
+
+   m_spImpl->SetExecutionStateChangedHandler(fnOnExecutionStateChanged);
+}
+
+CameraScriptProcessor::T_enExecutionState CameraScriptProcessor::CurrentExecutionState() const throw()
+{
+   ATLASSERT(m_spImpl != nullptr);
+
+   try
+   {
+      return m_spImpl->CurrentExecutionState();
+   }
+   catch (...)
+   {
+      return stateError;
+   }
+}
+
 void CameraScriptProcessor::LoadScript(const CString& cszFilename)
 {
    ATLASSERT(m_spImpl != nullptr);
 
-   Stop();
+   if (CurrentExecutionState() != stateIdle)
+      Stop();
 
    m_spImpl->LoadFile(cszFilename);
 }
@@ -187,7 +241,8 @@ void CameraScriptProcessor::Run()
 {
    ATLASSERT(m_spImpl != nullptr);
 
-   Stop();
+   if (CurrentExecutionState() != stateIdle)
+      Stop();
 
    m_spImpl->Run();
 }
@@ -197,4 +252,6 @@ void CameraScriptProcessor::Stop()
    ATLASSERT(m_spImpl != nullptr);
 
    m_spImpl->CancelHandlers();
+
+   m_spImpl->CurrentExecutionState(stateIdle);
 }
