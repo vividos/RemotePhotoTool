@@ -647,6 +647,12 @@ void CanonControlLuaBindings::SetAvailImageHandler_OnAvailImageHandler(const std
 
    std::vector<Lua::Value> vecParams;
 
+   // first 'self' parameter: viewfinder
+   // note that it's only a placeholder table
+   Lua::Table viewfinder = GetState().AddTable(_T(""));
+   vecParams.push_back(Lua::Value(viewfinder));
+
+   // second parameter: image
    size_t uiSize = vecImage.size();
    Lua::Userdata userdata = GetState().AddUserdata(uiSize);
    memcpy(userdata.Data(), vecImage.data(), uiSize);
@@ -655,7 +661,7 @@ void CanonControlLuaBindings::SetAvailImageHandler_OnAvailImageHandler(const std
 
    try
    {
-      app.CallFunction(c_pszAsyncWaitForCamera_OnConnectedHandler, 0, vecParams);
+      app.CallFunction(c_pszSetAvailImageHandler_OnAvailImageHandler, 0, vecParams);
    }
    catch (const Lua::Exception& ex)
    {
