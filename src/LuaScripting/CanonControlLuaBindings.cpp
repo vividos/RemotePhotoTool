@@ -28,7 +28,7 @@ m_strand(strand)
 {
 }
 
-CanonControlLuaBindings::~CanonControlLuaBindings()
+CanonControlLuaBindings::~CanonControlLuaBindings() throw()
 {
    // when one of these asserts fail, then the user of this class
    // forgot to call CancelHandlers(); but we cannot call it here
@@ -36,7 +36,13 @@ CanonControlLuaBindings::~CanonControlLuaBindings()
    ATLASSERT(m_spRemoteRelaseControl == nullptr);
    ATLASSERT(m_spViewfinder == nullptr);
 
-   CleanupBindings();
+   try
+   {
+      CleanupBindings();
+   }
+   catch (...)
+   {
+   }
 }
 
 void CanonControlLuaBindings::InitBindings()

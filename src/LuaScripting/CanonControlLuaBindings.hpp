@@ -35,7 +35,7 @@ public:
    CanonControlLuaBindings(Lua::State& state, boost::asio::io_service::strand& strand);
 
    /// dtor; cleans up bindings
-   virtual ~CanonControlLuaBindings();
+   virtual ~CanonControlLuaBindings() throw();
 
    /// sets output debug string handler
    void SetOutputDebugStringHandler(T_fnOutputDebugString fnOutputDebugString)
