@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "CameraScriptProcessor.hpp"
 #include "Lua.hpp"
+#include "SystemLuaBindings.hpp"
 #include "CanonControlLuaBindings.hpp"
 #include "LuaScriptWorkerThread.hpp"
 #include <lua.h>
@@ -66,19 +67,8 @@ public:
    /// inits bindings to system functions and CanonControl
    void InitBindings()
    {
-      // global print() function
-      GetState().AddFunction(_T("print"),
-         std::bind(&Impl::Print, shared_from_this(), std::placeholders::_1, std::placeholders::_2));
-
-      /// global Sys table
-      {
-         Lua::Table sys = GetState().AddTable(_T("Sys"));
-      }
-
-      m_spCanonControlLuaBindings.reset(
-         new CanonControlLuaBindings(GetState(), m_scriptWorkerThread.GetStrand()));
-
-      m_spCanonControlLuaBindings->InitBindings();
+      InitGlobalFunctions();
+      InitExtraBindings();
    }
 
    /// loads script file
@@ -129,6 +119,7 @@ public:
    {
       m_scriptWorkerThread.GetStrand().post([&]()
       {
+         m_spSystemLuaBindings->CancelHandlers();
          m_spCanonControlLuaBindings->CancelHandlers();
       });
    }
@@ -145,6 +136,12 @@ public:
 
          GetState().CollectGarbage();
 
+         // SystemLuaBindings must not be used in handlers anymore
+         ATLASSERT(m_spSystemLuaBindings.unique() == true);
+
+         // this calls SystemLuaBindings::CleanupBindings()
+         m_spSystemLuaBindings.reset();
+
          // CanonControlLuaBindings must not be used in handlers anymore
          ATLASSERT(m_spCanonControlLuaBindings.unique() == true);
 
@@ -160,6 +157,29 @@ public:
    }
 
 private:
+   void InitGlobalFunctions()
+   {
+      // global print() function
+      GetState().AddFunction(_T("print"),
+         std::bind(&Impl::Print, shared_from_this(), std::placeholders::_1, std::placeholders::_2));
+   }
+
+   void InitExtraBindings()
+   {
+      Lua::State& state = GetState();
+
+      m_spSystemLuaBindings.reset(
+         new SystemLuaBindings(state, m_thread, m_scriptWorkerThread.GetStrand()));
+
+      m_spSystemLuaBindings->InitBindings();
+
+
+      m_spCanonControlLuaBindings.reset(
+         new CanonControlLuaBindings(state, m_scriptWorkerThread.GetStrand()));
+
+      m_spCanonControlLuaBindings->InitBindings();
+   }
+
    // global functions
 
    /// prints values as output debug string
@@ -193,6 +213,9 @@ private:
 
    /// execution state changes handler
    T_fnOnExecutionStateChanged m_fnOnExecutionStateChanged;
+
+   /// bindings for System library
+   std::shared_ptr<SystemLuaBindings> m_spSystemLuaBindings;
 
    /// bindings for CanonControl library
    std::shared_ptr<CanonControlLuaBindings> m_spCanonControlLuaBindings;

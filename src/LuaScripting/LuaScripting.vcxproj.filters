@@ -23,6 +23,9 @@
     <ClCompile Include="CanonControlLuaBindings.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SystemLuaBindings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Lua.hpp">
@@ -38,6 +41,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="LuaScriptWorkerThread.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SystemLuaBindings.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

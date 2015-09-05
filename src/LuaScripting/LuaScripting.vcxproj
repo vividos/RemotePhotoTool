@@ -72,6 +72,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="SystemLuaBindings.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CameraScriptProcessor.hpp" />
@@ -79,6 +80,7 @@
     <ClInclude Include="Lua.hpp" />
     <ClInclude Include="LuaScriptWorkerThread.hpp" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="SystemLuaBindings.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="lua-5.3.1\Lua.vcxproj">

@@ -10,6 +10,12 @@ App = {
 
 	timerShutdown = nil;
 
+	-- event that is used to wait for connecting camera
+	eventCameraConntect = nil;
+
+	-- event that is later used to get notified that a viewfinder preview image arrived
+	eventViewfinder = nil;
+
 	-- Main entry point of the RemotePhotoTool scripting environment.
 	-- Be sure to register at least callback here before returning, or
 	-- the script execution stops.
@@ -17,16 +23,23 @@ App = {
 
 		print("RemotePhotoTool - Demo script for Lua scripting\n\n");
 
+		print("on main thread: " .. (Sys:isMainThread() and "yes" or "no") .. "\n");
+
 		local instance = Sys:getInstance();
 
 		-- print(instance:getVersion());
+
+		eventCameraConnect = Sys:createEvent();
 
 		instance:asyncWaitForCamera(App.onConnected);
 
 		print("waiting for camera to connect...\n");
 
-		-- TODO not supported yet
-		-- local timerShutdown = Sys:createTimer()
+		-- only waits for some seconds, then exists
+		local ret = eventCameraConnect:wait(15.0);
+		if (ret == false) then
+			print("no camera connected for 15.0 seconds; exiting.\n");
+		end
 	end,
 
 	-- This function is called when a camera has been connected or
@@ -36,6 +49,8 @@ App = {
 
 		print("list of connected cameras changed\n");
 
+		print("on main thread: " .. (Sys:isMainThread() and "yes" or "no") .. "\n");
+
 		local instance = Sys:getInstance();
 
 		local allSourceInfos = instance:enumerateDevices();
@@ -44,23 +59,22 @@ App = {
 		-- connected, so check before using
 		if (allSourceInfos and allSourceInfos.length > 0) then
 
-			self:printSourceInfos(allSourceInfos);
-
 			-- be sure to unregister the callback to not get
 			-- any more calls to onConnected().
 			instance:asyncWaitForCamera();
 
-			-- as no more handler are connected, the debugger should go to
-			-- the "stopped" state again after returning from here.
+			self:printSourceInfos(allSourceInfos);
+
 			print("finished.\n\n");
+
+			-- signal finished handler
+			eventCameraConnect:signal();
 
 		else
 			-- There was no device; maybe an already connected camera was
-			-- turned off. Wait untin another call to onConnected() is made.
+			-- turned off. Wait until another call to onConnected() is made.
 			print("no cameras connected. continue waiting...\n");
-
 		end
-
 	end,
 
 	-- We call this function at onConnected() to print all infos about
@@ -244,9 +258,24 @@ App = {
 
 		local viewfinder = remoteReleaseControl:startViewfinder();
 
+		eventViewfinder = Sys:createEvent();
+
 		viewfinder:setAvailImageHandler(App.onViewfinderImageAvail);
 
-		-- TODO wait for image to arrive, then continue
+		-- wait for image to arrive, then continue
+		eventViewfinder:wait();
+
+	end,
+
+	-- called when a viewfinder image has been sent
+	onViewfinderImageAvail = function(viewfinder, imageData)
+
+		print("received an image from viewfinder\n");
+
+		-- unregister handler
+		viewfinder:setAvailImageHandler();
+
+		App.eventViewfinder:signal();
 
 	end,
 
@@ -262,22 +291,15 @@ App = {
 
 		local bulbReleaseControl = remoteReleaseControl:startBulb()
 
-		-- TODO wait for some seconds, then stop bulb mode
+		-- wait for some seconds, then stop bulb mode
+		local event = Sys:createEvent();
+
+		event.wait(5.0);
 
 		bulbReleaseControl:stop();
 
 		local elapsed = bulbReleaseControl.elapsedTime();
 		print("elapsed time: " .. elapsed .. " seconds.");
-
-	end,
-
-	-- called when a viewfinder image has been sent
-	onViewfinderImageAvail = function(self, imageData)
-
-		print("received an image from viewfinder\n");
-
-		-- unregister handler
-		viewfinder:setAvailImageHandler();
 
 	end
 	-- end of last function
