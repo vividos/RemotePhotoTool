@@ -15,11 +15,11 @@
     <ComponentGroup Id="MainAppFiles">
 
       <Component Id="RemotePhotoToolExe" Guid="9BCE338C-3509-449A-BDFF-871DB7E83CB5" Directory="INSTALLDIR">
-        <File Id="RemotePhotoToolExe" Name="RemotePhotoTool.exe" DiskId="1" KeyPath="yes" Source="$(var.SourceFolder)\RemotePhotoTool.exe" />
+        <File Id="RemotePhotoToolExe" Name="RemotePhotoTool.exe" DiskId="1" KeyPath="yes" Source="$(var.BinaryFolder)\RemotePhotoTool.exe" />
       </Component>
 
       <Component Id="RemoteScriptingEditorExe" Guid="77E764F1-4C03-4F32-9645-CA326579C6B9" Directory="INSTALLDIR">
-        <File Id="RemoteScriptingEditorExe" Name="RemoteScriptingEditor.exe" DiskId="1" KeyPath="yes" Source="$(var.SourceFolder)\RemoteScriptingEditor.exe" />
+        <File Id="RemoteScriptingEditorExe" Name="RemoteScriptingEditor.exe" DiskId="1" KeyPath="yes" Source="$(var.BinaryFolder)\RemoteScriptingEditor.exe" />
       </Component>
 
       <Component Id="MainAppShortcut" Guid="5A8B18B1-9CCB-4A2B-87AC-AC8B62DCFD2D" Directory="MainAppShortcutFolder">
@@ -33,15 +33,15 @@
       </Component>
 
       <Component Id="LibExifDll" Guid="49D38FCA-EB5D-4C6B-A321-1B11D5D491BE" Directory="INSTALLDIR">
-        <File Id="LibExifDll" Name="libexif.dll" DiskId="1" KeyPath="yes" Source="$(var.SourceFolder)\libexif.dll" />
+        <File Id="LibExifDll" Name="libexif.dll" DiskId="1" KeyPath="yes" Source="$(var.BinaryFolder)\libexif.dll" />
       </Component>
 
     </ComponentGroup>
 
     <ComponentGroup Id="ScintillaFiles">
        <Component Id="SciLexerDll" Guid="F024868C-B467-4A54-BA44-35D2B1039991" Directory="INSTALLDIR">
-         <File Id="SciLexerDll" Name="SciLexer.dll" DiskId="1" KeyPath="yes" Source="$(var.SourceFolder)\SciLexer.dll" />
-         <File Id="LuaProperties" Name="lua.properties" DiskId="1" KeyPath="no" Source="$(var.SourceFolder)\lua.properties" />
+         <File Id="SciLexerDll" Name="SciLexer.dll" DiskId="1" KeyPath="yes" Source="$(var.BinaryFolder)\SciLexer.dll" />
+         <File Id="LuaProperties" Name="lua.properties" DiskId="1" KeyPath="no" Source="$(var.BinaryFolder)\lua.properties" />
        </Component>
     </ComponentGroup>
 

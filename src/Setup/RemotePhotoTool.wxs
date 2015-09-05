@@ -2,20 +2,21 @@
 <!--
 
   RemotePhotoTool - remote camera control software
-  Copyright (C) 2008-2014 Michael Fink
+  Copyright (C) 2008-2015 Michael Fink
 
-  RemotePhotoTool.wxs - RemotePhotoTool install package
+  RemotePhotoTool.wxs - RemotePhotoTool setup package
 
 -->
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
 
   <?include Config.wxi ?>
 
-  <Product Id="$(var.ProductId)"
+  <Product Id="*"
      UpgradeCode="$(var.UpgradeCode)"
      Name="$(var.ProductName)"
      Language="1033"
-     Version="$(var.Version)" Manufacturer="Michael Fink">
+     Version="$(var.Version)"
+     Manufacturer="Michael Fink">
 
     <Package Id="*"
        Description="$(var.ProductNameVersion) Setup"
@@ -23,18 +24,21 @@
        Manufacturer="Michael Fink"
        InstallerVersion="405"
        InstallPrivileges="elevated"
+       InstallScope="perMachine"
        AdminImage="no"
        Compressed="yes"
        ShortNames="no"
        Languages="1033"
-       Keywords="$(var.ProductName) Canon Remote Capture"
+       Keywords="$(var.ProductName) Canon Camera Remote Capture Lua Scripting"
        SummaryCodepage="1252"
        Platform="x86" />
 
-    <Media Id="1" Cabinet="data1.cab" EmbedCab="yes" />
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+
+    <MediaTemplate EmbedCab="yes" />
 
     <Directory Id="TARGETDIR" Name="SourceDir">
-      <Merge Id="VCRedist" SourceFile="$(env.CommonProgramFiles)\Merge Modules\Microsoft_VC120_CRT_x86.msm" DiskId="1" Language="0" />
+      <Merge Id="VCRedist" SourceFile="$(env.CommonProgramFiles)\Merge Modules\Microsoft_VC140_CRT_x86.msm" DiskId="1" Language="0" />
       <Directory Id="ProgramFilesFolder">
         <Directory Id="MainAppFolder" Name="$(var.ProductName)">
           <Directory Id="INSTALLDIR" Name=".">
@@ -54,10 +58,9 @@
       <ComponentGroupRef Id="PsrecFiles" />
       <ComponentGroupRef Id="CdsdkFiles" />
       <ComponentGroupRef Id="ScintillaFiles" />
-
     </Feature>
 
-    <Feature Id="VCRedist" Title="Visual C++ 2012 Runtime" AllowAdvertise="no" Display="hidden" Level="1">
+    <Feature Id="VCRedist" Title="Visual C++ 2015 Runtime" AllowAdvertise="no" Display="hidden" Level="1">
       <MergeRef Id="VCRedist"/>
     </Feature>
 
@@ -84,13 +87,11 @@
 
     <!-- common properties -->
 
-    <Property Id="ALLUSERS"><![CDATA[1]]></Property>
-
     <Property Id="ARPURLINFOABOUT"><![CDATA[http://vividos.github.io/RemotePhotoTool/]]></Property>
     <Property Id="ARPCOMMENTS"><![CDATA[For more information, please visit hhttp://vividos.github.io/RemotePhotoTool/]]></Property>
     <Property Id="ARPHELPLINK" Value="http://vividos.github.io/RemotePhotoTool/" />
 
-    <Icon Id="RemotePhotoToolIcon" SourceFile="$(var.SourceFolder)\..\..\src\RemotePhotoTool\res\RemotePhotoTool.ico"/>
+    <Icon Id="RemotePhotoToolIcon" SourceFile="$(var.SourceFolder)\RemotePhotoTool\res\RemotePhotoTool.ico"/>
     <Property Id="ARPPRODUCTICON" Value="RemotePhotoToolIcon" />
 
     <UIRef Id="WixUI_InstallDir" />
@@ -108,34 +109,6 @@
       <ProgressText Action="ExecuteAction">System is being prepared for setup...</ProgressText>
       <ProgressText Action="InstallInitialize">Setup is being initialized...</ProgressText>
     </UI>
-
-    <!-- upgrade stuff -->
-
-    <Property Id="UPGRADEGUIDS" Secure="yes" />
-    <Property Id="NEWERFOUND" Secure="yes" />
-
-    <!-- upgrade section for all versions -->
-    <Upgrade Id="$(var.UpgradeCode)">
-      <!-- finds all previous versions and fills UPGRADEGUIDS with all product codes to remove -->
-      <UpgradeVersion Maximum="$(var.Version)"
-                      IncludeMaximum="no"
-                      Property="UPGRADEGUIDS"
-                      MigrateFeatures="yes"
-                         />
-
-      <!-- finds newer versions and prevents downgrades -->
-      <UpgradeVersion OnlyDetect="yes"
-                      Property="NEWERFOUND"
-                      Minimum="$(var.Version)"
-                      IncludeMinimum="no" />
-    </Upgrade>
-
-    <CustomAction Id="NoDowngrade" Error="A later version of [ProductName] is already installed." />
-
-    <InstallExecuteSequence>
-      <Custom Action="NoDowngrade" After="FindRelatedProducts">NEWERFOUND</Custom>
-      <RemoveExistingProducts After="InstallFinalize"/>
-    </InstallExecuteSequence>
 
   </Product>
 
