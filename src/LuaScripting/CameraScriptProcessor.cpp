@@ -13,6 +13,7 @@
 #include "CanonControlLuaBindings.hpp"
 #include "LuaScriptWorkerThread.hpp"
 #include <lua.h>
+#include <lualib.h>
 
 /// implementation class, mostly for bindings
 class CameraScriptProcessor::Impl : public std::enable_shared_from_this<CameraScriptProcessor::Impl>
@@ -67,6 +68,7 @@ public:
    /// inits bindings to system functions and CanonControl
    void InitBindings()
    {
+      InitBuiltinLibs();
       InitGlobalFunctions();
       InitExtraBindings();
    }
@@ -157,6 +159,25 @@ public:
    }
 
 private:
+   void InitBuiltinLibs()
+   {
+      Lua::State& state = GetState();
+
+      // set up built-in libs
+      state.RequireLib(LUA_COLIBNAME);
+      state.RequireLib(LUA_STRLIBNAME);
+      state.RequireLib(LUA_TABLIBNAME);
+      state.RequireLib(LUA_MATHLIBNAME);
+      state.RequireLib(LUA_UTF8LIBNAME);
+      state.RequireLib(LUA_DBLIBNAME);
+
+      // omitted:
+      // basic (can load external scripts)
+      // package (can load external scripts)
+      // io (can write files)
+      // os (can interact with file system, start external programs)
+   }
+
    void InitGlobalFunctions()
    {
       // global print() function
