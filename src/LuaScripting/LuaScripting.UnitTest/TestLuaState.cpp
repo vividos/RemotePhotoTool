@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2015 Michael Fink
 //
 /// \file TestLuaState.cpp Tests for Lua::State class
 //
@@ -186,7 +186,7 @@ namespace LuaScriptingUnitTest
          Lua::State state;
 
          // define a function to call back
-         Lua::T_fnCFunction fn = [&] (const std::vector<Lua::Value>& vecParams) -> std::vector<Lua::Value>
+         Lua::T_fnCFunction fn = [&] (Lua::State&, const std::vector<Lua::Value>& vecParams) -> std::vector<Lua::Value>
          {
             if (vecParams.size() != 1)
                throw std::runtime_error("must pass exactly 1 value");
@@ -385,7 +385,7 @@ namespace LuaScriptingUnitTest
          // setup
 
          // define a function to call back
-         Lua::T_fnCFunction fn = [&] (const std::vector<Lua::Value>&) -> std::vector<Lua::Value>
+         Lua::T_fnCFunction fn = [&] (Lua::State&, const std::vector<Lua::Value>&) -> std::vector<Lua::Value>
          {
             std::vector<Lua::Value> vecRetValues;
             vecRetValues.push_back(Lua::Value(42.0));
@@ -413,7 +413,7 @@ namespace LuaScriptingUnitTest
          // setup
 
          // define a function to call back
-         Lua::T_fnCFunction fn = [&] (const std::vector<Lua::Value>& vecParams) -> std::vector<Lua::Value>
+         Lua::T_fnCFunction fn = [&] (Lua::State&, const std::vector<Lua::Value>& vecParams) -> std::vector<Lua::Value>
          {
             if (vecParams.size() != 1)
                throw std::runtime_error("must pass exactly 1 value");
@@ -468,7 +468,7 @@ namespace LuaScriptingUnitTest
          // setup
 
          // define a function to call back
-         Lua::T_fnCFunction fn = [&] (const std::vector<Lua::Value>& vecParams) -> std::vector<Lua::Value>
+         Lua::T_fnCFunction fn = [] (Lua::State& paramState, const std::vector<Lua::Value>& vecParams) -> std::vector<Lua::Value>
          {
             if (vecParams.size() != 1)
                throw std::runtime_error("must pass exactly 1 value");
@@ -476,7 +476,7 @@ namespace LuaScriptingUnitTest
             if (Lua::Value::typeNumber != vecParams[0].GetType())
                throw std::runtime_error("must pass a number value");
 
-            Lua::Table table = state.AddTable(_T(""));
+            Lua::Table table = paramState.AddTable(_T(""));
             table.AddValue(_T("def"), vecParams[0]);
 
             std::vector<Lua::Value> vecRetValues;
@@ -508,7 +508,7 @@ namespace LuaScriptingUnitTest
          // setup
 
          // define a function to call back
-         Lua::T_fnCFunction fn = [&] (const std::vector<Lua::Value>& vecParams) -> std::vector<Lua::Value>
+         Lua::T_fnCFunction fn = [&] (Lua::State&, const std::vector<Lua::Value>& vecParams) -> std::vector<Lua::Value>
          {
             if (vecParams.size() != 1)
                throw std::runtime_error("must pass exactly 1 value");
@@ -547,7 +547,7 @@ namespace LuaScriptingUnitTest
          // setup
 
          // define a function to call back
-         Lua::T_fnCFunction fnAsyncWait = [&](const std::vector<Lua::Value>& vecParams) -> std::vector<Lua::Value>
+         Lua::T_fnCFunction fnAsyncWait = [](Lua::State& paramState, const std::vector<Lua::Value>& vecParams) -> std::vector<Lua::Value>
          {
             if (vecParams.size() != 1)
                throw std::runtime_error("must pass exactly 1 value");
@@ -558,12 +558,12 @@ namespace LuaScriptingUnitTest
             Lua::Function func = vecParams[0].Get<Lua::Function>();
 
             // add function as value
-            state.AddValue(_T("_the_handler"), vecParams[0]);
+            paramState.AddValue(_T("_the_handler"), vecParams[0]);
 
             return std::vector<Lua::Value>();
          };
 
-         Lua::T_fnCFunction fnHandler = [&](const std::vector<Lua::Value>& vecParams)-> std::vector<Lua::Value>
+         Lua::T_fnCFunction fnHandler = [](Lua::State&, const std::vector<Lua::Value>& vecParams)-> std::vector<Lua::Value>
          {
             if (vecParams.size() != 1)
                throw std::runtime_error("must pass exactly 1 value");
@@ -600,7 +600,7 @@ namespace LuaScriptingUnitTest
          // setup
 
          // define a function to call back
-         Lua::T_fnCFunction fnAsyncWait = [&](const std::vector<Lua::Value>& vecParams) -> std::vector<Lua::Value>
+         Lua::T_fnCFunction fnAsyncWait = [](Lua::State&, const std::vector<Lua::Value>& vecParams) -> std::vector<Lua::Value>
          {
             if (vecParams.size() != 2)
                throw std::runtime_error("must pass exactly 2 values");
@@ -620,7 +620,7 @@ namespace LuaScriptingUnitTest
             return std::vector<Lua::Value>();
          };
 
-         Lua::T_fnCFunction fnHandler = [&](const std::vector<Lua::Value>& vecParams)-> std::vector<Lua::Value>
+         Lua::T_fnCFunction fnHandler = [](Lua::State&, const std::vector<Lua::Value>& vecParams)-> std::vector<Lua::Value>
          {
             if (vecParams.size() != 2)
                throw std::runtime_error("must pass exactly 2 values");
@@ -654,6 +654,250 @@ namespace LuaScriptingUnitTest
          Assert::AreEqual<size_t>(1, vecRetval.size(), _T("must have returned 1 return value"));
 
          Assert::AreEqual(vecRetval[0].Get<double>(), 42.0, 1e-6, _T("value must be 42.0"));
+      }
+
+      TEST_METHOD(TestThreadEmptyCtor)
+      {
+         // setup
+         Lua::State state;
+         Lua::Thread thread(state);
+
+         // run
+
+         // check
+         Assert::IsTrue(thread.Status() == Lua::Thread::statusOK, _T("non-started thread must have status statusOK"));
+      }
+
+      TEST_METHOD(TestThreadCallFunc)
+      {
+         // setup
+         Lua::State state;
+         Lua::Thread thread(state);
+
+         state.LoadSourceString(_T("function run() return; end"));
+
+         // run
+         Lua::Function func = thread.GetValue(_T("run")).Get<Lua::Function>();
+
+         std::vector<Lua::Value> vecParam;
+         std::pair<int, std::vector<Lua::Value>> retVal = thread.Start(func, vecParam);
+
+         // check
+         Assert::IsTrue(retVal.first == Lua::Thread::statusOK, _T("status of finished thread must be statusOK"));
+         Assert::IsTrue(retVal.second.empty(), _T("must have returned no return values"));
+      }
+
+      TEST_METHOD(TestThreadCallFuncReturnValue)
+      {
+         // setup
+         Lua::State state;
+         Lua::Thread thread(state);
+
+         state.LoadSourceString(_T("function run() return 42, 42==6*7, \"123abc\", nil; end"));
+
+         // run
+         Lua::Function func = thread.GetValue(_T("run")).Get<Lua::Function>();
+
+         std::vector<Lua::Value> vecParam;
+         std::pair<int, std::vector<Lua::Value>> retVal = thread.Start(func, vecParam);
+
+         // check
+         Assert::IsTrue(retVal.first == Lua::Thread::statusOK, _T("status of finished thread must be statusOK"));
+
+         std::vector<Lua::Value>& vecRetvals = retVal.second;
+
+         Assert::AreEqual<size_t>(4, vecRetvals.size(), _T("must have returned 4 return values"));
+
+         Assert::IsTrue(Lua::Value::typeNumber == vecRetvals[0].GetType(), _T("type must be number"));
+         Assert::AreEqual(vecRetvals[0].Get<double>(), 42.0, 1e-6, _T("value must be 42"));
+
+         Assert::IsTrue(Lua::Value::typeBoolean == vecRetvals[1].GetType(), _T("type must be boolean"));
+         Assert::IsTrue(Lua::Value::typeString == vecRetvals[2].GetType(), _T("type must be string"));
+         Assert::IsTrue(Lua::Value::typeNil == vecRetvals[3].GetType(), _T("type must be nil"));
+      }
+
+      TEST_METHOD(TestThreadCallFunctionInTable)
+      {
+         // setup
+         Lua::State state;
+         Lua::Thread thread(state);
+
+         state.LoadSourceString(_T("abc = { def = function(self, val) return val, val+val, val*val end }"));
+
+         // run
+         Lua::Table table = thread.GetTable(_T("abc"));
+
+         Lua::Function func = table.GetValue(_T("def")).Get<Lua::Function>();
+
+         std::vector<Lua::Value> vecParam;
+         vecParam.push_back(Lua::Value(table));
+         vecParam.push_back(Lua::Value(42.0));
+
+         std::pair<int, std::vector<Lua::Value>> retVal = thread.Start(func, vecParam);
+
+         // check
+         Assert::IsTrue(retVal.first == Lua::Thread::statusOK, _T("status of finished thread must be statusOK"));
+
+         std::vector<Lua::Value>& vecRetvals = retVal.second;
+
+         Assert::AreEqual<size_t>(3, vecRetvals.size(), _T("must have returned 3 return values"));
+
+         Assert::AreEqual(vecRetvals[0].Get<double>(), 42.0, 1e-6, _T("value must be 42"));
+         Assert::AreEqual(vecRetvals[1].Get<double>(), 42.0 + 42.0, 1e-6, _T("value must be 42+42"));
+         Assert::AreEqual(vecRetvals[2].Get<double>(), 42.0*42.0, 1e-6, _T("value must be 42*42"));
+      }
+
+      TEST_METHOD(TestThreadCallFunctionClosure)
+      {
+         // setup
+         Lua::State state;
+         Lua::Thread thread(state);
+
+         // define a function to call back
+         Lua::T_fnCFunction fn = [](Lua::State&, const std::vector<Lua::Value>& vecParams) -> std::vector<Lua::Value>
+         {
+            if (vecParams.size() != 1)
+               throw std::runtime_error("must pass exactly 1 value");
+
+            if (Lua::Value::typeNumber != vecParams[0].GetType())
+               throw std::runtime_error("must pass a number value");
+
+            std::vector<Lua::Value> vecRetValues;
+            vecRetValues.push_back(Lua::Value(vecParams[0].Get<double>() * 42.0));
+
+            return vecRetValues;
+         };
+
+         state.AddFunction(_T("run"), fn);
+
+         // run
+         Lua::Function func = thread.GetValue(_T("run")).Get<Lua::Function>();
+
+         std::vector<Lua::Value> vecParam1;
+         vecParam1.push_back(Lua::Value(3.0));
+         std::pair<int, std::vector<Lua::Value>> retVal = thread.Start(func, vecParam1);
+
+         // check
+         Assert::IsTrue(retVal.first == Lua::Thread::statusOK, _T("status of finished thread must be statusOK"));
+
+         std::vector<Lua::Value>& vecRetvals = retVal.second;
+
+         Assert::AreEqual<size_t>(1, vecRetvals.size(), _T("must have returned 1 return values"));
+
+         Assert::IsTrue(Lua::Value::typeNumber == vecRetvals[0].GetType(), _T("type must be number"));
+         Assert::AreEqual(3.0 * 42.0, vecRetvals[0].Get<double>(), 1e-6, _T("value must match calculated value"));
+      }
+
+      TEST_METHOD(TestThreadStartYieldResume)
+      {
+         // setup
+         Lua::State state;
+         Lua::Thread thread(state);
+
+         state.RequireLib("coroutine");
+         state.LoadSourceString(_T("function run(value) return coroutine.yield(value * 42, 64); end"));
+
+         // run 1
+         Lua::Function func = thread.GetValue(_T("run")).Get<Lua::Function>();
+
+         std::vector<Lua::Value> vecParam1;
+         vecParam1.push_back(Lua::Value(3.0));
+         std::pair<int, std::vector<Lua::Value>> retVal1 = thread.Start(func, vecParam1);
+
+         // check 1
+         Assert::IsTrue(retVal1.first == Lua::Thread::statusYield, _T("status of finished thread must be statusYield"));
+
+         std::vector<Lua::Value>& vecRetvals1 = retVal1.second;
+         Assert::AreEqual<size_t>(2, vecRetvals1.size(), _T("must have returned 2 return values"));
+
+         double dValue2 = vecRetvals1[0].Get<double>() - vecRetvals1[1].Get<double>();
+
+         // run 2
+         std::vector<Lua::Value> vecParam2;
+         vecParam2.push_back(Lua::Value(dValue2));
+
+         std::pair<int, std::vector<Lua::Value>> retVal2 = thread.Resume(vecParam2);
+
+         // check 2
+         Assert::IsTrue(retVal2.first == Lua::Thread::statusOK, _T("status of finished thread must be statusOK"));
+
+         std::vector<Lua::Value>& vecRetvals2 = retVal2.second;
+
+         Assert::AreEqual<size_t>(1, vecRetvals2.size(), _T("must have returned 1 return values"));
+
+         Assert::IsTrue(Lua::Value::typeNumber == vecRetvals2[0].GetType(), _T("type must be number"));
+         Assert::AreEqual(3.0 * 42.0 - 64.0, 1e-6, vecRetvals2[0].Get<double>(), _T("value must match calculated value"));
+      }
+
+      TEST_METHOD(TestThreadYieldInClosure)
+      {
+         // setup
+         Lua::State state;
+         Lua::Thread thread(state);
+
+         // define a function to call back
+         Lua::T_fnCFunction fn = [&thread](Lua::State&, const std::vector<Lua::Value>& vecParams) -> std::vector<Lua::Value>
+         {
+            if (vecParams.size() != 1)
+               throw std::runtime_error("must have passed exactly 1 value");
+
+            if (Lua::Value::typeNumber != vecParams[0].GetType())
+               throw std::runtime_error("must pass a number value");
+
+            // yield to caller
+            std::vector<Lua::Value> vecYieldParams;
+            vecYieldParams.push_back(Lua::Value(vecParams[0].Get<double>() * 42.0));
+            vecYieldParams.push_back(Lua::Value(64.0));
+
+            auto continuation = [&thread](Lua::State&, const std::vector<Lua::Value>& vecParams2) -> std::vector<Lua::Value>
+            {
+               if (vecParams2.size() != 1)
+                  throw std::runtime_error("must have passed exactly 1 value");
+
+               std::vector<Lua::Value> vecRetValues;
+               vecRetValues.push_back(vecParams2[0]);
+
+               return vecRetValues;
+            };
+
+            thread.Yield(vecYieldParams, continuation);
+         };
+
+         state.AddFunction(_T("run"), fn);
+
+         // run 1
+         std::pair<int, std::vector<Lua::Value>> retVal1;
+         {
+            Lua::Function func = thread.GetValue(_T("run")).Get<Lua::Function>();
+
+            std::vector<Lua::Value> vecParam1;
+            vecParam1.push_back(Lua::Value(3.0));
+            retVal1 = thread.Start(func, vecParam1);
+         }
+
+         // check 1
+         Assert::IsTrue(retVal1.first == Lua::Thread::statusYield, _T("status of finished thread must be statusYield"));
+
+         std::vector<Lua::Value>& vecRetvals1 = retVal1.second;
+         Assert::AreEqual<size_t>(2, vecRetvals1.size(), _T("must have returned 2 return values"));
+
+         double dValue2 = vecRetvals1[0].Get<double>() - vecRetvals1[1].Get<double>();
+
+         // run 2
+         std::vector<Lua::Value> vecParam2;
+         vecParam2.push_back(Lua::Value(dValue2));
+
+         std::pair<int, std::vector<Lua::Value>> retVal2 = thread.Resume(vecParam2);
+
+         // check 2
+         Assert::IsTrue(retVal2.first == Lua::Thread::statusOK, _T("status of finished thread must be statusOK"));
+
+         std::vector<Lua::Value>& vecRetvals2 = retVal2.second;
+
+         Assert::AreEqual<size_t>(1, vecRetvals2.size(), _T("must have returned 1 return values"));
+
+         Assert::IsTrue(Lua::Value::typeNumber == vecRetvals2[0].GetType(), _T("type must be number"));
+         Assert::AreEqual(3.0 * 42.0 - 64.0, 1e-6, vecRetvals2[0].Get<double>(), _T("value must match calculated value"));
       }
    };
 }

@@ -57,7 +57,8 @@ void CanonControlLuaBindings::InitBindings()
 
    /// local instance = Sys:getInstance()
    sys.AddFunction("getInstance",
-      std::bind(&CanonControlLuaBindings::SysGetInstance, shared_from_this()));
+      std::bind(&CanonControlLuaBindings::SysGetInstance, shared_from_this(),
+         std::placeholders::_1));
 
    InitConstants();
 }
@@ -159,7 +160,6 @@ void CanonControlLuaBindings::CancelHandlers()
    if (appValue.GetType() == Lua::Value::typeTable)
    {
       Lua::Table app = appValue.Get<Lua::Table>();
-      //Lua::Table app = GetState().GetTable(_T("App"));
 
       app.AddValue(c_pszAsyncWaitForCamera_OnConnectedHandler, Lua::Value());
       app.AddValue(c_pszSetAvailImageHandler_OnAvailImageHandler, Lua::Value());
@@ -177,18 +177,20 @@ void CanonControlLuaBindings::CleanupBindings()
    GetState().CollectGarbage();
 }
 
-std::vector<Lua::Value> CanonControlLuaBindings::SysGetInstance()
+std::vector<Lua::Value> CanonControlLuaBindings::SysGetInstance(Lua::State& state)
 {
-   Lua::Table instance = GetState().AddTable(_T(""));
+   Lua::Table instance = state.AddTable(_T(""));
 
    instance.AddFunction("getVersion",
       std::bind(&CanonControlLuaBindings::InstanceGetVersion, shared_from_this()));
 
    instance.AddFunction("enumerateDevices",
-      std::bind(&CanonControlLuaBindings::InstanceEnumerateDevices, shared_from_this()));
+      std::bind(&CanonControlLuaBindings::InstanceEnumerateDevices, shared_from_this(),
+         std::placeholders::_1));
 
    instance.AddFunction("asyncWaitForCamera",
-      std::bind(&CanonControlLuaBindings::InstanceAsyncWaitForCamera, shared_from_this(), std::placeholders::_1));
+      std::bind(&CanonControlLuaBindings::InstanceAsyncWaitForCamera, shared_from_this(),
+         std::placeholders::_1, std::placeholders::_2));
 
    std::vector<Lua::Value> vecRetValues;
 
@@ -205,19 +207,19 @@ std::vector<Lua::Value> CanonControlLuaBindings::InstanceGetVersion()
    return vecRetValues;
 }
 
-std::vector<Lua::Value> CanonControlLuaBindings::InstanceEnumerateDevices()
+std::vector<Lua::Value> CanonControlLuaBindings::InstanceEnumerateDevices(Lua::State& state)
 {
    std::vector<std::shared_ptr<SourceInfo>> vecSourceInfo;
    m_upInstance->EnumerateDevices(vecSourceInfo);
 
    std::vector<Lua::Value> vecRetValues;
 
-   Lua::Table table = GetState().AddTable(_T(""));
+   Lua::Table table = state.AddTable(_T(""));
 
    size_t uiIndex = 0;
 
    std::for_each(vecSourceInfo.begin(), vecSourceInfo.end(), [&](std::shared_ptr<SourceInfo> spSourceInfo){
-      AddSourceInfo(table, uiIndex++, spSourceInfo);
+      AddSourceInfo(state, table, uiIndex++, spSourceInfo);
    });
 
    table.AddValue(_T("length"), Lua::Value(static_cast<int>(uiIndex)));
@@ -227,15 +229,17 @@ std::vector<Lua::Value> CanonControlLuaBindings::InstanceEnumerateDevices()
    return vecRetValues;
 }
 
-std::vector<Lua::Value> CanonControlLuaBindings::InstanceAsyncWaitForCamera(const std::vector<Lua::Value>& vecParams)
+std::vector<Lua::Value> CanonControlLuaBindings::InstanceAsyncWaitForCamera(
+   Lua::State& state,
+   const std::vector<Lua::Value>& vecParams)
 {
    if (vecParams.size() != 1 && vecParams.size() != 2)
-      throw Lua::Exception(_T("instance:asyncWaitForCamera() needs callback parameter"), GetState().GetState(), __FILE__, __LINE__);
+      throw Lua::Exception(_T("instance:asyncWaitForCamera() needs callback parameter"), state.GetState(), __FILE__, __LINE__);
 
    if (vecParams[0].GetType() != Lua::Value::typeTable)
-      throw Lua::Exception(_T("instance:asyncWaitForCamera() was passed an illegal 'self' value"), GetState().GetState(), __FILE__, __LINE__);
+      throw Lua::Exception(_T("instance:asyncWaitForCamera() was passed an illegal 'self' value"), state.GetState(), __FILE__, __LINE__);
 
-   Lua::Table app = GetState().GetTable(_T("App"));
+   Lua::Table app = state.GetTable(_T("App"));
 
    if (vecParams.size() == 1)
    {
@@ -288,15 +292,15 @@ void CanonControlLuaBindings::AsyncWaitForCamera_OnCameraConnected()
    }
 }
 
-void CanonControlLuaBindings::AddSourceInfo(Lua::Table& table, size_t uiIndex, std::shared_ptr<SourceInfo> spSourceInfo)
+void CanonControlLuaBindings::AddSourceInfo(Lua::State& state, Lua::Table& table, size_t uiIndex, std::shared_ptr<SourceInfo> spSourceInfo)
 {
-   Lua::Table sourceInfo = GetState().AddTable(_T(""));
+   Lua::Table sourceInfo = state.AddTable(_T(""));
 
    sourceInfo.AddValue(_T("name"), Lua::Value(spSourceInfo->Name()));
 
    sourceInfo.AddFunction("open",
       std::bind(&CanonControlLuaBindings::SourceInfoOpen, shared_from_this(),
-         spSourceInfo, std::placeholders::_1));
+         spSourceInfo, std::placeholders::_1, std::placeholders::_2));
 
    // add our table as index 1..N of parent table; Lua uses 1-based indices
    CString cszIndex;
@@ -307,14 +311,15 @@ void CanonControlLuaBindings::AddSourceInfo(Lua::Table& table, size_t uiIndex, s
 
 std::vector<Lua::Value> CanonControlLuaBindings::SourceInfoOpen(
    std::shared_ptr<SourceInfo> spSourceInfo,
+   Lua::State& state,
    const std::vector<Lua::Value>& vecParams)
 {
    if (vecParams.size() != 1)
-      throw Lua::Exception(_T("invalid number of parameters to SourceInfo:open()"), GetState().GetState(), __FILE__, __LINE__);
+      throw Lua::Exception(_T("invalid number of parameters to SourceInfo:open()"), state.GetState(), __FILE__, __LINE__);
 
    std::shared_ptr<SourceDevice> spSourceDevice = spSourceInfo->Open();
 
-   Lua::Table sourceDevice = GetState().AddTable(_T(""));
+   Lua::Table sourceDevice = state.AddTable(_T(""));
    InitSourceDeviceTable(spSourceDevice, sourceDevice);
 
    std::vector<Lua::Value> vecRetValues;
@@ -330,20 +335,30 @@ void CanonControlLuaBindings::InitSourceDeviceTable(std::shared_ptr<SourceDevice
    sourceDevice.AddValue(_T("serialNumber"), Lua::Value(spSourceDevice->SerialNumber()));
 
    sourceDevice.AddFunction("getDeviceCapability",
-      std::bind(&CanonControlLuaBindings::SourceDeviceGetDeviceCapability, shared_from_this(), spSourceDevice, std::placeholders::_1));
+      std::bind(&CanonControlLuaBindings::SourceDeviceGetDeviceCapability, shared_from_this(),
+         spSourceDevice, std::placeholders::_1, std::placeholders::_2));
+
    sourceDevice.AddFunction("enumDeviceProperties",
-      std::bind(&CanonControlLuaBindings::SourceDeviceEnumDeviceProperties, shared_from_this(), spSourceDevice));
+      std::bind(&CanonControlLuaBindings::SourceDeviceEnumDeviceProperties, shared_from_this(),
+         spSourceDevice, std::placeholders::_1));
+
    sourceDevice.AddFunction("getDeviceProperty",
-      std::bind(&CanonControlLuaBindings::SourceDeviceGetDeviceProperty, shared_from_this(), spSourceDevice, std::placeholders::_1));
+      std::bind(&CanonControlLuaBindings::SourceDeviceGetDeviceProperty, shared_from_this(),
+         spSourceDevice, std::placeholders::_1, std::placeholders::_2));
+
    sourceDevice.AddFunction("enterReleaseControl",
-      std::bind(&CanonControlLuaBindings::SourceDeviceEnterReleaseControl, shared_from_this(), spSourceDevice));
+      std::bind(&CanonControlLuaBindings::SourceDeviceEnterReleaseControl, shared_from_this(),
+         spSourceDevice, std::placeholders::_1));
 }
 
-std::vector<Lua::Value> CanonControlLuaBindings::SourceDeviceGetDeviceCapability(std::shared_ptr<SourceDevice> spSourceDevice,
+std::vector<Lua::Value> CanonControlLuaBindings::SourceDeviceGetDeviceCapability(
+   std::shared_ptr<SourceDevice> spSourceDevice,
+   Lua::State& state,
    const std::vector<Lua::Value>& vecParams)
 {
    if (vecParams.size() != 2)
-      throw Lua::Exception(_T("invalid number of parameters to SourceDevice:getDeviceCapability()"), GetState().GetState(), __FILE__, __LINE__);
+      throw Lua::Exception(_T("invalid number of parameters to SourceDevice:getDeviceCapability()"),
+         state.GetState(), __FILE__, __LINE__);
 
    SourceDevice::T_enDeviceCapability enDeviceCapability =
       static_cast<SourceDevice::T_enDeviceCapability>(vecParams[1].Get<int>());
@@ -356,7 +371,9 @@ std::vector<Lua::Value> CanonControlLuaBindings::SourceDeviceGetDeviceCapability
    return vecRetValues;
 }
 
-std::vector<Lua::Value> CanonControlLuaBindings::SourceDeviceEnumDeviceProperties(std::shared_ptr<SourceDevice> spSourceDevice)
+std::vector<Lua::Value> CanonControlLuaBindings::SourceDeviceEnumDeviceProperties(
+   std::shared_ptr<SourceDevice> spSourceDevice,
+   Lua::State& state)
 {
    std::vector<unsigned int> vecDeviceProperties = spSourceDevice->EnumDeviceProperties();
 
@@ -364,7 +381,7 @@ std::vector<Lua::Value> CanonControlLuaBindings::SourceDeviceEnumDevicePropertie
 
    if (!vecDeviceProperties.empty())
    {
-      Lua::Table table = GetState().AddTable(_T(""));
+      Lua::Table table = state.AddTable(_T(""));
 
       size_t uiIndex = 1;
       std::for_each(vecDeviceProperties.begin(), vecDeviceProperties.end(), [&](unsigned int uiPropertyId){
@@ -382,18 +399,20 @@ std::vector<Lua::Value> CanonControlLuaBindings::SourceDeviceEnumDevicePropertie
    return vecRetValues;
 }
 
-std::vector<Lua::Value> CanonControlLuaBindings::SourceDeviceGetDeviceProperty(std::shared_ptr<SourceDevice> spSourceDevice,
+std::vector<Lua::Value> CanonControlLuaBindings::SourceDeviceGetDeviceProperty(
+   std::shared_ptr<SourceDevice> spSourceDevice,
+   Lua::State& state,
    const std::vector<Lua::Value>& vecParams)
 {
    if (vecParams.size() != 2)
-      throw Lua::Exception(_T("invalid number of parameters to SourceDevice:getDeviceProperty()"), GetState().GetState(), __FILE__, __LINE__);
+      throw Lua::Exception(_T("invalid number of parameters to SourceDevice:getDeviceProperty()"), state.GetState(), __FILE__, __LINE__);
 
    unsigned int uiPropertyId =
       static_cast<unsigned int>(vecParams[1].Get<int>());
 
    DeviceProperty deviceProperty = spSourceDevice->GetDeviceProperty(uiPropertyId);
 
-   Lua::Table table = GetState().AddTable(_T(""));
+   Lua::Table table = state.AddTable(_T(""));
 
    AddDeviceProperty(table, deviceProperty, spSourceDevice);
 
@@ -413,12 +432,14 @@ void CanonControlLuaBindings::AddDeviceProperty(Lua::Table& table, const DeviceP
    // can't use Variant values anyway.
 }
 
-std::vector<Lua::Value> CanonControlLuaBindings::SourceDeviceEnterReleaseControl(std::shared_ptr<SourceDevice> spSourceDevice)
+std::vector<Lua::Value> CanonControlLuaBindings::SourceDeviceEnterReleaseControl(
+   std::shared_ptr<SourceDevice> spSourceDevice,
+   Lua::State& state)
 {
    std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl = spSourceDevice->EnterReleaseControl();
    m_spRemoteRelaseControl = spRemoteReleaseControl;
 
-   Lua::Table remoteReleaseControl = GetState().AddTable(_T(""));
+   Lua::Table remoteReleaseControl = state.AddTable(_T(""));
    InitRemoteReleaseControlTable(spRemoteReleaseControl, remoteReleaseControl);
 
    std::vector<Lua::Value> vecRetValues;
@@ -430,37 +451,47 @@ std::vector<Lua::Value> CanonControlLuaBindings::SourceDeviceEnterReleaseControl
 void CanonControlLuaBindings::InitRemoteReleaseControlTable(std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl, Lua::Table& remoteReleaseControl)
 {
    remoteReleaseControl.AddFunction("getCapability",
-      std::bind(&CanonControlLuaBindings::RemoteReleaseControlGetCapability, shared_from_this(), spRemoteReleaseControl, std::placeholders::_1));
+      std::bind(&CanonControlLuaBindings::RemoteReleaseControlGetCapability, shared_from_this(), spRemoteReleaseControl,
+         std::placeholders::_1, std::placeholders::_2));
 
    remoteReleaseControl.AddFunction("setReleaseSettings",
-      std::bind(&CanonControlLuaBindings::RemoteReleaseControlSetReleaseSettings, shared_from_this(), spRemoteReleaseControl, std::placeholders::_1));
+      std::bind(&CanonControlLuaBindings::RemoteReleaseControlSetReleaseSettings, shared_from_this(), spRemoteReleaseControl,
+         std::placeholders::_1, std::placeholders::_2));
 
    // TODO event handlers
 
    remoteReleaseControl.AddFunction("enumImageProperties",
-      std::bind(&CanonControlLuaBindings::RemoteReleaseControlEnumImageProperties, shared_from_this(), spRemoteReleaseControl));
+      std::bind(&CanonControlLuaBindings::RemoteReleaseControlEnumImageProperties, shared_from_this(),
+         spRemoteReleaseControl, std::placeholders::_1));
+
    remoteReleaseControl.AddFunction("getImageProperty",
-      std::bind(&CanonControlLuaBindings::RemoteReleaseControlGetImageProperty, shared_from_this(), spRemoteReleaseControl, std::placeholders::_1));
+      std::bind(&CanonControlLuaBindings::RemoteReleaseControlGetImageProperty, shared_from_this(), spRemoteReleaseControl,
+         std::placeholders::_1, std::placeholders::_2));
 
    remoteReleaseControl.AddFunction("startViewfinder",
-      std::bind(&CanonControlLuaBindings::RemoteReleaseControlStartViewfinder, shared_from_this(), spRemoteReleaseControl));
+      std::bind(&CanonControlLuaBindings::RemoteReleaseControlStartViewfinder, shared_from_this(),
+         spRemoteReleaseControl, std::placeholders::_1));
 
    remoteReleaseControl.AddFunction("numAvailableShots",
       std::bind(&CanonControlLuaBindings::RemoteReleaseControlNumAvailableShots, shared_from_this(), spRemoteReleaseControl));
    remoteReleaseControl.AddFunction("sendCommand",
-      std::bind(&CanonControlLuaBindings::RemoteReleaseControlSendCommand, shared_from_this(), spRemoteReleaseControl, std::placeholders::_1));
+      std::bind(&CanonControlLuaBindings::RemoteReleaseControlSendCommand, shared_from_this(), spRemoteReleaseControl,
+         std::placeholders::_1, std::placeholders::_2));
 
    remoteReleaseControl.AddFunction("release",
       std::bind(&CanonControlLuaBindings::RemoteReleaseControlRelease, shared_from_this(), spRemoteReleaseControl));
    remoteReleaseControl.AddFunction("startBulb",
-      std::bind(&CanonControlLuaBindings::RemoteReleaseControlStartBulb, shared_from_this(), spRemoteReleaseControl));
+      std::bind(&CanonControlLuaBindings::RemoteReleaseControlStartBulb, shared_from_this(),
+         spRemoteReleaseControl, std::placeholders::_1));
 }
 
-std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlGetCapability(std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
+std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlGetCapability(
+   std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
+   Lua::State& state,
    const std::vector<Lua::Value>& vecParams)
 {
    if (vecParams.size() != 2)
-      throw Lua::Exception(_T("invalid number of parameters to RemoteReleaseControl:sendCommand()"), GetState().GetState(), __FILE__, __LINE__);
+      throw Lua::Exception(_T("invalid number of parameters to RemoteReleaseControl:sendCommand()"), state.GetState(), __FILE__, __LINE__);
 
    RemoteReleaseControl::T_enRemoteCapability enCapability =
       static_cast<RemoteReleaseControl::T_enRemoteCapability>(vecParams[1].Get<int>());
@@ -473,7 +504,9 @@ std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlGetCapabili
    return vecRetValues;
 }
 
-std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlSetReleaseSettings(std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
+std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlSetReleaseSettings(
+   std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
+   Lua::State& /*state*/,
    const std::vector<Lua::Value>& /*vecParams*/)
 {
    // TODO implement
@@ -481,7 +514,9 @@ std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlSetReleaseS
    return std::vector<Lua::Value>();
 }
 
-std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlEnumImageProperties(std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl)
+std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlEnumImageProperties(
+   std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
+   Lua::State& state)
 {
    std::vector<unsigned int> vecImageProperties = spRemoteReleaseControl->EnumImageProperties();
 
@@ -489,7 +524,7 @@ std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlEnumImagePr
 
    if (!vecImageProperties.empty())
    {
-      Lua::Table table = GetState().AddTable(_T(""));
+      Lua::Table table = state.AddTable(_T(""));
 
       size_t uiIndex = 1;
       std::for_each(vecImageProperties.begin(), vecImageProperties.end(), [&](unsigned int uiPropertyId){
@@ -509,17 +544,18 @@ std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlEnumImagePr
 
 std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlGetImageProperty(
    std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
+   Lua::State& state,
    const std::vector<Lua::Value>& vecParams)
 {
    if (vecParams.size() != 2)
-      throw Lua::Exception(_T("invalid number of parameters to RemoteReleaseControl:getImageProperty()"), GetState().GetState(), __FILE__, __LINE__);
+      throw Lua::Exception(_T("invalid number of parameters to RemoteReleaseControl:getImageProperty()"), state.GetState(), __FILE__, __LINE__);
 
    unsigned int uiPropertyId =
       static_cast<unsigned int>(vecParams[1].Get<int>());
 
    ImageProperty imageProperty = spRemoteReleaseControl->GetImageProperty(uiPropertyId);
 
-   Lua::Table table = GetState().AddTable(_T(""));
+   Lua::Table table = state.AddTable(_T(""));
 
    AddImageProperty(table, imageProperty, spRemoteReleaseControl);
 
@@ -540,12 +576,14 @@ void CanonControlLuaBindings::AddImageProperty(Lua::Table& table, const ImagePro
    // can't use Variant values anyway.
 }
 
-std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlStartViewfinder(std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl)
+std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlStartViewfinder(
+   std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
+   Lua::State& state)
 {
    std::shared_ptr<Viewfinder> spViewfinder = spRemoteReleaseControl->StartViewfinder();
    m_spViewfinder = spViewfinder;
 
-   Lua::Table viewfinder = GetState().AddTable(_T(""));
+   Lua::Table viewfinder = state.AddTable(_T(""));
    InitViewfinderTable(spViewfinder, viewfinder);
 
    std::vector<Lua::Value> vecRetValues;
@@ -554,7 +592,8 @@ std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlStartViewfi
    return vecRetValues;
 }
 
-std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlNumAvailableShots(std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl)
+std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlNumAvailableShots(
+   std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl)
 {
    unsigned int uiNumShots = spRemoteReleaseControl->NumAvailableShots();
 
@@ -564,11 +603,13 @@ std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlNumAvailabl
    return vecRetValues;
 }
 
-std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlSendCommand(std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
+std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlSendCommand(
+   std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
+   Lua::State& state,
    const std::vector<Lua::Value>& vecParams)
 {
    if (vecParams.size() != 2)
-      throw Lua::Exception(_T("invalid number of parameters to RemoteReleaseControl:sendCommand()"), GetState().GetState(), __FILE__, __LINE__);
+      throw Lua::Exception(_T("invalid number of parameters to RemoteReleaseControl:sendCommand()"), state.GetState(), __FILE__, __LINE__);
 
    RemoteReleaseControl::T_enCameraCommand enCameraCommand =
       static_cast<RemoteReleaseControl::T_enCameraCommand>(vecParams[1].Get<int>());
@@ -585,11 +626,13 @@ std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlRelease(std
    return std::vector<Lua::Value>();
 }
 
-std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlStartBulb(std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl)
+std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlStartBulb(
+   std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
+   Lua::State& state)
 {
    std::shared_ptr<BulbReleaseControl> spBulbReleaseControl = spRemoteReleaseControl->StartBulb();
 
-   Lua::Table bulbReleaseControl = GetState().AddTable(_T(""));
+   Lua::Table bulbReleaseControl = state.AddTable(_T(""));
    InitBulbReleaseControlTable(spBulbReleaseControl, bulbReleaseControl);
 
    std::vector<Lua::Value> vecRetValues;
@@ -601,19 +644,22 @@ std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlStartBulb(s
 void CanonControlLuaBindings::InitViewfinderTable(std::shared_ptr<Viewfinder> spViewfinder, Lua::Table& viewfinder)
 {
    viewfinder.AddFunction("setAvailImageHandler",
-      std::bind(&CanonControlLuaBindings::ViewfinderSetAvailImageHandler, shared_from_this(), spViewfinder, std::placeholders::_1));
+      std::bind(&CanonControlLuaBindings::ViewfinderSetAvailImageHandler, shared_from_this(), spViewfinder,
+         std::placeholders::_1, std::placeholders::_2));
 }
 
-std::vector<Lua::Value> CanonControlLuaBindings::ViewfinderSetAvailImageHandler(std::shared_ptr<Viewfinder> spViewfinder,
+std::vector<Lua::Value> CanonControlLuaBindings::ViewfinderSetAvailImageHandler(
+   std::shared_ptr<Viewfinder> spViewfinder,
+   Lua::State& state,
    const std::vector<Lua::Value>& vecParams)
 {
    if (vecParams.size() != 1 && vecParams.size() != 2)
-      throw Lua::Exception(_T("viewfinder:setAvailImageHandler() needs callback parameter"), GetState().GetState(), __FILE__, __LINE__);
+      throw Lua::Exception(_T("viewfinder:setAvailImageHandler() needs callback parameter"), state.GetState(), __FILE__, __LINE__);
 
    if (vecParams[0].GetType() != Lua::Value::typeTable)
-      throw Lua::Exception(_T("viewfinder:setAvailImageHandler() was passed an illegal 'self' value"), GetState().GetState(), __FILE__, __LINE__);
+      throw Lua::Exception(_T("viewfinder:setAvailImageHandler() was passed an illegal 'self' value"), state.GetState(), __FILE__, __LINE__);
 
-   Lua::Table app = GetState().GetTable(_T("App"));
+   Lua::Table app = state.GetTable(_T("App"));
 
    if (vecParams.size() == 1)
    {

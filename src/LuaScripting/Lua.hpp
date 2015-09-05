@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2015 Michael Fink
 //
 /// \file Lua.hpp Lua wrapper classes
 //
@@ -16,6 +16,10 @@
 
 // forward references
 struct lua_State;
+struct FuncData;
+
+// WinBase.h defines Yield()...
+#undef Yield
 
 /// Lua C++ wrapper classes
 namespace Lua
@@ -106,8 +110,9 @@ public:
       typeInteger,
       typeString,
       typeFunction,
-      typeUserdata,
       typeTable,
+      typeUserdata,
+      typeThread,
    };
 
    /// default ctor; constructs nil value
@@ -163,6 +168,9 @@ public:
    /// ctor; used to wrap Nil object
    explicit Value(class Nil nil);
 
+   /// ctor; used to wrap Thread object
+   explicit Value(class Thread thread);
+
    /// pushes value to stack
    void Push(State& state) const;
 
@@ -180,10 +188,11 @@ public:
          std::is_same<T, int>::value ||
          std::is_same<T, CString>::value ||
          std::is_same<T, LPCTSTR>::value ||
+         std::is_same<T, Function>::value ||
          std::is_same<T, Table>::value ||
          std::is_same<T, Userdata>::value ||
-         std::is_same<T, Function>::value ||
-         std::is_same<T, Nil>::value, "not an allowed type for Get<T>()");
+         std::is_same<T, Nil>::value ||
+         std::is_same<T, Thread>::value, "not an allowed type for Get<T>()");
 
       return boost::any_cast<T>(m_value);
    }
@@ -221,7 +230,7 @@ private:
 /// Internally the object is stored in a Lua userdata type with __call and __gc
 /// metafunctions that call or clean up the function. As soon as the userdata object is
 /// garbage collected, all bound variables (such as shared_from_this()) are destroyed.
-typedef std::function<std::vector<Value>(const std::vector<Value>&)> T_fnCFunction;
+typedef std::function<std::vector<Value>(State& state, const std::vector<Value>&)> T_fnCFunction;
 
 /// \brief Lua function
 /// \details Allows calling a Lua function; this object mostly results from a Lua::Value
@@ -293,6 +302,7 @@ public:
 
 private:
    friend class State;
+   friend class Thread;
    friend Value;
 
    // note: these ctors can only be called by Lua::State
@@ -483,6 +493,14 @@ public:
 private:
    friend Value;
    friend Table;
+   friend FuncData;
+   friend class Thread;
+
+   /// ctor that takes an existing state
+   explicit State(lua_State* L, bool mainState);
+
+   /// no-op deleter, used for non-mainState states
+   static void StateDeleterNoop(lua_State*);
 
    /// panic error handler
    static int OnLuaPanic(lua_State* L);
@@ -490,6 +508,76 @@ private:
 private:
    /// Lua state
    std::shared_ptr<lua_State> m_spState;
+};
+
+/// \brief Lua thread
+/// \details manages a Lua thread, also called coroutine.
+class Thread
+{
+public:
+   /// thread status
+   enum T_enThreadStatus
+   {
+      statusOK = 0,     ///< thread has returned or hasn't run yet
+      statusYield = 1,  ///< thread has yielded
+   };
+
+   /// ctor; creates a new thread
+   Thread(Lua::State& state);
+
+   /// callback function for Yield() that is called when thread is being Resume()d
+   typedef std::function<std::vector<Lua::Value>(Lua::State&, const std::vector<Lua::Value>&)> T_fnYieldCallback;
+
+   // access to thread state values
+
+   /// returns an existing global value
+   Value GetValue(const CString& cszName);
+
+   /// returns an existing table
+   Table GetTable(const CString& cszName);
+
+   // thread handling
+
+   /// returns status of Lua thread; either LUA_OK or LUA_YIELD
+   T_enThreadStatus Status() const throw();
+
+   /// starts a function running in this thread, with given function and params,
+   /// and returns new status and return values. Status must be LUA_OK (the thread
+   /// must not have been yielded.
+   std::pair<T_enThreadStatus, std::vector<Value>> Start(Function& func, const std::vector<Value>& vecParam);
+
+   /// resumes thread when a function has yielded (status must be LUA_YIELD)
+   /// and returns new status and return values.
+   std::pair<T_enThreadStatus, std::vector<Value>> Resume(const std::vector<Value>& vecParam);
+
+   /// yields this thread and passes the given values to the caller.
+   __declspec(noreturn)
+   void Yield(const std::vector<Value>& vecRetValues, T_fnYieldCallback fnYieldCallback = T_fnYieldCallback());
+
+   /// returns thread Lua state
+   lua_State* GetThreadState() { return m_threadState.GetState();  }
+
+private:
+   friend Value;
+
+   /// ctor; creates thread object from value on stack
+   explicit Thread(State& state, int iStackIndex, bool bTemporary);
+
+   /// resume implementation, used by Start() and Resume()
+   std::pair<T_enThreadStatus, std::vector<Lua::Value>> InternalResume(const std::vector<Lua::Value>& vecParam);
+
+   /// is called when Yield() is called
+   static int InternalYield(lua_State* L, int status, ptrdiff_t context);
+
+private:
+   /// parent state
+   Lua::State& m_state;
+
+   /// thread state
+   Lua::State m_threadState;
+
+   /// number of parameters used in the Resume() call
+   static size_t s_iNumResumeParams;
 };
 
 }; // namespace Lua

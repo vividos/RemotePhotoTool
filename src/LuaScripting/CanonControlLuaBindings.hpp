@@ -71,7 +71,7 @@ private:
    /// instance:getVersion()
    /// instance:enumerateDevices()
    /// instance:asyncWaitForCamera(callbackFunction)
-   std::vector<Lua::Value> SysGetInstance();
+   std::vector<Lua::Value> SysGetInstance(Lua::State& state);
 
    // Instance functions
 
@@ -79,10 +79,11 @@ private:
    std::vector<Lua::Value> InstanceGetVersion();
 
    /// local sourceInfoArray = instance:enumerateDevices()
-   std::vector<Lua::Value> InstanceEnumerateDevices();
+   std::vector<Lua::Value> InstanceEnumerateDevices(Lua::State& state);
 
    /// instance:asyncWaitForCamera(callbackFunction)
-   std::vector<Lua::Value> InstanceAsyncWaitForCamera(const std::vector<Lua::Value>& vecParams);
+   std::vector<Lua::Value> InstanceAsyncWaitForCamera(Lua::State& state,
+      const std::vector<Lua::Value>& vecParams);
 
    void AsyncWaitForCamera_OnCameraConnected();
 
@@ -90,11 +91,11 @@ private:
 
    /// adds a source info table to given table
    /// { name = "camera name", function open() ... end }
-   void AddSourceInfo(Lua::Table& table, size_t uiIndex, std::shared_ptr<SourceInfo> spSourceInfo);
+   void AddSourceInfo(Lua::State& state, Lua::Table& table, size_t uiIndex, std::shared_ptr<SourceInfo> spSourceInfo);
 
    /// local sourceDevice = sourceInfo:open()
    std::vector<Lua::Value> SourceInfoOpen(std::shared_ptr<SourceInfo> spSourceInfo,
-      const std::vector<Lua::Value>& vecParams);
+      Lua::State& state, const std::vector<Lua::Value>& vecParams);
 
    // SourceDevice functions
 
@@ -102,19 +103,21 @@ private:
 
    /// local isCapable = sourceDevice:getDeviceCapability(Constants.SourceDevice.capXxx)
    std::vector<Lua::Value> SourceDeviceGetDeviceCapability(std::shared_ptr<SourceDevice> spSourceDevice,
-      const std::vector<Lua::Value>& vecParams);
+      Lua::State& state, const std::vector<Lua::Value>& vecParams);
 
    /// local arrayDeviceProps = sourceDevice:enumDeviceProperties()
-   std::vector<Lua::Value> SourceDeviceEnumDeviceProperties(std::shared_ptr<SourceDevice> spSourceDevice);
+   std::vector<Lua::Value> SourceDeviceEnumDeviceProperties(std::shared_ptr<SourceDevice> spSourceDevice,
+      Lua::State& state);
 
    std::vector<Lua::Value> SourceDeviceGetDeviceProperty(std::shared_ptr<SourceDevice> spSourceDevice,
-      const std::vector<Lua::Value>& vecParams);
+      Lua::State& state, const std::vector<Lua::Value>& vecParams);
 
    /// adds a device property values to given table
    /// { id = "property id", name = "name", asString = "value", isReadOnly = true/false end }
    void AddDeviceProperty(Lua::Table& table, const DeviceProperty& deviceProperty, std::shared_ptr<SourceDevice> spSourceDevice);
 
-   std::vector<Lua::Value> SourceDeviceEnterReleaseControl(std::shared_ptr<SourceDevice> spSourceDevice);
+   std::vector<Lua::Value> SourceDeviceEnterReleaseControl(std::shared_ptr<SourceDevice> spSourceDevice,
+      Lua::State& state);
 
 
    // RemoteReleaseControl functions
@@ -122,29 +125,32 @@ private:
    void InitRemoteReleaseControlTable(std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl, Lua::Table& remoteReleaseControl);
 
    std::vector<Lua::Value> RemoteReleaseControlGetCapability(std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
-      const std::vector<Lua::Value>& vecParams);
+      Lua::State& state, const std::vector<Lua::Value>& vecParams);
 
    std::vector<Lua::Value> RemoteReleaseControlSetReleaseSettings(std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
-      const std::vector<Lua::Value>& vecParams);
+      Lua::State& state, const std::vector<Lua::Value>& vecParams);
 
-   std::vector<Lua::Value> RemoteReleaseControlEnumImageProperties(std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl);
+   std::vector<Lua::Value> RemoteReleaseControlEnumImageProperties(
+      std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl, Lua::State& state);
 
    std::vector<Lua::Value> RemoteReleaseControlGetImageProperty(std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
-      const std::vector<Lua::Value>& vecParams);
+      Lua::State& state, const std::vector<Lua::Value>& vecParams);
 
    void AddImageProperty(Lua::Table& table, const ImageProperty& imageProperty,
       std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl);
 
-   std::vector<Lua::Value> RemoteReleaseControlStartViewfinder(std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl);
+   std::vector<Lua::Value> RemoteReleaseControlStartViewfinder(
+      std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl, Lua::State& state);
 
    std::vector<Lua::Value> RemoteReleaseControlNumAvailableShots(std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl);
 
    std::vector<Lua::Value> RemoteReleaseControlSendCommand(std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
-      const std::vector<Lua::Value>& vecParams);
+      Lua::State& state, const std::vector<Lua::Value>& vecParams);
 
    std::vector<Lua::Value> RemoteReleaseControlRelease(std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl);
 
-   std::vector<Lua::Value> RemoteReleaseControlStartBulb(std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl);
+   std::vector<Lua::Value> RemoteReleaseControlStartBulb(
+      std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl, Lua::State& state);
 
    // Viewfinder functions
 
@@ -152,7 +158,7 @@ private:
 
    /// viewfinder:setAvailImageHandler(callbackFunction)
    std::vector<Lua::Value> ViewfinderSetAvailImageHandler(std::shared_ptr<Viewfinder> spViewfinder,
-      const std::vector<Lua::Value>& vecParams);
+      Lua::State& state, const std::vector<Lua::Value>& vecParams);
 
    void SetAvailImageHandler_OnAvailImageHandler(const std::vector<BYTE>& /*vecImage*/);
 

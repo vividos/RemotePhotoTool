@@ -19,7 +19,8 @@ class CameraScriptProcessor::Impl : public std::enable_shared_from_this<CameraSc
 public:
    /// ctor
    Impl()
-      :m_enExecutionState(stateIdle)
+      :m_enExecutionState(stateIdle),
+       m_thread(m_state)
    {
    }
    /// dtor
@@ -67,7 +68,7 @@ public:
    {
       // global print() function
       GetState().AddFunction(_T("print"),
-         std::bind(&Impl::Print, shared_from_this(), std::placeholders::_1));
+         std::bind(&Impl::Print, shared_from_this(), std::placeholders::_1, std::placeholders::_2));
 
       /// global Sys table
       {
@@ -96,12 +97,30 @@ public:
       {
          CurrentExecutionState(stateRunning);
 
-         Lua::Table app = GetState().GetTable(_T("App"));
+         Lua::Table app = m_thread.GetTable(_T("App"));
+         Lua::Function func = app.GetValue(_T("run")).Get<Lua::Function>();
 
          std::vector<Lua::Value> vecParam;
-         app.CallFunction(_T("run"), 0, vecParam);
+         vecParam.push_back(Lua::Value(app));
 
-         CurrentExecutionState(stateIdle);
+         std::pair<Lua::Thread::T_enThreadStatus, std::vector<Lua::Value>> retVal;
+         try
+         {
+            retVal = m_thread.Start(func, vecParam);
+         }
+         catch (const Lua::Exception&)
+         {
+            CurrentExecutionState(stateIdle);
+            throw;
+         }
+
+         if (retVal.first == Lua::Thread::statusOK)
+            CurrentExecutionState(stateIdle);
+         else
+            if (retVal.first == Lua::Thread::statusYield)
+               CurrentExecutionState(stateYield);
+            else
+               ATLASSERT(false); // unknown status code
       });
    }
 
@@ -144,10 +163,12 @@ private:
    // global functions
 
    /// prints values as output debug string
-   std::vector<Lua::Value> Print(const std::vector<Lua::Value>& vecParams)
+   std::vector<Lua::Value> Print(Lua::State& state, const std::vector<Lua::Value>& vecParams)
    {
-      lua_concat(GetState().GetState(), vecParams.size());
-      CString cszText = lua_tostring(GetState().GetState(), -1);
+      lua_State* L = state.GetState();
+
+      lua_concat(L, vecParams.size());
+      CString cszText = lua_tostring(L, -1);
 
       ATLTRACE(_T("%s\n"), cszText.GetString());
 
@@ -160,6 +181,9 @@ private:
 private:
    /// Lua state
    Lua::State m_state;
+
+   /// Lua thread that is used to run scripts
+   Lua::Thread m_thread;
 
    /// current execution state
    T_enExecutionState m_enExecutionState;

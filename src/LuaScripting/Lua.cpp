@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2015 Michael Fink
 //
 /// \file Lua.cpp Lua wrapper classes
 //
@@ -149,6 +149,12 @@ m_value(nil)
 {
 }
 
+Value::Value(Thread thread)
+:m_enType(typeThread),
+m_value(thread)
+{
+}
+
 void Value::Push(State& state) const
 {
    lua_State* L = state.GetState();
@@ -237,6 +243,9 @@ Value Value::FromStack(State& state, int iIndex, bool bTemporary)
    case LUA_TUSERDATA:
       return Value(Userdata(state, iIndex, bTemporary));
 
+   case LUA_TTHREAD:
+      return Value(Thread(state, iIndex, bTemporary));
+
    default:
       ATLASSERT(false); // type can't be converted into Value
       break;
@@ -253,9 +262,8 @@ Value Value::FromStack(State& state, int iIndex, bool bTemporary)
 struct FuncData
 {
    /// ctor
-   FuncData(State& state, T_fnCFunction fn)
-      :m_state(state),
-       m_fn(fn)
+   FuncData(T_fnCFunction fn)
+      :m_fn(fn)
    {
    }
 
@@ -271,9 +279,6 @@ struct FuncData
    /// garbage collect call
    static int OnFunctionGarbageCollect(lua_State* L);
 
-   /// Lua state
-   State& m_state;
-
    /// bound C++ function
    T_fnCFunction m_fn;
 };
@@ -285,7 +290,7 @@ void FuncData::PushCClosure(State& state, T_fnCFunction fn)
    // add userdata
    void* pUserdata = lua_newuserdata(L, sizeof(FuncData*));
    FuncData** pFunction = reinterpret_cast<FuncData**>(pUserdata);
-   *pFunction = new FuncData(state, fn);
+   *pFunction = new FuncData(fn);
 
    ATLASSERT(lua_isuserdata(L, -1) == 1);
 
@@ -326,17 +331,20 @@ int FuncData::OnFunctionCall(lua_State* L)
    // collect params
    int iStackDepth = lua_absindex(L, -1);
 
+   State paramState(L, false);
+
    std::vector<Value> vecParams;
    for (int i=1; i <= iStackDepth; i++)
-      vecParams.push_back(Value::FromStack(data.m_state, i, false));
+      vecParams.push_back(Value::FromStack(paramState, i, false));
 
    State::TraceUpvalues(L);
 
    // call bound function
-   std::vector<Value> vecRetVals = data.m_fn(vecParams);
+   std::vector<Value> vecRetVals = data.m_fn(paramState, vecParams);
 
    // push all params
-   std::for_each(vecRetVals.begin(), vecRetVals.end(), [&](const Value& value){ value.Push(data.m_state); });
+   std::for_each(vecRetVals.begin(), vecRetVals.end(),
+      [&](const Value& value){ value.Push(paramState); });
 
    return vecRetVals.size();
 }
@@ -369,7 +377,8 @@ std::vector<Value> Function::Call(int iResults, const std::vector<Value>& vecPar
 
    lua_pushvalue(L, m_iStackIndex);
 
-   std::for_each(vecParam.begin(), vecParam.end(), [&](const Value& value){ value.Push(m_state); });
+   std::for_each(vecParam.begin(), vecParam.end(),
+      [&](const Value& value){ value.Push(m_state); });
 
    lua_call(L, vecParam.size(), iResults);
 
@@ -557,7 +566,8 @@ std::vector<Value> Table::CallFunction(const CString& cszName,
    lua_pushvalue(L, m_iStackIndex);
 
    // then params
-   std::for_each(vecParam.begin(), vecParam.end(), [&](const Value& value){ value.Push(m_state); });
+   std::for_each(vecParam.begin(), vecParam.end(),
+      [&](const Value& value){ value.Push(m_state); });
 
    lua_call(L, vecParam.size()+1, iResults);
 
@@ -630,7 +640,7 @@ Userdata::Userdata(const Userdata& userdata)
  m_bTemporary(userdata.m_bTemporary),
  m_iStackIndex(userdata.m_iStackIndex)
 {
-   lua_State* L = m_state.GetState();
+   lua_State* L = m_state.GetState(); L;
    ATLASSERT(lua_isuserdata(L, m_iStackIndex) != 0);
 
    // now that the values are copied, prevent creating or deleting the source object
@@ -647,7 +657,7 @@ Userdata& Userdata::operator=(const Userdata& userdata)
    m_bTemporary = userdata.m_bTemporary;
    m_iStackIndex = userdata.m_iStackIndex;
 
-   lua_State* L = m_state.GetState();
+   lua_State* L = m_state.GetState(); L;
    ATLASSERT(lua_isuserdata(L, m_iStackIndex) != 0);
 
    // now that the values are copied, prevent creating or deleting the source object
@@ -691,7 +701,7 @@ Nil::Nil(State& state, int iStackIndex, bool bTemporary)
 m_bTemporary(bTemporary),
 m_iStackIndex(iStackIndex)
 {
-   lua_State* L = m_state.GetState();
+   lua_State* L = m_state.GetState(); L;
 
    ATLASSERT(lua_isnil(L, m_iStackIndex) == true);
 }
@@ -712,7 +722,7 @@ Nil::Nil(const Nil& nil)
 m_bTemporary(nil.m_bTemporary),
 m_iStackIndex(nil.m_iStackIndex)
 {
-   lua_State* L = m_state.GetState();
+   lua_State* L = m_state.GetState(); L;
    ATLASSERT(lua_isnil(L, m_iStackIndex) == true);
 
    // now that the values are copied, prevent creating or deleting the source object
@@ -726,7 +736,7 @@ Nil& Nil::operator=(const Nil& nil)
    m_iStackIndex = nil.m_iStackIndex;
 
    lua_State* L = m_state.GetState();
-   ATLASSERT(lua_isnil(L, m_iStackIndex) == true);
+   ATLASSERT(lua_isnil(L, m_iStackIndex) == true); L;
 
    // now that the values are copied, prevent creating or deleting the source object
    const_cast<Nil&>(nil).m_bTemporary = false;
@@ -749,7 +759,6 @@ void Nil::Push()
    }
 }
 
-
 //
 // Lua::State
 //
@@ -759,6 +768,12 @@ State::State()
    lua_State* L = luaL_newstate();
    m_spState.reset(L, &lua_close);
 
+   lua_atpanic(L, OnLuaPanic);
+}
+
+State::State(lua_State* L, bool mainState)
+:m_spState(L, mainState ? &lua_close : &State::StateDeleterNoop)
+{
    lua_atpanic(L, OnLuaPanic);
 }
 
@@ -821,7 +836,8 @@ std::vector<Value> State::CallFunction(const CString& cszName, int iResults, con
       throw Lua::Exception(_T("function not found: ") + cszName, L, __FILE__, __LINE__);
    }
 
-   std::for_each(vecParam.begin(), vecParam.end(), [&](const Value& value){ value.Push(*this); });
+   std::for_each(vecParam.begin(), vecParam.end(),
+      [&](const Value& value){ value.Push(*this); });
 
    lua_call(L, vecParam.size(), iResults);
 
@@ -889,6 +905,10 @@ void State::CollectGarbage()
    lua_State* L = GetState();
 
    lua_gc(L, LUA_GCCOLLECT, 0);
+}
+
+void State::StateDeleterNoop(lua_State*)
+{
 }
 
 int State::OnLuaPanic(lua_State* L)
@@ -980,4 +1000,216 @@ void State::TraceValue(lua_State* L, int iIndex, int iStackDepth)
       cszType.GetString(),
       cszContent.GetString(),
       iHasMetatable != 0 ? _T(" +[metatable] ") : _T(""));
+}
+
+//
+// Lua::Thread
+//
+
+static_assert(Thread::statusOK == LUA_OK, "value of statusOk must equal LUA_OK");
+static_assert(Thread::statusYield == LUA_YIELD, "value of statusOk must equal LUA_YIELD");
+
+/// Lua doesn't pass the number of arguments used in the
+/// InternalResume() -> lua_resume() call to the yield function; to notify the
+/// InternalYield() function about number of parameters, this static variable is
+/// used.
+size_t Thread::s_iNumResumeParams = 0;
+
+Thread::Thread(Lua::State& state)
+:m_state(state),
+m_threadState(lua_newthread(state.GetState()), false) // non-mainState
+{
+}
+
+Thread::Thread(State& state, int iStackIndex, bool bTemporary)
+:m_state(state),
+m_threadState(lua_tothread(state.GetState(), iStackIndex), false) // non-mainState
+{
+   ATLASSERT(bTemporary == false); bTemporary; // must not create temporary thread object
+}
+
+Value Thread::GetValue(const CString& cszName)
+{
+   lua_State* L = m_threadState.GetState();
+
+   lua_getglobal(L, CStringA(cszName).GetString());
+
+   return Value::FromStack(m_threadState, -1, true);
+}
+
+Table Thread::GetTable(const CString& cszName)
+{
+   lua_State* L = m_threadState.GetState();
+
+   lua_getglobal(L, CStringA(cszName).GetString());
+   if (!lua_istable(L, -1))
+   {
+      lua_pop(L, 1); // remove global
+      throw Lua::Exception(_T("table not found: ") + cszName, L, __FILE__, __LINE__);
+   }
+
+   return Table(m_threadState, -1, true, cszName);
+}
+
+Thread::T_enThreadStatus Thread::Status() const throw()
+{
+   lua_State* L = const_cast<Lua::State&>(m_threadState).GetState();
+
+   return static_cast<T_enThreadStatus>(lua_status(L));
+}
+
+std::pair<Thread::T_enThreadStatus, std::vector<Lua::Value>> Thread::Start(Lua::Function& func, const std::vector<Lua::Value>& vecParam)
+{
+   ATLASSERT(Status() == statusOK);
+
+   if (Status() != statusOK)
+      throw Lua::Exception(_T("Lua thread attempted to start has yielded"), m_threadState.GetState(), __FILE__, __LINE__);
+
+   Lua::Value funcValue(func);
+   funcValue.Push(m_threadState);
+
+   return InternalResume(vecParam);
+}
+
+std::pair<Thread::T_enThreadStatus, std::vector<Lua::Value>> Thread::Resume(const std::vector<Lua::Value>& vecParam)
+{
+   ATLASSERT(Status() == statusYield);
+
+   if (Status() != statusYield)
+      throw Lua::Exception(_T("Lua thread attempted to resume hasn't yielded"), m_threadState.GetState(), __FILE__, __LINE__);
+
+   return InternalResume(vecParam);
+}
+
+void Thread::Yield(const std::vector<Value>& vecRetValues, T_fnYieldCallback fnYieldCallback)
+{
+   if (!lua_isyieldable(m_threadState.GetState()))
+      throw Lua::Exception(_T("Lua thread isn't yieldable"), m_threadState.GetState(), __FILE__, __LINE__);
+
+   State::TraceStack(m_threadState.GetState());
+
+   std::for_each(vecRetValues.begin(), vecRetValues.end(),
+      [&](const Value& value) { value.Push(m_threadState); });
+
+   State::TraceStack(m_threadState.GetState());
+
+   lua_KContext context = 0;
+   lua_KFunction func = nullptr;
+
+   if (fnYieldCallback != nullptr)
+   {
+      context = reinterpret_cast<lua_KContext>(new T_fnYieldCallback(fnYieldCallback));
+      func = &Thread::InternalYield;
+   }
+
+   lua_yieldk(m_threadState.GetState(), vecRetValues.size(), context, func);
+
+   throw Lua::Exception(_T("Yield() continued after calling lua_yieldk"), m_threadState.GetState(), __FILE__, __LINE__);
+}
+
+std::pair<Thread::T_enThreadStatus, std::vector<Lua::Value>> Thread::InternalResume(const std::vector<Lua::Value>& vecParam)
+{
+   lua_State* L = m_threadState.GetState();
+
+   int iBeforeResumeStackIndex = lua_gettop(L);
+   if (Status() == statusYield)
+      iBeforeResumeStackIndex++;
+
+   std::for_each(vecParam.begin(), vecParam.end(),
+      [&](const Value& value) { value.Push(m_threadState); });
+
+   // TODO detach values from their stack index?
+
+   s_iNumResumeParams = vecParam.size();
+
+   State::TraceStack(L);
+
+   int iRet = lua_resume(L, m_state.GetState(), vecParam.size());
+
+   if (iRet == LUA_ERRRUN || // a runtime error.
+      iRet == LUA_ERRMEM || // memory allocation error.For such errors, Lua does not call the message handler.
+      iRet == LUA_ERRERR || // error while running the message handler.
+      iRet == LUA_ERRGCMM) // error while running a __gc metamethod
+   {
+      State::OnLuaPanic(L);
+   }
+
+   std::pair<Thread::T_enThreadStatus, std::vector<Lua::Value>> retVal;
+   retVal.first = static_cast<Thread::T_enThreadStatus>(iRet);
+
+   State::TraceStack(L);
+
+   // collect return values; note that returning from lua_resume removed
+   // all values from stack, and put the return values from Yield() on it.
+   int iStackIndex = lua_gettop(L);
+
+   std::vector<Value>& vecResults = retVal.second;
+
+   // when finishing a coroutine, the Lua::Function from Thread::Start() is still
+   // on the stack; account for that.
+   int iStartIndex = iRet == LUA_YIELD ? 1 : iBeforeResumeStackIndex;
+
+   for (int i = iStartIndex; i <= iStackIndex; i++)
+   {
+      vecResults.push_back(Value::FromStack(m_threadState, i, false));
+   }
+
+   return retVal;
+}
+
+int Thread::InternalYield(lua_State* L, int status, lua_KContext context)
+{
+   ATLASSERT(status == LUA_YIELD); status; // Lua docs says it always passes this value
+
+   State::TraceStack(L);
+
+   T_fnYieldCallback* pfnCallback = reinterpret_cast<T_fnYieldCallback*>(context);
+   if (pfnCallback == nullptr)
+      return 0; // InternalResume() called without a continuation function
+
+   State paramState(L, false);
+
+   // collect params for continuation
+   std::vector<Lua::Value> vecParams;
+
+   int iTopIndex = lua_gettop(L);
+
+   for (int iStackIndex = iTopIndex - s_iNumResumeParams + 1; iStackIndex <= iTopIndex; iStackIndex++)
+      vecParams.push_back(Value::FromStack(paramState, iStackIndex, false));
+
+   std::vector<Lua::Value> vecResults;
+   try
+   {
+      // call continuation
+      vecResults = (*pfnCallback)(paramState, vecParams);
+
+      // put results on stack
+      std::for_each(vecResults.begin(), vecResults.end(),
+         [&](const Value& value) { value.Push(paramState); });
+   }
+   catch (const Lua::Exception& ex)
+   {
+      delete pfnCallback;
+
+      lua_pushstring(L, CStringA(ex.Message()));
+      throw;
+   }
+   catch (const std::exception& ex)
+   {
+      delete pfnCallback;
+
+      lua_pushstring(L, ex.what());
+      throw;
+   }
+   catch (...)
+   {
+      delete pfnCallback;
+
+      lua_pushstring(L, "unknown C++ exception thrown");
+      throw;
+   }
+
+   delete pfnCallback;
+
+   return vecResults.size();
 }
