@@ -8,13 +8,13 @@
 // includes
 #include "stdafx.h"
 #include "SystemLuaBindings.hpp"
+#include "LuaScheduler.hpp"
 
 /// poll time for manual-reset events
 const unsigned int c_uiManualResetEventPollTimeInMs = 50;
 
-SystemLuaBindings::SystemLuaBindings(Lua::State& state, Lua::Thread& thread, boost::asio::io_service::strand& strand)
-:m_state(state),
-m_thread(thread),
+SystemLuaBindings::SystemLuaBindings(LuaScheduler& scheduler, boost::asio::io_service::strand& strand)
+:m_scheduler(scheduler),
 m_strand(strand)
 {
 }
@@ -41,7 +41,12 @@ void SystemLuaBindings::InitBindings()
    sys.AddFunction("createEvent",
       std::bind(&SystemLuaBindings::SysCreateEvent, shared_from_this(),
          std::placeholders::_1));
+}
 
+/// returns Lua state object
+Lua::State& SystemLuaBindings::GetState() throw()
+{
+   return m_scheduler.GetState();
 }
 
 void SystemLuaBindings::CancelHandlers()
@@ -63,7 +68,7 @@ void SystemLuaBindings::CleanupBindings()
 
 std::vector<Lua::Value> SystemLuaBindings::SysIsMainThread(Lua::State& state)
 {
-   bool bIsMainThread = state.GetState() == m_thread.GetThreadState();
+   bool bIsMainThread = state.GetState() == m_scheduler.GetThread().GetThreadState();
 
    std::vector<Lua::Value> vecRetValues;
    vecRetValues.push_back(Lua::Value(bIsMainThread));
@@ -74,7 +79,7 @@ std::vector<Lua::Value> SystemLuaBindings::SysIsMainThread(Lua::State& state)
 std::vector<Lua::Value> SystemLuaBindings::SysCreateEvent(Lua::State& state)
 {
    std::shared_ptr<ManualResetEvent> spEvent =
-      std::make_shared<ManualResetEvent>(m_thread, m_strand);
+      std::make_shared<ManualResetEvent>(m_scheduler, m_strand);
 
    m_vecAllEvents.push_back(spEvent);
 
@@ -87,10 +92,10 @@ std::vector<Lua::Value> SystemLuaBindings::SysCreateEvent(Lua::State& state)
    return vecRetValues;
 }
 
-SystemLuaBindings::ManualResetEvent::ManualResetEvent(Lua::Thread& thread, boost::asio::io_service::strand& strand)
+SystemLuaBindings::ManualResetEvent::ManualResetEvent(LuaScheduler& scheduler, boost::asio::io_service::strand& strand)
 :m_event(true, false), // manual-reset
 m_timerWait(strand.get_io_service()),
-m_thread(thread),
+m_scheduler(scheduler),
 m_strand(strand)
 {
 }
@@ -185,7 +190,7 @@ std::vector<Lua::Value> SystemLuaBindings::ManualResetEvent::Wait(Lua::State& st
    RestartTimer(dwWaitTimeout);
 
    // yield until our wait handler resumes
-   m_thread.Yield(std::vector<Lua::Value>(),
+   m_scheduler.GetThread().Yield(std::vector<Lua::Value>(),
       std::bind(&SystemLuaBindings::ManualResetEvent::Resume, shared_from_this(),
          std::placeholders::_1, std::placeholders::_2));
 }
@@ -211,7 +216,7 @@ void SystemLuaBindings::ManualResetEvent::WaitHandler(const boost::system::error
    if (error)
       return; // timer was canceled
 
-   if (m_thread.Status() != Lua::Thread::statusYield)
+   if (m_scheduler.GetThread().Status() != Lua::Thread::statusYield)
       return; // someone else resumed our thread already
 
    bool bEventIsSet;
@@ -249,7 +254,7 @@ void SystemLuaBindings::ManualResetEvent::WaitHandler(const boost::system::error
          std::vector<Lua::Value> vecRetvals;
          vecRetvals.push_back(Lua::Value(bEventIsSet));
 
-         m_thread.Resume(vecRetvals);
+         m_scheduler.ResumeMainThread(vecRetvals);
       });
    }
    else

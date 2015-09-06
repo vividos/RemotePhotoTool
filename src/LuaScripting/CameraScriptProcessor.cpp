@@ -12,6 +12,7 @@
 #include "SystemLuaBindings.hpp"
 #include "CanonControlLuaBindings.hpp"
 #include "LuaScriptWorkerThread.hpp"
+#include "LuaScheduler.hpp"
 #include <lua.h>
 #include <lualib.h>
 
@@ -21,8 +22,6 @@ class CameraScriptProcessor::Impl : public std::enable_shared_from_this<CameraSc
 public:
    /// ctor
    Impl()
-      :m_enExecutionState(stateIdle),
-       m_thread(m_state)
    {
    }
    /// dtor
@@ -30,8 +29,11 @@ public:
    {
    }
 
+   /// returns Lua scheduler object
+   LuaScheduler& GetScheduler() throw() { return m_scheduler; }
+
    /// returns Lua state object
-   Lua::State& GetState() throw() { return m_state; }
+   Lua::State& GetState() throw() { return m_scheduler.GetState(); }
 
    /// sets output debug string handler
    void SetOutputDebugStringHandler(T_fnOutputDebugString fnOutputDebugString)
@@ -42,27 +44,6 @@ public:
          m_spCanonControlLuaBindings->SetOutputDebugStringHandler(fnOutputDebugString);
 
       m_scriptWorkerThread.SetOutputDebugStringHandler(fnOutputDebugString);
-   }
-
-   /// sets handler to notify about execution state changes
-   void SetExecutionStateChangedHandler(T_fnOnExecutionStateChanged fnOnExecutionStateChanged)
-   {
-      m_fnOnExecutionStateChanged = fnOnExecutionStateChanged;
-   }
-
-   /// returns current execution state
-   T_enExecutionState CurrentExecutionState() const
-   {
-      return m_enExecutionState;
-   }
-
-   /// sets new execution state
-   void CurrentExecutionState(T_enExecutionState enExecutionState)
-   {
-      m_enExecutionState = enExecutionState;
-
-      if (m_fnOnExecutionStateChanged != nullptr)
-         m_fnOnExecutionStateChanged(enExecutionState);
    }
 
    /// inits bindings to system functions and CanonControl
@@ -78,7 +59,7 @@ public:
    {
       m_scriptWorkerThread.GetStrand().post([&, cszFilename]()
       {
-         GetState().LoadFile(cszFilename);
+         m_scheduler.GetState().LoadFile(cszFilename);
       });
    }
 
@@ -87,32 +68,14 @@ public:
    {
       m_scriptWorkerThread.GetStrand().post([&]()
       {
-         CurrentExecutionState(stateRunning);
-
-         Lua::Table app = m_thread.GetTable(_T("App"));
+         Lua::Table app = m_scheduler.GetThread().GetTable(_T("App"));
          Lua::Function func = app.GetValue(_T("run")).Get<Lua::Function>();
 
          std::vector<Lua::Value> vecParam;
          vecParam.push_back(Lua::Value(app));
 
-         std::pair<Lua::Thread::T_enThreadStatus, std::vector<Lua::Value>> retVal;
-         try
-         {
-            retVal = m_thread.Start(func, vecParam);
-         }
-         catch (const Lua::Exception&)
-         {
-            CurrentExecutionState(stateIdle);
-            throw;
-         }
+         m_scheduler.StartMainThread(func, vecParam);
 
-         if (retVal.first == Lua::Thread::statusOK)
-            CurrentExecutionState(stateIdle);
-         else
-            if (retVal.first == Lua::Thread::statusYield)
-               CurrentExecutionState(stateYield);
-            else
-               ATLASSERT(false); // unknown status code
       });
    }
 
@@ -190,7 +153,7 @@ private:
       Lua::State& state = GetState();
 
       m_spSystemLuaBindings.reset(
-         new SystemLuaBindings(state, m_thread, m_scriptWorkerThread.GetStrand()));
+         new SystemLuaBindings(m_scheduler, m_scriptWorkerThread.GetStrand()));
 
       m_spSystemLuaBindings->InitBindings();
 
@@ -220,20 +183,11 @@ private:
    }
 
 private:
-   /// Lua state
-   Lua::State m_state;
-
-   /// Lua thread that is used to run scripts
-   Lua::Thread m_thread;
-
-   /// current execution state
-   T_enExecutionState m_enExecutionState;
+   /// scheduler
+   LuaScheduler m_scheduler;
 
    /// output debug string handler
    T_fnOutputDebugString m_fnOutputDebugString;
-
-   /// execution state changes handler
-   T_fnOnExecutionStateChanged m_fnOnExecutionStateChanged;
 
    /// bindings for System library
    std::shared_ptr<SystemLuaBindings> m_spSystemLuaBindings;
@@ -266,6 +220,13 @@ CameraScriptProcessor::~CameraScriptProcessor() throw()
    m_spImpl.reset();
 }
 
+LuaScheduler& CameraScriptProcessor::GetScheduler() throw()
+{
+   ATLASSERT(m_spImpl != nullptr);
+
+   return m_spImpl->GetScheduler();
+}
+
 void CameraScriptProcessor::SetOutputDebugStringHandler(T_fnOutputDebugString fnOutputDebugString)
 {
    ATLASSERT(m_spImpl != nullptr);
@@ -273,32 +234,11 @@ void CameraScriptProcessor::SetOutputDebugStringHandler(T_fnOutputDebugString fn
    m_spImpl->SetOutputDebugStringHandler(fnOutputDebugString);
 }
 
-void CameraScriptProcessor::SetExecutionStateChangedHandler(T_fnOnExecutionStateChanged fnOnExecutionStateChanged)
-{
-   ATLASSERT(m_spImpl != nullptr);
-
-   m_spImpl->SetExecutionStateChangedHandler(fnOnExecutionStateChanged);
-}
-
-CameraScriptProcessor::T_enExecutionState CameraScriptProcessor::CurrentExecutionState() const throw()
-{
-   ATLASSERT(m_spImpl != nullptr);
-
-   try
-   {
-      return m_spImpl->CurrentExecutionState();
-   }
-   catch (...)
-   {
-      return stateError;
-   }
-}
-
 void CameraScriptProcessor::LoadScript(const CString& cszFilename)
 {
    ATLASSERT(m_spImpl != nullptr);
 
-   if (CurrentExecutionState() != stateIdle)
+   if (m_spImpl->GetScheduler().CurrentExecutionState() != LuaScheduler::stateIdle)
       Stop();
 
    m_spImpl->LoadFile(cszFilename);
@@ -309,7 +249,7 @@ void CameraScriptProcessor::Run()
 {
    ATLASSERT(m_spImpl != nullptr);
 
-   if (CurrentExecutionState() != stateIdle)
+   if (m_spImpl->GetScheduler().CurrentExecutionState() != LuaScheduler::stateIdle)
       Stop();
 
    m_spImpl->Run();
@@ -321,5 +261,5 @@ void CameraScriptProcessor::Stop()
 
    m_spImpl->CancelHandlers();
 
-   m_spImpl->CurrentExecutionState(stateIdle);
+   m_spImpl->GetScheduler().CurrentExecutionState(LuaScheduler::stateIdle);
 }

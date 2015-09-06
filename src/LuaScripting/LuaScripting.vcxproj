@@ -68,6 +68,7 @@
     <ClCompile Include="CameraScriptProcessor.cpp" />
     <ClCompile Include="CanonControlLuaBindings.cpp" />
     <ClCompile Include="Lua.cpp" />
+    <ClCompile Include="LuaScheduler.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -78,6 +79,7 @@
     <ClInclude Include="CameraScriptProcessor.hpp" />
     <ClInclude Include="CanonControlLuaBindings.hpp" />
     <ClInclude Include="Lua.hpp" />
+    <ClInclude Include="LuaScheduler.hpp" />
     <ClInclude Include="LuaScriptWorkerThread.hpp" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="SystemLuaBindings.hpp" />

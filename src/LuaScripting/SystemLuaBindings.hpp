@@ -13,13 +13,14 @@
 
 // forward references
 struct SystemEvent;
+class LuaScheduler;
 
 /// Lua bindings for System library
 class SystemLuaBindings : public std::enable_shared_from_this<SystemLuaBindings>
 {
 public:
    /// ctor; inits bindings
-   SystemLuaBindings(Lua::State& state, Lua::Thread& thread, boost::asio::io_service::strand& strand);
+   SystemLuaBindings(LuaScheduler& scheduler, boost::asio::io_service::strand& strand);
 
    /// dtor; cleans up bindings
    virtual ~SystemLuaBindings() throw();
@@ -33,7 +34,7 @@ public:
 
 private:
    /// returns Lua state object
-   Lua::State& GetState() throw() { return m_state; }
+   Lua::State& GetState() throw();
 
    void CleanupBindings();
 
@@ -52,7 +53,7 @@ private:
    {
    public:
       /// ctor
-      ManualResetEvent(Lua::Thread& thread, boost::asio::io_service::strand& strand);
+      ManualResetEvent(LuaScheduler& scheduler, boost::asio::io_service::strand& strand);
 
       /// init event object in given table
       void InitBindings(Lua::Table& manualResetEvent);
@@ -86,19 +87,16 @@ private:
       /// wait timer
       boost::asio::deadline_timer m_timerWait;
 
-      /// Lua main thread
-      Lua::Thread& m_thread;
+      /// Lua scheduler
+      LuaScheduler& m_scheduler;
 
       /// strand to execute all Lua calls on
       boost::asio::io_service::strand& m_strand;
    };
 
 private:
-   /// Lua state
-   Lua::State& m_state;
-
-   /// Lua main thread
-   Lua::Thread& m_thread;
+   /// Lua scheduler
+   LuaScheduler& m_scheduler;
 
    /// strand to execute all Lua calls on
    boost::asio::io_service::strand& m_strand;

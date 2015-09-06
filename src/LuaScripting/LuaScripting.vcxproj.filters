@@ -26,6 +26,9 @@
     <ClCompile Include="SystemLuaBindings.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="LuaScheduler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Lua.hpp">
@@ -44,6 +47,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SystemLuaBindings.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LuaScheduler.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
