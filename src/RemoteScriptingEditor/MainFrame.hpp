@@ -10,6 +10,7 @@
 #include "LuaScriptEditorView.hpp"
 #include "OutputWindow.hpp"
 #include "CameraScriptProcessor.hpp"
+#include "LuaScheduler.hpp"
 
 /// \brief application main frame
 /// \details uses ribbon for commands
@@ -125,6 +126,9 @@ private:
    /// sets up Most Recently Used file list
    void SetupMRUList();
 
+   /// sets up status bar
+   void SetupStatusBar();
+
    /// sets up view
    void SetupView();
 
@@ -149,6 +153,9 @@ private:
    /// called when debug string is output
    void OnOutputDebugString(const CString& cszText);
 
+   /// called when camera script processor changes its state
+   void OnExecutionStateChanged(LuaScheduler::T_enExecutionState enExecutionState);
+
 private:
    // UI
 
@@ -169,6 +176,9 @@ private:
 
    /// output window
    OutputWindow m_ecOutputWindow;
+
+   /// status bar
+   CMultiPaneStatusBarCtrl m_statusBar;
 
 
    // model

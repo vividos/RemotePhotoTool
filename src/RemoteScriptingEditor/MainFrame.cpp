@@ -54,7 +54,7 @@ LRESULT MainFrame::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/,
    SetupRibbonBar();
    SetupToolbar();
    SetupMRUList();
-   CreateSimpleStatusBar();
+   SetupStatusBar();
    SetupView();
 
    // register object for message filtering and idle updates
@@ -108,6 +108,9 @@ LRESULT MainFrame::OnClose(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, 
 
 LRESULT MainFrame::OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& bHandled)
 {
+   m_processor.GetScheduler().SetExecutionStateChangedHandler(
+      LuaScheduler::T_fnOnExecutionStateChanged());
+
    // unregister message filtering and idle updates
    CMessageLoop* pLoop = _Module.GetMessageLoop();
    ATLASSERT(pLoop != nullptr);
@@ -445,6 +448,28 @@ void MainFrame::SetupMRUList()
    m_mru.ReadFromRegistry(c_pszSettingsRegkey);
 }
 
+/// \see http://www.codeproject.com/Articles/2948/How-to-use-the-WTL-multipane-status-bar-control
+void MainFrame::SetupStatusBar()
+{
+   // added WS_CLIPCHILDREN to default styles
+   CreateSimpleStatusBar(
+      ATL_IDS_IDLEMESSAGE, WS_CHILD | WS_VISIBLE | WS_CLIPCHILDREN | WS_CLIPSIBLINGS | SBARS_SIZEGRIP);
+
+   m_statusBar.SubclassWindow(m_hWndStatusBar);
+
+   // set status bar panes. ID_DEFAULT_PANE is defined by WTL
+   int arrPanes[] = { ID_DEFAULT_PANE, IDR_PANE_SCRIPT_STATUS };
+
+   m_statusBar.SetPanes(arrPanes, sizeof(arrPanes) / sizeof(int), false);
+
+   m_statusBar.SetPaneWidth(IDR_PANE_SCRIPT_STATUS, 150);
+
+   OnExecutionStateChanged(LuaScheduler::stateIdle);
+
+   m_processor.GetScheduler().SetExecutionStateChangedHandler(
+      std::bind(&MainFrame::OnExecutionStateChanged, this, std::placeholders::_1));
+}
+
 void MainFrame::SetupView()
 {
    m_hWndClient = m_splitter.Create(m_hWnd, rcDefault, NULL, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN);
@@ -479,4 +504,42 @@ void MainFrame::SetupOutputPane()
 void MainFrame::OnOutputDebugString(const CString& cszText)
 {
    m_ecOutputWindow.OutputText(cszText);
+}
+
+void MainFrame::OnExecutionStateChanged(LuaScheduler::T_enExecutionState enExecutionState)
+{
+   LPCTSTR pszText = nullptr;
+
+   switch (enExecutionState)
+   {
+   case LuaScheduler::stateIdle:
+      UIEnable(ID_SCRIPT_RUN, TRUE);
+      UIEnable(ID_SCRIPT_STOP, FALSE);
+      pszText = _T("Idle.");
+      break;
+
+   case LuaScheduler::stateRunning:
+      pszText = _T("Running...");
+      break;
+
+   case LuaScheduler::stateYield:
+      pszText = _T("Waiting...");
+      break;
+
+   case LuaScheduler::stateDebug:
+      break;
+
+   case LuaScheduler::stateError:
+      pszText = _T("Error.");
+      UIEnable(ID_SCRIPT_RUN, FALSE);
+      UIEnable(ID_SCRIPT_STOP, TRUE);
+      break;
+
+   default:
+      ATLASSERT(false); // unknown state
+      break;
+   }
+
+   if (pszText != nullptr)
+      m_statusBar.SetPaneText(IDR_PANE_SCRIPT_STATUS, pszText);
 }
