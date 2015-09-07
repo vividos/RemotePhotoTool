@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>RemotePhotoTool - Home</title>
+    <title>RemotePhotoTool - Download</title>
 
     <link href="css/bootstrap.min.css" rel="stylesheet" />
     <link href="css/bootstrap-theme.min.css" rel="stylesheet" />
@@ -13,7 +13,7 @@
 <body>
 
     <!-- navbar -->
-    <div class="navbar navbar-inverse navbar-static-top" role="navigation" style="margin-bottom: 0px">
+    <div class="navbar navbar-inverse navbar-static-top" role="navigation">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -26,10 +26,10 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li class="active">
+                    <li>
                         <a href="index.html">Home</a>
                     </li>
-                    <li>
+                    <li class="active">
                         <a href="download.html">Download</a>
                     </li>
                     <li>
@@ -49,46 +49,38 @@
     <a id="forkme_banner" href="https://github.com/vividos/RemotePhotoTool">View on GitHub</a>
 
 
-    <div class="container">
+    <div class="container theme-showcase" role="main">
 
-        <div class="jumbotron">
-            <div class="container">
-                <h1>RemotePhotoTool</h1>
-                <p>RemotePhotoTool is a remote image capture application for Canon based cameras. It supports taking HDR and Panorama photos.</p>
-                <p>
-                    <a class="btn btn-primary btn-lg" href="download.html" role="button">Download software &raquo;</a>
-                </p>
-            </div>
+        <div class="page-header">
+            <a name="download"></a>
+            <h1>Download</h1>
         </div>
 
-        <div class="row">
-            <div class="col-md-4">
-                <h2>Photo Modes</h2>
-                <p>
-                    Different Photo Modes allow to streamline the process to take photos:
-                    <ul>
-                        <li>Normal shooting</li>
-                        <li>HDR processing</li>
-                        <li>Panorama pictures</li>
-                    </ul>
-                </p>
-            </div>
-            <div class="col-md-4">
-                <h2>External Tool integration</h2>
-                <p>
-                    RemotePhotoTool integrates external tools to further process the images taken. Supported tools are
-                    <a href="http://www.hdrsoft.com/">PhotoMatix</a> for processing HDR images, and
-                    <a href="http://hugin.sourceforge.net/">Hugin</a> for stitching Panorama images together.
-                </p>
-            </div>
-            <div class="col-md-4">
-                <h2>Lua scripting (Coming soon!)</h2>
-                <p>
-                    RemotePhotoTool allows you to run scripts to exactly control your camera (while connected). The scripts are
-                    written in the popular scripting language Lua.
-                </p>
-            </div>
+        <p>Download and install this package to get RemotePhotoTool:</p>
+
+        <div class="alert alert-success">
+
+            <b>
+                <a href="https://github.com/vividos/RemotePhotoTool/releases/download/remotephototool-1.3.0/RemotePhotoTool-1.3.0-Setup.msi">
+                    RemotePhotoTool-1.3.0-Setup.msi
+                </a>
+            </b><br />
+            RemotePhotoTool 1.3.0 Build 118, Windows Installer (7704 kb)
+
         </div>
+
+        <p>On Windows 7 and above you usually don't need additional drivers for Canon cameras.</p>
+
+        <div class="bs-callout bs-callout-warning">
+            <p>
+                Note that on Windows XP you may need to install Windows Installer 4.5 to successfully install the RemotePhotoTool
+                setup package. You can download the proper package here:
+                <a href="http://www.microsoft.com/en-us/download/details.aspx?id=8483">WindowsXP-KB942288-v3-x86.exe</a>, 3.2 MB.
+            </p>
+        </div>
+
+
+        <p>The open source code repository at GitHub is: <a href="https://github.com/vividos/RemotePhotoTool">https://github.com/vividos/RemotePhotoTool</a></p>
 
     </div>
     <!-- /container -->
