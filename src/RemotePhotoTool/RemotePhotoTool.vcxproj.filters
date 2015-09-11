@@ -34,6 +34,10 @@
     <Filter Include="UI Files\Source Files">
       <UniqueIdentifier>{d39a5d87-cdd2-4d73-a375-c067ab92044d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Bitmap Files">
+      <UniqueIdentifier>{ad05fb7c-9996-479f-a167-56e42768bc31}</UniqueIdentifier>
+      <Extensions>*.bmp;*.png</Extensions>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="HuginInterface.cpp">
@@ -265,77 +269,77 @@
     <Image Include="res\RemotePhotoTool.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="res\toolbar.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\toolbar_big.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\icons.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\home_connect.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\home_settings.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="res\app_exit.bmp">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Bitmap Files</Filter>
     </Image>
     <Image Include="res\bigicons.bmp">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Bitmap Files</Filter>
+    </Image>
+    <Image Include="res\home_connect.bmp">
+      <Filter>Resource Files\Bitmap Files</Filter>
+    </Image>
+    <Image Include="res\home_settings.bmp">
+      <Filter>Resource Files\Bitmap Files</Filter>
+    </Image>
+    <Image Include="res\icons.bmp">
+      <Filter>Resource Files\Bitmap Files</Filter>
     </Image>
     <Image Include="res\photomode_device_properties.bmp">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Bitmap Files</Filter>
     </Image>
     <Image Include="res\photomode_image_properties.bmp">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Bitmap Files</Filter>
     </Image>
     <Image Include="res\photomode_scripting.bmp">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Bitmap Files</Filter>
     </Image>
     <Image Include="res\placeholder.bmp">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Bitmap Files</Filter>
     </Image>
     <Image Include="res\prev_images_edit.bmp">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Bitmap Files</Filter>
     </Image>
     <Image Include="res\prev_images_exit.bmp">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Bitmap Files</Filter>
     </Image>
     <Image Include="res\prev_images_next.bmp">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Bitmap Files</Filter>
     </Image>
     <Image Include="res\prev_images_open_folder.bmp">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Bitmap Files</Filter>
     </Image>
     <Image Include="res\prev_images_prev.bmp">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Bitmap Files</Filter>
     </Image>
     <Image Include="res\prev_images_show.bmp">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Bitmap Files</Filter>
     </Image>
     <Image Include="res\scripting_edit.bmp">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Bitmap Files</Filter>
     </Image>
     <Image Include="res\scripting_open.bmp">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Bitmap Files</Filter>
     </Image>
     <Image Include="res\scripting_reload.bmp">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Bitmap Files</Filter>
     </Image>
     <Image Include="res\scripting_run.bmp">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Bitmap Files</Filter>
     </Image>
     <Image Include="res\scripting_stop.bmp">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Bitmap Files</Filter>
+    </Image>
+    <Image Include="res\toolbar.bmp">
+      <Filter>Resource Files\Bitmap Files</Filter>
+    </Image>
+    <Image Include="res\toolbar_big.bmp">
+      <Filter>Resource Files\Bitmap Files</Filter>
     </Image>
     <Image Include="res\view_ribbon.bmp">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Bitmap Files</Filter>
     </Image>
     <Image Include="res\viewfinder_show.bmp">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Bitmap Files</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
@@ -359,10 +363,10 @@
       <Filter>Resource Files\Generated Files</Filter>
     </None>
     <None Include="res\toolbar.xcf">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Bitmap Files</Filter>
     </None>
     <None Include="res\toolbar_big.xcf">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Bitmap Files</Filter>
     </None>
   </ItemGroup>
 </Project>
