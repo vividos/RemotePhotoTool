@@ -185,7 +185,7 @@ private:
 
    virtual ViewFinderView* GetViewFinderView() throw() override { return m_upViewFinderView.get(); }
 
-   virtual void SetStatusText(const CString& cszText) override;
+   virtual void SetStatusText(const CString& cszText, unsigned int uiPane = 0) override;
 
    virtual void LockActionMode(bool bLock) override;
 

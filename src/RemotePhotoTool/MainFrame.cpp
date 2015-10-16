@@ -558,9 +558,13 @@ std::shared_ptr<RemoteReleaseControl> MainFrame::StartRemoteReleaseControl(bool 
    return m_spRemoteReleaseControl;
 }
 
-void MainFrame::SetStatusText(const CString& cszText)
+void MainFrame::SetStatusText(const CString& cszText, unsigned int uiPane)
 {
-   ::SetWindowText(m_hWndStatusBar, cszText);
+   if (uiPane == 0)
+      ::SetWindowText(m_hWndStatusBar, cszText);
+   else
+      if (uiPane == 1)
+         m_statusBar.SetPaneText(IDR_PANE_PROGRESS, cszText);
 }
 
 void MainFrame::LockActionMode(bool bLock)

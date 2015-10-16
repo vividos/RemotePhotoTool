@@ -49,6 +49,12 @@ HWND ScriptingPhotoModeView::CreateView(HWND hWndParent)
 
    SetSplitterPosPct(75);
 
+   // set up scheduler state handling
+   OnExecutionStateChanged(LuaScheduler::stateIdle);
+
+   m_processor.GetScheduler().SetExecutionStateChangedHandler(
+      std::bind(&ScriptingPhotoModeView::OnExecutionStateChanged, this, std::placeholders::_1));
+
    return hWndClient;
 }
 
@@ -126,6 +132,19 @@ void ScriptingPhotoModeView::EditScript(const CString& cszFilename)
    return;
 }
 
+LRESULT ScriptingPhotoModeView::OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& bHandled)
+{
+   m_processor.GetScheduler().SetExecutionStateChangedHandler(
+      LuaScheduler::T_fnOnExecutionStateChanged());
+
+   m_processor.Stop();
+
+   m_host.SetStatusText(_T(""), 1);
+
+   bHandled = false;
+   return 1;
+}
+
 LRESULT ScriptingPhotoModeView::OnScriptingOpenScript(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
    OpenScript();
@@ -146,13 +165,14 @@ LRESULT ScriptingPhotoModeView::OnScriptingReload(WORD /*wNotifyCode*/, WORD /*w
 
 LRESULT ScriptingPhotoModeView::OnScriptingRun(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
-   m_host.EnableUI(ID_SCRIPTING_RUN, false);
-   m_host.EnableUI(ID_SCRIPTING_STOP, true);
+   CString cszFilename = m_view.GetFilePath();
+   if (cszFilename.IsEmpty())
+      return 0;
 
    {
       CString cszText;
       cszText.Format(_T("Start executing file %s...\n\n"),
-         m_view.GetFilePath().GetString());
+         cszFilename.GetString());
 
       m_ecOutputWindow.SetText(CStringA(cszText));
    }
@@ -161,7 +181,7 @@ LRESULT ScriptingPhotoModeView::OnScriptingRun(WORD /*wNotifyCode*/, WORD /*wID*
 
    try
    {
-      m_processor.LoadScript(m_view.GetFilePath());
+      m_processor.LoadScript(cszFilename);
 
       m_processor.Run();
    }
@@ -174,9 +194,6 @@ LRESULT ScriptingPhotoModeView::OnScriptingRun(WORD /*wNotifyCode*/, WORD /*wID*
          ex.LuaErrorMessage().GetString());
 
       OnOutputDebugString(cszText);
-
-      m_host.EnableUI(ID_SCRIPTING_RUN, TRUE);
-      m_host.EnableUI(ID_SCRIPTING_STOP, FALSE);
    }
 
    return 0;
@@ -184,9 +201,6 @@ LRESULT ScriptingPhotoModeView::OnScriptingRun(WORD /*wNotifyCode*/, WORD /*wID*
 
 LRESULT ScriptingPhotoModeView::OnScriptingStop(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
-   m_host.EnableUI(ID_SCRIPTING_RUN, TRUE);
-   m_host.EnableUI(ID_SCRIPTING_STOP, FALSE);
-
    m_processor.Stop();
 
    return 0;
@@ -202,6 +216,55 @@ LRESULT ScriptingPhotoModeView::OnScriptingEditScript(WORD /*wNotifyCode*/, WORD
 
    m_view.SetReadOnly(true);
    m_view.HideCaret();
+
+   return 0;
+}
+
+void ScriptingPhotoModeView::OnExecutionStateChanged(LuaScheduler::T_enExecutionState enExecutionState)
+{
+   PostMessage(WM_EXECUTION_STATE_CHANGED, static_cast<WPARAM>(enExecutionState));
+}
+
+LRESULT ScriptingPhotoModeView::OnMessageExecutionStateChanged(UINT /*uMsg*/, WPARAM wParam, LPARAM /*lParam*/, BOOL& /*bHandled*/)
+{
+   LuaScheduler::T_enExecutionState enExecutionState =
+      static_cast<LuaScheduler::T_enExecutionState>(wParam);
+
+   LPCTSTR pszText = nullptr;
+
+   switch (enExecutionState)
+   {
+   case LuaScheduler::stateIdle:
+      m_host.EnableUI(ID_SCRIPTING_RUN, true);
+      m_host.EnableUI(ID_SCRIPTING_STOP, false);
+      pszText = _T("Idle.");
+      break;
+
+   case LuaScheduler::stateRunning:
+      pszText = _T("Running...");
+      m_host.EnableUI(ID_SCRIPTING_RUN, false);
+      m_host.EnableUI(ID_SCRIPTING_STOP, true);
+      break;
+
+   case LuaScheduler::stateYield:
+      pszText = _T("Waiting...");
+      break;
+
+   case LuaScheduler::stateDebug:
+      break;
+
+   case LuaScheduler::stateError:
+      m_host.EnableUI(ID_SCRIPTING_RUN, true);
+      m_host.EnableUI(ID_SCRIPTING_STOP, false);
+      break;
+
+   default:
+      ATLASSERT(false); // unknown state
+      break;
+   }
+
+   if (pszText != nullptr)
+      m_host.SetStatusText(pszText, 1);
 
    return 0;
 }

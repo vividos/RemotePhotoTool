@@ -36,7 +36,7 @@ public:
    virtual ViewFinderView* GetViewFinderView() throw() = 0;
 
    /// sets new status text
-   virtual void SetStatusText(const CString& cszText) = 0;
+   virtual void SetStatusText(const CString& cszText, unsigned int uiPane = 0) = 0;
 
    /// locks switching action modes
    virtual void LockActionMode(bool bLock) = 0;
