@@ -237,13 +237,17 @@ LRESULT MainFrame::OnScriptRun(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCt
          return 0;
    }
 
+   CString cszFilename = m_view.GetFilePath();
+   if (cszFilename.IsEmpty())
+      return 0;
+
    UIEnable(ID_SCRIPT_RUN, FALSE);
    UIEnable(ID_SCRIPT_STOP, TRUE);
 
    {
       CString cszText;
       cszText.Format(_T("Start executing file %s...\n\n"),
-         m_view.GetFilePath().GetString());
+         cszFilename.GetString());
 
       m_ecOutputWindow.OutputText(cszText);
    }
@@ -252,7 +256,7 @@ LRESULT MainFrame::OnScriptRun(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCt
 
    try
    {
-      m_processor.LoadScript(m_view.GetFilePath());
+      m_processor.LoadScript(cszFilename);
 
       m_processor.Run();
    }
@@ -279,6 +283,7 @@ LRESULT MainFrame::OnScriptStop(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndC
    UIEnable(ID_SCRIPT_STOP, FALSE);
 
    m_processor.Stop();
+
    return 0;
 }
 
