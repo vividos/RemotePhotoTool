@@ -6,7 +6,7 @@ This document describes how the source code of RemotePhotoTool is organized.
 
 The application is developed using C++. Features from C++11 are used where possible. This means that at least Visual Studio 2013 is needed to compile the application.
 
-The app uses classes from the Boost library where no appriopriate class from the Standard
+The app uses classes from the Boost library where no appropriate class from the Standard
 C++ Library could be used. The application also uses other libraries. See the
 [Credits.md](Credits.md) file for more infos.
 
@@ -24,7 +24,7 @@ building the app):
 
 ### src folder ###
 
-The `"src"` folder has the following structure:
+The `"src"` folder has the following projects:
 
 - Base: Contains a base static library with classes common to several other of my projects
 - Base.UnitTest: Unit tests for Base library.
@@ -74,7 +74,7 @@ application.
 
 ## ATL ##
 
-With previous versions, the ATL library is needed (and could be extracted from the "Windows
+With previous versions, the ATL library was needed (and could be extracted from the "Windows
 Driver Kit 7.1.0"). With the Visual Studio Community 2015 version, this is no longer needed.
 
 ## WTL 9.0 ##
@@ -85,7 +85,7 @@ http://sourceforge.net/projects/wtl/
 
 You need to click on "Browse all files" and select WTL 9.0 to get to the proper folder. Here's
 a link to the version I use:
-http://sourceforge.net/projects/wtl/files/WTL%209.0/WTL%209.0.4140%20Final/WTL90_4140_Final.zip/download
+[http://sourceforge.net/projects/wtl/files/WTL%209.0/WTL%209.0.4140%20Final/WTL90_4140_Final.zip/download]()
 
 Extract the contents of the zip archive in to a new folder. Navigate into the "AppWiz" folder and
 double-click the file `"Setup.js"`.
@@ -108,18 +108,14 @@ following command line commands (e.g. in a .cmd file) to compile Boost:
 This should generate the appropriate lib files in the `"stage\lib"` folder, for the library
 Boost.System.
 
-## WiX 3.7 ##
+## WiX 3.10 ##
 
-To build the setup, you need to install the "Windows Installer for XML 3.7" package. Go to this
+To build the setup, you need to install the "Windows Installer for XML 3.10" package. Go to this
 website:
 [http://wix.codeplex.com/](http://wix.codeplex.com/)
 
-Go to "Downloads" and download the "Wix37.exe" under the "WiX Toolset v3.7" release. Later releases
+Go to "Downloads" and download the "Wix310.exe" under the "WiX Toolset v3.10" release. Later releases
 of WiX may or may not work. Install the package on your system.
-
-For the setup to compile you need to adjust the file `src\wix-v3.props` with the path of the
-folder you installed the WiX Toolset. Add the path to the `"bin"` folder to the setting beneath the
-`<ExecutablePath>` tag.
 
 ## RemotePhotoTool ##
 
@@ -131,17 +127,18 @@ Rebuild the application and run it.
 Here's a checklist of what to do before each release:
 
 - Update version number in version.h
-- Update version number and ProductId in Config.wxi, and BuildNumber in BuildNumber.wxi
+- Update version number in Config.wxi, and BuildNumber in BuildNumber.wxi
 - Update Changelog.md file with all changes since last release
 - Check all Documentation files for needed updates, especially Features.md
 - Check in or stash all changes
 - Build all projects in Win32 | Release
 - Fix cppcheck errors and doxygen warnings
 - Compile all project with /analyze and fix all warnings
+- Use Coverity to find even more warnings and fix them
 - Test built .msi setup if it installs properly
 - Do a short smoke test with available cameras
 - Fix all errors, check them in and push all changes
 - Tag the git repository with tag "remotephototool-x.y.z" and push the tag
 - Add a release and upload result .msi file, to releases on github.com
-- Adjust README.md and index.html with link to new release and push it
+- Adjust index.html and download.html with link to new release and push it
 - Done

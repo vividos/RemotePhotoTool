@@ -69,7 +69,7 @@ under the GNU Lesser General Public License Version 2.1 (LGPL).
 
 - [http://libexif.sourceforge.net/](http://libexif.sourceforge.net/ "libexif project page")
 
-[- http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html](http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+- [http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html](http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
  "GNU Lesser General Public License Version 2.1 (LGPL)")
 
 ## Other ##
