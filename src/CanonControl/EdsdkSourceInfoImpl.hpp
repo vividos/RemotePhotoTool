@@ -31,6 +31,11 @@ public:
       return m_deviceInfo.szDeviceDescription;
    }
 
+   virtual CString DeviceId() const override
+   {
+      return m_deviceInfo.szPortName;
+   }
+
    virtual std::shared_ptr<SourceDevice> Open() override
    {
       LOG_TRACE(_T("about to call EdsOpenSession...\n"));

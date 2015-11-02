@@ -21,6 +21,9 @@ public:
    /// returns name of source camera
    virtual CString Name() const = 0;
 
+   /// returns device id of source camera
+   virtual CString DeviceId() const = 0;
+
    /// opens source device for use
    virtual std::shared_ptr<SourceDevice> Open() = 0;
 };

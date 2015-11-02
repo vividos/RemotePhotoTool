@@ -35,6 +35,12 @@ public:
       return cszName;
    }
 
+   virtual CString DeviceId() const override
+   {
+      CString cszDeviceId(reinterpret_cast<LPCWSTR>(m_deviceInfo.DeviceInternalName));
+      return cszDeviceId;
+   }
+
    virtual std::shared_ptr<SourceDevice> Open() override
    {
       return std::shared_ptr<SourceDevice>(new SourceDeviceImpl(m_spRef, m_deviceInfo));

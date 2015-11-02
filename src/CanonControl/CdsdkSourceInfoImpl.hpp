@@ -34,6 +34,11 @@ public:
       return m_sourceInfo.Name;
    }
 
+   virtual CString DeviceId() const override
+   {
+      return m_sourceInfo.NameInOS;
+   }
+
    virtual std::shared_ptr<SourceDevice> Open() override
    {
       cdHSource hSource = 0;

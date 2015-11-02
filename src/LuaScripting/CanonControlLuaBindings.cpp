@@ -297,6 +297,7 @@ void CanonControlLuaBindings::AddSourceInfo(Lua::State& state, Lua::Table& table
    Lua::Table sourceInfo = state.AddTable(_T(""));
 
    sourceInfo.AddValue(_T("name"), Lua::Value(spSourceInfo->Name()));
+   sourceInfo.AddValue(_T("deviceId"), Lua::Value(spSourceInfo->DeviceId()));
 
    sourceInfo.AddFunction("open",
       std::bind(&CanonControlLuaBindings::SourceInfoOpen, shared_from_this(),
