@@ -41,6 +41,12 @@ public:
    /// sets save target
    void SaveTarget(T_enSaveTarget enSaveTarget) throw() { m_enSaveTarget = enSaveTarget; }
 
+   /// sets handler function called when image transfer has finished
+   void HandlerOnFinishedTransfer(T_fnOnFinishedTransfer fnOnFinishedTransfer) throw()
+   {
+      m_fnOnFinishedTransfer = fnOnFinishedTransfer;
+   }
+
    // get functions
 
    /// returns filename of saved file
@@ -49,7 +55,7 @@ public:
    /// returns save target
    T_enSaveTarget SaveTarget() const throw() { return m_enSaveTarget; }
 
-   /// returns handler function when
+   /// returns handler function called when image transfer has finished
    T_fnOnFinishedTransfer HandlerOnFinishedTransfer() const throw() { return m_fnOnFinishedTransfer; }
 
 private:
