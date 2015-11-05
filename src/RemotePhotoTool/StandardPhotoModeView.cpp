@@ -56,7 +56,9 @@ LRESULT StandardPhotoModeView::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LP
    // set default release settings
    try
    {
-      ShutterReleaseSettings settings(ShutterReleaseSettings::saveToBoth,
+      ShutterReleaseSettings& settings = m_host.GetReleaseSettings();
+
+      settings.HandlerOnFinishedTransfer(
          std::bind(&StandardPhotoModeView::OnFinishedTransfer, this, std::placeholders::_1));
 
       CString cszFilename =
@@ -96,18 +98,11 @@ LRESULT StandardPhotoModeView::OnShootingModeSelChange(WORD /*wNotifyCode*/, WOR
 
 LRESULT StandardPhotoModeView::OnButtonRelease(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
-   ShutterReleaseSettings settings(ShutterReleaseSettings::saveToBoth,
-      std::bind(&StandardPhotoModeView::OnFinishedTransfer, this, std::placeholders::_1));
-
-   CString cszFilename =
-      m_host.GetImageFileManager().NextFilename(imageTypeNormal);
-   settings.Filename(cszFilename);
-
-   m_spRemoteReleaseControl->SetReleaseSettings(settings);
-
    m_host.SetStatusText(_T("Started shutter release"));
 
-   m_host.LockActionMode(true);
+   // action mode is only unlocked when we receive an image
+   if (m_host.GetReleaseSettings().SaveTarget() != ShutterReleaseSettings::saveToCamera)
+      m_host.LockActionMode(true);
 
    try
    {

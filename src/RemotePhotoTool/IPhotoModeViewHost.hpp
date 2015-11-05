@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2015 Michael Fink
 //
 /// \file IPhotoModeViewHost.hpp Interface for host of photo mode views
 //
@@ -11,6 +11,7 @@ class RemoteReleaseControl;
 class ImageFileManager;
 class PreviousImagesManager;
 class ViewFinderView;
+class ShutterReleaseSettings;
 class AppSettings;
 
 /// host interface for photo mode views
@@ -34,6 +35,9 @@ public:
 
    /// returns viewfinder view (or nullptr if not active)
    virtual ViewFinderView* GetViewFinderView() throw() = 0;
+
+   /// returns release settings
+   virtual ShutterReleaseSettings& GetReleaseSettings() throw() = 0;
 
    /// sets new status text
    virtual void SetStatusText(const CString& cszText, unsigned int uiPane = 0) = 0;

@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2015 Michael Fink
 //
 /// \file RemotePhotoTool\MainFrame.hpp Main application frame
 //
@@ -15,6 +15,7 @@
 #include "ViewFinderView.hpp"
 #include "AppSettings.hpp"
 #include "ImageFileManager.hpp"
+#include "ShutterReleaseSettings.hpp"
 #include "PreviousImagesManager.hpp"
 #include "RemoteReleaseControl.hpp"
 #include <atlsplit.h>
@@ -60,6 +61,7 @@ private:
    friend CRibbonImpl<MainFrame>;
 
    BEGIN_RIBBON_CONTROL_MAP(MainFrame)
+      RIBBON_CONTROL(m_cbCameraSettingsSaveToMode)
       RIBBON_CONTROL(m_cbViewfinderLinesMode)
    END_RIBBON_CONTROL_MAP()
 
@@ -78,6 +80,13 @@ private:
       UPDATE_ELEMENT(ID_PHOTO_MODE_IMAGE_PROPERTIES, UPDUI_MENUPOPUP | UPDUI_RIBBON)
 
       UPDATE_ELEMENT(ID_CAMERA_RELEASE, UPDUI_MENUPOPUP | UPDUI_RIBBON)
+      UPDATE_ELEMENT(ID_CAMERA_SHOOTING_MODE, UPDUI_MENUPOPUP | UPDUI_RIBBON)
+      UPDATE_ELEMENT(ID_CAMERA_SETTINGS_AV, UPDUI_MENUPOPUP | UPDUI_RIBBON)
+      UPDATE_ELEMENT(ID_CAMERA_SETTINGS_TV, UPDUI_MENUPOPUP | UPDUI_RIBBON)
+      UPDATE_ELEMENT(ID_CAMERA_SETTINGS_EXPOSURE, UPDUI_MENUPOPUP | UPDUI_RIBBON)
+      UPDATE_ELEMENT(ID_CAMERA_SETTINGS_ISO, UPDUI_MENUPOPUP | UPDUI_RIBBON)
+      UPDATE_ELEMENT(ID_CAMERA_SETTINGS_SAVETO, UPDUI_MENUPOPUP | UPDUI_RIBBON)
+      UPDATE_ELEMENT(ID_CAMERA_SETTINGS_IMAGE_FORMAT, UPDUI_MENUPOPUP | UPDUI_RIBBON)
 
       UPDATE_ELEMENT(ID_PREV_IMAGES_SHOW, UPDUI_MENUPOPUP | UPDUI_RIBBON)
       UPDATE_ELEMENT(ID_PREV_IMAGES_EXIT, UPDUI_MENUPOPUP | UPDUI_RIBBON)
@@ -122,6 +131,8 @@ private:
       COMMAND_ID_HANDLER(ID_HOME_SETTINGS, OnHomeSettings)
       COMMAND_RANGE_HANDLER(ID_PHOTO_MODE_NORMAL, ID_PHOTO_MODE_IMAGE_PROPERTIES, OnPhotoMode)
       COMMAND_ID_HANDLER(ID_VIEWFINDER_SHOW, OnViewfinderShow)
+      RIBBON_GALLERY_CONTROL_HANDLER(ID_CAMERA_SETTINGS_SAVETO, OnCameraSettingsSaveToSelChanged)
+      COMMAND_RANGE_HANDLER(ID_CAMERA_SETTINGS_SAVETO_CAMERA, ID_CAMERA_SETTINGS_SAVETO_BOTH, OnCameraSettingsSaveToRange)
       RIBBON_GALLERY_CONTROL_HANDLER(ID_VIEWFINDER_LINES_MODE, OnViewfinderLinesModeSelChanged)
       COMMAND_RANGE_HANDLER(ID_VIEWFINDER_LINES_MODE_NONE, ID_VIEWFINDER_LINES_MODE_GOLDENRATIO, OnViewfinderLinesModeRange)
       COMMAND_ID_HANDLER(ID_PREV_IMAGES_SHOW, OnPrevImagesShow)
@@ -147,6 +158,7 @@ private:
    LRESULT OnMove(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
    /// called when custom message "lock action mode" is received
    LRESULT OnLockActionMode(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
+
    /// called when "File | Exit" menu entry is being selected
    LRESULT OnFileExit(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
    /// called when "View | Menu band" menu entry is being selected
@@ -161,11 +173,18 @@ private:
    LRESULT OnPhotoMode(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
    /// called when "Viewfinder | Show" menu entry is being selected
    LRESULT OnViewfinderShow(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+
+   /// called when a selection in the ribbon combobox for "save to" camera settings was made
+   LRESULT OnCameraSettingsSaveToSelChanged(UI_EXECUTIONVERB verb, WORD wID, UINT uSel, BOOL& bHandled);
+   /// called when an entry in "Camera | Save to" submenu entry is being selected
+   LRESULT OnCameraSettingsSaveToRange(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+
    /// called when a selection in the ribbon combobox for viewfinder lines mode was made
    LRESULT OnViewfinderLinesModeSelChanged(UI_EXECUTIONVERB verb, WORD wID, UINT uSel, BOOL& bHandled);
    /// called when a lines mode in "Viewfinder | Lines mode" submenu entry is being selected
    LRESULT OnViewfinderLinesModeRange(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
-   /// called when "Viewfinder | Previous images" menu entry is being selected
+
+   /// called when "View | Previous images" menu entry is being selected
    LRESULT OnPrevImagesShow(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
    /// called when "Previous images | Exit" menu entry is being selected
    LRESULT OnPrevImagesExit(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
@@ -184,6 +203,8 @@ private:
    virtual PreviousImagesManager& GetPreviousImagesManager() throw() override { return m_previousImagesManager; }
 
    virtual ViewFinderView* GetViewFinderView() throw() override { return m_upViewFinderView.get(); }
+
+   virtual ShutterReleaseSettings& GetReleaseSettings() throw() override { return m_releaseSettings; }
 
    virtual void SetStatusText(const CString& cszText, unsigned int uiPane = 0) override;
 
@@ -219,6 +240,12 @@ private:
 
    /// enables or disables scripting related UI elements
    void EnableScriptingUI(bool bScripting);
+
+   /// enables or disables camera related UI elements
+   void EnableCameraUI(bool bEnable);
+
+   /// sets new "Save to" camera settings value
+   void SetCameraSettingsSaveTo(ShutterReleaseSettings::T_enSaveTarget enSaveTarget);
 
    /// sets status bar pane widths
    void SetPaneWidths(int* arrWidths, int nPanes);
@@ -259,6 +286,9 @@ private:
    /// thread id of UI thread
    DWORD m_dwUIThreadId;
 
+   /// ribbon item gallery for camera settings "save to" mode
+   CRibbonItemGalleryCtrl<ID_CAMERA_SETTINGS_SAVETO, 3> m_cbCameraSettingsSaveToMode;
+
    /// ribbon item gallery for viewfinder lines mode
    CRibbonItemGalleryCtrl<ID_VIEWFINDER_LINES_MODE, 3> m_cbViewfinderLinesMode;
 
@@ -278,6 +308,9 @@ private:
 
    /// current remote release control
    std::shared_ptr<RemoteReleaseControl> m_spRemoteReleaseControl;
+
+   /// current release settings
+   ShutterReleaseSettings m_releaseSettings;
 
    /// current view type
    T_enViewType m_enCurrentViewType;

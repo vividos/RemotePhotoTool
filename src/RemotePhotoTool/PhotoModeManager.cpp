@@ -30,7 +30,7 @@ bool HDRPhotoModeManager::Init(std::shared_ptr<RemoteReleaseControl> spRemoteRel
    // set default release settings
    try
    {
-      ShutterReleaseSettings settings(ShutterReleaseSettings::saveToBoth);
+      ShutterReleaseSettings& settings = m_host.GetReleaseSettings();
 
       CString cszFilename =
          m_host.GetImageFileManager().NextFilename(imageTypeHDR);
@@ -175,7 +175,9 @@ void HDRPhotoModeManager::ReleaseAEBFirst()
          pViewfinder->EnableUpdate(false);
    }
 
-   m_host.LockActionMode(true);
+   // action mode is only unlocked when we receive an image
+   if (m_host.GetReleaseSettings().SaveTarget() != ShutterReleaseSettings::saveToCamera)
+      m_host.LockActionMode(true);
 
    m_bAEBInProgress = true;
    m_vecAEBFilenameList.clear();
@@ -204,10 +206,12 @@ void HDRPhotoModeManager::ReleaseAEBNext()
    // called when shutter speed was changed successfully
    bool bLastShot = m_uiCurrentAEBShutterSpeed + 1 == m_vecAEBShutterSpeedValues.size();
 
-   ShutterReleaseSettings settings(ShutterReleaseSettings::saveToBoth,
+   ShutterReleaseSettings& settings = m_host.GetReleaseSettings();
+
+   settings.HandlerOnFinishedTransfer(
       bLastShot ?
-      std::bind(&HDRPhotoModeManager::OnFinishedTransferLastAEB, this, std::placeholders::_1) :
-      std::bind(&HDRPhotoModeManager::OnFinishedTransferNextAEB, this, std::placeholders::_1));
+         std::bind(&HDRPhotoModeManager::OnFinishedTransferLastAEB, this, std::placeholders::_1) :
+         std::bind(&HDRPhotoModeManager::OnFinishedTransferNextAEB, this, std::placeholders::_1));
 
    CString cszFilename =
       m_host.GetImageFileManager().NextFilename(imageTypeHDR, m_uiCurrentAEBShutterSpeed == 0);
@@ -271,7 +275,7 @@ bool PanoramaPhotoModeManager::Init(std::shared_ptr<RemoteReleaseControl> spRemo
    // set default release settings
    try
    {
-      ShutterReleaseSettings settings(ShutterReleaseSettings::saveToBoth);
+      ShutterReleaseSettings& settings = m_host.GetReleaseSettings();
 
       CString cszFilename =
          m_host.GetImageFileManager().NextFilename(imageTypePano);
@@ -322,7 +326,9 @@ void PanoramaPhotoModeManager::StartHugin()
 void PanoramaPhotoModeManager::ReleasePanorama()
 {
    // called when shutter speed was changed successfully
-   ShutterReleaseSettings settings(ShutterReleaseSettings::saveToBoth,
+   ShutterReleaseSettings& settings = m_host.GetReleaseSettings();
+
+   settings.HandlerOnFinishedTransfer(
       std::bind(&PanoramaPhotoModeManager::OnFinishedTransfer, this, std::placeholders::_1));
 
    bool bNewPanorama = m_vecPanoramaFilenameList.empty();
@@ -339,7 +345,9 @@ void PanoramaPhotoModeManager::ReleasePanorama()
       m_vecPanoramaFilenameList.size() + 1);
    m_host.SetStatusText(cszText);
 
-   m_host.LockActionMode(true);
+   // action mode is only unlocked when we receive an image
+   if (m_host.GetReleaseSettings().SaveTarget() != ShutterReleaseSettings::saveToCamera)
+      m_host.LockActionMode(true);
 
    try
    {

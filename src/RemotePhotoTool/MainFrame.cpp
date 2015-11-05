@@ -14,6 +14,7 @@
 #include "ConnectCameraDlg.hpp"
 #include "SettingsDlg.hpp"
 #include "SourceDevice.hpp"
+#include "ShutterReleaseSettings.hpp"
 #include "CameraException.hpp"
 #include "CameraErrorDlg.hpp"
 #include "Logging.hpp"
@@ -35,6 +36,8 @@ MainFrame::MainFrame()
    SetupLogging();
 
    m_upImageFileManager.reset(new ImageFileManager(m_settings));
+
+   m_releaseSettings.SaveTarget(ShutterReleaseSettings::saveToBoth);
 }
 
 MainFrame::~MainFrame() throw()
@@ -106,8 +109,11 @@ LRESULT MainFrame::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/,
 
    UIEnable(ID_VIEWFINDER_SHOW, false);
 
+   UISetCheck(ID_CAMERA_SETTINGS_SAVETO_BOTH, true);
+
    EnablePhotoModes(false);
    EnableScriptingUI(false);
+   EnableCameraUI(false);
 
    // show the connect dialog
    PostMessage(WM_COMMAND, MAKEWPARAM(ID_HOME_CONNECT, 0), 0);
@@ -230,6 +236,7 @@ LRESULT MainFrame::OnHomeConnect(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWnd
 
    EnablePhotoModes(false);
    EnableScriptingUI(false);
+   EnableCameraUI(false);
 
    m_hWndView = m_upView->CreateView(m_splitter);
 
@@ -310,6 +317,71 @@ LRESULT MainFrame::OnViewfinderShow(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*h
    bool bViewfinderActive = m_upViewFinderView != nullptr;
    ShowViewfinder(!bViewfinderActive);
    return 0;
+}
+
+LRESULT MainFrame::OnCameraSettingsSaveToSelChanged(UI_EXECUTIONVERB verb, WORD /*wID*/, UINT uSel, BOOL& /*bHandled*/)
+{
+   if (verb == UI_EXECUTIONVERB_EXECUTE &&
+      uSel != UI_COLLECTION_INVALIDINDEX &&
+      m_spRemoteReleaseControl != nullptr)
+   {
+      ShutterReleaseSettings::T_enSaveTarget enSaveTarget =
+         static_cast<ShutterReleaseSettings::T_enSaveTarget>(uSel + 1);
+
+      SetCameraSettingsSaveTo(enSaveTarget);
+   }
+
+   return 0;
+}
+
+static_assert(
+   ID_CAMERA_SETTINGS_SAVETO_CAMERA - ID_CAMERA_SETTINGS_SAVETO_CAMERA + 1 ==
+   ShutterReleaseSettings::saveToCamera, "ensure that ID value matches enum value in T_enSaveTarget");
+
+static_assert(
+   ID_CAMERA_SETTINGS_SAVETO_PC - ID_CAMERA_SETTINGS_SAVETO_CAMERA + 1 ==
+   ShutterReleaseSettings::saveToHost, "ensure that ID value matches enum value in T_enSaveTarget");
+
+static_assert(
+   ID_CAMERA_SETTINGS_SAVETO_BOTH - ID_CAMERA_SETTINGS_SAVETO_CAMERA + 1 ==
+   ShutterReleaseSettings::saveToBoth, "ensure that ID value matches enum value in T_enSaveTarget");
+
+LRESULT MainFrame::OnCameraSettingsSaveToRange(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+   ShutterReleaseSettings::T_enSaveTarget enSaveTarget =
+      static_cast<ShutterReleaseSettings::T_enSaveTarget>(wID - ID_CAMERA_SETTINGS_SAVETO_CAMERA + 1);
+
+   SetCameraSettingsSaveTo(enSaveTarget);
+
+   return 0;
+}
+
+void MainFrame::SetCameraSettingsSaveTo(ShutterReleaseSettings::T_enSaveTarget enSaveTarget)
+{
+   m_releaseSettings.SaveTarget(enSaveTarget);
+
+   if (m_spRemoteReleaseControl == nullptr)
+      return;
+
+   try
+   {
+      m_spRemoteReleaseControl->SetReleaseSettings(m_releaseSettings);
+   }
+   catch (CameraException& ex)
+   {
+      CameraErrorDlg dlg(_T("Error while setting shutter release settings"), ex);
+      dlg.DoModal(m_hWnd);
+      return;
+   }
+
+   UISetCheck(ID_CAMERA_SETTINGS_SAVETO_CAMERA, false);
+   UISetCheck(ID_CAMERA_SETTINGS_SAVETO_PC, false);
+   UISetCheck(ID_CAMERA_SETTINGS_SAVETO_BOTH, false);
+
+   UINT uiId = static_cast<UINT>(enSaveTarget - ShutterReleaseSettings::saveToCamera) +
+      ID_CAMERA_SETTINGS_SAVETO_CAMERA;
+
+   UISetCheck(uiId, true);
 }
 
 /// \note Normally the ideal place for this handler would be ViewFinderView, but there is a problem:
@@ -441,6 +513,7 @@ void MainFrame::SetupRibbonBar()
    {
       UIAddMenu(m_CmdBar.GetMenu(), true);
 
+      m_cbCameraSettingsSaveToMode.Select(2);
       m_cbViewfinderLinesMode.Select(0);
 
       CRibbonPersist(c_pszSettingsRegkey).Restore(bRibbonUI, m_hgRibbonSettings);
@@ -527,6 +600,8 @@ std::shared_ptr<RemoteReleaseControl> MainFrame::StartRemoteReleaseControl(bool 
          {
             m_spRemoteReleaseControl = m_spSourceDevice->EnterReleaseControl();
 
+            EnableCameraUI(true);
+
             // check viewfinder
             bool bAvailViewfinder = m_spRemoteReleaseControl->GetCapability(RemoteReleaseControl::capViewfinder);
 
@@ -545,6 +620,9 @@ std::shared_ptr<RemoteReleaseControl> MainFrame::StartRemoteReleaseControl(bool 
             dlg.DoModal(m_hWnd);
 
             m_spRemoteReleaseControl.reset();
+
+            UIEnable(ID_VIEWFINDER_SHOW, false, true);
+            EnableCameraUI(false);
          }
       }
    }
@@ -553,6 +631,7 @@ std::shared_ptr<RemoteReleaseControl> MainFrame::StartRemoteReleaseControl(bool 
       m_spRemoteReleaseControl.reset();
 
       UIEnable(ID_VIEWFINDER_SHOW, false, true);
+      EnableCameraUI(false);
    }
 
    return m_spRemoteReleaseControl;
@@ -741,6 +820,21 @@ void MainFrame::EnableScriptingUI(bool bScripting)
    UIEnable(ID_SCRIPTING_EDIT, false); // enabled when a script is loaded
 }
 
+void MainFrame::EnableCameraUI(bool bEnable)
+{
+   UIEnable(ID_CAMERA_RELEASE, bEnable);
+   UIEnable(ID_CAMERA_SHOOTING_MODE, bEnable);
+   UIEnable(ID_CAMERA_SETTINGS_AV, bEnable);
+   UIEnable(ID_CAMERA_SETTINGS_TV, bEnable);
+   UIEnable(ID_CAMERA_SETTINGS_EXPOSURE, bEnable);
+   UIEnable(ID_CAMERA_SETTINGS_ISO, bEnable);
+   UIEnable(ID_CAMERA_SETTINGS_SAVETO, bEnable);
+   UIEnable(ID_CAMERA_SETTINGS_SAVETO_CAMERA, bEnable);
+   UIEnable(ID_CAMERA_SETTINGS_SAVETO_PC, bEnable);
+   UIEnable(ID_CAMERA_SETTINGS_SAVETO_BOTH, bEnable);
+   UIEnable(ID_CAMERA_SETTINGS_IMAGE_FORMAT, bEnable);
+}
+
 void MainFrame::SetPaneWidths(int* arrWidths, int nPanes)
 {
    // find the size of the borders
@@ -776,6 +870,7 @@ void MainFrame::OnStateEvent(RemoteReleaseControl::T_enStateEvent enStateEvent, 
 
       EnablePhotoModes(false);
       EnableScriptingUI(false);
+      EnableCameraUI(false);
 
       UpdateTitle();
 

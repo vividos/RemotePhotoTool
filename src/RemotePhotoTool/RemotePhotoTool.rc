@@ -63,8 +63,11 @@ BEGIN
     BEGIN
         MENUITEM "Release", ID_CAMERA_RELEASE
         POPUP "&Save to..."
+        POPUP "&Save to"
         BEGIN
-            MENUITEM "dummy", IDC_STATIC
+            MENUITEM "&Both", ID_CAMERA_SETTINGS_SAVETO_BOTH
+            MENUITEM "&Camera", ID_CAMERA_SETTINGS_SAVETO_CAMERA
+            MENUITEM "&PC", ID_CAMERA_SETTINGS_SAVETO_PC
         END
     END
     POPUP "&Scripting"
@@ -170,6 +173,16 @@ LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
 ID_PREV_IMAGES_OPEN_FOLDER BITMAP         "res\\prev_images_open_folder.bmp"
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
 ID_PREV_IMAGES_EDIT BITMAP         "res\\prev_images_edit.bmp"
+LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
+ID_CAMERA_RELEASE BITMAP         "res\\placeholder.bmp"
+LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
+ID_CAMERA_SETTINGS_SAVETO BITMAP         "res\\placeholder.bmp"
+LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
+ID_CAMERA_SETTINGS_SAVETO_CAMERA BITMAP         "res\\placeholder.bmp"
+LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
+ID_CAMERA_SETTINGS_SAVETO_PC BITMAP         "res\\placeholder.bmp"
+LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
+ID_CAMERA_SETTINGS_SAVETO_BOTH BITMAP         "res\\placeholder.bmp"
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
 ID_VIEWFINDER_SHOW BITMAP         "res\\viewfinder_show.bmp"
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
@@ -429,6 +442,10 @@ BEGIN
     ID_PREV_IMAGES_OPEN_FOLDER    "Opens folder of image shown\nOpen folder"
     ID_PREV_IMAGES_EDIT           "Edits shown image in associated application\nEdit image"
     ID_CAMERA_RELEASE             "Presses the camera shutter release button\nShutter release"
+    ID_CAMERA_SETTINGS_SAVETO     "Destination to save images taken by cvamera\nSave to"
+    ID_CAMERA_SETTINGS_SAVETO_CAMERA "Camera only\nSave to camera only"
+    ID_CAMERA_SETTINGS_SAVETO_PC  "PC only\nSave to PC only"
+    ID_CAMERA_SETTINGS_SAVETO_BOTH "Both camera and PC\nSave to camera and PC"
     ID_VIEWFINDER_SHOW            "Shows or hides the Viewfinder window\nViewfinder"
     ID_VIEWFINDER_AUTO_FOCUS      "Adjusts auto focus of live viewfinder\nAuto focus"
     ID_VIEWFINDER_AUTO_WB         "Adjusts white balance of live viewfinder\nAuto white balance"
