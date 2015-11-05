@@ -68,6 +68,7 @@ private:
       MESSAGE_HANDLER(WM_DESTROY, OnDestroy)
       COMMAND_HANDLER(IDC_COMBO_SHOOTING_MODE, CBN_SELCHANGE, OnShootingModeSelChange)
       COMMAND_ID_HANDLER(IDC_BUTTON_RELEASE, OnButtonRelease)
+      COMMAND_ID_HANDLER(ID_CAMERA_RELEASE, OnButtonRelease)
       REFLECT_NOTIFICATIONS() // to make sure superclassed controls get notification messages
    END_MSG_MAP()
 
