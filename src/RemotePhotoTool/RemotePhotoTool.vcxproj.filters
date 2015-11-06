@@ -264,6 +264,9 @@
     <ClInclude Include="PreviousImageInfo.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ImagePropertyRibbonCombobox.hpp">
+      <Filter>UI Files\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\RemotePhotoTool.ico">

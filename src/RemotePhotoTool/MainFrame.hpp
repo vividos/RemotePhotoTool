@@ -13,6 +13,8 @@
 #include "IPhotoModeViewHost.hpp"
 #include "ViewManager.hpp"
 #include "ViewFinderView.hpp"
+#include "ImagePropertyValueManager.hpp"
+#include "ImagePropertyRibbonCombobox.hpp"
 #include "AppSettings.hpp"
 #include "ImageFileManager.hpp"
 #include "ShutterReleaseSettings.hpp"
@@ -62,6 +64,11 @@ private:
 
    BEGIN_RIBBON_CONTROL_MAP(MainFrame)
       RIBBON_CONTROL(m_cbCameraSettingsSaveToMode)
+      RIBBON_CONTROL(m_cbCameraSettingsShootingMode)
+      RIBBON_CONTROL(m_cbCameraSettingsAv)
+      RIBBON_CONTROL(m_cbCameraSettingsTv)
+      RIBBON_CONTROL(m_cbCameraSettingsExposure)
+      RIBBON_CONTROL(m_cbCameraSettingsIso)
       RIBBON_CONTROL(m_cbViewfinderLinesMode)
    END_RIBBON_CONTROL_MAP()
 
@@ -134,6 +141,11 @@ private:
       RIBBON_GALLERY_CONTROL_HANDLER(ID_CAMERA_SETTINGS_SAVETO, OnCameraSettingsSaveToSelChanged)
       COMMAND_RANGE_HANDLER(ID_CAMERA_SETTINGS_SAVETO_CAMERA, ID_CAMERA_SETTINGS_SAVETO_BOTH, OnCameraSettingsSaveToRange)
       RIBBON_GALLERY_CONTROL_HANDLER(ID_VIEWFINDER_LINES_MODE, OnViewfinderLinesModeSelChanged)
+      RIBBON_COMBOBOX_IMAGE_PROPERTY(ID_CAMERA_SHOOTING_MODE, m_cbCameraSettingsShootingMode)
+      RIBBON_COMBOBOX_IMAGE_PROPERTY(ID_CAMERA_SETTINGS_AV, m_cbCameraSettingsAv)
+      RIBBON_COMBOBOX_IMAGE_PROPERTY(ID_CAMERA_SETTINGS_TV, m_cbCameraSettingsTv)
+      RIBBON_COMBOBOX_IMAGE_PROPERTY(ID_CAMERA_SETTINGS_EXPOSURE, m_cbCameraSettingsExposure)
+      RIBBON_COMBOBOX_IMAGE_PROPERTY(ID_CAMERA_SETTINGS_ISO, m_cbCameraSettingsIso)
       COMMAND_RANGE_HANDLER(ID_VIEWFINDER_LINES_MODE_NONE, ID_VIEWFINDER_LINES_MODE_GOLDENRATIO, OnViewfinderLinesModeRange)
       COMMAND_ID_HANDLER(ID_PREV_IMAGES_SHOW, OnPrevImagesShow)
       COMMAND_ID_HANDLER(ID_PREV_IMAGES_EXIT, OnPrevImagesExit)
@@ -191,6 +203,23 @@ private:
    /// called for every WM_COMMAND message; forwards it to the photo view
    LRESULT OnForwardCommandMessage(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
 
+   // ribbon framework methods
+
+   /// called to query category text for category number
+   LPCWSTR OnRibbonQueryCategoryText(UINT32 uCtrlID, UINT32 uCat);
+
+   /// called to query item category for item
+   UINT32 OnRibbonQueryItemCategory(UINT32 uCtrlID, UINT32 uItem);
+
+   /// called to query item text for item
+   LPCWSTR OnRibbonQueryItemText(UINT32 uCtrlID, UINT32 uItem);
+
+   /// called to query currently selected item
+   bool OnRibbonQuerySelectedItem(UINT32 uCtrlID, UINT32& uSel);
+
+   /// called to query item image for item
+   HBITMAP OnRibbonQueryItemImage(UINT32 uCtrlID, UINT32 uItem);
+
 private:
    // virtual methods from IPhotoModeViewHost
 
@@ -244,6 +273,15 @@ private:
    /// enables or disables camera related UI elements
    void EnableCameraUI(bool bEnable);
 
+   /// called when image property has been updated
+   void OnUpdatedImageProperty(RemoteReleaseControl::T_enPropertyEvent enPropertyEvent, unsigned int uiValue);
+
+   /// sets up image property manager
+   void SetupImagePropertyManager();
+
+   /// updates values that depend on shooting mode changes
+   void UpdateShootingModeDependentValues();
+
    /// sets new "Save to" camera settings value
    void SetCameraSettingsSaveTo(ShutterReleaseSettings::T_enSaveTarget enSaveTarget);
 
@@ -288,6 +326,27 @@ private:
 
    /// ribbon item gallery for camera settings "save to" mode
    CRibbonItemGalleryCtrl<ID_CAMERA_SETTINGS_SAVETO, 3> m_cbCameraSettingsSaveToMode;
+
+   /// handler id for image property changes
+   int m_iImagePropertyHandlerId;
+
+   /// image property value manager
+   std::unique_ptr<ImagePropertyValueManager> m_upImagePropertyValueManager;
+
+   /// shooting mode combobox
+   ImagePropertyRibbonCombobox<ID_CAMERA_SHOOTING_MODE, T_enImagePropertyType::propShootingMode> m_cbCameraSettingsShootingMode;
+
+   /// aperture ribbon combobox
+   ImagePropertyRibbonCombobox<ID_CAMERA_SETTINGS_AV, T_enImagePropertyType::propAv> m_cbCameraSettingsAv;
+
+   /// shutter speed ribbon combobox
+   ImagePropertyRibbonCombobox<ID_CAMERA_SETTINGS_TV, T_enImagePropertyType::propTv> m_cbCameraSettingsTv;
+
+   /// exposure value ribbon combobox
+   ImagePropertyRibbonCombobox<ID_CAMERA_SETTINGS_EXPOSURE, T_enImagePropertyType::propExposureCompensation> m_cbCameraSettingsExposure;
+
+   /// ISO setting ribbon combobox
+   ImagePropertyRibbonCombobox<ID_CAMERA_SETTINGS_ISO, T_enImagePropertyType::propISOSpeed> m_cbCameraSettingsIso;
 
    /// ribbon item gallery for viewfinder lines mode
    CRibbonItemGalleryCtrl<ID_VIEWFINDER_LINES_MODE, 3> m_cbViewfinderLinesMode;

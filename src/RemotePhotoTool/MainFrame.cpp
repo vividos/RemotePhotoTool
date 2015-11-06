@@ -15,6 +15,7 @@
 #include "SettingsDlg.hpp"
 #include "SourceDevice.hpp"
 #include "ShutterReleaseSettings.hpp"
+#include "ShootingMode.hpp"
 #include "CameraException.hpp"
 #include "CameraErrorDlg.hpp"
 #include "Logging.hpp"
@@ -29,7 +30,8 @@ MainFrame::MainFrame()
  m_settings(c_pszSettingsRegkey),
  m_dwUIThreadId(Thread::CurrentId()),
  m_enCurrentViewType(viewBlank),
- m_enPrevImagesSavedView(viewBlank)
+ m_enPrevImagesSavedView(viewBlank),
+ m_iImagePropertyHandlerId(-1)
 {
    m_settings.Load();
 
@@ -131,6 +133,8 @@ LRESULT MainFrame::OnClose(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, 
       if (iRet != IDYES)
          return 0;
    }
+
+   EnableCameraUI(false);
 
    bHandled = false; // let app process message
 
@@ -465,6 +469,56 @@ LRESULT MainFrame::OnForwardCommandMessage(UINT uMsg, WPARAM wParam, LPARAM lPar
    return lResult;
 }
 
+LPCWSTR MainFrame::OnRibbonQueryCategoryText(UINT32 uCtrlID, UINT32 uCat)
+{
+   RibbonUI::ICtrl& ctrl = GetRibbonCtrl(uCtrlID);
+   IRibbonCombobox* pCombo = dynamic_cast<IRibbonCombobox*>(&ctrl);
+   if (pCombo == nullptr)
+      return L"Category";
+
+   return pCombo->OnRibbonQueryCategoryText(uCat);
+}
+
+UINT32 MainFrame::OnRibbonQueryItemCategory(UINT32 uCtrlID, UINT32 uItem)
+{
+   RibbonUI::ICtrl& ctrl = GetRibbonCtrl(uCtrlID);
+   IRibbonCombobox* pCombo = dynamic_cast<IRibbonCombobox*>(&ctrl);
+   if (pCombo == nullptr)
+      return 0;
+
+   return pCombo->OnRibbonQueryItemCategory(uItem);
+}
+
+LPCWSTR MainFrame::OnRibbonQueryItemText(UINT32 uCtrlID, UINT32 uItem)
+{
+   RibbonUI::ICtrl& ctrl = GetRibbonCtrl(uCtrlID);
+   IRibbonCombobox* pCombo = dynamic_cast<IRibbonCombobox*>(&ctrl);
+   if (pCombo == nullptr)
+      return DefRibbonQueryItemText(uCtrlID, uItem);
+
+   return pCombo->OnRibbonQueryItemText(uItem);
+}
+
+bool MainFrame::OnRibbonQuerySelectedItem(UINT32 uCtrlID, UINT32& uSel)
+{
+   RibbonUI::ICtrl& ctrl = GetRibbonCtrl(uCtrlID);
+   IRibbonCombobox* pCombo = dynamic_cast<IRibbonCombobox*>(&ctrl);
+   if (pCombo == nullptr)
+      return false;
+
+   return pCombo->OnRibbonQuerySelectedItem(uSel);
+}
+
+HBITMAP MainFrame::OnRibbonQueryItemImage(UINT32 uCtrlID, UINT32 uItem)
+{
+   RibbonUI::ICtrl& ctrl = GetRibbonCtrl(uCtrlID);
+   IRibbonCombobox* pCombo = dynamic_cast<IRibbonCombobox*>(&ctrl);
+   if (pCombo == nullptr)
+      return DefRibbonQueryItemImage(uCtrlID, uItem);
+
+   return pCombo->OnRibbonQueryItemImage(uItem);
+}
+
 void MainFrame::SetupLogging()
 {
    // set up logging
@@ -494,13 +548,13 @@ void MainFrame::SetupCmdBar()
 {
    // create command bar window
    m_CmdBar.Create(m_hWnd, rcDefault, NULL, ATL_SIMPLE_CMDBAR_PANE_STYLE);
-   // attach menu
+
+   // move menu infos to command bar
    m_CmdBar.AttachMenu(GetMenu());
-   // load command bar images
+
    m_CmdBar.SetImageMaskColor(RGB(253, 5, 255)); // pink
    m_CmdBar.LoadImages(IDR_MAINFRAME);
 
-   // remove old menu
    SetMenu(NULL);
 }
 
@@ -512,6 +566,12 @@ void MainFrame::SetupRibbonBar()
    if (bRibbonUI)
    {
       UIAddMenu(m_CmdBar.GetMenu(), true);
+
+      // also add texts for all menu commands that only appear on ribbon
+      CMenu menuRibbonCommands;
+      menuRibbonCommands.LoadMenu(IDR_RIBBON_COMMANDS);
+
+      UIAddMenu(menuRibbonCommands, true);
 
       m_cbCameraSettingsSaveToMode.Select(2);
       m_cbViewfinderLinesMode.Select(0);
@@ -833,6 +893,87 @@ void MainFrame::EnableCameraUI(bool bEnable)
    UIEnable(ID_CAMERA_SETTINGS_SAVETO_PC, bEnable);
    UIEnable(ID_CAMERA_SETTINGS_SAVETO_BOTH, bEnable);
    UIEnable(ID_CAMERA_SETTINGS_IMAGE_FORMAT, bEnable);
+
+   if (bEnable && m_spRemoteReleaseControl != nullptr)
+   {
+      SetupImagePropertyManager();
+
+      // shooting mode change supported?
+      bool bChangePossible = m_spRemoteReleaseControl->GetCapability(RemoteReleaseControl::capChangeShootingMode);
+      UIEnable(ID_CAMERA_SHOOTING_MODE, bChangePossible);
+
+      // wait for changes in shooting mode property
+      m_iImagePropertyHandlerId = m_spRemoteReleaseControl->AddPropertyEventHandler(
+         std::bind(&MainFrame::OnUpdatedImageProperty, this, std::placeholders::_1, std::placeholders::_2));
+   }
+
+   if (!bEnable)
+   {
+      if (m_iImagePropertyHandlerId != -1 && m_spRemoteReleaseControl != nullptr)
+         m_spRemoteReleaseControl->RemovePropertyEventHandler(m_iImagePropertyHandlerId);
+
+      m_upImagePropertyValueManager.reset();
+   }
+}
+
+void MainFrame::OnUpdatedImageProperty(RemoteReleaseControl::T_enPropertyEvent enPropertyEvent, unsigned int uiValue)
+{
+   if (enPropertyEvent == RemoteReleaseControl::propEventPropertyChanged &&
+      uiValue == m_spRemoteReleaseControl->MapImagePropertyTypeToId(propShootingMode))
+   {
+      // shooting mode has changed; update some fields
+      UpdateShootingModeDependentValues();
+   }
+}
+
+void MainFrame::SetupImagePropertyManager()
+{
+   m_upImagePropertyValueManager.reset(new ImagePropertyValueManager(*m_spRemoteReleaseControl));
+
+   m_cbCameraSettingsShootingMode.SetRemoteReleaseControl(m_spRemoteReleaseControl);
+   m_cbCameraSettingsAv.SetRemoteReleaseControl(m_spRemoteReleaseControl);
+   m_cbCameraSettingsTv.SetRemoteReleaseControl(m_spRemoteReleaseControl);
+   m_cbCameraSettingsExposure.SetRemoteReleaseControl(m_spRemoteReleaseControl);
+   m_cbCameraSettingsIso.SetRemoteReleaseControl(m_spRemoteReleaseControl);
+
+   m_upImagePropertyValueManager->AddControl(m_cbCameraSettingsShootingMode);
+   m_upImagePropertyValueManager->AddControl(m_cbCameraSettingsAv);
+   m_upImagePropertyValueManager->AddControl(m_cbCameraSettingsTv);
+   m_upImagePropertyValueManager->AddControl(m_cbCameraSettingsExposure);
+   m_upImagePropertyValueManager->AddControl(m_cbCameraSettingsIso);
+
+   m_upImagePropertyValueManager->UpdateControls();
+
+   m_upImagePropertyValueManager->UpdateProperty(
+      m_spRemoteReleaseControl->MapImagePropertyTypeToId(propShootingMode));
+}
+
+void MainFrame::UpdateShootingModeDependentValues()
+{
+   ShootingMode shootingMode(m_spRemoteReleaseControl);
+
+   ImageProperty currentMode = shootingMode.Current();
+
+   bool bIsM = currentMode.Value() == shootingMode.Manual().Value();
+   bool bIsAv = currentMode.Value() == shootingMode.Av().Value();
+   bool bIsTv = currentMode.Value() == shootingMode.Tv().Value();
+   bool bIsP = currentMode.Value() == shootingMode.Program().Value();
+
+   bool bReadOnlyAv = !bIsM && (bIsTv || bIsP);
+   bool bReadOnlyTv = !bIsM && (bIsAv || bIsP);
+   bool bReadOnlyExp = bIsM;
+
+   m_cbCameraSettingsAv.UpdateValuesList();
+   m_cbCameraSettingsAv.UpdateValue();
+   UIEnable(ID_CAMERA_SETTINGS_AV, !bReadOnlyAv);
+
+   m_cbCameraSettingsTv.UpdateValuesList();
+   m_cbCameraSettingsTv.UpdateValue();
+   UIEnable(ID_CAMERA_SETTINGS_TV, !bReadOnlyTv);
+
+   m_cbCameraSettingsExposure.UpdateValuesList();
+   m_cbCameraSettingsExposure.UpdateValue();
+   UIEnable(ID_CAMERA_SETTINGS_EXPOSURE, !bReadOnlyExp);
 }
 
 void MainFrame::SetPaneWidths(int* arrWidths, int nPanes)

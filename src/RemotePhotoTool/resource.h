@@ -3,6 +3,7 @@
 #endif
 
 #define IDR_MAINFRAME                           128
+#define IDR_RIBBON_COMMANDS                     129
 #define IDB_ICONS                               131
 #define IDB_BIGICONS                            132
 #define IDR_PANE_PROGRESS                       133

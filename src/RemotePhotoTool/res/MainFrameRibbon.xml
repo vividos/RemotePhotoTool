@@ -201,6 +201,14 @@
             <Group CommandName="GroupCameraRelease" SizeDefinition="OneButton">
               <Button CommandName="phototool_CAMERA_RELEASE"/>
             </Group>
+            <Group CommandName="GroupCameraSettings">
+              <ComboBox CommandName="phototool_CAMERA_SHOOTING_MODE" />
+              <ComboBox CommandName="phototool_CAMERA_SETTINGS_AV" />
+              <ComboBox CommandName="phototool_CAMERA_SETTINGS_TV" />
+              <ComboBox CommandName="phototool_CAMERA_SETTINGS_EXPOSURE" />
+              <ComboBox CommandName="phototool_CAMERA_SETTINGS_ISO" />
+            </Group>
+
             <Group CommandName="GroupCameraSettings" SizeDefinition="OneButton">
 
               <DropDownGallery CommandName="phototool_CAMERA_SETTINGS_SAVETO"

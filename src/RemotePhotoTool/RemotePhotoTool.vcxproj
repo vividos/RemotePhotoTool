@@ -153,6 +153,7 @@
     <ClInclude Include="IImagePropertyControl.hpp" />
     <ClInclude Include="ImageFileManager.hpp" />
     <ClInclude Include="ImagePropertyCombobox.hpp" />
+    <ClInclude Include="ImagePropertyRibbonCombobox.hpp" />
     <ClInclude Include="ImagePropertyValueManager.hpp" />
     <ClInclude Include="ImagePropertyView.hpp" />
     <ClInclude Include="IPhotoModeView.hpp" />
