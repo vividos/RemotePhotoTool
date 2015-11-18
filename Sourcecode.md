@@ -77,15 +77,15 @@ application.
 With previous versions, the ATL library was needed (and could be extracted from the "Windows
 Driver Kit 7.1.0"). With the Visual Studio Community 2015 version, this is no longer needed.
 
-## WTL 9.0 ##
+## WTL 9.1 ##
 
-The application uses WTL, on top of ATL, for the user interface. Download WTL 9.0.4140 (or any
+The application uses WTL, on top of ATL, for the user interface. Download WTL 9.1.5321 (or any
 later version) from this website:
 http://sourceforge.net/projects/wtl/
 
-You need to click on "Browse all files" and select WTL 9.0 to get to the proper folder. Here's
+You need to click on "Browse all files" and select WTL 9.1 to get to the proper folder. Here's
 a link to the version I use:
-[http://sourceforge.net/projects/wtl/files/WTL%209.0/WTL%209.0.4140%20Final/WTL90_4140_Final.zip/download]()
+[http://sourceforge.net/projects/wtl/files/WTL%209.1/WTL%209.1.5321%20Final/WTL91_5321_Final.zip/download]()
 
 Extract the contents of the zip archive in to a new folder. Navigate into the "AppWiz" folder and
 double-click the file `"Setup.js"`.
