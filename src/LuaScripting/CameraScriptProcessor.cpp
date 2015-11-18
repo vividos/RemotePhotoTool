@@ -63,6 +63,15 @@ public:
       });
    }
 
+   /// loads Lua source string
+   void LoadSourceString(const CString& cszLuaSource)
+   {
+      m_scriptWorkerThread.GetStrand().post([&, cszLuaSource]()
+      {
+         m_scheduler.GetState().LoadSourceString(cszLuaSource);
+      });
+   }
+
    /// runs script by calling Lua function App.run()
    void Run()
    {
@@ -75,7 +84,6 @@ public:
          vecParam.push_back(Lua::Value(app));
 
          m_scheduler.StartMainThread(func, vecParam);
-
       });
    }
 
@@ -242,6 +250,16 @@ void CameraScriptProcessor::LoadScript(const CString& cszFilename)
       Stop();
 
    m_spImpl->LoadFile(cszFilename);
+}
+
+void CameraScriptProcessor::LoadSourceString(const CString& cszLuaSource)
+{
+   ATLASSERT(m_spImpl != nullptr);
+
+   if (m_spImpl->GetScheduler().CurrentExecutionState() != LuaScheduler::stateIdle)
+      Stop();
+
+   m_spImpl->LoadSourceString(cszLuaSource);
 }
 
 /// \details calls App:run() of loaded script

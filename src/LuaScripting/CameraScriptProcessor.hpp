@@ -30,6 +30,9 @@ public:
    /// loads new script into processor
    void LoadScript(const CString& cszFilename);
 
+   /// loads Lua script source string into processor
+   void LoadSourceString(const CString& cszLuaSource);
+
    /// runs script in background thread
    void Run();
 
