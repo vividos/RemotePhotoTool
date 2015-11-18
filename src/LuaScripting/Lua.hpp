@@ -12,6 +12,7 @@
 #include <memory>
 #include <vector>
 #include <boost/any.hpp>
+#include <boost/optional.hpp>
 #include "Exception.hpp"
 
 // forward references
@@ -60,11 +61,6 @@ public:
    UINT LuaLineNumber() const throw() { return m_uiLuaLineNumber; }
 
 private:
-   CString m_cszLuaErrorMessage; ///< Lua error message
-   CString m_cszLuaSourceFile;   ///< Lua source file name
-   UINT m_uiLuaLineNumber;       ///< source file line number
-
-private:
    /// formats message from Lua state
    static CString MessageFromState(const CString& cszMessage, lua_State* L) throw();
 
@@ -73,6 +69,11 @@ private:
 
    /// parses Lua message
    void ParseLuaError(LPCSTR pszaText);
+
+private:
+   CString m_cszLuaErrorMessage; ///< Lua error message
+   CString m_cszLuaSourceFile;   ///< Lua source file name
+   UINT m_uiLuaLineNumber;       ///< source file line number
 };
 
 /// checks stack for consistency in dtor (same number of values on stack)
@@ -116,45 +117,22 @@ public:
    };
 
    /// default ctor; constructs nil value
-   Value()
-      :m_enType(typeNil)
-   {
-   }
+   Value();
 
    /// ctor for boolean value
-   explicit Value(bool bValue)
-      :m_value(bValue),
-       m_enType(typeBoolean)
-   {
-   }
+   explicit Value(bool bValue);
 
    /// ctor for number value
-   explicit Value(double dValue)
-      :m_value(dValue),
-       m_enType(typeNumber)
-   {
-   }
+   explicit Value(double dValue);
 
    /// ctor for integer value
-   explicit Value(int iValue)
-      :m_value(iValue),
-       m_enType(typeInteger)
-   {
-   }
+   explicit Value(int iValue);
 
    /// ctor for string value
-   explicit Value(const CString& cszText)
-      :m_value(cszText),
-       m_enType(typeString)
-   {
-   }
+   explicit Value(const CString& cszText);
 
    /// ctor for ANSI string value
-   explicit Value(LPCSTR pszText)
-      :m_value(pszText),
-       m_enType(typeString)
-   {
-   }
+   explicit Value(LPCSTR pszText);
 
    /// ctor; used to wrap Table object
    explicit Value(class Table table);
@@ -165,14 +143,17 @@ public:
    /// ctor; used to wrap Function object
    explicit Value(class Function func);
 
-   /// ctor; used to wrap Nil object
-   explicit Value(class Nil nil);
-
    /// ctor; used to wrap Thread object
    explicit Value(class Thread thread);
 
-   /// pushes value to stack
-   void Push(State& state) const;
+   /// copy ctor
+   Value(const Value& val);
+
+   /// assignment operator
+   Value& operator=(const Value& val);
+
+   /// dtor; removes value from stack, if stored on it
+   ~Value() throw();
 
    /// returns type
    T_enType GetType() const throw() { return m_enType; }
@@ -191,7 +172,6 @@ public:
          std::is_same<T, Function>::value ||
          std::is_same<T, Table>::value ||
          std::is_same<T, Userdata>::value ||
-         std::is_same<T, Nil>::value ||
          std::is_same<T, Thread>::value, "not an allowed type for Get<T>()");
 
       return boost::any_cast<T>(m_value);
@@ -204,15 +184,34 @@ public:
       return static_cast<int>(boost::any_cast<double>(m_value));
    }
 
+   /// returns string value
+   template <>
+   CString Get() const
+   {
+      return CString(boost::any_cast<LPCSTR>(m_value));
+   }
+
+private:
+   friend struct FuncData;
+   friend class Function;
+   friend class Table;
+   friend class State;
+   friend class Thread;
+
+   /// attaches value to state, and stack index
+   void Attach(State& state, int iStackIndex, bool bTemporary) const;
+
+   /// pushes value to stack
+   void Push(State& state) const;
+
+   /// detaches the object from stack
+   void Detach() const;
+
+   /// called when value on given stack index is removed
+   void OnRemoveStackValue(int iStackIndex);
+
    /// constructs Value object from stack entry
    static Value FromStack(State& state, int iIndex, bool bTemporary);
-
-protected:
-   /// ctor; used to set type for derived classes
-   explicit Value(T_enType enType)
-      :m_enType(enType)
-   {
-   }
 
 private:
    /// value
@@ -220,6 +219,15 @@ private:
 
    /// type
    T_enType m_enType;
+
+   /// state where the value is placed on
+   mutable boost::optional<std::reference_wrapper<State>> m_state;
+
+   /// stack index, when already stored on stack, or -1 if not
+   mutable int m_iStackIndex;
+
+   /// indicates if value is temporary
+   bool m_bTemporary;
 };
 
 /// \brief C++ function that can be registered as closure
@@ -240,28 +248,40 @@ typedef std::function<std::vector<Value>(State& state, const std::vector<Value>&
 class Function
 {
 public:
+   /// copy ctor
+   Function(const Function& func);
+
+   /// assignment operator
+   Function& operator=(const Function& func);
+
    /// dtor
-   ~Function();
+   ~Function() throw();
 
    /// calls function
    std::vector<Value> Call(int iResults = 0,
       const std::vector<Value>& vecParam = std::vector<Value>());
 
-   /// pushes function onto stack
-   void Push();
-
 private:
    friend Value;
 
    /// ctor; creates function object from value on stack
-   explicit Function(State& state, int iStackIndex);
+   explicit Function(State& state, int iStackIndex, bool bTemporary);
+
+   /// pushes function onto stack
+   void Push();
+
+   /// detaches function from stack
+   void Detach() const;
 
 private:
    /// state the function belongs to
    State& m_state;
 
    /// stack index of function currently held (always absolute value into stack)
-   int m_iStackIndex;
+   mutable int m_iStackIndex;
+
+   /// indicates if function is temporary
+   bool m_bTemporary;
 };
 
 /// \brief Lua table
@@ -274,28 +294,28 @@ private:
 class Table
 {
 public:
-   /// dtor
-   ~Table();
-
    /// copy ctor
    Table(const Table& table);
 
    /// assignment operator
    Table& operator=(const Table& table);
 
-   /// adds a value to the table
+   /// dtor
+   ~Table() throw();
+
+   /// adds a value to the table, using a string as key
    Table& AddValue(const CString& key, const Value& value);
+
+   /// adds a value to the table, using a numeric key
+   Table& AddValue(int key, const Value& value);
 
    /// adds a function to the table
    Table& AddFunction(LPCSTR pszaName, T_fnCFunction fn);
 
-   /// pushes table onto stack
-   void Push();
-
    /// returns value from table
    Value GetValue(const CString& key);
 
-   /// calls function
+   /// calls function stored in table
    std::vector<Value> CallFunction(const CString& cszName,
       int iResults = 0,
       const std::vector<Value>& vecParam = std::vector<Value>());
@@ -313,6 +333,12 @@ private:
    /// ctor; creates table object from value on stack
    explicit Table(State& state, int iStackIndex, bool bTemporary, const CString& cszName);
 
+   /// pushes table onto stack
+   void Push();
+
+   /// detaches table from stack
+   void Detach() const;
+
 private:
    /// state the table belongs to
    State& m_state;
@@ -320,14 +346,11 @@ private:
    /// table name
    CString m_cszName;
 
-   /// indicates if the table is currently being created
-   bool m_bCreating;
+   /// stack index of table currently held (always absolute value into stack)
+   mutable int m_iStackIndex;
 
    /// indicates if table is temporary
    bool m_bTemporary;
-
-   /// stack index of table currently held (always absolute value into stack)
-   int m_iStackIndex;
 };
 
 /// \brief Lua userdata
@@ -336,14 +359,14 @@ private:
 class Userdata
 {
 public:
-   /// dtor
-   ~Userdata();
-
    /// copy ctor
    Userdata(const Userdata& userdata);
 
    /// assignment operator
    Userdata& operator=(const Userdata& userdata);
+
+   /// dtor
+   ~Userdata() throw();
 
    /// returns size of userdata memory block
    size_t Size() const throw() { return m_uiSize; }
@@ -354,9 +377,6 @@ public:
    /// returns userdata memory block, as typed pointer
    template <typename T>
    T* Data() const throw() { return reinterpret_cast<T*>(m_pUserdata); }
-
-   /// pushes userdata onto stack
-   void Push();
 
 private:
    friend class State;
@@ -370,6 +390,12 @@ private:
    /// ctor; creates userdata object from value on stack
    explicit Userdata(State& state, int iStackIndex, bool bTemporary);
 
+   /// pushes userdata onto stack
+   void Push();
+
+   /// detaches userdata from stack
+   void Detach() const;
+
 private:
    /// state the userdata belongs to
    State& m_state;
@@ -380,57 +406,12 @@ private:
    /// size of raw memory block
    size_t m_uiSize;
 
-   /// indicates if the userdata is currently being created
-   bool m_bCreating;
+   /// stack index of userdata currently held (always absolute value into stack)
+   mutable int m_iStackIndex;
 
    /// indicates if userdata is temporary
    bool m_bTemporary;
-
-   /// stack index of userdata currently held (always absolute value into stack)
-   int m_iStackIndex;
 };
-
-/// \brief Lua nil value
-/// \details this class is used when a nil value was read from stack
-/// and needs to be managed, e.g. freed at stack end.
-class Nil
-{
-public:
-   /// dtor
-   ~Nil();
-
-   /// copy ctor
-   Nil(const Nil& nil);
-
-   /// assignment operator
-   Nil& operator=(const Nil& nil);
-
-   /// pushes nil value on stack
-   void Push();
-
-private:
-   friend class State;
-   friend Value;
-
-   // note: these ctors can only be called by Lua::State
-
-   /// ctor; creates userdata object from value on stack
-   explicit Nil(State& state, int iStackIndex, bool bTemporary);
-
-private:
-   /// state the userdata belongs to
-   State& m_state;
-
-   /// indicates if the nil value is currently being created
-   bool m_bCreating;
-
-   /// indicates if userdata is temporary
-   bool m_bTemporary;
-
-   /// stack index of userdata currently held (always absolute value into stack)
-   int m_iStackIndex;
-};
-
 
 /// \brief Lua state
 /// \details Helper functions to load Lua code, to call functions, to add tables and C++
@@ -493,7 +474,9 @@ public:
 private:
    friend Value;
    friend Table;
+   friend Function;
    friend FuncData;
+   friend Userdata;
    friend class Thread;
 
    /// ctor that takes an existing state
@@ -505,9 +488,27 @@ private:
    /// panic error handler
    static int OnLuaPanic(lua_State* L);
 
+   /// removes value from state stack, and moves all references
+   void Remove(Value& val, int iStackIndex);
+
+   /// adds a value reference in this state
+   void AddRef(Value& val);
+
+   /// removes value reference in this state
+   bool RemoveRef(const Value& val);
+
+   /// removes stack value from state stack
+   void RemoveIndex(int iStackIndex);
+
+   /// detaches all references from state
+   void DetachAll();
+
 private:
    /// Lua state
    std::shared_ptr<lua_State> m_spState;
+
+   /// list of values referenced on stack
+   std::vector<std::reference_wrapper<Value>> m_vecValuesOnStack;
 };
 
 /// \brief Lua thread
