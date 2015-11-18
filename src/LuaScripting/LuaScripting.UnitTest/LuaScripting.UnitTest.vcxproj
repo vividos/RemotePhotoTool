@@ -74,15 +74,18 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="TestCameraScriptProcessor.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="TestCameraScriptProcessor.cpp" />
     <ClCompile Include="TestLuaState.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\CanonControl\CanonControl.vcxproj">
+      <Project>{ce953b34-5513-4719-aead-a61f0585ab34}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\lua-5.3.1\Lua.vcxproj">
       <Project>{24ea638c-0f97-48fa-82d1-7dba2832c1dc}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\LuaScripting.vcxproj">
+      <Project>{41b565f7-f668-4425-a93d-6cabc18f6d1f}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
