@@ -102,10 +102,7 @@ m_strand(strand)
 
 void SystemLuaBindings::ManualResetEvent::InitBindings(Lua::Table& manualResetEvent)
 {
-   CString cszEventName;
-   cszEventName.Format(_T("event-%08p"), this);
-
-   manualResetEvent.AddValue("__name", Lua::Value(cszEventName));
+   manualResetEvent.AddValue("__name", Lua::Value(GetEventName()));
 
    manualResetEvent.AddFunction("signal",
       std::bind(&SystemLuaBindings::ManualResetEvent::Signal, shared_from_this(),
@@ -136,7 +133,8 @@ std::vector<Lua::Value> SystemLuaBindings::ManualResetEvent::Signal(Lua::State& 
 
    Lua::Table manualResetEvent = vecParams[0].Get<Lua::Table>();
 
-   //CString cszName = manualResetEvent.GetValue(_T("__name")).Get<CString>();
+   CString cszName = manualResetEvent.GetValue(_T("__name")).Get<CString>();
+   ATLASSERT(cszName == GetEventName());
 
    m_event.Set();
 
@@ -152,7 +150,8 @@ std::vector<Lua::Value> SystemLuaBindings::ManualResetEvent::Reset(Lua::State& s
 
    Lua::Table manualResetEvent = vecParams[0].Get<Lua::Table>();
 
-   //CString cszName = manualResetEvent.GetValue(_T("__name")).Get<CString>();
+   CString cszName = manualResetEvent.GetValue(_T("__name")).Get<CString>();
+   ATLASSERT(cszName == GetEventName());
 
    m_event.Reset();
 
@@ -177,6 +176,11 @@ std::vector<Lua::Value> SystemLuaBindings::ManualResetEvent::Wait(Lua::State& st
 
    if (vecParams.size() != 1 && vecParams.size() != 2)
       throw Lua::Exception(_T("invalid number of parameters to Event:wait()"), L, __FILE__, __LINE__);
+
+   Lua::Table manualResetEvent = vecParams[0].Get<Lua::Table>();
+
+   CString cszName = manualResetEvent.GetValue(_T("__name")).Get<CString>();
+   ATLASSERT(cszName == GetEventName());
 
    DWORD dwWaitTimeout = INFINITE;
    if (vecParams.size() == 2)
@@ -259,4 +263,12 @@ void SystemLuaBindings::ManualResetEvent::WaitHandler(const boost::system::error
    }
    else
       RestartTimer(dwWaitTimeout);
+}
+
+CString SystemLuaBindings::ManualResetEvent::GetEventName() const
+{
+   CString cszEventName;
+   cszEventName.Format(_T("event-%08p"), this);
+
+   return cszEventName;
 }

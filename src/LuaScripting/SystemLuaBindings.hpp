@@ -80,6 +80,9 @@ private:
       /// wait handler; checks for event state and resumes thread (yielded in wait())
       void WaitHandler(const boost::system::error_code& error, DWORD dwWaitTimeout);
 
+      /// returns internal event name
+      CString GetEventName() const;
+
    private:
       /// actual manual-reset event
       Event m_event;
