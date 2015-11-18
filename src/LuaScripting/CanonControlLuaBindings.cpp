@@ -493,7 +493,7 @@ std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlGetCapabili
    const std::vector<Lua::Value>& vecParams)
 {
    if (vecParams.size() != 2)
-      throw Lua::Exception(_T("invalid number of parameters to RemoteReleaseControl:sendCommand()"), state.GetState(), __FILE__, __LINE__);
+      throw Lua::Exception(_T("invalid number of parameters to RemoteReleaseControl:getCapability()"), state.GetState(), __FILE__, __LINE__);
 
    RemoteReleaseControl::T_enRemoteCapability enCapability =
       static_cast<RemoteReleaseControl::T_enRemoteCapability>(vecParams[1].Get<int>());
