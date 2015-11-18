@@ -899,5 +899,40 @@ namespace LuaScriptingUnitTest
          Assert::IsTrue(Lua::Value::typeNumber == vecRetvals2[0].GetType(), _T("type must be number"));
          Assert::AreEqual(3.0 * 42.0 - 64.0, 1e-6, vecRetvals2[0].Get<double>(), _T("value must match calculated value"));
       }
+
+      /// tests if stack is cleaned up when calling thread methods
+      TEST_METHOD(TestThreadCleanupStackMultipleRuns)
+      {
+         // setup
+         Lua::State state;
+         Lua::Thread thread(state);
+
+         state.LoadSourceString(_T("abc = { def = function(param1) return param1 + 1; end }"));
+
+         // run
+         for (int i = 0; i < 100; i++)
+         {
+            Lua::StackChecker checker1(state.GetState());
+            Lua::StackChecker checker2(thread.GetThreadState());
+
+            Lua::Table table = thread.GetTable(_T("abc"));
+
+            Lua::Function func = table.GetValue(_T("def")).Get<Lua::Function>();
+
+            std::vector<Lua::Value> vecParam;
+            vecParam.push_back(Lua::Value(42.0));
+
+            std::pair<Lua::Thread::T_enThreadStatus, std::vector<Lua::Value>> retVal = thread.Start(func, vecParam);
+
+            // check
+            Assert::IsTrue(retVal.first == Lua::Thread::statusOK, _T("status of finished thread must be statusOK"));
+
+            std::vector<Lua::Value>& vecRetvals = retVal.second;
+
+            Assert::AreEqual<size_t>(1, vecRetvals.size(), _T("must have returned 1 return values"));
+
+            // stack checker must not report an error
+         }
+      }
    };
 }
