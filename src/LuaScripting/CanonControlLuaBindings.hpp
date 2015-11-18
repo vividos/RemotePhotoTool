@@ -160,7 +160,8 @@ private:
    std::vector<Lua::Value> ViewfinderSetAvailImageHandler(std::shared_ptr<Viewfinder> spViewfinder,
       Lua::State& state, const std::vector<Lua::Value>& vecParams);
 
-   void SetAvailImageHandler_OnAvailImageHandler(const std::vector<BYTE>& /*vecImage*/);
+   void SetAvailImageHandler_OnAvailImageHandler(std::shared_ptr<Viewfinder> spViewfinder,
+      const std::vector<BYTE>& vecImage);
 
    // Bulb functions
 

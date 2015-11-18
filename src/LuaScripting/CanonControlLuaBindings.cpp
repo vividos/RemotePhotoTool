@@ -672,8 +672,11 @@ std::vector<Lua::Value> CanonControlLuaBindings::ViewfinderSetAvailImageHandler(
    {
       app.AddValue(c_pszSetAvailImageHandler_OnAvailImageHandler, vecParams[1]);
 
-      auto fnOnAvailImage = std::bind(&CanonControlLuaBindings::SetAvailImageHandler_OnAvailImageHandler,
-         shared_from_this(), std::placeholders::_1);
+      auto fnOnAvailImage = std::bind(
+         &CanonControlLuaBindings::SetAvailImageHandler_OnAvailImageHandler,
+         shared_from_this(),
+         spViewfinder,
+         std::placeholders::_1);
 
       spViewfinder->SetAvailImageHandler(m_strand.wrap(fnOnAvailImage));
    }
@@ -681,7 +684,9 @@ std::vector<Lua::Value> CanonControlLuaBindings::ViewfinderSetAvailImageHandler(
    return std::vector<Lua::Value>();
 }
 
-void CanonControlLuaBindings::SetAvailImageHandler_OnAvailImageHandler(const std::vector<BYTE>& vecImage)
+void CanonControlLuaBindings::SetAvailImageHandler_OnAvailImageHandler(
+   std::shared_ptr<Viewfinder> spViewfinder,
+   const std::vector<BYTE>& vecImage)
 {
    Lua::Table app = GetState().GetTable(_T("App"));
 
@@ -695,8 +700,9 @@ void CanonControlLuaBindings::SetAvailImageHandler_OnAvailImageHandler(const std
    std::vector<Lua::Value> vecParams;
 
    // first 'self' parameter: viewfinder
-   // note that it's only a placeholder table
    Lua::Table viewfinder = GetState().AddTable(_T(""));
+   InitViewfinderTable(spViewfinder, viewfinder);
+
    vecParams.push_back(Lua::Value(viewfinder));
 
    // second parameter: image
@@ -714,6 +720,9 @@ void CanonControlLuaBindings::SetAvailImageHandler_OnAvailImageHandler(const std
    {
       if (m_fnOutputDebugString != nullptr)
          m_fnOutputDebugString(ex.Message());
+
+      // unregister handler to not receive any more events, which may also end in an error
+      spViewfinder->SetAvailImageHandler(Viewfinder::T_fnOnAvailViewfinderImage());
    }
 }
 
