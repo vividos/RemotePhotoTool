@@ -1,53 +1,17 @@
 --
 -- RemotePhotoTool - remote camera control software
 -- Copyright (C) 2008-2015 Michael Fink
--- file RemotePhotoTool.lua - Demo script for Lua scripting
+-- file PrintProperties.lua - Demo script: Prints camera properties
 --
 
 -- The App object is a global object, and its run() function is called by the Lua
 -- scripting engine when starting the script.
 App = {
 
-	-- event that is used to wait for connecting camera
-	eventCameraConnect = nil;
-
-	-- event that is later used to get notified that a viewfinder preview image arrived
-	eventViewfinder = nil;
-
-	-- Main entry point of the RemotePhotoTool scripting environment.
-	-- Be sure to register at least callback here before returning, or
-	-- the script execution stops.
+	-- entry point function
 	run = function(self)
 
-		print("RemotePhotoTool.lua - Demo script for Lua scripting\n\n");
-
-		print("on main thread: " .. (Sys:isMainThread() and "yes" or "no") .. "\n");
-
-		local instance = Sys:getInstance();
-
-		print(instance:getVersion());
-
-		self.eventCameraConnect = Sys:createEvent();
-
-		instance:asyncWaitForCamera(App.onConnected);
-
-		print("Waiting for camera to connect...\n");
-
-		-- only waits for some seconds, then exists
-		local ret = self.eventCameraConnect:wait(15.0);
-		if (ret == false) then
-			print("No camera connected for 15.0 seconds; exiting.\n");
-		end;
-	end;
-
-	-- This function is called when a camera has been connected or
-	-- disconnected; the next step would be to check if some devices
-	-- can be enumerated.
-	onConnected = function(self)
-
-		print("List of connected cameras changed\n\n");
-
-		print("on main thread: " .. (Sys:isMainThread() and "yes" or "no") .. "\n");
+		print("PrintProperties.lua - Demo script: Prints camera properties\n\n");
 
 		local instance = Sys:getInstance();
 
@@ -57,49 +21,18 @@ App = {
 		-- connected, so check before using
 		if (allSourceInfos ~= nil and allSourceInfos.length > 0) then
 
-			-- be sure to unregister the callback to not get
-			-- any more calls to onConnected().
-			instance:asyncWaitForCamera();
-
 			self:printSourceInfos(allSourceInfos);
 
 			print("Finished.\n\n");
 
-			-- signal finished handler
-			self.eventCameraConnect:signal();
-
 		else
-			-- There was no device; maybe an already connected camera was
-			-- turned off. Wait until another call to onConnected() is made.
-			print("No cameras connected. Continue waiting...\n");
+			print("No cameras connected. Exiting.\n");
 		end;
-	end;
-
-	-- opens the camera to take images; can be used to directly open release control
-	-- of the camera; not used in this script.
-	openCamera = function(self, sourceInfo)
-
-		print("Opening camera " .. sourceInfo.name .. "\n");
-
-		local sourceDevice = sourceInfo:open();
-
-		local capRemoteReleaseControl = sourceDevice:getDeviceCapability(Constants.SourceDevice.capRemoteReleaseControl);
-
-		if (not capRemoteReleaseControl) then
-			print("Camera can't be remote controlled!");
-			return nil;
-		end;
-
-		local remoteReleaseControl = sourceDevice:enterReleaseControl();
-
-		return remoteReleaseControl;
 	end;
 
 	-- We call this function at onConnected() to print all infos about
 	-- connected cameras, stored in SourceInfo objects.
 	printSourceInfos = function(self, allSourceInfos)
-
-		print("\n");
 
 		print("Number of cameras: " .. allSourceInfos.length .. "\n");
 
@@ -183,12 +116,6 @@ App = {
 
 		self:printImageProperties(remoteReleaseControl);
 
-		self:releaseShutter(remoteReleaseControl);
-
-		self:checkViewfinder(remoteReleaseControl);
-
-		self:checkBulbMode(remoteReleaseControl);
-
 	end;
 
 	-- prints all release control capabilities
@@ -249,83 +176,4 @@ App = {
 
 	end;
 
-	-- releases shutter and takes a picture
-	releaseShutter = function(self, remoteReleaseControl)
-
-		print("Taking an image ...\n");
-
-		-- TODO register a download handler
-		-- TODO set release settings
-
-		-- auto focus on current view
-		remoteReleaseControl:sendCommand(Constants.RemoteReleaseControl.commandAdjustFocus);
-
-		remoteReleaseControl:release();
-
-		-- TODO wait for photo to be downloaded
-
-		print("Finished.\n");
-
-	end;
-
-	-- checks viewfinder functions
-	checkViewfinder = function(self, remoteReleaseControl)
-
-		local capViewfinder = remoteReleaseControl:getCapability(Constants.RemoteReleaseControl.capViewfinder);
-
-		if (not capViewfinder) then
-			print("Viewfinder not supported by this camera.");
-			return;
-		end;
-
-		print("Starting viewfinder...\n");
-
-		local viewfinder = remoteReleaseControl:startViewfinder();
-
-		self.eventViewfinder = Sys:createEvent();
-
-		viewfinder:setAvailImageHandler(App.onViewfinderImageAvail);
-
-		-- wait for image to arrive, then continue
-		local imageWasAvail = self.eventViewfinder:wait(10.0);
-
-		print("Captured " .. (imageWasAvail and "a viewfinder image" or "no viewfinder image") .. "\n");
-
-	end;
-
-	-- called when a viewfinder image has been sent
-	onViewfinderImageAvail = function(viewfinder, imageData)
-
-		print("Received an image from viewfinder\n");
-
-		-- unregister handler
-		viewfinder:setAvailImageHandler();
-
-		App.eventViewfinder:signal();
-
-	end;
-
-	-- checks bulb mode functions
-	checkBulbMode = function(self, remoteReleaseControl)
-
-		local capBulbMode = remoteReleaseControl:getCapability(Constants.RemoteReleaseControl.capBulbMode);
-
-		if (not capBulbMode) then
-			print("Bulb mode not supported by this camera.");
-			return;
-		end;
-
-		local bulbReleaseControl = remoteReleaseControl:startBulb()
-
-		-- wait for some seconds, then stop bulb mode
-		local event = Sys:createEvent();
-
-		event.wait(5.0);
-
-		bulbReleaseControl:stop();
-
-		local elapsed = bulbReleaseControl.elapsedTime();
-		print("elapsed time: " .. elapsed .. " seconds.");
-
-	end;
 }

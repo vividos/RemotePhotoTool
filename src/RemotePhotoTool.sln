@@ -56,7 +56,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation Files", "Docu
 		..\Features.md = ..\Features.md
 		..\License.md = ..\License.md
 		..\README.md = ..\README.md
-		..\RemotePhotoTool.lua = ..\RemotePhotoTool.lua
 		..\Screenshots.md = ..\Screenshots.md
 		..\Sourcecode.md = ..\Sourcecode.md
 		..\SupportedCameras.md = ..\SupportedCameras.md
@@ -84,7 +83,13 @@ Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Setup", "Setup\Setup.wixpro
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lua Scripts", "Lua Scripts", "{40D84258-C4A0-4307-96EC-F42158A06AF8}"
 	ProjectSection(SolutionItems) = preProject
-		..\RemotePhotoTool.lua = ..\RemotePhotoTool.lua
+		..\scripts\LuaQuickReference.lua = ..\scripts\LuaQuickReference.lua
+		..\scripts\Multithreaded.lua = ..\scripts\Multithreaded.lua
+		..\scripts\PrintProperties.lua = ..\scripts\PrintProperties.lua
+		..\scripts\RemotePhotoTool.lua = ..\scripts\RemotePhotoTool.lua
+		..\scripts\TakeImage.lua = ..\scripts\TakeImage.lua
+		..\scripts\Viewfinder.lua = ..\scripts\Viewfinder.lua
+		..\scripts\WaitForCamera.lua = ..\scripts\WaitForCamera.lua
 	EndProjectSection
 EndProject
 Global
