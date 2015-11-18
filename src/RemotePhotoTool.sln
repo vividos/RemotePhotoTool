@@ -55,6 +55,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation Files", "Docu
 		..\Credits.md = ..\Credits.md
 		..\Features.md = ..\Features.md
 		..\License.md = ..\License.md
+		..\LuaScripting.md = ..\LuaScripting.md
 		..\README.md = ..\README.md
 		..\Screenshots.md = ..\Screenshots.md
 		..\Sourcecode.md = ..\Sourcecode.md
