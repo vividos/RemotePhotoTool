@@ -311,10 +311,7 @@ void CanonControlLuaBindings::AddSourceInfo(Lua::State& state, Lua::Table& table
          spSourceInfo, std::placeholders::_1, std::placeholders::_2));
 
    // add our table as index 1..N of parent table; Lua uses 1-based indices
-   CString cszIndex;
-   cszIndex.Format(_T("%u"), unsigned(uiIndex + 1));
-
-   table.AddValue(cszIndex, Lua::Value(sourceInfo));
+   table.AddValue(uiIndex + 1, Lua::Value(sourceInfo));
 }
 
 std::vector<Lua::Value> CanonControlLuaBindings::SourceInfoOpen(
@@ -393,10 +390,7 @@ std::vector<Lua::Value> CanonControlLuaBindings::SourceDeviceEnumDevicePropertie
 
       size_t uiIndex = 1;
       std::for_each(vecDeviceProperties.begin(), vecDeviceProperties.end(), [&](unsigned int uiPropertyId){
-         CString cszKey;
-         cszKey.Format(_T("%u"), uiIndex++);
-
-         table.AddValue(cszKey, Lua::Value(static_cast<int>(uiPropertyId)));
+         table.AddValue(uiIndex++, Lua::Value(static_cast<int>(uiPropertyId)));
       });
 
       table.AddValue(_T("length"), Lua::Value(static_cast<int>(uiIndex-1)));
@@ -536,10 +530,7 @@ std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlEnumImagePr
 
       size_t uiIndex = 1;
       std::for_each(vecImageProperties.begin(), vecImageProperties.end(), [&](unsigned int uiPropertyId){
-         CString cszKey;
-         cszKey.Format(_T("%u"), uiIndex++);
-
-         table.AddValue(cszKey, Lua::Value(static_cast<int>(uiPropertyId)));
+         table.AddValue(uiIndex++, Lua::Value(static_cast<int>(uiPropertyId)));
       });
 
       table.AddValue(_T("length"), Lua::Value(static_cast<int>(uiIndex - 1)));
