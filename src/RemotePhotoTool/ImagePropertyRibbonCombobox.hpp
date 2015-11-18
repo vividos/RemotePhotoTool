@@ -12,6 +12,7 @@
 #include "RemoteReleaseControl.hpp"
 #include "CameraException.hpp"
 #include "CameraErrorDlg.hpp"
+#include "LightweightMutex.hpp"
 
 // forward references
 class MainFrame;
@@ -82,6 +83,8 @@ public:
    {
       ATLASSERT(m_spRemoteReleaseControl != nullptr);
 
+      LightweightMutex::LockType lock(m_mtxValues);
+
       m_vecValues.clear();
 
       try
@@ -109,6 +112,8 @@ public:
 
       try
       {
+         LightweightMutex::LockType lock(m_mtxValues);
+
          ImageProperty val = m_spRemoteReleaseControl->GetImageProperty(m_uiPropertyId);
          cszPropertyName = val.Name();
 
@@ -169,6 +174,8 @@ public:
    /// called to query item text for item
    virtual LPCWSTR OnRibbonQueryItemText(UINT32 uItem) override
    {
+      LightweightMutex::LockType lock(m_mtxValues);
+
       ATLASSERT(uItem < m_vecValueTexts.size());
 
       if (uItem >= m_vecValueTexts.size())
@@ -200,6 +207,8 @@ public:
          uSel != UI_COLLECTION_INVALIDINDEX &&
          m_spRemoteReleaseControl != nullptr)
       {
+         LightweightMutex::LockType lock(m_mtxValues);
+
          if (m_vecValues.empty())
             return 0; // read-only value
 
@@ -239,6 +248,9 @@ private:
 
    /// property id
    unsigned int m_uiPropertyId;
+
+   /// mutex to protect m_vecValues and m_vecValueTexts
+   LightweightMutex m_mtxValues;
 
    /// all currently possible values for this property
    std::vector<ImageProperty> m_vecValues;
