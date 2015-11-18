@@ -518,13 +518,15 @@ void MainFrame::OnExecutionStateChanged(LuaScheduler::T_enExecutionState enExecu
    switch (enExecutionState)
    {
    case LuaScheduler::stateIdle:
-      UIEnable(ID_SCRIPT_RUN, TRUE);
-      UIEnable(ID_SCRIPT_STOP, FALSE);
+      UIEnable(ID_SCRIPT_RUN, true);
+      UIEnable(ID_SCRIPT_STOP, false);
       pszText = _T("Idle.");
       break;
 
    case LuaScheduler::stateRunning:
       pszText = _T("Running...");
+      UIEnable(ID_SCRIPT_RUN, false);
+      UIEnable(ID_SCRIPT_STOP, true);
       break;
 
    case LuaScheduler::stateYield:
@@ -536,8 +538,8 @@ void MainFrame::OnExecutionStateChanged(LuaScheduler::T_enExecutionState enExecu
 
    case LuaScheduler::stateError:
       pszText = _T("Error.");
-      UIEnable(ID_SCRIPT_RUN, FALSE);
-      UIEnable(ID_SCRIPT_STOP, TRUE);
+      UIEnable(ID_SCRIPT_RUN, false);
+      UIEnable(ID_SCRIPT_STOP, true);
       break;
 
    default:

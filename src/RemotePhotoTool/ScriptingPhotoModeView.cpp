@@ -235,9 +235,9 @@ LRESULT ScriptingPhotoModeView::OnMessageExecutionStateChanged(UINT /*uMsg*/, WP
    switch (enExecutionState)
    {
    case LuaScheduler::stateIdle:
+      pszText = _T("Idle.");
       m_host.EnableUI(ID_SCRIPTING_RUN, true);
       m_host.EnableUI(ID_SCRIPTING_STOP, false);
-      pszText = _T("Idle.");
       break;
 
    case LuaScheduler::stateRunning:
@@ -254,6 +254,7 @@ LRESULT ScriptingPhotoModeView::OnMessageExecutionStateChanged(UINT /*uMsg*/, WP
       break;
 
    case LuaScheduler::stateError:
+      pszText = _T("Error.");
       m_host.EnableUI(ID_SCRIPTING_RUN, true);
       m_host.EnableUI(ID_SCRIPTING_STOP, false);
       break;
