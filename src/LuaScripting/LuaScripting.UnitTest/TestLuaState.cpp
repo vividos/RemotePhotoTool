@@ -680,7 +680,7 @@ namespace LuaScriptingUnitTest
          Lua::Function func = thread.GetValue(_T("run")).Get<Lua::Function>();
 
          std::vector<Lua::Value> vecParam;
-         std::pair<int, std::vector<Lua::Value>> retVal = thread.Start(func, vecParam);
+         std::pair<Lua::Thread::T_enThreadStatus, std::vector<Lua::Value>> retVal = thread.Start(func, vecParam);
 
          // check
          Assert::IsTrue(retVal.first == Lua::Thread::statusOK, _T("status of finished thread must be statusOK"));
@@ -699,7 +699,7 @@ namespace LuaScriptingUnitTest
          Lua::Function func = thread.GetValue(_T("run")).Get<Lua::Function>();
 
          std::vector<Lua::Value> vecParam;
-         std::pair<int, std::vector<Lua::Value>> retVal = thread.Start(func, vecParam);
+         std::pair<Lua::Thread::T_enThreadStatus, std::vector<Lua::Value>> retVal = thread.Start(func, vecParam);
 
          // check
          Assert::IsTrue(retVal.first == Lua::Thread::statusOK, _T("status of finished thread must be statusOK"));
@@ -733,7 +733,7 @@ namespace LuaScriptingUnitTest
          vecParam.push_back(Lua::Value(table));
          vecParam.push_back(Lua::Value(42.0));
 
-         std::pair<int, std::vector<Lua::Value>> retVal = thread.Start(func, vecParam);
+         std::pair<Lua::Thread::T_enThreadStatus, std::vector<Lua::Value>> retVal = thread.Start(func, vecParam);
 
          // check
          Assert::IsTrue(retVal.first == Lua::Thread::statusOK, _T("status of finished thread must be statusOK"));
@@ -775,7 +775,7 @@ namespace LuaScriptingUnitTest
 
          std::vector<Lua::Value> vecParam1;
          vecParam1.push_back(Lua::Value(3.0));
-         std::pair<int, std::vector<Lua::Value>> retVal = thread.Start(func, vecParam1);
+         std::pair<Lua::Thread::T_enThreadStatus, std::vector<Lua::Value>> retVal = thread.Start(func, vecParam1);
 
          // check
          Assert::IsTrue(retVal.first == Lua::Thread::statusOK, _T("status of finished thread must be statusOK"));
@@ -802,7 +802,7 @@ namespace LuaScriptingUnitTest
 
          std::vector<Lua::Value> vecParam1;
          vecParam1.push_back(Lua::Value(3.0));
-         std::pair<int, std::vector<Lua::Value>> retVal1 = thread.Start(func, vecParam1);
+         std::pair<Lua::Thread::T_enThreadStatus, std::vector<Lua::Value>> retVal1 = thread.Start(func, vecParam1);
 
          // check 1
          Assert::IsTrue(retVal1.first == Lua::Thread::statusYield, _T("status of finished thread must be statusYield"));
@@ -816,7 +816,7 @@ namespace LuaScriptingUnitTest
          std::vector<Lua::Value> vecParam2;
          vecParam2.push_back(Lua::Value(dValue2));
 
-         std::pair<int, std::vector<Lua::Value>> retVal2 = thread.Resume(vecParam2);
+         std::pair<Lua::Thread::T_enThreadStatus, std::vector<Lua::Value>> retVal2 = thread.Resume(vecParam2);
 
          // check 2
          Assert::IsTrue(retVal2.first == Lua::Thread::statusOK, _T("status of finished thread must be statusOK"));
@@ -866,7 +866,7 @@ namespace LuaScriptingUnitTest
          state.AddFunction(_T("run"), fn);
 
          // run 1
-         std::pair<int, std::vector<Lua::Value>> retVal1;
+         std::pair<Lua::Thread::T_enThreadStatus, std::vector<Lua::Value>> retVal1;
          {
             Lua::Function func = thread.GetValue(_T("run")).Get<Lua::Function>();
 
@@ -887,7 +887,7 @@ namespace LuaScriptingUnitTest
          std::vector<Lua::Value> vecParam2;
          vecParam2.push_back(Lua::Value(dValue2));
 
-         std::pair<int, std::vector<Lua::Value>> retVal2 = thread.Resume(vecParam2);
+         std::pair<Lua::Thread::T_enThreadStatus, std::vector<Lua::Value>> retVal2 = thread.Resume(vecParam2);
 
          // check 2
          Assert::IsTrue(retVal2.first == Lua::Thread::statusOK, _T("status of finished thread must be statusOK"));
