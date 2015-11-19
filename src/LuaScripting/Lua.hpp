@@ -471,6 +471,9 @@ public:
    /// \note use this with care, as you can mess up the stack or the state!
    lua_State* GetState() { return m_spState.get(); }
 
+   /// returns the Lua version used
+   static LPCTSTR GetVersion() throw();
+
 private:
    friend Value;
    friend Table;

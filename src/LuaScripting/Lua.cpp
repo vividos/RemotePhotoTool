@@ -1132,6 +1132,11 @@ void State::TraceValue(lua_State* L, int iIndex, int iStackDepth)
       iHasMetatable != 0 ? _T(" +[metatable] ") : _T(""));
 }
 
+LPCTSTR State::GetVersion() throw()
+{
+   return _T(LUA_RELEASE);
+}
+
 void State::Remove(Value& val, int iStackIndex)
 {
    RemoveRef(val);
