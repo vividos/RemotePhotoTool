@@ -148,7 +148,7 @@ CAPTION "About"
 FONT 8, "MS Shell Dlg", 400, 0, 0
 BEGIN
 DEFPUSHBUTTON   "OK", IDOK, 131, 178, 50, 14
-CTEXT           "RemoteScriptingEditor %VERSION%\n\n%COPYRIGHT%", IDC_STATIC_ABOUT_VERSION, 41, 18, 114, 30
+CTEXT           "RemoteScriptingEditor %VERSION%\n\n%COPYRIGHT%", IDC_STATIC_ABOUT_VERSION, 41, 18, 152, 30
 ICON            IDR_MAINFRAME, IDC_STATIC, 15, 20, 21, 20, SS_ICON
 GROUPBOX        "", IDC_STATIC, 5, 5, 301, 168
 LTEXT           "This software uses the famfamfam Silk Icon set. http://www.famfamfam.com/.\nThis software is based in part on the work of the Independent JPEG Group.\n\n", IDC_STATIC_ABOUT_INFO, 13, 50, 286, 116, 0, WS_EX_STATICEDGE
