@@ -1,8 +1,8 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2015 Michael Fink
 //
-/// \file RemotePhotoTool\AboutDlg.cpp About dialog for remote photo tool
+/// \file RemoteScriptingEditor\AboutDlg.cpp About dialog for remote scripting editor
 //
 
 // includes

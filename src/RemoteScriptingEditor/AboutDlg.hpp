@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2015 Michael Fink
 //
 /// \file RemoteScriptingEditor\AboutDlg.hpp About dialog for remote scripting editor
 //
@@ -21,20 +21,16 @@ private:
       COMMAND_ID_HANDLER(IDCANCEL, OnCloseCmd)
    END_MSG_MAP()
 
-// Handler prototypes (uncomment arguments if needed):
-// LRESULT MessageHandler(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
-// LRESULT CommandHandler(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
-// LRESULT NotifyHandler(int /*idCtrl*/, LPNMHDR /*pnmh*/, BOOL& /*bHandled*/)
+private:
+   /// sets version text
+   void SetVersionText();
 
-   LRESULT OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
-   {
-      CenterWindow(GetParent());
-      return TRUE;
-   }
+   /// sets about info
+   void SetAboutInfo();
 
-   LRESULT OnCloseCmd(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
-   {
-      EndDialog(wID);
-      return 0;
-   }
+   /// called at start of dialog
+   LRESULT OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
+
+   /// called to close dialog
+   LRESULT OnCloseCmd(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 };
