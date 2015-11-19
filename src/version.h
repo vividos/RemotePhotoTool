@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2015 Michael Fink
 //
 //! \file version.h project version defines
 //
@@ -21,6 +21,6 @@
 #define VERSIONINFO_FILEVERSION_DISPLAYSTRING    STR(MAIN_VERSION) "." STR(MINOR_VERSION) "." STR(SUB_VERSION) " Build " STR(BUILD_NUMBER)
 #define VERSIONINFO_PRODUCTVERSION_STRING STR(MAIN_VERSION) "." STR(MINOR_VERSION) "." STR(SUB_VERSION)
 
-#define VERSIONINFO_COPYRIGHT    "Copyright 2008-2014 Michael Fink"
+#define VERSIONINFO_COPYRIGHT    "Copyright 2008-2015 Michael Fink"
 #define VERSIONINFO_COMPANY_NAME "Michael Fink"
 #define VERSIONINFO_PRODUCTNAME  "RemotePhotoTool"
