@@ -16,6 +16,10 @@
     <Filter Include="Generated Files">
       <UniqueIdentifier>{20fafa37-d6e6-42bf-be99-cb1963c63e4e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Bitmap Files">
+      <UniqueIdentifier>{c3382bd1-e7b8-4db3-955a-0b76ae9d76e5}</UniqueIdentifier>
+      <Extensions>*.bmp;*.png</Extensions>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -75,65 +79,65 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\toolbar.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="res\RemoteScriptingEditor.ico">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\app_exit.bmp">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Bitmap Files</Filter>
     </Image>
     <Image Include="res\edit_copy.bmp">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Bitmap Files</Filter>
     </Image>
     <Image Include="res\edit_cut.bmp">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Bitmap Files</Filter>
     </Image>
     <Image Include="res\edit_find.bmp">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Bitmap Files</Filter>
     </Image>
     <Image Include="res\edit_paste.bmp">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Bitmap Files</Filter>
     </Image>
     <Image Include="res\edit_redo.bmp">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Bitmap Files</Filter>
     </Image>
     <Image Include="res\edit_repeat.bmp">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Bitmap Files</Filter>
     </Image>
     <Image Include="res\edit_replace.bmp">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Bitmap Files</Filter>
     </Image>
     <Image Include="res\edit_select_all.bmp">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Bitmap Files</Filter>
     </Image>
     <Image Include="res\edit_undo.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\file_new.bmp">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Bitmap Files</Filter>
     </Image>
     <Image Include="res\file_open.bmp">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Bitmap Files</Filter>
+    </Image>
+    <Image Include="res\file_new.bmp">
+      <Filter>Resource Files\Bitmap Files</Filter>
     </Image>
     <Image Include="res\file_save.bmp">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Bitmap Files</Filter>
     </Image>
     <Image Include="res\placeholder.bmp">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Bitmap Files</Filter>
     </Image>
     <Image Include="res\script_run.bmp">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Bitmap Files</Filter>
     </Image>
     <Image Include="res\script_stop.bmp">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Bitmap Files</Filter>
+    </Image>
+    <Image Include="res\toolbar.bmp">
+      <Filter>Resource Files\Bitmap Files</Filter>
     </Image>
     <Image Include="res\view_output.bmp">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Bitmap Files</Filter>
     </Image>
     <Image Include="res\view_ribbon.bmp">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Bitmap Files</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
@@ -146,10 +150,10 @@
       <Filter>Generated Files</Filter>
     </None>
     <None Include="res\edit_repeat.xcf">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Bitmap Files</Filter>
     </None>
     <None Include="res\edit_replace.xcf">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Bitmap Files</Filter>
     </None>
   </ItemGroup>
 </Project>
