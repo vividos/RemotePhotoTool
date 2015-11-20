@@ -1058,9 +1058,7 @@ void State::TraceStack(lua_State* L)
    ATLTRACE(_T("Tracing stack, %i entries:\n"), iStackDepth);
 
    for (int iIndex = 1; iIndex <= iStackDepth; iIndex++)
-   {
-      TraceValue(L, iIndex, iStackDepth);
-   }
+      TraceValue(L, iIndex, iStackDepth, false);
 
    ATLASSERT(iStackDepth == lua_gettop(L));
 
@@ -1078,13 +1076,36 @@ void State::TraceUpvalues(lua_State* L)
       if (lua_type(L, iIndex) == LUA_TNONE)
          continue;
 
-      TraceValue(L, iIndex, 256);
+      TraceValue(L, iIndex, 0, true);
    }
 
    ATLTRACE(_T("End tracing upvalues.\n"));
 }
 
-void State::TraceValue(lua_State* L, int iIndex, int iStackDepth)
+CString EnumTableIndices(lua_State* L, int iIndex)
+{
+   CString cszText;
+
+   if (iIndex < 0)
+      iIndex = lua_absindex(L, iIndex);
+
+   lua_pushnil(L);
+   while (lua_next(L, iIndex) != 0)
+   {
+      if (lua_type(L, -2) == LUA_TSTRING)
+         cszText.AppendFormat(_T(" \"%hs\""), lua_tostring(L, -2));
+      else if (lua_type(L, -2) == LUA_TNUMBER)
+         cszText.AppendFormat(_T(" \"%f\""), lua_tonumber(L, -2));
+      else
+         cszText.AppendFormat(_T(" (type %i)"), lua_type(L, -2));
+
+      lua_pop(L, 1);
+   }
+
+   return cszText;
+}
+
+void State::TraceValue(lua_State* L, int iIndex, int iStackDepth, bool bIsUpvalue)
 {
    iStackDepth;
 
@@ -1093,43 +1114,74 @@ void State::TraceValue(lua_State* L, int iIndex, int iStackDepth)
    CString cszContent(_T("???"));
    switch (lua_type(L, iIndex))
    {
-   case LUA_TNONE: cszContent = _T("none"); break;
-   case LUA_TNIL:  cszContent = _T("[nil]"); break;
+   case LUA_TNONE: cszContent = _T("[none]"); break;
+   case LUA_TNIL:  cszContent = _T("nil"); break;
    case LUA_TNUMBER: cszContent.Format(_T("%f"), lua_tonumber(L, iIndex)); break;
    case LUA_TBOOLEAN: cszContent = lua_toboolean(L, iIndex) != 0 ? _T("true") : _T("false"); break;
    case LUA_TSTRING: cszContent.Format(_T("[%hs]"), lua_tostring(L, iIndex)); break;
    case LUA_TTABLE:
    {
-      lua_len(L, iIndex);
-      lua_Integer iLen = lua_tointeger(L, -1);
-      lua_pop(L, 1);
-
-      cszContent.Format(_T("[table, len=%li]"), iLen);
+      cszContent.Format(_T("[table%s]"), EnumTableIndices(L, iIndex));
+      break;
    }
-   break;
-   case LUA_TFUNCTION: cszContent.Format(_T("&%p"), lua_tocfunction(L, iIndex)); break;
-   case LUA_TLIGHTUSERDATA: cszContent.Format(_T("0x%p"), lua_touserdata(L, iIndex)); break;
-   case LUA_TUSERDATA: cszContent.Format(_T("&%p"), lua_touserdata(L, iIndex)); break;
-   case LUA_TTHREAD: cszContent = _T("[thread]"); break;
+
+   case LUA_TFUNCTION:
+   {
+      cszContent.Format(
+         lua_iscfunction(L, iIndex) ? _T("(C) 0x%p") : _T("(Lua)"),
+         lua_tocfunction(L, iIndex));
+      break;
+   }
+
+   case LUA_TLIGHTUSERDATA:
+   {
+      cszContent.Format(_T("0x%p"),
+         lua_touserdata(L, iIndex));
+      break;
+   }
+
+   case LUA_TUSERDATA:
+   {
+      cszContent.Format(_T("0x%p, size=%u"),
+         lua_touserdata(L, iIndex),
+         lua_rawlen(L, iIndex));
+      break;
+   }
+
+   case LUA_TTHREAD:
+      cszContent = _T("[thread]");
+      break;
+
    default:
       ATLASSERT(false);
       break;
    }
 
+   CString cszMetatableInfo;
    int iHasMetatable = lua_getmetatable(L, iIndex);
    if (iHasMetatable != 0)
    {
-      lua_len(L, -1);
-      //int iLenMetatable = lua_tointeger(L, -1);
-      lua_pop(L, 2);
+      cszMetatableInfo = _T(" +[metatable");
+      cszMetatableInfo += EnumTableIndices(L, -1);
+      cszMetatableInfo += _T("]");
+      lua_pop(L, 1);
    }
 
-   ATLTRACE(_T("[%i] [%i] %s %s%s\n"),
-      iIndex,
-      iIndex - iStackDepth - 1,
+   CString cszText;
+
+   if (bIsUpvalue)
+      cszText.Format(_T("[%i] "), lua_upvalueindex(iIndex));
+   else
+      cszText.Format(_T("[%i] [%i] "),
+         iIndex,
+         iIndex - iStackDepth - 1);
+
+   cszText.AppendFormat(_T("%s %s%s\n"),
       cszType.GetString(),
       cszContent.GetString(),
-      iHasMetatable != 0 ? _T(" +[metatable] ") : _T(""));
+      cszMetatableInfo);
+
+   ATLTRACE(cszText);
 }
 
 LPCTSTR State::GetVersion() throw()

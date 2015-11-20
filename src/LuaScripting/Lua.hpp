@@ -465,7 +465,7 @@ public:
    static void TraceUpvalues(lua_State* L);
 
    /// debug-traces a single value on stack
-   static void TraceValue(lua_State* L, int iIndex, int iStackDepth);
+   static void TraceValue(lua_State* L, int iIndex, int iStackDepth, bool bIsUpvalue);
 
    /// returns Lua state
    /// \note use this with care, as you can mess up the stack or the state!
