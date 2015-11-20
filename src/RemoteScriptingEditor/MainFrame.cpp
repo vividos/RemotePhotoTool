@@ -81,8 +81,8 @@ LRESULT MainFrame::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/,
       }
    }
 
-   UIEnable(ID_SCRIPT_RUN, TRUE);
-   UIEnable(ID_SCRIPT_STOP, FALSE);
+   UIEnable(ID_SCRIPT_RUN, true);
+   UIEnable(ID_SCRIPT_STOP, false);
 
    return 0;
 }
@@ -241,9 +241,6 @@ LRESULT MainFrame::OnScriptRun(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCt
    if (cszFilename.IsEmpty())
       return 0;
 
-   UIEnable(ID_SCRIPT_RUN, FALSE);
-   UIEnable(ID_SCRIPT_STOP, TRUE);
-
    {
       CString cszText;
       cszText.Format(_T("Start executing file %s...\n\n"),
@@ -270,8 +267,8 @@ LRESULT MainFrame::OnScriptRun(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCt
 
       OnOutputDebugString(cszText);
 
-      UIEnable(ID_SCRIPT_RUN, TRUE);
-      UIEnable(ID_SCRIPT_STOP, FALSE);
+      UIEnable(ID_SCRIPT_RUN, true);
+      UIEnable(ID_SCRIPT_STOP, false);
    }
 
    return 0;
@@ -279,9 +276,6 @@ LRESULT MainFrame::OnScriptRun(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCt
 
 LRESULT MainFrame::OnScriptStop(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
-   UIEnable(ID_SCRIPT_RUN, TRUE);
-   UIEnable(ID_SCRIPT_STOP, FALSE);
-
    m_processor.Stop();
 
    return 0;
@@ -513,6 +507,14 @@ void MainFrame::OnOutputDebugString(const CString& cszText)
 
 void MainFrame::OnExecutionStateChanged(LuaScheduler::T_enExecutionState enExecutionState)
 {
+   PostMessage(WM_EXECUTION_STATE_CHANGED, static_cast<WPARAM>(enExecutionState));
+}
+
+LRESULT MainFrame::OnMessageExecutionStateChanged(UINT /*uMsg*/, WPARAM wParam, LPARAM /*lParam*/, BOOL& /*bHandled*/)
+{
+   LuaScheduler::T_enExecutionState enExecutionState =
+      static_cast<LuaScheduler::T_enExecutionState>(wParam);
+
    LPCTSTR pszText = nullptr;
 
    switch (enExecutionState)
@@ -549,4 +551,6 @@ void MainFrame::OnExecutionStateChanged(LuaScheduler::T_enExecutionState enExecu
 
    if (pszText != nullptr)
       m_statusBar.SetPaneText(IDR_PANE_SCRIPT_STATUS, pszText);
+
+   return 0;
 }
