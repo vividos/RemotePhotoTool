@@ -11,6 +11,7 @@
 #include "Instance.hpp"
 #include "RecursiveMutex.hpp"
 #include "Asio.hpp"
+#include "ShutterReleaseSettings.hpp"
 
 // forward references
 class SourceDevice;
@@ -127,8 +128,20 @@ private:
    std::vector<Lua::Value> RemoteReleaseControlGetCapability(std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
       Lua::State& state, const std::vector<Lua::Value>& vecParams);
 
+   std::vector<Lua::Value> RemoteReleaseControlGetReleaseSettings(std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
+      Lua::State& state, const std::vector<Lua::Value>& vecParams);
+
+   /// initializes ReleaseSettings table
+   void InitReleaseSettingsTable(const ShutterReleaseSettings& releaseSettings,
+      Lua::Table& tableReleaseSettings);
+
    std::vector<Lua::Value> RemoteReleaseControlSetReleaseSettings(std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
       Lua::State& state, const std::vector<Lua::Value>& vecParams);
+
+   /// callback that is called when image has been transferred
+   void SetReleaseSettings_OnFinishedTransfer(
+      std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
+      const ShutterReleaseSettings& releaseSettings);
 
    std::vector<Lua::Value> RemoteReleaseControlEnumImageProperties(
       std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl, Lua::State& state);
@@ -177,6 +190,9 @@ private:
 
    /// CanonControl instance
    std::unique_ptr<Instance> m_upInstance;
+
+   /// release settings stored for the script
+   ShutterReleaseSettings m_releaseSettings;
 
    /// once Lua has connected to remote release control, a pointer is stored here
    std::shared_ptr<RemoteReleaseControl> m_spRemoteRelaseControl;

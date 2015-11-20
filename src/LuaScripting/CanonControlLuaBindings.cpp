@@ -22,6 +22,9 @@ LPCTSTR c_pszAsyncWaitForCamera_OnConnectedHandler = _T("__AsyncWaitForCamera_On
 /// name for Lua value in App object to store handler for setAvailImageHandler()
 LPCTSTR c_pszSetAvailImageHandler_OnAvailImageHandler = _T("__SetAvailImageHandler_OnAvailImageHandler");
 
+/// name for onFinishedTransfer function stored in RemoteReleaseControl table
+LPCTSTR c_pszReleaseSettingsOnFinishedTransfer = _T("__ReleaseSettings_OnFinishedTransfer");
+
 CanonControlLuaBindings::CanonControlLuaBindings(Lua::State& state, boost::asio::io_service::strand& strand)
 :m_state(state),
 m_strand(strand)
@@ -128,6 +131,10 @@ void CanonControlLuaBindings::InitRemoteReleaseControlConstants(Lua::Table& cons
    remoteReleaseControl.AddValue(_T("shootingModeTv"), Lua::Value(RemoteReleaseControl::shootingModeTv));
    remoteReleaseControl.AddValue(_T("shootingModeAv"), Lua::Value(RemoteReleaseControl::shootingModeAv));
    remoteReleaseControl.AddValue(_T("shootingModeM"), Lua::Value(RemoteReleaseControl::shootingModeM));
+
+   remoteReleaseControl.AddValue(_T("saveToCamera"), Lua::Value(ShutterReleaseSettings::saveToCamera));
+   remoteReleaseControl.AddValue(_T("saveToHost"), Lua::Value(ShutterReleaseSettings::saveToHost));
+   remoteReleaseControl.AddValue(_T("saveToBoth"), Lua::Value(ShutterReleaseSettings::saveToBoth));
 
    constants.AddValue(_T("RemoteReleaseControl"), Lua::Value(remoteReleaseControl));
 }
@@ -441,6 +448,11 @@ std::vector<Lua::Value> CanonControlLuaBindings::SourceDeviceEnterReleaseControl
    std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl = spSourceDevice->EnterReleaseControl();
    m_spRemoteRelaseControl = spRemoteReleaseControl;
 
+   m_releaseSettings = ShutterReleaseSettings(
+      ShutterReleaseSettings::saveToBoth,
+      ShutterReleaseSettings::T_fnOnFinishedTransfer());
+   m_releaseSettings.Filename(_T("images/IMG_0000.jpg"));
+
    Lua::Table remoteReleaseControl = state.AddTable(_T(""));
    InitRemoteReleaseControlTable(spRemoteReleaseControl, remoteReleaseControl);
 
@@ -454,6 +466,10 @@ void CanonControlLuaBindings::InitRemoteReleaseControlTable(std::shared_ptr<Remo
 {
    remoteReleaseControl.AddFunction("getCapability",
       std::bind(&CanonControlLuaBindings::RemoteReleaseControlGetCapability, shared_from_this(), spRemoteReleaseControl,
+         std::placeholders::_1, std::placeholders::_2));
+
+   remoteReleaseControl.AddFunction("getReleaseSettings",
+      std::bind(&CanonControlLuaBindings::RemoteReleaseControlGetReleaseSettings, shared_from_this(), spRemoteReleaseControl,
          std::placeholders::_1, std::placeholders::_2));
 
    remoteReleaseControl.AddFunction("setReleaseSettings",
@@ -485,6 +501,10 @@ void CanonControlLuaBindings::InitRemoteReleaseControlTable(std::shared_ptr<Remo
    remoteReleaseControl.AddFunction("startBulb",
       std::bind(&CanonControlLuaBindings::RemoteReleaseControlStartBulb, shared_from_this(),
          spRemoteReleaseControl, std::placeholders::_1));
+
+   // internal values
+   Lua::Table app = GetState().GetTable(_T("App"));
+   app.AddValue(c_pszReleaseSettingsOnFinishedTransfer, Lua::Value());
 }
 
 std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlGetCapability(
@@ -506,14 +526,116 @@ std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlGetCapabili
    return vecRetValues;
 }
 
+std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlGetReleaseSettings(
+   std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
+   Lua::State& state,
+   const std::vector<Lua::Value>& vecParams)
+{
+   if (vecParams.size() != 1)
+      throw Lua::Exception(_T("invalid number of parameters to RemoteReleaseControl:getReleaseSettings()"), state.GetState(), __FILE__, __LINE__);
+
+   if (vecParams[0].GetType() != Lua::Value::typeTable)
+      throw Lua::Exception(_T("first parameter must be the RemoteReleaseControl table"), state.GetState(), __FILE__, __LINE__);
+
+   Lua::Table tableReleaseSettings = state.AddTable(_T(""));
+   InitReleaseSettingsTable(m_releaseSettings, tableReleaseSettings);
+
+   std::vector<Lua::Value> vecRetValues;
+   vecRetValues.push_back(Lua::Value(tableReleaseSettings));
+
+   return vecRetValues;
+}
+
+void CanonControlLuaBindings::InitReleaseSettingsTable(
+   const ShutterReleaseSettings& releaseSettings,
+   Lua::Table& tableReleaseSettings)
+{
+   Lua::Table app = GetState().GetTable(_T("App"));
+   Lua::Value onFinishedTransfer = app.GetValue(c_pszReleaseSettingsOnFinishedTransfer);
+
+   tableReleaseSettings.AddValue(_T("saveTarget"), Lua::Value(static_cast<int>(releaseSettings.SaveTarget())));
+   tableReleaseSettings.AddValue(_T("outputFilename"), Lua::Value(m_releaseSettings.Filename()));
+   tableReleaseSettings.AddValue(_T("onFinishedTransfer"), onFinishedTransfer);
+}
+
 std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlSetReleaseSettings(
    std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
-   Lua::State& /*state*/,
-   const std::vector<Lua::Value>& /*vecParams*/)
+   Lua::State& state,
+   const std::vector<Lua::Value>& vecParams)
 {
-   // TODO implement
+   if (vecParams.size() != 2)
+      throw Lua::Exception(_T("invalid number of parameters to RemoteReleaseControl:setReleaseSettings()"), state.GetState(), __FILE__, __LINE__);
+
+   if (vecParams[0].GetType() != Lua::Value::typeTable)
+      throw Lua::Exception(_T("first parameter must be the RemoteReleaseControl table"), state.GetState(), __FILE__, __LINE__);
+
+   if (vecParams[1].GetType() != Lua::Value::typeTable)
+      throw Lua::Exception(_T("second parameter must be the ReleaseSettings table"), state.GetState(), __FILE__, __LINE__);
+
+   //Lua::Table tableRemoteReleaseControl = vecParams[0].Get<Lua::Table>();
+   Lua::Table tableReleaseSettings = vecParams[1].Get<Lua::Table>();
+
+   m_releaseSettings.SaveTarget(
+      static_cast<ShutterReleaseSettings::T_enSaveTarget>(
+         tableReleaseSettings.GetValue(_T("saveTarget")).Get<int>()));
+
+   m_releaseSettings.Filename(
+      tableReleaseSettings.GetValue(_T("outputFilename")).Get<CString>());
+
+   Lua::Value onFinishedTransfer = tableReleaseSettings.GetValue(_T("onFinishedTransfer"));
+
+   Lua::Table app = state.GetTable(_T("App"));
+   app.AddValue(c_pszReleaseSettingsOnFinishedTransfer, onFinishedTransfer);
+
+   if (onFinishedTransfer.GetType() != Lua::Value::typeNil)
+   {
+      auto fnOnFinishedTransfer = std::bind(
+         &CanonControlLuaBindings::SetReleaseSettings_OnFinishedTransfer,
+         shared_from_this(),
+         spRemoteReleaseControl,
+         std::placeholders::_1);
+
+      m_releaseSettings.HandlerOnFinishedTransfer(fnOnFinishedTransfer);
+   }
+   else
+      m_releaseSettings.HandlerOnFinishedTransfer(ShutterReleaseSettings::T_fnOnFinishedTransfer());
+
+   m_spRemoteRelaseControl->SetReleaseSettings(m_releaseSettings);
 
    return std::vector<Lua::Value>();
+}
+
+void CanonControlLuaBindings::SetReleaseSettings_OnFinishedTransfer(
+   std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
+   const ShutterReleaseSettings& releaseSettings)
+{
+   Lua::State& state = GetState();
+
+   Lua::Table app = state.GetTable(_T("App"));
+   Lua::Value value = app.GetValue(c_pszReleaseSettingsOnFinishedTransfer);
+
+   if (value.GetType() != Lua::Value::typeFunction)
+   {
+      m_fnOutputDebugString(_T("Runtime error: callback for setReleaseSettings() is not a function"));
+      return;
+   }
+
+   std::vector<Lua::Value> vecParams;
+
+   Lua::Table tableReleaseSettings = state.AddTable(_T(""));
+   InitReleaseSettingsTable(releaseSettings, tableReleaseSettings);
+
+   vecParams.push_back(Lua::Value(tableReleaseSettings));
+
+   try
+   {
+      app.CallFunction(c_pszReleaseSettingsOnFinishedTransfer, 0, vecParams);
+   }
+   catch (const Lua::Exception& ex)
+   {
+      if (m_fnOutputDebugString != nullptr)
+         m_fnOutputDebugString(ex.Message());
+   }
 }
 
 std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlEnumImageProperties(
