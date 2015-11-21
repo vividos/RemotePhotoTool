@@ -122,142 +122,134 @@ StackChecker::~StackChecker()
 }
 
 //
+// Lua::Ref
+//
+
+Ref::Ref(State& state, int iStackIndex)
+   :m_state(state),
+   m_iStackIndex(lua_absindex(state.GetState(), iStackIndex))
+{
+}
+
+Ref::~Ref() throw()
+{
+   if (m_iStackIndex != -1)
+      m_state.RemoveRef(*this);
+}
+
+void Ref::Detach()
+{
+   m_iStackIndex = -1;
+}
+
+void Ref::OnRemoveStackValue(int iStackIndex)
+{
+   ATLASSERT(iStackIndex != m_iStackIndex); // must not be own ref that is removed
+
+   if (m_iStackIndex >= iStackIndex)
+      m_iStackIndex--; // it's below us, so reduce index
+}
+
+
+//
 // Lua::Value
 //
 
 /// default ctor; constructs nil value
 Value::Value()
-   :m_enType(typeNil),
-   m_iStackIndex(-1),
-   m_bTemporary(true)
+   :m_enType(typeNil)
 {
 }
 
 Value::Value(bool bValue)
    :m_value(bValue),
-   m_enType(typeBoolean),
-   m_iStackIndex(-1),
-   m_bTemporary(true)
+   m_enType(typeBoolean)
 {
 }
 
 Value::Value(double dValue)
    :m_value(dValue),
-   m_enType(typeNumber),
-   m_iStackIndex(-1),
-   m_bTemporary(true)
+   m_enType(typeNumber)
 {
 }
 
 Value::Value(int iValue)
    :m_value(iValue),
-   m_enType(typeInteger),
-   m_iStackIndex(-1),
-   m_bTemporary(true)
+   m_enType(typeInteger)
 {
 }
 
 Value::Value(const CString& cszText)
    :m_value(CStringA(cszText).GetString()),
-   m_enType(typeString),
-   m_iStackIndex(-1),
-   m_bTemporary(true)
+   m_enType(typeString)
 {
 }
 
 Value::Value(LPCSTR pszText)
    :m_value(pszText),
-   m_enType(typeString),
-   m_iStackIndex(-1),
-   m_bTemporary(true)
+   m_enType(typeString)
 {
 }
 
 Value::Value(Table table)
    :m_enType(typeTable),
    m_value(table),
-   m_iStackIndex(-1),
-   m_bTemporary(false) // table cleans itself up
+   m_spRef(table.GetRef())
 {
 }
 
 Value::Value(Userdata userdata)
    :m_enType(typeUserdata),
    m_value(userdata),
-   m_iStackIndex(-1),
-   m_bTemporary(false) // userdata cleans itself up
+   m_spRef(userdata.GetRef())
 {
 }
 
 Value::Value(Function func)
    :m_enType(typeFunction),
    m_value(func),
-   m_iStackIndex(-1),
-   m_bTemporary(false) // function cleans itself up
+   m_spRef(func.GetRef())
 {
 }
 
 Value::Value(Thread thread)
    :m_enType(typeThread),
    m_value(thread),
-   m_iStackIndex(-1),
-   m_bTemporary(false) // thread cleans itself up
+   m_spRef(thread.GetRef())
 {
 }
 
 Value::Value(const Value& val)
    :m_value(val.m_value),
    m_enType(val.m_enType),
-   m_state(val.m_state),
-   m_iStackIndex(val.m_iStackIndex),
-   m_bTemporary(val.m_bTemporary)
+   m_spRef(val.GetRef())
 {
-   // now that the values are copied, prevent deleting the source object
-   const_cast<Value&>(val).m_bTemporary = false;
-
-   if (m_state.is_initialized())
-      m_state.get().get().AddRef(*this);
-
-   if (val.m_state.is_initialized())
-      val.m_state.get().get().RemoveRef(val);
 }
 
 Value& Value::operator=(const Value& val)
 {
    m_value = val.m_value;
    m_enType = val.m_enType;
-   m_state = val.m_state;
-   m_iStackIndex = val.m_iStackIndex;
-   m_bTemporary = val.m_bTemporary;
-
-   // now that the values are copied, prevent creating or deleting the source object
-   const_cast<Value&>(val).m_bTemporary = false;
-
-   if (m_state.is_initialized())
-      m_state.get().get().AddRef(*this);
-
-   if (val.m_state.is_initialized())
-      val.m_state.get().get().RemoveRef(val);
+   m_spRef = val.GetRef();
 
    return *this;
 }
 
 Value::~Value() throw()
 {
-   if (m_bTemporary &&
-      m_iStackIndex != -1 &&
-      m_state.is_initialized())
-   {
-      try
-      {
-         m_state.get().get().Remove(*this, m_iStackIndex);
+   std::weak_ptr<Ref> wpRef = m_spRef;
+   m_spRef.reset();
 
-         m_state.reset();
-      }
-      catch (...)
-      {
-      }
+   if (wpRef.use_count() == 1)
+   {
+      std::shared_ptr<Ref> spRef = wpRef.lock();
+      spRef->GetState().RemoveFromStack(*spRef);
    }
+}
+
+void Value::Attach(std::shared_ptr<Ref> spRef) const
+{
+   m_spRef = spRef;
 }
 
 void Value::Push(State& state) const
@@ -268,27 +260,27 @@ void Value::Push(State& state) const
    {
    case typeNil:
       lua_pushnil(L);
-      Attach(state, -1, false);
+      Attach(std::make_shared<Ref>(state, -1));
       break;
 
    case typeBoolean:
       lua_pushboolean(L, boost::any_cast<bool>(m_value) ? 1 : 0);
-      Attach(state, -1, false);
+      Attach(std::make_shared<Ref>(state, -1));
       break;
 
    case typeNumber:
       lua_pushnumber(L, boost::any_cast<double>(m_value));
-      Attach(state, -1, false);
+      Attach(std::make_shared<Ref>(state, -1));
       break;
 
    case typeInteger:
       lua_pushinteger(L, boost::any_cast<int>(m_value));
-      Attach(state, -1, false);
+      Attach(std::make_shared<Ref>(state, -1));
       break;
 
    case typeString:
       lua_pushstring(L, CStringA(boost::any_cast<LPCSTR>(m_value)));
-      Attach(state, -1, false);
+      Attach(std::make_shared<Ref>(state, -1));
       break;
 
    case typeTable:
@@ -312,6 +304,13 @@ void Value::Push(State& state) const
    }
    break;
 
+   case typeThread:
+   {
+      Thread thread = Get<Thread>();
+      thread.Push();
+   }
+   break;
+
    default:
       ATLASSERT(false);
       break;
@@ -320,8 +319,8 @@ void Value::Push(State& state) const
 
 void Value::Detach() const
 {
-   m_state.reset();
-   m_iStackIndex = -1;
+   m_spRef->Detach();
+   m_spRef.reset();
 
    switch (m_enType)
    {
@@ -345,75 +344,86 @@ void Value::Detach() const
       userdata.Detach();
    }
    break;
+
+   case typeThread:
+   {
+      Thread thread = Get<Thread>();
+      thread.Detach();
+   }
+   break;
    }
 }
 
-void Value::OnRemoveStackValue(int iStackIndex)
-{
-   if (m_iStackIndex == -1 ||
-      !m_state.is_initialized())
-      return;
-
-   if (iStackIndex == m_iStackIndex)
-      Detach(); // it's our own value
-   else
-      if (m_iStackIndex >= iStackIndex)
-         m_iStackIndex--;
-}
-
-Value Value::FromStack(State& state, int iIndex, bool bTemporary)
+Value Value::FromStack(State& state, int iStackIndex)
 {
    lua_State* L = state.GetState();
 
-   if (iIndex <= 0)
-      iIndex = lua_absindex(L, iIndex);
-
-   switch (lua_type(L, iIndex))
+   switch (lua_type(L, iStackIndex))
    {
    case LUA_TNONE:
    case LUA_TNIL:
    {
       Value val;
-      val.Attach(state, iIndex, bTemporary);
-      state.AddRef(val);
+      val.Attach(std::make_shared<Ref>(state, iStackIndex));
+      state.AddRef(val.GetRef());
       return val;
    }
 
    case LUA_TNUMBER:
    {
-      Value val(lua_tonumber(L, iIndex));
-      val.Attach(state, iIndex, bTemporary);
-      state.AddRef(val);
+      Value val(lua_tonumber(L, iStackIndex));
+      val.Attach(std::make_shared<Ref>(state, iStackIndex));
+      state.AddRef(val.GetRef());
       return val;
    }
 
    case LUA_TBOOLEAN:
    {
-      Value val(lua_toboolean(L, iIndex) != 0);
-      val.Attach(state, iIndex, bTemporary);
-      state.AddRef(val);
+      Value val(lua_toboolean(L, iStackIndex) != 0);
+      val.Attach(std::make_shared<Ref>(state, iStackIndex));
+      state.AddRef(val.GetRef());
       return val;
    }
 
    case LUA_TSTRING:
    {
-      Value val(lua_tostring(L, iIndex));
-      val.Attach(state, iIndex, bTemporary);
-      state.AddRef(val);
+      Value val(lua_tostring(L, iStackIndex));
+      val.Attach(std::make_shared<Ref>(state, iStackIndex));
+      state.AddRef(val.GetRef());
       return val;
    }
 
    case LUA_TTABLE:
-      return Value(Table(state, iIndex, bTemporary, CString()));
+   {
+      auto spRef = std::make_shared<Ref>(state, iStackIndex);
+      state.AddRef(spRef);
+
+      return Value(Table(spRef, _T("")));
+   }
 
    case LUA_TFUNCTION:
-      return Value(Function(state, iIndex, bTemporary));
+   {
+      auto spRef = std::make_shared<Ref>(state, iStackIndex);
+      state.AddRef(spRef);
+
+      return Value(Function(spRef));
+   }
 
    case LUA_TUSERDATA:
-      return Value(Userdata(state, iIndex, bTemporary));
+   {
+      auto spRef = std::make_shared<Ref>(state, iStackIndex);
+      state.AddRef(spRef);
+
+      return Value(Userdata(spRef));
+   }
 
    case LUA_TTHREAD:
-      return Value(Thread(state, iIndex, bTemporary));
+   {
+      auto spRef = std::make_shared<Ref>(state, iStackIndex);
+      state.AddRef(spRef);
+
+      return Value(Thread(spRef));
+   }
 
    default:
       ATLASSERT(false); // type can't be converted into Value
@@ -461,7 +471,7 @@ void FuncData::PushCClosure(State& state, T_fnCFunction fn)
    FuncData** pFunction = reinterpret_cast<FuncData**>(pUserdata);
    *pFunction = new FuncData(fn);
 
-   ATLASSERT(lua_isuserdata(L, -1) == 1);
+   ATLASSERT(lua_isuserdata(L, -1) != 0);
 
    // set up metatable
    lua_newtable(L);
@@ -504,7 +514,7 @@ int FuncData::OnFunctionCall(lua_State* L)
 
    std::vector<Value> vecParams;
    for (int i = 1; i <= iStackDepth; i++)
-      vecParams.push_back(Value::FromStack(paramState, i, false));
+      vecParams.push_back(Value::FromStack(paramState, i));
 
    State::TraceUpvalues(L);
 
@@ -536,80 +546,70 @@ int FuncData::OnFunctionGarbageCollect(lua_State* L)
 // Lua::Function
 //
 
-Function::Function(State& state, int iStackIndex, bool bTemporary)
-   :m_state(state),
-   m_bTemporary(bTemporary),
-   m_iStackIndex(lua_absindex(state.GetState(), iStackIndex))
+Function::Function(std::shared_ptr<Ref> spRef)
+   :m_spRef(spRef)
 {
 }
 
 Function::Function(const Function& func)
-   :m_state(func.m_state),
-   m_iStackIndex(func.m_iStackIndex),
-   m_bTemporary(func.m_bTemporary)
+   :m_spRef(func.GetRef())
 {
-   // now that the values are copied, prevent creating or deleting the source object
-   const_cast<Function&>(func).m_bTemporary = false;
 }
 
 Function& Function::operator=(const Function& func)
 {
-   m_state = func.m_state;
-   m_iStackIndex = func.m_iStackIndex;
-   m_bTemporary = func.m_bTemporary;
-
-   // now that the values are copied, prevent creating or deleting the source object
-   const_cast<Function&>(func).m_bTemporary = false;
+   m_spRef = func.GetRef();
 
    return *this;
 }
 
 Function::~Function() throw()
 {
-   if (m_bTemporary && m_iStackIndex != -1)
-   {
-      try
-      {
-         lua_State* L = m_state.GetState();
+   ATLASSERT(m_spRef == nullptr || m_spRef->GetStackIndex() == -1 ||
+      lua_isfunction(m_spRef->GetState().GetState(), m_spRef->GetStackIndex()) == true);
 
-         ATLASSERT(lua_isfunction(L, m_iStackIndex) == true);
-         m_state.RemoveIndex(m_iStackIndex);
-      }
-      catch (...)
-      {
-      }
+   std::weak_ptr<Ref> wpRef = m_spRef;
+   m_spRef.reset();
+
+   if (wpRef.use_count() == 1)
+   {
+      std::shared_ptr<Ref> spRef = wpRef.lock();
+      spRef->GetState().RemoveFromStack(*spRef);
    }
 }
 
 std::vector<Value> Function::Call(int iResults, const std::vector<Value>& vecParam)
 {
-   lua_State* L = m_state.GetState();
+   State& state = m_spRef->GetState();
+   lua_State* L = state.GetState();
 
-   lua_pushvalue(L, m_iStackIndex);
+   lua_pushvalue(L, m_spRef->GetStackIndex());
 
    std::for_each(vecParam.begin(), vecParam.end(),
-      [&](const Value& value) { value.Push(m_state); value.Detach(); });
+      [&](const Value& value) { value.Push(state); value.Detach(); });
 
    lua_call(L, vecParam.size(), iResults);
 
    // collect return values
    std::vector<Value> vecResults;
    for (int i = -iResults; i <= -1; i++)
-      vecResults.push_back(Value::FromStack(m_state, i, true));
+      vecResults.push_back(Value::FromStack(state, i));
 
    return vecResults;
 }
 
 void Function::Push()
 {
-   lua_State* L = m_state.GetState();
+   State& state = m_spRef->GetState();
+   lua_State* L = state.GetState();
 
-   lua_pushvalue(L, m_iStackIndex);
+   lua_pushvalue(L, m_spRef->GetStackIndex());
 }
 
 void Function::Detach() const
 {
-   m_iStackIndex = -1;
+   m_spRef->Detach();
+   m_spRef.reset();
 }
 
 //
@@ -617,12 +617,9 @@ void Function::Detach() const
 //
 
 Table::Table(State& state, const CString& cszName)
-   :m_state(state),
-   m_cszName(cszName),
-   m_iStackIndex(-1),
-   m_bTemporary(true)
+   :m_cszName(cszName)
 {
-   lua_State* L = m_state.GetState();
+   lua_State* L = state.GetState();
 
    lua_newtable(L);
 
@@ -634,65 +631,55 @@ Table::Table(State& state, const CString& cszName)
       lua_getglobal(L, CStringA(m_cszName).GetString());
    }
 
-   m_iStackIndex = lua_absindex(L, -1);
+   m_spRef = std::make_shared<Ref>(state, -1);
+
+   state.AddRef(m_spRef);
 }
 
-Table::Table(State& state, int iStackIndex, bool bTemporary, const CString& cszName)
-   :m_state(state),
-   m_cszName(cszName),
-   m_bTemporary(bTemporary),
-   m_iStackIndex(lua_absindex(state.GetState(), iStackIndex))
+Table::Table(std::shared_ptr<Ref> spRef, const CString& cszName)
+   :m_spRef(spRef),
+   m_cszName(cszName)
 {
 }
 
 Table::Table(const Table& table)
-   :m_state(table.m_state),
-   m_cszName(table.m_cszName),
-   m_bTemporary(table.m_bTemporary),
-   m_iStackIndex(table.m_iStackIndex)
+   : m_spRef(table.GetRef()),
+   m_cszName(table.m_cszName)
 {
-   // now that the values are copied, prevent creating or deleting the source object
-   const_cast<Table&>(table).m_bTemporary = false;
 }
 
 Table& Table::operator=(const Table& table)
 {
-   m_state = table.m_state;
-   m_bTemporary = table.m_bTemporary;
-   m_iStackIndex = table.m_iStackIndex;
-
-   // now that the values are copied, prevent creating or deleting the source object
-   const_cast<Table&>(table).m_bTemporary = false;
+   m_spRef = table.GetRef();
 
    return *this;
 }
 
 Table::~Table() throw()
 {
-   if (m_bTemporary && m_iStackIndex != -1)
-   {
-      try
-      {
-         lua_State* L = m_state.GetState();
+   ATLASSERT(m_spRef == nullptr || m_spRef->GetStackIndex() == -1 ||
+      lua_istable(m_spRef->GetState().GetState(), m_spRef->GetStackIndex()) == true);
 
-         ATLASSERT(lua_istable(L, m_iStackIndex) == true);
-         m_state.RemoveIndex(m_iStackIndex);
-      }
-      catch (...)
-      {
-      }
+   std::weak_ptr<Ref> wpRef = m_spRef;
+   m_spRef.reset();
+
+   if (wpRef.use_count() == 1)
+   {
+      std::shared_ptr<Ref> spRef = wpRef.lock();
+      spRef->GetState().RemoveFromStack(*spRef);
    }
 }
 
 Table& Table::AddValue(const CString& key, const Value& value)
 {
-   lua_State* L = m_state.GetState();
+   State& state = m_spRef->GetState();
+   lua_State* L = state.GetState();
 
-   ATLASSERT(lua_istable(L, m_iStackIndex) != 0);
+   ATLASSERT(lua_istable(L, m_spRef->GetStackIndex()) != 0);
 
-   value.Push(m_state);
+   value.Push(state);
 
-   lua_setfield(L, m_iStackIndex, CStringA(key));
+   lua_setfield(L, m_spRef->GetStackIndex(), CStringA(key));
 
    value.Detach();
 
@@ -701,13 +688,14 @@ Table& Table::AddValue(const CString& key, const Value& value)
 
 Table& Table::AddValue(int key, const Value& value)
 {
-   lua_State* L = m_state.GetState();
+   State& state = m_spRef->GetState();
+   lua_State* L = state.GetState();
 
-   ATLASSERT(lua_istable(L, m_iStackIndex) != 0);
+   ATLASSERT(lua_istable(L, m_spRef->GetStackIndex()) != 0);
 
-   value.Push(m_state);
+   value.Push(state);
 
-   lua_seti(L, m_iStackIndex, lua_Integer(key));
+   lua_seti(L, m_spRef->GetStackIndex(), lua_Integer(key));
 
    value.Detach();
 
@@ -716,35 +704,39 @@ Table& Table::AddValue(int key, const Value& value)
 
 Table& Table::AddFunction(LPCSTR pszaName, T_fnCFunction fn)
 {
-   lua_State* L = m_state.GetState();
+   State& state = m_spRef->GetState();
+   lua_State* L = state.GetState();
 
-   ATLASSERT(lua_istable(L, m_iStackIndex) == true);
+   ATLASSERT(lua_istable(L, m_spRef->GetStackIndex()) != 0);
 
-   FuncData::PushCClosure(m_state, fn);
+   FuncData::PushCClosure(state, fn);
 
-   lua_setfield(L, m_iStackIndex, pszaName);
+   lua_setfield(L, m_spRef->GetStackIndex(), pszaName);
 
    return *this;
 }
 
 Value Table::GetValue(const CString& key)
 {
-   lua_State* L = m_state.GetState();
+   State& state = m_spRef->GetState();
+   lua_State* L = state.GetState();
 
    lua_pushstring(L, CStringA(key));
 
-   lua_gettable(L, m_iStackIndex);
+   lua_gettable(L, m_spRef->GetStackIndex());
 
-   return Value::FromStack(m_state, -1, true);
+   return Value::FromStack(state, -1);
 }
 
 std::vector<Value> Table::CallFunction(const CString& cszName,
    int iResults,
    const std::vector<Value>& vecParam)
 {
-   lua_State* L = m_state.GetState();
+   State& state = m_spRef->GetState();
+   lua_State* L = state.GetState();
 
-   lua_getfield(L, m_iStackIndex, CStringA(cszName).GetString());
+   lua_getfield(L, m_spRef->GetStackIndex(), CStringA(cszName).GetString());
+
    if (!lua_isfunction(L, -1))
    {
       lua_pop(L, 1);
@@ -752,11 +744,11 @@ std::vector<Value> Table::CallFunction(const CString& cszName,
    }
 
    // add table as first argument
-   lua_pushvalue(L, m_iStackIndex);
+   lua_pushvalue(L, m_spRef->GetStackIndex());
 
    // then params
    std::for_each(vecParam.begin(), vecParam.end(),
-      [&](const Value& value) { value.Push(m_state); value.Detach();  });
+      [&](const Value& value) { value.Push(state); value.Detach();  });
 
    try
    {
@@ -765,31 +757,30 @@ std::vector<Value> Table::CallFunction(const CString& cszName,
    catch (const Lua::Exception&)
    {
       // since the exception is re-thrown, detach all params from stack
-      m_state.DetachAll();
+      state.DetachAll();
       throw;
    }
 
    // collect return values
    std::vector<Value> vecResults;
    for (int i = -iResults; i <= -1; i++)
-      vecResults.push_back(Value::FromStack(m_state, i, true));
+      vecResults.push_back(Value::FromStack(state, i));
 
    return vecResults;
 }
 
 void Table::Push()
 {
-   lua_State* L = m_state.GetState();
+   State& state = m_spRef->GetState();
+   lua_State* L = state.GetState();
 
-   lua_pushvalue(L, m_iStackIndex);
-
-   if (m_bTemporary)
-      m_bTemporary = false;
+   lua_pushvalue(L, m_spRef->GetStackIndex());
 }
 
 void Table::Detach() const
 {
-   m_iStackIndex = -1;
+   m_spRef->Detach();
+   m_spRef.reset();
 }
 
 //
@@ -797,95 +788,77 @@ void Table::Detach() const
 //
 
 Userdata::Userdata(State& state, size_t uiSize)
-   :m_state(state),
-   m_pUserdata(nullptr),
-   m_uiSize(uiSize),
-   m_bTemporary(true),
-   m_iStackIndex(-1)
+   :m_pUserdata(nullptr),
+   m_uiSize(uiSize)
 {
-   lua_State* L = m_state.GetState();
+   lua_State* L = state.GetState();
 
    m_pUserdata = lua_newuserdata(L, uiSize);
 
-   m_iStackIndex = lua_absindex(L, -1);
+   m_spRef = std::make_shared<Ref>(state, -1);
+
+   state.AddRef(m_spRef);
 }
 
-Userdata::Userdata(State& state, int iStackIndex, bool bTemporary)
-   :m_state(state),
+Userdata::Userdata(std::shared_ptr<Ref> spRef)
+   :m_spRef(spRef),
    m_pUserdata(nullptr),
-   m_uiSize(0),
-   m_bTemporary(bTemporary),
-   m_iStackIndex(lua_absindex(state.GetState(), iStackIndex))
+   m_uiSize(0)
 {
-   lua_State* L = m_state.GetState();
+   State& state = m_spRef->GetState();
+   lua_State* L = state.GetState();
 
-   ATLASSERT(lua_isuserdata(L, m_iStackIndex) != 0);
+   int iStackIndex = m_spRef->GetStackIndex();
 
-   m_pUserdata = lua_touserdata(L, m_iStackIndex);
-   m_uiSize = lua_rawlen(L, m_iStackIndex);
+   ATLASSERT(lua_isuserdata(L, iStackIndex) != 0);
+
+   m_pUserdata = lua_touserdata(L, iStackIndex);
+   m_uiSize = lua_rawlen(L, iStackIndex);
 }
 
 Userdata::Userdata(const Userdata& userdata)
-   :m_state(userdata.m_state),
+   :m_spRef(userdata.GetRef()),
    m_pUserdata(userdata.m_pUserdata),
-   m_uiSize(userdata.m_uiSize),
-   m_bTemporary(userdata.m_bTemporary),
-   m_iStackIndex(userdata.m_iStackIndex)
+   m_uiSize(userdata.m_uiSize)
 {
-   lua_State* L = m_state.GetState(); L;
-   ATLASSERT(lua_isuserdata(L, m_iStackIndex) != 0);
-
-   // now that the values are copied, prevent creating or deleting the source object
-   const_cast<Userdata&>(userdata).m_bTemporary = false;
 }
 
 Userdata& Userdata::operator=(const Userdata& userdata)
 {
-   m_state = userdata.m_state;
+   m_spRef = userdata.GetRef();
    m_pUserdata = userdata.m_pUserdata;
    m_uiSize = userdata.m_uiSize;
-   m_bTemporary = userdata.m_bTemporary;
-   m_iStackIndex = userdata.m_iStackIndex;
-
-   lua_State* L = m_state.GetState(); L;
-   ATLASSERT(lua_isuserdata(L, m_iStackIndex) != 0);
-
-   // now that the values are copied, prevent creating or deleting the source object
-   const_cast<Userdata&>(userdata).m_bTemporary = false;
 
    return *this;
 }
 
 Userdata::~Userdata() throw()
 {
-   if (m_bTemporary && m_iStackIndex != -1)
-   {
-      try
-      {
-         lua_State* L = m_state.GetState();
+   ATLASSERT(m_spRef == nullptr || m_spRef->GetStackIndex() == -1 ||
+      lua_isuserdata(m_spRef->GetState().GetState(), m_spRef->GetStackIndex()) != 0);
 
-         ATLASSERT(lua_isuserdata(L, m_iStackIndex) != 0);
-         m_state.RemoveIndex(m_iStackIndex);
-      }
-      catch (...)
-      {
-      }
+   std::weak_ptr<Ref> wpRef = m_spRef;
+   m_spRef.reset();
+
+   if (wpRef.use_count() == 1)
+   {
+      std::shared_ptr<Ref> spRef = wpRef.lock();
+      spRef->GetState().RemoveFromStack(*spRef);
    }
 }
 
 void Userdata::Push()
 {
-   lua_State* L = m_state.GetState();
+   State& state = m_spRef->GetState();
+   lua_State* L = state.GetState();
 
-   lua_pushvalue(L, m_iStackIndex);
-
-   if (m_bTemporary)
-      m_bTemporary = false;
+   lua_pushvalue(L, m_spRef->GetStackIndex());
 }
 
 void Userdata::Detach() const
 {
-   m_iStackIndex = -1;
+   m_spRef->Detach();
+   m_spRef.reset();
 }
 
 //
@@ -972,7 +945,7 @@ std::vector<Value> State::CallFunction(const CString& cszName, int iResults, con
    // collect return values
    std::vector<Value> vecResults;
    for (int i = -iResults; i <= -1; i++)
-      vecResults.push_back(Value::FromStack(*this, i, true));
+      vecResults.push_back(Value::FromStack(*this, i));
 
    return vecResults;
 }
@@ -1013,7 +986,7 @@ Value State::GetValue(const CString& cszName)
 
    lua_getglobal(L, CStringA(cszName).GetString());
 
-   return Value::FromStack(*this, -1, true);
+   return Value::FromStack(*this, -1);
 }
 
 Table State::GetTable(const CString& cszName)
@@ -1027,7 +1000,10 @@ Table State::GetTable(const CString& cszName)
       throw Lua::Exception(_T("table not found: ") + cszName, L, __FILE__, __LINE__);
    }
 
-   return Table(*this, -1, true, cszName);
+   auto spRef = std::make_shared<Ref>(*this, -1);
+   AddRef(spRef);
+
+   return Table(spRef, cszName);
 }
 
 void State::CollectGarbage()
@@ -1053,6 +1029,8 @@ int State::OnLuaPanic(lua_State* L)
 
 void State::TraceStack(lua_State* L)
 {
+   StackChecker checker(L);
+
    int iStackDepth = lua_gettop(L);
 
    ATLTRACE(_T("Tracing stack, %i entries:\n"), iStackDepth);
@@ -1060,13 +1038,13 @@ void State::TraceStack(lua_State* L)
    for (int iIndex = 1; iIndex <= iStackDepth; iIndex++)
       TraceValue(L, iIndex, iStackDepth, false);
 
-   ATLASSERT(iStackDepth == lua_gettop(L));
-
    ATLTRACE(_T("End tracing stack.\n"));
 }
 
 void State::TraceUpvalues(lua_State* L)
 {
+   StackChecker checker(L);
+
    ATLTRACE(_T("Tracing upvalues:\n"));
 
    for (int iUpvalueIndex = 1; iUpvalueIndex < 256; iUpvalueIndex++)
@@ -1084,6 +1062,8 @@ void State::TraceUpvalues(lua_State* L)
 
 CString EnumTableIndices(lua_State* L, int iIndex)
 {
+   StackChecker checker(L);
+
    CString cszText;
 
    if (iIndex < 0)
@@ -1189,28 +1169,28 @@ LPCTSTR State::GetVersion() throw()
    return _T(LUA_RELEASE);
 }
 
-void State::Remove(Value& val, int iStackIndex)
+void State::AddRef(std::shared_ptr<Ref> spRef)
 {
-   RemoveRef(val);
-   RemoveIndex(iStackIndex);
+   m_vecRefsOnStack.push_back(spRef);
 }
 
-void State::AddRef(Value& val)
+void State::RemoveRef(Ref& ref)
 {
-   m_vecValuesOnStack.push_back(std::ref(val));
+   RemoveFromStack(ref);
+   RemoveIndex(ref.GetStackIndex());
 }
 
-bool State::RemoveRef(const Value& val)
+bool State::RemoveFromStack(const Ref& ref)
 {
-   auto iter = std::find_if(m_vecValuesOnStack.begin(), m_vecValuesOnStack.end(),
-      [&](std::reference_wrapper<Value>& valueRef)
+   auto iter = std::find_if(m_vecRefsOnStack.begin(), m_vecRefsOnStack.end(),
+      [&](std::shared_ptr<Ref>& spRef)
    {
-      return &valueRef.get() == &val;
+      return spRef.get() == &ref;
    });
 
-   bool bFound = iter != m_vecValuesOnStack.end();
+   bool bFound = iter != m_vecRefsOnStack.end();
    if (bFound)
-      m_vecValuesOnStack.erase(iter);
+      m_vecRefsOnStack.erase(iter);
 
    return bFound;
 }
@@ -1218,23 +1198,25 @@ bool State::RemoveRef(const Value& val)
 void State::RemoveIndex(int iStackIndex)
 {
    // adjust all stack indices of referenced values
-   std::for_each(m_vecValuesOnStack.begin(), m_vecValuesOnStack.end(),
-      [&](std::reference_wrapper<Value>& valueRef)
+   std::for_each(m_vecRefsOnStack.begin(), m_vecRefsOnStack.end(),
+      [&](std::shared_ptr<Ref>& spRef)
    {
-      valueRef.get().OnRemoveStackValue(iStackIndex);
+      spRef->OnRemoveStackValue(iStackIndex);
    });
 
    lua_State* L = GetState();
+
+   State::TraceStack(L);
 
    lua_remove(L, iStackIndex);
 }
 
 void State::DetachAll()
 {
-   std::for_each(m_vecValuesOnStack.begin(), m_vecValuesOnStack.end(),
-      [&](std::reference_wrapper<Value>& valueRef)
+   std::for_each(m_vecRefsOnStack.begin(), m_vecRefsOnStack.end(),
+      [&](std::shared_ptr<Ref>& spRef)
    {
-      valueRef.get().Detach();
+      spRef->Detach();
    });
 }
 
@@ -1245,23 +1227,17 @@ void State::DetachAll()
 static_assert(Thread::statusOK == LUA_OK, "value of statusOk must equal LUA_OK");
 static_assert(Thread::statusYield == LUA_YIELD, "value of statusOk must equal LUA_YIELD");
 
-/// Lua doesn't pass the number of arguments used in the
-/// InternalResume() -> lua_resume() call to the yield function; to notify the
-/// InternalYield() function about number of parameters, this static variable is
-/// used.
-size_t Thread::s_iNumResumeParams = 0;
-
 Thread::Thread(Lua::State& state)
    :m_state(state),
    m_threadState(lua_newthread(state.GetState()), false) // non-mainState
 {
 }
 
-Thread::Thread(State& state, int iStackIndex, bool bTemporary)
-   : m_state(state),
-   m_threadState(lua_tothread(state.GetState(), iStackIndex), false) // non-mainState
+Thread::Thread(std::shared_ptr<Ref> spRef)
+   :m_spRef(spRef),
+   m_state(spRef->GetState()),
+   m_threadState(lua_tothread(spRef->GetState().GetState(), spRef->GetStackIndex()), false) // non-mainState
 {
-   ATLASSERT(bTemporary == false); bTemporary; // must not create temporary thread object
 }
 
 Value Thread::GetValue(const CString& cszName)
@@ -1270,7 +1246,7 @@ Value Thread::GetValue(const CString& cszName)
 
    lua_getglobal(L, CStringA(cszName).GetString());
 
-   return Value::FromStack(m_threadState, -1, true);
+   return Value::FromStack(m_threadState, -1);
 }
 
 Table Thread::GetTable(const CString& cszName)
@@ -1284,7 +1260,10 @@ Table Thread::GetTable(const CString& cszName)
       throw Lua::Exception(_T("table not found: ") + cszName, L, __FILE__, __LINE__);
    }
 
-   return Table(m_threadState, -1, true, cszName);
+   auto spRef = std::make_shared<Ref>(m_threadState, -1);
+   m_threadState.AddRef(spRef);
+
+   return Table(spRef, cszName);
 }
 
 Thread::T_enThreadStatus Thread::Status() const throw()
@@ -1304,6 +1283,8 @@ std::pair<Thread::T_enThreadStatus, std::vector<Lua::Value>> Thread::Start(Lua::
    Lua::Value funcValue(func);
 
    funcValue.Push(m_threadState);
+
+   // detach in case the thread yields; then the stack is empty
    funcValue.Detach();
 
    return InternalResume(vecParam);
@@ -1321,15 +1302,13 @@ std::pair<Thread::T_enThreadStatus, std::vector<Lua::Value>> Thread::Resume(cons
 
 void Thread::Yield(const std::vector<Value>& vecRetValues, T_fnYieldCallback fnYieldCallback)
 {
-   if (!lua_isyieldable(m_threadState.GetState()))
-      throw Lua::Exception(_T("Lua thread isn't yieldable"), m_threadState.GetState(), __FILE__, __LINE__);
+   lua_State* L = m_threadState.GetState();
 
-   State::TraceStack(m_threadState.GetState());
+   if (!lua_isyieldable(L))
+      throw Lua::Exception(_T("Lua thread isn't yieldable"), L, __FILE__, __LINE__);
 
    std::for_each(vecRetValues.begin(), vecRetValues.end(),
       [&](const Value& value) { value.Push(m_threadState); value.Detach(); });
-
-   State::TraceStack(m_threadState.GetState());
 
    lua_KContext context = 0;
    lua_KFunction func = nullptr;
@@ -1340,9 +1319,10 @@ void Thread::Yield(const std::vector<Value>& vecRetValues, T_fnYieldCallback fnY
       func = &Thread::InternalYield;
    }
 
-   lua_yieldk(m_threadState.GetState(), vecRetValues.size(), context, func);
+   // bug? lua_yieldk only returns n-1 values to lua_resume, so add one
+   lua_yieldk(L, vecRetValues.size() + 1, context, func);
 
-   throw Lua::Exception(_T("Yield() continued after calling lua_yieldk"), m_threadState.GetState(), __FILE__, __LINE__);
+   throw Lua::Exception(_T("Yield() continued after calling lua_yieldk"), L, __FILE__, __LINE__);
 }
 
 std::pair<Thread::T_enThreadStatus, std::vector<Lua::Value>> Thread::InternalResume(const std::vector<Lua::Value>& vecParam)
@@ -1350,19 +1330,20 @@ std::pair<Thread::T_enThreadStatus, std::vector<Lua::Value>> Thread::InternalRes
    // L is the thread stack here
    lua_State* L = m_threadState.GetState();
 
-   int iBeforeResumeStackIndex = lua_gettop(L);
-   if (Status() == statusYield)
-      iBeforeResumeStackIndex++;
+   // determine last stack value we don't use; when starting new thread, don'T remove pushed function
+   int iIndexLastValue = lua_gettop(L);
+   if (Status() != statusYield)
+      iIndexLastValue--;
 
    std::for_each(vecParam.begin(), vecParam.end(),
       [&](const Value& value) { value.Push(m_threadState); value.Detach(); });
 
-   s_iNumResumeParams = vecParam.size();
-
-   State::TraceStack(L);
-
    // since lua_resume removes everything from stack, detach all values still referenced on the stack
    m_threadState.DetachAll();
+
+   // remove all values below our parameters (and pushed function, when we start a new thread)
+   for (int iIndex = iIndexLastValue; iIndex >= 1; iIndex--)
+      lua_remove(m_threadState.GetState(), iIndex);
 
    int iRet = lua_resume(L, m_state.GetState(), vecParam.size());
 
@@ -1374,18 +1355,19 @@ std::pair<Thread::T_enThreadStatus, std::vector<Lua::Value>> Thread::InternalRes
       State::OnLuaPanic(L);
    }
 
+   State::TraceStack(L);
+
    std::pair<Thread::T_enThreadStatus, std::vector<Lua::Value>> retVal;
    retVal.first = static_cast<Thread::T_enThreadStatus>(iRet);
 
-   State::TraceStack(L);
-
-   // collect return values; note that returning from lua_resume removed
-   // all values from stack, and put the return values from Yield() on it.
    std::vector<Value>& vecResults = retVal.second;
 
+   // collect return values; since we removed all excess values on stack,
+   // always start at the first element.
    int iTopIndex = lua_gettop(L);
+
    for (int i = 1; i <= iTopIndex; i++)
-      vecResults.push_back(Value::FromStack(m_threadState, i, true));
+      vecResults.push_back(Value::FromStack(m_threadState, i));
 
    return retVal;
 }
@@ -1407,8 +1389,8 @@ int Thread::InternalYield(lua_State* L, int status, lua_KContext context)
 
    int iTopIndex = lua_gettop(L);
 
-   for (int iStackIndex = iTopIndex - s_iNumResumeParams + 1; iStackIndex <= iTopIndex; iStackIndex++)
-      vecParams.push_back(Value::FromStack(paramState, iStackIndex, true));
+   for (int iStackIndex = 1; iStackIndex <= iTopIndex; iStackIndex++)
+      vecParams.push_back(Value::FromStack(paramState, iStackIndex));
 
    std::vector<Lua::Value> vecResults;
    try
@@ -1418,7 +1400,7 @@ int Thread::InternalYield(lua_State* L, int status, lua_KContext context)
 
       // put results on stack
       std::for_each(vecResults.begin(), vecResults.end(),
-         [&](const Value& value) { value.Push(paramState); });
+         [&](const Value& value) { value.Push(paramState); value.Detach(); });
    }
    catch (const Lua::Exception& ex)
    {
@@ -1447,16 +1429,13 @@ int Thread::InternalYield(lua_State* L, int status, lua_KContext context)
    return vecResults.size();
 }
 
-//
-// Value
-//
-
-void Value::Attach(State& state, int iStackIndex, bool bTemporary) const
+void Thread::Push()
 {
-   m_state = std::ref(state);
+   lua_pushthread(m_threadState.GetState());
+}
 
-   lua_State* L = state.GetState();
-   m_iStackIndex = lua_absindex(L, iStackIndex);
-
-   const_cast<Value&>(*this).m_bTemporary = bTemporary;
+void Thread::Detach() const
+{
+   m_spRef->Detach();
+   m_spRef.reset();
 }

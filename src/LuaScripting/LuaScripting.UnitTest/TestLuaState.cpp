@@ -855,7 +855,7 @@ namespace LuaScriptingUnitTest
                   throw std::runtime_error("must have passed exactly 1 value");
 
                std::vector<Lua::Value> vecRetValues;
-               vecRetValues.push_back(vecParams2[0]);
+               vecRetValues.push_back(Lua::Value(vecParams2[0].Get<double>() - 5.0));
 
                return vecRetValues;
             };
@@ -897,7 +897,7 @@ namespace LuaScriptingUnitTest
          Assert::AreEqual<size_t>(1, vecRetvals2.size(), _T("must have returned 1 return values"));
 
          Assert::IsTrue(Lua::Value::typeNumber == vecRetvals2[0].GetType(), _T("type must be number"));
-         Assert::AreEqual(3.0 * 42.0 - 64.0, 1e-6, vecRetvals2[0].Get<double>(), _T("value must match calculated value"));
+         Assert::AreEqual(3.0 * 42.0 - 64.0 - 5.0, 1e-6, vecRetvals2[0].Get<double>(), _T("value must match calculated value"));
       }
 
       /// tests if stack is cleaned up when calling thread methods

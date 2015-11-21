@@ -25,7 +25,12 @@ struct FuncData;
 /// Lua C++ wrapper classes
 namespace Lua
 {
+class Value;
+class Table;
+class Function;
+class Userdata;
 class State;
+class Thread;
 
 /// Lua exception class
 class Exception: public ::Exception
@@ -94,6 +99,46 @@ private:
    int m_iStackDepth;
 };
 
+/// \brief Reference to a value on the stack
+/// \details This is used by the various classes to keep track of the values
+/// stored on the stack of a Lua state. When the value isn't referenced
+/// anymore, the corresponding value is removed from the stack.
+class Ref
+{
+public:
+   /// ctor
+   Ref(State& state, int iStackIndex);
+   /// dtor
+   ~Ref() throw();
+
+   /// returns state
+   State& GetState() throw() { return m_state; }
+
+   /// returns stack index of value
+   int GetStackIndex() const throw() { return m_iStackIndex; }
+
+private:
+   friend Value;
+   friend Table;
+   friend Function;
+   friend Userdata;
+   friend State;
+   friend Thread;
+
+   /// detaches reference from stack, e.g. because the value was removed from stack by Lua itself
+   void Detach();
+
+   /// called when value at given stack index is removed
+   void OnRemoveStackValue(int iStackIndex);
+
+private:
+   /// the state where the value is stored on
+   State& m_state;
+
+   /// absolute stack index
+   int m_iStackIndex;
+};
+
 /// \brief Lua value
 /// Stores a Lua value, e.g. for passing arguments to a function call (see
 /// State::CallFunction(), Table::CallFunction(), etc.) or as function return
@@ -152,7 +197,7 @@ public:
    /// assignment operator
    Value& operator=(const Value& val);
 
-   /// dtor; removes value from stack, if stored on it
+   /// dtor
    ~Value() throw();
 
    /// returns type
@@ -191,15 +236,18 @@ public:
       return CString(boost::any_cast<LPCSTR>(m_value));
    }
 
-private:
-   friend struct FuncData;
-   friend class Function;
-   friend class Table;
-   friend class State;
-   friend class Thread;
+   /// returns ref object
+   std::shared_ptr<Ref> GetRef() const { return m_spRef; }
 
-   /// attaches value to state, and stack index
-   void Attach(State& state, int iStackIndex, bool bTemporary) const;
+private:
+   friend FuncData;
+   friend Function;
+   friend Table;
+   friend State;
+   friend Thread;
+
+   /// attaches value to state, using reference
+   void Attach(std::shared_ptr<Ref> spRef) const;
 
    /// pushes value to stack
    void Push(State& state) const;
@@ -207,11 +255,8 @@ private:
    /// detaches the object from stack
    void Detach() const;
 
-   /// called when value on given stack index is removed
-   void OnRemoveStackValue(int iStackIndex);
-
-   /// constructs Value object from stack entry
-   static Value FromStack(State& state, int iIndex, bool bTemporary);
+   /// constructs Value object from value at stack index
+   static Value FromStack(State& state, int iStackIndex);
 
 private:
    /// value
@@ -220,14 +265,8 @@ private:
    /// type
    T_enType m_enType;
 
-   /// state where the value is placed on
-   mutable boost::optional<std::reference_wrapper<State>> m_state;
-
-   /// stack index, when already stored on stack, or -1 if not
-   mutable int m_iStackIndex;
-
-   /// indicates if value is temporary
-   bool m_bTemporary;
+   /// state stack reference
+   mutable std::shared_ptr<Ref> m_spRef;
 };
 
 /// \brief C++ function that can be registered as closure
@@ -261,11 +300,14 @@ public:
    std::vector<Value> Call(int iResults = 0,
       const std::vector<Value>& vecParam = std::vector<Value>());
 
+   /// returns ref object
+   std::shared_ptr<Ref> GetRef() const { return m_spRef; }
+
 private:
    friend Value;
 
    /// ctor; creates function object from value on stack
-   explicit Function(State& state, int iStackIndex, bool bTemporary);
+   explicit Function(std::shared_ptr<Ref> spRef);
 
    /// pushes function onto stack
    void Push();
@@ -274,14 +316,8 @@ private:
    void Detach() const;
 
 private:
-   /// state the function belongs to
-   State& m_state;
-
-   /// stack index of function currently held (always absolute value into stack)
-   mutable int m_iStackIndex;
-
-   /// indicates if function is temporary
-   bool m_bTemporary;
+   /// state stack reference
+   mutable std::shared_ptr<Ref> m_spRef;
 };
 
 /// \brief Lua table
@@ -320,9 +356,12 @@ public:
       int iResults = 0,
       const std::vector<Value>& vecParam = std::vector<Value>());
 
+   /// returns ref object
+   std::shared_ptr<Ref> GetRef() const { return m_spRef; }
+
 private:
-   friend class State;
-   friend class Thread;
+   friend State;
+   friend Thread;
    friend Value;
 
    // note: these ctors can only be called by Lua::State
@@ -331,7 +370,7 @@ private:
    explicit Table(State& state, const CString& cszName);
 
    /// ctor; creates table object from value on stack
-   explicit Table(State& state, int iStackIndex, bool bTemporary, const CString& cszName);
+   explicit Table(std::shared_ptr<Ref> spRef, const CString& cszName);
 
    /// pushes table onto stack
    void Push();
@@ -340,17 +379,11 @@ private:
    void Detach() const;
 
 private:
-   /// state the table belongs to
-   State& m_state;
-
    /// table name
    CString m_cszName;
 
-   /// stack index of table currently held (always absolute value into stack)
-   mutable int m_iStackIndex;
-
-   /// indicates if table is temporary
-   bool m_bTemporary;
+   /// state stack reference
+   mutable std::shared_ptr<Ref> m_spRef;
 };
 
 /// \brief Lua userdata
@@ -378,8 +411,11 @@ public:
    template <typename T>
    T* Data() const throw() { return reinterpret_cast<T*>(m_pUserdata); }
 
+   /// returns ref object
+   std::shared_ptr<Ref> GetRef() const { return m_spRef; }
+
 private:
-   friend class State;
+   friend State;
    friend Value;
 
    // note: these ctors can only be called by Lua::State
@@ -388,7 +424,7 @@ private:
    explicit Userdata(State& state, size_t uiSize);
 
    /// ctor; creates userdata object from value on stack
-   explicit Userdata(State& state, int iStackIndex, bool bTemporary);
+   explicit Userdata(std::shared_ptr<Ref> spRef);
 
    /// pushes userdata onto stack
    void Push();
@@ -397,20 +433,14 @@ private:
    void Detach() const;
 
 private:
-   /// state the userdata belongs to
-   State& m_state;
-
    /// raw memory block allocated by ctor
    void* m_pUserdata;
 
    /// size of raw memory block
    size_t m_uiSize;
 
-   /// stack index of userdata currently held (always absolute value into stack)
-   mutable int m_iStackIndex;
-
-   /// indicates if userdata is temporary
-   bool m_bTemporary;
+   /// state stack reference
+   mutable std::shared_ptr<Ref> m_spRef;
 };
 
 /// \brief Lua state
@@ -475,12 +505,13 @@ public:
    static LPCTSTR GetVersion() throw();
 
 private:
+   friend Ref;
    friend Value;
    friend Table;
    friend Function;
    friend FuncData;
    friend Userdata;
-   friend class Thread;
+   friend Thread;
 
    /// ctor that takes an existing state
    explicit State(lua_State* L, bool mainState);
@@ -491,14 +522,14 @@ private:
    /// panic error handler
    static int OnLuaPanic(lua_State* L);
 
-   /// removes value from state stack, and moves all references
-   void Remove(Value& val, int iStackIndex);
+   /// adds a reference to value on this state stack
+   void AddRef(std::shared_ptr<Ref> spRef);
 
-   /// adds a value reference in this state
-   void AddRef(Value& val);
+   /// removes reference from state stack
+   void RemoveRef(Ref& ref);
 
-   /// removes value reference in this state
-   bool RemoveRef(const Value& val);
+   /// removes reference to value stored in this state stack
+   bool RemoveFromStack(const Ref& val);
 
    /// removes stack value from state stack
    void RemoveIndex(int iStackIndex);
@@ -510,8 +541,8 @@ private:
    /// Lua state
    std::shared_ptr<lua_State> m_spState;
 
-   /// list of values referenced on stack
-   std::vector<std::reference_wrapper<Value>> m_vecValuesOnStack;
+   /// list of references of values on state stack
+   std::vector<std::shared_ptr<Ref>> m_vecRefsOnStack;
 };
 
 /// \brief Lua thread
@@ -561,11 +592,20 @@ public:
    /// returns thread Lua state
    lua_State* GetThreadState() { return m_threadState.GetState();  }
 
+   /// returns ref object
+   std::shared_ptr<Ref> GetRef() const { return m_spRef; }
+
 private:
    friend Value;
 
    /// ctor; creates thread object from value on stack
-   explicit Thread(State& state, int iStackIndex, bool bTemporary);
+   explicit Thread(std::shared_ptr<Ref> spRef);
+
+   /// pushes thread onto stack
+   void Push();
+
+   /// detaches thread from stack
+   void Detach() const;
 
    /// resume implementation, used by Start() and Resume()
    std::pair<T_enThreadStatus, std::vector<Lua::Value>> InternalResume(const std::vector<Lua::Value>& vecParam);
@@ -580,8 +620,8 @@ private:
    /// thread state
    Lua::State m_threadState;
 
-   /// number of parameters used in the Resume() call
-   static size_t s_iNumResumeParams;
+   /// state stack reference
+   mutable std::shared_ptr<Ref> m_spRef;
 };
 
 }; // namespace Lua
