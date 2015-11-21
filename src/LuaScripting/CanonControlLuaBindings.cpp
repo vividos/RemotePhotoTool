@@ -820,6 +820,8 @@ void CanonControlLuaBindings::SetAvailImageHandler_OnAvailImageHandler(
    if (value.GetType() != Lua::Value::typeFunction)
    {
       m_fnOutputDebugString(_T("Runtime error: callback for setAvailImageHandler() is not a function"));
+
+      spViewfinder->SetAvailImageHandler(Viewfinder::T_fnOnAvailViewfinderImage());
       return;
    }
 
