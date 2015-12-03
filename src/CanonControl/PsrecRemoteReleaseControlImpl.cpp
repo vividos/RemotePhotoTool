@@ -354,11 +354,17 @@ void RemoteReleaseControlImpl::AsyncRelease()
    DWORD dwEnd = GetTickCount();
    LOG_TRACE(_T("PR_RC_Release took %u ms\n"), dwEnd-dwStart);
 
-
    // wait for event
    m_evtReleaseImageReady.Wait();
 
-   StartImageDownload(m_hReleaseImage, true);
+   try
+   {
+      StartImageDownload(m_hReleaseImage, true);
+   }
+   catch (const CameraException&)
+   {
+      m_subjectStateEvent.Call(RemoteReleaseControl::stateEventReleaseError, 0);
+   }
 }
 
 LPCTSTR RemoteReleaseControlImpl::EventNameFromCode(prUInt16 uiEventCode) throw()
