@@ -19,6 +19,7 @@ struct AppCommand
       deviceInfo,       ///< outputs device info
       deviceProperties, ///< outputs device properties
       imageProperties,  ///< outputs image properties
+      listenEvents,     ///< listens for events
       releaseShutter,   ///< releases shutter
       runScript,        ///< runs Lua script
    };

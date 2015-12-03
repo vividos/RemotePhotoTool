@@ -34,6 +34,7 @@ private:
    void OutputDeviceInfo();                     ///< outputs device inf
    void ListDeviceProperties();                 ///< outputs device properties
    void ListImageProperties();                  ///< outputs image properties
+   void ListenToEvents();                       ///< listens to events
    void EnsureReleaseControl();                 ///< ensures that remote release control is set
    void ReleaseShutter();                       ///< releases shutter
    void RunScript(const CString& cszFilename);  ///< runs Lua script

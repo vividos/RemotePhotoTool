@@ -36,6 +36,9 @@ AppOptions::AppOptions(std::vector<AppCommand>& vecCommandList)
    RegisterOption(_T("i"), _T("image-props"), _T("shows image properties"),
       0, std::bind(&AppOptions::OnAddSimpleCommand, this, AppCommand::deviceInfo));
 
+   RegisterOption(_T("e"), _T("listen-events"), _T("listens for events from camera and prints them"),
+      0, std::bind(&AppOptions::OnAddSimpleCommand, this, AppCommand::listenEvents));
+
    RegisterOption(_T("r"), _T("release"), _T("releases shutter"),
       0, std::bind(&AppOptions::OnAddSimpleCommand, this, AppCommand::releaseShutter));
 
@@ -53,6 +56,6 @@ bool AppOptions::OnAddCommandWithParam(AppCommand::T_enCommand enCommand, const 
 {
    ATLASSERT(vecParam.size() == 1);
 
-   m_vecCommandList.push_back(AppCommand(enCommand, vecParam[1]));
+   m_vecCommandList.push_back(AppCommand(enCommand, vecParam[0]));
    return true;
 }

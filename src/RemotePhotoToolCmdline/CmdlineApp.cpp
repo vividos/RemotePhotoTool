@@ -20,6 +20,7 @@
 #include "RemoteReleaseControl.hpp"
 #include "ShutterReleaseSettings.hpp"
 #include "..\version.h"
+#include <thread>
 
 CmdlineApp::CmdlineApp()
 {
@@ -75,6 +76,7 @@ void CmdlineApp::Exec(const AppCommand& cmd)
    case AppCommand::deviceInfo: OutputDeviceInfo(); break;
    case AppCommand::deviceProperties: ListDeviceProperties(); break;
    case AppCommand::imageProperties: ListImageProperties(); break;
+   case AppCommand::listenEvents: ListenToEvents(); break;
    case AppCommand::releaseShutter: ReleaseShutter(); break;
    case AppCommand::runScript: RunScript(cmd.m_cszData); break;
    default:
@@ -241,6 +243,57 @@ void CmdlineApp::ListImageProperties()
             ip.ValueAsString(ip2.Value()).GetString());
       }
    }
+}
+
+void CmdlineApp::ListenToEvents()
+{
+   _tprintf(_T("Listens for events from camera\n"));
+
+   EnsureReleaseControl();
+
+   int iPropertyEvent = m_spReleaseControl->AddPropertyEventHandler(
+      [&](RemoteReleaseControl::T_enPropertyEvent enPropertyEvent, unsigned int uiValue)
+   {
+      ImageProperty prop = m_spReleaseControl->GetImageProperty(uiValue);
+
+      _tprintf(_T("Property%s changed: Id=%04x Name=%s Value=%s\n"),
+         enPropertyEvent == RemoteReleaseControl::propEventPropertyChanged ? _T("") : _T(" desc."),
+         uiValue,
+         prop.Name().GetString(),
+         prop.AsString().GetString());
+   });
+
+   int iStateEvent = m_spReleaseControl->AddStateEventHandler(
+      [&](RemoteReleaseControl::T_enStateEvent enStateEvent, unsigned int uiValue)
+   {
+      _tprintf(_T("State changed: State=%s Value=%u\n"),
+         enStateEvent == RemoteReleaseControl::stateEventCameraShutdown ? _T("CameraShutdown") :
+         enStateEvent == RemoteReleaseControl::stateEventRotationAngle ? _T("RotationAngle") :
+         enStateEvent == RemoteReleaseControl::stateEventMemoryCardSlotOpen ? _T("MemoryCardSlotOpen") :
+         enStateEvent == RemoteReleaseControl::stateEventReleaseError ? _T("ReleaseError") :
+         enStateEvent == RemoteReleaseControl::stateEventBulbExposureTime ? _T("BulbExposureTime") :
+         enStateEvent == RemoteReleaseControl::stateEventInternalError ? _T("InternalError") :
+         _T("???"),
+         uiValue);
+   });
+
+   _tprintf(_T("Press any key to exit listening for events...\n\n"));
+
+   // wait for key and run OnIdle() in the meantime
+   Event evtStop(true, false);
+   std::thread idleThread([&evtStop]()
+   {
+      (void)fgetc(stdin);
+      evtStop.Set();
+   });
+
+   while (!evtStop.Wait(10))
+      Instance::OnIdle();
+
+   idleThread.join();
+
+   m_spReleaseControl->RemovePropertyEventHandler(iPropertyEvent);
+   m_spReleaseControl->RemoveStateEventHandler(iStateEvent);
 }
 
 void CmdlineApp::EnsureReleaseControl()
