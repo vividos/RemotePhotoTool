@@ -587,7 +587,7 @@ public:
 
    /// yields this thread and passes the given values to the caller.
    __declspec(noreturn)
-   void Yield(const std::vector<Value>& vecRetValues, T_fnYieldCallback fnYieldCallback = T_fnYieldCallback());
+   void Yield(State& localParamState, const std::vector<Value>& vecRetValues, T_fnYieldCallback fnYieldCallback = T_fnYieldCallback());
 
    /// returns thread Lua state
    lua_State* GetThreadState() { return m_threadState.GetState();  }

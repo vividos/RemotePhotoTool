@@ -1300,7 +1300,7 @@ std::pair<Thread::T_enThreadStatus, std::vector<Lua::Value>> Thread::Resume(cons
    return InternalResume(vecParam);
 }
 
-void Thread::Yield(const std::vector<Value>& vecRetValues, T_fnYieldCallback fnYieldCallback)
+void Thread::Yield(State& localParamState, const std::vector<Value>& vecRetValues, T_fnYieldCallback fnYieldCallback)
 {
    lua_State* L = m_threadState.GetState();
 
@@ -1309,6 +1309,10 @@ void Thread::Yield(const std::vector<Value>& vecRetValues, T_fnYieldCallback fnY
 
    std::for_each(vecRetValues.begin(), vecRetValues.end(),
       [&](const Value& value) { value.Push(m_threadState); value.Detach(); });
+
+   m_state.DetachAll();
+   m_threadState.DetachAll();
+   localParamState.DetachAll();
 
    lua_KContext context = 0;
    lua_KFunction func = nullptr;

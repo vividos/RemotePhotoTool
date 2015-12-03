@@ -194,7 +194,7 @@ std::vector<Lua::Value> SystemLuaBindings::ManualResetEvent::Wait(Lua::State& st
    RestartTimer(dwWaitTimeout);
 
    // yield until our wait handler resumes
-   m_scheduler.GetThread().Yield(std::vector<Lua::Value>(),
+   m_scheduler.GetThread().Yield(state, std::vector<Lua::Value>(),
       std::bind(&SystemLuaBindings::ManualResetEvent::Resume, shared_from_this(),
          std::placeholders::_1, std::placeholders::_2));
 }
