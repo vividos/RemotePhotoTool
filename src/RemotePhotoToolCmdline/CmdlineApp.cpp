@@ -126,13 +126,32 @@ void CmdlineApp::OpenByName(const CString& cszName)
    std::vector<std::shared_ptr<SourceInfo>> vecSourceDevices;
    inst.EnumerateDevices(vecSourceDevices);
 
-   // TODO support {x} notation
+   int iPosOpen = cszName.Find(_T('{'));
+   int iPosClose = cszName.Find(_T('}'), iPosOpen + 1);
+   if (iPosOpen != -1 && iPosClose != -1)
+   {
+      CString cszIndex = cszName.Mid(iPosOpen + 1, iPosClose - iPosOpen - 1);
+
+      size_t iIndex = _tcstoul(cszIndex, nullptr, 10);
+
+      if (iIndex >= vecSourceDevices.size())
+         throw Exception(_T("Invalid index for camera"), __FILE__, __LINE__);
+
+      std::shared_ptr<SourceInfo> spSourceInfo = vecSourceDevices[iIndex];
+
+      _tprintf(_T("Opening camera: %s\n"), spSourceInfo->Name().GetString());
+
+      m_spSourceDevice = spSourceInfo->Open();
+      return;
+   }
 
    for (size_t i=0,iMax=vecSourceDevices.size(); i<iMax; i++)
    {
       std::shared_ptr<SourceInfo> spSourceInfo = vecSourceDevices[i];
       if (spSourceInfo->Name() == cszName)
       {
+         _tprintf(_T("Opening camera: %s\n"), spSourceInfo->Name().GetString());
+
          m_spSourceDevice = spSourceInfo->Open();
          return;
       }
