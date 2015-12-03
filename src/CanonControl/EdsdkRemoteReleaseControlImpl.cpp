@@ -82,17 +82,17 @@ EdsError RemoteReleaseControlImpl::OnPropertyChange_(
    if (inPropertyID == 0x0000FFFF)
       inPropertyID = 0;
 
-   prrc->OnPropertyChange(inEvent, inPropertyID);
+   prrc->OnPropertyChange(inEvent, inPropertyID, inParam);
 
    return EDS_ERR_OK;
 }
 
-void RemoteReleaseControlImpl::OnPropertyChange(EdsPropertyEvent inEvent, EdsPropertyID inPropertyID) throw()
+void RemoteReleaseControlImpl::OnPropertyChange(EdsPropertyEvent inEvent, EdsPropertyID inPropertyID, EdsUInt32 inParam) throw()
 {
    try
    {
       PropertyAccess pa(m_hCamera);
-      Variant value = pa.Get(inPropertyID);
+      Variant value = pa.Get(inPropertyID, inParam);
 
       LOG_TRACE(
          inEvent == kEdsPropertyEvent_PropertyChanged ?
@@ -318,7 +318,7 @@ void RemoteReleaseControlImpl::AsyncSetImageProperty(const ImageProperty& imageP
 
    // it seems for the Zoom property no notification is sent
    if (imageProperty.Id() == kEdsPropID_Evf_Zoom)
-      OnPropertyChange(kEdsPropertyEvent_PropertyChanged, kEdsPropID_Evf_Zoom);
+      OnPropertyChange(kEdsPropertyEvent_PropertyChanged, kEdsPropID_Evf_Zoom, 0);
 }
 
 std::shared_ptr<Viewfinder> RemoteReleaseControlImpl::StartViewfinder() const

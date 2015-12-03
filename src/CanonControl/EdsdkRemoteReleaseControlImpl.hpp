@@ -42,7 +42,7 @@ public:
       EdsVoid* inContext) throw();
 
    /// called on property changes
-   void OnPropertyChange(EdsPropertyEvent inEvent, EdsPropertyID inPropertyID) throw();
+   void OnPropertyChange(EdsPropertyEvent inEvent, EdsPropertyID inPropertyID, EdsUInt32 inParam) throw();
 
    /// callback function for state changes
    static EdsError EDSCALLBACK OnStateChange_(EdsStateEvent inEvent, EdsUInt32 inEventData, EdsVoid *inContext) throw();
