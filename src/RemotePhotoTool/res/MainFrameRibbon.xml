@@ -147,13 +147,13 @@
             <Button CommandName="phototool_HOME_SETTINGS"/>
           </Group>
 
-          <Group CommandName="GroupPhotoModes" SizeDefinition="NineButtons">
+          <Group CommandName="GroupPhotoModes" SizeDefinition="SevenButtons">
             <Button CommandName="phototool_PHOTO_MODE_NORMAL"/>
             <Button CommandName="phototool_PHOTO_MODE_HDR"/>
             <Button CommandName="phototool_PHOTO_MODE_PANO" />
             <Button CommandName="phototool_PHOTO_MODE_HDR_PANO" />
-            <Button CommandName="phototool_PHOTO_MODE_TIMELAPSE" />
-            <Button CommandName="phototool_PHOTO_MODE_PHOTOSTACK" />
+            <!-- Button CommandName="phototool_PHOTO_MODE_TIMELAPSE" />
+            <Button CommandName="phototool_PHOTO_MODE_PHOTOSTACK" / -->
             <Button CommandName="phototool_PHOTO_MODE_SCRIPTING" />
             <Button CommandName="phototool_PHOTO_MODE_DEVICE_PROPERTIES" />
             <Button CommandName="phototool_PHOTO_MODE_IMAGE_PROPERTIES" />

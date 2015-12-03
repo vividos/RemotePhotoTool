@@ -579,7 +579,11 @@ void MainFrame::SetupRibbonBar()
       CRibbonPersist(c_pszSettingsRegkey).Restore(bRibbonUI, m_hgRibbonSettings);
    }
    else
-      CMenuHandle(m_CmdBar.GetMenu()).DeleteMenu(ID_VIEW_RIBBON, MF_BYCOMMAND);
+      m_CmdBar.GetMenu().DeleteMenu(ID_VIEW_RIBBON, MF_BYCOMMAND);
+
+   // remove photo modes that aren't implemented yet
+   m_CmdBar.GetMenu().DeleteMenu(ID_PHOTO_MODE_TIMELAPSE, MF_BYCOMMAND);
+   m_CmdBar.GetMenu().DeleteMenu(ID_PHOTO_MODE_PHOTOSTACK, MF_BYCOMMAND);
 }
 
 /// sets button text for toolbar button
@@ -624,6 +628,10 @@ void MainFrame::SetupToolbar()
 
       //SetToolbarButtonText(tb, ID_HOME_CONNECT, _T("Connect"));
       //SetToolbarButtonText(tb, ID_HOME_SETTINGS, _T("Settings"));
+
+      // remove photo modes that aren't implemented yet
+      tb.HideButton(ID_PHOTO_MODE_TIMELAPSE);
+      tb.HideButton(ID_PHOTO_MODE_PHOTOSTACK);
    }
 }
 
