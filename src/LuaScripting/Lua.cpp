@@ -519,7 +519,16 @@ int FuncData::OnFunctionCall(lua_State* L)
    State::TraceUpvalues(L);
 
    // call bound function
-   std::vector<Value> vecRetVals = data.m_fn(paramState, vecParams);
+   std::vector<Value> vecRetVals;
+   try
+   {
+      vecRetVals = data.m_fn(paramState, vecParams);
+   }
+   catch (...)
+   {
+      // in case of exceptions, detach all values from parameter state
+      paramState.DetachAll();
+   }
 
    // put results on stack
    std::for_each(vecRetVals.begin(), vecRetVals.end(),
