@@ -16,7 +16,7 @@ EDSDK
 -----
 implement UI lock
 on protocol 0 cameras, lock UI when getting/setting property
-support custom function numbers through kEdsPropID_CFn, e.g. mirror lockup
+support custom function numbers through kEdsPropID_CFn, e.g. mirror lockup (inParam=0x060f)
 
 CDSDK
 -----
@@ -24,19 +24,25 @@ Test cameras
 implement formatting all properties
 implement TODOs from source files
 
+Lua scripting
+-------------
+Implement a way to close remote control from script
+Implement waiting for property events
+Viewfinder callback, pass actual viewfinder table
+
 RemotePhotoTool
 ---------------
+Ribbon icons for Viewfinder and Camera contextual tab
+Previous Images browser: back button active
+Previous Images browser: scan folder for images, on startup
 Nice toolbar icons
-implement HDR pano photo view
 implement timelapse shooting, video output
 implement photo stacking, focus stacking, CombineZP
 implement view finder stage 2: battery, number of remaining shots, auto rotate, image format
 implement view finder stage 3: half transparent background image, histogram
-implement previous images browser
 Write manual
 Multi-camera photo view
 Image Property view: change values using editbox or combobox
-Add "last transferred image" view
 Add Bulb mode shooting when supported
 Add multi-language support
 Real tablet mode: big combobox fonts, scaling dialogs according to system settings, etc.
@@ -48,12 +54,9 @@ Add photo mode with motion detection using viewfinder to take photos (e.g. for w
 
 RemotePhotoToolCmdline
 ----------------------
-implement opening by index, {0}
 fix crashes in EDSDK: call EdsGetEvent() often
 add checking for unknown device and image properties
 add listing remote shooting capabilities
-use crash reporter
-release first version
 
 RemoteScriptingEditor
 ---------------------
