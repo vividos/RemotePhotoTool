@@ -79,8 +79,9 @@
     <Command Name="GroupPreviousImagesExit" Symbol="ID_GROUP_PREV_IMAGES_EXIT" LabelTitle="Exit" />
     <Command Name="GroupPreviousImagesNavigation" Symbol="ID_GROUP_PREV_IMAGES_NAVIGATION" LabelTitle="Navigation" />
     <Command Name="GroupPreviousImagesActions" Symbol="ID_GROUP_PREV_IMAGES_ACTIONS" LabelTitle="Actions" />
-    <Command Name="GroupCameraRelease" Symbol="ID_GROUP_RELEASE" LabelTitle="Release" />
-    <Command Name="GroupCameraSettings" Symbol="ID_GROUP_CAMERA_SETTINGS" LabelTitle="Settings" />
+    <Command Name="GroupCameraActions" Symbol="ID_GROUP_CAMERA_ACTIONS" LabelTitle="Actions" />
+    <Command Name="GroupCameraShootingSettings" Symbol="ID_GROUP_CAMERA_SHOOTING_SETTINGS" LabelTitle="Shooting settings" />
+    <Command Name="GroupCameraMiscSettings" Symbol="ID_GROUP_CAMERA_MISC_SETTINGS" LabelTitle="Misc. settings" />
     <Command Name="GroupViewfinderViewfinder" Symbol="ID_GROUP_VIEWFINDER_VIEWFINDER" LabelTitle="Viewfinder" />
     <Command Name="GroupViewfinderAdjust" Symbol="ID_GROUP_VIEWFINDER_ADJUST" LabelTitle="Adjust" />
     <Command Name="GroupViewfinderZoom" Symbol="ID_GROUP_VIEWFINDER_ZOOM" LabelTitle="Zoom" />
@@ -198,10 +199,11 @@
         <!-- Contextual tab "Camera" -->
         <TabGroup CommandName="TabGroupContextCamera">
           <Tab CommandName="TabContextCamera">
-            <Group CommandName="GroupCameraRelease" SizeDefinition="OneButton">
+            <Group CommandName="GroupCameraActions" SizeDefinition="OneButton">
               <Button CommandName="phototool_CAMERA_RELEASE"/>
             </Group>
-            <Group CommandName="GroupCameraSettings">
+            
+            <Group CommandName="GroupCameraShootingSettings">
               <ComboBox CommandName="phototool_CAMERA_SHOOTING_MODE" />
               <ComboBox CommandName="phototool_CAMERA_SETTINGS_AV" />
               <ComboBox CommandName="phototool_CAMERA_SETTINGS_TV" />
@@ -209,8 +211,7 @@
               <ComboBox CommandName="phototool_CAMERA_SETTINGS_ISO" />
             </Group>
 
-            <Group CommandName="GroupCameraSettings" SizeDefinition="OneButton">
-
+            <Group CommandName="GroupCameraMiscSettings" SizeDefinition="OneButton">
               <DropDownGallery CommandName="phototool_CAMERA_SETTINGS_SAVETO"
                                HasLargeItems="false"
                                TextPosition="Right">
@@ -221,13 +222,7 @@
                 </DropDownGallery.MenuLayout>
               </DropDownGallery>
 
-              <!-- Button CommandName="phototool_CAMERA_SHOOTING_MODE"/>
-              <Button CommandName="phototool_CAMERA_SETTINGS_AV"/>
-              <Button CommandName="phototool_CAMERA_SETTINGS_TV"/>
-              <Button CommandName="phototool_CAMERA_SETTINGS_EXPOSURE"/>
-              <Button CommandName="phototool_CAMERA_SETTINGS_ISO"/>
-              <Button CommandName="phototool_CAMERA_SETTINGS_SAVETO"/>
-              <Button CommandName="phototool_CAMERA_SETTINGS_IMAGE_FORMAT"/ -->
+              <!-- Button CommandName="phototool_CAMERA_SETTINGS_IMAGE_FORMAT"/ -->
             </Group>
           </Tab>
         </TabGroup>
