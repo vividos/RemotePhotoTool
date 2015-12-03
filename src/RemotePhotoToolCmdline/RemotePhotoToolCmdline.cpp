@@ -89,8 +89,19 @@ void ListRemoteCapabilities(std::shared_ptr<RemoteReleaseControl> spReleaseContr
 /// command line app main function
 int _tmain(int argc, _TCHAR* argv[])
 {
-   CmdlineApp app;
-   app.Run(argc, argv);
+   try
+   {
+      CmdlineApp::InitCrashReporter();
 
-   return 0;
+      CmdlineApp app;
+      app.Run(argc, argv);
+
+      return 0;
+   }
+   catch (...)
+   {
+      // exception while running
+      _tprintf(_T("Exception while running RemotePhotoToolCmdLine\n"));
+      return -1;
+   }
 }

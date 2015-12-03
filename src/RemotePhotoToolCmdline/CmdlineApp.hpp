@@ -21,6 +21,9 @@ public:
    /// ctor
    CmdlineApp();
 
+   /// inits crash reporter
+   static void InitCrashReporter();
+
    /// runs command line
    void Run(int argc, TCHAR* argv[]);
 

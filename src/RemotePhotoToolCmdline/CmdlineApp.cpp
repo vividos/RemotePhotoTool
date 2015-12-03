@@ -19,6 +19,8 @@
 #include "SourceDevice.hpp"
 #include "RemoteReleaseControl.hpp"
 #include "ShutterReleaseSettings.hpp"
+#include "Filesystem.hpp"
+#include "CrashReporter.hpp"
 #include "..\version.h"
 #include <thread>
 
@@ -27,6 +29,21 @@ CmdlineApp::CmdlineApp()
    _tprintf(_T("RemotePhotoTool Command-Line %s\n%s\n\n"),
       _T(VERSIONINFO_FILEVERSION_DISPLAYSTRING),
       _T(VERSIONINFO_COPYRIGHT));
+}
+
+void CmdlineApp::InitCrashReporter()
+{
+   CString cszFolder = App_GetAppDataFolder(appDataUserNonRoaming) + _T("\\RemotePhotoToolCmdline\\");
+
+   if (!Directory_Exists(cszFolder))
+      CreateDirectory(cszFolder, NULL);
+
+   cszFolder += _T("crashdumps\\");
+
+   if (!Directory_Exists(cszFolder))
+      CreateDirectory(cszFolder, NULL);
+
+   CrashReporter::Init(cszFolder);
 }
 
 void CmdlineApp::Run(int argc, TCHAR* argv[])
