@@ -836,7 +836,7 @@ namespace LuaScriptingUnitTest
          Lua::Thread thread(state);
 
          // define a function to call back
-         Lua::T_fnCFunction fn = [&thread](Lua::State&, const std::vector<Lua::Value>& vecParams) -> std::vector<Lua::Value>
+         Lua::T_fnCFunction fn = [&thread](Lua::State& paramState, const std::vector<Lua::Value>& vecParams) -> std::vector<Lua::Value>
          {
             if (vecParams.size() != 1)
                throw std::runtime_error("must have passed exactly 1 value");
@@ -860,7 +860,7 @@ namespace LuaScriptingUnitTest
                return vecRetValues;
             };
 
-            thread.Yield(vecYieldParams, continuation);
+            thread.Yield(paramState, vecYieldParams, continuation);
          };
 
          state.AddFunction(_T("run"), fn);
