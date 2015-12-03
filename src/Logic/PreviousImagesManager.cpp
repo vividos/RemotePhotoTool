@@ -247,7 +247,7 @@ void PreviousImagesManager::AnalyzeImage(std::shared_ptr<PreviousImageInfo> spPr
    {
       Exif::Entry entry = c.GetEntry(c_aReadTags[i]);
 
-      CString cszText = entry.GetValue();
+      CString cszText = entry.GetDisplayValue();
 
       PreviousImageInfo::T_enImageInfoType enImageInfoType =
          static_cast<PreviousImageInfo::T_enImageInfoType>(i);

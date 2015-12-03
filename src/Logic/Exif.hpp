@@ -13,6 +13,7 @@
 #include <vector>
 #include <libexif/exif-data.h>
 #include <libexif/exif-loader.h>
+#include <atltime.h>
 
 /// \brief Exif data access
 namespace Exif
@@ -114,6 +115,32 @@ public:
       return CString(cszaValue);
    }
 
+   /// Returns a nicely formatted string, depending on the entry tag and
+   /// format. When the tag isn't known, the function returns the same as
+   /// GetValue().
+   CString GetDisplayValue() const
+   {
+      switch (Tag())
+      {
+      case EXIF_TAG_ISO_SPEED_RATINGS:
+         return FormatIsoSpeed();
+
+      case EXIF_TAG_FOCAL_LENGTH:
+         return FormatFocalLength();
+
+      case EXIF_TAG_FLASH:
+         return FormatFlash();
+
+      case EXIF_TAG_DATE_TIME_ORIGINAL:
+         return FormatDateTimeOriginal();
+
+      default:
+         break;
+      }
+
+      return GetValue();
+   }
+
    /// returns data in ascii format
    CString GetAscii() const
    {
@@ -203,6 +230,75 @@ protected:
       :m_spEntry(p, exif_entry_unref)
    {
       exif_entry_ref(p);
+   }
+
+private:
+   /// Formats ISO speed
+   CString FormatIsoSpeed() const
+   {
+      if (EXIF_FORMAT_SHORT != Format())
+         return GetValue();
+
+      ExifShort shortValue = GetShort();
+
+      CString cszText;
+      cszText.Format(_T("ISO %u"), unsigned(shortValue));
+
+      return cszText;
+   }
+
+   /// Formats focal length
+   CString FormatFocalLength() const
+   {
+      if (EXIF_FORMAT_RATIONAL != Format())
+         return GetValue();
+
+      ExifRational rational = GetRational(0);
+
+      CString cszText;
+      cszText.Format(_T("%3.1f mm"), double(rational.numerator) / rational.denominator);
+
+      return cszText;
+   }
+
+   /// Formats info about flash fired
+   CString FormatFlash() const
+   {
+      if (EXIF_FORMAT_SHORT != Format())
+         return GetValue();
+
+      ExifShort shortValue = GetShort();
+
+      // see http://www.awaresystems.be/imaging/tiff/tifftags/privateifd/exif/flash.html
+      return (shortValue & 1) == 0 ? _T("No flash") : _T("Flash");
+   }
+
+   /// Formats date/time of original image
+   CString FormatDateTimeOriginal() const
+   {
+      if (EXIF_FORMAT_ASCII != Format())
+         return GetValue();
+
+      CString cszText = GetAscii();
+
+      // parse date/time, format: "2007:02:17 11:00:58"
+      ATL::CTime dateTime(
+         static_cast<unsigned int>(_tcstoul(cszText.Left(4), NULL, 10)),
+         static_cast<unsigned int>(_tcstoul(cszText.Mid(5, 2), NULL, 10)),
+         static_cast<unsigned int>(_tcstoul(cszText.Mid(8, 2), NULL, 10)),
+         static_cast<unsigned int>(_tcstoul(cszText.Mid(11, 2), NULL, 10)),
+         static_cast<unsigned int>(_tcstoul(cszText.Mid(14, 2), NULL, 10)),
+         static_cast<unsigned int>(_tcstoul(cszText.Mid(17, 2), NULL, 10)));
+
+      cszText.Format(_T("%04u-%02u-%02u %02u:%02u:%02u"),
+         dateTime.GetYear(),
+         dateTime.GetMonth(),
+         dateTime.GetDay(),
+         dateTime.GetHour(),
+         dateTime.GetMinute(),
+         dateTime.GetSecond());
+
+      return cszText;
    }
 
 private:
