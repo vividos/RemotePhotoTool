@@ -8,6 +8,9 @@
 -- scripting engine when starting the script.
 App = {
 
+	-- event that is set when transferring image has finished
+	eventFinishedTransfer = nil;
+
 	-- entry point function
 	run = function(self)
 
@@ -56,17 +59,45 @@ App = {
 
 		print("Taking an image ...\n");
 
-		-- TODO register a download handler
-		-- TODO set release settings
+		self.setReleaseSettings(remoteReleaseControl);
+
+		self.eventFinishedTransfer = Sys:createEvent();
 
 		-- auto focus on current view
 		remoteReleaseControl:sendCommand(Constants.RemoteReleaseControl.commandAdjustFocus);
 
 		remoteReleaseControl:release();
 
-		-- TODO wait for photo to be downloaded
+		-- wait for photo to be downloaded
+		self.eventFinishedTransfer:wait(10.0);
 
 		print("Finished.\n");
+
+	end;
+
+	-- sets new release settings
+	setReleaseSettings = function(remoteReleaseControl)
+
+		-- set release settings
+		local releaseSettings = remoteReleaseControl:getReleaseSettings();
+
+		releaseSettings.saveTarget = Constants.RemoteReleaseControl.saveToHost;
+
+		local randomName = math.random(1, 9999);
+		releaseSettings.outputFilename = "images/IMG_" .. randomName .. ".jpg";
+
+		releaseSettings.onFinishedTransfer = App.onFinishedTransfer;
+
+		remoteReleaseControl:setReleaseSettings(releaseSettings);
+
+	end;
+
+	-- called when transfer of an image has finished
+	onFinishedTransfer = function(releaseSettings)
+
+		print("Received image: " .. releaseSettings.outputFilename .. "\n");
+
+		App.eventFinishedTransfer.signal();
 
 	end;
 }
