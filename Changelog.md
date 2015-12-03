@@ -5,9 +5,29 @@ the git sourcecode repository at [https://github.com/vividos/RemotePhotoTool](ht
 
 ## 2015-xx-xx: Version 1.4.0 Build 119 ##
 
-RemotePhotoTool is now built with Visual Studio Community 2015.
+Implemented the Lua Scripting Photo Mode. This photo mode lets you load a script written in the
+programming language Lua. The script can be run on the host PC to remote control the camera by
+accessing camera functions and waiting for camera events. A whole API to access the camera is
+implemented. For more infos, including an introduction and an API cross reference, see the
+document [https://github.com/vividos/RemotePhotoTool/blob/master/LuaScripting.md](https://github.com/vividos/RemotePhotoTool/blob/master/LuaScripting.md "LuaScripting.md")
 
-Implemented the "Previous images" view that shows all images taken with RemotePhotoTool.
+Implemented the "Previous images" view that shows all images taken with RemotePhotoTool. The view
+is accessible even when no camera is connected. It shows only the images taken in the current
+program session.
+
+Redesigned the user interface to use the ribbon more:
+
+- When a camera is connected, the Camera contextual ribbon tab is available. It lets the user
+  start a shutter release and adjust various camera settings, such as shooting mode, aperture,
+  save-to location and more.
+- When scripting photo mode is selected, the Scripting contextual ribbon tab is available. It lets
+  the user open Lua scripts, start and stop running scripts, and switch to the standalone
+  scripting editor RemoteScriptingEditor.exe.
+- When live viewfinder is active, the Viewfinder contextual ribbon tab is available. It lets the
+  user start auto focus and auto white balance, zoom in/out, select a lines mode and toggle
+  showing overexposed areas in the live viewfinder.
+
+RemotePhotoTool is now built with Visual Studio Community 2015.
 
 ## 2014-11-22: Version 1.3.0 Build 118 ##
 
