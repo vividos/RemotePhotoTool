@@ -408,7 +408,6 @@ void MainFrame::SetupRibbonBar()
    {
       UIAddMenu(m_CmdBar.GetMenu(), true);
 
-      // causes memory leak, so it should be commented out; see https://sourceforge.net/p/wtl/bugs/271/
       UIRemoveUpdateElement(ID_FILE_MRU_FIRST);
 
       CRibbonPersist(c_pszSettingsRegkey).Restore(bRibbonUI, m_hgRibbonSettings);
