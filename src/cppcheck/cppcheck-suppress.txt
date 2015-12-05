@@ -1,8 +1,9 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2015 Michael Fink
 //
 // this file lists all cppcheck warnings that will be suppressed
 //
 
 unusedStructMember:..\CanonControl\EdsdkPropertyAccess.cpp
+noExplicitConstructor:*
