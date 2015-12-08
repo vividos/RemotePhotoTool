@@ -87,7 +87,7 @@ LRESULT ViewFinderImageWindow::OnMessageViewfinderAvailImage(UINT /*uMsg*/, WPAR
 {
    CBitmapHandle bmp;
 
-   CreateBitmap(bmp);
+   ReadBitmap(bmp);
    SetBitmap(bmp);
 
    // invalidate control to force redraw
@@ -173,7 +173,7 @@ void ViewFinderImageWindow::MakeOverexposedTransparent(std::vector<BYTE>& vecBit
    vecBitmapData.swap(vecTransparentBitmapData);
 }
 
-void ViewFinderImageWindow::CreateBitmap(CBitmapHandle& bmp)
+void ViewFinderImageWindow::ReadBitmap(CBitmapHandle& bmp)
 {
    BITMAPINFO bi = {0};
 

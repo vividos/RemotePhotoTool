@@ -75,7 +75,7 @@ private:
    void MakeOverexposedTransparent(std::vector<BYTE>& vecBitmapData);
 
    /// creates bitmap from viewfinder data
-   void CreateBitmap(CBitmapHandle& bmp);
+   void ReadBitmap(CBitmapHandle& bmp);
 
    /// sets new bitmap
    void SetBitmap(CBitmapHandle bmpViewfinder);
