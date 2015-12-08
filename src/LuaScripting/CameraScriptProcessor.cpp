@@ -130,6 +130,7 @@ public:
    }
 
 private:
+   /// initializes built-in libs
    void InitBuiltinLibs()
    {
       Lua::State& state = GetState();
@@ -149,6 +150,7 @@ private:
       // os (can interact with file system, start external programs)
    }
 
+   /// initializes global functions
    void InitGlobalFunctions()
    {
       // global print() function
@@ -156,6 +158,7 @@ private:
          std::bind(&Impl::Print, shared_from_this(), std::placeholders::_1, std::placeholders::_2));
    }
 
+   /// inits extra bindings stored in other classes
    void InitExtraBindings()
    {
       Lua::State& state = GetState();

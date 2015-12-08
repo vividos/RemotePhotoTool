@@ -49,6 +49,7 @@ private:
 
    // virtual methods from CIdleHandler
 
+   /// called to update controls when idle
    virtual BOOL OnIdle() override;
 
 private:

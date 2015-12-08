@@ -15,6 +15,7 @@
 
 using namespace Lua;
 
+/// list of libraries that can be loaded using Lua::State::RequireLib()
 static const luaL_Reg loadedlibs[] = {
    { "_G", luaopen_base },
    { LUA_LOADLIBNAME, luaopen_package },
@@ -1069,6 +1070,7 @@ void State::TraceUpvalues(lua_State* L)
    ATLTRACE(_T("End tracing upvalues.\n"));
 }
 
+/// enumerates all keys of a table and returns it as space delimited string
 CString EnumTableIndices(lua_State* L, int iIndex)
 {
    StackChecker checker(L);

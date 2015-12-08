@@ -167,6 +167,7 @@ std::vector<Lua::Value> SystemLuaBindings::ManualResetEvent::Reset(Lua::State& s
 /// method and report the result. So basically we "poll" the event if it is set yet.
 /// This isn't really efficient, but the alternative would be to start another thread that
 /// waits for the event.
+/// \param[in] state the Lua state
 /// \param[in] vecParams Lua params; [0] is the event table, and [1] (optional) is a
 /// timeout value, in seconds, to wait. If not specified, the wait is infinite.
 std::vector<Lua::Value> SystemLuaBindings::ManualResetEvent::Wait(Lua::State& state,

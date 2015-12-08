@@ -36,6 +36,7 @@ private:
    /// returns Lua state object
    Lua::State& GetState() throw();
 
+   /// cleans up all system bindings
    void CleanupBindings();
 
    // Sys functions
