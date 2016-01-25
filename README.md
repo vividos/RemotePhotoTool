@@ -29,6 +29,6 @@ Read the credits acknowledgement in this file: [Credits.md](Credits.md)
 Read the Changelog file: [Changelog.md](Changelog.md)
 
 The project is being scanned with Coverity scanner. See the project status here:
-[https://scan.coverity.com/projects/2058](https://scan.coverity.com/projects/2058 "https://scan.coverity.com/projects/2058")
+[https://scan.coverity.com/projects/vividos-remotephototool](https://scan.coverity.com/projects/vividos-remotephototool)
 
 ![Coverity Scan Build Status](https://scan.coverity.com/projects/2058/badge.svg)

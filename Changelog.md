@@ -57,7 +57,7 @@ versions.
 
 All source code was checked with [Coverity](http://www.coverity.com/)'s source code checker. All
 found issues were subsequently fixed. Here's the link to the scan project:
-[https://scan.coverity.com/projects/2058](https://scan.coverity.com/projects/2058).
+[https://scan.coverity.com/projects/vividos-remotephototool](https://scan.coverity.com/projects/vividos-remotephototool).
 
 ## 2014-04-11: Version 1.2.0 Build 114 ##
 
