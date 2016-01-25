@@ -9,15 +9,6 @@
 // needed includes
 #include "Atl.hpp"
 
-// min and max macros are used in atlcom.h, etc., so temporarily define them here
-#ifndef min
-#  define min(x,y) (x) < (y) ? (x) : (y) ///< temporary define of min()
-#endif
-
-#ifndef max
-#  define max(x,y) (x) > (y) ? (x) : (y) ///< temporary define of min()
-#endif
-
 // ignore /analyze warnings in WTL header files
 #pragma warning(push)
 #pragma warning(disable: 6001 6011 6031 6387)
@@ -42,10 +33,6 @@ extern CAppModule _Module; ///< app module
 #endif
 
 #pragma warning(pop)
-
-// undef the macros so that std::min and std::max work as they should be
-#undef min
-#undef max
 
 // add manifest for common controls 6
 #if defined _M_IX86

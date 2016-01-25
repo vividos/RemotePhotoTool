@@ -16,6 +16,15 @@
 // no min-max macros, we use std::min / std::max instead
 #define NOMINMAX
 
+// min and max macros are used in atlcom.h, etc., so temporarily define them here
+#ifndef min
+#  define min(x,y) (x) < (y) ? (x) : (y) ///< temporary define of min()
+#endif
+
+#ifndef max
+#  define max(x,y) (x) > (y) ? (x) : (y) ///< temporary define of min()
+#endif
+
 // ATL includes
 #include <atlbase.h>
 #include <atlstr.h>
@@ -30,3 +39,7 @@
 
 // for _stdcallthunk
 #include <atlstdthunk.h>
+
+// undef the macros so that std::min and std::max work as they should be
+#undef min
+#undef max
