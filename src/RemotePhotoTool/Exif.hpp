@@ -9,6 +9,7 @@
 // includes
 #include <memory>
 #include <functional>
+#include <algorithm>
 #include <vector>
 #include <libexif/exif-data.h>
 #include <libexif/exif-loader.h>
