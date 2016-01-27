@@ -221,6 +221,9 @@
       <Project>{ce953b34-5513-4719-aead-a61f0585ab34}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
+    <ProjectReference Include="..\Logic\Logic.vcxproj">
+      <Project>{40627961-fc2d-4f09-8e74-073a0279a98a}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\LuaScripting\LuaScripting.vcxproj">
       <Project>{41b565f7-f668-4425-a93d-6cabc18f6d1f}</Project>
     </ProjectReference>
