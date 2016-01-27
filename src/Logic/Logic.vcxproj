@@ -74,9 +74,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ImageFileInfo.hpp" />
+    <ClInclude Include="ImageType.hpp" />
+    <ClInclude Include="ImageTypeFilesList.hpp" />
+    <ClInclude Include="ImageTypeScanner.hpp" />
+    <ClInclude Include="ImageTypeScannerOptions.hpp" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ImageTypeScanner.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
