@@ -79,6 +79,12 @@ public:
       exif_entry_initialize(m_spEntry.get(), tag);
    }
 
+   /// returns if given entry is valid
+   bool IsValid() const throw()
+   {
+      return m_spEntry != nullptr;
+   }
+
    /// returns tag value
    ExifTag Tag() const
    {
@@ -426,6 +432,15 @@ public:
    void LoadFile(const CString& cszFilename)
    {
       exif_loader_write_file(m_spLoader.get(), CStringA(cszFilename));
+   }
+
+   /// returns if file was loaded correctly
+   bool IsValid() const throw()
+   {
+      ExifData* pData = exif_loader_get_data(m_spLoader.get());
+      exif_data_unref(pData);
+
+      return pData != nullptr;
    }
 
    /// returns the data element after file was loaded
