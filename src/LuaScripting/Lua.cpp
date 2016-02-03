@@ -181,13 +181,13 @@ Value::Value(int iValue)
 }
 
 Value::Value(const CString& cszText)
-   :m_value(CStringA(cszText).GetString()),
+   :m_value(CStringA(cszText)),
    m_enType(typeString)
 {
 }
 
 Value::Value(LPCSTR pszText)
-   :m_value(pszText),
+   :m_value(CStringA(pszText)),
    m_enType(typeString)
 {
 }
@@ -280,7 +280,7 @@ void Value::Push(State& state) const
       break;
 
    case typeString:
-      lua_pushstring(L, CStringA(boost::any_cast<LPCSTR>(m_value)));
+      lua_pushstring(L, boost::any_cast<CStringA>(m_value));
       Attach(std::make_shared<Ref>(state, -1));
       break;
 

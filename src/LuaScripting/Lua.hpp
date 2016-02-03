@@ -233,7 +233,7 @@ public:
    template <>
    CString Get() const
    {
-      return CString(boost::any_cast<LPCSTR>(m_value));
+      return CString(boost::any_cast<CStringA>(m_value));
    }
 
    /// returns ref object
