@@ -529,6 +529,7 @@ int FuncData::OnFunctionCall(lua_State* L)
    {
       // in case of exceptions, detach all values from parameter state
       paramState.DetachAll();
+      throw;
    }
 
    // put results on stack
