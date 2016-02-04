@@ -186,7 +186,7 @@ std::vector<Lua::Value> SystemLuaBindings::ManualResetEvent::Wait(Lua::State& pa
    DWORD dwWaitTimeout = INFINITE;
    if (vecParams.size() == 2)
    {
-      dwWaitTimeout = GetTickCount() + static_cast<DWORD>(vecParams[1].Get<int>() * 1000);
+      dwWaitTimeout = GetTickCount() + static_cast<DWORD>(vecParams[1].Get<double>() * 1000.0);
       if (dwWaitTimeout == INFINITE)
          dwWaitTimeout++; // account for accidentally adding up to INFINITE after 49 days
    }
