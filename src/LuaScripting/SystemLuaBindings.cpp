@@ -167,13 +167,13 @@ std::vector<Lua::Value> SystemLuaBindings::ManualResetEvent::Reset(Lua::State& s
 /// method and report the result. So basically we "poll" the event if it is set yet.
 /// This isn't really efficient, but the alternative would be to start another thread that
 /// waits for the event.
-/// \param[in] state the Lua state
+/// \param[in] paramState the Lua state for parameters to this function
 /// \param[in] vecParams Lua params; [0] is the event table, and [1] (optional) is a
 /// timeout value, in seconds, to wait. If not specified, the wait is infinite.
-std::vector<Lua::Value> SystemLuaBindings::ManualResetEvent::Wait(Lua::State& state,
+std::vector<Lua::Value> SystemLuaBindings::ManualResetEvent::Wait(Lua::State& paramState,
    const std::vector<Lua::Value>& vecParams)
 {
-   lua_State* L = state.GetState();
+   lua_State* L = paramState.GetState();
 
    if (vecParams.size() != 1 && vecParams.size() != 2)
       throw Lua::Exception(_T("invalid number of parameters to Event:wait()"), L, __FILE__, __LINE__);
@@ -195,7 +195,7 @@ std::vector<Lua::Value> SystemLuaBindings::ManualResetEvent::Wait(Lua::State& st
    RestartTimer(dwWaitTimeout);
 
    // yield until our wait handler resumes
-   m_scheduler.GetThread().Yield(state, std::vector<Lua::Value>(),
+   m_scheduler.GetThread().Yield(paramState, std::vector<Lua::Value>(),
       std::bind(&SystemLuaBindings::ManualResetEvent::Resume, shared_from_this(),
          std::placeholders::_1, std::placeholders::_2));
 }
