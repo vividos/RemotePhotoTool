@@ -54,6 +54,7 @@ namespace LuaScriptingUnitTest
       /// tests running script multiple times
       TEST_METHOD(TestRunningMultipleTimes)
       {
+         // set up
          CameraScriptProcessor csp;
 
          Event evtWaitIdle(true, false); // manual-reset
@@ -63,6 +64,7 @@ namespace LuaScriptingUnitTest
                evtWaitIdle.Set();
          });
 
+         // run / check
          for (int i = 0; i < 100; i++)
          {
             csp.LoadSourceString(_T("App = { run = function() print(\"no-op\") end; }"));
@@ -75,6 +77,9 @@ namespace LuaScriptingUnitTest
 
             csp.Stop();
          }
+
+         // cleanup
+         csp.GetScheduler().SetExecutionStateChangedHandler(nullptr);
       }
    };
 }
