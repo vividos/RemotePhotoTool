@@ -759,7 +759,7 @@ std::vector<Value> Table::CallFunction(const CString& cszName,
 
    // then params
    std::for_each(vecParam.begin(), vecParam.end(),
-      [&](const Value& value) { value.Push(state); value.Detach();  });
+      [&](const Value& value) { value.Push(state); value.Detach(); });
 
    try
    {
@@ -1230,6 +1230,8 @@ void State::DetachAll()
    {
       spRef->Detach();
    });
+
+   m_vecRefsOnStack.clear();
 }
 
 //
@@ -1319,13 +1321,22 @@ void Thread::Yield(State& localParamState, const std::vector<Value>& vecRetValue
    if (!lua_isyieldable(L))
       throw Lua::Exception(_T("Lua thread isn't yieldable"), L, __FILE__, __LINE__);
 
+   // determine last stack value we don't use
+   int iIndexLastValue = lua_gettop(L);
+
    std::for_each(vecRetValues.begin(), vecRetValues.end(),
       [&](const Value& value) { value.Push(m_threadState); value.Detach(); });
 
    m_state.DetachAll();
    m_threadState.DetachAll();
+
+   // remove all values below our parameters
+   for (int iIndex = iIndexLastValue; iIndex >= 1; iIndex--)
+      lua_remove(m_threadState.GetState(), iIndex);
+
    localParamState.DetachAll();
 
+   // call yield
    lua_KContext context = 0;
    lua_KFunction func = nullptr;
 
@@ -1335,20 +1346,21 @@ void Thread::Yield(State& localParamState, const std::vector<Value>& vecRetValue
       func = &Thread::InternalYield;
    }
 
-   // bug? lua_yieldk only returns n-1 values to lua_resume, so add one
-   lua_yieldk(L, vecRetValues.size() + 1, context, func);
+   lua_yieldk(L, vecRetValues.size(), context, func);
 
    throw Lua::Exception(_T("Yield() continued after calling lua_yieldk"), L, __FILE__, __LINE__);
 }
 
 std::pair<Thread::T_enThreadStatus, std::vector<Lua::Value>> Thread::InternalResume(const std::vector<Lua::Value>& vecParam)
 {
+   bool startThread = Status() != statusYield;
+
    // L is the thread stack here
    lua_State* L = m_threadState.GetState();
 
-   // determine last stack value we don't use; when starting new thread, don'T remove pushed function
+   // determine last stack value we don't use; when starting new thread, don't remove pushed function
    int iIndexLastValue = lua_gettop(L);
-   if (Status() != statusYield)
+   if (startThread)
       iIndexLastValue--;
 
    std::for_each(vecParam.begin(), vecParam.end(),
