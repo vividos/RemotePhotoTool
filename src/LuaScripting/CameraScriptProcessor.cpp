@@ -123,6 +123,15 @@ public:
       });
    }
 
+   /// resets status to "idle", e.g. when currently yielding
+   void ResetStatus()
+   {
+      m_scriptWorkerThread.GetStrand().post([&]()
+      {
+         m_scheduler.ResetMainThread();
+      });
+   }
+
    /// stops Lua worker thread
    void StopThread()
    {
@@ -281,6 +290,8 @@ void CameraScriptProcessor::Stop()
    ATLASSERT(m_spImpl != nullptr);
 
    m_spImpl->CancelHandlers();
+
+   m_spImpl->ResetStatus();
 
    m_spImpl->GetScheduler().CurrentExecutionState(LuaScheduler::stateIdle);
 }

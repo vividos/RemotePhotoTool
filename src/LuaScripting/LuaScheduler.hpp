@@ -66,6 +66,9 @@ public:
    /// resumes main thread with given return values
    void ResumeMainThread(const std::vector<Lua::Value>& vecRetvals);
 
+   /// resets main thread, e.g. if it is currently yielded
+   void ResetMainThread();
+
 private:
    /// updates execution status by using thread status
    void UpdateStatus(Lua::Thread::T_enThreadStatus enThreadStatus);

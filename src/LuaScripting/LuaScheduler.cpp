@@ -45,6 +45,12 @@ void LuaScheduler::ResumeMainThread(const std::vector<Lua::Value>& vecRetvals)
    UpdateStatus(retVal.first);
 }
 
+void LuaScheduler::ResetMainThread()
+{
+   m_thread.Reset();
+   m_state.Reset();
+}
+
 void LuaScheduler::UpdateStatus(Lua::Thread::T_enThreadStatus enThreadStatus)
 {
    if (enThreadStatus == Lua::Thread::statusOK)

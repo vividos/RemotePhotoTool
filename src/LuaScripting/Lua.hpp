@@ -488,6 +488,9 @@ public:
    /// starts Lua garbage collector
    void CollectGarbage();
 
+   /// resets state (by detaching all values and clearing the stack)
+   void Reset();
+
    /// debug-traces current stack
    static void TraceStack(lua_State* L);
 
@@ -588,6 +591,9 @@ public:
    /// yields this thread and passes the given values to the caller.
    __declspec(noreturn)
    void Yield(State& localParamState, const std::vector<Value>& vecRetValues, T_fnYieldCallback fnYieldCallback = T_fnYieldCallback());
+
+   /// resets thread (by creating a new Lua thread object)
+   void Reset();
 
    /// returns thread Lua state
    lua_State* GetThreadState() { return m_threadState.GetState();  }

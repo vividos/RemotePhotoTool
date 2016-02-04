@@ -1024,6 +1024,15 @@ void State::CollectGarbage()
    lua_gc(L, LUA_GCCOLLECT, 0);
 }
 
+void State::Reset()
+{
+   DetachAll();
+
+   // remove all stack values
+   lua_State* L = GetState();
+   lua_pop(L, lua_gettop(L));
+}
+
 void State::StateDeleterNoop(lua_State*)
 {
 }
@@ -1462,8 +1471,20 @@ void Thread::Push()
    lua_pushthread(m_threadState.GetState());
 }
 
+void Thread::Reset()
+{
+   Detach();
+
+   m_threadState = Lua::State(lua_newthread(m_state.GetState()), false); // non-mainState
+
+   // old thread state is garbage collected some time later
+}
+
 void Thread::Detach() const
 {
+   if (m_spRef == nullptr)
+      return;
+
    m_spRef->Detach();
    m_spRef.reset();
 }
