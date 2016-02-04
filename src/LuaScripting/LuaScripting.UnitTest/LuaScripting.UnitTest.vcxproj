@@ -76,6 +76,7 @@
     </ClCompile>
     <ClCompile Include="TestCameraScriptProcessor.cpp" />
     <ClCompile Include="TestLuaState.cpp" />
+    <ClCompile Include="TestSystemBindings.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\CanonControl\CanonControl.vcxproj">
