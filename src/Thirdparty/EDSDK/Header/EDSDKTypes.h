@@ -8,7 +8,7 @@
 *******************************************************************************
 *                                                                             *
 *   Written and developed by Canon Inc.                                       *
-*   Copyright Canon Inc. 2006-2014 All Rights Reserved                        *
+*   Copyright Canon Inc. 2006-2015 All Rights Reserved                        *
 *                                                                             *
 ******************************************************************************/
 
@@ -866,6 +866,7 @@ typedef enum
 	kEdsWhiteBalance_WhitePaper5  = 19,
     kEdsWhiteBalance_PCSet4       = 20,
     kEdsWhiteBalance_PCSet5       = 21,
+	kEdsWhiteBalance_AwbWhite     = 23,
     kEdsWhiteBalance_Click        = -1,
     kEdsWhiteBalance_Pasted       = -2,
         
@@ -946,6 +947,7 @@ typedef enum
     kEdsPictureStyle_Faithful     = 0x0085,
     kEdsPictureStyle_Monochrome   = 0x0086,
     kEdsPictureStyle_Auto		  = 0x0087,
+    kEdsPictureStyle_FineDetail   = 0x0088,
     kEdsPictureStyle_User1        = 0x0021,
     kEdsPictureStyle_User2        = 0x0022,
     kEdsPictureStyle_User3        = 0x0023,
@@ -1215,7 +1217,8 @@ typedef struct tagEdsPictureStyleDesc
     EdsInt32    colorTone;
     EdsUInt32   filterEffect;
     EdsUInt32   toningEffect;
-
+    EdsUInt32   sharpFineness;
+    EdsUInt32   sharpThreshold;
 } EdsPictureStyleDesc;
 
 /*-----------------------------------------------------------------------------
