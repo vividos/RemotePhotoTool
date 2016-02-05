@@ -218,7 +218,7 @@ void ViewFinderImageWindow::TraceViewfinderFps()
    if (dwElapsed > 500)
    {
       CString cszText;
-      cszText.Format(_T("Viewfinder: %u fps"), s_uiViewfinderImageCount * 1000 / dwElapsed);
+      cszText.Format(_T("Viewfinder: %lu fps"), s_uiViewfinderImageCount * 1000 / dwElapsed);
       ATLTRACE(_T("%s\n"), cszText);
 
       s_uiViewfinderImageCount = 0;

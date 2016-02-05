@@ -131,7 +131,7 @@ void CmdlineApp::ListDevices()
       for (size_t i=0,iMax=vecSourceDevices.size(); i<iMax; i++)
       {
          std::shared_ptr<SourceInfo> spSourceInfo = vecSourceDevices[i];
-         _tprintf(_T("Device %u: \"%s\"\n"), i+1, spSourceInfo->Name().GetString());
+         _tprintf(_T("Device %lu: \"%s\"\n"), i+1, spSourceInfo->Name().GetString());
       }
    }
 
