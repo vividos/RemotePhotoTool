@@ -1,13 +1,14 @@
 REM
 REM RemotePhotoTool - remote camera control software
-REM Copyright (C) 2008-2015 Michael Fink
+REM Copyright (C) 2008-2016 Michael Fink
 REM
 REM runs CppCheck to check sourcecode
 REM
 
+set PATH=%PATH%;"C:\Program Files\Cppcheck\"
+
 REM when started via command line, assume "no xml" and "current folder"
 set INTDIR=%1
-if "%INTDIR%" == "" set PATH=%PATH%;"C:\Program Files (x86)\Cppcheck\"
 if "%INTDIR%" == "" set INTDIR=%CD%\
 
 REM when xml is passed as second param, set format and output file

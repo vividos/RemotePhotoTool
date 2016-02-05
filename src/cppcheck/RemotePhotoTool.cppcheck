@@ -6,7 +6,7 @@
         <define name="_WINDOWS"/>
         <define name="STRICT"/>
         <define name="NDEBUG"/>
-        <define name="_MSC_VER=1600"/>
+        <define name="_MSC_VER=1900"/>
     </defines>
     <paths>
         <dir name="Base"/>
@@ -15,6 +15,7 @@
         <dir name="RemotePhotoToolCmdline"/>
         <dir name="RemoteScriptingEditor"/>
         <dir name="LuaScripting"/>
+        <dir name="Logic"/>
     </paths>
     <exclude>
         <path name="../Thirdparty/"/>
