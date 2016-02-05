@@ -121,7 +121,8 @@ public:
       T* pT = static_cast<T*>(this);
 
       HWND hWndFocus = ::GetFocus();
-      if ((pT->m_hWnd == hWndFocus) || m_pFindReplaceDialog->IsChild(hWndFocus))
+      if (hWndFocus != nullptr && (
+         (pT->m_hWnd == hWndFocus) || m_pFindReplaceDialog->IsChild(hWndFocus)))
          return m_pFindReplaceDialog->IsDialogMessage(pMsg);
 
       return FALSE;

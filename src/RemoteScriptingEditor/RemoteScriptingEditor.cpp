@@ -10,6 +10,7 @@
 #include "App.hpp"
 
 /// main function
+#pragma warning(suppress: 28251)
 int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR lpstrCmdLine, int nCmdShow)
 {
    try

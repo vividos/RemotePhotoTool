@@ -1124,7 +1124,7 @@ void State::TraceValue(lua_State* L, int iIndex, int iStackDepth, bool bIsUpvalu
    case LUA_TSTRING: cszContent.Format(_T("[%hs]"), lua_tostring(L, iIndex)); break;
    case LUA_TTABLE:
    {
-      cszContent.Format(_T("[table%s]"), EnumTableIndices(L, iIndex));
+      cszContent.Format(_T("[table%s]"), EnumTableIndices(L, iIndex).GetString());
       break;
    }
 
@@ -1182,7 +1182,7 @@ void State::TraceValue(lua_State* L, int iIndex, int iStackDepth, bool bIsUpvalu
    cszText.AppendFormat(_T("%s %s%s\n"),
       cszType.GetString(),
       cszContent.GetString(),
-      cszMetatableInfo);
+      cszMetatableInfo.GetString());
 
    ATLTRACE(cszText);
 }

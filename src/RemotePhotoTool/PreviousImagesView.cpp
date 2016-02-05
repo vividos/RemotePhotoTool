@@ -287,7 +287,7 @@ void PreviousImagesView::OpenFolder(const CString& cszImageFilename)
    CString cszFolderName = Path(cszImageFilename).DirectoryName();
 
    CString cszArgs;
-   cszArgs.Format(_T("/select, \"%s\""), cszImageFilename);
+   cszArgs.Format(_T("/select, \"%s\""), cszImageFilename.GetString());
    ::ShellExecute(m_hWnd, _T("open"), _T("explorer.exe"), cszArgs, cszFolderName, SW_SHOWNORMAL);
 }
 
