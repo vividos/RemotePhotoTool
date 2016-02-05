@@ -1,8 +1,8 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2015 Michael Fink
+// Copyright (C) 2008-2016 Michael Fink
 //
-/// \file Lua.hpp Lua wrapper classes
+/// \file Lua.hpp Lua C++ bindings classes
 //
 #pragma once
 
@@ -19,10 +19,38 @@
 struct lua_State;
 struct FuncData;
 
-// WinBase.h defines Yield()...
+// WinBase.h defines Yield(), so undef again...
 #undef Yield
 
-/// Lua C++ wrapper classes
+/// \brief Lua C++ bindings classes
+/// \details The classes in this namespace provide a way to run Lua scripts
+/// and define C++ bindings to use in Lua code.
+///
+/// The central class is Lua::State, which contains the runtime for Lua
+/// scripts. The scripts can be loaded into the state, and the state lets you
+/// define global variables, such as tables and functions on it. Tables can
+/// also contain values of these data types. Values in Lua are represented by
+/// the Lua::Value class, which encapsulates the value, and optionally stores
+/// a reference to the value in the Lua state. For a list of all data types,
+/// see the Lua manual, at http://www.lua.org/.
+///
+/// These classes also allow you to add C++ functions, represented by
+/// std::function<Signature>, to be stored in Lua functions. When a Lua script
+/// calls these functions, the bound C++ function is called instead. See the
+/// Lua::Function class how to bind functions.
+///
+/// Lua also supports a form of cooperative multithreading, represented by the
+/// Lua::Thread class. Only one thread of execution can be active at any
+/// single time in a single Lua::State runtime state. A thread has its own
+/// stack of calling parameter variables, but share the Lua state of global
+/// variables.
+///
+/// The Lua C library operates on a stack-based engine, which these classes
+/// mostly hide. Sometimes you still may come in contact with the stack.
+/// Lua::Value objects store the value of a Lua object, and in some cases,
+/// they store the reference to the stack index of the internal Lua::State
+/// stack. These references become invalid when calling Thread::Start(),
+/// Thread::Resume() and Thread::Yield().
 namespace Lua
 {
 class Value;
@@ -32,7 +60,11 @@ class Userdata;
 class State;
 class Thread;
 
-/// Lua exception class
+/// \brief Lua exception class
+/// \details Objects of this class are thrown when the Lua C++ bindings
+/// encounter an error and can't continue. Also Lua errors are wrapped in an
+/// exception and thrown. The passed Lua state is examined for a Lua stack
+/// trace, which is then included into the exception message.
 class Exception: public ::Exception
 {
    /// base class type
@@ -81,7 +113,10 @@ private:
    UINT m_uiLuaLineNumber;       ///< source file line number
 };
 
-/// checks stack for consistency in dtor (same number of values on stack)
+/// \brief Checks stack for consistency in dtor (same number of values on stack)
+/// \details This helper class cann be used to ensure that in a local
+/// function, the Lua stack of values used is balanced, so that a function
+/// doesn't "leak" values on the stack, which may lead to a stack overflow.
 class StackChecker
 {
 public:
@@ -102,7 +137,9 @@ private:
 /// \brief Reference to a value on the stack
 /// \details This is used by the various classes to keep track of the values
 /// stored on the stack of a Lua state. When the value isn't referenced
-/// anymore, the corresponding value is removed from the stack.
+/// anymore, the corresponding value is removed from the stack. Note that when
+/// calling Thread functions, references can be "detached" from its stack
+/// value, to ensure it isn't removed twice.
 class Ref
 {
 public:
@@ -125,7 +162,8 @@ private:
    friend State;
    friend Thread;
 
-   /// detaches reference from stack, e.g. because the value was removed from stack by Lua itself
+   /// detaches reference from stack, e.g. because the value was removed from
+   /// stack by Lua itself
    void Detach();
 
    /// called when value at given stack index is removed
@@ -140,25 +178,26 @@ private:
 };
 
 /// \brief Lua value
-/// Stores a Lua value, e.g. for passing arguments to a function call (see
-/// State::CallFunction(), Table::CallFunction(), etc.) or as function return
-/// values, e.g. in a C++ closure (see the T_fnCFunction type and where it is
-/// used.
+/// \details Stores a Lua value, e.g. for passing arguments to a function call
+/// (see State::CallFunction(), Table::CallFunction(), etc.) or as function
+/// return values, e.g. in a C++ closure (see the T_fnCFunction type and where
+/// it is used. Some objects, such as Function and Table, are stored in their
+/// own classes, as there are more interactions possible with these types.
 class Value
 {
 public:
    /// Lua value type
    enum T_enType
    {
-      typeNil,
-      typeBoolean,
-      typeNumber,
-      typeInteger,
-      typeString,
-      typeFunction,
-      typeTable,
-      typeUserdata,
-      typeThread,
+      typeNil,       ///< the nil type
+      typeBoolean,   ///< boolean type
+      typeNumber,    ///< double number type
+      typeInteger,   ///< integer number type
+      typeString,    ///< string type
+      typeFunction,  ///< function type
+      typeTable,     ///< table type
+      typeUserdata,  ///< user data type
+      typeThread,    ///< thread type
    };
 
    /// default ctor; constructs nil value
@@ -217,7 +256,8 @@ public:
          std::is_same<T, Function>::value ||
          std::is_same<T, Table>::value ||
          std::is_same<T, Userdata>::value ||
-         std::is_same<T, Thread>::value, "not an allowed type for Get<T>()");
+         std::is_same<T, Thread>::value,
+         "not an allowed type for Get<T>()");
 
       return boost::any_cast<T>(m_value);
    }
@@ -322,7 +362,7 @@ private:
 
 /// \brief Lua table
 /// \details The Table class can be either in a "constructing" mode, where you are
-/// constructing a new table, or in a "using" mode, where you are using the table.
+/// constructing a new table, or in a "using" mode, where you are using an existing table.
 /// You get a table in the "constructing" mode by calling State::AddTable().
 /// You get a table in the "using" mode by calling State::GetTable(). You can put
 /// the table in "using" mode by calling Push(). This is also called when wrapping
@@ -420,7 +460,7 @@ private:
 
    // note: these ctors can only be called by Lua::State
 
-   /// ctor; constructs new userdata object on stack, with given size
+   /// ctor; constructs new userdata object on stack, with given size in bytes
    explicit Userdata(State& state, size_t uiSize);
 
    /// ctor; creates userdata object from value on stack
@@ -444,9 +484,10 @@ private:
 };
 
 /// \brief Lua state
-/// \details Helper functions to load Lua code, to call functions, to add tables and C++
-/// closure functions and to access tables. Also some debug tracing functions for use
-/// while coding.
+/// \details The Lua state contains the runtime for Lua scripts. The class
+/// contains functions to load Lua code, call functions, add tables and C++
+/// closure functions and to access tables. Also some debug tracing functions
+/// for use while coding are available.
 class State
 {
 public:
@@ -456,10 +497,10 @@ public:
    /// loads a built-in library into state
    void RequireLib(const char* moduleName);
 
-   /// loads Lua code from file
+   /// loads Lua script code from file
    void LoadFile(const CString& cszFilename);
 
-   /// loads Lua code from source code string
+   /// loads Lua script code from source code string
    void LoadSourceString(const CString& cszLuaSource);
 
    /// calls a function
@@ -485,7 +526,7 @@ public:
    /// returns an existing table
    Table GetTable(const CString& cszName);
 
-   /// starts Lua garbage collector
+   /// runs Lua garbage collector
    void CollectGarbage();
 
    /// resets state (by detaching all values and clearing the stack)
@@ -501,7 +542,7 @@ public:
    static void TraceValue(lua_State* L, int iIndex, int iStackDepth, bool bIsUpvalue);
 
    /// returns Lua state
-   /// \note use this with care, as you can mess up the stack or the state!
+   /// \note use the Lua state with care, as you can mess up the stack or the state!
    lua_State* GetState() { return m_spState.get(); }
 
    /// returns the Lua version used
@@ -549,15 +590,17 @@ private:
 };
 
 /// \brief Lua thread
-/// \details manages a Lua thread, also called coroutine.
+/// \details Manages a Lua thread, also called coroutine. Threads can yield
+/// during its execution, and the thread has to be resumed to continue
+/// running. This allows various cooperative multithreading scenarios to work.
 class Thread
 {
 public:
    /// thread status
    enum T_enThreadStatus
    {
-      statusOK = 0,     ///< thread has returned or hasn't run yet
-      statusYield = 1,  ///< thread has yielded
+      statusOK = 0,     ///< thread has returned or hasn't run yet; same as LUA_OK
+      statusYield = 1,  ///< thread has yielded; same as LUA_YIELD
    };
 
    /// ctor; creates a new thread
@@ -576,19 +619,21 @@ public:
 
    // thread handling
 
-   /// returns status of Lua thread; either LUA_OK or LUA_YIELD
+   /// returns status of Lua thread
    T_enThreadStatus Status() const throw();
 
    /// starts a function running in this thread, with given function and params,
-   /// and returns new status and return values. Status must be LUA_OK (the thread
+   /// and returns new status and return values. Status must be statusOK (the thread
    /// must not have been yielded.
    std::pair<T_enThreadStatus, std::vector<Value>> Start(Function& func, const std::vector<Value>& vecParam);
 
-   /// resumes thread when a function has yielded (status must be LUA_YIELD)
+   /// resumes thread when a function has yielded (status must be statusYield)
    /// and returns new status and return values.
    std::pair<T_enThreadStatus, std::vector<Value>> Resume(const std::vector<Value>& vecParam);
 
    /// yields this thread and passes the given values to the caller.
+   /// The function won't return, but will continue in the yield callback when
+   /// resumed.
    __declspec(noreturn)
    void Yield(State& localParamState, const std::vector<Value>& vecRetValues, T_fnYieldCallback fnYieldCallback = T_fnYieldCallback());
 

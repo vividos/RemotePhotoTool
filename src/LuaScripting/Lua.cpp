@@ -890,6 +890,8 @@ State::State(lua_State* L, bool mainState)
    lua_atpanic(L, OnLuaPanic);
 }
 
+/// \see see file lualib.h for infos about what modules are currently
+/// available in the Lua library.
 void State::RequireLib(const char* moduleName)
 {
    lua_State* L = GetState();
