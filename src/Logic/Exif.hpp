@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2006,2007,2008,2009,2015 Michael Fink
+// Copyright (C) 2006,2007,2008,2009,2015,2016 Michael Fink
 //
 /// \file Exif.hpp Wrapper around libexif
 //

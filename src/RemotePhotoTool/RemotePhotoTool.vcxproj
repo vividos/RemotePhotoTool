@@ -60,7 +60,7 @@
       <ProxyFileName>RemotePhotoTool_p.c</ProxyFileName>
     </Midl>
     <ClCompile>
-      <AdditionalIncludeDirectories>..\Base;..\CanonControl\exports;..\LuaScripting;..\Thirdparty;..\Thirdparty\jpeg-9b;..\Thirdparty\Scintilla\include;..\Thirdparty\libexif-0.6.21;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Base;..\CanonControl\exports;..\LuaScripting;..\Logic;..\Thirdparty;..\Thirdparty\jpeg-9b;..\Thirdparty\Scintilla\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WINDOWS;STRICT;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ResourceCompile>
@@ -86,7 +86,7 @@
       <ProxyFileName>RemotePhotoTool_p.c</ProxyFileName>
     </Midl>
     <ClCompile>
-      <AdditionalIncludeDirectories>..\Base;..\CanonControl\exports;..\LuaScripting;..\Thirdparty;..\Thirdparty\jpeg-9b;..\Thirdparty\Scintilla\include;..\Thirdparty\libexif-0.6.21;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Base;..\CanonControl\exports;..\LuaScripting;..\Logic;..\Thirdparty;..\Thirdparty\jpeg-9b;..\Thirdparty\Scintilla\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WINDOWS;STRICT;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ResourceCompile>
@@ -108,19 +108,15 @@
     <ClCompile Include="DevicePropertyView.cpp" />
     <ClCompile Include="HDRPanoramaPhotoModeView.cpp" />
     <ClCompile Include="HDRPhotoModeView.cpp" />
-    <ClCompile Include="HuginInterface.cpp" />
     <ClCompile Include="ImageFileManager.cpp" />
     <ClCompile Include="ImagePropertyCombobox.cpp" />
     <ClCompile Include="ImagePropertyValueManager.cpp" />
     <ClCompile Include="ImagePropertyView.cpp" />
-    <ClCompile Include="JpegMemoryReader.cpp" />
     <ClCompile Include="LuaScriptViewerView.cpp" />
     <ClCompile Include="MainFrame.cpp" />
     <ClCompile Include="PanoramaPhotoModeView.cpp" />
-    <ClCompile Include="PhotomatixInterface.cpp" />
     <ClCompile Include="PhotoModeManager.cpp" />
     <ClCompile Include="PhotoStackingPhotoModeView.cpp" />
-    <ClCompile Include="PreviousImagesManager.cpp" />
     <ClCompile Include="PreviousImagesView.cpp" />
     <ClCompile Include="RemotePhotoTool.cpp" />
     <ClCompile Include="ScriptingPhotoModeView.cpp" />
@@ -145,10 +141,8 @@
     <ClInclude Include="CameraInfoDlg.hpp" />
     <ClInclude Include="ConnectCameraDlg.hpp" />
     <ClInclude Include="DevicePropertyView.hpp" />
-    <ClInclude Include="Exif.hpp" />
     <ClInclude Include="HDRPanoramaPhotoModeView.hpp" />
     <ClInclude Include="HDRPhotoModeView.hpp" />
-    <ClInclude Include="HuginInterface.hpp" />
     <ClInclude Include="Icons.hpp" />
     <ClInclude Include="IImagePropertyControl.hpp" />
     <ClInclude Include="ImageFileManager.hpp" />
@@ -158,17 +152,11 @@
     <ClInclude Include="ImagePropertyView.hpp" />
     <ClInclude Include="IPhotoModeView.hpp" />
     <ClInclude Include="IPhotoModeViewHost.hpp" />
-    <ClInclude Include="JpegDecoder.hpp" />
-    <ClInclude Include="JpegMemoryReader.hpp" />
-    <ClInclude Include="JpegMemorySourceManager.hpp" />
     <ClInclude Include="LuaScriptViewerView.hpp" />
     <ClInclude Include="MainFrame.hpp" />
     <ClInclude Include="PanoramaPhotoModeView.hpp" />
-    <ClInclude Include="PhotomatixInterface.hpp" />
     <ClInclude Include="PhotoModeManager.hpp" />
     <ClInclude Include="PhotoStackingPhotoModeView.hpp" />
-    <ClInclude Include="PreviousImageInfo.hpp" />
-    <ClInclude Include="PreviousImagesManager.hpp" />
     <ClInclude Include="PreviousImagesView.hpp" />
     <ClInclude Include="res\MainFrameRibbon.h" />
     <ClInclude Include="ScriptingPhotoModeView.hpp" />

@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2015 Michael Fink
+// Copyright (C) 2008-2016 Michael Fink
 //
 /// \file PreviousImagesManager.hpp Previous images manager
 //
