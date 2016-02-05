@@ -34,7 +34,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Base.UnitTest", "Base\Base.
 		{3AB1BB98-D491-47DB-8D93-1DAB3CE88C87} = {3AB1BB98-D491-47DB-8D93-1DAB3CE88C87}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "jpeg-9a", "Thirdparty\jpeg-9a\jpeg-9a.vcxproj", "{1A81D718-3886-4CD5-8F10-4946BF4D6355}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "jpeg-9b", "Thirdparty\jpeg-9b\jpeg-9b.vcxproj", "{1A81D718-3886-4CD5-8F10-4946BF4D6355}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cppcheck", "cppcheck\cppcheck.vcxproj", "{36163BCB-F4DA-472D-A77B-73D2BC5F42AD}"
 EndProject

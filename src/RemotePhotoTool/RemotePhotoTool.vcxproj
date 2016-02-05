@@ -60,7 +60,7 @@
       <ProxyFileName>RemotePhotoTool_p.c</ProxyFileName>
     </Midl>
     <ClCompile>
-      <AdditionalIncludeDirectories>..\Base;..\CanonControl\exports;..\LuaScripting;..\Thirdparty;..\Thirdparty\jpeg-9a;..\Thirdparty\Scintilla\include;..\Thirdparty\libexif-0.6.21;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Base;..\CanonControl\exports;..\LuaScripting;..\Thirdparty;..\Thirdparty\jpeg-9b;..\Thirdparty\Scintilla\include;..\Thirdparty\libexif-0.6.21;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WINDOWS;STRICT;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ResourceCompile>
@@ -86,7 +86,7 @@
       <ProxyFileName>RemotePhotoTool_p.c</ProxyFileName>
     </Midl>
     <ClCompile>
-      <AdditionalIncludeDirectories>..\Base;..\CanonControl\exports;..\LuaScripting;..\Thirdparty;..\Thirdparty\jpeg-9a;..\Thirdparty\Scintilla\include;..\Thirdparty\libexif-0.6.21;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Base;..\CanonControl\exports;..\LuaScripting;..\Thirdparty;..\Thirdparty\jpeg-9b;..\Thirdparty\Scintilla\include;..\Thirdparty\libexif-0.6.21;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WINDOWS;STRICT;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ResourceCompile>
@@ -227,7 +227,7 @@
     <ProjectReference Include="..\LuaScripting\LuaScripting.vcxproj">
       <Project>{41b565f7-f668-4425-a93d-6cabc18f6d1f}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\Thirdparty\jpeg-9a\jpeg-9a.vcxproj">
+    <ProjectReference Include="..\Thirdparty\jpeg-9b\jpeg-9b.vcxproj">
       <Project>{1a81d718-3886-4cd5-8f10-4946bf4d6355}</Project>
     </ProjectReference>
     <ProjectReference Include="..\Thirdparty\libexif-0.6.21\libexif.vcxproj">
