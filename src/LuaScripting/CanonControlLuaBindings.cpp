@@ -217,14 +217,7 @@ std::vector<Lua::Value> CanonControlLuaBindings::InstanceGetVersion()
 std::vector<Lua::Value> CanonControlLuaBindings::InstanceEnumerateDevices(Lua::State& state)
 {
    std::vector<std::shared_ptr<SourceInfo>> vecSourceInfo;
-   try
-   {
-      m_upInstance->EnumerateDevices(vecSourceInfo);
-   }
-   catch (...)
-   {
-      vecSourceInfo.clear();
-   }
+   m_upInstance->EnumerateDevices(vecSourceInfo);
 
    std::vector<Lua::Value> vecRetValues;
 

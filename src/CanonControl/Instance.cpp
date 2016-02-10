@@ -240,10 +240,30 @@ void Instance::AsyncWaitForCamera(T_fnOnCameraAdded fnOnCameraAdded)
 
 void Instance::EnumerateDevices(std::vector<std::shared_ptr<SourceInfo>>& vecSourceDevices) const
 {
-   if (!RunTimeHelper::IsVista())
-      m_spImpl->m_spCdSdkRef->EnumerateDevices(vecSourceDevices);
-   m_spImpl->m_spEdSdkRef->EnumerateDevices(vecSourceDevices);
-   m_spImpl->m_spPsRecRef->EnumerateDevices(vecSourceDevices);
+   try
+   {
+      if (!RunTimeHelper::IsVista())
+         m_spImpl->m_spCdSdkRef->EnumerateDevices(vecSourceDevices);
+   }
+   catch (...)
+   {
+   }
+
+   try
+   {
+      m_spImpl->m_spEdSdkRef->EnumerateDevices(vecSourceDevices);
+   }
+   catch (...)
+   {
+   }
+
+   try
+   {
+      m_spImpl->m_spPsRecRef->EnumerateDevices(vecSourceDevices);
+   }
+   catch (...)
+   {
+   }
 }
 
 void Instance::OnIdle()
