@@ -1184,7 +1184,7 @@ void State::TraceValue(lua_State* L, int iIndex, int iStackDepth, bool bIsUpvalu
       cszContent.GetString(),
       cszMetatableInfo.GetString());
 
-   ATLTRACE(cszText);
+   ATLTRACE(_T("%s"), cszText.GetString());
 }
 
 LPCTSTR State::GetVersion() throw()

@@ -121,7 +121,7 @@ void LogTrace(LPCTSTR pszFormat, ...) throw()
          cszText.Replace(_T("%"), _T("%%"));
       }
 
-      ATLTRACE(cszText);
+      ATLTRACE(_T("%s"), cszText.GetString());
 
 #ifdef _DEBUG
       // in debug, quit after tracing message
