@@ -14,6 +14,7 @@
 #include "MainFrame.hpp"
 #include "Lua.hpp"
 #include "Path.hpp"
+#include "Instance.hpp"
 
 extern LPCTSTR g_pszLuaScriptingFilter;
 
@@ -43,6 +44,8 @@ BOOL MainFrame::PreTranslateMessage(MSG* pMsg)
 
 BOOL MainFrame::OnIdle()
 {
+   Instance::OnIdle();
+
    UIUpdateToolBar();
    UIUpdateAll();
    return FALSE;
