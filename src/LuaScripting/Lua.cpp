@@ -126,6 +126,9 @@ StackChecker::~StackChecker()
 // Lua::Ref
 //
 
+/// \param[in] state Lua state that the reference points to
+/// \param[in] iStackIndex absolute or relative stack index of value to be
+/// referenced. The value is converted to an absolute stack index.
 Ref::Ref(State& state, int iStackIndex)
    :m_state(state),
    m_iStackIndex(lua_absindex(state.GetState(), iStackIndex))
@@ -739,6 +742,8 @@ Value Table::GetValue(const CString& key)
    return Value::FromStack(state, -1);
 }
 
+/// \details also pushes table as 'self' parameter before passing all other
+/// params from vecParam.
 std::vector<Value> Table::CallFunction(const CString& cszName,
    int iResults,
    const std::vector<Value>& vecParam)

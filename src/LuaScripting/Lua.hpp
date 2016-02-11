@@ -151,7 +151,7 @@ public:
    /// returns state
    State& GetState() throw() { return m_state; }
 
-   /// returns stack index of value
+   /// returns absolute stack index of value, or -1 when not on stack
    int GetStackIndex() const throw() { return m_iStackIndex; }
 
 private:
@@ -163,7 +163,7 @@ private:
    friend Thread;
 
    /// detaches reference from stack, e.g. because the value was removed from
-   /// stack by Lua itself
+   /// stack by Lua itself, by setting stack index to -1
    void Detach();
 
    /// called when value at given stack index is removed
@@ -173,7 +173,7 @@ private:
    /// the state where the value is stored on
    State& m_state;
 
-   /// absolute stack index
+   /// absolute stack index, or -1 when detached
    int m_iStackIndex;
 };
 
