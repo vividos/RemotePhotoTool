@@ -588,7 +588,7 @@ std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlSetReleaseS
          spRemoteReleaseControl,
          std::placeholders::_1);
 
-      m_releaseSettings.HandlerOnFinishedTransfer(fnOnFinishedTransfer);
+      m_releaseSettings.HandlerOnFinishedTransfer(m_strand.wrap(fnOnFinishedTransfer));
    }
    else
       m_releaseSettings.HandlerOnFinishedTransfer(ShutterReleaseSettings::T_fnOnFinishedTransfer());
