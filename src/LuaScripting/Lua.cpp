@@ -640,7 +640,7 @@ Table::Table(State& state, const CString& cszName)
    if (!cszName.IsEmpty())
    {
       // no temporary (empty name) table? then set and get again
-      lua_setglobal(L, CStringA(m_cszName));
+      lua_setglobal(L, CStringA(m_cszName).GetString());
 
       lua_getglobal(L, CStringA(m_cszName).GetString());
    }
