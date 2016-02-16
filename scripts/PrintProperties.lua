@@ -1,6 +1,6 @@
 --
 -- RemotePhotoTool - remote camera control software
--- Copyright (C) 2008-2015 Michael Fink
+-- Copyright (C) 2008-2016 Michael Fink
 -- file PrintProperties.lua - Demo script: Prints camera properties
 --
 
@@ -109,7 +109,7 @@ App = {
 		local remoteReleaseControl = sourceDevice:enterReleaseControl();
 
 		local numAvailableShots = remoteReleaseControl.numAvailableShots();
-		print("   number of available shots:" .. numAvailableShots .. "\n");
+		print("   number of available shots: " .. numAvailableShots .. "\n");
 		print("\n");
 
 		self:printReleaseControlCapabilities(remoteReleaseControl);

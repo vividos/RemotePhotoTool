@@ -1,6 +1,6 @@
 --
 -- RemotePhotoTool - remote camera control software
--- Copyright (C) 2008-2015 Michael Fink
+-- Copyright (C) 2008-2016 Michael Fink
 -- file TakeImage.lua - Demo script: Takes an image
 --
 
@@ -57,34 +57,37 @@ App = {
 	-- releases shutter and takes a picture
 	releaseShutter = function(self, remoteReleaseControl)
 
-		print("Taking an image ...\n");
+		print("Taking an image\n");
 
 		self.setReleaseSettings(remoteReleaseControl);
 
 		self.eventFinishedTransfer = Sys:createEvent();
 
 		-- auto focus on current view
+		print("Auto-focus...\n");
 		remoteReleaseControl:sendCommand(Constants.RemoteReleaseControl.commandAdjustFocus);
 
+		print("Release shutter...\n");
 		remoteReleaseControl:release();
 
 		-- wait for photo to be downloaded
-		self.eventFinishedTransfer:wait(10.0);
+		local result = self.eventFinishedTransfer:wait(10.0);
 
-		print("Finished.\n");
+		print(result and "Finished.\n" or "Failed waiting for image.\n");
+
+		self.resetTransferHandler(remoteReleaseControl);
 
 	end;
 
 	-- sets new release settings
 	setReleaseSettings = function(remoteReleaseControl)
 
-		-- set release settings
 		local releaseSettings = remoteReleaseControl:getReleaseSettings();
 
 		releaseSettings.saveTarget = Constants.RemoteReleaseControl.saveToHost;
 
 		local randomName = math.random(1, 9999);
-		releaseSettings.outputFilename = "images/IMG_" .. randomName .. ".jpg";
+		releaseSettings.outputFilename = "IMG_" .. randomName .. ".jpg";
 
 		releaseSettings.onFinishedTransfer = App.onFinishedTransfer;
 
@@ -92,12 +95,23 @@ App = {
 
 	end;
 
+	-- resets handler
+	resetTransferHandler = function(remoteReleaseControl)
+
+		local releaseSettings = remoteReleaseControl:getReleaseSettings();
+
+		releaseSettings.onFinishedTransfer = nil;
+
+		remoteReleaseControl:setReleaseSettings(releaseSettings);
+
+	end;
+
 	-- called when transfer of an image has finished
-	onFinishedTransfer = function(releaseSettings)
+	onFinishedTransfer = function(self, releaseSettings)
 
 		print("Received image: " .. releaseSettings.outputFilename .. "\n");
 
-		App.eventFinishedTransfer.signal();
+		self.eventFinishedTransfer:signal();
 
 	end;
 }

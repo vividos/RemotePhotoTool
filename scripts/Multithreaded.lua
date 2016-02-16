@@ -1,6 +1,6 @@
 --
 -- RemotePhotoTool - remote camera control software
--- Copyright (C) 2008-2015 Michael Fink
+-- Copyright (C) 2008-2016 Michael Fink
 -- file Multithreaded.lua - Demo for multithreaded scheduling
 --
 
@@ -9,6 +9,7 @@ App = {
 	-- event
 	event = nil;
 
+	-- coroutine thread
 	thread = nil;
 
 	-- entry function
@@ -34,9 +35,9 @@ App = {
 		-- wait for thread to start and exit
 		local ret = self.event:wait(10.0);
 		if (ret == false) then
-			print("event wasn't signaled in 10 seconds time.\n");
+			print("event wasn't signaled in 10 seconds time - Shouldn't happen!\n");
 		else
-			print("event was set.\n");
+			print("event was set - OK.\n");
 		end
 
 	end;
@@ -48,7 +49,7 @@ App = {
 
 		print("on main thread: " .. (Sys:isMainThread() and "yes" or "no") .. "\n");
 
-		self.event.signal();
+		self.event:signal();
 
 		coroutine.yield(self.thread);
 

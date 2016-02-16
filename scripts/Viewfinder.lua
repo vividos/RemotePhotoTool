@@ -1,6 +1,6 @@
 --
 -- RemotePhotoTool - remote camera control software
--- Copyright (C) 2008-2015 Michael Fink
+-- Copyright (C) 2008-2016 Michael Fink
 -- file Viewfinder.lua - Demo script: Getting viewfinder images
 --
 
@@ -8,7 +8,7 @@
 -- scripting engine when starting the script.
 App = {
 
-	-- event that is later used to get notified that a viewfinder preview image arrived
+	-- event that is used to get notified that a viewfinder preview image arrived
 	eventViewfinder = nil;
 
 	-- entry point function
@@ -75,19 +75,19 @@ App = {
 		-- wait for image to arrive, then continue
 		local imageWasAvail = self.eventViewfinder:wait(10.0);
 
-		print("Captured " .. (imageWasAvail and "a viewfinder image" or "no viewfinder image") .. "\n");
+		print("Captured " .. (imageWasAvail and "a viewfinder image!" or "no viewfinder image.") .. "\n");
 
 	end;
 
 	-- called when a viewfinder image has been sent
-	onViewfinderImageAvail = function(viewfinder, imageData)
+	onViewfinderImageAvail = function(self, viewfinder, imageData)
 
 		print("Received an image from viewfinder\n");
 
 		-- unregister handler
 		viewfinder:setAvailImageHandler();
 
-		App.eventViewfinder:signal();
+		self.eventViewfinder:signal();
 
 	end;
 }

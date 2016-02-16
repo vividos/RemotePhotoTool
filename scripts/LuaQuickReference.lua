@@ -1,6 +1,6 @@
 --
 -- RemotePhotoTool - remote camera control software
--- Copyright (C) 2008-2015 Michael Fink
+-- Copyright (C) 2008-2016 Michael Fink
 -- file LuaQuickReference.lua - Demo script for Lua scripting
 --
 

@@ -1,6 +1,6 @@
 --
 -- RemotePhotoTool - remote camera control software
--- Copyright (C) 2008-2015 Michael Fink
+-- Copyright (C) 2008-2016 Michael Fink
 -- file RemotePhotoTool.lua - Demo script for Lua scripting
 --
 
@@ -14,7 +14,7 @@ App = {
 	-- event that is set when transferring image has finished
 	eventFinishedTransfer = nil;
 
-	-- event that is later used to get notified that a viewfinder preview image arrived
+	-- event that is used to get notified that a viewfinder preview image arrived
 	eventViewfinder = nil;
 
 	-- Main entry point of the RemotePhotoTool scripting environment.
@@ -64,6 +64,8 @@ App = {
 			-- any more calls to onConnected().
 			instance:asyncWaitForCamera();
 
+			print("\n");
+
 			self:printSourceInfos(allSourceInfos);
 
 			print("Finished.\n\n");
@@ -101,8 +103,6 @@ App = {
 	-- We call this function at onConnected() to print all infos about
 	-- connected cameras, stored in SourceInfo objects.
 	printSourceInfos = function(self, allSourceInfos)
-
-		print("\n");
 
 		print("Number of cameras: " .. allSourceInfos.length .. "\n");
 
@@ -179,7 +179,7 @@ App = {
 		local remoteReleaseControl = sourceDevice:enterReleaseControl();
 
 		local numAvailableShots = remoteReleaseControl.numAvailableShots();
-		print("   number of available shots:" .. numAvailableShots .. "\n");
+		print("   number of available shots: " .. numAvailableShots .. "\n");
 		print("\n");
 
 		self:printReleaseControlCapabilities(remoteReleaseControl);
@@ -255,34 +255,37 @@ App = {
 	-- releases shutter and takes a picture
 	releaseShutter = function(self, remoteReleaseControl)
 
-		print("Taking an image ...\n");
+		print("Taking an image\n");
 
 		self.setReleaseSettings(remoteReleaseControl);
 
 		self.eventFinishedTransfer = Sys:createEvent();
 
 		-- auto focus on current view
+		print("Auto-focus...\n");
 		remoteReleaseControl:sendCommand(Constants.RemoteReleaseControl.commandAdjustFocus);
 
+		print("Release shutter...\n");
 		remoteReleaseControl:release();
 
 		-- wait for photo to be downloaded
-		self.eventFinishedTransfer:wait(10.0);
+		local result = self.eventFinishedTransfer:wait(10.0);
 
-		print("Finished.\n");
+		print(result and "Finished.\n" or "Failed waiting for image.\n");
+
+		self.resetTransferHandler(remoteReleaseControl);
 
 	end;
 
 	-- sets new release settings
 	setReleaseSettings = function(remoteReleaseControl)
 
-		-- set release settings
 		local releaseSettings = remoteReleaseControl:getReleaseSettings();
 
 		releaseSettings.saveTarget = Constants.RemoteReleaseControl.saveToHost;
 
 		local randomName = math.random(1, 9999);
-		releaseSettings.outputFilename = "images/IMG_" .. randomName .. ".jpg";
+		releaseSettings.outputFilename = "IMG_" .. randomName .. ".jpg";
 
 		releaseSettings.onFinishedTransfer = App.onFinishedTransfer;
 
@@ -290,12 +293,23 @@ App = {
 
 	end;
 
+	-- resets handler
+	resetTransferHandler = function(remoteReleaseControl)
+
+		local releaseSettings = remoteReleaseControl:getReleaseSettings();
+
+		releaseSettings.onFinishedTransfer = nil;
+
+		remoteReleaseControl:setReleaseSettings(releaseSettings);
+
+	end;
+
 	-- called when transfer of an image has finished
-	onFinishedTransfer = function(releaseSettings)
+	onFinishedTransfer = function(self, releaseSettings)
 
 		print("Received image: " .. releaseSettings.outputFilename .. "\n");
 
-		App.eventFinishedTransfer.signal();
+		self.eventFinishedTransfer:signal();
 
 	end;
 
@@ -320,19 +334,19 @@ App = {
 		-- wait for image to arrive, then continue
 		local imageWasAvail = self.eventViewfinder:wait(10.0);
 
-		print("Captured " .. (imageWasAvail and "a viewfinder image" or "no viewfinder image") .. "\n");
+		print("Captured " .. (imageWasAvail and "a viewfinder image!" or "no viewfinder image.") .. "\n");
 
 	end;
 
 	-- called when a viewfinder image has been sent
-	onViewfinderImageAvail = function(viewfinder, imageData)
+	onViewfinderImageAvail = function(self, viewfinder, imageData)
 
 		print("Received an image from viewfinder\n");
 
 		-- unregister handler
 		viewfinder:setAvailImageHandler();
 
-		App.eventViewfinder:signal();
+		self.eventViewfinder:signal();
 
 	end;
 
@@ -355,7 +369,7 @@ App = {
 
 		bulbReleaseControl:stop();
 
-		local elapsed = bulbReleaseControl.elapsedTime();
+		local elapsed = bulbReleaseControl:elapsedTime();
 		print("elapsed time: " .. elapsed .. " seconds.");
 
 	end;
