@@ -140,7 +140,7 @@ private:
       Lua::State& state, const std::vector<Lua::Value>& vecParams);
 
    /// initializes ReleaseSettings table
-   void InitReleaseSettingsTable(const ShutterReleaseSettings& releaseSettings,
+   void InitReleaseSettingsTable(Lua::State& state, const ShutterReleaseSettings& releaseSettings,
       Lua::Table& tableReleaseSettings);
 
    /// sets new release settings
