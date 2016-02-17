@@ -365,14 +365,15 @@ returned from execution.
 Resets the event to be non-signaled. This is used to prepare an event object
 to be reused again. This makes the event a manual-reset event.
 
-#### boolean Event:wait([waitTimeInMilliseconds]) ####
+#### boolean Event:wait([waitTimeInSeconds]) ####
 
 Waits for the event to be signaled from another thread. The parameter passed
 to this function is optional, and can be omitted. It specifies the number of
-milliseconds to wait for the event. When omitted, it is waiting indefinitely.
-The function returns after the waiting time has elapsed, and the event yet. It
-returns false in this case. If the event was signaled during waiting, it
-returns before the waiting time has elapsed, and it returns true.
+seconds to wait for the event. When omitted, it is waiting indefinitely.
+
+If the event wasn't signalled yet, the function returns after the waiting time
+has elapsed; it returns false in this case. If the event was signaled during
+waiting, it returns before the waiting time has elapsed, and it returns true.
 
 ### Instance table ###
 
@@ -383,6 +384,7 @@ object provides the same functions, and so can be considered a "singleton".
 The Instance table has several functions:
 
     instance = {
+      getVersion = function() { ... };
       enumerateDevices = function() { ... };
       asyncWaitForCamera = function(...) { ... };
     }
@@ -762,7 +764,7 @@ and setReleaseSettings() contains the following values:
 
     releaseSettings = {
       saveTarget = Constants.RemoteReleaseControl.saveToCamera;
-      onFinishedTransfer = function(releaseSettings) { ... };
+      onFinishedTransfer = function(self, releaseSettings) { ... };
       outputFilename = "images\IMG_0001.jpg";
     }
 
@@ -815,11 +817,12 @@ This function sets a handler function that is called every time a new
 viewfinder preview image arrives. The callback function receives the preview
 image. The callback function should look as follows:
 
-    callbackFunction = function(viewfinder, image-as-userdata) { ... }
+    callbackFunction = function(self, viewfinder, image-as-userdata) { ... }
 
-The first argument is the viewfinder instance object; it can be used to
-unregister the handler. The second argument is image data as Lua userdata
-object. Unfortunately at the moment you can't do much with the userdata value.
+The first argument is the App object. The second argument is the viewfinder
+instance object; it can be used to unregister the handler. The third argument
+is image data as Lua userdata object. Unfortunately you can't do much with the
+userdata value at the moment.
 
 If no or a nil callback function is passed, the handler is unregistered. To
 receive calls to this callback function, the main thread must give up its
