@@ -11,7 +11,7 @@
 #include "CommandLineParser.hpp"
 #include "Path.hpp"
 #include "FileFinder.hpp"
-#include "../RemotePhotoTool/Exif.hpp"
+#include "Exif.hpp"
 #include <map>
 
 /// main application for generator
