@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2015 Michael Fink
+// Copyright (C) 2008-2016 Michael Fink
 //
 /// \file RemotePhotoTool\MainFrame.hpp Main application frame
 //
@@ -154,54 +154,54 @@ private:
    END_MSG_MAP()
 
 // Handler prototypes (uncomment arguments if needed):
-// LRESULT MessageHandler(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
-// LRESULT CommandHandler(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
-// LRESULT NotifyHandler(int /*idCtrl*/, LPNMHDR /*pnmh*/, BOOL& /*bHandled*/)
+// LRESULT MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+// LRESULT CommandHandler(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+// LRESULT NotifyHandler(int /*idCtrl*/, LPNMHDR /*pnmh*/, BOOL& bHandled)
 
    /// called when main frame is being created
-   LRESULT OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
+   LRESULT OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
    /// called when main frame is being closed by [x]
-   LRESULT OnClose(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
+   LRESULT OnClose(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
    /// called when main frame is being destroyed
-   LRESULT OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& bHandled);
+   LRESULT OnDestroy(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
    /// called when main frame is being resized
-   LRESULT OnSize(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
+   LRESULT OnSize(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
    /// called when main frame is being moved
-   LRESULT OnMove(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
+   LRESULT OnMove(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
    /// called when custom message "lock action mode" is received
-   LRESULT OnLockActionMode(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
+   LRESULT OnLockActionMode(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
    /// called when "File | Exit" menu entry is being selected
-   LRESULT OnFileExit(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   LRESULT OnFileExit(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
    /// called when "View | Menu band" menu entry is being selected
-   LRESULT OnToggleRibbon(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   LRESULT OnToggleRibbon(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
    /// called when "Help | About" menu entry is being selected
-   LRESULT OnAppAbout(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   LRESULT OnAppAbout(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
    /// called when "Home | Connect camera" menu entry is being selected
-   LRESULT OnHomeConnect(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   LRESULT OnHomeConnect(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
    /// called when "Home | Settings" menu entry is being selected
-   LRESULT OnHomeSettings(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   LRESULT OnHomeSettings(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
    /// called when a photo mode menu entry is being selected
-   LRESULT OnPhotoMode(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   LRESULT OnPhotoMode(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
    /// called when "Viewfinder | Show" menu entry is being selected
-   LRESULT OnViewfinderShow(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   LRESULT OnViewfinderShow(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
    /// called when a selection in the ribbon combobox for "save to" camera settings was made
    LRESULT OnCameraSettingsSaveToSelChanged(UI_EXECUTIONVERB verb, WORD wID, UINT uSel, BOOL& bHandled);
    /// called when an entry in "Camera | Save to" submenu entry is being selected
-   LRESULT OnCameraSettingsSaveToRange(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   LRESULT OnCameraSettingsSaveToRange(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
    /// called when a selection in the ribbon combobox for viewfinder lines mode was made
    LRESULT OnViewfinderLinesModeSelChanged(UI_EXECUTIONVERB verb, WORD wID, UINT uSel, BOOL& bHandled);
    /// called when a lines mode in "Viewfinder | Lines mode" submenu entry is being selected
-   LRESULT OnViewfinderLinesModeRange(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   LRESULT OnViewfinderLinesModeRange(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
    /// called when "View | Previous images" menu entry is being selected
-   LRESULT OnPrevImagesShow(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   LRESULT OnPrevImagesShow(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
    /// called when "Previous images | Exit" menu entry is being selected
-   LRESULT OnPrevImagesExit(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   LRESULT OnPrevImagesExit(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
    /// called for every WM_COMMAND message; forwards it to the photo view
-   LRESULT OnForwardCommandMessage(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
+   LRESULT OnForwardCommandMessage(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
    // ribbon framework methods
 

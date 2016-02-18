@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2016 Michael Fink
 //
 /// \file ScriptingPhotoModeView.hpp  Scripting photo mode view
 //
@@ -76,25 +76,25 @@ private:
    END_MSG_MAP()
 
 // Handler prototypes (uncomment arguments if needed):
-// LRESULT MessageHandler(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
-// LRESULT CommandHandler(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
-// LRESULT NotifyHandler(int /*idCtrl*/, LPNMHDR /*pnmh*/, BOOL& /*bHandled*/)
+// LRESULT MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+// LRESULT CommandHandler(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+// LRESULT NotifyHandler(int /*idCtrl*/, LPNMHDR /*pnmh*/, BOOL& bHandled)
 
    /// called when window is destroyed
-   LRESULT OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& bHandled);
+   LRESULT OnDestroy(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
    /// called when menu "Scripting | Open script" is selected
-   LRESULT OnScriptingOpenScript(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   LRESULT OnScriptingOpenScript(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
    /// called when menu "Scripting | Reload script" is selected
-   LRESULT OnScriptingReload(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   LRESULT OnScriptingReload(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
    /// called when menu "Scripting | Run" is selected
-   LRESULT OnScriptingRun(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   LRESULT OnScriptingRun(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
    /// called when menu "Scripting | Stop" is selected
-   LRESULT OnScriptingStop(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   LRESULT OnScriptingStop(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
    /// called when menu "Scripting | Edit script" is selected
-   LRESULT OnScriptingEditScript(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   LRESULT OnScriptingEditScript(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
    /// called when message is sent when execution state has changed
-   LRESULT OnMessageExecutionStateChanged(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
+   LRESULT OnMessageExecutionStateChanged(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
    /// called by Lua scheduler when execution state has changed
    void OnExecutionStateChanged(LuaScheduler::T_enExecutionState enExecutionState);

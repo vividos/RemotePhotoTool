@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2016 Michael Fink
 //
 /// \file SettingsDlg.hpp Settings dialog
 //
@@ -45,19 +45,19 @@ private:
    END_MSG_MAP()
 
    /// called when dialog is being shown
-   LRESULT OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
+   LRESULT OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
    /// called when OK or Cancel button is pressed
-   LRESULT OnCloseCmd(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   LRESULT OnCloseCmd(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
    /// called when button to select Projects folder is pressed
-   LRESULT OnBtnProjectsFolder(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   LRESULT OnBtnProjectsFolder(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
    /// called when checkbox "Logging" is changed
-   LRESULT OnCheckLogFolder(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   LRESULT OnCheckLogFolder(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
    /// called when button to select Log folder is pressed
-   LRESULT OnBtnLogFolder(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   LRESULT OnBtnLogFolder(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
    /// called when button "Detect" for Photomatix is pressed
-   LRESULT OnBtnDetectPhotomatix(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   LRESULT OnBtnDetectPhotomatix(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
    /// called when button "Detect" for Hugin is pressed
-   LRESULT OnBtnDetectHugin(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   LRESULT OnBtnDetectHugin(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
    /// selects new log folder
    void SelectLogFolder();

@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2016 Michael Fink
 //
 /// \file ViewFinderView.hpp View for viewfinder image
 //
@@ -71,28 +71,28 @@ private:
    END_MSG_MAP()
 
 // Handler prototypes (uncomment arguments if needed):
-// LRESULT MessageHandler(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
-// LRESULT CommandHandler(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
-// LRESULT NotifyHandler(int /*idCtrl*/, LPNMHDR /*pnmh*/, BOOL& /*bHandled*/)
+// LRESULT MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+// LRESULT CommandHandler(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+// LRESULT NotifyHandler(int /*idCtrl*/, LPNMHDR /*pnmh*/, BOOL& bHandled)
 
    /// called when view is being shown
-   LRESULT OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
+   LRESULT OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
    /// called at destruction of view
-   LRESULT OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
+   LRESULT OnDestroy(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
    /// called when a horizontal scroll bar (the zoom trackbar) has been changed
-   LRESULT OnHScroll(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
+   LRESULT OnHScroll(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
    /// called when button Auto Focus is pressed
-   LRESULT OnViewfinderAutoFocus(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   LRESULT OnViewfinderAutoFocus(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
    /// called when button Auto White Balance is pressed
-   LRESULT OnViewfinderAutoWhiteBalance(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   LRESULT OnViewfinderAutoWhiteBalance(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
    /// called when zoom out button is pressed
-   LRESULT OnViewfinderZoomOut(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   LRESULT OnViewfinderZoomOut(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
    /// called when zoom in button is pressed
-   LRESULT OnViewfinderZoomIn(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   LRESULT OnViewfinderZoomIn(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
    /// called when button Histogram is pressed
-   LRESULT OnViewfinderHistogram(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   LRESULT OnViewfinderHistogram(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
    /// called when "show overexposed areas" button-checkbox is changed
-   LRESULT OnViewfinderShowOverexposed(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   LRESULT OnViewfinderShowOverexposed(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
    /// sets up viewfinder window
    void SetupViewfinderWindow();
