@@ -811,6 +811,10 @@ void CanonControlLuaBindings::SetAvailImageHandler_OnAvailImageHandler(
    Lua::Table app = GetState().GetTable(_T("App"));
 
    Lua::Value value = app.GetValue(c_pszSetAvailImageHandler_OnAvailImageHandler);
+
+   if (value.GetType() == Lua::Value::typeNil)
+      return; // Lua value already set to nil, but handler still active
+
    if (value.GetType() != Lua::Value::typeFunction)
    {
       m_fnOutputDebugString(_T("Runtime error: callback for setAvailImageHandler() is not a function"));

@@ -332,6 +332,7 @@ App = {
 		viewfinder:setAvailImageHandler(App.onViewfinderImageAvail);
 
 		-- wait for image to arrive, then continue
+		print("Waiting for viewfinder image...\n");
 		local imageWasAvail = self.eventViewfinder:wait(10.0);
 
 		print("Captured " .. (imageWasAvail and "a viewfinder image!" or "no viewfinder image.") .. "\n");
