@@ -281,7 +281,7 @@ void CanonControlLuaBindings::AsyncWaitForCamera_OnCameraConnected()
    Lua::Value value = app.GetValue(c_pszAsyncWaitForCamera_OnConnectedHandler);
    if (value.GetType() != Lua::Value::typeFunction)
    {
-      m_fnOutputDebugString(_T("Runtime error: callback for asyncWaitForCamera() is not a function"));
+      m_fnOutputDebugString(_T("Runtime error: callback for asyncWaitForCamera() is not a function\n"));
       return;
    }
 
@@ -610,7 +610,7 @@ void CanonControlLuaBindings::SetReleaseSettings_OnFinishedTransfer(
 
    if (value.GetType() != Lua::Value::typeFunction)
    {
-      m_fnOutputDebugString(_T("Runtime error: callback for setReleaseSettings() is not a function"));
+      m_fnOutputDebugString(_T("Runtime error: callback for setReleaseSettings() is not a function\n"));
       return;
    }
 
@@ -628,7 +628,7 @@ void CanonControlLuaBindings::SetReleaseSettings_OnFinishedTransfer(
    catch (const Lua::Exception& ex)
    {
       if (m_fnOutputDebugString != nullptr)
-         m_fnOutputDebugString(ex.Message());
+         m_fnOutputDebugString(ex.Message() + _T("\n"));
    }
 }
 
@@ -817,7 +817,7 @@ void CanonControlLuaBindings::SetAvailImageHandler_OnAvailImageHandler(
 
    if (value.GetType() != Lua::Value::typeFunction)
    {
-      m_fnOutputDebugString(_T("Runtime error: callback for setAvailImageHandler() is not a function"));
+      m_fnOutputDebugString(_T("Runtime error: callback for setAvailImageHandler() is not a function\n"));
 
       spViewfinder->SetAvailImageHandler(Viewfinder::T_fnOnAvailViewfinderImage());
       return;
