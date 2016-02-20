@@ -30,6 +30,7 @@ App = {
 				self:checkViewfinder(remoteReleaseControl);
 			end;
 
+			remoteReleaseControl:close();
 			print("Finished.\n\n");
 
 		else

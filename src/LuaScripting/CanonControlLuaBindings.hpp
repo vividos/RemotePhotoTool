@@ -182,6 +182,10 @@ private:
    std::vector<Lua::Value> RemoteReleaseControlStartBulb(
       std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl, Lua::State& state);
 
+   /// local remoteReleaseControl:close()
+   std::vector<Lua::Value> RemoteReleaseControlClose(
+      std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl);
+
    // Viewfinder functions
 
    /// initializes viewfinder table

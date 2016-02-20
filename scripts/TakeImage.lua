@@ -30,6 +30,9 @@ App = {
 				self:releaseShutter(remoteReleaseControl);
 			end;
 
+			remoteReleaseControl:close();
+			print("Finished.\n\n");
+
 		else
 			print("No cameras connected. Exiting.\n");
 		end;

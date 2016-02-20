@@ -494,6 +494,8 @@ void CanonControlLuaBindings::InitRemoteReleaseControlTable(std::shared_ptr<Remo
    remoteReleaseControl.AddFunction("startBulb",
       std::bind(&CanonControlLuaBindings::RemoteReleaseControlStartBulb, shared_from_this(),
          spRemoteReleaseControl, std::placeholders::_1));
+   remoteReleaseControl.AddFunction("close",
+      std::bind(&CanonControlLuaBindings::RemoteReleaseControlClose, shared_from_this(), spRemoteReleaseControl));
 
    // internal values
    Lua::Table app = GetState().GetTable(_T("App"));
@@ -760,6 +762,14 @@ std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlStartBulb(
    vecRetValues.push_back(Lua::Value(bulbReleaseControl));
 
    return vecRetValues;
+}
+
+std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlClose(
+   std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl)
+{
+   spRemoteReleaseControl->Close();
+
+   return std::vector<Lua::Value>();
 }
 
 void CanonControlLuaBindings::InitViewfinderTable(std::shared_ptr<Viewfinder> spViewfinder, Lua::Table& viewfinder)

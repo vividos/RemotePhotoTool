@@ -26,7 +26,6 @@ implement TODOs from source files
 
 Lua scripting
 -------------
-Implement a way to close remote control from script
 Implement waiting for property events
 Viewfinder callback, pass actual viewfinder table
 

@@ -23,6 +23,7 @@ App = {
 
 			self:printSourceInfos(allSourceInfos);
 
+			remoteReleaseControl:close();
 			print("Finished.\n\n");
 
 		else

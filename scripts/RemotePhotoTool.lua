@@ -192,6 +192,8 @@ App = {
 
 		self:checkBulbMode(remoteReleaseControl);
 
+		remoteReleaseControl:close();
+
 	end;
 
 	-- prints all release control capabilities

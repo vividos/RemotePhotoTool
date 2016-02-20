@@ -546,6 +546,9 @@ The RemoteReleaseControl table contains the following functions:
       sendCommand = function(cameraCommand) { ... };
       release = function() { ... };
       startBulb = function() { ... };
+
+      -- cleanup
+      close = function() { ... };
     }
 
 #### boolean RemoteReleaseControl:getCapability(remoteReleaseCapability) ####
@@ -714,6 +717,12 @@ Note that only some of the Canon DSLR cameras support Bulb mode. Use the
 function RemoteReleaseControl:getCapability() with the constant
 Constants.RemoteReleaseControl.capBulbMode to determine if the camera supports
 this mode.
+
+#### RemoteReleaseControl:close() ####
+
+Closes access to remote release control. On some cameras the lens is retracted
+back into the case. Access to the other functions of the RemoteReleaseControl
+table isn't possible anymore.
 
 ### DeviceProperty table ###
 
