@@ -128,6 +128,8 @@ public:
          prERROR_PRSDK_COMPONENTID | prNOT_SUPPORTED, __FILE__, __LINE__);
    }
 
+   virtual void Close() override;
+
 private:
    /// releases shutter; called in worker thread
    void AsyncRelease();

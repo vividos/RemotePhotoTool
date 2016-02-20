@@ -183,4 +183,11 @@ public:
 
    /// starts bulb release; only supported when GetCapability(capBulbMode) returned true
    virtual std::shared_ptr<BulbReleaseControl> StartBulb() = 0;
+
+   ////////////////////////////////////////////////
+   // cleanup
+   ////////////////////////////////////////////////
+
+   /// closes remote release control; no further method calls are possible on this instance
+   virtual void Close() = 0;
 };

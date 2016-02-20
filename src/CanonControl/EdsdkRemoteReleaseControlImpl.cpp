@@ -45,21 +45,37 @@ RemoteReleaseControlImpl::RemoteReleaseControlImpl(std::shared_ptr<SourceDevice>
 
 RemoteReleaseControlImpl::~RemoteReleaseControlImpl() throw()
 {
-   LOG_TRACE(_T("Start unregistering event handler\n"));
-
    m_subjectPropertyEvent.Clear();
    m_subjectStateEvent.Clear();
 
+   LOG_TRACE(_T("Start unregistering event handler\n"));
+
+   try
+   {
+      Close();
+   }
+   catch (...)
+   {
+   }
+
+   LOG_TRACE(_T("Finished unregistering event handler\n"));
+}
+
+void RemoteReleaseControlImpl::Close()
+{
    EdsError err = EdsSetPropertyEventHandler(m_hCamera.Get(), kEdsPropertyEvent_All, nullptr, this);
    LOG_TRACE(_T("EdsSetPropertyEventHandler(ref = %08x, All, nullptr) returned %08x\n"), m_hCamera.Get(), err);
+   EDSDK::CheckError(_T("EdsSetPropertyEventHandler"), err, __FILE__, __LINE__);
 
    err = EdsSetCameraStateEventHandler(m_hCamera.Get(), kEdsStateEvent_All, nullptr, this);
    LOG_TRACE(_T("EdsSetCameraStateEventHandler(ref = %08x, All, nullptr) returned %08x\n"), m_hCamera.Get(), err);
+   EDSDK::CheckError(_T("EdsSetCameraStateEventHandler"), err, __FILE__, __LINE__);
 
    err = EdsSetObjectEventHandler(m_hCamera.Get(), kEdsObjectEvent_All, nullptr, this);
    LOG_TRACE(_T("EdsSetObjectEventHandler(ref = %08x, All, nullptr) returned %08x\n"), m_hCamera.Get(), err);
+   EDSDK::CheckError(_T("EdsSetObjectEventHandler"), err, __FILE__, __LINE__);
 
-   LOG_TRACE(_T("Finished unregistering event handler\n"));
+   m_hCamera = Handle();
 }
 
 EdsError RemoteReleaseControlImpl::OnPropertyChange_(

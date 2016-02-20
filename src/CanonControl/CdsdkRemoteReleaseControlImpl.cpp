@@ -47,6 +47,17 @@ m_releaseControlFaculty(0)
 
 RemoteReleaseControlImpl::~RemoteReleaseControlImpl() throw()
 {
+   try
+   {
+      Close();
+   }
+   catch (...)
+   {
+   }
+}
+
+void RemoteReleaseControlImpl::Close()
+{
    cdHSource hSource = GetSource();
 
    if (m_hEventCallback != 0)
@@ -54,11 +65,13 @@ RemoteReleaseControlImpl::~RemoteReleaseControlImpl() throw()
       cdError err = CDUnregisterEventCallbackFunction(hSource, m_hEventCallback);
       LOG_TRACE(_T("CDUnregisterEventCallbackFunction(%08x, event = %08x) returned %08x\n"),
          hSource, m_hEventCallback, err);
+      CheckError(_T("CDUnregisterEventCallbackFunction"), err, __FILE__, __LINE__);
    }
 
    // may return cdINVALID_HANDLE, cdINVALID_FN_CALL
    cdError err = CDExitReleaseControl(hSource);
    LOG_TRACE(_T("CDExitReleaseControl(%08x) returned %08x\n"), hSource, err);
+   CheckError(_T("CDExitReleaseControl"), err, __FILE__, __LINE__);
 }
 
 bool RemoteReleaseControlImpl::GetCapability(RemoteReleaseControl::T_enRemoteCapability enCapability) const throw()

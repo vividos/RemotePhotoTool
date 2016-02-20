@@ -118,6 +118,8 @@ public:
 
    virtual std::shared_ptr<BulbReleaseControl> StartBulb() override;
 
+   virtual void Close() override;
+
 private:
    /// returns context value used by callback functions
    cdContext GetContext() const throw()

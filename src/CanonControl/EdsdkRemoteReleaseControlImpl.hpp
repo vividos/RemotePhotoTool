@@ -226,6 +226,8 @@ public:
       return std::shared_ptr<BulbReleaseControl>(new BulbReleaseControlImpl(m_hCamera));
    }
 
+   virtual void Close() override;
+
    /// async method to set image property (called in worker thread by SetImageProperty)
    void AsyncSetImageProperty(const ImageProperty& imageProperty);
 

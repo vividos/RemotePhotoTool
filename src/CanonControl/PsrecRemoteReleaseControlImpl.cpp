@@ -89,14 +89,27 @@ RemoteReleaseControlImpl::RemoteReleaseControlImpl(prHandle hCamera, std::shared
 
 RemoteReleaseControlImpl::~RemoteReleaseControlImpl() throw()
 {
+   try
+   {
+      Close();
+   }
+   catch (...)
+   {
+   }
+}
+
+void RemoteReleaseControlImpl::Close()
+{
    // unregister event handler
    // may return prINVALID_FN_CALL, prINVALID_HANDLE or @ERR
    prResponse err = PR_ClearEventCallBack(m_hCamera);
    LOG_TRACE(_T("PR_ClearEventCallBack(%08x) returned %08x\n"), m_hCamera, err);
+   CheckError(_T("PR_ClearEventCallBack"), err, __FILE__, __LINE__);
 
    // may return prINVALID_FN_CALL, prINVALID_HANDLE, prMEM_ALLOC_FAILED or @ERR
    err = PR_TerminateReleaseControl(m_hCamera);
    LOG_TRACE(_T("PR_TerminateReleaseControl(%08x) returned %08x\n"), m_hCamera, err);
+   CheckError(_T("PR_TerminateReleaseControl"), err, __FILE__, __LINE__);
 }
 
 bool RemoteReleaseControlImpl::GetCapability(RemoteReleaseControl::T_enRemoteCapability enCapability) const throw()
