@@ -51,7 +51,9 @@ App = {
 
 		self.event:signal();
 
-		coroutine.yield(self.thread);
+		if (not Sys:isMainThread()) then
+			coroutine.yield(self.thread);
+		end;
 
 	end;
 }
