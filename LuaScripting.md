@@ -32,6 +32,111 @@ implements multithreading, read the chapter "Scheduler". If you want to
 directly dive into programming your camera with Lua, continue with the chapter
 "Camera interface".
 
+## RemotePhotoTool integration ##
+
+The next chapters describe the way how Lua scripting is integrated into the
+RemotePhotoTool applications.
+
+### "Scripting" Photo Mode ###
+
+The main RemotePhotoTool application has several "photo modes" that provide
+different ways to interact with the connected cameras. One of the photo modes
+is the "Scripting" photo mode that lets you load pre-written Lua scripts. All
+other photo modes require a connection to a connected camera, whereas the
+"Scripting" photo mode can be accessed without a connection, too.
+
+The "Scripting" contextual menu band that is available in the "Scripting" photo
+mode offers several commands:
+
+- Open: Opens a Lua script file (extension .lua) into the main view.
+- Reload: Reloads a Lua script, e.g. when editing with an external editor.
+- Run: Starts the currently loaded script.
+- Stop: Stops the currently loaded script, resetting script execution.
+- Edit: Starts the RemoteScriptingEditor application.
+
+The main view of the photo mode shows the read-only Lua script that is loaded.
+Editing of the script is possible using the "Edit" menu command that starts the
+RemoteScriptingEditor application, or with any other editor of your choice.
+Remember to reload the script when editing the file with another editor. Note
+that after editing using the "Edit" menu command, the file is reloaded
+automatically. 
+
+Below the main view there is an "Output" window that shows script output and
+error messages. It can be resized to see more of the output text.
+
+The status bar of the application offers a pane on the right end of the bar, to
+show the status of the script. The status of the script represents exactly the
+states that the Scheduler is in. Refer to the chapter "Scheduler" above about
+what possible states there are.
+
+### RemoteScriptingEditor ###
+
+The RemoteScriptingEditor is a standalone application that can be used to
+write, run and test Lua scripts. The application can be started in the
+"Scripting" photo mode using the "Edit" command, or can be started using the
+Program menu short cut in the Windows Start menu.
+
+The menu band (also called "ribbon") offer several commands. Possible keyboard
+short cuts for the commands are shown below the command text.
+
+The "File" tab offers a menu to access files, and also offers an "Exit" option
+to exit the application. You can also exit the application using the [x] in the
+title bar, or by double-clicking on the application icon in the title bar. The
+tab also shows a list of "Recent Files" that were opened before. 
+
+The "Home" tab contains multiple groups of commands. The commands in the "File"
+group do the following:
+
+- New: Creates a new empty Lua script in the main view.
+- Open: Opens a Lua script file (extension .lua) into the main view.
+- Save: Saves a modified Lua script with the name used while opening. When the
+  file wasn't saved before, the file name must be entered in the file save
+  dialog.
+- Save As: Saves a modified Lua script with another file name.
+
+The menu band commands in the "Edit" group do the following:
+
+- Paste: Inserts previously copied or cut text from the clipboard.
+- Cut: Cuts out text and moves it to the clipboard.
+- Copy: Copies text to the clipboard.
+- Select All: Selects all text in the editor.
+- Undo: Undoes the last editing step, such as clipboard commands or key
+  strokes.
+- Redo: Re-does previously undone editing steps, effectively maintaining a
+  sort of "editing history".
+
+The menu band commands in the "Find" group do the following:
+
+- Find: Starts a dialog where text to find can be entered.
+- Find Next: After finding the first occurrence of a text, use this to find
+  further occurrences.
+- Replace: Starts a dialog where text to replace with alternative text can be
+  entered.
+
+The menu band commands in the "Run" group do the following:
+
+- Run: Starts the currently loaded script.
+- Stop: Stops the currently loaded script, resetting script execution.
+
+The menu band commands in the "View" group do the following:
+
+- Menu band: Switches from the menu band ("ribbon") view to the classic
+  application menu.
+- Output pane: Toggles showing/hiding the output window below the main view.
+
+The main view of the application shows the Lua script that is currently loaded.
+It can be edited using the keyboard, context menu commands and the menu band
+commands. Line numbers are shown on the left side, so that error messages with
+Lua script line numbers can be matched to the correct script line.
+
+Below the main view there is an "Output" window that shows script output and
+error messages. It can be resized to see more of the output text.
+
+The status bar of the application offers a pane on the right end of the bar, to
+show the status of the script. The status of the script represents exactly the
+states that the Scheduler is in. Refer to the chapter "Scheduler" above about
+what possible states there are.
+
 ## Lua quick reference ##
 
 Here's a quick introduction to the Lua scripting language, in case you want to
@@ -50,7 +155,7 @@ in other languages.
 
 The function type can be used to pass around functions to be called, and are
 also used for bindings to C++ functions. Functions assigned to variables
-capture the values from their envoriment they use, so that the values are
+capture the values from their environment they use, so that the values are
 available once the function is called.
 
     function transmogrify(a, b) -- specifies a function
@@ -215,67 +320,494 @@ connected and is available.
 
     instance:asyncWaitForCamera(App.onConnected);
 
-TODO
+The onConnected function is called with the "App" as only parameter. You can
+then retrieve the list of devices using enumerateDevices(), as shown before.
+The callback function may be also called when a disconnects, so be sure to
+check the length of the list of cameras.
 
-## RemotePhotoTool integration ##
+The list of cameras consist of a list of SourceInfo tables that list some
+information about the device, such as name and deviceId:
 
-TODO
+    for idx = 1, allSourceInfos.length, 1 do
+    	local sourceInfo = allSourceInfos[idx];
+    	print("Camera #" .. idx .. ": " .. sourceInfo.name ..
+			", device id: " .. deviceId .. "\n");
+	end;
 
-### "Scripting" Photo Mode ###
+At this stage the camera isn't connected yet and can't be queried. The open()
+function of the SourceInfo table object opens the camera for access:
 
-TODO
+	local sourceDevice = sourceInfo:open();
 
-### RemoteScriptingEditor ###
+Now the script can access infos about the camera, such as capabilities, device
+properties and other infos. 
 
-TODO
+	local capRemoteReleaseControl = sourceDevice:getDeviceCapability(
+		Constants.SourceDevice.capRemoteReleaseControl);
+
+	print("   can remote release shutter: " ..
+		(capRemoteReleaseControl and "yes" or "no") .. "\n");
+
+Here's how to enumerate device properties:
+
+	local devicePropertyList = sourceDevice:enumDeviceProperties();
+
+	for idx = 1, devicePropertyList.length, 1 do
+		local devicePropertyId = devicePropertyList[idx];
+
+		local deviceProperty = sourceDevice:getDeviceProperty(devicePropertyId);
+
+		-- do something with deviceProperty
+
+		end;
+	end;
+
+To actually control the camera, you first have to enter "remote release
+control". Some cameras extend their lens only at this stage of connection:
+
+	local remoteReleaseControl = sourceDevice:enterReleaseControl();
+
+	remoteReleaseControl:release();
+
+The RemoteReleaseControl offers many informations and ways to control the
+camera, including:
+
+- Reading and setting image properties (properties that affect the final image)
+- sending commands, e.g. to adjust the auto focus
+- setting "shutter release" settings
+- pressing the shutter release button
+- accessing live viewfinder images
+- starting bulb shooting (if supported by the camera) 
+
+See the reference description for the RemoteReleaseControl table object for a
+complete overview of the functions available, or study the examples available
+with RemotePhotoTool. 
 
 ## Examples ##
 
-The examples... TODO
+The example scripts provided with RemotePhotoTool show all functions that are
+currently possible with Lua scripting. You can use these as starting places and
+can extend the scripts, or you can learn about how the many functions available
+to the Lua scripts are used correctly.
 
-Note that you can always look up functions and table-object structures in the
-Reference chapter, below.
+Note that you can always look up functions and table-object structures that are
+used in the examples, in the Reference chapter below.
 
 The examples shown here as excepts are also available as complete and
 standalone Lua scripts that you can download and modify. The scripts are
 stored at GitHub:
 [https://github.com/vividos/RemotePhotoTool/tree/master/scripts](https://github.com/vividos/RemotePhotoTool/tree/master/scripts "")
 
-### Reading device and image properties ###
-
-PrintProperties.lua
-
-TODO
+The remainder of this chapter describes the different Lua example scripts and
+highlight the code that is essential for using the scripts.
 
 ### Waiting for cameras to connect ###
 
-WaitForCamera.lua
+**WaitForCamera.lua**
 
-TODO
+Usually the camera may not be connected via USB yet, so there's the possibility
+to wait for an updated of the connected cameras list.
+
+This creates an event to wait for an actual camera to connect, and starts
+waiting for a camera by registering a handler (onConnected):
+
+	self.eventCameraConnect = Sys:createEvent();
+
+	instance:asyncWaitForCamera(App.onConnected);
+
+Note that the handler is only called when our Lua script isn't running code,
+but does the following:
+
+- the script is waiting on an event
+- the script's App.run() function has exited, or
+- the script has yielded
+
+As we have set up an event to wait for a camera to connect, wait for it:
+
+	-- only waits for some seconds, then exists
+	local ret = self.eventCameraConnect:wait(15.0);
+	if (ret == false) then
+		print("No camera connected for 15.0 seconds; exiting.\n");
+	end;
+
+In case we wait for 15 seconds, but the event is never "signaled" (e.g. was set
+by another thread), print a message before exiting.
+
+The handler function can be defined like this:
+
+	onConnected = function(self)
+
+		local instance = Sys:getInstance();
+		local allSourceInfos = instance:enumerateDevices();
+
+		-- more code here
+
+	end;
+
+Since the list of source infos that enumerateDevices() can be empty, we have
+to check for this case: 
+
+	if (allSourceInfos ~= nil and allSourceInfos.length > 0) then
+
+		-- more code here
+
+	else
+		print("No cameras connected. Continue waiting...\n");
+	end;
+
+In the case where the list is empty, we just continue waiting. When the list
+isn't empty, we can examine the list further. However, we first un-register the
+handler again, so that the handler doesn't get called multiple times:
+
+	instance:asyncWaitForCamera(); 
+
+	-- now do something with the list of cameras, e.g. printing properties
+
+	print("Finished.\n\n");
+
+As last step in the onConnect() function, we signal our main thread of
+execution that there was actually a camera connected:
+
+	-- signal finished handler
+	self.eventCameraConnect:signal();
+
+When our handler exits, the wait() call on the eventCameraConnect object
+returns, and the return code can be examined, as mentioned above. 
+
+### Reading device and image properties ###
+
+**PrintProperties.lua**
+
+Once you have a SourceDevice table object, you can check the capabilities of
+the device and enumerate the device properties.
+
+	local sourceDevice = sourceInfo:open();
+
+	print("   model name: " .. sourceDevice.modelName .. "\n");
+	print("   serial no: " .. sourceDevice.serialNumber .. "\n");
+
+The device capabilities describe if a camera has some specific function: 
+
+	local capRemoteReleaseControl = sourceDevice:getDeviceCapability(
+		Constants.SourceDevice.capRemoteReleaseControl);
+
+	print("   can remote release shutter: " ..
+		(capRemoteReleaseControl and "yes" or "no") .. "\n");
+
+	local capRemoteViewfinder = sourceDevice:getDeviceCapability(
+		Constants.SourceDevice.capRemoteViewfinder);
+
+	print("   can show viewfinder: " ..
+		(capRemoteViewfinder and "yes" or "no") .. "\n");
+
+Based on the device capabilities you should decide if a camera can use a
+functionality or not.
+
+The device properties can be enumerated and listed this way:
+
+	local devicePropertyList = sourceDevice:enumDeviceProperties();
+
+	if (devicePropertyList and devicePropertyList.length > 0) then
+
+		print("   number of device properties: " ..
+			devicePropertyList.length .. "\n");
+
+		for idx = 1, devicePropertyList.length, 1 do
+
+			local devicePropertyId = devicePropertyList[idx];
+
+			local prop = sourceDevice:getDeviceProperty(devicePropertyId);
+
+			print("   property: id=" .. prop.id ..
+				", name=\"" .. prop.name ..
+				"\", value=\"" .. prop.asString ..
+				"\", readonly=" .. (prop.isReadOnly and "yes" or "no") .. "\n");
+		end;
+	end;
+
+Device properties are values that are stored in the camera, but usually don't
+have an influence in the parameters when taking a photo. See image properties
+below.
+
 
 ### Take an image ###
 
-TakeImage.lua
+**TakeImage.lua**
 
-TODO
+To actually take an image using the connected camera, get the "remote release
+control" table object first, when you have a SourceDevice object:
+
+	local remoteReleaseControl = sourceDevice:enterReleaseControl();
+
+In this script, we have a dedicated openCamera() function that takes a
+sourceInfo table object, checks the device capabilities, enters the "release
+control" mode and returns the resulting RemoteReleaseControl table object. You
+can use this convenience function to save a bit of typing.
+
+	-- opens the camera to take images
+	openCamera = function(self, sourceInfo)
+
+		print("Opening camera " .. sourceInfo.name .. "\n");
+
+		local sourceDevice = sourceInfo:open();
+
+		local capRemoteReleaseControl = sourceDevice:getDeviceCapability(
+			Constants.SourceDevice.capRemoteReleaseControl);
+
+		if (not capRemoteReleaseControl) then
+			print("Camera can't be remote controlled!");
+			return nil;
+		end;
+
+		local remoteReleaseControl = sourceDevice:enterReleaseControl();
+
+		return remoteReleaseControl;
+	end;
+
+Now that you have the remoteReleaseControl object, you can prepare taking an
+image by setting "release settings"; first get the current settings:
+
+	local releaseSettings = remoteReleaseControl:getReleaseSettings();
+
+Setting saveTarget determines where the images are stored; see the reference
+for possible values of this constant:
+
+	releaseSettings.saveTarget = Constants.RemoteReleaseControl.saveToHost;
+
+We also need a file name that the output file should get, when transferred to
+the host. Note that when the image is only stored on the camera, the file name
+is ignored.  
+
+	local randomName = math.random(1, 9999);
+	releaseSettings.outputFilename = "IMG_" .. randomName .. ".jpg";
+
+As last value before storing the settings, we register a handler function that
+is called when transfer of an image has finished:
+
+	releaseSettings.onFinishedTransfer = App.onFinishedTransfer;
+
+	remoteReleaseControl:setReleaseSettings(releaseSettings);
+
+Now we can send commands, e.g. for adjusting auto focus:
+
+	remoteReleaseControl:sendCommand(
+		Constants.RemoteReleaseControl.commandAdjustFocus);
+
+And finally we can virtually press the shutter release button: 
+
+	remoteReleaseControl:release();
+
+Note that the release() function immediately returns, as the "shutter release"
+is done asynchronously.
+
+The handler function we previously set, can look like this:
+
+	onFinishedTransfer = function(self, releaseSettings)
+
+		print("Received image: " .. releaseSettings.outputFilename .. "\n");
+
+		self.eventFinishedTransfer:signal();
+
+	end;
+
+The releaseSettings object is a copy of the settings we previously set, above.
+The function uses an event to signal that the image has been transferred, in
+the same way as when waiting for a camera. For this to work, we create an event
+object (it's best to create it before the release() call:
+
+	self.eventFinishedTransfer = Sys:createEvent();
+
+After the release() call (which returns immediately, not waiting for the photo
+to be taken, we just wait for the event to be signaled:
+
+	local result = self.eventFinishedTransfer:wait(10.0);
+
+	print(result and "Finished.\n" or "Failed waiting for image.\n");
+
+After waiting, we could finish the script, or we could take another image, or
+whatever is being desired to do. Once you're not interested in the event that
+an image has been transferred, reset the handler function like this:
+
+	local releaseSettings = remoteReleaseControl:getReleaseSettings();
+
+	releaseSettings.onFinishedTransfer = nil;
+
+	remoteReleaseControl:setReleaseSettings(releaseSettings);
+
+When you're done with controlling the camera, you can quit the "release
+control" mode again:
+ 
+	remoteReleaseControl:close();
+
+On some cameras, this causes the lens to retract into the camera case again. 
 
 ### Receiving viewfinder image data ###
 
-Viewfinder.lua
+**Viewfinder.lua**
 
-TODO
+The live viewfinder of most cameras can be used to fetch live images from the
+camera. On DSLR cameras the mirror is locked up, which may consume more battery
+power than just taking images.
+
+Note that the viewfinder can be used to implement "mirror lockup" on DSLR
+cameras, by activating viewfinder, waiting for some fractions of seconds, then
+take a photo. This may be useful for long exposure images.
+
+To use the viewfinder, you must already have entered the "release control" mode
+by getting the RemoteReleaseControl table object:
+
+	local remoteReleaseControl = sourceDevice:enterReleaseControl();
+
+Once again you could use the openCamera() function mentioned above.
+
+We first check the capabilities, if viewfinder operations are supported at all:
+
+	local capViewfinder = remoteReleaseControl:getCapability(
+		Constants.RemoteReleaseControl.capViewfinder);
+
+	if (not capViewfinder) then
+		print("Viewfinder not supported by this camera.");
+		return;
+	end;
+
+Then we can start the live viewfinder:
+
+	local viewfinder = remoteReleaseControl:startViewfinder();
+
+Again there is a handler function involved that is called when a new viewfinder
+image is transferred from the camera. We also create an event to signal our
+main thread once an image arrived:
+
+	self.eventViewfinder = Sys:createEvent();
+
+	viewfinder:setAvailImageHandler(App.onViewfinderImageAvail);
+
+The handler function we previously set, can look like this:
+
+	onViewfinderImageAvail = function(self, viewfinder, imageData)
+
+		print("Received an image from viewfinder\n");
+
+		-- unregister handler
+		viewfinder:setAvailImageHandler();
+
+		self.eventViewfinder:signal();
+
+	end;
+
+It receives the App object in the first parameter, a copy of the viewfinder
+table object in the second, and the image data in the third.
+
+The viewfinder object can be used to unregister the handler, as shown.
+
+The imageData object is a Lua userdata object that wraps the actual data bytes.
+Unfortunately at the moment you can't do much with this data. The data block
+contains JPEG image data.
+
+The remainder of the main function (after calling startViewfinder()) just waits
+for the event that we registered before:
+
+	local imageWasAvail = self.eventViewfinder:wait(10.0);
+
+	print("Captured " .. (imageWasAvail and "a viewfinder image!" or "no viewfinder image.") .. "\n");
+
+There is currently no way to stop the live viewfinder. You can set the
+viewfinder object to nil and call the Lua garbage collector (Lua built-in
+function collectgarbage()) to clean it up.
 
 ### Cooperative multithreading ###
 
-Multithreading.lua
+**Multithreading.lua**
 
-TODO
+This script doesn't interact with a camera, but should demonstrate the behavior
+of the Lua scripting Scheduler object when running multiple threads of
+execution, which are executed co-operatively.
+
+There is a distinction if we are running on the main thread (the one that
+starts by running in App.run():
+
+	App = {
+		run = function(self)
+
+			print("on main thread: " ..
+				(Sys:isMainThread() and "yes" or "no") .. "\n");
+
+			-- more code here
+
+		end;
+	}
+
+First we create an event object to play around with it:
+
+	self.event = Sys:createEvent();
+
+The self parameter of the run() function (and all further functions) is always
+the App object itself.
+
+We also define another function that should run on another thread of execution:
+
+	threadFunc = function(self)
+
+		print("on main thread: " .. (Sys:isMainThread() and "yes" or "no") .. "\n");
+
+		self.event:signal();
+
+		if (not Sys:isMainThread()) then
+			coroutine.yield(self.thread);
+		end;
+
+	end;
+
+The function first outputs if it's on the main thread (which depends on how we
+call it). Then it signals the event we created before. The last statement
+leaves the function by yielding when not on the main thread. We get to that
+soon.
+
+Now when we would call the threadFunc() function on our main thread (go ahead
+and try it out in the RemoteScriptingEditor!), it would first print "yes", then
+would signal the event, then return normally.
+
+Lua has some built-in libraries, and one of them is called "coroutine". It
+enables us to start "threads of execution" separately from the main thread.
+First, a coroutine object is created, by passing a function to
+coroutine.create(), like this: 
+
+	self.thread = coroutine.create(self.threadFunc);
+
+The returned object is a thread object that can be resumed:
+
+	coroutine.resume(self.thread, self);
+
+The second parameter is passed on to the threadFunc() function. The resume()
+call pauses the main thread and starts to execute the thread by calling
+threadFunc(), but not on the main thread anymore.
+
+Our function would print "no", as it's not on the main thread anymore, then
+would signal the event by calling signal(), and then calling coroutine.yield(),
+which temporarily stops the thread again. The thread becomes "yielded" and can
+be activated again using coroutine.resume().
+
+When we would instead exited the threadFunc() function normally, the thread
+would become "finished", and when resumed with coroutine.resume() would restart
+the function at the beginning.
+
+The next script code in the main thread is:
+
+	local ret = self.event:wait(10.0);
+
+We just wait there for the event to be signaled, which should be done when the
+threadFunc() function runs.
+
+Internally the wait() function also uses the same function that the coroutine
+library uses to start, resume and yield threads.
 
 ### The all-in-one script ###
 
-RemotePhotoTool.lua
+**RemotePhotoTool.lua**
 
-TODO
+This script is a combination of all previous scripts and ties all functions
+together. The example script isn't discussed further, see the different scripts
+above for examples of the individual functions.
 
 ## Reference ##
 
