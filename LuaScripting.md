@@ -228,6 +228,11 @@ Some notes about the language:
 
     local text = (i % 1) and "odd" or "even"
 
+You can also look at the following example Lua script, and you can use it to
+play around with the Lua language itself:
+
+[LuaQuickReference.lua](https://github.com/vividos/RemotePhotoTool/blob/master/scripts/LuaQuickReference.lua "")
+
 ### Scheduler ###
 
 The Lua language runtime uses a scheduler to run scripts. This is done to
@@ -403,7 +408,7 @@ highlight the code that is essential for using the scripts.
 
 ### Waiting for cameras to connect ###
 
-**WaitForCamera.lua**
+[WaitForCamera.lua](https://github.com/vividos/RemotePhotoTool/blob/master/scripts/WaitForCamera.lua "")
 
 Usually the camera may not be connected via USB yet, so there's the possibility
 to wait for an updated of the connected cameras list.
@@ -476,7 +481,7 @@ returns, and the return code can be examined, as mentioned above.
 
 ### Reading device and image properties ###
 
-**PrintProperties.lua**
+[PrintProperties.lua](https://github.com/vividos/RemotePhotoTool/blob/master/scripts/PrintProperties.lua "")
 
 Once you have a SourceDevice table object, you can check the capabilities of
 the device and enumerate the device properties.
@@ -532,7 +537,7 @@ below.
 
 ### Take an image ###
 
-**TakeImage.lua**
+[TakeImage.lua](https://github.com/vividos/RemotePhotoTool/blob/master/scripts/TakeImage.lua "")
 
 To actually take an image using the connected camera, get the "remote release
 control" table object first, when you have a SourceDevice object:
@@ -643,7 +648,7 @@ On some cameras, this causes the lens to retract into the camera case again.
 
 ### Receiving viewfinder image data ###
 
-**Viewfinder.lua**
+[Viewfinder.lua](https://github.com/vividos/RemotePhotoTool/blob/master/scripts/Viewfinder.lua "")
 
 The live viewfinder of most cameras can be used to fetch live images from the
 camera. On DSLR cameras the mirror is locked up, which may consume more battery
@@ -717,7 +722,7 @@ function collectgarbage()) to clean it up.
 
 ### Cooperative multithreading ###
 
-**Multithreading.lua**
+[Multithreading.lua](https://github.com/vividos/RemotePhotoTool/blob/master/scripts/Multithreading.lua "")
 
 This script doesn't interact with a camera, but should demonstrate the behavior
 of the Lua scripting Scheduler object when running multiple threads of
@@ -803,7 +808,7 @@ library uses to start, resume and yield threads.
 
 ### The all-in-one script ###
 
-**RemotePhotoTool.lua**
+[RemotePhotoTool.lua](https://github.com/vividos/RemotePhotoTool/blob/master/scripts/RemotePhotoTool.lua "")
 
 This script is a combination of all previous scripts and ties all functions
 together. The example script isn't discussed further, see the different scripts
