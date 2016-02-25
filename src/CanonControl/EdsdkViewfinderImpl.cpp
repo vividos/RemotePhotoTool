@@ -54,22 +54,27 @@ ViewfinderImpl::~ViewfinderImpl() throw()
       // be called before reset()ing a shared ptr to this class.
       //StopBackgroundThread();
 
-      // clear live view flag in property
-      PropertyAccess p(m_hSourceDevice);
-
-      Variant vDevice = p.Get(kEdsPropID_Evf_OutputDevice);
-      ATLASSERT(vDevice.Type() == Variant::typeUInt32);
-
-      unsigned int device = vDevice.Get<unsigned int>();
-      device &= ~kEdsEvfOutputDevice_PC;
-
-      vDevice.Set(device);
-
-      p.Set(kEdsPropID_Evf_OutputDevice, vDevice);
+      Close();
    }
    catch(...)
    {
    }
+}
+
+void ViewfinderImpl::Close()
+{
+   // clear live view flag in property
+   PropertyAccess p(m_hSourceDevice);
+
+   Variant vDevice = p.Get(kEdsPropID_Evf_OutputDevice);
+   ATLASSERT(vDevice.Type() == Variant::typeUInt32);
+
+   unsigned int device = vDevice.Get<unsigned int>();
+   device &= ~kEdsEvfOutputDevice_PC;
+
+   vDevice.Set(device);
+
+   p.Set(kEdsPropID_Evf_OutputDevice, vDevice);
 }
 
 void ViewfinderImpl::SetAvailImageHandler(Viewfinder::T_fnOnAvailViewfinderImage fnOnAvailViewfinderImage)

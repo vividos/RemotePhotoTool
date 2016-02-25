@@ -32,6 +32,8 @@ public:
 
    virtual void SetAvailImageHandler(Viewfinder::T_fnOnAvailViewfinderImage fnOnAvailViewfinderImage) override;
 
+   virtual void Close() override;
+
 private:
    /// starts background thread to fetch images
    void StartBackgroundThread();

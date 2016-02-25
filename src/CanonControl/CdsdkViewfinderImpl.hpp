@@ -38,18 +38,15 @@ public:
    /// dtor
    virtual ~ViewfinderImpl() throw()
    {
-      // disable handler
       try
       {
          SetAvailImageHandler(Viewfinder::T_fnOnAvailViewfinderImage());
+
+         Close();
       }
       catch (...)
       {
       }
-
-      // may return cdINVALID_HANDLE, cdINVALID_FN_CALL
-      cdError err = CDTermViewfinder(GetSource());
-      LOG_TRACE(_T("CDTermViewfinder(%08x) returned %08x\n"), GetSource(), err);
    }
 
    virtual void SetAvailImageHandler(Viewfinder::T_fnOnAvailViewfinderImage fnOnAvailViewfinderImage) override
@@ -57,6 +54,14 @@ public:
       LightweightMutex::LockType lock(m_mtxFnOnAvailViewfinderImage);
 
       m_fnOnAvailViewfinderImage = fnOnAvailViewfinderImage;
+   }
+
+   virtual void Close() override
+   {
+      // may return cdINVALID_HANDLE, cdINVALID_FN_CALL
+      cdError err = CDTermViewfinder(GetSource());
+      LOG_TRACE(_T("CDTermViewfinder(%08x) returned %08x\n"), GetSource(), err);
+      CheckError(_T("CDTermViewfinder"), err, __FILE__, __LINE__);
    }
 
 private:

@@ -21,4 +21,7 @@ public:
 
    /// sets (or resets) viewfinder callback
    virtual void SetAvailImageHandler(T_fnOnAvailViewfinderImage fnOnAvailViewfinderImage = T_fnOnAvailViewfinderImage()) = 0;
+
+   /// closes viewfinder
+   virtual void Close() = 0;
 };

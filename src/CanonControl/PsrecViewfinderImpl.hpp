@@ -35,18 +35,15 @@ public:
    /// dtor
    virtual ~ViewfinderImpl() throw()
    {
-      // disable handler
       try
       {
          SetAvailImageHandler(Viewfinder::T_fnOnAvailViewfinderImage());
+
+         Close();
       }
       catch (...)
       {
       }
-
-      // may return prINVALID_FN_CALL, prINVALID_HANDLE, prMEM_ALLOC_FAILED or @ERR
-      prResponse err = PR_RC_TermViewFinder(m_hCamera);
-      LOG_TRACE(_T("PR_RC_TermViewFinder(%08x) returned %08x\n"), m_hCamera, err);
    }
 
    virtual void SetAvailImageHandler(Viewfinder::T_fnOnAvailViewfinderImage fnOnAvailViewfinderImage) override
@@ -54,6 +51,14 @@ public:
       LightweightMutex::LockType lock(m_mtxFnOnAvailViewfinderImage);
 
       m_fnOnAvailViewfinderImage = fnOnAvailViewfinderImage;
+   }
+
+   virtual void Close() override
+   {
+      // may return prINVALID_FN_CALL, prINVALID_HANDLE, prMEM_ALLOC_FAILED or @ERR
+      prResponse err = PR_RC_TermViewFinder(m_hCamera);
+      LOG_TRACE(_T("PR_RC_TermViewFinder(%08x) returned %08x\n"), m_hCamera, err);
+      CheckError(_T("PR_RC_TermViewFinder"), err, __FILE__, __LINE__);
    }
 
 private:
