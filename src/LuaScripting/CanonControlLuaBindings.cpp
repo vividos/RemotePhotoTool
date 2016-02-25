@@ -777,6 +777,10 @@ void CanonControlLuaBindings::InitViewfinderTable(std::shared_ptr<Viewfinder> sp
    viewfinder.AddFunction("setAvailImageHandler",
       std::bind(&CanonControlLuaBindings::ViewfinderSetAvailImageHandler, shared_from_this(), spViewfinder,
          std::placeholders::_1, std::placeholders::_2));
+
+   viewfinder.AddFunction("close",
+      std::bind(&CanonControlLuaBindings::ViewfinderClose, shared_from_this(), spViewfinder,
+         std::placeholders::_1, std::placeholders::_2));
 }
 
 std::vector<Lua::Value> CanonControlLuaBindings::ViewfinderSetAvailImageHandler(
@@ -860,6 +864,17 @@ void CanonControlLuaBindings::SetAvailImageHandler_OnAvailImageHandler(
       // unregister handler to not receive any more events, which may also end in an error
       spViewfinder->SetAvailImageHandler(Viewfinder::T_fnOnAvailViewfinderImage());
    }
+}
+
+std::vector<Lua::Value> CanonControlLuaBindings::ViewfinderClose(std::shared_ptr<Viewfinder> spViewfinder,
+   Lua::State& state, const std::vector<Lua::Value>& vecParams)
+{
+   if (vecParams[0].GetType() != Lua::Value::typeTable)
+      throw Lua::Exception(_T("viewfinder:setAvailImageHandler() was passed an illegal 'self' value"), state.GetState(), __FILE__, __LINE__);
+
+   spViewfinder->Close();
+
+   return std::vector<Lua::Value>();
 }
 
 void CanonControlLuaBindings::InitBulbReleaseControlTable(std::shared_ptr<BulbReleaseControl> spBulbReleaseControl, Lua::Table& bulbReleaseControl)

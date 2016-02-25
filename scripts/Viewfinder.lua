@@ -81,6 +81,8 @@ App = {
 
 		print("Captured " .. (imageWasAvail and "a viewfinder image!" or "no viewfinder image.") .. "\n");
 
+		viewfinder:close();
+
 	end;
 
 	-- called when a viewfinder image has been sent

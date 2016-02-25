@@ -716,9 +716,11 @@ for the event that we registered before:
 
 	print("Captured " .. (imageWasAvail and "a viewfinder image!" or "no viewfinder image.") .. "\n");
 
-There is currently no way to stop the live viewfinder. You can set the
-viewfinder object to nil and call the Lua garbage collector (Lua built-in
-function collectgarbage()) to clean it up.
+To stop the viewfinder, you can do this:
+
+	viewfinder:close();
+
+After the close call no handler can be set anymore.
 
 ### Cooperative multithreading ###
 
@@ -1354,7 +1356,8 @@ The following constants can be used for saveTarget:
 The Viewfinder table contains the following functions:
 
     viewfinder = {
-      setAvailImageHandler = function([callbackFunction]);
+      setAvailImageHandler = function([callbackFunction]) { ... };
+      close = function() { ... };
     }
 
 #### Viewfinder:setAvailImageHandler([callbackFunction]) ####
@@ -1374,6 +1377,12 @@ If no or a nil callback function is passed, the handler is unregistered. To
 receive calls to this callback function, the main thread must give up its
 execution. For more infos about asynchronous functions, see the chapter about
 the Scheduler above.
+
+#### Viewfinder:close() ####
+
+The function stops the live viewfinder, and the registered callback function
+isn't called anymore. No other operations on the viewfinder object can be done
+either.
 
 ### BulbReleaseControl table ###
 

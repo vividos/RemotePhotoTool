@@ -199,6 +199,10 @@ private:
    void SetAvailImageHandler_OnAvailImageHandler(std::shared_ptr<Viewfinder> spViewfinder,
       const std::vector<BYTE>& vecImage);
 
+   /// called to close viewfinder
+   std::vector<Lua::Value> ViewfinderClose(std::shared_ptr<Viewfinder> spViewfinder,
+      Lua::State& state, const std::vector<Lua::Value>& vecParams);
+
    // Bulb functions
 
    /// initizalizes BulbReleaseControl table
