@@ -170,6 +170,9 @@ private:
    /// increases reference count of object ref in h
    void Retain(const Handle& h)
    {
+      if (h.m_objRef == 0)
+         return; // null handle doesn't need to be retained
+
       EdsUInt32 uiCount = EdsRetain(h.m_objRef);
       //LOG_TRACE(_T("EdsRetain(%08x) returned %i\n"), h.m_objRef, uiCount);
       if (uiCount == 0xFFFFFFFF)
@@ -183,7 +186,7 @@ private:
    void Release()
    {
       if (m_objRef == 0)
-         return;
+         return; // null handle doesn't need to be released
 
       EdsUInt32 uiCount = EdsRelease(m_objRef);
       //LOG_TRACE(_T("EdsRelease(%08x) returned %i\n"), m_objRef, uiCount);
