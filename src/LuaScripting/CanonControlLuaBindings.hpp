@@ -67,8 +67,14 @@ private:
    /// inits constants for RemoteReleaseControl
    void InitRemoteReleaseControlConstants(Lua::Table& constants);
 
+   /// restarts timer for event handling
+   void RestartEventTimer();
+
    /// cleans up all bindings
    void CleanupBindings();
+
+   /// handler for timer used for event handling
+   void OnTimerEventHandling(const boost::system::error_code& error);
 
    // Sys functions
 
@@ -238,4 +244,7 @@ private:
 
    /// mutex to protect AsyncWaitForCamera() handler to call Lua script multiple times
    RecursiveMutex m_mtxAsyncWaitForCamera_InScript;
+
+   /// timer for event handling
+   boost::asio::deadline_timer m_timerEventHandling;
 };

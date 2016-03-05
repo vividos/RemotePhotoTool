@@ -25,9 +25,13 @@ LPCTSTR c_pszSetAvailImageHandler_OnAvailImageHandler = _T("__SetAvailImageHandl
 /// name for onFinishedTransfer function stored in RemoteReleaseControl table
 LPCTSTR c_pszReleaseSettingsOnFinishedTransfer = _T("__ReleaseSettings_OnFinishedTransfer");
 
+/// cycle time for event timer
+const unsigned int c_uiEventTimerCycleInMilliseconds = 100;
+
 CanonControlLuaBindings::CanonControlLuaBindings(Lua::State& state, boost::asio::io_service::strand& strand)
 :m_state(state),
-m_strand(strand)
+m_strand(strand),
+m_timerEventHandling(m_strand.get_io_service())
 {
 }
 
@@ -64,6 +68,8 @@ void CanonControlLuaBindings::InitBindings()
          std::placeholders::_1));
 
    InitConstants();
+
+   RestartEventTimer();
 }
 
 void CanonControlLuaBindings::InitConstants()
@@ -139,6 +145,24 @@ void CanonControlLuaBindings::InitRemoteReleaseControlConstants(Lua::Table& cons
    constants.AddValue(_T("RemoteReleaseControl"), Lua::Value(remoteReleaseControl));
 }
 
+void CanonControlLuaBindings::RestartEventTimer()
+{
+   m_timerEventHandling.expires_from_now(boost::posix_time::milliseconds(c_uiEventTimerCycleInMilliseconds));
+   m_timerEventHandling.async_wait(
+      m_strand.wrap(
+         std::bind(&CanonControlLuaBindings::OnTimerEventHandling, shared_from_this(), std::placeholders::_1)));
+}
+
+void CanonControlLuaBindings::OnTimerEventHandling(const boost::system::error_code& error)
+{
+   if (error)
+      return; // timer was canceled
+
+   Instance::OnIdle();
+
+   RestartEventTimer();
+}
+
 void CanonControlLuaBindings::CancelHandlers()
 {
    // cancel all callbacks that may be active
@@ -177,6 +201,8 @@ void CanonControlLuaBindings::CancelHandlers()
 
 void CanonControlLuaBindings::CleanupBindings()
 {
+   m_timerEventHandling.cancel();
+
    m_upInstance.reset();
 
    GetState().AddValue(_T("Constants"), Lua::Value());
