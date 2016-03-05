@@ -1,9 +1,9 @@
 CanonControl
 ------------
-replace logging with Boost Log v2
 write documentation for CanonControl library
 remove TODOs
 Viewfinder: implement image on TFT and/or PC
+Send Keep-Alive to keep cameras alive
 
 PSREC
 -----
@@ -27,11 +27,14 @@ implement TODOs from source files
 Lua scripting
 -------------
 Implement waiting for property events
-Viewfinder callback, pass actual viewfinder table
+Implement writing absolute filenames before calling onFinishedTransfer
+Add more libraries and sandbox unsafe functions
+Bindings for Exif library
+Bindings for ImageMagick library
 
 RemotePhotoTool
 ---------------
-Ribbon icons for Viewfinder and Camera contextual tab
+Add selecting image format
 Previous Images browser: back button active
 Previous Images browser: scan folder for images, on startup
 Nice toolbar icons
@@ -61,7 +64,6 @@ RemoteScriptingEditor
 ---------------------
 Add proper toolbar
 Implement all bindings from CanonControl
-Implement running and stopping scripts
 Implement debugging scripts
 Implement squiggly lines for Lua compile errors
 Implement breakpoints
