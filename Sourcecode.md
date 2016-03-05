@@ -4,13 +4,16 @@ This document describes how the source code of RemotePhotoTool is organized.
 
 ## Source code ##
 
-The application is developed using C++. Features from C++11 are used where possible. This means that at least Visual Studio 2013 is needed to compile the application.
+The application is developed using C++. Features from C++11 are used where possible. This means
+that at least Visual Studio 2013 is needed to compile the application.
 
 The app uses classes from the Boost library where no appropriate class from the Standard
 C++ Library could be used. The application also uses other libraries. See the
 [Credits.md](Credits.md) file for more infos.
 
-The app uses SDKs from Canon to connect and remote control cameras. The SDKs and documentation can be downloaded via the "Digital Image Developer Programme". All needed headers, libs and redistributable files are included in this package, so you don't need to apply for this program.
+The app uses SDKs from Canon to connect and remote control cameras. The SDKs and documentation can
+be downloaded via the "Digital Image Developer Programme". All needed headers, libs and
+redistributable files are included in this package, so you don't need to apply for this program.
 
 ## Folder structure ##
 
@@ -89,6 +92,9 @@ a link to the version I use:
 
 Extract the contents of the zip archive in to a new folder. Navigate into the "AppWiz" folder and
 double-click the file `"Setup.js"`.
+
+You need to adjust the file `src\wix91.props` with the path of the folder where the include files
+are found. There are two folders to adjust, both in the `<AdditionalIncludeDirectories>` tags.
 
 ## Boost ##
 

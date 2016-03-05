@@ -3,13 +3,14 @@
 Note: For the complete changelog, including internal changes, you can always go to
 the git sourcecode repository at [https://github.com/vividos/RemotePhotoTool](https://github.com/vividos/RemotePhotoTool).
 
-## 2015-xx-xx: Version 1.4.0 Build 119 ##
+## 2016-03-05: Version 1.4.0 Build 120 ##
 
 Implemented the Lua Scripting Photo Mode. This photo mode lets you load a script written in the
 programming language Lua. The script can be run on the host PC to remote control the camera by
 accessing camera functions and waiting for camera events. A whole API to access the camera is
 implemented. For more infos, including an introduction and an API cross reference, see the
 document [https://github.com/vividos/RemotePhotoTool/blob/master/LuaScripting.md](https://github.com/vividos/RemotePhotoTool/blob/master/LuaScripting.md "LuaScripting.md")
+Lua scripting uses Lua version 5.3.2.
 
 Implemented the "Previous images" view that shows all images taken with RemotePhotoTool. The view
 is accessible even when no camera is connected. It shows only the images taken in the current
@@ -26,6 +27,9 @@ Redesigned the user interface to use the ribbon more:
 - When live viewfinder is active, the Viewfinder contextual ribbon tab is available. It lets the
   user start auto focus and auto white balance, zoom in/out, select a lines mode and toggle
   showing overexposed areas in the live viewfinder.
+
+RemotePhotoTool now uses the Canon EOS Digital SDK version 3.2.1 that supports many newer EOS DSLR
+cameras. For a full list, see [SupportedCameras.md](SupportedCameras.md).
 
 RemotePhotoTool is now built with Visual Studio Community 2015.
 

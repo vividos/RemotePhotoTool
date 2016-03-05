@@ -19,6 +19,7 @@
   - Zoom in/out for cameras that support it
   - Helper lines (for rule of thirds and golden ratio)
   - Show overexposed areas by showing a zebra style pattern
+- Support for Lua scripts to remote control connected cameras
 - Support for third party applications:
   - Hugin for Panorama stitching
   - Photomatix Pro for HDR image generation
