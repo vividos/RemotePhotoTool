@@ -10,6 +10,7 @@
 #include "Lua.hpp"
 #include "Instance.hpp"
 #include "RecursiveMutex.hpp"
+#include "Event.hpp"
 #include "Asio.hpp"
 #include "ShutterReleaseSettings.hpp"
 
@@ -50,6 +51,9 @@ public:
 
    /// cancels all handlers of async operations
    void CancelHandlers();
+
+   /// stops internal timer
+   void StopTimer();
 
 private:
    /// returns Lua state object
@@ -247,4 +251,7 @@ private:
 
    /// timer for event handling
    boost::asio::deadline_timer m_timerEventHandling;
+
+   /// event that is set when the event handling timer has stopped
+   Event m_evtTimerStopped;
 };

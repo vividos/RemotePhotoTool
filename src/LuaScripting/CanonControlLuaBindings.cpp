@@ -15,6 +15,7 @@
 #include "Viewfinder.hpp"
 #include "BulbReleaseControl.hpp"
 #include "Asio.hpp"
+#include <atomic>
 
 /// name for Lua value in App object to store handler for asyncWaitForCamera()
 LPCTSTR c_pszAsyncWaitForCamera_OnConnectedHandler = _T("__AsyncWaitForCamera_OnConnectedHandler");
@@ -31,7 +32,8 @@ const unsigned int c_uiEventTimerCycleInMilliseconds = 100;
 CanonControlLuaBindings::CanonControlLuaBindings(Lua::State& state, boost::asio::io_service::strand& strand)
 :m_state(state),
 m_strand(strand),
-m_timerEventHandling(m_strand.get_io_service())
+m_timerEventHandling(m_strand.get_io_service()),
+m_evtTimerStopped(true, false) // manual-reset event
 {
 }
 
@@ -147,6 +149,8 @@ void CanonControlLuaBindings::InitRemoteReleaseControlConstants(Lua::Table& cons
 
 void CanonControlLuaBindings::RestartEventTimer()
 {
+   m_evtTimerStopped.Reset();
+
    m_timerEventHandling.expires_from_now(boost::posix_time::milliseconds(c_uiEventTimerCycleInMilliseconds));
    m_timerEventHandling.async_wait(
       m_strand.wrap(
@@ -156,7 +160,11 @@ void CanonControlLuaBindings::RestartEventTimer()
 void CanonControlLuaBindings::OnTimerEventHandling(const boost::system::error_code& error)
 {
    if (error)
-      return; // timer was canceled
+   {
+      // timer was canceled
+      m_evtTimerStopped.Set();
+      return;
+   }
 
    Instance::OnIdle();
 
@@ -177,6 +185,9 @@ void CanonControlLuaBindings::CancelHandlers()
       // TODO
       //m_spRemoteRelaseControl->RemoveDownloadEventHandler();
       m_spRemoteRelaseControl.reset();
+
+      m_releaseSettings.HandlerOnFinishedTransfer(ShutterReleaseSettings::T_fnOnFinishedTransfer());
+      m_spRemoteRelaseControl->SetReleaseSettings(m_releaseSettings);
    }
 
    if (m_upInstance != nullptr)
@@ -199,10 +210,23 @@ void CanonControlLuaBindings::CancelHandlers()
    GetState().CollectGarbage();
 }
 
-void CanonControlLuaBindings::CleanupBindings()
+void CanonControlLuaBindings::StopTimer()
 {
    m_timerEventHandling.cancel();
 
+   std::atomic<bool> finished = false;
+
+   do
+   {
+      m_strand.post([&] {
+         finished = m_evtTimerStopped.Wait(0);
+      });
+      Sleep(50);
+   } while (!finished);
+}
+
+void CanonControlLuaBindings::CleanupBindings()
+{
    m_upInstance.reset();
 
    GetState().AddValue(_T("Constants"), Lua::Value());
