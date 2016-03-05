@@ -118,6 +118,9 @@ void ViewfinderImpl::StopBackgroundThread()
    m_ioService.post(
       std::bind(&ViewfinderImpl::AsyncStopBackgroundThread, shared_from_this()));
 
+   if (!m_hSourceDevice.IsValid())
+      return;
+
    MutexTryLock<RecursiveMutex> tryLock(m_hSourceDevice.GetRef()->SdkFunctionMutex());
 
    while (!tryLock.Try(10))
@@ -139,6 +142,9 @@ void ViewfinderImpl::AsyncStopBackgroundThread()
 
 void ViewfinderImpl::GetImage(std::vector<BYTE>& vecImage)
 {
+   if (!m_hSourceDevice.IsValid())
+      return;
+
    MutexTryLock<RecursiveMutex> tryLock(m_hSourceDevice.GetRef()->SdkFunctionMutex());
 
    while (!tryLock.Try(10))

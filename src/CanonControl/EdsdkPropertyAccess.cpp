@@ -296,6 +296,9 @@ static PropIdDisplayInfo g_aPropIdDisplayInfo[] =
 
 Variant PropertyAccess::Get(EdsPropertyID propId, int iParam) const
 {
+   if (!m_h.IsValid())
+      return Variant();
+
    if (propId == kEdsPropID_Meta_MaxZoomPos)
    {
       Variant v;
@@ -333,6 +336,9 @@ void PropertyAccess::Set(EdsPropertyID propId, Variant value, int iParam)
    if (propId == kEdsPropID_Meta_MaxZoomPos)
       return;
 
+   if (!m_h.IsValid())
+      return;
+
    MutexTryLock<RecursiveMutex> tryLock(const_cast<Handle&>(m_h).GetRef()->SdkFunctionMutex());
 
    while (!tryLock.Try(10))
@@ -363,6 +369,9 @@ void PropertyAccess::Enum(EdsPropertyID propId, std::vector<Variant>& vecValues,
 {
    // special cases
    if (propId == kEdsPropID_Meta_MaxZoomPos)
+      return;
+
+   if (!m_h.IsValid())
       return;
 
    if (propId == kEdsPropID_Evf_Zoom)
@@ -420,6 +429,9 @@ bool PropertyAccess::IsReadOnly(EdsPropertyID propId) const
    if (propId == kEdsPropID_Meta_MaxZoomPos) return true;
    if (propId == kEdsPropID_Evf_Zoom) return false;
 
+   if (!m_h.IsValid())
+      return true;
+
    MutexTryLock<RecursiveMutex> tryLock(const_cast<Handle&>(m_h).GetRef()->SdkFunctionMutex());
 
    while (!tryLock.Try(10))
@@ -439,6 +451,9 @@ bool PropertyAccess::IsReadOnly(EdsPropertyID propId) const
 
 void PropertyAccess::GetTypeAndSize(EdsPropertyID propId, int iParam, EdsDataType& dataType, EdsUInt32& size) const
 {
+   if (!m_h.IsValid())
+      return;
+
    MutexTryLock<RecursiveMutex> tryLock(const_cast<Handle&>(m_h).GetRef()->SdkFunctionMutex());
 
    while (!tryLock.Try(10))
@@ -461,6 +476,9 @@ bool PropertyAccess::IsPropertyAvail(unsigned int uiPropId) const throw()
 {
    if (uiPropId >= kEdsPropID_Meta_MaxZoomPos)
       return true;
+
+   if (!m_h.IsValid())
+      return false;
 
    MutexTryLock<RecursiveMutex> tryLock(const_cast<Handle&>(m_h).GetRef()->SdkFunctionMutex());
 
