@@ -2,7 +2,7 @@
 <!--
 
   RemotePhotoTool - remote camera control software
-  Copyright (C) 2008-2014 Michael Fink
+  Copyright (C) 2008-2016 Michael Fink
 
   BuildNumber.wxi - Build number include file
 
@@ -11,6 +11,6 @@
 -->
 <Include xmlns="http://schemas.microsoft.com/wix/2006/wi">
 
-   <?define BuildNumber = "118" ?>
+   <?define BuildNumber = "120" ?>
 
 </Include>
