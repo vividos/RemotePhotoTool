@@ -166,6 +166,9 @@ public:
    /// returns SDK reference
    RefSp GetRef() throw() { return m_spRef; }
 
+   /// returns if handle is valid
+   bool IsValid() const throw() { return m_objRef != 0; }
+
 private:
    /// increases reference count of object ref in h
    void Retain(const Handle& h)
