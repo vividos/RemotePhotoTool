@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RemotePhotoTool", "RemotePhotoTool\RemotePhotoTool.vcxproj", "{CDEDF8B5-A808-4995-97EB-1289A84FF7ED}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -99,6 +99,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Logic", "Logic\Logic.vcxpro
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Logic.UnitTest", "Logic\Logic.UnitTest\Logic.UnitTest.vcxproj", "{051C359A-AE9E-44D6-9F67-1DF7E51E0778}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CanonEOSShutterCount", "CanonEOSShutterCount\CanonEOSShutterCount.vcxproj", "{C1CB4553-07D9-4CF2-90CC-0BB23584AD00}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -177,6 +179,10 @@ Global
 		{051C359A-AE9E-44D6-9F67-1DF7E51E0778}.Debug|Win32.Build.0 = Debug|Win32
 		{051C359A-AE9E-44D6-9F67-1DF7E51E0778}.Release|Win32.ActiveCfg = Release|Win32
 		{051C359A-AE9E-44D6-9F67-1DF7E51E0778}.Release|Win32.Build.0 = Release|Win32
+		{C1CB4553-07D9-4CF2-90CC-0BB23584AD00}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C1CB4553-07D9-4CF2-90CC-0BB23584AD00}.Debug|Win32.Build.0 = Debug|Win32
+		{C1CB4553-07D9-4CF2-90CC-0BB23584AD00}.Release|Win32.ActiveCfg = Release|Win32
+		{C1CB4553-07D9-4CF2-90CC-0BB23584AD00}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -201,5 +207,6 @@ Global
 		{D1756F69-5398-4CC3-978E-25A5F59BDD7F} = {82A43ECD-CEA0-4720-922D-9208C5310730}
 		{40627961-FC2D-4F09-8E74-073A0279A98A} = {0ED83E22-FDDB-4917-8B66-8082B7641FDF}
 		{051C359A-AE9E-44D6-9F67-1DF7E51E0778} = {9E084F49-B1D4-41E3-8E10-B49AF6F71E4E}
+		{C1CB4553-07D9-4CF2-90CC-0BB23584AD00} = {82A43ECD-CEA0-4720-922D-9208C5310730}
 	EndGlobalSection
 EndGlobal

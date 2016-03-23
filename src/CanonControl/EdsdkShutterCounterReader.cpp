@@ -1,8 +1,8 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2016 Michael Fink
 //
-/// \file EdsdkRemoteReleaseControlImpl.cpp EDSDK - RemoteReleaseControl impl
+/// \file EdsdkShutterCounterReader.cpp EDSDK - Shutter counter reader
 //
 
 // includes
