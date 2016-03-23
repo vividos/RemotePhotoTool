@@ -2,7 +2,7 @@
 <!--
 
   RemotePhotoTool - remote camera control software
-  Copyright (C) 2008-2015 Michael Fink
+  Copyright (C) 2008-2016 Michael Fink
 
   RemotePhotoTool.wxs - RemotePhotoTool setup package
 
@@ -54,6 +54,7 @@
        Description="Installs the $(var.ProductName) application." Level="1"
        AllowAdvertise="no" TypicalDefault="install" ConfigurableDirectory="INSTALLDIR">
       <ComponentGroupRef Id="MainAppFiles" />
+      <ComponentGroupRef Id="CmdLineAppFiles" />
       <ComponentGroupRef Id="EdsdkFiles" />
       <ComponentGroupRef Id="PsrecFiles" />
       <ComponentGroupRef Id="CdsdkFiles" />

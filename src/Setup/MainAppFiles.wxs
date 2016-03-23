@@ -2,7 +2,7 @@
 <!--
 
   RemotePhotoTool - remote camera control software
-  Copyright (C) 2008-2015 Michael Fink
+  Copyright (C) 2008-2016 Michael Fink
 
   MainAppFiles.wxs - Main application file components (fragment)
 
@@ -35,7 +35,15 @@
       <Component Id="LibExifDll" Guid="49D38FCA-EB5D-4C6B-A321-1B11D5D491BE" Directory="INSTALLDIR">
         <File Id="LibExifDll" Name="libexif.dll" DiskId="1" KeyPath="yes" Source="$(var.BinaryFolder)\libexif.dll" />
       </Component>
+    </ComponentGroup>
 
+    <ComponentGroup Id="CmdLineAppFiles">
+      <Component Id="CanonEosShutterCount" Guid="5592D8F0-11E5-430B-AFD6-D907603622E6" Directory="INSTALLDIR">
+        <File Id="CanonEosShutterCount" Name="CanonEOSShutterCount.exe" DiskId="1" KeyPath="yes" Source="$(var.BinaryFolder)CanonEOSShutterCount.exe" />
+      </Component>
+      <Component Id="RemotePhotoToolCmdline" Guid="E4D56D92-2DB9-4FBB-88AE-09CC11BEB681" Directory="INSTALLDIR">
+        <File Id="RemotePhotoToolCmdline" Name="RemotePhotoToolCmdline.exe" DiskId="1" KeyPath="yes" Source="$(var.BinaryFolder)RemotePhotoToolCmdline.exe" />
+      </Component>
     </ComponentGroup>
 
     <ComponentGroup Id="ScintillaFiles">
