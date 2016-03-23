@@ -28,6 +28,10 @@
           <File Id="EdsdkDll" Name="EDSDK.dll" DiskId="1" KeyPath="yes" Source="$(var.BinaryFolder)\EDSDK.dll" />
         </Component>
 
+        <Component Id="Edsdk25Dll" Guid="9CED97FC-C033-4A8F-83CC-DF48B7A427BC" Directory="INSTALLDIR">
+          <File Id="Edsdk25Dll" Name="EDSDK_25.dll" DiskId="1" KeyPath="yes" Source="$(var.BinaryFolder)\EDSDK_25.dll" />
+        </Component>
+
         <Component Id="EdsimageDll" Guid="79300D66-2A1D-4CB9-B93D-00D7B3D78B78" Directory="INSTALLDIR">
           <File Id="EdsimageDll" Name="EdsImage.dll" DiskId="1" KeyPath="yes" Source="$(var.BinaryFolder)\EdsImage.dll" />
         </Component>
