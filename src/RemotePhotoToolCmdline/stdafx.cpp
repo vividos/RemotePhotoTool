@@ -1,5 +1,9 @@
-// stdafx.cpp : source file that includes just the standard includes
-// PhotoToolCmdline.pch will be the pre-compiled header
-// stdafx.obj will contain the pre-compiled type information
+//
+// RemotePhotoTool - remote camera control software
+// Copyright (C) 2008-2016 Michael Fink
+//
+/// \file RemotePhotoToolCmdline\stdafx.cpp Precompiled header support
+//
 
+// includes
 #include "stdafx.h"

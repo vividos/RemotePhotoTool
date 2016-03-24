@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2016 Michael Fink
 //
 /// \file CmdlineApp.hpp Command line app
 //
@@ -12,6 +12,7 @@
 
 // forward references
 class SourceDevice;
+class DeviceProperty;
 class RemoteReleaseControl;
 
 /// command line app
@@ -34,9 +35,14 @@ private:
    void PrintVersionInfo();                     ///< outputs version info
    void ListDevices();                          ///< outputs list of devices
    void OpenByName(const CString& cszName);     ///< opens device by name
-   void OutputDeviceInfo();                     ///< outputs device inf
+   void OutputDeviceInfo();                     ///< outputs device infos
    void ListDeviceProperties();                 ///< outputs device properties
+   void CheckUnknownDeviceProperties();         ///< checks for unknown device properties
+   void PrintValidDevicePropertyValues(const DeviceProperty& dp) const; ///< prints valid device property values
    void ListImageProperties();                  ///< outputs image properties
+   void CheckUnknownImageProperties();          ///< checks for unknown image properties
+   void PrintValidImagePropertyValues(unsigned int propertyId); ///< prints valid image property values
+   void ListRemoteCapabilities();               ///< outputs remote capabilities
    void ListenToEvents();                       ///< listens to events
    void EnsureReleaseControl();                 ///< ensures that remote release control is set
    void ReleaseShutter();                       ///< releases shutter

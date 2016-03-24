@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2016 Michael Fink
 //
 /// \file AppCommand.hpp Command line app command
 //
@@ -18,7 +18,10 @@ struct AppCommand
       closeDevice,      ///< closes device
       deviceInfo,       ///< outputs device info
       deviceProperties, ///< outputs device properties
+      checkUnknownDeviceProps, ///< checks for unknown device properties
       imageProperties,  ///< outputs image properties
+      checkUnknownImageProps, ///< checks for unknown image properties
+      remoteCapabilities, ///< outputs remote capabilities
       listenEvents,     ///< listens for events
       releaseShutter,   ///< releases shutter
       runScript,        ///< runs Lua script

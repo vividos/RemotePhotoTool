@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2016 Michael Fink
 //
 /// \file AppOptions.cpp Command line app options
 //
@@ -31,10 +31,19 @@ AppOptions::AppOptions(std::vector<AppCommand>& vecCommandList)
       0, std::bind(&AppOptions::OnAddSimpleCommand, this, AppCommand::deviceInfo));
 
    RegisterOption(_T("p"), _T("device-props"), _T("shows device properties"),
-      0, std::bind(&AppOptions::OnAddSimpleCommand, this, AppCommand::deviceInfo));
+      0, std::bind(&AppOptions::OnAddSimpleCommand, this, AppCommand::deviceProperties));
+
+   RegisterOption(_T(""), _T("check-unknown-device-props"), _T("checks for unknown device properties"),
+      0, std::bind(&AppOptions::OnAddSimpleCommand, this, AppCommand::checkUnknownDeviceProps));
 
    RegisterOption(_T("i"), _T("image-props"), _T("shows image properties"),
-      0, std::bind(&AppOptions::OnAddSimpleCommand, this, AppCommand::deviceInfo));
+      0, std::bind(&AppOptions::OnAddSimpleCommand, this, AppCommand::imageProperties));
+
+   RegisterOption(_T(""), _T("check-unknown-image-props"), _T("checks for unknown image properties"),
+      0, std::bind(&AppOptions::OnAddSimpleCommand, this, AppCommand::checkUnknownImageProps));
+
+   RegisterOption(_T(""), _T("remote-caps"), _T("shows remote capabilities"),
+      0, std::bind(&AppOptions::OnAddSimpleCommand, this, AppCommand::remoteCapabilities));
 
    RegisterOption(_T("e"), _T("listen-events"), _T("listens for events from camera and prints them"),
       0, std::bind(&AppOptions::OnAddSimpleCommand, this, AppCommand::listenEvents));

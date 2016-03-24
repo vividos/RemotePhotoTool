@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2016 Michael Fink
 //
 /// \file CmdlineApp.cpp Command line app
 //
@@ -71,10 +71,12 @@ void CmdlineApp::Run(int argc, TCHAR* argv[])
       catch(const CameraException& ex)
       {
          _tprintf(_T("CameraException was thrown: \"%s\"\n"), ex.Message().GetString());
+         throw;
       }
       catch(const Exception& ex)
       {
          _tprintf(_T("Exception was thrown: \"%s\"\n"), ex.Message().GetString());
+         throw;
       }
    });
 }
@@ -92,7 +94,10 @@ void CmdlineApp::Exec(const AppCommand& cmd)
       break;
    case AppCommand::deviceInfo: OutputDeviceInfo(); break;
    case AppCommand::deviceProperties: ListDeviceProperties(); break;
+   case AppCommand::checkUnknownDeviceProps: CheckUnknownDeviceProperties(); break;
    case AppCommand::imageProperties: ListImageProperties(); break;
+   case AppCommand::checkUnknownImageProps: CheckUnknownImageProperties(); break;
+   case AppCommand::remoteCapabilities: ListRemoteCapabilities(); break;
    case AppCommand::listenEvents: ListenToEvents(); break;
    case AppCommand::releaseShutter: ReleaseShutter(); break;
    case AppCommand::runScript: RunScript(cmd.m_cszData); break;
@@ -140,6 +145,8 @@ void CmdlineApp::ListDevices()
 
 void CmdlineApp::OpenByName(const CString& cszName)
 {
+   _tprintf(_T("Opening device %s\n"), cszName.GetString());
+
    Instance inst = Instance::Get();
 
    std::vector<std::shared_ptr<SourceInfo>> vecSourceDevices;
@@ -161,10 +168,12 @@ void CmdlineApp::OpenByName(const CString& cszName)
       _tprintf(_T("Opening camera: %s\n"), spSourceInfo->Name().GetString());
 
       m_spSourceDevice = spSourceInfo->Open();
+
+      _tprintf(_T("\n"));
       return;
    }
 
-   for (size_t i=0,iMax=vecSourceDevices.size(); i<iMax; i++)
+   for (size_t i=0, iMax=vecSourceDevices.size(); i<iMax; i++)
    {
       std::shared_ptr<SourceInfo> spSourceInfo = vecSourceDevices[i];
       if (spSourceInfo->Name() == cszName)
@@ -172,6 +181,8 @@ void CmdlineApp::OpenByName(const CString& cszName)
          _tprintf(_T("Opening camera: %s\n"), spSourceInfo->Name().GetString());
 
          m_spSourceDevice = spSourceInfo->Open();
+
+         _tprintf(_T("\n"));
          return;
       }
    }
@@ -181,6 +192,12 @@ void CmdlineApp::OpenByName(const CString& cszName)
 
 void CmdlineApp::OutputDeviceInfo()
 {
+   if (m_spSourceDevice == nullptr)
+   {
+      _tprintf(_T("No device was opened before.\n"));
+      return;
+   }
+
    _tprintf(_T("Device info about \"%s\"\n"), m_spSourceDevice->ModelName().GetString());
    _tprintf(_T("Serial number \"%s\"\n"), m_spSourceDevice->SerialNumber().GetString());
 
@@ -191,37 +208,90 @@ void CmdlineApp::OutputDeviceInfo()
 
    _tprintf(_T("can release shutter: %s\n"), bCanRelease ? _T("yes") : _T("no"));
    _tprintf(_T("can use remote viewfinder: %s\n"), bCanUseViewfinder ? _T("yes") : _T("no"));
+
    _tprintf(_T("\n"));
 }
 
 void CmdlineApp::ListDeviceProperties()
 {
-   // output device properties
    _tprintf(_T("Device properties\n"));
+
+   if (m_spSourceDevice == nullptr)
+   {
+      _tprintf(_T("No device was opened before.\n"));
+      return;
+   }
 
    std::vector<unsigned int> vecProperties = m_spSourceDevice->EnumDeviceProperties();
 
    for (size_t i=0, iMax=vecProperties.size(); i<iMax; i++)
    {
-      unsigned int uiPropertyId = vecProperties[i];
-      DeviceProperty dp = m_spSourceDevice->GetDeviceProperty(uiPropertyId);
+      unsigned int propertyId = vecProperties[i];
+      DeviceProperty dp = m_spSourceDevice->GetDeviceProperty(propertyId);
 
       _tprintf(_T("Property \"%s\" (%04x)%s: %s (%s)\n"),
          dp.Name().GetString(),
-         uiPropertyId,
+         propertyId,
          dp.IsReadOnly() ? _T(" [read-only]") : _T(""),
          dp.Value().ToString().GetString(),
          dp.AsString().GetString());
 
-      std::vector<Variant> vecValidValues = dp.ValidValues();
-      for (size_t j=0, jMax=vecValidValues.size(); j<jMax; j++)
+      PrintValidDevicePropertyValues(dp);
+   }
+
+   _tprintf(_T("\n"));
+}
+
+void CmdlineApp::CheckUnknownDeviceProperties()
+{
+   _tprintf(_T("Checking for unknown device properties (this may take a while)\n"));
+
+   if (m_spSourceDevice == nullptr)
+   {
+      _tprintf(_T("No device was opened before.\n"));
+      return;
+   }
+
+   unsigned int foundProperties = 0;
+   for (unsigned int propId = 0; propId < 0xffff; propId++)
+   {
+      try
       {
-         _tprintf(_T("   Valid value: %s (%s)\n"),
-            vecValidValues[j].ToString().GetString(),
-            dp.ValueAsString(vecValidValues[j]).GetString());
+         DeviceProperty dp = m_spSourceDevice->GetDeviceProperty(propId);
+
+         if (dp.Name() != _T("???") ||
+            dp.Value().Type() == Variant::typeInvalid)
+            continue;
+
+         _tprintf(_T("Id [%04x] Name [%s] Value [%s]\n"),
+            propId,
+            dp.Name().GetString(),
+            dp.AsString().GetString());
+
+         PrintValidDevicePropertyValues(dp);
+
+         foundProperties++;
+      }
+      catch (...)
+      {
+         continue;
       }
    }
+
+   _tprintf(_T("Found %u unknown device properties\n"), foundProperties);
+
    _tprintf(_T("\n"));
+}
+
+void CmdlineApp::PrintValidDevicePropertyValues(const DeviceProperty& dp) const
+{
+   std::vector<Variant> vecValidValues = dp.ValidValues();
+   for (size_t j = 0, jMax = vecValidValues.size(); j<jMax; j++)
+   {
+      _tprintf(_T("   Valid value: %s (%s)\n"),
+         vecValidValues[j].ToString().GetString(),
+         dp.ValueAsString(vecValidValues[j]).GetString());
+   }
 }
 
 void CmdlineApp::ListImageProperties()
@@ -238,28 +308,113 @@ void CmdlineApp::ListImageProperties()
    else
    for (size_t i=0,iMax=vecImageProperties.size(); i<iMax; i++)
    {
-      unsigned int uiPropertyId = vecImageProperties[i];
+      unsigned int propertyId = vecImageProperties[i];
 
-      ImageProperty ip = m_spReleaseControl->GetImageProperty(uiPropertyId);
+      ImageProperty ip = m_spReleaseControl->GetImageProperty(propertyId);
 
       _tprintf(_T("Image property \"%s\" (%04x)%s: %s (%s)\n"),
          ip.Name().GetString(),
-         uiPropertyId,
+         propertyId,
          ip.IsReadOnly() ? _T(" [read-only]") : _T(""),
          ip.Value().ToString().GetString(),
          ip.AsString().GetString());
 
-      std::vector<ImageProperty> vecValues;
-      m_spReleaseControl->EnumImagePropertyValues(vecImageProperties[i], vecValues);
+      PrintValidImagePropertyValues(propertyId);
+   }
 
-      for (size_t j=0, jMax=vecValues.size(); j<jMax; j++)
+   _tprintf(_T("\n"));
+}
+
+void CmdlineApp::CheckUnknownImageProperties()
+{
+   _tprintf(_T("Checking for unknown image properties (this may take a while)\n"));
+
+   EnsureReleaseControl();
+
+   // start viewfinder to potentially find more image properties
+   std::shared_ptr<Viewfinder> spViewfinder;
+   if (m_spReleaseControl->GetCapability(RemoteReleaseControl::capViewfinder))
+      spViewfinder = m_spReleaseControl->StartViewfinder();
+
+   unsigned int foundProperties = 0;
+   for (unsigned int propId = 0; propId < 0xffff; propId++)
+   {
+      try
       {
-         const ImageProperty& ip2 = vecValues[j];
-         _tprintf(_T("   Valid value: %s (%s)\n"),
-            ip2.Value().ToString().GetString(),
-            ip.ValueAsString(ip2.Value()).GetString());
+         ImageProperty ip = m_spReleaseControl->GetImageProperty(propId);
+
+         if (ip.Name() != _T("???") ||
+            ip.Value().Type() == Variant::typeInvalid)
+            continue;
+
+         _tprintf(_T("Id [%04x] Name [%s] Value [%s] ReadOnly [%s]\n"),
+            propId,
+            ip.Name().GetString(),
+            ip.AsString().GetString(),
+            ip.IsReadOnly() ? _T("yes") : _T("no"));
+
+         PrintValidImagePropertyValues(propId);
+
+         foundProperties++;
+      }
+      catch (...)
+      {
+         continue;
       }
    }
+
+   _tprintf(_T("Found %u unknown image properties\n"), foundProperties);
+
+   _tprintf(_T("\n"));
+}
+
+void CmdlineApp::PrintValidImagePropertyValues(unsigned int propertyId)
+{
+   ATLASSERT(m_spReleaseControl != nullptr);
+
+   std::vector<ImageProperty> vecValues;
+   m_spReleaseControl->EnumImagePropertyValues(propertyId, vecValues);
+
+   for (size_t i = 0, iMax = vecValues.size(); i<iMax; i++)
+   {
+      const ImageProperty& ip = vecValues[i];
+      _tprintf(_T("   Valid value: %s (%s)\n"),
+         ip.Value().ToString().GetString(),
+         ip.ValueAsString(ip.Value()).GetString());
+   }
+}
+
+void CmdlineApp::ListRemoteCapabilities()
+{
+   _tprintf(_T("List remote capture capabilites\n"));
+
+   EnsureReleaseControl();
+
+   struct SRemoteCapList
+   {
+      RemoteReleaseControl::T_enRemoteCapability enCapability;
+      LPCTSTR pszCapabilityName;
+   };
+
+   SRemoteCapList s_capList[] =
+   {
+      { RemoteReleaseControl::capChangeShootingParameter, _T("can change shooting parameter at all") },
+      { RemoteReleaseControl::capChangeShootingMode,      _T("ability to change shooting modes") },
+      { RemoteReleaseControl::capZoomControl,             _T("can control zoom") },
+      { RemoteReleaseControl::capViewfinder,              _T("can fetch live view image") },
+      { RemoteReleaseControl::capReleaseWhileViewfinder,  _T("can capture during live view") },
+      { RemoteReleaseControl::capAFLock,                  _T("supports AF lock/unlock") },
+      { RemoteReleaseControl::capBulbMode,                _T("supports bulb mode") },
+   };
+
+   for (unsigned int i = 0; i<sizeof(s_capList) / sizeof(*s_capList); i++)
+   {
+      bool bSupported = m_spReleaseControl->GetCapability(s_capList[i].enCapability);
+
+      _tprintf(_T("%s: %s\n"), s_capList[i].pszCapabilityName, bSupported ? _T("yes") : _T("no"));
+   }
+
+   _tprintf(_T("\n"));
 }
 
 void CmdlineApp::ListenToEvents()
