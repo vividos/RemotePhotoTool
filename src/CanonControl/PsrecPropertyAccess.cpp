@@ -808,6 +808,15 @@ LPCTSTR PropertyAccess::NameFromId(prUInt16 propertyId) throw()
    case prPTP_DEV_PROP_CAMERA_MODEL_ID: pszName = _T("Camera model ID"); break;
    case PSREC_PROP_IMAGE_FORMAT: pszName = _T("Image format"); break;
    case PSREC_PROP_AVAILABLE_SHOTS: pszName = _T("Available shots"); break;
+   case PSREC_PROP_OUTPUT_DATA_SIZE: pszName = _T("Output data size"); break;
+   case PSREC_PROP_INPUT_DATA_SIZE: pszName = _T("Input data size"); break;
+   case PSREC_PROP_REMOTE_API_VERSION: pszName = _T("Remote API version"); break;
+   case PSREC_PROP_EVENT_EMULATE_MODE: pszName = _T("Event emulate mode"); break;
+   case PSREC_PROP_DPOF_VERSION: pszName = _T("DPOF version"); break;
+   case PSREC_PROP_SUPPORTED_SLIDESHOW_TYPE: pszName = _T("Supported slideshow type"); break;
+   case PSREC_PROP_MTP_DEVICE_NAME: pszName = _T("MTP Device name"); break;
+   case PSREC_PROP_MTP_SESSION_INITIATOR: pszName = _T("MTP Session Initiator"); break;
+   case PSREC_PROP_MTP_DEVICE_TYPE: pszName = _T("MTP Device type"); break;
    }
 
    return pszName;
@@ -957,6 +966,9 @@ CString PropertyAccess::DisplayTextFromIdAndValue(prUInt16 propertyId, Variant v
 
 CString PropertyAccess::FormatImageFormatValue(const Variant& value)
 {
+   if (value.Type() == Variant::typeInvalid)
+      return _T("invalid");
+
    ATLASSERT(value.IsArray() == true);
    ATLASSERT(value.Type() == Variant::typeUInt8);
 

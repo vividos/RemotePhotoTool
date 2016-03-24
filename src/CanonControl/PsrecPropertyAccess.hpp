@@ -13,11 +13,32 @@
 
 namespace PSREC
 {
+
+// dummy property values used by CanonControl to treat some special properties
+// as normal properties
+
 /// dummy property value for getting propImageFormat value
 const prUInt16 PSREC_PROP_IMAGE_FORMAT = 0x1000;
 
 /// dummy property value for getting available shots
 const prUInt16 PSREC_PROP_AVAILABLE_SHOTS = 0x1001;
+
+// Canon properties found in some PowerShot cameras (G9), but not in PS-ReC headers
+
+const prUInt16 PSREC_PROP_OUTPUT_DATA_SIZE = 0xd02e;
+const prUInt16 PSREC_PROP_INPUT_DATA_SIZE = 0xd02f;
+const prUInt16 PSREC_PROP_REMOTE_API_VERSION = 0xd030;
+const prUInt16 PSREC_PROP_EVENT_EMULATE_MODE = 0xd045;
+const prUInt16 PSREC_PROP_DPOF_VERSION = 0xd046;
+const prUInt16 PSREC_PROP_SUPPORTED_SLIDESHOW_TYPE = 0xd047;
+//const prUInt16 PSREC_PROP_UNKNOWN1 = 0xd04a;
+//const prUInt16 PSREC_PROP_UNKNOWN2 = 0xd050;
+
+// MTP properties found in some PowerShot cameras (G9), but not in PS-ReC headers
+
+const prUInt16 PSREC_PROP_MTP_DEVICE_NAME = 0xd402;
+const prUInt16 PSREC_PROP_MTP_SESSION_INITIATOR = 0xd406;
+const prUInt16 PSREC_PROP_MTP_DEVICE_TYPE = 0xd407;
 
 /// device value parser
 struct DeviceValueParser: public VarDataParser
