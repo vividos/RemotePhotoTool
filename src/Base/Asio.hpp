@@ -27,9 +27,8 @@
 
 // asio but no winsock init
 
-/// fake startup func
+/// \cond false
 inline void boost::asio::detail::winsock_init_base::startup(boost::asio::detail::winsock_init_base::data &,unsigned char,unsigned char){}
-/// fake cleanup func
 inline void boost::asio::detail::winsock_init_base::cleanup(boost::asio::detail::winsock_init_base::data &){}
-/// fake throw func
 inline void boost::asio::detail::winsock_init_base::throw_on_error(boost::asio::detail::winsock_init_base::data &){}
+/// \endcond

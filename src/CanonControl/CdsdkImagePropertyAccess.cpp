@@ -798,13 +798,13 @@ std::vector<unsigned int> ImagePropertyAccess::EnumImageProperties() const
    return vecPropIds;
 }
 
-Variant ImagePropertyAccess::Get(unsigned int uiPropId) const
-{
-   Variant v;
-
 /// switch-case for getting a property
 #define CASE_PROP_GET(PROPID) \
    case TYPE_TO_PROP_ID(PROPID##): ATLASSERT(true == s_##PROPID.CanRead()); v = s_##PROPID.Get(m_hSource); break;
+
+Variant ImagePropertyAccess::Get(unsigned int uiPropId) const
+{
+   Variant v;
 
    switch (uiPropId)
    {
@@ -883,17 +883,17 @@ Variant ImagePropertyAccess::Get(unsigned int uiPropId) const
       v = GetReleaseSetting(uiPropId);
       break;
    }
-#undef CASE_PROP_GET
 
    return v;
 }
+#undef CASE_PROP_GET
 
-void ImagePropertyAccess::Set(unsigned int uiPropId, Variant val)
-{
 /// switch-case for setting a property
 #define CASE_PROP_SET(PROPID) \
    case TYPE_TO_PROP_ID(PROPID##): ATLASSERT(true == s_##PROPID.CanWrite()); s_##PROPID.Set(m_hSource, val); break;
 
+void ImagePropertyAccess::Set(unsigned int uiPropId, Variant val)
+{
    switch (uiPropId)
    {
    CASE_PROP_SET(propShootingMode)
@@ -930,15 +930,15 @@ void ImagePropertyAccess::Set(unsigned int uiPropId, Variant val)
       SetReleaseSetting(uiPropId, val);
       break;
    }
-#undef CASE_PROP_SET
 }
+#undef CASE_PROP_SET
 
-void ImagePropertyAccess::Enum(unsigned int uiPropId, std::vector<Variant>& vecValues)
-{
 /// switch-case for enumerating values of a property
 #define CASE_PROP_ENUM(PROPID) \
    case TYPE_TO_PROP_ID(PROPID##): ATLASSERT(true == s_##PROPID.CanEnum()); s_##PROPID.Enum(m_hSource, vecValues); break;
 
+void ImagePropertyAccess::Enum(unsigned int uiPropId, std::vector<Variant>& vecValues)
+{
    switch (uiPropId)
    {
       // these properties have special cases when they throw a "Not supported" error
@@ -1032,15 +1032,15 @@ void ImagePropertyAccess::Enum(unsigned int uiPropId, std::vector<Variant>& vecV
       ATLASSERT(false);
       break;
    }
-#undef CASE_PROP_ENUM
 }
+#undef CASE_PROP_ENUM
 
-bool ImagePropertyAccess::IsReadOnly(unsigned int uiPropId)
-{
-   /// switch-case for checking if a property is read-only
+/// switch-case for checking if a property is read-only
 #define CASE_PROP_ISREADONLY(PROPID) \
    case TYPE_TO_PROP_ID(PROPID##): return !s_##PROPID.CanWrite();
 
+bool ImagePropertyAccess::IsReadOnly(unsigned int uiPropId)
+{
    switch (uiPropId)
    {
    CASE_PROP_ISREADONLY(propShootingMode)
@@ -1068,6 +1068,7 @@ bool ImagePropertyAccess::IsReadOnly(unsigned int uiPropId)
 
    return true;
 }
+#undef CASE_PROP_ISREADONLY
 
 void ImagePropertyAccess::EnumAvailReleaseSettings(std::vector<unsigned int>& vecPropIds) const
 {
