@@ -12,6 +12,7 @@
 #include "DeviceProperty.hpp"
 
 // forward references
+/// camera widget type
 typedef struct _CameraWidget CameraWidget;
 
 namespace GPhoto2
@@ -36,8 +37,10 @@ public:
    /// returns a property for given property id
    DeviceProperty GetDeviceProperty(unsigned int uiPropertyId) const;
 
+   /// returns displayable text from property id and value
    static CString DisplayTextFromIdAndValue(unsigned int propId, Variant value);
 
+   /// returns name from given id
    static LPCTSTR NameFromId(unsigned int propId) throw();
 
 private:
