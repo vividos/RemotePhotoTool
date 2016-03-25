@@ -90,7 +90,7 @@ void CameraInfoDlg::CollectDeviceProperties(CString& cszText)
       try
       {
          unsigned int uiPropertyId = vecProperties[iProp];
-         DeviceProperty p = m_sourceDevice.GetDeviceProperty(uiPropertyId);
+         const DeviceProperty p = m_sourceDevice.GetDeviceProperty(uiPropertyId);
 
          cszText.AppendFormat(_T("Property %s (%08x): [%s]\n"),
             p.Name().GetString(), uiPropertyId, p.AsString().GetString());
