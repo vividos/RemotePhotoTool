@@ -997,7 +997,7 @@ void MainFrame::EnableCameraUI(bool bEnable)
 void MainFrame::OnUpdatedImageProperty(RemoteReleaseControl::T_enPropertyEvent enPropertyEvent, unsigned int uiValue)
 {
    if (enPropertyEvent == RemoteReleaseControl::propEventPropertyChanged &&
-      m_spRemoteReleaseControl != nullptr,
+      m_spRemoteReleaseControl != nullptr &&
       uiValue == m_spRemoteReleaseControl->MapImagePropertyTypeToId(propShootingMode))
    {
       // shooting mode has changed; update some fields
