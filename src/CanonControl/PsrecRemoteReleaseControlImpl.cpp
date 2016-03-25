@@ -18,6 +18,11 @@ using namespace PSREC;
 /// 256 kb per transfer
 const unsigned int c_uiImageDownloadBufferSizeKb = 256;
 
+// events that doesn't appear in PS-ReC headers
+
+/// event "storage info changed"
+const prUInt16 PSREC_EVENT_STORAGE_INFO_CHANGED = 0x400c;
+
 /// camera event data
 struct PSREC::CameraEventData: public VarDataParser
 {
@@ -531,13 +536,12 @@ void RemoteReleaseControlImpl::OnCameraEvent(const CameraEventData& eventData)
       OnEventStateChanged(eventData.m_uiEventCode);
       break;
 
-   case 0x400c:
-      LOG_TRACE(_T("unknown camera event 0x400c: param1=%08x\n"), eventData.m_vecParams[0]);
+   case PSREC_EVENT_STORAGE_INFO_CHANGED:
+      LOG_TRACE(_T("storage info changed: param1=%08x\n"), eventData.m_vecParams[0]);
       break;
 
    default:
       LOG_TRACE(_T("unknown camera event %04x: param1=%08x\n"), eventData.m_uiEventCode, eventData.m_vecParams[0]);
-      //ATLASSERT(false);
       break;
    }
 }
