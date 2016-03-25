@@ -27,7 +27,7 @@ AppOptions::AppOptions(std::vector<AppCommand>& vecCommandList)
    RegisterOption(_T("c"), _T("close"), _T("closes opened device"),
       0, std::bind(&AppOptions::OnAddSimpleCommand, this, AppCommand::closeDevice));
 
-   RegisterOption(_T("d"), _T("deviceinfo"), _T("shows device info of opened device"),
+   RegisterOption(_T("d"), _T("device-info"), _T("shows device info of opened device"),
       0, std::bind(&AppOptions::OnAddSimpleCommand, this, AppCommand::deviceInfo));
 
    RegisterOption(_T("p"), _T("device-props"), _T("shows device properties"),
