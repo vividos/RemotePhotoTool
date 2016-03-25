@@ -210,6 +210,7 @@ void CmdlineApp::OutputDeviceInfo()
 
    _tprintf(_T("Device info about \"%s\"\n"), m_spSourceDevice->ModelName().GetString());
    _tprintf(_T("Serial number \"%s\"\n"), m_spSourceDevice->SerialNumber().GetString());
+   _tprintf(_T("\n"));
 
    // output capabilities
    _tprintf(_T("Device capabilities\n"));
@@ -501,15 +502,29 @@ void CmdlineApp::ReleaseShutter()
    _tprintf(_T("Memory for %u images available\n"), uiNumAvailShot);
 
    Event evtPictureTaken(true, false);
+
+   // add handler to signal when picture was taken
    ShutterReleaseSettings settings(
-      ShutterReleaseSettings::saveToHost,
+      ShutterReleaseSettings::saveToBoth,
       std::bind(&Event::Set, &evtPictureTaken));
 
    m_spReleaseControl->SetReleaseSettings(settings);
 
+   // also add handler when there's a release error
+   m_spReleaseControl->AddStateEventHandler(
+      [&evtPictureTaken](RemoteReleaseControl::T_enStateEvent enStateEvent, unsigned int errorCode)
+      {
+         if (enStateEvent == RemoteReleaseControl::stateEventReleaseError)
+         {
+            _tprintf(_T("Error while shutter release: %u\n"), errorCode);
+            evtPictureTaken.Set();
+         }
+      });
+
    m_spReleaseControl->Release();
 
-   evtPictureTaken.Wait();
+   while (!evtPictureTaken.Wait(10))
+      Instance::OnIdle();
 }
 
 void CmdlineApp::RunScript(const CString& cszFilename)

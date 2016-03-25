@@ -378,8 +378,11 @@ void RemoteReleaseControlImpl::AsyncRelease()
    // send command
    EdsError err = EdsSendCommand(m_hCamera.Get(), kEdsCameraCommand_TakePicture, 0);
    LOG_TRACE(_T("EdsSendCommand(%08x, TakePicture, 0) returned %08x\n"), m_hCamera.Get(), err);
+
    // no error checking, since we're on the background thread
    //EDSDK::CheckError(_T("EdsSendCommand"), err, __FILE__, __LINE__);
+   if (err != EDS_ERR_OK)
+      m_subjectStateEvent.Call(RemoteReleaseControl::stateEventReleaseError, err);
 }
 
 void RemoteReleaseControlImpl::OnReceivedObjectEventRequestTransfer(Handle hDirectoryItem)

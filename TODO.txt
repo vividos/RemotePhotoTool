@@ -54,10 +54,6 @@ Store IPTC data in every image taken
 Add geotagging for PCs that have a GPS receiver built in
 Add photo mode with motion detection using viewfinder to take photos (e.g. for wildlife photography)
 
-RemotePhotoToolCmdline
-----------------------
-fix crashes in EDSDK: call EdsGetEvent() often
-
 RemoteScriptingEditor
 ---------------------
 Add proper toolbar
