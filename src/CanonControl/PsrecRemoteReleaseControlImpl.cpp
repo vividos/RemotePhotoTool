@@ -360,13 +360,15 @@ void RemoteReleaseControlImpl::AsyncRelease()
    val.SetType(Variant::typeUInt16);
    pa.Set(prPTP_DEV_PROP_CAPTURE_TRANSFER_MODE, val);
 
-
-
    DWORD dwStart = GetTickCount();
 
    // may return prWAIT_TIMEOUT_ERROR?, prINVALID_FN_CALL, prINVALID_HANDLE, prMEM_ALLOC_FAILED or @ERR
    prResponse err = PR_RC_Release(m_hCamera);
    LOG_TRACE(_T("PR_RC_Release(%08x) returned %08x\n"), m_hCamera, err);
+
+   if (err != prOK)
+      m_subjectStateEvent.Call(RemoteReleaseControl::stateEventReleaseError, 0);
+
    CheckError(_T("PR_RC_Release"), err, __FILE__, __LINE__);
 
    DWORD dwEnd = GetTickCount();
