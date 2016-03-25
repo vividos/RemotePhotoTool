@@ -196,10 +196,11 @@ void CanonControlLuaBindings::CancelHandlers()
    {
       // TODO
       //m_spRemoteRelaseControl->RemoveDownloadEventHandler();
-      m_spRemoteRelaseControl.reset();
 
       m_releaseSettings.HandlerOnFinishedTransfer(ShutterReleaseSettings::T_fnOnFinishedTransfer());
       m_spRemoteRelaseControl->SetReleaseSettings(m_releaseSettings);
+
+      m_spRemoteRelaseControl.reset();
    }
 
    if (m_upInstance != nullptr)
