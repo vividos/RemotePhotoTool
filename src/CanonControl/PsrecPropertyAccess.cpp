@@ -537,7 +537,21 @@ m_bParseValues(bParseValues)
 {
    // determine size
    prUInt32 uiSize = 0;
-   prResponse err = PR_GetDevicePropDesc(hCamera, propId, &uiSize, nullptr);
+   prResponse err = prOK;
+
+   // when prINVALID_FN_CALL is returned, it may be because the camera isn't
+   // initialized yet; wait for this case
+   bool exit = true;
+   do
+   {
+      err = PR_GetDevicePropDesc(hCamera, propId, &uiSize, nullptr);
+
+      exit = !(err == (prERROR_PRSDK_COMPONENTID | prINVALID_FN_CALL));
+
+      if (!exit)
+         Sleep(1);
+
+   } while (!exit);
 
    if ((err & prERROR_ERRORID_MASK) != prINSUFFICIENT_BUFFER)
    {
