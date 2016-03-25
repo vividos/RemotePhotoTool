@@ -391,6 +391,12 @@ private:
    /// current remote release control
    std::shared_ptr<RemoteReleaseControl> m_spRemoteReleaseControl;
 
+   /// handler id for state event handler
+   int m_iStateEventHandlerId;
+
+   /// handler id for download event handler
+   int m_iDownloadEventHandlerId;
+
    /// current release settings
    ShutterReleaseSettings m_releaseSettings;
 

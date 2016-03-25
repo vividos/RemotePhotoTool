@@ -33,6 +33,8 @@ MainFrame::MainFrame()
  m_dwUIThreadId(Thread::CurrentId()),
  m_enCurrentViewType(viewBlank),
  m_enPrevImagesSavedView(viewBlank),
+ m_iStateEventHandlerId(-1),
+ m_iDownloadEventHandlerId(-1),
  m_iImagePropertyHandlerId(-1)
 {
    m_settings.Load();
@@ -726,10 +728,10 @@ std::shared_ptr<RemoteReleaseControl> MainFrame::StartRemoteReleaseControl(bool 
             UIEnable(ID_VIEWFINDER_SHOW, bAvailViewfinder, true);
 
             // add event handler
-            m_spRemoteReleaseControl->AddStateEventHandler(
+            m_iStateEventHandlerId = m_spRemoteReleaseControl->AddStateEventHandler(
                std::bind(&MainFrame::OnStateEvent, this, std::placeholders::_1, std::placeholders::_2));
 
-            m_spRemoteReleaseControl->AddDownloadEventHandler(
+            m_iDownloadEventHandlerId = m_spRemoteReleaseControl->AddDownloadEventHandler(
                std::bind(&MainFrame::OnDownloadEvent, this, std::placeholders::_1, std::placeholders::_2));
          }
          catch(CameraException& ex)
@@ -746,6 +748,15 @@ std::shared_ptr<RemoteReleaseControl> MainFrame::StartRemoteReleaseControl(bool 
    }
    else
    {
+      if (m_spRemoteReleaseControl != nullptr)
+      {
+         m_spRemoteReleaseControl->RemoveStateEventHandler(m_iStateEventHandlerId);
+         m_iStateEventHandlerId = -1;
+
+         m_spRemoteReleaseControl->RemoveDownloadEventHandler(m_iDownloadEventHandlerId);
+         m_iDownloadEventHandlerId = -1;
+      }
+
       m_spRemoteReleaseControl.reset();
 
       UIEnable(ID_VIEWFINDER_SHOW, false, true);
