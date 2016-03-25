@@ -80,6 +80,11 @@ void CameraInfoDlg::CollectDeviceProperties(CString& cszText)
          ex.Message().GetString());
    }
 
+   if (vecProperties.empty())
+   {
+      cszText += _T("no device properties found.\n");
+   }
+   else
    for (size_t iProp=0, iMaxProp = vecProperties.size(); iProp<iMaxProp; iProp++)
    {
       try
@@ -108,7 +113,7 @@ void CameraInfoDlg::CollectDeviceProperties(CString& cszText)
       }
       catch(CameraException& ex)
       {
-         cszText.AppendFormat(_T("Error while evaluating property %08x: %s\n"),
+         cszText.AppendFormat(_T("Error while evaluating device property %08x: %s\n"),
             vecProperties[iProp], ex.Message().GetString());
       }
    }
@@ -202,7 +207,7 @@ void CameraInfoDlg::CollectImageProperties(std::shared_ptr<RemoteReleaseControl>
       }
       catch (CameraException& ex)
       {
-         cszText.AppendFormat(_T("Error while getting device property %08x: %s\n"),
+         cszText.AppendFormat(_T("Error while evaluating image property %08x: %s\n"),
             uiPropertyId, ex.Message().GetString());
       }
    }
