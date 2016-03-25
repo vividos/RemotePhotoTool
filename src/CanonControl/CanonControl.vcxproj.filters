@@ -226,9 +226,6 @@
     <ClInclude Include="CommonPropertyAccess.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ImageFormat.hpp">
-      <Filter>Exported Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="exports\ShootingMode.hpp">
       <Filter>Exported Header Files</Filter>
     </ClInclude>
@@ -303,6 +300,9 @@
     </ClInclude>
     <ClInclude Include="GPhoto2Include.hpp">
       <Filter>GPhoto2 Files</Filter>
+    </ClInclude>
+    <ClInclude Include="exports\ImageFormat.hpp">
+      <Filter>Exported Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

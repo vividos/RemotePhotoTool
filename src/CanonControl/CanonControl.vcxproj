@@ -133,6 +133,7 @@
     <ClInclude Include="EdsdkShutterCounterReader.hpp" />
     <ClInclude Include="ErrorText.hpp" />
     <ClInclude Include="exports\BulbReleaseControl.hpp" />
+    <ClInclude Include="exports\ImageFormat.hpp" />
     <ClInclude Include="exports\Instance.hpp" />
     <ClInclude Include="exports\CameraException.hpp" />
     <ClInclude Include="exports\DeviceProperty.hpp" />
@@ -152,7 +153,6 @@
     <ClInclude Include="GPhoto2RemoteReleaseControlImpl.hpp" />
     <ClInclude Include="GPhoto2SourceDeviceImpl.hpp" />
     <ClInclude Include="GPhoto2SourceInfoImpl.hpp" />
-    <ClInclude Include="ImageFormat.hpp" />
     <ClInclude Include="PsrecViewfinderImpl.hpp" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="CdsdkCommon.hpp" />
