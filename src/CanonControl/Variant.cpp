@@ -115,13 +115,16 @@ CString Variant::ToString() const
       cszValue.Format(_T("%f"), Get<double>());
       break;
 
+   case typeFloat: // used in gPhoto2
+      cszValue.Format(_T("%f"), Get<float>());
+      break;
+
    case typeInvalid:
       cszValue = _T("invalid type");
       break;
 
    case typeInt64:
    case typeUInt64:
-   case typeFloat:
    case typeByteBlock:
    case typeRational:
    case typePoint:
