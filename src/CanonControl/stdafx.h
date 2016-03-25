@@ -20,5 +20,8 @@
 #include <map>
 #include <memory>
 #include <functional>
+#include <algorithm>
+#include <thread>
+#include <atomic>
 
 #include "Logging.hpp"

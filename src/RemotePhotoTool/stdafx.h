@@ -25,9 +25,23 @@
 #include <map>
 #include <memory>
 #include <functional>
+#include <algorithm>
+#include <thread>
+#include <atomic>
 
 // Boost includes
 #include <boost/noncopyable.hpp>
+
+// CanonControl includes
+#include "Instance.hpp"
+#include "Variant.hpp"
+#include "CameraException.hpp"
+#include "SourceInfo.hpp"
+#include "SourceDevice.hpp"
+#include "RemoteReleaseControl.hpp"
+#include "Viewfinder.hpp"
+#include "ImageProperty.hpp"
+#include "DeviceProperty.hpp"
 
 // app wide window message
 
