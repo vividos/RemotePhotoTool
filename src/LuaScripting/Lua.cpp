@@ -742,6 +742,18 @@ Value Table::GetValue(const CString& key)
    return Value::FromStack(state, -1);
 }
 
+Value Table::GetValue(int key)
+{
+   State& state = m_spRef->GetState();
+   lua_State* L = state.GetState();
+
+   lua_pushinteger(L, key);
+
+   lua_gettable(L, m_spRef->GetStackIndex());
+
+   return Value::FromStack(state, -1);
+}
+
 /// \details also pushes table as 'self' parameter before passing all other
 /// params from vecParam.
 std::vector<Value> Table::CallFunction(const CString& cszName,

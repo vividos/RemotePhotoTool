@@ -391,6 +391,9 @@ public:
    /// returns value from table
    Value GetValue(const CString& key);
 
+   /// returns value from table, by integer key
+   Value GetValue(int key);
+
    /// calls function stored in table
    std::vector<Value> CallFunction(const CString& cszName,
       int iResults = 0,
