@@ -23,3 +23,14 @@ del %OUTDIR%psCamDat.dll 2> nul
 del %OUTDIR%Ucs32P.dll 2> nul
 del %OUTDIR%lua.properties 2> nul
 del %OUTDIR%SciLexer.dll 2> nul
+
+REM gPhoto2 files
+del %OUTDIR%SciLexer.dll 2> nul
+del %OUTDIR%libusb1.dll 2> nul
+del %OUTDIR%ptp2.dll 2> nul
+del %OUTDIR%ptpip.dll 2> nul
+del %OUTDIR%canon.dll 2> nul
+del %OUTDIR%disk.dll 2> nul
+del %OUTDIR%libgphoto2.dll 2> nul
+del %OUTDIR%libgphoto2_port.dll 2> nul
+del %OUTDIR%libusb-1.0.dll 2> nul
