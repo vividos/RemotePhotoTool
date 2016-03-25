@@ -92,7 +92,7 @@ void CameraInfoDlg::CollectDeviceProperties(CString& cszText)
 
          try
          {
-            std::vector<Variant> vecValues = p.ValidValues();
+            const std::vector<Variant>& vecValues = p.ValidValues();
             for (size_t iValue = 0, iMaxValue = vecValues.size(); iValue < iMaxValue; iValue++)
             {
                cszText.AppendFormat(_T("   Valid value: %s (%s)\n"),

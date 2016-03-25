@@ -29,8 +29,8 @@ public:
    /// returns if property is read-only
    bool IsReadOnly() const throw() { return m_bReadOnly; }
 
-   /// valid values as variant
-   std::vector<Variant> ValidValues() const { return m_vecValidValues; }
+   /// returns valid values as list of variants
+   const std::vector<Variant>& ValidValues() const { return m_vecValidValues; }
 
    /// converts a given value (e.g. from ValidValues()) to string
    CString ValueAsString(Variant value) const throw();
@@ -48,6 +48,9 @@ private:
        m_bReadOnly(bReadOnly)
    {
    }
+
+   /// returns valid values as list of variants; non-const version
+   std::vector<Variant>& ValidValues() { return m_vecValidValues; }
 
 private:
    /// SDK variant

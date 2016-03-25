@@ -285,7 +285,7 @@ void CmdlineApp::CheckUnknownDeviceProperties()
 
 void CmdlineApp::PrintValidDevicePropertyValues(const DeviceProperty& dp) const
 {
-   std::vector<Variant> vecValidValues = dp.ValidValues();
+   const std::vector<Variant>& vecValidValues = dp.ValidValues();
    for (size_t j = 0, jMax = vecValidValues.size(); j<jMax; j++)
    {
       _tprintf(_T("   Valid value: %s (%s)\n"),
