@@ -198,9 +198,7 @@ public:
          iParam = kEdsCameraCommand_ShutterButton_Halfway;
          break;
 
-      case RemoteReleaseControl::commandAdjustWhiteBalance:
-         uiCommand = kEdsCameraCommand_DoClickWBEvf;
-         // TODO put white balance x/y coordinates
+      case RemoteReleaseControl::commandAdjustWhiteBalance: // not supported
          break;
 
       case RemoteReleaseControl::commandAdjustExposure: // not supported

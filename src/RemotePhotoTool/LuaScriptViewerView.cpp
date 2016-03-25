@@ -34,9 +34,12 @@ void LuaScriptViewerView::SetupSourceEditor()
 
    // set Lua keywords
    SetKeyWords(0,
-      "and break do else elseif end for function if in " // official keywords
-      "local nil not or repeat return then until while "
-      ""); // TODO add RemotePhotoTool specific classes
+      "and break do else elseif end for function if in "
+      "local nil not or repeat return then until while");
+
+   // add RemotePhotoTool specific classes
+   SetKeyWords(1,
+      "App Sys Constants RemoteReleaseControl Viewfinder");
 
    SetTabWidth(3);
 }

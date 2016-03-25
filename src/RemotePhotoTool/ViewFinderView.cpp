@@ -178,9 +178,7 @@ void ViewFinderView::SetupZoomControls()
 
    if (!m_spRemoteReleaseControl->GetCapability(RemoteReleaseControl::capZoomControl) || m_vecAllZoomValues.empty())
    {
-      // TODO disable zoom buttons
       m_tbZoom.EnableWindow(FALSE);
-
       return;
    }
 

@@ -289,7 +289,7 @@ void MainFrame::DoFileNew()
    if (m_view.QueryClose())
    {
       m_view.Init(_T(""), _T("Untitled.lua"));
-      m_view.SetText(""); // TODO load template
+      m_view.SetText("");
       m_view.SetSavePoint();
       UpdateTitle();
    }
