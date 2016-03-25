@@ -9,6 +9,7 @@
 // includes
 #include "PsrecCommon.hpp"
 #include "PsrecVarDataParser.hpp"
+#include "ImageProperty.hpp"
 #include "Variant.hpp"
 
 namespace PSREC
@@ -108,6 +109,12 @@ public:
 
    /// returns value for image format property
    Variant GetImageFormatProperty() const;
+
+   /// sets new image format property
+   void SetImageFormatProperty(Variant value);
+
+   /// enumerates all image format property values
+   void EnumImageFormatPropertyValues(std::vector<ImageProperty>& vecValues);
 
    /// converts from property id to property name
    static LPCTSTR NameFromId(prUInt16 propertyId) throw();

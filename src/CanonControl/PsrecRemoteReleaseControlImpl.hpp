@@ -90,6 +90,12 @@ public:
    {
       PropertyAccess access(m_hCamera);
 
+      if (uiImagePropertyId == PSREC_PROP_IMAGE_FORMAT)
+      {
+         access.EnumImageFormatPropertyValues(vecValues);
+         return;
+      }
+
       std::vector<Variant> vecRawValues;
       access.Enum(static_cast<prUInt16>(uiImagePropertyId), vecRawValues);
 

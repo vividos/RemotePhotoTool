@@ -700,8 +700,16 @@ Variant PropertyAccess::Get(prUInt16 propId) const
    DevicePropDesc desc(m_hCamera, propId, false);
    return desc.m_varCurrentValue;
 }
+
 void PropertyAccess::Set(prUInt16 propId, Variant v)
 {
+   // special case: image format
+   if (propId == PSREC_PROP_IMAGE_FORMAT)
+   {
+      SetImageFormatProperty(v);
+      return;
+   }
+
    // first, get type and size of property
    DevicePropDesc desc(m_hCamera, propId, false);
 
@@ -724,11 +732,10 @@ void PropertyAccess::Set(prUInt16 propId, Variant v)
 
 Variant PropertyAccess::GetImageFormatProperty() const
 {
-   std::vector<prUInt8> vecRawValues;
-
    DevicePropDesc compQuality(m_hCamera, prPTP_DEV_PROP_COMP_QUALITY, false);
    DevicePropDesc imageSize(m_hCamera, prPTP_DEV_PROP_IMAGE_SIZE, false);
 
+   std::vector<prUInt8> vecRawValues;
    vecRawValues.push_back(compQuality.m_varCurrentValue.Get<prUInt8>());
    vecRawValues.push_back(imageSize.m_varCurrentValue.Get<prUInt8>());
 
@@ -737,6 +744,52 @@ Variant PropertyAccess::GetImageFormatProperty() const
    value.SetType(Variant::typeUInt8);
 
    return value;
+}
+
+void PropertyAccess::SetImageFormatProperty(Variant value)
+{
+   ATLASSERT(value.IsArray() == true); // must be an array of two 8-bit values
+   ATLASSERT(value.Type() == Variant::typeUInt8);
+
+   std::vector<prUInt8> vecRawValues = value.GetArray<prUInt8>();
+
+   ATLASSERT(vecRawValues.size() == 2);
+   if (vecRawValues.size() != 2)
+      return;
+
+   Variant compQuality;
+   compQuality.Set(vecRawValues[0]);
+   compQuality.SetType(Variant::typeUInt8);
+
+   Set(prPTP_DEV_PROP_COMP_QUALITY, compQuality);
+
+   Variant imageSize;
+   imageSize.Set(vecRawValues[1]);
+   imageSize.SetType(Variant::typeUInt8);
+
+   Set(prPTP_DEV_PROP_IMAGE_SIZE, imageSize);
+}
+
+void PropertyAccess::EnumImageFormatPropertyValues(std::vector<ImageProperty>& vecValues)
+{
+   DevicePropDesc compQuality(m_hCamera, prPTP_DEV_PROP_COMP_QUALITY, true);
+   DevicePropDesc imageSize(m_hCamera, prPTP_DEV_PROP_IMAGE_SIZE, true);
+
+   for (size_t indexSize = 0; indexSize < imageSize.m_vecAllValues.size(); indexSize++)
+   {
+      for (size_t indexQuality = 0; indexQuality < compQuality.m_vecAllValues.size(); indexQuality++)
+      {
+         std::vector<prUInt8> vecRawValues;
+         vecRawValues.push_back(compQuality.m_vecAllValues[indexQuality].Get<prUInt8>());
+         vecRawValues.push_back(imageSize.m_vecAllValues[indexSize].Get<prUInt8>());
+
+         Variant value;
+         value.SetArray(vecRawValues);
+         value.SetType(Variant::typeUInt8);
+
+         vecValues.push_back(ImageProperty(variantPsrec, PSREC_PROP_IMAGE_FORMAT, value, true));
+      }
+   }
 }
 
 LPCTSTR PropertyAccess::NameFromId(prUInt16 propertyId) throw()

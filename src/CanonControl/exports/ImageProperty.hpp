@@ -77,6 +77,7 @@ private:
    friend EDSDK::RemoteReleaseControlImpl;
    friend CDSDK::RemoteReleaseControlImpl;
    friend PSREC::RemoteReleaseControlImpl;
+   friend PSREC::PropertyAccess;
    friend GPhoto2::RemoteReleaseControlImpl;
    friend class RemoteReleaseControl;
    friend class ShutterSpeedValue;

@@ -35,6 +35,7 @@ class DevicePropertyAccess;
 namespace PSREC
 {
 class SourceDeviceImpl;
+class PropertyAccess;
 class RemoteReleaseControlImpl;
 }
 
