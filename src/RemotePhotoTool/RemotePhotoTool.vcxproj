@@ -168,6 +168,7 @@
     <ClInclude Include="ViewFinderView.hpp" />
     <ClInclude Include="ViewManager.hpp" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="WindowMessages.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\app_exit.bmp" />
