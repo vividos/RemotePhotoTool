@@ -9,6 +9,7 @@
 // includes
 #include "ViewFinderImageWindow.hpp"
 #include "ImageProperty.hpp"
+#include "Viewfinder.hpp"
 
 // forward references
 class RemoteReleaseControl;
@@ -42,6 +43,9 @@ public:
 
    /// sets new lines mode
    void SetLinesMode(ViewFinderImageWindow::T_enLinesMode enLinesMode);
+
+   /// sets new viewfinder output type
+   void SetOutputType(Viewfinder::T_enOutputType enOutputType);
 
 private:
    friend CDialogResize<ViewFinderView>;

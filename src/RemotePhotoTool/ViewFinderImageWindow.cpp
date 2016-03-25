@@ -33,6 +33,11 @@ ViewFinderImageWindow::~ViewFinderImageWindow() throw()
    m_brushZebraPattern.DeleteObject();
 }
 
+void ViewFinderImageWindow::SetOutputType(Viewfinder::T_enOutputType enOutputType)
+{
+   m_spViewfinder->SetOutputType(enOutputType);
+}
+
 void ViewFinderImageWindow::EnableUpdate(bool bEnable)
 {
    if (bEnable)

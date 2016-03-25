@@ -9,10 +9,8 @@
 // includes
 #include "LightweightMutex.hpp"
 #include "Event.hpp"
+#include "Viewfinder.hpp"
 #include "resource.h"
-
-// forward references
-class Viewfinder;
 
 /// image control for viewfinder image
 class ViewFinderImageWindow: public CWindowImpl<ViewFinderImageWindow>
@@ -35,6 +33,9 @@ public:
 
    /// sets lines mode
    void SetLinesMode(T_enLinesMode enLinesMode) throw() { m_enLinesMode = enLinesMode; }
+
+   /// sets new viewfinder output type
+   void SetOutputType(Viewfinder::T_enOutputType enOutputType);
 
    /// shows zebra pattern for overexposed images
    void ShowZebraPattern(bool bShowZebraPattern) throw() { m_bShowZebraPattern = bShowZebraPattern; }

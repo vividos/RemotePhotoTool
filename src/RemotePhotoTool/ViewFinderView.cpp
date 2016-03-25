@@ -74,6 +74,12 @@ void ViewFinderView::SetLinesMode(ViewFinderImageWindow::T_enLinesMode enLinesMo
       m_upViewFinderWindow->SetLinesMode(enLinesMode);
 }
 
+void ViewFinderView::SetOutputType(Viewfinder::T_enOutputType enOutputType)
+{
+   if (m_upViewFinderWindow != nullptr)
+      m_upViewFinderWindow->SetOutputType(enOutputType);
+}
+
 LRESULT ViewFinderView::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
    DoDataExchange(DDX_LOAD);

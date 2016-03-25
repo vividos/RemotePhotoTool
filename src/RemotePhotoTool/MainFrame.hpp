@@ -70,6 +70,7 @@ private:
       RIBBON_CONTROL(m_cbCameraSettingsExposure)
       RIBBON_CONTROL(m_cbCameraSettingsIso)
       RIBBON_CONTROL(m_cbViewfinderLinesMode)
+      RIBBON_CONTROL(m_cbViewfinderOutputType)
    END_RIBBON_CONTROL_MAP()
 
    BEGIN_UPDATE_UI_MAP(MainFrame)
@@ -111,6 +112,10 @@ private:
       UPDATE_ELEMENT(ID_VIEWFINDER_LINES_MODE_NONE, UPDUI_MENUPOPUP | UPDUI_RIBBON)
       UPDATE_ELEMENT(ID_VIEWFINDER_LINES_MODE_RULEOFTHIRDS, UPDUI_MENUPOPUP | UPDUI_RIBBON)
       UPDATE_ELEMENT(ID_VIEWFINDER_LINES_MODE_GOLDENRATIO, UPDUI_MENUPOPUP | UPDUI_RIBBON)
+      UPDATE_ELEMENT(ID_VIEWFINDER_OUTPUT_TYPE, UPDUI_MENUPOPUP | UPDUI_RIBBON)
+      UPDATE_ELEMENT(ID_VIEWFINDER_OUTPUT_TYPE_LCD, UPDUI_MENUPOPUP | UPDUI_RIBBON)
+      UPDATE_ELEMENT(ID_VIEWFINDER_OUTPUT_TYPE_VIDEO_OUT, UPDUI_MENUPOPUP | UPDUI_RIBBON)
+      UPDATE_ELEMENT(ID_VIEWFINDER_OUTPUT_TYPE_OFF, UPDUI_MENUPOPUP | UPDUI_RIBBON)
       UPDATE_ELEMENT(ID_VIEWFINDER_SHOW_OVEREXPOSED, UPDUI_MENUPOPUP | UPDUI_RIBBON)
       UPDATE_ELEMENT(ID_VIEWFINDER_SHOW_OVERLAY_IMAGE, UPDUI_MENUPOPUP | UPDUI_RIBBON)
       UPDATE_ELEMENT(ID_VIEWFINDER_HISTOGRAM, UPDUI_MENUPOPUP | UPDUI_RIBBON)
@@ -141,12 +146,14 @@ private:
       RIBBON_GALLERY_CONTROL_HANDLER(ID_CAMERA_SETTINGS_SAVETO, OnCameraSettingsSaveToSelChanged)
       COMMAND_RANGE_HANDLER(ID_CAMERA_SETTINGS_SAVETO_CAMERA, ID_CAMERA_SETTINGS_SAVETO_BOTH, OnCameraSettingsSaveToRange)
       RIBBON_GALLERY_CONTROL_HANDLER(ID_VIEWFINDER_LINES_MODE, OnViewfinderLinesModeSelChanged)
+      RIBBON_GALLERY_CONTROL_HANDLER(ID_VIEWFINDER_OUTPUT_TYPE, OnViewfinderOutputTypeSelChanged)
       RIBBON_COMBOBOX_IMAGE_PROPERTY(ID_CAMERA_SHOOTING_MODE, m_cbCameraSettingsShootingMode)
       RIBBON_COMBOBOX_IMAGE_PROPERTY(ID_CAMERA_SETTINGS_AV, m_cbCameraSettingsAv)
       RIBBON_COMBOBOX_IMAGE_PROPERTY(ID_CAMERA_SETTINGS_TV, m_cbCameraSettingsTv)
       RIBBON_COMBOBOX_IMAGE_PROPERTY(ID_CAMERA_SETTINGS_EXPOSURE, m_cbCameraSettingsExposure)
       RIBBON_COMBOBOX_IMAGE_PROPERTY(ID_CAMERA_SETTINGS_ISO, m_cbCameraSettingsIso)
       COMMAND_RANGE_HANDLER(ID_VIEWFINDER_LINES_MODE_NONE, ID_VIEWFINDER_LINES_MODE_GOLDENRATIO, OnViewfinderLinesModeRange)
+      COMMAND_RANGE_HANDLER(ID_VIEWFINDER_OUTPUT_TYPE_LCD, ID_VIEWFINDER_OUTPUT_TYPE_OFF, OnViewfinderOutputTypeRange)
       COMMAND_ID_HANDLER(ID_PREV_IMAGES_SHOW, OnPrevImagesShow)
       COMMAND_ID_HANDLER(ID_PREV_IMAGES_EXIT, OnPrevImagesExit)
       MESSAGE_HANDLER(WM_COMMAND, OnForwardCommandMessage)
@@ -195,6 +202,11 @@ private:
    LRESULT OnViewfinderLinesModeSelChanged(UI_EXECUTIONVERB verb, WORD wID, UINT uSel, BOOL& bHandled);
    /// called when a lines mode in "Viewfinder | Lines mode" submenu entry is being selected
    LRESULT OnViewfinderLinesModeRange(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+
+   /// called when a selection in the ribbon combobox for viewfinder output type was made
+   LRESULT OnViewfinderOutputTypeSelChanged(UI_EXECUTIONVERB verb, WORD wID, UINT uSel, BOOL& bHandled);
+   /// called when output type in "Viewfinder | Output type" submenu entry is being selected
+   LRESULT OnViewfinderOutputTypeRange(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
    /// called when "View | Previous images" menu entry is being selected
    LRESULT OnPrevImagesShow(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
@@ -350,6 +362,9 @@ private:
 
    /// ribbon item gallery for viewfinder lines mode
    CRibbonItemGalleryCtrl<ID_VIEWFINDER_LINES_MODE, 3> m_cbViewfinderLinesMode;
+
+   /// ribbon item gallery for viewfinder output type
+   CRibbonItemGalleryCtrl<ID_VIEWFINDER_OUTPUT_TYPE, 3> m_cbViewfinderOutputType;
 
    // model
 

@@ -2,7 +2,6 @@ CanonControl
 ------------
 write documentation for CanonControl library
 remove TODOs
-Viewfinder: implement image on TFT and/or PC
 Send Keep-Alive to keep cameras alive
 
 PSREC

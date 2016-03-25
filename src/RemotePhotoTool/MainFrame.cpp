@@ -16,6 +16,7 @@
 #include "SourceDevice.hpp"
 #include "ShutterReleaseSettings.hpp"
 #include "ShootingMode.hpp"
+#include "Viewfinder.hpp"
 #include "CameraException.hpp"
 #include "CameraErrorDlg.hpp"
 #include "Logging.hpp"
@@ -423,6 +424,34 @@ LRESULT MainFrame::OnViewfinderLinesModeRange(WORD /*wNotifyCode*/, WORD wID, HW
    return 0;
 }
 
+LRESULT MainFrame::OnViewfinderOutputTypeSelChanged(UI_EXECUTIONVERB verb, WORD /*wID*/, UINT uSel, BOOL& /*bHandled*/)
+{
+   if (verb == UI_EXECUTIONVERB_EXECUTE &&
+      uSel != UI_COLLECTION_INVALIDINDEX &&
+      m_upViewFinderView != nullptr)
+   {
+      // T_enOutputType starts with value 1
+      Viewfinder::T_enOutputType enOutputType =
+         static_cast<Viewfinder::T_enOutputType>(uSel + 1);
+
+      m_upViewFinderView->SetOutputType(enOutputType);
+   }
+
+   return 0;
+}
+
+
+LRESULT MainFrame::OnViewfinderOutputTypeRange(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+   // T_enOutputType starts with value 1
+   Viewfinder::T_enOutputType enOutputType =
+      static_cast<Viewfinder::T_enOutputType>(wID - ID_VIEWFINDER_OUTPUT_TYPE + 1);
+
+   m_upViewFinderView->SetOutputType(enOutputType);
+
+   return 0;
+}
+
 LRESULT MainFrame::OnPrevImagesShow(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
    m_enPrevImagesSavedView = m_enCurrentViewType;
@@ -575,6 +604,7 @@ void MainFrame::SetupRibbonBar()
 
       m_cbCameraSettingsSaveToMode.Select(2);
       m_cbViewfinderLinesMode.Select(0);
+      m_cbViewfinderOutputType.Select(2);
 
       CRibbonPersist(c_pszSettingsRegkey).Restore(bRibbonUI, m_hgRibbonSettings);
    }
@@ -798,6 +828,10 @@ void MainFrame::ShowViewfinder(bool bShow)
    UIEnable(ID_VIEWFINDER_LINES_MODE_NONE, bShow);
    UIEnable(ID_VIEWFINDER_LINES_MODE_RULEOFTHIRDS, bShow);
    UIEnable(ID_VIEWFINDER_LINES_MODE_GOLDENRATIO, bShow);
+   UIEnable(ID_VIEWFINDER_OUTPUT_TYPE, bShow);
+   UIEnable(ID_VIEWFINDER_OUTPUT_TYPE_LCD, bShow);
+   UIEnable(ID_VIEWFINDER_OUTPUT_TYPE_VIDEO_OUT, bShow);
+   UIEnable(ID_VIEWFINDER_OUTPUT_TYPE_OFF, bShow);
    UIEnable(ID_VIEWFINDER_SHOW_OVEREXPOSED, bShow);
    UIEnable(ID_VIEWFINDER_SHOW_OVERLAY_IMAGE, bShow);
    UIEnable(ID_VIEWFINDER_HISTOGRAM, bShow);
