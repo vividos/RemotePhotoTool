@@ -158,9 +158,10 @@ void CmdlineApp::OpenByName(const CString& cszName)
    {
       CString cszIndex = cszName.Mid(iPosOpen + 1, iPosClose - iPosOpen - 1);
 
-      size_t iIndex = _tcstoul(cszIndex, nullptr, 10);
+      // index was passed as 1-based
+      size_t iIndex = _tcstoul(cszIndex, nullptr, 10) - 1;
 
-      if (iIndex >= vecSourceDevices.size())
+      if (iIndex < 0 || iIndex >= vecSourceDevices.size())
          throw Exception(_T("Invalid index for camera"), __FILE__, __LINE__);
 
       std::shared_ptr<SourceInfo> spSourceInfo = vecSourceDevices[iIndex];
