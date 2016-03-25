@@ -46,6 +46,20 @@ public:
       }
    }
 
+   virtual void SetOutputType(Viewfinder::T_enOutputType enOutputType) override
+   {
+      // note that T_enOutputType values exactly correspond to values
+      // expected by prPTP_DEV_PROP_CAMERA_OUTPUT
+      prUInt8 output = static_cast<prUInt8>(enOutputType);
+
+      Variant outputValue;
+      outputValue.Set(output);
+      outputValue.SetType(Variant::typeUInt8);
+
+      PropertyAccess access(m_hCamera);
+      access.Set(prPTP_DEV_PROP_CAMERA_OUTPUT, outputValue);
+   }
+
    virtual void SetAvailImageHandler(Viewfinder::T_fnOnAvailViewfinderImage fnOnAvailViewfinderImage) override
    {
       LightweightMutex::LockType lock(m_mtxFnOnAvailViewfinderImage);

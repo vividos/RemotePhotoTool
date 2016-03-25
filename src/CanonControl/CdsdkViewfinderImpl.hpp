@@ -17,7 +17,6 @@ namespace CDSDK
 class SourceDeviceImpl;
 
 /// viewfinder impl for CDSDK
-// TODO use CDSelectViewfinderCameraOutput
 class ViewfinderImpl : public Viewfinder
 {
 public:
@@ -47,6 +46,16 @@ public:
       catch (...)
       {
       }
+   }
+
+   virtual void SetOutputType(Viewfinder::T_enOutputType enOutputType) override
+   {
+      // note that T_enOutputType values exactly correspond to cdRelViewfinderOutput
+      cdRelViewfinderOutput output = static_cast<cdRelViewfinderOutput>(enOutputType);
+
+      cdError err = CDSelectViewFinderCameraOutput(GetSource(), output);
+      LOG_TRACE(_T("CDSelectViewFinderCameraOutput(%08x) returned %08x\n"), GetSource(), err);
+      CheckError(_T("CDSelectViewFinderCameraOutput"), err, __FILE__, __LINE__);
    }
 
    virtual void SetAvailImageHandler(Viewfinder::T_fnOnAvailViewfinderImage fnOnAvailViewfinderImage) override

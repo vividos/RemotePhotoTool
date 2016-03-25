@@ -77,6 +77,41 @@ void ViewfinderImpl::Close()
    p.Set(kEdsPropID_Evf_OutputDevice, vDevice);
 }
 
+void ViewfinderImpl::SetOutputType(T_enOutputType enOutputType)
+{
+   unsigned int output = 0;
+
+   switch (enOutputType)
+   {
+   case Viewfinder::outputTypeUndefined:
+      return; // do nothing
+
+   case Viewfinder::outputTypeLCD:
+      // corresponds to "Camera and PC", to have viewfinder on camera LCD also
+      output = 3;
+      break;
+
+   case Viewfinder::outputTypeVideoOut:
+      return; // do nothing, since on EDSDK, video out can't be set
+
+   case Viewfinder::outputTypeOff:
+      // corresponds to "PC", not "Off", to not shutdown viewfinder at all
+      output = 2;
+      break;
+
+   default:
+      ATLASSERT(false);
+      return;
+   }
+
+   Variant outputValue;
+   outputValue.Set(output);
+   outputValue.SetType(Variant::typeUInt32);
+
+   PropertyAccess p(m_hSourceDevice);
+   p.Set(kEdsPropID_Evf_OutputDevice, outputValue);
+}
+
 void ViewfinderImpl::SetAvailImageHandler(Viewfinder::T_fnOnAvailViewfinderImage fnOnAvailViewfinderImage)
 {
    {

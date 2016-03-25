@@ -30,6 +30,8 @@ public:
    /// dtor
    virtual ~ViewfinderImpl() throw();
 
+   virtual void SetOutputType(Viewfinder::T_enOutputType enOutputType) override;
+
    virtual void SetAvailImageHandler(Viewfinder::T_fnOnAvailViewfinderImage fnOnAvailViewfinderImage) override;
 
    virtual void Close() override;
