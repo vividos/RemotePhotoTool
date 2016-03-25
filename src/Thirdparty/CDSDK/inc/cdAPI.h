@@ -485,7 +485,7 @@ cdCAPI CDTermViewfinder(
 	cdHSource						hSource
 );
 
-cdCAPI CDSelectViewfinderCameraOutput( 
+cdCAPI CDSelectViewFinderCameraOutput( 
 	cdHSource						hSource,
 	cdRelViewfinderOutput			cameraOutput
 );

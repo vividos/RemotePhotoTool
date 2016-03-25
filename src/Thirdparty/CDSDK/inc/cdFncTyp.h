@@ -493,7 +493,7 @@ typedef cdError cdSTDCALL cdTermViewfinder(
 	cdHSource						hSource
 );
 
-typedef cdError cdSTDCALL cdSelectViewfinderCameraOutput( 
+typedef cdError cdSTDCALL cdSelectViewFinderCameraOutput( 
 	cdHSource						hSource,
 	cdRelViewfinderOutput			cameraOutput
 );
@@ -926,7 +926,7 @@ typedef struct {
 	cdGetReleasedData*					pGetReleasedData;
 	cdStartViewfinder*					pStartViewfinder;
 	cdTermViewfinder*					pTermViewfinder;
-	cdSelectViewfinderCameraOutput*		pSelectViewfinderCameraOutput;
+	cdSelectViewFinderCameraOutput*		pSelectViewFinderCameraOutput;
 	cdActViewfinderAutoFunctions*		pActViewfinderAutoFunctions;
 	cdGetMaximumZoomPos*				pGetMaximumZoomPos;
 	cdGetZoomPos*						pGetZoomPos;
