@@ -1356,9 +1356,29 @@ The following constants can be used for saveTarget:
 The Viewfinder table contains the following functions:
 
     viewfinder = {
+      setOutputType = function(outputType) { ... };
       setAvailImageHandler = function([callbackFunction]) { ... };
       close = function() { ... };
     }
+
+#### Viewfinder:setOutputType(outputType) ####
+
+This function selects where the viewfinder image should be shown, in addition
+to transfer it to the PC.
+
+The following constants can be used:
+
+- Constants.Viewfinder.outputTypeLCD:
+  The live viewfinder image is also shown on the camera's LCD screen.
+
+- Constants.Viewfinder.outputTypeVideoOut:
+  The live viewfinder image is also sent to the camera's Video Out connector,
+  to be viewed on an external screen.
+  Note: Doesn't work on Canon EOS based cameras, since the function can be
+  controlled remotely.
+
+- Constants.Viewfinder.outputTypeOff:
+  The live viewfinder image is only sent to the PC.
 
 #### Viewfinder:setAvailImageHandler([callbackFunction]) ####
 

@@ -71,6 +71,9 @@ private:
    /// inits constants for RemoteReleaseControl
    void InitRemoteReleaseControlConstants(Lua::Table& constants);
 
+   /// inits constants for Viewfinder
+   void InitViewfinderConstants(Lua::Table& constants);
+
    /// restarts timer for event handling
    void RestartEventTimer();
 
@@ -200,6 +203,10 @@ private:
 
    /// initializes viewfinder table
    void InitViewfinderTable(std::shared_ptr<Viewfinder> spViewfinder, Lua::Table& viewfinder);
+
+   /// viewfinder:setOutputType(outputType)
+   std::vector<Lua::Value> ViewfinderSetOutputType(std::shared_ptr<Viewfinder> spViewfinder,
+      Lua::State& state, const std::vector<Lua::Value>& vecParams);
 
    /// viewfinder:setAvailImageHandler(callbackFunction)
    std::vector<Lua::Value> ViewfinderSetAvailImageHandler(std::shared_ptr<Viewfinder> spViewfinder,

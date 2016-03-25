@@ -329,6 +329,9 @@ App = {
 
 		local viewfinder = remoteReleaseControl:startViewfinder();
 
+		-- send viewfinder to LCD, too
+		viewfinder:setOutputType(Constants.Viewfinder.outputTypeLCD);
+
 		self.eventViewfinder = Sys:createEvent();
 
 		viewfinder:setAvailImageHandler(App.onViewfinderImageAvail);
@@ -338,6 +341,8 @@ App = {
 		local imageWasAvail = self.eventViewfinder:wait(10.0);
 
 		print("Captured " .. (imageWasAvail and "a viewfinder image!" or "no viewfinder image.") .. "\n");
+
+		viewfinder:close();
 
 	end;
 

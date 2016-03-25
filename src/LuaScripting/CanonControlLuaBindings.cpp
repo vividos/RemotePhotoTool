@@ -81,6 +81,7 @@ void CanonControlLuaBindings::InitConstants()
    InitSourceDeviceConstants(constants);
    InitShutterReleaseSettingsConstants(constants);
    InitRemoteReleaseControlConstants(constants);
+   InitViewfinderConstants(constants);
 }
 
 void CanonControlLuaBindings::InitSourceDeviceConstants(Lua::Table& constants)
@@ -145,6 +146,17 @@ void CanonControlLuaBindings::InitRemoteReleaseControlConstants(Lua::Table& cons
    remoteReleaseControl.AddValue(_T("saveToBoth"), Lua::Value(ShutterReleaseSettings::saveToBoth));
 
    constants.AddValue(_T("RemoteReleaseControl"), Lua::Value(remoteReleaseControl));
+}
+
+void CanonControlLuaBindings::InitViewfinderConstants(Lua::Table& constants)
+{
+   Lua::Table viewfinder = GetState().AddTable(_T(""));
+
+   viewfinder.AddValue(_T("outputTypeLCD"), Lua::Value(Viewfinder::outputTypeLCD));
+   viewfinder.AddValue(_T("outputTypeVideoOut"), Lua::Value(Viewfinder::outputTypeVideoOut));
+   viewfinder.AddValue(_T("outputTypeOff"), Lua::Value(Viewfinder::outputTypeOff));
+
+   constants.AddValue(_T("Viewfinder"), Lua::Value(viewfinder));
 }
 
 void CanonControlLuaBindings::RestartEventTimer()
@@ -824,6 +836,10 @@ std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlClose(
 
 void CanonControlLuaBindings::InitViewfinderTable(std::shared_ptr<Viewfinder> spViewfinder, Lua::Table& viewfinder)
 {
+   viewfinder.AddFunction("setOutputType",
+      std::bind(&CanonControlLuaBindings::ViewfinderSetOutputType, shared_from_this(), spViewfinder,
+         std::placeholders::_1, std::placeholders::_2));
+
    viewfinder.AddFunction("setAvailImageHandler",
       std::bind(&CanonControlLuaBindings::ViewfinderSetAvailImageHandler, shared_from_this(), spViewfinder,
          std::placeholders::_1, std::placeholders::_2));
@@ -831,6 +847,24 @@ void CanonControlLuaBindings::InitViewfinderTable(std::shared_ptr<Viewfinder> sp
    viewfinder.AddFunction("close",
       std::bind(&CanonControlLuaBindings::ViewfinderClose, shared_from_this(), spViewfinder,
          std::placeholders::_1, std::placeholders::_2));
+}
+
+std::vector<Lua::Value> CanonControlLuaBindings::ViewfinderSetOutputType(
+   std::shared_ptr<Viewfinder> spViewfinder,
+   Lua::State& state,
+   const std::vector<Lua::Value>& vecParams)
+{
+   if (vecParams.size() != 1 && vecParams.size() != 2)
+      throw Lua::Exception(_T("viewfinder:setOutputType() needs output type parameter"), state.GetState(), __FILE__, __LINE__);
+
+   if (vecParams[0].GetType() != Lua::Value::typeTable)
+      throw Lua::Exception(_T("viewfinder:setOutputType() was passed an illegal 'self' value"), state.GetState(), __FILE__, __LINE__);
+
+   int outputType = vecParams[1].Get<int>();
+
+   spViewfinder->SetOutputType(static_cast<Viewfinder::T_enOutputType>(outputType));
+
+   return std::vector<Lua::Value>();
 }
 
 std::vector<Lua::Value> CanonControlLuaBindings::ViewfinderSetAvailImageHandler(

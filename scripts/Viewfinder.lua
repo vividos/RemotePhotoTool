@@ -71,6 +71,9 @@ App = {
 
 		local viewfinder = remoteReleaseControl:startViewfinder();
 
+		-- send viewfinder to LCD, too
+		viewfinder:setOutputType(Constants.Viewfinder.outputTypeLCD);
+
 		self.eventViewfinder = Sys:createEvent();
 
 		viewfinder:setAvailImageHandler(App.onViewfinderImageAvail);
