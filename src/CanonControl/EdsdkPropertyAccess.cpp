@@ -654,8 +654,6 @@ void PropertyAccess::EnumDeviceIds(std::vector<unsigned int>& vecDeviceIds)
       if (IsPropertyAvail(uiPropId))
          vecDeviceIds.push_back(uiPropId);
    }
-
-   // TODO vecDeviceIds.push_back(kEdsPropID_ShutterCounter);
 }
 
 void PropertyAccess::EnumImageIds(std::vector<unsigned int>& vecImageIds)

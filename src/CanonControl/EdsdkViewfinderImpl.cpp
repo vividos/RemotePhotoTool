@@ -39,10 +39,6 @@ m_evtTimerStopped(true, false) // manual-reset event
 
    // A property change event notification is issued from the camera if property settings are made successfully.
    // Start downloading of the live view image once the property change notification arrives.
-
-   // TODO wait for notification
-
-   // note: don't bother downloading viewfinder images until handler is set
 }
 
 ViewfinderImpl::~ViewfinderImpl() throw()
