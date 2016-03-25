@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2016 Michael Fink
 //
 /// \file ImageProperty.hpp Canon control - Image property
 //
@@ -77,6 +77,7 @@ private:
    friend EDSDK::RemoteReleaseControlImpl;
    friend CDSDK::RemoteReleaseControlImpl;
    friend PSREC::RemoteReleaseControlImpl;
+   friend GPhoto2::RemoteReleaseControlImpl;
    friend class RemoteReleaseControl;
    friend class ShutterSpeedValue;
    friend class ImageFormat;

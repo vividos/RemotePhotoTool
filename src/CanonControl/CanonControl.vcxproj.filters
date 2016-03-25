@@ -30,6 +30,9 @@
     <Filter Include="CDSDK Files\SDK Files">
       <UniqueIdentifier>{3a4140a5-486c-43b2-b516-e932e3d54b0a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GPhoto2 Files">
+      <UniqueIdentifier>{ffbda97f-5566-4577-be2c-0403704f759f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DeviceProperty.cpp">
@@ -97,6 +100,21 @@
     </ClCompile>
     <ClCompile Include="EdsdkShutterCounterReader.cpp">
       <Filter>EDSDK Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GPhoto2Common.cpp">
+      <Filter>GPhoto2 Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GPhoto2SourceInfoImpl.cpp">
+      <Filter>GPhoto2 Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GPhoto2SourceDeviceImpl.cpp">
+      <Filter>GPhoto2 Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GPhoto2RemoteReleaseControlImpl.cpp">
+      <Filter>GPhoto2 Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GPhoto2PropertyAccess.cpp">
+      <Filter>GPhoto2 Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -267,6 +285,24 @@
     </ClInclude>
     <ClInclude Include="EdsdkShutterCounterReader.hpp">
       <Filter>EDSDK Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GPhoto2Common.hpp">
+      <Filter>GPhoto2 Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GPhoto2SourceInfoImpl.hpp">
+      <Filter>GPhoto2 Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GPhoto2SourceDeviceImpl.hpp">
+      <Filter>GPhoto2 Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GPhoto2RemoteReleaseControlImpl.hpp">
+      <Filter>GPhoto2 Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GPhoto2PropertyAccess.hpp">
+      <Filter>GPhoto2 Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GPhoto2Include.hpp">
+      <Filter>GPhoto2 Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

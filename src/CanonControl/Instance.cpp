@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2016 Michael Fink
 //
 /// \file Instance.cpp Canon control - Instance class
 //
@@ -12,6 +12,7 @@
 #include "CdsdkCommon.hpp"
 #include "CdsdkSourceInfoImpl.hpp"
 #include "PsrecCommon.hpp"
+#include "GPhoto2Common.hpp"
 #include "LightweightMutex.hpp"
 #include "BackgroundWorkerThread.hpp"
 #include "BackgroundTimer.hpp"
@@ -25,10 +26,14 @@ class Instance::Impl
 {
 public:
    /// ctor
-   Impl(EDSDK::RefSp spEdSdkRef, CDSDK::RefSp spCdSdkRef, PSREC::RefSp spPsRecRef)
+   Impl(EDSDK::RefSp spEdSdkRef,
+      CDSDK::RefSp spCdSdkRef,
+      PSREC::RefSp spPsRecRef,
+      GPhoto2::RefSp spGPhoto2Ref)
       :m_spEdSdkRef(spEdSdkRef),
        m_spCdSdkRef(spCdSdkRef),
        m_spPsRecRef(spPsRecRef),
+       m_spGPhoto2Ref(spGPhoto2Ref),
        m_uiPollNumDevices(0)
    {
    }
@@ -36,10 +41,12 @@ public:
    static std::weak_ptr<EDSDK::Ref> m_wpEdSdkRef; ///< weak ref to EDSDK
    static std::weak_ptr<CDSDK::Ref> m_wpCdSdkRef; ///< weak ref to CDSDK
    static std::weak_ptr<PSREC::Ref> m_wpPsRecRef; ///< weak ref to PSREC
+   static std::weak_ptr<GPhoto2::Ref> m_wpGPhoto2Ref; ///< weak ref to gPhoto2
 
    EDSDK::RefSp m_spEdSdkRef; ///< EDSDK reference
    CDSDK::RefSp m_spCdSdkRef; ///< CDSDK reference
    PSREC::RefSp m_spPsRecRef; ///< PSREC reference
+   GPhoto2::RefSp m_spGPhoto2Ref; ///< gPhoto2 reference
 
    /// returns current impl
    static std::shared_ptr<Impl> Get();
@@ -78,6 +85,7 @@ private:
 std::weak_ptr<EDSDK::Ref> Instance::Impl::m_wpEdSdkRef;
 std::weak_ptr<CDSDK::Ref> Instance::Impl::m_wpCdSdkRef;
 std::weak_ptr<PSREC::Ref> Instance::Impl::m_wpPsRecRef;
+std::weak_ptr<GPhoto2::Ref> Instance::Impl::m_wpGPhoto2Ref;
 
 
 std::shared_ptr<Instance::Impl> Instance::Impl::Get()
@@ -94,7 +102,11 @@ std::shared_ptr<Instance::Impl> Instance::Impl::Get()
    if (spPsRecRef == nullptr)
       m_wpPsRecRef = spPsRecRef = PSREC::RefSp(new PSREC::Ref);
 
-   return std::make_shared<Instance::Impl>(spEdSdkRef, spCdSdkRef, spPsRecRef);
+   GPhoto2::RefSp spGPhoto2Ref = m_wpGPhoto2Ref.lock();
+   if (spGPhoto2Ref == nullptr)
+      m_wpGPhoto2Ref = spGPhoto2Ref = GPhoto2::RefSp(new GPhoto2::Ref);
+
+   return std::make_shared<Instance::Impl>(spEdSdkRef, spCdSdkRef, spPsRecRef, spGPhoto2Ref);
 }
 
 void Instance::Impl::StartPollCamera()
@@ -107,6 +119,7 @@ void Instance::Impl::StartPollCamera()
          m_spCdSdkRef->EnumerateDevices(vecSourceDevices);
 
       m_spPsRecRef->EnumerateDevices(vecSourceDevices);
+      m_spGPhoto2Ref->EnumerateDevices(vecSourceDevices);
 
       m_uiPollNumDevices = vecSourceDevices.size();
    }
@@ -143,6 +156,7 @@ void Instance::Impl::PollCamera()
       m_spCdSdkRef->EnumerateDevices(vecSourceDevices);
 
    m_spPsRecRef->EnumerateDevices(vecSourceDevices);
+   m_spGPhoto2Ref->EnumerateDevices(vecSourceDevices);
 
    size_t uiPollNumDevices = vecSourceDevices.size();
 
@@ -192,6 +206,7 @@ CString Instance::Version() const
    m_spImpl->m_spEdSdkRef->AddVersionText(cszVersionText);
    m_spImpl->m_spPsRecRef->AddVersionText(cszVersionText);
    m_spImpl->m_spCdSdkRef->AddVersionText(cszVersionText);
+   m_spImpl->m_spGPhoto2Ref->AddVersionText(cszVersionText);
 
    return cszVersionText;
 }
@@ -260,6 +275,14 @@ void Instance::EnumerateDevices(std::vector<std::shared_ptr<SourceInfo>>& vecSou
    try
    {
       m_spImpl->m_spPsRecRef->EnumerateDevices(vecSourceDevices);
+   }
+   catch (...)
+   {
+   }
+
+   try
+   {
+   m_spImpl->m_spGPhoto2Ref->EnumerateDevices(vecSourceDevices);
    }
    catch (...)
    {

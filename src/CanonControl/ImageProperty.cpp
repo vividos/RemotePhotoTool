@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2016 Michael Fink
 //
 /// \file ImageProperty.cpp Canon control - Image property
 //
@@ -11,6 +11,7 @@
 #include "CdsdkImagePropertyAccess.hpp"
 #include "EdsdkPropertyAccess.hpp"
 #include "PsrecPropertyAccess.hpp"
+#include "GPhoto2PropertyAccess.hpp"
 
 CString ImageProperty::Name() const throw()
 {
@@ -23,6 +24,7 @@ CString ImageProperty::Name() const throw()
       case variantCdsdk: cszName = CDSDK::ImagePropertyAccess::NameFromId(m_uiImageProperty); break;
       case variantEdsdk: cszName = EDSDK::PropertyAccess::NameFromId(m_uiImageProperty); break;
       case variantPsrec: cszName = PSREC::PropertyAccess::NameFromId(static_cast<prUInt16>(m_uiImageProperty & 0xFFFF)); break;
+      case variantGphoto2: cszName = GPhoto2::PropertyAccess::NameFromId(m_uiImageProperty); break;
       default:
          ATLASSERT(false);
          LOG_TRACE(_T("invalid SDK variant in DeviceProperty::Name()\n"));
@@ -52,6 +54,7 @@ CString ImageProperty::ValueAsString(Variant value) const throw()
       case variantCdsdk: return CDSDK::ImagePropertyAccess::DisplayTextFromIdAndValue(m_uiImageProperty, value);
       case variantEdsdk: return EDSDK::PropertyAccess::DisplayTextFromIdAndValue(m_uiImageProperty, value);
       case variantPsrec: return PSREC::PropertyAccess::DisplayTextFromIdAndValue(static_cast<prUInt16>(m_uiImageProperty & 0xFFFF), value);
+      case variantGphoto2: return GPhoto2::PropertyAccess::DisplayTextFromIdAndValue(m_uiImageProperty, value);
       default:
          ATLASSERT(false);
          LOG_TRACE(_T("invalid SDK variant in ImageProperty::ValueAsString()\n"));

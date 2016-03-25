@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2016 Michael Fink
 //
 /// \file DeviceProperty.hpp Canon control - Device property
 //
@@ -39,6 +39,7 @@ private:
    friend EDSDK::SourceDeviceImpl;
    friend CDSDK::SourceDeviceImpl;
    friend PSREC::SourceDeviceImpl;
+   friend GPhoto2::PropertyAccess;
 
    /// ctor
    DeviceProperty(T_enSDKVariant enSDKVariant, unsigned int uiPropertyId, Variant value, bool bReadOnly)

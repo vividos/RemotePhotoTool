@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2016 Michael Fink
 //
 /// \file ImplFwd.hpp Canon control - Implementation forward declarations
 //
@@ -13,7 +13,8 @@ enum T_enSDKVariant
 {
    variantCdsdk,
    variantEdsdk,
-   variantPsrec
+   variantPsrec,
+   variantGphoto2,
 };
 
 // forward declarations for implementation classes
@@ -35,4 +36,11 @@ namespace PSREC
 {
 class SourceDeviceImpl;
 class RemoteReleaseControlImpl;
+}
+
+namespace GPhoto2
+{
+   class SourceDeviceImpl;
+   class PropertyAccess;
+   class RemoteReleaseControlImpl;
 }

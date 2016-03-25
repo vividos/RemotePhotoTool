@@ -57,13 +57,13 @@
       <Command />
     </CustomBuildStep>
     <ClCompile>
-      <AdditionalIncludeDirectories>exports;..\Base;..\Thirdparty\EDSDK\Header;..\Thirdparty\CDSDK\inc;..\Thirdparty\PSREC\PSReCSDK\inc;..\Thirdparty\boost-log-2.0-RC1;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>exports;..\Base;..\Thirdparty\EDSDK\Header;..\Thirdparty\CDSDK\inc;..\Thirdparty\PSREC\PSReCSDK\inc;..\Thirdparty\boost-log-2.0-RC1;..\Thirdparty\gphoto2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;CANONCONTROL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Lib>
       <AdditionalOptions>/IGNORE:4006 /IGNORE:4221 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalLibraryDirectories>$(SolutionDir)\Thirdparty\CDSDK\lib;$(SolutionDir)\Thirdparty\EDSDK\Library;$(SolutionDir)\Thirdparty\PSREC\PSReCSDK\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>edsdk.lib;prsdk.lib;cdsdk.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\Thirdparty\CDSDK\lib;$(SolutionDir)\Thirdparty\EDSDK\Library;$(SolutionDir)\Thirdparty\PSREC\PSReCSDK\lib;$(SolutionDir)Thirdparty\gphoto2\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>edsdk.lib;prsdk.lib;cdsdk.lib;libgphoto2.lib;libgphoto2_port.lib</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -71,13 +71,13 @@
       <Command />
     </CustomBuildStep>
     <ClCompile>
-      <AdditionalIncludeDirectories>exports;..\Base;..\Thirdparty\EDSDK\Header;..\Thirdparty\CDSDK\inc;..\Thirdparty\PSREC\PSReCSDK\inc;..\Thirdparty\boost-log-2.0-RC1;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>exports;..\Base;..\Thirdparty\EDSDK\Header;..\Thirdparty\CDSDK\inc;..\Thirdparty\PSREC\PSReCSDK\inc;..\Thirdparty\boost-log-2.0-RC1;..\Thirdparty\gphoto2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;CANONCONTROL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Lib>
       <AdditionalOptions>/IGNORE:4006 /IGNORE:4221 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalLibraryDirectories>$(SolutionDir)\Thirdparty\CDSDK\lib;$(SolutionDir)\Thirdparty\EDSDK\Library;$(SolutionDir)\Thirdparty\PSREC\PSReCSDK\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>edsdk.lib;prsdk.lib;cdsdk.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\Thirdparty\CDSDK\lib;$(SolutionDir)\Thirdparty\EDSDK\Library;$(SolutionDir)\Thirdparty\PSREC\PSReCSDK\lib;$(SolutionDir)Thirdparty\gphoto2\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>edsdk.lib;prsdk.lib;cdsdk.lib;libgphoto2.lib;libgphoto2_port.lib</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -88,6 +88,11 @@
     <ClCompile Include="CommonPropertyAccess.cpp" />
     <ClCompile Include="EdsdkShutterCounterReader.cpp" />
     <ClCompile Include="ErrorText.cpp" />
+    <ClCompile Include="GPhoto2Common.cpp" />
+    <ClCompile Include="GPhoto2PropertyAccess.cpp" />
+    <ClCompile Include="GPhoto2RemoteReleaseControlImpl.cpp" />
+    <ClCompile Include="GPhoto2SourceDeviceImpl.cpp" />
+    <ClCompile Include="GPhoto2SourceInfoImpl.cpp" />
     <ClCompile Include="ImageFormat.cpp" />
     <ClCompile Include="Instance.cpp" />
     <ClCompile Include="DeviceProperty.cpp" />
@@ -141,6 +146,12 @@
     <ClInclude Include="exports\SourceInfo.hpp" />
     <ClInclude Include="exports\Variant.hpp" />
     <ClInclude Include="exports\Viewfinder.hpp" />
+    <ClInclude Include="GPhoto2Common.hpp" />
+    <ClInclude Include="GPhoto2Include.hpp" />
+    <ClInclude Include="GPhoto2PropertyAccess.hpp" />
+    <ClInclude Include="GPhoto2RemoteReleaseControlImpl.hpp" />
+    <ClInclude Include="GPhoto2SourceDeviceImpl.hpp" />
+    <ClInclude Include="GPhoto2SourceInfoImpl.hpp" />
     <ClInclude Include="ImageFormat.hpp" />
     <ClInclude Include="PsrecViewfinderImpl.hpp" />
     <ClInclude Include="stdafx.h" />
