@@ -215,7 +215,7 @@
               <ComboBox CommandName="phototool_CAMERA_SETTINGS_ISO" />
             </Group>
 
-            <Group CommandName="GroupCameraMiscSettings" SizeDefinition="OneButton">
+            <Group CommandName="GroupCameraMiscSettings" SizeDefinition="TwoButtons">
               <DropDownGallery CommandName="phototool_CAMERA_SETTINGS_SAVETO"
                                HasLargeItems="false"
                                TextPosition="Right">
@@ -226,7 +226,13 @@
                 </DropDownGallery.MenuLayout>
               </DropDownGallery>
 
-              <!-- Button CommandName="phototool_CAMERA_SETTINGS_IMAGE_FORMAT"/ -->
+              <DropDownGallery CommandName="phototool_CAMERA_SETTINGS_IMAGE_FORMAT"
+                               HasLargeItems="false"
+                               TextPosition="Right">
+                <DropDownGallery.MenuLayout>
+                  <FlowMenuLayout Columns = "3"/>
+                </DropDownGallery.MenuLayout>
+              </DropDownGallery>
             </Group>
           </Tab>
         </TabGroup>

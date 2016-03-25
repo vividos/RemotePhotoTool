@@ -32,7 +32,6 @@ Bindings for ImageMagick library
 
 RemotePhotoTool
 ---------------
-Add selecting image format
 Previous Images browser: back button active
 Previous Images browser: scan folder for images, on startup
 Nice toolbar icons

@@ -69,6 +69,7 @@ private:
       RIBBON_CONTROL(m_cbCameraSettingsTv)
       RIBBON_CONTROL(m_cbCameraSettingsExposure)
       RIBBON_CONTROL(m_cbCameraSettingsIso)
+      RIBBON_CONTROL(m_cbCameraSettingsImageFormat)
       RIBBON_CONTROL(m_cbViewfinderLinesMode)
       RIBBON_CONTROL(m_cbViewfinderOutputType)
    END_RIBBON_CONTROL_MAP()
@@ -145,6 +146,7 @@ private:
       COMMAND_ID_HANDLER(ID_VIEWFINDER_SHOW, OnViewfinderShow)
       RIBBON_GALLERY_CONTROL_HANDLER(ID_CAMERA_SETTINGS_SAVETO, OnCameraSettingsSaveToSelChanged)
       COMMAND_RANGE_HANDLER(ID_CAMERA_SETTINGS_SAVETO_CAMERA, ID_CAMERA_SETTINGS_SAVETO_BOTH, OnCameraSettingsSaveToRange)
+      RIBBON_GALLERY_CONTROL_HANDLER(ID_CAMERA_SETTINGS_IMAGE_FORMAT, OnCameraSettingsImageFormatSelChanged)
       RIBBON_GALLERY_CONTROL_HANDLER(ID_VIEWFINDER_LINES_MODE, OnViewfinderLinesModeSelChanged)
       RIBBON_GALLERY_CONTROL_HANDLER(ID_VIEWFINDER_OUTPUT_TYPE, OnViewfinderOutputTypeSelChanged)
       RIBBON_COMBOBOX_IMAGE_PROPERTY(ID_CAMERA_SHOOTING_MODE, m_cbCameraSettingsShootingMode)
@@ -197,6 +199,9 @@ private:
    LRESULT OnCameraSettingsSaveToSelChanged(UI_EXECUTIONVERB verb, WORD wID, UINT uSel, BOOL& bHandled);
    /// called when an entry in "Camera | Save to" submenu entry is being selected
    LRESULT OnCameraSettingsSaveToRange(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+
+   /// called when a selection in the ribbon combobox for "image format" camera settings was made
+   LRESULT OnCameraSettingsImageFormatSelChanged(UI_EXECUTIONVERB verb, WORD wID, UINT uSel, BOOL& bHandled);
 
    /// called when a selection in the ribbon combobox for viewfinder lines mode was made
    LRESULT OnViewfinderLinesModeSelChanged(UI_EXECUTIONVERB verb, WORD wID, UINT uSel, BOOL& bHandled);
@@ -339,6 +344,9 @@ private:
    /// ribbon item gallery for camera settings "save to" mode
    CRibbonItemGalleryCtrl<ID_CAMERA_SETTINGS_SAVETO, 3> m_cbCameraSettingsSaveToMode;
 
+   /// ribbon item gallery for image format
+   CRibbonItemGalleryCtrl<ID_CAMERA_SETTINGS_IMAGE_FORMAT, 100> m_cbCameraSettingsImageFormat;
+
    /// handler id for image property changes
    int m_iImagePropertyHandlerId;
 
@@ -385,6 +393,9 @@ private:
 
    /// current release settings
    ShutterReleaseSettings m_releaseSettings;
+
+   /// all image formats currently available for selection
+   std::vector<ImageProperty> m_vecAllImageFormats;
 
    /// current view type
    T_enViewType m_enCurrentViewType;

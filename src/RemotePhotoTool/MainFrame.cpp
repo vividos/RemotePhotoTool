@@ -16,6 +16,7 @@
 #include "SourceDevice.hpp"
 #include "ShutterReleaseSettings.hpp"
 #include "ShootingMode.hpp"
+#include "ImageFormat.hpp"
 #include "Viewfinder.hpp"
 #include "CameraException.hpp"
 #include "CameraErrorDlg.hpp"
@@ -389,6 +390,23 @@ void MainFrame::SetCameraSettingsSaveTo(ShutterReleaseSettings::T_enSaveTarget e
    UISetCheck(uiId, true);
 }
 
+LRESULT MainFrame::OnCameraSettingsImageFormatSelChanged(UI_EXECUTIONVERB verb, WORD /*wID*/, UINT uSel, BOOL& /*bHandled*/)
+{
+   if (verb == UI_EXECUTIONVERB_EXECUTE &&
+      uSel != UI_COLLECTION_INVALIDINDEX &&
+      !m_vecAllImageFormats.empty() &&
+      m_spRemoteReleaseControl != nullptr)
+   {
+      size_t indexImageFormat = uSel;
+
+      const ImageProperty& imageFormat = m_vecAllImageFormats[indexImageFormat];
+
+      m_spRemoteReleaseControl->SetImageProperty(imageFormat);
+   }
+
+   return 0;
+}
+
 /// \note Normally the ideal place for this handler would be ViewFinderView, but there is a problem:
 /// Some of the photo mode view classes have REFLECT_NOTIFICATIONS() in their message maps, and the
 /// method MainFrame::OnForwardCommandMessage() forwards WM_COMMAND messages to the photo view first,
@@ -603,6 +621,8 @@ void MainFrame::SetupRibbonBar()
       UIAddMenu(menuRibbonCommands, true);
 
       m_cbCameraSettingsSaveToMode.Select(2);
+      m_cbCameraSettingsImageFormat.Select(0);
+
       m_cbViewfinderLinesMode.Select(0);
       m_cbViewfinderOutputType.Select(2);
 
@@ -947,6 +967,20 @@ void MainFrame::EnableCameraUI(bool bEnable)
       // wait for changes in shooting mode property
       m_iImagePropertyHandlerId = m_spRemoteReleaseControl->AddPropertyEventHandler(
          std::bind(&MainFrame::OnUpdatedImageProperty, this, std::placeholders::_1, std::placeholders::_2));
+
+      // update list of image formats
+      unsigned int uiPropertyId = m_spRemoteReleaseControl->MapImagePropertyTypeToId(T_enImagePropertyType::propImageFormat);
+      m_spRemoteReleaseControl->EnumImagePropertyValues(uiPropertyId, m_vecAllImageFormats);
+
+      size_t maxImageFormat = m_vecAllImageFormats.size();
+      m_cbCameraSettingsImageFormat.Resize(maxImageFormat);
+
+      for (size_t indexImageFormat = 0; indexImageFormat < maxImageFormat; indexImageFormat++)
+      {
+         ImageFormat imageFormat(m_vecAllImageFormats[indexImageFormat]);
+
+         m_cbCameraSettingsImageFormat.SetItemText(indexImageFormat, imageFormat.ToString());
+      }
    }
 
    if (!bEnable)
@@ -955,6 +989,8 @@ void MainFrame::EnableCameraUI(bool bEnable)
          m_spRemoteReleaseControl->RemovePropertyEventHandler(m_iImagePropertyHandlerId);
 
       m_upImagePropertyValueManager.reset();
+
+      m_vecAllImageFormats.clear();
    }
 }
 
