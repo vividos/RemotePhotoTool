@@ -184,6 +184,13 @@ void RemoteReleaseControlImpl::OnStateChange(EdsStateEvent inEvent, EdsUInt32 in
    {
       LOG_TRACE(_T("unknown exception during StateEvent handler\n"));
    }
+
+   if (inEvent == kEdsStateEvent_WillSoonShutDown)
+   {
+      // keep the camera awake
+      EdsError err = EdsSendCommand(m_hCamera.Get(), kEdsCameraCommand_ExtendShutDownTimer, 0);
+      LOG_TRACE(_T("EdsSendCommand(%08x, ExtendShutDownTimer, 0) returned %08x\n"), m_hCamera.Get(), err);
+   }
 }
 
 EdsError RemoteReleaseControlImpl::OnObjectChange_(EdsObjectEvent inEvent, EdsBaseRef inRef, EdsVoid *inContext) throw()
