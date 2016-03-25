@@ -166,8 +166,17 @@ void CmdlineApp::OpenByName(const CString& cszName)
       std::shared_ptr<SourceInfo> spSourceInfo = vecSourceDevices[iIndex];
 
       _tprintf(_T("Opening camera: %s\n"), spSourceInfo->Name().GetString());
+      _tprintf(_T("Device Id: %s\n"), spSourceInfo->DeviceId().GetString());
 
-      m_spSourceDevice = spSourceInfo->Open();
+      try
+      {
+         m_spSourceDevice = spSourceInfo->Open();
+      }
+      catch (const CameraException& ex)
+      {
+         _tprintf(_T("Exception while opening camera: %s\n"), ex.Message().GetString());
+         throw;
+      }
 
       _tprintf(_T("\n"));
       return;
