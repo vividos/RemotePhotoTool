@@ -24,7 +24,6 @@ implement TODOs from source files
 
 Lua scripting
 -------------
-Implement waiting for property events
 Implement writing absolute filenames before calling onFinishedTransfer
 Add more libraries and sandbox unsafe functions
 Bindings for Exif library

@@ -87,6 +87,7 @@ Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Setup", "Setup\Setup.wixpro
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lua Scripts", "Lua Scripts", "{40D84258-C4A0-4307-96EC-F42158A06AF8}"
 	ProjectSection(SolutionItems) = preProject
+		..\scripts\ListenEvents.lua = ..\scripts\ListenEvents.lua
 		..\scripts\LuaQuickReference.lua = ..\scripts\LuaQuickReference.lua
 		..\scripts\Multithreaded.lua = ..\scripts\Multithreaded.lua
 		..\scripts\PrintProperties.lua = ..\scripts\PrintProperties.lua

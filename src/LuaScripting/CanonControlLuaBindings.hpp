@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2015 Michael Fink
+// Copyright (C) 2008-2016 Michael Fink
 //
 /// \file CanonControlLuaBindings.hpp Lua bindings for the CanonControl library
 //
@@ -13,12 +13,12 @@
 #include "Event.hpp"
 #include "Asio.hpp"
 #include "ShutterReleaseSettings.hpp"
+#include "RemoteReleaseControl.hpp"
 
 // forward references
 class SourceDevice;
 class SourceInfo;
 class DeviceProperty;
-class RemoteReleaseControl;
 class ImageProperty;
 class Viewfinder;
 class BulbReleaseControl;
@@ -83,10 +83,12 @@ private:
    /// handler for timer used for event handling
    void OnTimerEventHandling(const boost::system::error_code& error);
 
+
    // Sys functions
 
    /// local instance = Sys:getInstance()
    std::vector<Lua::Value> SysGetInstance(Lua::State& state);
+
 
    // Instance functions
 
@@ -103,6 +105,7 @@ private:
    /// method called when a camera has been connected
    void AsyncWaitForCamera_OnCameraConnected();
 
+
    // SourceInfo functions
 
    /// adds a source info table to given table
@@ -112,6 +115,7 @@ private:
    /// local sourceDevice = sourceInfo:open()
    std::vector<Lua::Value> SourceInfoOpen(std::shared_ptr<SourceInfo> spSourceInfo,
       Lua::State& state, const std::vector<Lua::Value>& vecParams);
+
 
    // SourceDevice functions
 
@@ -165,6 +169,60 @@ private:
       std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
       const ShutterReleaseSettings& releaseSettings);
 
+   void RemoteReleaseControl_PropertyEventHandler(
+      std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
+      std::shared_ptr<int> spHandlerId,
+      RemoteReleaseControl::T_enPropertyEvent,
+      unsigned int eventData);
+
+   /// local handlerId = remoteReleaseControl:addPropertyEventHandler(callbackFunction)
+   std::vector<Lua::Value> RemoteReleaseControlAddPropertyEventHandler(
+      std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
+      Lua::State& state,
+      const std::vector<Lua::Value>& vecParams);
+
+   /// remoteReleaseControl:removePropertyEventHandler(handlerId)
+   std::vector<Lua::Value> RemoteReleaseControlRemovePropertyEventHandler(
+      std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
+      Lua::State& state,
+      const std::vector<Lua::Value>& vecParams);
+
+   void RemoteReleaseControl_StateEventHandler(
+      std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
+      std::shared_ptr<int> spHandlerId,
+      RemoteReleaseControl::T_enStateEvent,
+      unsigned int eventData);
+
+   /// local handlerId = remoteReleaseControl:addStateEventHandler(callbackFunction)
+   std::vector<Lua::Value> RemoteReleaseControlAddStateEventHandler(
+      std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
+      Lua::State& state,
+      const std::vector<Lua::Value>& vecParams);
+
+   /// remoteReleaseControl:removeStateEventHandler(handlerId)
+   std::vector<Lua::Value> RemoteReleaseControlRemoveStateEventHandler(
+      std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
+      Lua::State& state,
+      const std::vector<Lua::Value>& vecParams);
+
+   void RemoteReleaseControl_DownloadEventHandler(
+      std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
+      std::shared_ptr<int> spHandlerId,
+      RemoteReleaseControl::T_enDownloadEvent,
+      unsigned int eventData);
+
+   /// local handlerId = remoteReleaseControl:addDownloadEventHandler(callbackFunction)
+   std::vector<Lua::Value> RemoteReleaseControlAddDownloadEventHandler(
+      std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
+      Lua::State& state,
+      const std::vector<Lua::Value>& vecParams);
+
+   /// remoteReleaseControl:removeDownloadEventHandler(handlerId)
+   std::vector<Lua::Value> RemoteReleaseControlRemoveDownloadEventHandler(
+      std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
+      Lua::State& state,
+      const std::vector<Lua::Value>& vecParams);
+
    /// local imagePropertiesList = remoteReleaseControl:enumImageProperties()
    std::vector<Lua::Value> RemoteReleaseControlEnumImageProperties(
       std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl, Lua::State& state);
@@ -199,6 +257,7 @@ private:
    std::vector<Lua::Value> RemoteReleaseControlClose(
       std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl);
 
+
    // Viewfinder functions
 
    /// initializes viewfinder table
@@ -220,7 +279,8 @@ private:
    std::vector<Lua::Value> ViewfinderClose(std::shared_ptr<Viewfinder> spViewfinder,
       Lua::State& state, const std::vector<Lua::Value>& vecParams);
 
-   // Bulb functions
+
+   // BulbReleaseControl functions
 
    /// initizalizes BulbReleaseControl table
    void InitBulbReleaseControlTable(std::shared_ptr<BulbReleaseControl> spBulbReleaseControl, Lua::Table& bulbReleaseControl);
@@ -243,6 +303,15 @@ private:
 
    /// once Lua has connected to remote release control, a pointer is stored here
    std::shared_ptr<RemoteReleaseControl> m_spRemoteRelaseControl;
+
+   /// set of all registered property handler ids
+   std::set<int> m_setAllPropertyHandlerIds;
+
+   /// set of all registered state handler ids
+   std::set<int> m_setAllStateHandlerIds;
+
+   /// set of all registered download handler ids
+   std::set<int> m_setAllDownloadHandlerIds;
 
    /// once Lua script started viewfinder, a pointer is stored here
    std::shared_ptr<Viewfinder> m_spViewfinder;

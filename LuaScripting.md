@@ -1071,7 +1071,14 @@ The RemoteReleaseControl table contains the following functions:
       setReleaseSettings = function(releaseSettings) { ... };
     
       -- event handling
-      -- TODO
+      addPropertyEventHandler = function(callbackFunction) { ... };
+      removePropertyEventHandler = function(handlerId) { ... };
+    
+      addStateEventHandler = function(callbackFunction) { ... };
+      removeStateEventHandler = function(handlerId) { ... };
+    
+      addDownloadEventHandler = function(callbackFunction) { ... };
+      removeDownloadEventHandler = function(handlerId) { ... };
     
       -- properties
       enumImageProperties = function() { ... };
@@ -1165,6 +1172,135 @@ Note that on most cameras, pressing the shutter release button on the camera
 itself also triggers taking photos. To also get notified when these images
 are taken, set a default ReleaseSettings value with a handler to process these
 out-of-bounds images.
+
+#### local handlerId = remoteReleaseControl:addPropertyEventHandler(callbackFunction) ####
+
+Adds an event handler to notify script when an image property of the camera
+has been changed. The callback function should look as follows:
+
+    callbackFunction = function(self, propertyEvent, eventParam) { ... }
+
+The propertyEvent is a number value and can be compared with the following
+constants:
+
+- Constants.RemoteReleaseControl.propEventPropertyChanged:
+  The value of a property has changed; either because the user changed a dial
+  on the camera or due to the camera changing a parameter. The eventParam
+  parameter is equal to the image property ID that was updated. If the
+  eventParam value is 0, it is unknown which property changed; in this case
+  it's best to get current values of all properties that are of interest.
+
+- Constants.RemoteReleaseControl.propEventPropertyDescChanged
+  The property description of a property has changed; this means that e.g. the
+  read-only status of a property has changed, or the list of available values
+  for a property has changed. The eventParam value contains the image property
+  ID of the property that has changed, or 0 if it is not known.
+
+The function returns a handler ID of the callback handler that can be used to
+unregister the handler again. See method removePropertyEventHandler().
+
+Note that all event handlers are automatically removed when the remote release
+control object is closed.
+
+#### remoteReleaseControl:removePropertyEventHandler(handlerId) ####
+
+Removes a property event handler from the remote release control. After
+calling this function, the handler previously registered with
+addPropertyEventHandler() won't be called again.
+
+#### local handlerId = remoteReleaseControl:addStateEventHandler(callbackFunction) ####
+
+Adds an event handler to notify script when an state event happened on the
+camera. The callback function should look as follows:
+
+    callbackFunction = function(self, stateEvent, eventParam) { ... }
+
+The stateEvent is a number value and can be compared with the following
+constants:
+
+- Constants.RemoteReleaseControl.stateEventCameraShutdown:
+  This event is sent when the camera is being shut down. No more operations on
+  remote release control are possible.
+
+- Constants.RemoteReleaseControl.stateEventRotationAngle:
+  This event is sent when the camera is rotated, changing from landscape to
+  portrait view or vice versa. The eventParam may or may not tell the new
+  direction of the camera.
+
+- Constants.RemoteReleaseControl.stateEventMemoryCardSlotOpen:
+  This event is sent when the memory card slot was opened; when this event
+  happens, no more actions should be performed, since pictures may not be
+  written to the camera memory card.
+
+- Constants.RemoteReleaseControl.stateEventReleaseError:
+  This event is sent when an attempt at releasing the shutter was made, but
+  there was an error; e.g. the auto focus couldn't determine focus, or other
+  errors while releasing.
+
+- Constants.RemoteReleaseControl.stateEventBulbExposureTime:
+  This event is sent during bulb operations, to tell the number of seconds
+  already elapsed. The eventParam value is the number of seconds since start.
+  See BulbReleaseControl table for how to control camera in Bulb mode.
+
+- Constants.RemoteReleaseControl.stateEventInternalError:
+  This event is sent when an internal error occured.
+
+Note that not all cameras send all the existing state events.
+
+The function returns a handler ID of the callback handler that can be used to
+unregister the handler again. See method removeStateEventHandler().
+
+Note that all event handlers are automatically removed when the remote release
+control object is closed.
+
+#### remoteReleaseControl:removeStateEventHandler(handlerId) ####
+
+Removes a state event handler from the remote release control. After
+calling this function, the handler previously registered with
+addStateEventHandler() won't be called again.
+
+#### local handlerId = remoteReleaseControl:addDownloadEventHandler(callbackFunction) ####
+
+Adds an event handler to notify script when an image is downloaded from the
+camera. The callback function should look as follows:
+
+    callbackFunction = function(self, downloadEvent, eventParam) { ... }
+
+The downloadEvent is a number value and can be compared with the following
+constants:
+
+- Constants.RemoteReleaseControl.downloadEventStarted:
+  Indicates that a download of an image has started, either because
+  RemoteReleaseControl:release() was called, or because the user pressed the
+  shutter release button on the camera. The eventParam value is set to 0
+  always.
+
+- Constants.RemoteReleaseControl.downloadEventInProgress:
+  Is called when progress is made on downloading the image from camera to PC.
+  The eventParam value is set to the percentage of completion of transfer.
+  Note: If you're connected to a very old Canon Powershot camera that uses
+  the CD-SDK, the value is set to 0, 1 or 2, and not the percentage.
+
+- Constants.RemoteReleaseControl.downloadEventFinished:
+  Indicates that a download of an image has finished. The eventParam value is
+  set to 0 always. After this download event was set, the onFinishedTransfer
+  handler from ReleaseSettings is called.
+
+Note that download events only occur when the relase settings (see table
+ReleaseSettings) are configured to save the image on the PC (saveTarget has to
+be set to saveToCamera or saveToBoth).
+
+The function returns a handler ID of the callback handler that can be used to
+unregister the handler again. See method removeDownloadEventHandler().
+
+Note that all event handlers are automatically removed when the remote release
+control object is closed.
+
+#### remoteReleaseControl:removeDownloadEventHandler(handlerId) ####
+
+Removes a download event handler from the remote release control. After
+calling this function, the handler previously registered with
+addDownloadEventHandler() won't be called again.
 
 #### image-property-ID-array-table RemoteReleaseControl:enumImageProperties()
 ####

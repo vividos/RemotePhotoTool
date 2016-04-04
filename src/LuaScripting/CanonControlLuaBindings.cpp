@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2015 Michael Fink
+// Copyright (C) 2008-2016 Michael Fink
 //
 /// \file CanonControlLuaBindings.cpp Lua bindings for the CanonControl library
 //
@@ -25,6 +25,15 @@ LPCTSTR c_pszSetAvailImageHandler_OnAvailImageHandler = _T("__SetAvailImageHandl
 
 /// name for onFinishedTransfer function stored in RemoteReleaseControl table
 LPCTSTR c_pszReleaseSettingsOnFinishedTransfer = _T("__ReleaseSettings_OnFinishedTransfer");
+
+/// name for table to store PropertyEvent handler functions
+LPCTSTR c_pszPropertyHandlerTable = _T("__PropertyHandler");
+
+/// name for table to store StateEvent handler functions
+LPCTSTR c_pszStateHandlerTable = _T("__StateHandler");
+
+/// name for table to store DownloadEvent handler functions
+LPCTSTR c_pszDownloadHandlerTable = _T("__DownloadHandler");
 
 /// cycle time for event timer
 const unsigned int c_uiEventTimerCycleInMilliseconds = 100;
@@ -194,8 +203,20 @@ void CanonControlLuaBindings::CancelHandlers()
 
    if (m_spRemoteRelaseControl != nullptr)
    {
-      // TODO
-      //m_spRemoteRelaseControl->RemoveDownloadEventHandler();
+      std::for_each(m_setAllPropertyHandlerIds.begin(), m_setAllPropertyHandlerIds.end(), [&](int iHandlerId)
+      {
+         m_spRemoteRelaseControl->RemovePropertyEventHandler(iHandlerId);
+      });
+
+      std::for_each(m_setAllStateHandlerIds.begin(), m_setAllStateHandlerIds.end(), [&](int iHandlerId)
+      {
+         m_spRemoteRelaseControl->RemoveStateEventHandler(iHandlerId);
+      });
+
+      std::for_each(m_setAllDownloadHandlerIds.begin(), m_setAllDownloadHandlerIds.end(), [&](int iHandlerId)
+      {
+         m_spRemoteRelaseControl->RemoveDownloadEventHandler(iHandlerId);
+      });
 
       m_releaseSettings.HandlerOnFinishedTransfer(ShutterReleaseSettings::T_fnOnFinishedTransfer());
       m_spRemoteRelaseControl->SetReleaseSettings(m_releaseSettings);
@@ -532,7 +553,37 @@ void CanonControlLuaBindings::InitRemoteReleaseControlTable(std::shared_ptr<Remo
       std::bind(&CanonControlLuaBindings::RemoteReleaseControlSetReleaseSettings, shared_from_this(), spRemoteReleaseControl,
          std::placeholders::_1, std::placeholders::_2));
 
-   // TODO event handlers
+   remoteReleaseControl.AddFunction("addPropertyEventHandler",
+      std::bind(&CanonControlLuaBindings::RemoteReleaseControlAddPropertyEventHandler, shared_from_this(), spRemoteReleaseControl,
+         std::placeholders::_1, std::placeholders::_2));
+
+   remoteReleaseControl.AddFunction("removePropertyEventHandler",
+      std::bind(&CanonControlLuaBindings::RemoteReleaseControlRemovePropertyEventHandler, shared_from_this(), spRemoteReleaseControl,
+         std::placeholders::_1, std::placeholders::_2));
+
+   remoteReleaseControl.AddFunction("addStateEventHandler",
+      std::bind(&CanonControlLuaBindings::RemoteReleaseControlAddStateEventHandler, shared_from_this(), spRemoteReleaseControl,
+         std::placeholders::_1, std::placeholders::_2));
+
+   remoteReleaseControl.AddFunction("removeStateEventHandler",
+      std::bind(&CanonControlLuaBindings::RemoteReleaseControlRemoveStateEventHandler, shared_from_this(), spRemoteReleaseControl,
+         std::placeholders::_1, std::placeholders::_2));
+
+   remoteReleaseControl.AddFunction("addDownloadEventHandler",
+      std::bind(&CanonControlLuaBindings::RemoteReleaseControlAddDownloadEventHandler, shared_from_this(), spRemoteReleaseControl,
+         std::placeholders::_1, std::placeholders::_2));
+
+   remoteReleaseControl.AddFunction("removeDownloadEventHandler",
+      std::bind(&CanonControlLuaBindings::RemoteReleaseControlRemoveDownloadEventHandler, shared_from_this(), spRemoteReleaseControl,
+         std::placeholders::_1, std::placeholders::_2));
+
+   remoteReleaseControl.AddFunction("getImagePropertyByType",
+      std::bind(&CanonControlLuaBindings::RemoteReleaseControlGetImagePropertyByType, shared_from_this(), spRemoteReleaseControl,
+         std::placeholders::_1, std::placeholders::_2));
+
+   remoteReleaseControl.AddFunction("getShootingModeImageProperty",
+      std::bind(&CanonControlLuaBindings::RemoteReleaseControlGetShootingModeImageProperty, shared_from_this(), spRemoteReleaseControl,
+         std::placeholders::_1, std::placeholders::_2));
 
    remoteReleaseControl.AddFunction("enumImageProperties",
       std::bind(&CanonControlLuaBindings::RemoteReleaseControlEnumImageProperties, shared_from_this(),
@@ -695,6 +746,354 @@ void CanonControlLuaBindings::SetReleaseSettings_OnFinishedTransfer(
       if (m_fnOutputDebugString != nullptr)
          m_fnOutputDebugString(ex.Message() + _T("\n"));
    }
+}
+
+void CanonControlLuaBindings::RemoteReleaseControl_PropertyEventHandler(
+   std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
+   std::shared_ptr<int> spHandlerId,
+   RemoteReleaseControl::T_enPropertyEvent enPropertyEvent,
+   unsigned int eventData)
+{
+   Lua::State& state = GetState();
+
+   Lua::Table app = state.GetTable(_T("App"));
+   Lua::Table handlerTable = app.GetValue(c_pszPropertyHandlerTable).Get<Lua::Table>();
+
+   int iHandlerId = *spHandlerId.get();
+
+   Lua::Value callbackFunction = handlerTable.GetValue(iHandlerId);
+
+   std::vector<Lua::Value> vecParams;
+
+   vecParams.push_back(Lua::Value(app));
+   vecParams.push_back(Lua::Value(static_cast<int>(enPropertyEvent)));
+   vecParams.push_back(Lua::Value(static_cast<int>(eventData)));
+
+   try
+   {
+      Lua::Function func = callbackFunction.Get<Lua::Function>();
+      func.Call(0, vecParams);
+   }
+   catch (const Lua::Exception& ex)
+   {
+      if (m_fnOutputDebugString != nullptr)
+         m_fnOutputDebugString(ex.Message() + _T("\n"));
+   }
+}
+
+std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlAddPropertyEventHandler(
+   std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
+   Lua::State& state,
+   const std::vector<Lua::Value>& vecParams)
+{
+   if (vecParams.size() != 2)
+      throw Lua::Exception(_T("invalid number of parameters to RemoteReleaseControl:addPropertyEventHandler()"), state.GetState(), __FILE__, __LINE__);
+
+   if (vecParams[0].GetType() != Lua::Value::typeTable)
+      throw Lua::Exception(_T("first parameter must be the RemoteReleaseControl table"), state.GetState(), __FILE__, __LINE__);
+
+   if (vecParams[1].GetType() != Lua::Value::typeFunction)
+      throw Lua::Exception(_T("second parameter must be callback function"), state.GetState(), __FILE__, __LINE__);
+
+   // bind handler function and store handler id in its argument
+   std::shared_ptr<int> spHandlerId(new int);
+
+   auto fn = std::bind(
+      &CanonControlLuaBindings::RemoteReleaseControl_PropertyEventHandler,
+      shared_from_this(),
+      spRemoteReleaseControl,
+      spHandlerId,
+      std::placeholders::_1,
+      std::placeholders::_2);
+
+   int iHandlerId = spRemoteReleaseControl->AddPropertyEventHandler(m_strand.wrap(fn));
+
+   *spHandlerId = iHandlerId;
+
+   m_setAllPropertyHandlerIds.insert(iHandlerId);
+
+   // store function as value to an array value with index
+   Lua::Value function = vecParams[1];
+
+   Lua::Table app = state.GetTable(_T("App"));
+
+   if (app.GetValue(c_pszPropertyHandlerTable).GetType() == Lua::Value::typeNil)
+   {
+      Lua::Table table = state.AddTable(_T(""));
+      app.AddValue(c_pszPropertyHandlerTable, Lua::Value(table));
+   }
+
+   Lua::Table handlerTable = app.GetValue(c_pszPropertyHandlerTable).Get<Lua::Table>();
+
+   handlerTable.AddValue(iHandlerId, function);
+
+   // return handler id
+   std::vector<Lua::Value> vecRetValues;
+   vecRetValues.push_back(Lua::Value(iHandlerId));
+
+   return vecRetValues;
+}
+
+std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlRemovePropertyEventHandler(
+   std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
+   Lua::State& state,
+   const std::vector<Lua::Value>& vecParams)
+{
+   if (vecParams.size() != 2)
+      throw Lua::Exception(_T("invalid number of parameters to RemoteReleaseControl:removePropertyEventHandler()"), state.GetState(), __FILE__, __LINE__);
+
+   if (vecParams[0].GetType() != Lua::Value::typeTable)
+      throw Lua::Exception(_T("first parameter must be the RemoteReleaseControl table"), state.GetState(), __FILE__, __LINE__);
+
+   if (vecParams[1].GetType() != Lua::Value::typeNumber)
+      throw Lua::Exception(_T("second parameter must be handler id"), state.GetState(), __FILE__, __LINE__);
+
+   // remove handler
+   int iHandlerId = vecParams[1].Get<int>();
+
+   spRemoteReleaseControl->RemovePropertyEventHandler(iHandlerId);
+
+   m_setAllPropertyHandlerIds.erase(iHandlerId);
+
+   // remove function from handler table
+   Lua::Table app = state.GetTable(_T("App"));
+   Lua::Table handlerTable = app.GetValue(c_pszPropertyHandlerTable).Get<Lua::Table>();
+
+   handlerTable.AddValue(iHandlerId, Lua::Value());
+
+   return std::vector<Lua::Value>();
+}
+
+void CanonControlLuaBindings::RemoteReleaseControl_StateEventHandler(
+   std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
+   std::shared_ptr<int> spHandlerId,
+   RemoteReleaseControl::T_enStateEvent enStateEvent,
+   unsigned int eventData)
+{
+   Lua::State& state = GetState();
+
+   Lua::Table app = state.GetTable(_T("App"));
+   Lua::Table handlerTable = app.GetValue(c_pszStateHandlerTable).Get<Lua::Table>();
+
+   int iHandlerId = *spHandlerId.get();
+
+   Lua::Value callbackFunction = handlerTable.GetValue(iHandlerId);
+
+   std::vector<Lua::Value> vecParams;
+
+   vecParams.push_back(Lua::Value(app));
+   vecParams.push_back(Lua::Value(static_cast<int>(enStateEvent)));
+   vecParams.push_back(Lua::Value(static_cast<int>(eventData)));
+
+   try
+   {
+      Lua::Function func = callbackFunction.Get<Lua::Function>();
+      func.Call(0, vecParams);
+   }
+   catch (const Lua::Exception& ex)
+   {
+      if (m_fnOutputDebugString != nullptr)
+         m_fnOutputDebugString(ex.Message() + _T("\n"));
+   }
+}
+
+std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlAddStateEventHandler(
+   std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
+   Lua::State& state,
+   const std::vector<Lua::Value>& vecParams)
+{
+   if (vecParams.size() != 2)
+      throw Lua::Exception(_T("invalid number of parameters to RemoteReleaseControl:addStateEventHandler()"), state.GetState(), __FILE__, __LINE__);
+
+   if (vecParams[0].GetType() != Lua::Value::typeTable)
+      throw Lua::Exception(_T("first parameter must be the RemoteReleaseControl table"), state.GetState(), __FILE__, __LINE__);
+
+   if (vecParams[1].GetType() != Lua::Value::typeFunction)
+      throw Lua::Exception(_T("second parameter must be callback function"), state.GetState(), __FILE__, __LINE__);
+
+   // bind handler function and store handler id in its argument
+   std::shared_ptr<int> spHandlerId(new int);
+
+   auto fn = std::bind(
+      &CanonControlLuaBindings::RemoteReleaseControl_StateEventHandler,
+      shared_from_this(),
+      spRemoteReleaseControl,
+      spHandlerId,
+      std::placeholders::_1,
+      std::placeholders::_2);
+
+   int iHandlerId = spRemoteReleaseControl->AddStateEventHandler(m_strand.wrap(fn));
+
+   *spHandlerId = iHandlerId;
+
+   m_setAllStateHandlerIds.insert(iHandlerId);
+
+   // store function as value to an array value with index
+   Lua::Value function = vecParams[1];
+
+   Lua::Table app = state.GetTable(_T("App"));
+
+   if (app.GetValue(c_pszStateHandlerTable).GetType() == Lua::Value::typeNil)
+   {
+      Lua::Table table = state.AddTable(_T(""));
+      app.AddValue(c_pszStateHandlerTable, Lua::Value(table));
+   }
+
+   Lua::Table handlerTable = app.GetValue(c_pszStateHandlerTable).Get<Lua::Table>();
+
+   handlerTable.AddValue(iHandlerId, function);
+
+   // return handler id
+   std::vector<Lua::Value> vecRetValues;
+   vecRetValues.push_back(Lua::Value(iHandlerId));
+
+   return vecRetValues;
+}
+
+std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlRemoveStateEventHandler(
+   std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
+   Lua::State& state,
+   const std::vector<Lua::Value>& vecParams)
+{
+   if (vecParams.size() != 2)
+      throw Lua::Exception(_T("invalid number of parameters to RemoteReleaseControl:removeStateEventHandler()"), state.GetState(), __FILE__, __LINE__);
+
+   if (vecParams[0].GetType() != Lua::Value::typeTable)
+      throw Lua::Exception(_T("first parameter must be the RemoteReleaseControl table"), state.GetState(), __FILE__, __LINE__);
+
+   if (vecParams[1].GetType() != Lua::Value::typeNumber)
+      throw Lua::Exception(_T("second parameter must be handler id"), state.GetState(), __FILE__, __LINE__);
+
+   // remove handler
+   int iHandlerId = vecParams[1].Get<int>();
+
+   spRemoteReleaseControl->RemoveStateEventHandler(iHandlerId);
+
+   m_setAllStateHandlerIds.erase(iHandlerId);
+
+   // remove function from handler table
+   Lua::Table app = state.GetTable(_T("App"));
+   Lua::Table handlerTable = app.GetValue(c_pszStateHandlerTable).Get<Lua::Table>();
+
+   handlerTable.AddValue(iHandlerId, Lua::Value());
+
+   return std::vector<Lua::Value>();
+}
+
+void CanonControlLuaBindings::RemoteReleaseControl_DownloadEventHandler(
+   std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
+   std::shared_ptr<int> spHandlerId,
+   RemoteReleaseControl::T_enDownloadEvent enDownloadEvent,
+   unsigned int eventData)
+{
+   Lua::State& state = GetState();
+
+   Lua::Table app = state.GetTable(_T("App"));
+   Lua::Table handlerTable = app.GetValue(c_pszDownloadHandlerTable).Get<Lua::Table>();
+
+   int iHandlerId = *spHandlerId.get();
+
+   Lua::Value callbackFunction = handlerTable.GetValue(iHandlerId);
+
+   std::vector<Lua::Value> vecParams;
+
+   vecParams.push_back(Lua::Value(app));
+   vecParams.push_back(Lua::Value(static_cast<int>(enDownloadEvent)));
+   vecParams.push_back(Lua::Value(static_cast<int>(eventData)));
+
+   try
+   {
+      Lua::Function func = callbackFunction.Get<Lua::Function>();
+      func.Call(0, vecParams);
+   }
+   catch (const Lua::Exception& ex)
+   {
+      if (m_fnOutputDebugString != nullptr)
+         m_fnOutputDebugString(ex.Message() + _T("\n"));
+   }
+}
+
+std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlAddDownloadEventHandler(
+   std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
+   Lua::State& state,
+   const std::vector<Lua::Value>& vecParams)
+{
+   if (vecParams.size() != 2)
+      throw Lua::Exception(_T("invalid number of parameters to RemoteReleaseControl:addDownloadEventHandler()"), state.GetState(), __FILE__, __LINE__);
+
+   if (vecParams[0].GetType() != Lua::Value::typeTable)
+      throw Lua::Exception(_T("first parameter must be the RemoteReleaseControl table"), state.GetState(), __FILE__, __LINE__);
+
+   if (vecParams[1].GetType() != Lua::Value::typeFunction)
+      throw Lua::Exception(_T("second parameter must be callback function"), state.GetState(), __FILE__, __LINE__);
+
+   // bind handler function and store handler id in its argument
+   std::shared_ptr<int> spHandlerId(new int);
+
+   auto fn = std::bind(
+      &CanonControlLuaBindings::RemoteReleaseControl_DownloadEventHandler,
+      shared_from_this(),
+      spRemoteReleaseControl,
+      spHandlerId,
+      std::placeholders::_1,
+      std::placeholders::_2);
+
+   int iHandlerId = spRemoteReleaseControl->AddDownloadEventHandler(m_strand.wrap(fn));
+
+   *spHandlerId = iHandlerId;
+
+   m_setAllDownloadHandlerIds.insert(iHandlerId);
+
+   // store function as value to an array value with index
+   Lua::Value function = vecParams[1];
+
+   Lua::Table app = state.GetTable(_T("App"));
+
+   if (app.GetValue(c_pszDownloadHandlerTable).GetType() == Lua::Value::typeNil)
+   {
+      Lua::Table table = state.AddTable(_T(""));
+      app.AddValue(c_pszDownloadHandlerTable, Lua::Value(table));
+   }
+
+   Lua::Table handlerTable = app.GetValue(c_pszDownloadHandlerTable).Get<Lua::Table>();
+
+   handlerTable.AddValue(iHandlerId, function);
+
+   // return handler id
+   std::vector<Lua::Value> vecRetValues;
+   vecRetValues.push_back(Lua::Value(iHandlerId));
+
+   return vecRetValues;
+}
+
+std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlRemoveDownloadEventHandler(
+   std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
+   Lua::State& state,
+   const std::vector<Lua::Value>& vecParams)
+{
+   if (vecParams.size() != 2)
+      throw Lua::Exception(_T("invalid number of parameters to RemoteReleaseControl:removeDownloadEventHandler()"), state.GetState(), __FILE__, __LINE__);
+
+   if (vecParams[0].GetType() != Lua::Value::typeTable)
+      throw Lua::Exception(_T("first parameter must be the RemoteReleaseControl table"), state.GetState(), __FILE__, __LINE__);
+
+   if (vecParams[1].GetType() != Lua::Value::typeNumber)
+      throw Lua::Exception(_T("second parameter must be handler id"), state.GetState(), __FILE__, __LINE__);
+
+   // remove handler
+   int iHandlerId = vecParams[1].Get<int>();
+
+   spRemoteReleaseControl->RemoveDownloadEventHandler(iHandlerId);
+
+   m_setAllDownloadHandlerIds.erase(iHandlerId);
+
+   // remove function from handler table
+   Lua::Table app = state.GetTable(_T("App"));
+   Lua::Table handlerTable = app.GetValue(c_pszDownloadHandlerTable).Get<Lua::Table>();
+
+   handlerTable.AddValue(iHandlerId, Lua::Value());
+
+   return std::vector<Lua::Value>();
 }
 
 std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlEnumImageProperties(

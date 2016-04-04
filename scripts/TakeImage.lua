@@ -26,9 +26,7 @@ App = {
 
 			local remoteReleaseControl = self:openCamera(allSourceInfos[1]);
 
-			if (remoteReleaseControl ~= nil) then
-				self:releaseShutter(remoteReleaseControl);
-			end;
+			self:takeImage(remoteReleaseControl);
 
 			remoteReleaseControl:close();
 			print("Finished.\n\n");
@@ -55,6 +53,33 @@ App = {
 		local remoteReleaseControl = sourceDevice:enterReleaseControl();
 
 		return remoteReleaseControl;
+	end;
+
+	-- takes an image
+	takeImage = function(self, remoteReleaseControl)
+
+		local downloadHandlerId =
+			remoteReleaseControl:addDownloadEventHandler(self.onDownloadEvent);
+
+		if (remoteReleaseControl ~= nil) then
+			self:releaseShutter(remoteReleaseControl);
+		end;
+
+		remoteReleaseControl:removeDownloadEventHandler(downloadHandlerId);
+
+	end;
+
+	-- called when a download event occurs
+	onDownloadEvent = function(self, downloadEventType, eventParam)
+
+		local downloadEventName =
+			downloadEventType == Constants.RemoteReleaseControl.downloadEventStarted and "downloadEventStarted" or
+			downloadEventType == Constants.RemoteReleaseControl.downloadEventInProgress and "downloadEventStarted" or
+			downloadEventType == Constants.RemoteReleaseControl.downloadEventFinished and "downloadEventStarted" or "???";
+
+		print("onDownloadEvent! type=" .. downloadEventName ..
+			" eventParam=" .. eventParam .. "\n");
+
 	end;
 
 	-- releases shutter and takes a picture
