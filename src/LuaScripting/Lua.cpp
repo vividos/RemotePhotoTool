@@ -119,7 +119,15 @@ StackChecker::~StackChecker()
 {
    int iStackDepth = lua_absindex(m_L, -1);
    ATLASSERT(m_iStackDepth == iStackDepth);
-   iStackDepth;
+
+   if (m_iStackDepth != iStackDepth)
+   {
+      ATLTRACE(
+         _T("StackChecker found a non-cleaned-up stack! Stack depth expected: %i, encountered: %i\nStack:\n"),
+         m_iStackDepth, iStackDepth);
+
+      Lua::State::TraceStack(m_L);
+   }
 }
 
 //
