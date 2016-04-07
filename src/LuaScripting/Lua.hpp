@@ -584,6 +584,9 @@ private:
    /// detaches all references from state
    void DetachAll();
 
+   /// helper function to clean up ref when it only has one reference left
+   static void CleanupRef(std::shared_ptr<Ref>& spRef) throw();
+
 private:
    /// Lua state
    std::shared_ptr<lua_State> m_spState;
@@ -608,6 +611,9 @@ public:
 
    /// ctor; creates a new thread
    Thread(Lua::State& state);
+
+   /// dtor
+   ~Thread() throw();
 
    /// callback function for Yield() that is called when thread is being Resume()d
    typedef std::function<std::vector<Lua::Value>(Lua::State&, const std::vector<Lua::Value>&)> T_fnYieldCallback;

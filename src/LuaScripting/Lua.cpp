@@ -249,14 +249,7 @@ Value& Value::operator=(const Value& val)
 
 Value::~Value() throw()
 {
-   std::weak_ptr<Ref> wpRef = m_spRef;
-   m_spRef.reset();
-
-   if (wpRef.use_count() == 1)
-   {
-      std::shared_ptr<Ref> spRef = wpRef.lock();
-      spRef->GetState().RemoveFromStack(*spRef);
-   }
+   State::CleanupRef(m_spRef);
 }
 
 void Value::Attach(std::shared_ptr<Ref> spRef) const
@@ -331,9 +324,6 @@ void Value::Push(State& state) const
 
 void Value::Detach() const
 {
-   m_spRef->Detach();
-   m_spRef.reset();
-
    switch (m_enType)
    {
    case typeTable:
@@ -363,6 +353,10 @@ void Value::Detach() const
       thread.Detach();
    }
    break;
+
+   default:
+      m_spRef->Detach();
+      m_spRef.reset();
    }
 }
 
@@ -587,17 +581,11 @@ Function& Function::operator=(const Function& func)
 
 Function::~Function() throw()
 {
-   ATLASSERT(m_spRef == nullptr || m_spRef->GetStackIndex() == -1 ||
+   ATLASSERT(m_spRef == nullptr ||
+      m_spRef->GetStackIndex() == -1 ||
       lua_isfunction(m_spRef->GetState().GetState(), m_spRef->GetStackIndex()) == true);
 
-   std::weak_ptr<Ref> wpRef = m_spRef;
-   m_spRef.reset();
-
-   if (wpRef.use_count() == 1)
-   {
-      std::shared_ptr<Ref> spRef = wpRef.lock();
-      spRef->GetState().RemoveFromStack(*spRef);
-   }
+   State::CleanupRef(m_spRef);
 }
 
 std::vector<Value> Function::Call(int iResults, const std::vector<Value>& vecParam)
@@ -630,7 +618,6 @@ void Function::Push()
 
 void Function::Detach() const
 {
-   m_spRef->Detach();
    m_spRef.reset();
 }
 
@@ -679,17 +666,11 @@ Table& Table::operator=(const Table& table)
 
 Table::~Table() throw()
 {
-   ATLASSERT(m_spRef == nullptr || m_spRef->GetStackIndex() == -1 ||
+   ATLASSERT(m_spRef == nullptr ||
+      m_spRef->GetStackIndex() == -1 ||
       lua_istable(m_spRef->GetState().GetState(), m_spRef->GetStackIndex()) == true);
 
-   std::weak_ptr<Ref> wpRef = m_spRef;
-   m_spRef.reset();
-
-   if (wpRef.use_count() == 1)
-   {
-      std::shared_ptr<Ref> spRef = wpRef.lock();
-      spRef->GetState().RemoveFromStack(*spRef);
-   }
+   State::CleanupRef(m_spRef);
 }
 
 Table& Table::AddValue(const CString& key, const Value& value)
@@ -815,7 +796,6 @@ void Table::Push()
 
 void Table::Detach() const
 {
-   m_spRef->Detach();
    m_spRef.reset();
 }
 
@@ -870,17 +850,11 @@ Userdata& Userdata::operator=(const Userdata& userdata)
 
 Userdata::~Userdata() throw()
 {
-   ATLASSERT(m_spRef == nullptr || m_spRef->GetStackIndex() == -1 ||
+   ATLASSERT(m_spRef == nullptr ||
+      m_spRef->GetStackIndex() == -1 ||
       lua_isuserdata(m_spRef->GetState().GetState(), m_spRef->GetStackIndex()) != 0);
 
-   std::weak_ptr<Ref> wpRef = m_spRef;
-   m_spRef.reset();
-
-   if (wpRef.use_count() == 1)
-   {
-      std::shared_ptr<Ref> spRef = wpRef.lock();
-      spRef->GetState().RemoveFromStack(*spRef);
-   }
+   State::CleanupRef(m_spRef);
 }
 
 void Userdata::Push()
@@ -893,7 +867,6 @@ void Userdata::Push()
 
 void Userdata::Detach() const
 {
-   m_spRef->Detach();
    m_spRef.reset();
 }
 
@@ -1270,6 +1243,25 @@ void State::DetachAll()
    m_vecRefsOnStack.clear();
 }
 
+void State::CleanupRef(std::shared_ptr<Ref>& spRef) throw()
+{
+   try
+   {
+      std::weak_ptr<Ref> wpRef = spRef;
+      spRef.reset();
+
+      if (wpRef.use_count() == 1)
+      {
+         std::shared_ptr<Ref> spLastRef = wpRef.lock();
+         spLastRef->GetState().RemoveFromStack(*spLastRef);
+      }
+   }
+   catch (...)
+   {
+      ATLASSERT(false);
+   }
+}
+
 //
 // Lua::Thread
 //
@@ -1288,6 +1280,15 @@ Thread::Thread(std::shared_ptr<Ref> spRef)
    m_state(spRef->GetState()),
    m_threadState(lua_tothread(spRef->GetState().GetState(), spRef->GetStackIndex()), false) // non-mainState
 {
+}
+
+Thread::~Thread() throw()
+{
+   ATLASSERT(m_spRef == nullptr ||
+      m_spRef->GetStackIndex() == -1 ||
+      lua_isthread(m_spRef->GetState().GetState(), m_spRef->GetStackIndex()) == true);
+
+   State::CleanupRef(m_spRef);
 }
 
 Value Thread::GetValue(const CString& cszName)
@@ -1509,9 +1510,5 @@ void Thread::Reset()
 
 void Thread::Detach() const
 {
-   if (m_spRef == nullptr)
-      return;
-
-   m_spRef->Detach();
    m_spRef.reset();
 }

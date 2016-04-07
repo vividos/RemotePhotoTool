@@ -461,6 +461,174 @@ namespace LuaScriptingUnitTest
          Assert::AreEqual(vecRetval[0].Get<double>(), 42.0, 1e-6, _T("value must be 42"));
       }
 
+      /// Tests function call, calling a global Lua function, with a table as parameter
+      TEST_METHOD(TestFunctionCall_LuaFunction_ParamTable)
+      {
+         Lua::State state;
+
+         // setup
+         state.LoadSourceString(_T("function test(val) return val * 42.0; end"));
+
+         // run
+         for (int i = 0; i < 1000; i++)
+         {
+            Lua::StackChecker checker(state.GetState());
+
+            Lua::Value valFunc = state.GetValue(_T("test"));
+            Lua::Function func = valFunc.Get<Lua::Function>();
+
+            std::vector<Lua::Value> vecParam;
+            vecParam.push_back(Lua::Value(42.0));
+
+            std::vector<Lua::Value> vecRetval = func.Call(1, vecParam);
+
+            // check
+            Assert::AreEqual<size_t>(1, vecRetval.size(), _T("must have returned 1 return value"));
+
+            Assert::AreEqual(vecRetval[0].Get<double>(), 42.0 * 42.0, 1e-6, _T("value must be 42 * 42"));
+         }
+      }
+
+      /// Tests function call, calling a Lua function stored in a table, with a table as parameter
+      TEST_METHOD(TestFunctionCall_TableFunction_ParamTable)
+      {
+         Lua::State state;
+
+         // setup
+         state.LoadSourceString(_T("abc = { test = function(self, val) return val * 42.0; end; }"));
+
+         // run
+         for (int i = 0; i < 1000; i++)
+         {
+            Lua::StackChecker checker(state.GetState());
+
+            Lua::Table table = state.GetTable(_T("abc"));
+
+            Lua::Value valFunc = table.GetValue(_T("test"));
+            Lua::Function func = valFunc.Get<Lua::Function>();
+
+            std::vector<Lua::Value> vecParam;
+            vecParam.push_back(Lua::Value(table));
+            vecParam.push_back(Lua::Value(42.0));
+
+            std::vector<Lua::Value> vecRetval = func.Call(1, vecParam);
+
+            // check
+            Assert::AreEqual<size_t>(1, vecRetval.size(), _T("must have returned 1 return value"));
+
+            Assert::AreEqual(vecRetval[0].Get<double>(), 42.0 * 42.0, 1e-6, _T("value must be 42 * 42"));
+         }
+      }
+
+      /// Tests function call, calling a C++ bound function stored in a table, with a table as parameter
+      TEST_METHOD(TestFunctionCall_CppBinding_ParamTable)
+      {
+         Lua::State state;
+
+         // setup
+
+         // define a function to call back
+         Lua::T_fnCFunction fn = [](Lua::State&, const std::vector<Lua::Value>& vecParams) -> std::vector<Lua::Value>
+         {
+            if (vecParams.size() != 1)
+               throw std::runtime_error("must pass exactly 1 value");
+
+            std::vector<Lua::Value> vecRetValues;
+            vecRetValues.push_back(Lua::Value(vecParams[0].Get<double>() * 42.0));
+
+            return vecRetValues;
+         };
+
+         // run
+         for (int i = 0; i < 1000; i++)
+         {
+            Lua::StackChecker checker(state.GetState());
+
+            Lua::Table table = state.AddTable(_T("abc"));
+            table.AddFunction("run", fn);
+
+            Lua::Value valFunc = table.GetValue(_T("run"));
+            Lua::Function func = valFunc.Get<Lua::Function>();
+
+            std::vector<Lua::Value> vecParam;
+            vecParam.push_back(Lua::Value(42.0));
+
+            std::vector<Lua::Value> vecRetval = func.Call(1, vecParam);
+
+            // check
+            Assert::AreEqual<size_t>(1, vecRetval.size(), _T("must have returned 1 return value"));
+
+            Assert::AreEqual(vecRetval[0].Get<double>(), 42.0 * 42.0, 1e-6, _T("value must be 42 * 42"));
+         }
+      }
+
+      /// Tests function call, calling a global Lua function, with a userdata object as parameter
+      TEST_METHOD(TestFunctionCall_ParamUserdata)
+      {
+         Lua::State state;
+
+         // setup
+         state.LoadSourceString(_T("function test(val) return val; end"));
+
+         // run
+         for (int i = 0; i < 1000; i++)
+         {
+            Lua::StackChecker checker(state.GetState());
+
+            Lua::Value valFunc = state.GetValue(_T("test"));
+            Lua::Function func = valFunc.Get<Lua::Function>();
+
+            Lua::Userdata userdata = state.AddUserdata(sizeof(int));
+            *userdata.Data<int>() = 42;
+
+            std::vector<Lua::Value> vecParam;
+            vecParam.push_back(Lua::Value(userdata));
+
+            std::vector<Lua::Value> vecRetval = func.Call(1, vecParam);
+
+            // check
+            Assert::AreEqual<size_t>(1, vecRetval.size(), _T("must have returned 1 return value"));
+
+            Assert::IsTrue(vecRetval[0].GetType() == Lua::Value::typeUserdata, _T("value must be of userdata type"));
+         }
+      }
+
+      /// Tests function call, calling a global Lua function, with a function object as parameter
+      TEST_METHOD(TestFunctionCall_ParamFunction)
+      {
+         Lua::State state;
+
+         // setup
+         state.LoadSourceString(_T("function test(func, val) return func(val) + 2 * func(val/2); end"));
+         state.LoadSourceString(_T("function calc(val) return val * val; end"));
+
+         // run
+         for (int i = 0; i < 1000; i++)
+         {
+            Lua::StackChecker checker(state.GetState());
+
+            Lua::Value valFuncTest = state.GetValue(_T("test"));
+            Lua::Function funcTest = valFuncTest.Get<Lua::Function>();
+
+            Lua::Value valFuncCalc = state.GetValue(_T("calc"));
+            Lua::Function funcCalc = valFuncCalc.Get<Lua::Function>();
+
+            std::vector<Lua::Value> vecParam;
+            vecParam.push_back(Lua::Value(funcCalc));
+            vecParam.push_back(Lua::Value(42.0));
+
+            std::vector<Lua::Value> vecRetval = funcTest.Call(1, vecParam);
+
+            // check
+            Assert::AreEqual<size_t>(1, vecRetval.size(), _T("must have returned 1 return value"));
+
+            Assert::IsTrue(vecRetval[0].GetType() == Lua::Value::typeNumber, _T("value must be a number"));
+            Assert::AreEqual(vecRetval[0].Get<double>(),
+               (42.0 * 42.0) + 2.0 * ((42.0/2.0) * (42.0 / 2.0)),
+               1e-6, _T("value must be equal to calculated value"));
+         }
+      }
+
       TEST_METHOD(TestFunctionPushTable)
       {
          Lua::State state;
