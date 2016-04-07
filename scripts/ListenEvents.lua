@@ -70,7 +70,9 @@ App = {
 		self.remoteReleaseControl = remoteReleaseControl;
 
 		local waitEvent = Sys:createEvent();
-		waitEvent.wait(30.0);
+		waitEvent:wait(30.0);
+
+		print("Finished.");
 
 		self.remoteReleaseControl = nil;
 
@@ -94,7 +96,7 @@ App = {
 	end;
 
 	-- called when a property event occurs
-	onPropertyEvent = function(self, stateEventType, eventParam)
+	onPropertyEvent = function(self, propertyEventType, eventParam)
 
 		local propertyEventName =
 			propertyEventType == Constants.RemoteReleaseControl.propEventPropertyChanged and "propEventPropertyChanged" or
