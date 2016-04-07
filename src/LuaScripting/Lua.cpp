@@ -595,10 +595,20 @@ std::vector<Value> Function::Call(int iResults, const std::vector<Value>& vecPar
 
    lua_pushvalue(L, m_spRef->GetStackIndex());
 
+   // push to stack and detach, since lua_call consumes all passed parameters
    std::for_each(vecParam.begin(), vecParam.end(),
       [&](const Value& value) { value.Push(state); value.Detach(); });
 
-   lua_call(L, vecParam.size(), iResults);
+   try
+   {
+      lua_call(L, vecParam.size(), iResults);
+   }
+   catch (...)
+   {
+      // since the exception is re-thrown, detach all params from stack
+      state.DetachAll();
+      throw;
+   }
 
    // collect return values
    std::vector<Value> vecResults;
@@ -948,10 +958,20 @@ std::vector<Value> State::CallFunction(const CString& cszName, int iResults, con
       throw Lua::Exception(_T("function not found: ") + cszName, L, __FILE__, __LINE__);
    }
 
+   // push to stack and detach, since lua_call consumes all passed parameters
    std::for_each(vecParam.begin(), vecParam.end(),
       [&](const Value& value) { value.Push(*this); value.Detach(); });
 
-   lua_call(L, vecParam.size(), iResults);
+   try
+   {
+      lua_call(L, vecParam.size(), iResults);
+   }
+   catch (const Lua::Exception&)
+   {
+      // since the exception is re-thrown, detach all params from stack
+      DetachAll();
+      throw;
+   }
 
    // collect return values
    std::vector<Value> vecResults;
