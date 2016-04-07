@@ -382,7 +382,7 @@ camera, including:
 - setting "shutter release" settings
 - pressing the shutter release button
 - accessing live viewfinder images
-- starting bulb shooting (if supported by the camera) 
+- starting bulb shooting (if supported by the camera)
 
 See the reference description for the RemoteReleaseControl table object for a
 complete overview of the functions available, or study the examples available
@@ -1458,7 +1458,10 @@ that can be used, below.
 The onFinishedTransfer is a callback function that is called when an image has
 been transferred completely. The callback function receives a copy of the
 release settings that were used to take the image. The output filename then
-contains the actual absolute filename.
+contains the actual absolute filename. The callback function should look as
+follows:
+
+    callbackFunction = function(self, releaseSettings) { ... }
 
 The outputFilename is the next desired filename that is used when images
 should be transferred to host. The path is always relative to the currently
