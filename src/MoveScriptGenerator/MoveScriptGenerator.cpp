@@ -81,6 +81,7 @@ private:
    }
 
    /// reads image infos for image with filename (already stored in info)
+   /// \see http://www.sno.phy.queensu.ca/~phil/exiftool/TagNames/Canon.html
    static bool ReadImageInfos(ImageFileInfo& info)
    {
       Exif::Loader loader;
