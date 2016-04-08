@@ -47,7 +47,7 @@ void ImagePropertyValueManager::OnUpdatedProperty(RemoteReleaseControl::T_enProp
    // my first lambda expression
    std::for_each(m_vecControls.begin(), m_vecControls.end(), [&](IImagePropertyControl* pControl)
    {
-      // when 0 was passed, update all properties; when ot, update only exact property
+      // when 0 was passed, update all properties; when not, update only exact property
       unsigned int uiControlPropertyId = pControl->GetPropertyId();
       if (uiValue != 0 &&
           uiControlPropertyId != 0 &&
