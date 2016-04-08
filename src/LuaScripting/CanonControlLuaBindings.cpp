@@ -239,6 +239,9 @@ void CanonControlLuaBindings::CancelHandlers()
    if (m_spViewfinder != nullptr)
    {
       m_spViewfinder->SetAvailImageHandler();
+
+      m_spViewfinder->Close();
+
       m_spViewfinder.reset();
    }
 
@@ -261,6 +264,8 @@ void CanonControlLuaBindings::CancelHandlers()
 
       m_releaseSettings.HandlerOnFinishedTransfer(ShutterReleaseSettings::T_fnOnFinishedTransfer());
       m_spRemoteRelaseControl->SetReleaseSettings(m_releaseSettings);
+
+      m_spRemoteRelaseControl->Close();
 
       m_spRemoteRelaseControl.reset();
    }
