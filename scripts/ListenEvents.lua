@@ -69,10 +69,12 @@ App = {
 
 		self.remoteReleaseControl = remoteReleaseControl;
 
+		print("Waiting for events from camera....\n\n");
+
 		local waitEvent = Sys:createEvent();
 		waitEvent:wait(30.0);
 
-		print("Finished.");
+		print("\nFinished listening to events.\n");
 
 		self.remoteReleaseControl = nil;
 
