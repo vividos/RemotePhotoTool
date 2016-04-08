@@ -65,6 +65,12 @@ private:
    /// inits constants for SourceDevice table
    void InitSourceDeviceConstants(Lua::Table& constants);
 
+   /// inits constants for ImageProperty table
+   void InitImagePropertyConstants(Lua::Table& constants);
+
+   /// inits constants for ShootingMode table
+   void InitShootingModeConstants(Lua::Table& constants);
+
    /// inits constants for ShutterReleaseSettings table
    void InitShutterReleaseSettingsConstants(Lua::Table& constants);
 
@@ -230,6 +236,18 @@ private:
    /// local imageProperty = remoteReleaseControl:getImageProperty()
    std::vector<Lua::Value> RemoteReleaseControlGetImageProperty(std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
       Lua::State& state, const std::vector<Lua::Value>& vecParams);
+
+   /// local imageProperty = remoteReleaseControl:getImagePropertyByType(imagePropertyType)
+   std::vector<Lua::Value> RemoteReleaseControlGetImagePropertyByType(
+      std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
+      Lua::State& state,
+      const std::vector<Lua::Value>& vecParams);
+
+   /// local imageProperty = remoteReleaseControl:getShootingModeImageProperty(shootingMode)
+   std::vector<Lua::Value> RemoteReleaseControlGetShootingModeImageProperty(
+      std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
+      Lua::State& state,
+      const std::vector<Lua::Value>& vecParams);
 
    /// adds ImageProperty table
    void AddImageProperty(Lua::Table& table, const ImageProperty& imageProperty,

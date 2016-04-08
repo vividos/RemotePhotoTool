@@ -1083,6 +1083,8 @@ The RemoteReleaseControl table contains the following functions:
       -- properties
       enumImageProperties = function() { ... };
       getImageProperty = function(imagePropertyId) { ... };
+      getImagePropertyByType = function(imagePropertyType) { ... };
+      getShootingModeImageProperty = function(shootingMode) { ... };
       numAvailableShots = function() { ... };
     
       -- viewfinder related
@@ -1334,6 +1336,144 @@ Here's an example table:
 For a given image property ID, returns a ImageProperty table with infos
 about the property. See description of table ImageProperty to see which
 infos are returned.
+
+#### local imageProperty = remoteReleaseControl:getImagePropertyByType(imagePropertyType) ####
+
+Returns an image property, by given type. Due to the different cameras, models
+and SDKs used, the image property IDs don't have the same numbers. To access
+most common properties, this method can be used to use a type to get the image
+property. See description of table ImageProperty to see which infos are
+returned.
+
+Note that when the camera doesn't support the image property, the function
+returns nil. Also note that the image property may be read-only, so that you
+can't set a new value.
+
+The folowing constants can be used for imagePropertyType:
+
+- Constants.ImageProperty.shootingMode:
+  Returns the shooting mode, e.g. Auto, Program, Av, Tv, M, or any other modes
+  that the camera supports. Note that often this property is not settable.
+
+- Constants.ImageProperty.driveMode:
+  Returns the drive mode, e.g. Single, Continuous, Self-timer.
+
+- Constants.ImageProperty.ISOSpeed:
+  Returns the current ISO speed; some cameras have a dial to adjust this on
+  the fly.
+
+- Constants.ImageProperty.meteringMode:
+  Returns the current exposure metering mode, e.g. Center-weight, Spot,
+  Average, etc.
+
+- Constants.ImageProperty.AFMode:
+  Returns the current auto focus mode, e.g. One-Shot AF, Continuous AF, Manual
+  focus, etc.
+
+- Constants.ImageProperty.Av:
+  Returns the currently set aperture value; depending on what shooting mode is
+  set, this may or may not be settable and/or enumerable (e.g. in Av you can
+  set an aperture, whereas in Tv the value is automatically chosen by the
+  camera).
+
+- Constants.ImageProperty.Tv:
+  Returns the currently set shutter speed value; depending on what shooting
+  mode is set, this may or may not be settable and/or enumerable (e.g. in Tv
+  you can set a shutter speed, whereas in Av the value is automatically chosen
+  by the camera).
+
+- Constants.ImageProperty.exposureCompensation:
+  Returns the current exposure compensation value that adjusts how light or
+  dark the image will be; on most cameras you can adjust this from +2 to -2,
+  in 1/3 steps.
+
+- Constants.ImageProperty.flashExposureComp:
+  Returns the current flash exposure compensation value; when flash is
+  enabled, the camera chooses an adequate flash intensity, and with this
+  property you can adjust the value down or up; on most cameras you can adjust
+  this from +2 to -2, in 1/3 steps.
+
+- Constants.ImageProperty.focalLength:
+  Returns the current focal length of the lens of the camera, measured in mm.
+  This value is read-only for most cameras, and zoom is set with image
+  property type currentZoomPos instead.
+
+- Constants.ImageProperty.flashMode:
+  Returns the current flash mode, e.g. Off, Auto, On, Red-eye, Slow sync, etc.
+
+- Constants.ImageProperty.whiteBalance:
+  Returns the current white balance setting, e.g. Auto, Sunny, Cloudy, or any
+  other white balance settings the camera supports.
+
+- Constants.ImageProperty.AFDistance:
+  Returns the current auto focus distance after focusing.
+
+- Constants.ImageProperty.currentZoomPos:
+  Returns the current zoom position; this property can also be used to set a
+  new zoom position on some cameras. On Canon DSLR cameras, this sets the
+  magnification of the live viewfinder image, which can be 1x, 5x or 10x.
+
+- Constants.ImageProperty.maxZoomPos:
+  Returns the maximum zoom position on the camera.
+
+- Constants.ImageProperty.availableShots:
+  Returns the number of available shots to store, depending on the size of the
+  memory card in the camera.
+
+- Constants.ImageProperty.saveTo:
+  Returns where images taken by RemoteReleaseControl:release(), or when the
+  user presses the shutter button, are stored. Possible values are:
+
+  - Constants.RemoteReleaseControl.saveToCamera:
+    Images are only stored on camera memory card; no download events are
+    generated, as the images are not transferred to PC.
+
+  - Constants.RemoteReleaseControl.saveToHost:
+    Images are only transferred to PC, but not stored on camera memory card.
+
+  - Constants.RemoteReleaseControl.saveToBoth:
+    Images are stored on camera memory card and are transferred to PC.
+
+- Constants.ImageProperty.batteryLevel:
+  Returns the current battery level. The last value always is the one describing the
+  most empty state.
+
+- Constants.ImageProperty.imageFormat:
+  Returns the image format that is currently set.
+
+#### local imageProperty = remoteReleaseControl:getShootingModeImageProperty(shootingMode) ####
+
+Returns an image property value that can be used to set a new shooting mode.
+Note that for some cameras, shooting mode can't be set (e.g. Canon DSLRs). In
+this case you have to notify the user that he has to change the shooting mode
+dial to the appropriate mode.
+
+The folowing constants can be used for shootingMode:
+
+- Constants.ShootingMode.shootingModeP:
+  Sets Program mode. Av and Tv can't be controlled in this mode and is chosen
+  by the camera, depending on metering mode. Exposure compensation can be used
+  to darken or lighten the image, though.
+
+- Constants.ShootingMode.shootingModeTv:
+  Sets "Tv" or shutter priority mode. Shutter speed can be adjusted in this
+  mode, and aperture (Av) is chosen by the camera. Exposure compensation can
+  be also be used here.
+
+- Constants.ShootingMode.shootingModeAv:
+  Sets "Av" or aperture priority mode. Aperture can be adjusted in this mode,
+  and shutter speed (Tv) is chosen by the camera. Exposure compensation can
+  be also be used here.
+
+- Constants.ShootingMode.shootingModeM:
+  Sets manual mode; both aperture (Av) and shutter speed (Tv) can be
+  controlled in this mode. Exposure compensation is ignored and is read-only.
+  Note: Use this mode to shoot in bulb mode, if the camera supports it. Bulb
+  shooting is done using the RemoteReleaseControl:startBulb() function.
+
+The image property returned here can be set using the
+RemoteReleaseControl.setImageProperty() function.
+(Note: function doesn't exist yet).
 
 #### integer RemoteReleaseControl:numAvailableShots() ####
 

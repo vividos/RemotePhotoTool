@@ -88,6 +88,8 @@ void CanonControlLuaBindings::InitConstants()
    Lua::Table constants = GetState().AddTable(_T("Constants"));
 
    InitSourceDeviceConstants(constants);
+   InitImagePropertyConstants(constants);
+   InitShootingModeConstants(constants);
    InitShutterReleaseSettingsConstants(constants);
    InitRemoteReleaseControlConstants(constants);
    InitViewfinderConstants(constants);
@@ -101,6 +103,45 @@ void CanonControlLuaBindings::InitSourceDeviceConstants(Lua::Table& constants)
    sourceDevice.AddValue(_T("capRemoteViewfinder"), Lua::Value(SourceDevice::capRemoteViewfinder));
 
    constants.AddValue(_T("SourceDevice"), Lua::Value(sourceDevice));
+}
+
+void CanonControlLuaBindings::InitImagePropertyConstants(Lua::Table& constants)
+{
+   Lua::Table imageProperty = GetState().AddTable(_T(""));
+
+   imageProperty.AddValue(_T("shootingMode"), Lua::Value(T_enImagePropertyType::propShootingMode));
+   imageProperty.AddValue(_T("driveMode"), Lua::Value(T_enImagePropertyType::propDriveMode));
+   imageProperty.AddValue(_T("ISOSpeed"), Lua::Value(T_enImagePropertyType::propISOSpeed));
+   imageProperty.AddValue(_T("meteringMode"), Lua::Value(T_enImagePropertyType::propMeteringMode));
+   imageProperty.AddValue(_T("AFMode"), Lua::Value(T_enImagePropertyType::propAFMode));
+   imageProperty.AddValue(_T("Av"), Lua::Value(T_enImagePropertyType::propAv));
+   imageProperty.AddValue(_T("Tv"), Lua::Value(T_enImagePropertyType::propTv));
+   imageProperty.AddValue(_T("exposureCompensation"), Lua::Value(T_enImagePropertyType::propExposureCompensation));
+   imageProperty.AddValue(_T("flashExposureComp"), Lua::Value(T_enImagePropertyType::propFlashExposureComp));
+   imageProperty.AddValue(_T("focalLength"), Lua::Value(T_enImagePropertyType::propFocalLength));
+   imageProperty.AddValue(_T("flashMode"), Lua::Value(T_enImagePropertyType::propFlashMode));
+   imageProperty.AddValue(_T("whiteBalance"), Lua::Value(T_enImagePropertyType::propWhiteBalance));
+   imageProperty.AddValue(_T("AFDistance"), Lua::Value(T_enImagePropertyType::propAFDistance));
+   imageProperty.AddValue(_T("currentZoomPos"), Lua::Value(T_enImagePropertyType::propCurrentZoomPos));
+   imageProperty.AddValue(_T("maxZoomPos"), Lua::Value(T_enImagePropertyType::propMaxZoomPos));
+   imageProperty.AddValue(_T("availableShots"), Lua::Value(T_enImagePropertyType::propAvailableShots));
+   imageProperty.AddValue(_T("saveTo"), Lua::Value(T_enImagePropertyType::propSaveTo));
+   imageProperty.AddValue(_T("batteryLevel"), Lua::Value(T_enImagePropertyType::propBatteryLevel));
+   imageProperty.AddValue(_T("imageFormat"), Lua::Value(T_enImagePropertyType::propImageFormat));
+
+   constants.AddValue(_T("ImageProperty"), Lua::Value(imageProperty));
+}
+
+void CanonControlLuaBindings::InitShootingModeConstants(Lua::Table& constants)
+{
+   Lua::Table shootingMode = GetState().AddTable(_T(""));
+
+   shootingMode.AddValue(_T("shootingModeP"), Lua::Value(RemoteReleaseControl::shootingModeP));
+   shootingMode.AddValue(_T("shootingModeTv"), Lua::Value(RemoteReleaseControl::shootingModeTv));
+   shootingMode.AddValue(_T("shootingModeAv"), Lua::Value(RemoteReleaseControl::shootingModeAv));
+   shootingMode.AddValue(_T("shootingModeM"), Lua::Value(RemoteReleaseControl::shootingModeM));
+
+   constants.AddValue(_T("ShootingMode"), Lua::Value(shootingMode));
 }
 
 void CanonControlLuaBindings::InitShutterReleaseSettingsConstants(Lua::Table& constants)
@@ -1133,6 +1174,54 @@ std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlGetImagePro
       static_cast<unsigned int>(vecParams[1].Get<int>());
 
    ImageProperty imageProperty = spRemoteReleaseControl->GetImageProperty(uiPropertyId);
+
+   Lua::Table table = state.AddTable(_T(""));
+
+   AddImageProperty(table, imageProperty, spRemoteReleaseControl);
+
+   std::vector<Lua::Value> vecRetValues;
+   vecRetValues.push_back(Lua::Value(table));
+
+   return vecRetValues;
+}
+
+std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlGetImagePropertyByType(
+   std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
+   Lua::State& state,
+   const std::vector<Lua::Value>& vecParams)
+{
+   if (vecParams.size() != 2)
+      throw Lua::Exception(_T("invalid number of parameters to RemoteReleaseControl:getImagePropertyByType()"), state.GetState(), __FILE__, __LINE__);
+
+   T_enImagePropertyType enImagePropertyType =
+      static_cast<T_enImagePropertyType>(vecParams[1].Get<int>());
+
+   unsigned int imagePropertyId = spRemoteReleaseControl->MapImagePropertyTypeToId(enImagePropertyType);
+
+   ImageProperty imageProperty = spRemoteReleaseControl->GetImageProperty(imagePropertyId);
+
+   Lua::Table table = state.AddTable(_T(""));
+
+   AddImageProperty(table, imageProperty, spRemoteReleaseControl);
+
+   std::vector<Lua::Value> vecRetValues;
+   vecRetValues.push_back(Lua::Value(table));
+
+   return vecRetValues;
+}
+
+std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlGetShootingModeImageProperty(
+   std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
+   Lua::State& state,
+   const std::vector<Lua::Value>& vecParams)
+{
+   if (vecParams.size() != 2)
+      throw Lua::Exception(_T("invalid number of parameters to RemoteReleaseControl:getShootingModeImageProperty()"), state.GetState(), __FILE__, __LINE__);
+
+   RemoteReleaseControl::T_enShootingMode enShootingMode =
+      static_cast<RemoteReleaseControl::T_enShootingMode>(vecParams[1].Get<int>());
+
+   ImageProperty imageProperty = spRemoteReleaseControl->MapShootingModeToImagePropertyValue(enShootingMode);
 
    Lua::Table table = state.AddTable(_T(""));
 

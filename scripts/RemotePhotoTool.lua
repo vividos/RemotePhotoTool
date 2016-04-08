@@ -186,6 +186,7 @@ App = {
 
 		self:printImageProperties(remoteReleaseControl);
 
+		self:printCurrentShootingSettings(remoteReleaseControl);
 		self:takeImage(remoteReleaseControl);
 		-- self:listenEvents(remoteReleaseControl);
 
@@ -252,6 +253,22 @@ App = {
 			end;
 		end;
 		print("\n");
+
+	end;
+
+	-- prints current shooting settings
+	printCurrentShootingSettings = function(self, remoteReleaseControl)
+
+		local shootingMode = remoteReleaseControl:getImagePropertyByType(Constants.ImageProperty.shootingMode);
+		local aperture = remoteReleaseControl:getImagePropertyByType(Constants.ImageProperty.Av);
+		local shutterSpeed = remoteReleaseControl:getImagePropertyByType(Constants.ImageProperty.Tv);
+		local isoSpeed = remoteReleaseControl:getImagePropertyByType(Constants.ImageProperty.ISOSpeed);
+
+		print(
+			"Mode: " .. shootingMode.asString .. ", " ..
+			"Aperture: " .. aperture.asString .. ", " ..
+			"Shutter speed: " .. shutterSpeed.asString .. ", " ..
+			"ISO: " .. isoSpeed.asString .. "\n");
 
 	end;
 

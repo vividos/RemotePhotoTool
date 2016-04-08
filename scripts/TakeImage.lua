@@ -26,6 +26,7 @@ App = {
 
 			local remoteReleaseControl = self:openCamera(allSourceInfos[1]);
 
+			self:printCurrentShootingSettings(remoteReleaseControl);
 			self:takeImage(remoteReleaseControl);
 
 			remoteReleaseControl:close();
@@ -53,6 +54,22 @@ App = {
 		local remoteReleaseControl = sourceDevice:enterReleaseControl();
 
 		return remoteReleaseControl;
+	end;
+
+	-- prints current shooting settings
+	printCurrentShootingSettings = function(self, remoteReleaseControl)
+
+		local shootingMode = remoteReleaseControl:getImagePropertyByType(Constants.ImageProperty.shootingMode);
+		local aperture = remoteReleaseControl:getImagePropertyByType(Constants.ImageProperty.Av);
+		local shutterSpeed = remoteReleaseControl:getImagePropertyByType(Constants.ImageProperty.Tv);
+		local isoSpeed = remoteReleaseControl:getImagePropertyByType(Constants.ImageProperty.ISOSpeed);
+
+		print(
+			"Mode: " .. shootingMode.asString .. ", " ..
+			"Aperture: " .. aperture.asString .. ", " ..
+			"Shutter speed: " .. shutterSpeed.asString .. ", " ..
+			"ISO: " .. isoSpeed.asString .. "\n");
+
 	end;
 
 	-- takes an image
