@@ -1,29 +1,31 @@
 CanonControl
 ------------
-write documentation for CanonControl library
-remove TODOs
+add reading histograms
 
 PSREC
 -----
-implement AF Lock -> shutter half press to focus
-support focus lock, PR_RC_FocusLock
 support taking/transferring CRW raw images
-Test functionality
 
 EDSDK
 -----
-implement UI lock
 on protocol 0 cameras, lock UI when getting/setting property
 support custom function numbers through kEdsPropID_CFn, e.g. mirror lockup (inParam=0x060f)
 
 CDSDK
 -----
-Test cameras
-implement formatting all properties
-implement TODOs from source files
+remove when removing support for Windows XP
+
+gPhoto2
+-------
+Display proper device property names
+Implement reading, enumerating and setting ImageProperty values
+Implement RemoteReleaseControl functions
+Implement Viewfinder functions
+Improve speed of EnumerateDevices()
 
 Lua scripting
 -------------
+Implement supporting ShootingMode and ShutterSpeedValue
 Implement writing absolute filenames before calling onFinishedTransfer
 Add more libraries and sandbox unsafe functions
 Bindings for Exif library
@@ -31,14 +33,12 @@ Bindings for ImageMagick library
 
 RemotePhotoTool
 ---------------
-Previous Images browser: back button active
 Previous Images browser: scan folder for images, on startup
 Nice toolbar icons
 implement timelapse shooting, video output
 implement photo stacking, focus stacking, CombineZP
 implement view finder stage 2: battery, number of remaining shots, auto rotate, image format
 implement view finder stage 3: half transparent background image, histogram
-Write manual
 Multi-camera photo view
 Image Property view: change values using editbox or combobox
 Add Bulb mode shooting when supported
@@ -57,6 +57,7 @@ Implement all bindings from CanonControl
 Implement debugging scripts
 Implement squiggly lines for Lua compile errors
 Implement breakpoints
+Fix bug when searching backwards
 
 Setup
 -----
