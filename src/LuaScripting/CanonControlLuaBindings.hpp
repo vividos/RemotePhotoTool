@@ -154,7 +154,7 @@ private:
    /// initializes RemoteReleaseControl table
    void InitRemoteReleaseControlTable(std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl, Lua::Table& remoteReleaseControl);
 
-   /// local capability = remoteReleaseControl:getCapability()
+   /// local isCapable = remoteReleaseControl:getCapability(Constants.RemoteReleaseControl.capXxx)
    std::vector<Lua::Value> RemoteReleaseControlGetCapability(std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
       Lua::State& state, const std::vector<Lua::Value>& vecParams);
 
@@ -283,6 +283,10 @@ private:
 
    /// initializes viewfinder table
    void InitViewfinderTable(std::shared_ptr<Viewfinder> spViewfinder, Lua::Table& viewfinder);
+
+   /// local isCapable = viewfinder:getCapability(Constants.Viewfinder.capXxx)
+   std::vector<Lua::Value> ViewfinderGetCapability(std::shared_ptr<Viewfinder> spViewfinder,
+      Lua::State& state, const std::vector<Lua::Value>& vecParams);
 
    /// viewfinder:setOutputType(outputType)
    std::vector<Lua::Value> ViewfinderSetOutputType(std::shared_ptr<Viewfinder> spViewfinder,

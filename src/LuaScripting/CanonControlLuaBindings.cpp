@@ -202,6 +202,9 @@ void CanonControlLuaBindings::InitViewfinderConstants(Lua::Table& constants)
 {
    Lua::Table viewfinder = GetState().AddTable(_T(""));
 
+   viewfinder.AddValue(_T("capOutputTypeVideoOut"), Lua::Value(Viewfinder::capOutputTypeVideoOut));
+   viewfinder.AddValue(_T("capGetHistogram"), Lua::Value(Viewfinder::capGetHistogram));
+
    viewfinder.AddValue(_T("outputTypeLCD"), Lua::Value(Viewfinder::outputTypeLCD));
    viewfinder.AddValue(_T("outputTypeVideoOut"), Lua::Value(Viewfinder::outputTypeVideoOut));
    viewfinder.AddValue(_T("outputTypeOff"), Lua::Value(Viewfinder::outputTypeOff));
@@ -1334,6 +1337,10 @@ std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlClose(
 
 void CanonControlLuaBindings::InitViewfinderTable(std::shared_ptr<Viewfinder> spViewfinder, Lua::Table& viewfinder)
 {
+   viewfinder.AddFunction("getCapability",
+      std::bind(&CanonControlLuaBindings::ViewfinderGetCapability, shared_from_this(), spViewfinder,
+         std::placeholders::_1, std::placeholders::_2));
+
    viewfinder.AddFunction("setOutputType",
       std::bind(&CanonControlLuaBindings::ViewfinderSetOutputType, shared_from_this(), spViewfinder,
          std::placeholders::_1, std::placeholders::_2));
@@ -1345,6 +1352,26 @@ void CanonControlLuaBindings::InitViewfinderTable(std::shared_ptr<Viewfinder> sp
    viewfinder.AddFunction("close",
       std::bind(&CanonControlLuaBindings::ViewfinderClose, shared_from_this(), spViewfinder,
          std::placeholders::_1, std::placeholders::_2));
+}
+
+std::vector<Lua::Value> CanonControlLuaBindings::ViewfinderGetCapability(std::shared_ptr<Viewfinder> spViewfinder,
+   Lua::State& state, const std::vector<Lua::Value>& vecParams)
+{
+   if (vecParams.size() != 1 && vecParams.size() != 2)
+      throw Lua::Exception(_T("viewfinder:getCapability() needs capability parameter"), state.GetState(), __FILE__, __LINE__);
+
+   if (vecParams[0].GetType() != Lua::Value::typeTable)
+      throw Lua::Exception(_T("viewfinder:getCapability() was passed an illegal 'self' value"), state.GetState(), __FILE__, __LINE__);
+
+   Viewfinder::T_enViewfinderCapability enCapability =
+      static_cast<Viewfinder::T_enViewfinderCapability>(vecParams[1].Get<int>());
+
+   bool bCapability = spViewfinder->GetCapability(enCapability);
+
+   std::vector<Lua::Value> vecRetValues;
+   vecRetValues.push_back(Lua::Value(bCapability));
+
+   return vecRetValues;
 }
 
 std::vector<Lua::Value> CanonControlLuaBindings::ViewfinderSetOutputType(

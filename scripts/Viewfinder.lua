@@ -71,6 +71,14 @@ App = {
 
 		local viewfinder = remoteReleaseControl:startViewfinder();
 
+		-- print capabilities
+		print("Viewfinder capabilities:\n");
+		local capOutputTypeVideoOut = viewfinder:getCapability(Constants.Viewfinder.capOutputTypeVideoOut);
+		print("   can set 'Video Out' output type: " .. (capOutputTypeVideoOut and "yes" or "no") .. "\n");
+
+		local capGetHistogram = viewfinder:getCapability(Constants.Viewfinder.capGetHistogram);
+		print("   can retrieve histogram: " .. (capGetHistogram and "yes" or "no") .. "\n");
+
 		-- send viewfinder to LCD, too
 		viewfinder:setOutputType(Constants.Viewfinder.outputTypeLCD);
 
