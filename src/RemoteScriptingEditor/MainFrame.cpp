@@ -111,6 +111,8 @@ LRESULT MainFrame::OnClose(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, 
 
 LRESULT MainFrame::OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& bHandled)
 {
+   m_processor.SetOutputDebugStringHandler(nullptr);
+
    m_processor.GetScheduler().SetExecutionStateChangedHandler(
       LuaScheduler::T_fnOnExecutionStateChanged());
 
