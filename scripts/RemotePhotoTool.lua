@@ -457,6 +457,10 @@ App = {
 
 		print("Captured " .. (imageWasAvail and "a viewfinder image!" or "no viewfinder image.") .. "\n");
 
+		if (imageWasAvail and capGetHistogram) then
+			self:readHistogram(viewfinder);
+		end;
+
 		viewfinder:close();
 
 	end;
@@ -470,6 +474,32 @@ App = {
 		viewfinder:setAvailImageHandler();
 
 		self.eventViewfinder:signal();
+
+	end;
+
+	-- reads histogram and finds maximum luminance value
+	readHistogram = function(self, viewfinder)
+
+		local histogram = viewfinder:getHistogram(Constants.Viewfinder.histogramLuminance);
+
+		if (histogram ~= nil) then
+
+			print("Histogram length: " .. histogram.length .. " entries.\n");
+
+			local maxIndex = 0;
+			local maxValue = 0;
+
+			for index = 1, histogram.length do
+
+				if (histogram[index] > maxValue) then
+					maxIndex = index;
+					maxValue = histogram[index];
+				end;
+			end;
+
+			print("maximum luminance of viewfinder image at " ..
+				(maxIndex * 100.0 / histogram.length) .. "% intensity\n");
+		end;
 
 	end;
 

@@ -209,6 +209,11 @@ void CanonControlLuaBindings::InitViewfinderConstants(Lua::Table& constants)
    viewfinder.AddValue(_T("outputTypeVideoOut"), Lua::Value(Viewfinder::outputTypeVideoOut));
    viewfinder.AddValue(_T("outputTypeOff"), Lua::Value(Viewfinder::outputTypeOff));
 
+   viewfinder.AddValue(_T("histogramLuminance"), Lua::Value(Viewfinder::histogramLuminance));
+   viewfinder.AddValue(_T("histogramRed"), Lua::Value(Viewfinder::histogramRed));
+   viewfinder.AddValue(_T("histogramGreen"), Lua::Value(Viewfinder::histogramGreen));
+   viewfinder.AddValue(_T("histogramBlue"), Lua::Value(Viewfinder::histogramBlue));
+
    constants.AddValue(_T("Viewfinder"), Lua::Value(viewfinder));
 }
 
@@ -1349,6 +1354,10 @@ void CanonControlLuaBindings::InitViewfinderTable(std::shared_ptr<Viewfinder> sp
       std::bind(&CanonControlLuaBindings::ViewfinderSetAvailImageHandler, shared_from_this(), spViewfinder,
          std::placeholders::_1, std::placeholders::_2));
 
+   viewfinder.AddFunction("getHistogram",
+      std::bind(&CanonControlLuaBindings::ViewfinderGetHistogram, shared_from_this(), spViewfinder,
+         std::placeholders::_1, std::placeholders::_2));
+
    viewfinder.AddFunction("close",
       std::bind(&CanonControlLuaBindings::ViewfinderClose, shared_from_this(), spViewfinder,
          std::placeholders::_1, std::placeholders::_2));
@@ -1474,6 +1483,39 @@ void CanonControlLuaBindings::SetAvailImageHandler_OnAvailImageHandler(
       // unregister handler to not receive any more events, which may also end in an error
       spViewfinder->SetAvailImageHandler(Viewfinder::T_fnOnAvailViewfinderImage());
    }
+}
+
+std::vector<Lua::Value> CanonControlLuaBindings::ViewfinderGetHistogram(std::shared_ptr<Viewfinder> spViewfinder,
+   Lua::State& state, const std::vector<Lua::Value>& vecParams)
+{
+   if (vecParams.size() != 1 && vecParams.size() != 2)
+      throw Lua::Exception(_T("viewfinder:getHistogram() needs histogram type parameter"), state.GetState(), __FILE__, __LINE__);
+
+   if (vecParams[0].GetType() != Lua::Value::typeTable)
+      throw Lua::Exception(_T("viewfinder:getHistogram() was passed an illegal 'self' value"), state.GetState(), __FILE__, __LINE__);
+
+   Viewfinder::T_enHistogramType enHistogramType =
+      static_cast<Viewfinder::T_enHistogramType>(vecParams[1].Get<int>());
+
+   std::vector<unsigned int> histogram;
+   spViewfinder->GetHistogram(enHistogramType, histogram);
+
+   Lua::Table histogramTable = state.AddTable(_T(""));
+
+   size_t maxIndex = histogram.size();
+   for (size_t index = 0; index < maxIndex; index++)
+   {
+      histogramTable.AddValue(
+         static_cast<int>(index + 1), // 1-based
+         Lua::Value(static_cast<int>(histogram[index])));
+   }
+
+   histogramTable.AddValue(_T("length"), Lua::Value(static_cast<int>(maxIndex)));
+
+   std::vector<Lua::Value> vecRetValues;
+   vecRetValues.push_back(Lua::Value(histogramTable));
+
+   return vecRetValues;
 }
 
 std::vector<Lua::Value> CanonControlLuaBindings::ViewfinderClose(std::shared_ptr<Viewfinder> spViewfinder,
