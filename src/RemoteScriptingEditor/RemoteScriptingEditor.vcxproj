@@ -50,7 +50,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;STRICT;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\Base;..\CanonControl\exports;..\Thirdparty;..\Thirdparty\Scintilla\include;..\LuaScripting;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Base;$(SolutionDir)CanonControl\exports;$(SolutionDir)Thirdparty;$(SolutionDir)Thirdparty\Scintilla\include;$(SolutionDir)LuaScripting;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <DelayLoadDLLs>propsys.dll;dwmapi.dll</DelayLoadDLLs>
@@ -65,7 +65,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;STRICT;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\Base;..\CanonControl\exports;..\Thirdparty;..\Thirdparty\Scintilla\include;..\LuaScripting;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Base;$(SolutionDir)CanonControl\exports;$(SolutionDir)Thirdparty;$(SolutionDir)Thirdparty\Scintilla\include;$(SolutionDir)LuaScripting;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <DelayLoadDLLs>propsys.dll;dwmapi.dll</DelayLoadDLLs>

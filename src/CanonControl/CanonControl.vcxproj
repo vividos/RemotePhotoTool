@@ -57,7 +57,7 @@
       <Command />
     </CustomBuildStep>
     <ClCompile>
-      <AdditionalIncludeDirectories>exports;..\Base;..\Thirdparty\EDSDK\Header;..\Thirdparty\CDSDK\inc;..\Thirdparty\PSREC\PSReCSDK\inc;..\Thirdparty\boost-log-2.0-RC1;..\Thirdparty\gphoto2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>exports;$(SolutionDir)Base;$(SolutionDir)Thirdparty\EDSDK\Header;$(SolutionDir)Thirdparty\CDSDK\inc;$(SolutionDir)Thirdparty\PSREC\PSReCSDK\inc;$(SolutionDir)Thirdparty\gphoto2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;CANONCONTROL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Lib>
@@ -71,7 +71,7 @@
       <Command />
     </CustomBuildStep>
     <ClCompile>
-      <AdditionalIncludeDirectories>exports;..\Base;..\Thirdparty\EDSDK\Header;..\Thirdparty\CDSDK\inc;..\Thirdparty\PSREC\PSReCSDK\inc;..\Thirdparty\boost-log-2.0-RC1;..\Thirdparty\gphoto2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>exports;$(SolutionDir)Base;$(SolutionDir)Thirdparty\EDSDK\Header;$(SolutionDir)Thirdparty\CDSDK\inc;$(SolutionDir)Thirdparty\PSREC\PSReCSDK\inc;$(SolutionDir)Thirdparty\gphoto2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;CANONCONTROL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Lib>

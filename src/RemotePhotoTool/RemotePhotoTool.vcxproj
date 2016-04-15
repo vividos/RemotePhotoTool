@@ -60,7 +60,7 @@
       <ProxyFileName>RemotePhotoTool_p.c</ProxyFileName>
     </Midl>
     <ClCompile>
-      <AdditionalIncludeDirectories>..\Base;..\CanonControl\exports;..\LuaScripting;..\Logic;..\Thirdparty;..\Thirdparty\jpeg-9b;..\Thirdparty\Scintilla\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Base;$(SolutionDir)CanonControl\exports;$(SolutionDir)LuaScripting;$(SolutionDir)Logic;$(SolutionDir)Thirdparty;$(SolutionDir)Thirdparty\jpeg-9b;$(SolutionDir)Thirdparty\Scintilla\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WINDOWS;STRICT;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ResourceCompile>
@@ -86,7 +86,7 @@
       <ProxyFileName>RemotePhotoTool_p.c</ProxyFileName>
     </Midl>
     <ClCompile>
-      <AdditionalIncludeDirectories>..\Base;..\CanonControl\exports;..\LuaScripting;..\Logic;..\Thirdparty;..\Thirdparty\jpeg-9b;..\Thirdparty\Scintilla\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Base;$(SolutionDir)CanonControl\exports;$(SolutionDir)LuaScripting;$(SolutionDir)Logic;$(SolutionDir)Thirdparty;$(SolutionDir)Thirdparty\jpeg-9b;$(SolutionDir)Thirdparty\Scintilla\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WINDOWS;STRICT;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ResourceCompile>
