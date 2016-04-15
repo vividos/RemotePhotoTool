@@ -110,7 +110,7 @@ void RemoteReleaseControlImpl::EnumImagePropertyValues(unsigned int uiImagePrope
 
 std::shared_ptr<Viewfinder> RemoteReleaseControlImpl::StartViewfinder() const
 {
-   throw CameraException(_T("RemoteReleaseControl::StartViewfinder"),
+   throw CameraException(_T("gPhoto2::RemoteReleaseControl::StartViewfinder"),
       _T("Not supported"), 0, __FILE__, __LINE__);
 }
 
@@ -139,7 +139,7 @@ void RemoteReleaseControlImpl::AsyncRelease()
 std::shared_ptr<BulbReleaseControl> RemoteReleaseControlImpl::StartBulb()
 {
    // bulb not supported by gPhoto2
-   throw CameraException(_T("RemoteReleaseControl::StartBulb"),
+   throw CameraException(_T("gPhoto2::RemoteReleaseControl::StartBulb"),
       _T("Not supported"), 0, __FILE__, __LINE__);
 }
 

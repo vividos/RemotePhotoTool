@@ -142,7 +142,7 @@ public:
    {
       if (!GetDeviceCapability(capRemoteReleaseControl))
       {
-         throw CameraException(_T("SourceDevice::EnterReleaseControl"), _T("Not supported"),
+         throw CameraException(_T("PSREC::SourceDevice::EnterReleaseControl"), _T("Not supported"),
             prERROR_PRSDK_COMPONENTID | prNOT_SUPPORTED, __FILE__, __LINE__);
       }
 

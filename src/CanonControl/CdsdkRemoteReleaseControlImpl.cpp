@@ -192,7 +192,7 @@ void RemoteReleaseControlImpl::EnumImagePropertyValues(unsigned int uiImagePrope
 std::shared_ptr<Viewfinder> RemoteReleaseControlImpl::StartViewfinder() const
 {
    if (!GetCapability(RemoteReleaseControl::capViewfinder))
-      throw CameraException(_T("RemoteReleaseControl::StartViewfinder"),
+      throw CameraException(_T("CDSDK::RemoteReleaseControl::StartViewfinder"),
          _T("Not supported"), cdERROR_CLIENT_COMPONENTID | cdNOT_SUPPORTED, __FILE__, __LINE__);
 
    return std::shared_ptr<Viewfinder>(new ViewfinderImpl(m_spSourceDevice));
@@ -316,7 +316,7 @@ void RemoteReleaseControlImpl::ReadReleaseData(const CStringA& cszaFilename, cdU
 std::shared_ptr<BulbReleaseControl> RemoteReleaseControlImpl::StartBulb()
 {
    // bulb not supported by CDSDK
-   throw CameraException(_T("RemoteReleaseControl::StartBulb"),
+   throw CameraException(_T("CDSDK::RemoteReleaseControl::StartBulb"),
       _T("Not supported"), cdERROR_CDSDK_COMPONENTID | cdNOT_SUPPORTED, __FILE__, __LINE__);
 }
 

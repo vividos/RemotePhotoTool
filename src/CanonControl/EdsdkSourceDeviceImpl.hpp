@@ -113,7 +113,7 @@ public:
       if (!GetDeviceCapability(capRemoteReleaseControl))
       {
          // throw an error code of 7, which means "not supported"
-         throw CameraException(_T("SourceDevice::EnterReleaseControl"),
+         throw CameraException(_T("EDSDK::SourceDevice::EnterReleaseControl"),
             _T("Not supported"), EDS_ERR_NOT_SUPPORTED, __FILE__, __LINE__);
       }
 

@@ -137,7 +137,7 @@ public:
    {
       if (!GetDeviceCapability(capRemoteReleaseControl))
       {
-         throw CameraException(_T("EnterReleaseControl"), _T("Not supported"),
+         throw CameraException(_T("CDSDK::SourceDevice::EnterReleaseControl"), _T("Not supported"),
             cdERROR_CDSDK_COMPONENTID | cdNOT_SUPPORTED, __FILE__, __LINE__);
       }
 

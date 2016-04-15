@@ -111,7 +111,7 @@ public:
    {
       if (!GetCapability(RemoteReleaseControl::capViewfinder))
       {
-         throw CameraException(_T("RemoteReleaseControl::StartViewfinder"), _T("Not supported"),
+         throw CameraException(_T("PSREC::RemoteReleaseControl::StartViewfinder"), _T("Not supported"),
             prERROR_PRSDK_COMPONENTID | prNOT_SUPPORTED, __FILE__, __LINE__);
       }
 
