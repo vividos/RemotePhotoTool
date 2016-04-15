@@ -73,6 +73,22 @@ void ViewfinderImpl::Close()
    p.Set(kEdsPropID_Evf_OutputDevice, vDevice);
 }
 
+bool ViewfinderImpl::GetCapability(T_enViewfinderCapability enViewfinderCapability) const throw()
+{
+   switch (enViewfinderCapability)
+   {
+   case Viewfinder::capGetHistogram:
+      return true; // supported in EDSDK
+      break;
+
+   default:
+      ATLASSERT(false);
+      break;
+   }
+
+   return false;
+}
+
 void ViewfinderImpl::SetOutputType(T_enOutputType enOutputType)
 {
    unsigned int output = 0;
@@ -171,6 +187,41 @@ void ViewfinderImpl::AsyncStopBackgroundThread()
    m_evtTimerStopped.Set();
 }
 
+void ViewfinderImpl::GetHistogram(T_enHistogramType enHistogramType, std::vector<unsigned int>& vecHistogramData)
+{
+   static_assert(sizeof(EdsUInt32) == sizeof(unsigned int), "types EdsUInt32 and unsigned int must match");
+
+   LightweightMutex::LockType lock(m_mtxHistogram);
+
+   std::reference_wrapper<const EdsUInt32[256]> histogram(m_histogramY);
+
+   switch (enHistogramType)
+   {
+   case Viewfinder::histogramLuminance:
+      histogram = std::cref(m_histogramY);
+      break;
+
+   case Viewfinder::histogramRed:
+      histogram = std::cref(m_histogramR);
+      break;
+
+   case Viewfinder::histogramGreen:
+      histogram = std::cref(m_histogramG);
+      break;
+
+   case Viewfinder::histogramBlue:
+      histogram = std::cref(m_histogramB);
+      break;
+
+   default:
+      ATLASSERT(false);
+      return;
+   }
+
+   vecHistogramData.resize(256);
+   std::copy(std::begin(histogram.get()), std::end(histogram.get()), vecHistogramData.begin());
+}
+
 void ViewfinderImpl::GetImage(std::vector<BYTE>& vecImage)
 {
    if (!m_hSourceDevice.IsValid())
@@ -217,11 +268,23 @@ void ViewfinderImpl::GetImage(std::vector<BYTE>& vecImage)
    if (pData != 0 && uiLength > 0)
    {
       const BYTE* pbData = reinterpret_cast<BYTE*>(pData);
-      vecImage.assign(pbData, pbData+uiLength);
+      vecImage.assign(pbData, pbData + uiLength);
    }
+
+   ReadHistogram(hEvfImage);
 
    m_bInGetImage = false;
    LOG_TRACE(_T("GetImage() end\n"));
+}
+
+void ViewfinderImpl::ReadHistogram(Handle& hEvfImage)
+{
+   LightweightMutex::LockType lock(m_mtxHistogram);
+
+   EdsGetPropertyData(hEvfImage, kEdsPropID_Evf_HistogramY, 0, sizeof(m_histogramY), m_histogramY);
+   EdsGetPropertyData(hEvfImage, kEdsPropID_Evf_HistogramR, 0, sizeof(m_histogramR), m_histogramR);
+   EdsGetPropertyData(hEvfImage, kEdsPropID_Evf_HistogramG, 0, sizeof(m_histogramG), m_histogramG);
+   EdsGetPropertyData(hEvfImage, kEdsPropID_Evf_HistogramB, 0, sizeof(m_histogramB), m_histogramB);
 }
 
 void ViewfinderImpl::OnGetViewfinderImage()

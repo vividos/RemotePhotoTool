@@ -16,6 +16,12 @@ public:
    /// dtor
    virtual ~Viewfinder() throw() {}
 
+   /// capabilities in live viewfinder mode
+   enum T_enViewfinderCapability
+   {
+      capGetHistogram = 0,  ///< can get last histogram values
+   };
+
    /// viewfinder output type
    /// \note this corresponds to the values found in PS-ReC and CDSDK
    enum T_enOutputType
@@ -26,6 +32,18 @@ public:
       outputTypeOff = 3,         ///< live viewfinder is only transferred to PC
    };
 
+   /// histogram type
+   enum T_enHistogramType
+   {
+      histogramLuminance,  ///< luminance histogram
+      histogramRed,        ///< histogram for red color channel only
+      histogramGreen,      ///< histogram for green color channel only
+      histogramBlue,       ///< histogram for blue color channel only
+   };
+
+   /// returns capability in live viewfinder mode
+   virtual bool GetCapability(T_enViewfinderCapability enViewfinderCapability) const throw() = 0;
+
    /// sets viewfinder output type
    virtual void SetOutputType(T_enOutputType enOutputType) = 0;
 
@@ -34,6 +52,9 @@ public:
 
    /// sets (or resets) viewfinder callback
    virtual void SetAvailImageHandler(T_fnOnAvailViewfinderImage fnOnAvailViewfinderImage = T_fnOnAvailViewfinderImage()) = 0;
+
+   /// returns histogram of last captured live viewfinder image (may be empty when none was captured so far)
+   virtual void GetHistogram(T_enHistogramType enHistogramType, std::vector<unsigned int>& vecHistogramData) = 0;
 
    /// closes viewfinder
    virtual void Close() = 0;

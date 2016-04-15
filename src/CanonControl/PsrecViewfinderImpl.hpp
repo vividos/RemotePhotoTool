@@ -46,6 +46,22 @@ public:
       }
    }
 
+   virtual bool GetCapability(T_enViewfinderCapability enViewfinderCapability) const throw() override
+   {
+      switch (enViewfinderCapability)
+      {
+      case Viewfinder::capGetHistogram:
+         return false;
+         break;
+
+      default:
+         ATLASSERT(false);
+         break;
+      }
+
+      return false;
+   }
+
    virtual void SetOutputType(Viewfinder::T_enOutputType enOutputType) override
    {
       // note that T_enOutputType values exactly correspond to values
@@ -65,6 +81,13 @@ public:
       LightweightMutex::LockType lock(m_mtxFnOnAvailViewfinderImage);
 
       m_fnOnAvailViewfinderImage = fnOnAvailViewfinderImage;
+   }
+
+   virtual void GetHistogram(T_enHistogramType, std::vector<unsigned int>&) override
+   {
+      // histogram not supported by PSREC
+      throw CameraException(_T("PSREC::Viewfinder::GetHistogram"), _T("Not supported"),
+         prERROR_PRSDK_COMPONENTID | prNOT_SUPPORTED, __FILE__, __LINE__);
    }
 
    virtual void Close() override

@@ -30,9 +30,13 @@ public:
    /// dtor
    virtual ~ViewfinderImpl() throw();
 
+   virtual bool GetCapability(T_enViewfinderCapability enViewfinderCapability) const throw() override;
+
    virtual void SetOutputType(Viewfinder::T_enOutputType enOutputType) override;
 
    virtual void SetAvailImageHandler(Viewfinder::T_fnOnAvailViewfinderImage fnOnAvailViewfinderImage) override;
+
+   virtual void GetHistogram(T_enHistogramType enHistogramType, std::vector<unsigned int>& vecHistogramData) override;
 
    virtual void Close() override;
 
@@ -48,6 +52,9 @@ private:
 
    /// retrieves viewfinder image data
    void GetImage(std::vector<BYTE>& vecImage);
+
+   /// reads histogram data from image
+   void ReadHistogram(Handle& hEvfImage);
 
    /// timer handler to retrieve viewfinder image
    void OnGetViewfinderImage();
@@ -76,6 +83,14 @@ private:
 
    /// viewfinder image handler
    Viewfinder::T_fnOnAvailViewfinderImage m_fnOnAvailViewfinderImage;
+
+   /// mutex to protect histogram arrays
+   LightweightMutex m_mtxHistogram;
+
+   EdsUInt32 m_histogramY[256]; ///< histogram for luminance
+   EdsUInt32 m_histogramR[256]; ///< histogram for red channel
+   EdsUInt32 m_histogramG[256]; ///< histogram for green channel
+   EdsUInt32 m_histogramB[256]; ///< histogram for blue channel
 };
 
 } // namespace EDSDK
