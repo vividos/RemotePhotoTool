@@ -135,8 +135,9 @@ Here's a checklist of what to do before each release:
 - Update version number in version.h
 - Update version number in Config.wxi, and BuildNumber in BuildNumber.wxi
 - Update Changelog.md file with all changes since last release
+- Update all external libraries and external tools if needed
 - Check all Documentation files for needed updates, especially Features.md
-- Check in or stash all changes
+- Check in or stash all other changes
 - Build all projects in Win32 | Release
 - Fix cppcheck errors and doxygen warnings
 - Compile all project with /analyze and fix all warnings
