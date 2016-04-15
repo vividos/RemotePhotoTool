@@ -77,9 +77,11 @@ bool ViewfinderImpl::GetCapability(T_enViewfinderCapability enViewfinderCapabili
 {
    switch (enViewfinderCapability)
    {
+   case Viewfinder::capOutputTypeVideoOut:
+      return false; // not supported in EDSDK
+
    case Viewfinder::capGetHistogram:
       return true; // supported in EDSDK
-      break;
 
    default:
       ATLASSERT(false);

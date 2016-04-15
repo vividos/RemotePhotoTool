@@ -52,9 +52,11 @@ public:
    {
       switch (enViewfinderCapability)
       {
+      case Viewfinder::capOutputTypeVideoOut:
+         return true; // supported using CDSelectViewFinderCameraOutput
+
       case Viewfinder::capGetHistogram:
          return false;
-         break;
 
       default:
          ATLASSERT(false);

@@ -50,9 +50,11 @@ public:
    {
       switch (enViewfinderCapability)
       {
+      case Viewfinder::capOutputTypeVideoOut:
+         return true; // supported by setting property prPTP_DEV_PROP_CAMERA_OUTPUT
+
       case Viewfinder::capGetHistogram:
          return false;
-         break;
 
       default:
          ATLASSERT(false);

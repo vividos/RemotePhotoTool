@@ -19,7 +19,8 @@ public:
    /// capabilities in live viewfinder mode
    enum T_enViewfinderCapability
    {
-      capGetHistogram = 0,  ///< can get last histogram values
+      capOutputTypeVideoOut = 0, ///< can switch to output type Video Out
+      capGetHistogram = 1,       ///< can get last histogram values
    };
 
    /// viewfinder output type
