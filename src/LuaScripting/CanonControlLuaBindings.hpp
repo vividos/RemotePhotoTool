@@ -175,6 +175,7 @@ private:
       std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
       const ShutterReleaseSettings& releaseSettings);
 
+   /// event handler for property change events
    void RemoteReleaseControl_PropertyEventHandler(
       std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
       std::shared_ptr<int> spHandlerId,
@@ -193,6 +194,7 @@ private:
       Lua::State& state,
       const std::vector<Lua::Value>& vecParams);
 
+   /// event handler for state events
    void RemoteReleaseControl_StateEventHandler(
       std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
       std::shared_ptr<int> spHandlerId,
@@ -211,6 +213,7 @@ private:
       Lua::State& state,
       const std::vector<Lua::Value>& vecParams);
 
+   /// event handler for download events
    void RemoteReleaseControl_DownloadEventHandler(
       std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
       std::shared_ptr<int> spHandlerId,
