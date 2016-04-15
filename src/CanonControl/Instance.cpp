@@ -119,7 +119,7 @@ void Instance::Impl::StartPollCamera()
          m_spCdSdkRef->EnumerateDevices(vecSourceDevices);
 
       m_spPsRecRef->EnumerateDevices(vecSourceDevices);
-      m_spGPhoto2Ref->EnumerateDevices(vecSourceDevices);
+      //m_spGPhoto2Ref->EnumerateDevices(vecSourceDevices);
 
       m_uiPollNumDevices = vecSourceDevices.size();
    }
@@ -156,7 +156,7 @@ void Instance::Impl::PollCamera()
       m_spCdSdkRef->EnumerateDevices(vecSourceDevices);
 
    m_spPsRecRef->EnumerateDevices(vecSourceDevices);
-   m_spGPhoto2Ref->EnumerateDevices(vecSourceDevices);
+   //m_spGPhoto2Ref->EnumerateDevices(vecSourceDevices);
 
    size_t uiPollNumDevices = vecSourceDevices.size();
 
@@ -282,7 +282,7 @@ void Instance::EnumerateDevices(std::vector<std::shared_ptr<SourceInfo>>& vecSou
 
    try
    {
-   m_spImpl->m_spGPhoto2Ref->EnumerateDevices(vecSourceDevices);
+      //m_spImpl->m_spGPhoto2Ref->EnumerateDevices(vecSourceDevices);
    }
    catch (...)
    {
