@@ -8,6 +8,8 @@
 // includes
 #include "stdafx.h"
 #include "RemotePhotoTool.CameraControl.Instance.hpp"
+#include "RemotePhotoTool.CameraControl.SourceInfo.hpp"
+#include "SourceInfo.hpp"
 
 void RemotePhotoTool::CameraControl::Instance::EnableLogging(bool enable, System::String^ logFilePath)
 {
@@ -37,7 +39,6 @@ static void OnCameraAdded(msclr::gcroot<RemotePhotoTool::CameraControl::Instance
 
 void RemotePhotoTool::CameraControl::Instance::AsyncWaitForCamera(CameraAddedHandler^ handler)
 {
-   // TODO implement
    if (handler == nullptr)
    {
       m_instance->AsyncWaitForCamera();
@@ -56,11 +57,19 @@ void RemotePhotoTool::CameraControl::Instance::AsyncWaitForCamera(CameraAddedHan
 System::Collections::Generic::List<RemotePhotoTool::CameraControl::SourceInfo^>^
 RemotePhotoTool::CameraControl::Instance::EnumerateDevices()
 {
-   auto sourceInfoList = gcnew System::Collections::Generic::List<RemotePhotoTool::CameraControl::SourceInfo^>();
+   std::vector<std::shared_ptr<::SourceInfo>> sourceInfoList;
+   m_instance->EnumerateDevices(sourceInfoList);
 
-   // TODO implement
+   auto sourceInfoCollection = gcnew System::Collections::Generic::List<RemotePhotoTool::CameraControl::SourceInfo^>();
 
-   return sourceInfoList;
+   for (size_t index = 0, max = sourceInfoList.size(); index < max; index++)
+   {
+      std::shared_ptr<::SourceInfo> sourceInfo = sourceInfoList[index];
+
+      sourceInfoCollection->Add(gcnew RemotePhotoTool::CameraControl::SourceInfo(sourceInfo));
+   }
+
+   return sourceInfoCollection;
 }
 
 void RemotePhotoTool::CameraControl::Instance::OnIdle()

@@ -13,10 +13,7 @@ namespace RemotePhotoTool
 {
    namespace CameraControl
    {
-      // TODO implement
-      public ref class SourceInfo
-      {
-      };
+      ref class SourceInfo;
 
       public ref class Instance
       {
