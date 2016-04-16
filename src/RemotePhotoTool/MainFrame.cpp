@@ -835,8 +835,7 @@ void MainFrame::SetNewView(T_enViewType enViewType)
 
    bool bEnable =
       enViewType != viewBlank &&
-      enViewType != viewPreviousImages &&
-      enViewType != viewScripting;
+      enViewType != viewPreviousImages;
 
    EnablePhotoModes(bEnable);
 

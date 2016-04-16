@@ -238,12 +238,14 @@ LRESULT ScriptingPhotoModeView::OnMessageExecutionStateChanged(UINT /*uMsg*/, WP
       pszText = _T("Idle.");
       m_host.EnableUI(ID_SCRIPTING_RUN, true);
       m_host.EnableUI(ID_SCRIPTING_STOP, false);
+      m_host.LockActionMode(false);
       break;
 
    case LuaScheduler::stateRunning:
       pszText = _T("Running...");
       m_host.EnableUI(ID_SCRIPTING_RUN, false);
       m_host.EnableUI(ID_SCRIPTING_STOP, true);
+      m_host.LockActionMode(true);
       break;
 
    case LuaScheduler::stateYield:
@@ -257,6 +259,7 @@ LRESULT ScriptingPhotoModeView::OnMessageExecutionStateChanged(UINT /*uMsg*/, WP
       pszText = _T("Error.");
       m_host.EnableUI(ID_SCRIPTING_RUN, true);
       m_host.EnableUI(ID_SCRIPTING_STOP, false);
+      m_host.LockActionMode(false);
       break;
 
    default:
