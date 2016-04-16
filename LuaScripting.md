@@ -1635,10 +1635,29 @@ The following constants can be used for saveTarget:
 The Viewfinder table contains the following functions:
 
     viewfinder = {
+      getCapability = function(viewfinderCapability) { ... };
       setOutputType = function(outputType) { ... };
       setAvailImageHandler = function([callbackFunction]) { ... };
+      getHistogram = function(histogramType) { ... };
       close = function() { ... };
     }
+
+#### boolean Viewfinder:getCapability(viewfinderCapability) ####
+
+Queries for capabilities of the live viewfinder, which can either be true or
+false. If a capability is false, some functions of the camera can't be carried
+out.
+
+The following capabilities exists, as constants:
+
+- Constants.Viewfinder.capOutputTypeVideoOut:
+  Determines if the Video Out output type can be set, using the function
+  Viewfinder:setOutputType(). Some SDKs may not provide a way to redirect the
+  viewfinder output to the Video Out connector.
+
+- Constants.Viewfinder.capGetHistogram:
+  Determines if the camera supports retrieving histogram data for viewfinder
+  images. See Viewfinder:getHistogram() for more infos.
 
 #### Viewfinder:setOutputType(outputType) ####
 
@@ -1676,6 +1695,46 @@ If no or a nil callback function is passed, the handler is unregistered. To
 receive calls to this callback function, the main thread must give up its
 execution. For more infos about asynchronous functions, see the chapter about
 the Scheduler above.
+
+#### Histogram-table Viewfinder:getHistogram(histogramType) ####
+
+Returns the histogram of the last transferred viewfinder image. The histogram
+is the distribution of light and dark parts of the image. The histogram is
+only available when the camera has the capability, which you can check with:
+
+    viewfinder:getCapability(Constants.Viewfinder.capGetHistogram)
+
+The histogram type determines which histogram data is returned:
+
+- Constants.Viewfinder.histogramLuminance
+  Returns the histogram data for overall luminance of the image.
+
+- Constants.Viewfinder.histogramRed
+  Returns the histogram data only for the red channel of the image.
+
+- Constants.Viewfinder.histogramGreen
+  Returns the histogram data only for the green channel of the image.
+
+- Constants.Viewfinder.histogramBlue
+  Returns the histogram data only for the blue channel of the image.
+
+The histogram table returned has the following layout
+
+    devices = {
+      length = 256;
+      [1] = intensityValue1;
+      [2] = intensityValue2;
+      ...
+      [256] = intensityValue256;
+    }
+
+Values at the low indexes represent intensities for dark colors, and values
+at high indexes represent intensities for light colors. Seen in another way
+the values are the number of colors in the image with this luminance or
+channel value.
+
+The values are not normalized to any range. For that you have to find the
+highest value and divide all other values by it.
 
 #### Viewfinder:close() ####
 
