@@ -908,6 +908,8 @@ void MainFrame::ShowViewfinder(bool bShow)
    {
       CameraErrorDlg dlg(_T("Couldn't start viewfinder"), ex);
       dlg.DoModal(m_hWnd);
+
+      return;
    }
 
    m_splitter.SetSplitterPanes(m_hWndView, *m_upViewFinderView);
