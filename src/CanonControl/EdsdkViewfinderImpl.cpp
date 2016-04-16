@@ -102,7 +102,7 @@ void ViewfinderImpl::SetOutputType(T_enOutputType enOutputType)
 
    case Viewfinder::outputTypeLCD:
       // corresponds to "Camera and PC", to have viewfinder on camera LCD also
-      output = 3;
+      output = kEdsEvfOutputDevice_TFT | kEdsEvfOutputDevice_PC;
       break;
 
    case Viewfinder::outputTypeVideoOut:
@@ -110,7 +110,7 @@ void ViewfinderImpl::SetOutputType(T_enOutputType enOutputType)
 
    case Viewfinder::outputTypeOff:
       // corresponds to "PC", not "Off", to not shutdown viewfinder at all
-      output = 2;
+      output = kEdsEvfOutputDevice_PC;
       break;
 
    default:
@@ -234,7 +234,7 @@ void ViewfinderImpl::GetImage(std::vector<BYTE>& vecImage)
    while (!tryLock.Try(10))
       EDSDK::Ref::OnIdle();
 
-   LOG_TRACE(_T("GetImage() start\n"));
+   //LOG_TRACE(_T("GetImage() start\n"));
    m_bInGetImage = true;
 
    LightweightMutex::LockType lock(*m_spMtxLock);
@@ -276,7 +276,7 @@ void ViewfinderImpl::GetImage(std::vector<BYTE>& vecImage)
    ReadHistogram(hEvfImage);
 
    m_bInGetImage = false;
-   LOG_TRACE(_T("GetImage() end\n"));
+   //LOG_TRACE(_T("GetImage() end\n"));
 }
 
 void ViewfinderImpl::ReadHistogram(Handle& hEvfImage)
