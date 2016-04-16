@@ -70,6 +70,7 @@ static PropIdDisplayInfo g_aPropIdDisplayInfo[] =
          { 19, _T("Manual 5") },
          { 20, _T("PC-4") },
          { 21, _T("PC-5") },
+         { 23, _T("White")},
          { 0, nullptr }
       }
    },
@@ -94,6 +95,7 @@ static PropIdDisplayInfo g_aPropIdDisplayInfo[] =
          { 0x0085, _T("Faithful") },
          { 0x0086, _T("Monochrome") },
          { 0x0087, _T("Auto") },
+         { 0x0088, _T("Fine detail") },
          { 0x0021, _T("User Style 1") }, /* kEdsPictureStyle_User1 */
          { 0x0022, _T("User Style 2") }, /* kEdsPictureStyle_User2 */
          { 0x0023, _T("User Style 3") }, /* kEdsPictureStyle_User3 */
@@ -126,6 +128,15 @@ static PropIdDisplayInfo g_aPropIdDisplayInfo[] =
          { 16, _T("Custom 2") },
          { 17, _T("Custom 3") },
          { 19, _T("Creative Auto") },
+         { 19, _T("Movie") },
+         { 21, _T("Photo in movie") },
+         { 22, _T("Scene intelligent auto") },
+         { 23, _T("Night scenes") },
+         { 24, _T("Backlit scenes") },
+         { 25, _T("SCN") },
+         { 26, _T("Children") },
+         { 27, _T("Food") },
+         { 28, _T("Candlelight portraits") },
          { 0, nullptr }
       }
    },
@@ -230,6 +241,8 @@ static PropIdDisplayInfo g_aPropIdDisplayInfo[] =
          { 1, _T("Camera") },
          { 2, _T("PC") },
          { 3, _T("Camera and PC") },
+         { 4, _T("Mobile") },
+         { 8, _T("Mobile 2") },
          { 0, nullptr }
       }
    },
@@ -278,6 +291,7 @@ static PropIdDisplayInfo g_aPropIdDisplayInfo[] =
          { 0, _T("Quick mode") },
          { 1, _T("Live mode") },
          { 2, _T("Live face mode") },
+         { 3, _T("Live multi") },
          { 0, nullptr }
       }
    },
