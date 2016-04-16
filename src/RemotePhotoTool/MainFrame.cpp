@@ -253,14 +253,21 @@ LRESULT MainFrame::OnHomeConnect(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWnd
 
    UpdateLayout();
 
-   ConnectCameraDlg dlg;
-   if (IDOK != dlg.DoModal(m_hWnd))
-      return 0;
+   try
+   {
+      ConnectCameraDlg dlg;
+      if (IDOK != dlg.DoModal(m_hWnd))
+         return 0;
 
-   // set new device remote connection
-   m_spSourceDevice = dlg.GetSourceDevice();
-   if (m_spSourceDevice == nullptr)
+      // set new device remote connection
+      m_spSourceDevice = dlg.GetSourceDevice();
+      if (m_spSourceDevice == nullptr)
+         return 0;
+   }
+   catch (...)
+   {
       return 0;
+   }
 
    // start with standard view
    SetNewView(T_enViewType::viewStandard);
