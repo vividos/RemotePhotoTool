@@ -135,11 +135,21 @@ public:
 
    virtual ImageProperty GetImageProperty(unsigned int uiImageProperty) const override
    {
+      int iParam = 0;
+      unsigned int uiRealImageProperty = uiImageProperty;
+
+      // support for custom functions: passing param in the property ID
+      if ((uiRealImageProperty & 0xFFFF) == kEdsPropID_CFn)
+      {
+         iParam = static_cast<int>(uiRealImageProperty >> 16);
+         uiRealImageProperty &= 0xFFFF;
+      }
+
       try
       {
          // get value
          PropertyAccess p(m_hCamera);
-         Variant value = p.Get(uiImageProperty);
+         Variant value = p.Get(uiRealImageProperty, iParam);
          bool bReadOnly = p.IsReadOnly(uiImageProperty);
 
          return ImageProperty(variantEdsdk, uiImageProperty, value, bReadOnly);
@@ -170,7 +180,15 @@ public:
       std::vector<Variant> vecRawValues;
       bool bReadOnly = false;
 
-      p.Enum(uiImageProperty, vecRawValues, bReadOnly);
+      unsigned int uiRealImageProperty = uiImageProperty;
+
+      // support for custom functions: passing param in the property ID
+      if ((uiRealImageProperty & 0xFFFF) == kEdsPropID_CFn)
+      {
+         uiRealImageProperty &= 0xFFFF;
+      }
+
+      p.Enum(uiRealImageProperty, vecRawValues, bReadOnly);
 
       for (size_t i=0,iMax=vecRawValues.size(); i<iMax; i++)
          vecValues.push_back(ImageProperty(variantEdsdk, uiImageProperty, vecRawValues[i], bReadOnly));

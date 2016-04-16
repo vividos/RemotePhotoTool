@@ -429,6 +429,13 @@ bool PropertyAccess::IsReadOnly(EdsPropertyID propId) const
    if (propId == kEdsPropID_Meta_MaxZoomPos) return true;
    if (propId == kEdsPropID_Evf_Zoom) return false;
 
+   if ((propId & 0xFFFF) == kEdsPropID_CFn)
+   {
+      // support for custom functions: EdsGetPropertyDesc can't be used, so
+      // return that they are always read-write
+      return false;
+   }
+
    if (!m_h.IsValid())
       return true;
 
@@ -472,7 +479,7 @@ void PropertyAccess::GetTypeAndSize(EdsPropertyID propId, int iParam, EdsDataTyp
       dataType = kEdsDataType_UInt32;
 }
 
-bool PropertyAccess::IsPropertyAvail(unsigned int uiPropId) const throw()
+bool PropertyAccess::IsPropertyAvail(unsigned int uiPropId, int iParam) const throw()
 {
    if (uiPropId >= kEdsPropID_Meta_MaxZoomPos)
       return true;
@@ -495,7 +502,7 @@ bool PropertyAccess::IsPropertyAvail(unsigned int uiPropId) const throw()
    // check if property exists by retrieving type and size
    EdsDataType dataType = kEdsDataType_Unknown;
    EdsUInt32 size = 0;
-   EdsError err = EdsGetPropertySize(m_h.Get(), uiPropId, 0, &dataType, &size);
+   EdsError err = EdsGetPropertySize(m_h.Get(), uiPropId, iParam, &dataType, &size);
    return (err == EDS_ERR_OK && dataType != kEdsDataType_Unknown);
 }
 
@@ -651,7 +658,7 @@ void PropertyAccess::EnumDeviceIds(std::vector<unsigned int>& vecDeviceIds)
    {
       unsigned int uiPropId = aAllPropIds[i];
 
-      if (IsPropertyAvail(uiPropId))
+      if (IsPropertyAvail(uiPropId, 0))
          vecDeviceIds.push_back(uiPropId);
    }
 }
@@ -760,7 +767,7 @@ void PropertyAccess::EnumImageIds(std::vector<unsigned int>& vecImageIds)
    {
       unsigned int uiPropId = aAllPropIds[i];
 
-      if (IsPropertyAvail(uiPropId))
+      if (IsPropertyAvail(uiPropId, 0))
          vecImageIds.push_back(uiPropId);
    }
 }
@@ -937,7 +944,7 @@ LPCTSTR PropertyAccess::NameFromId(EdsPropertyID propertyId) throw()
    case kEdsPropID_DateTime: pszName = _T("Date / Time"); break;
    case kEdsPropID_FirmwareVersion: pszName = _T("Firmware version"); break;
    case kEdsPropID_BatteryLevel: pszName = _T("Battery level"); break;
-   case kEdsPropID_CFn: pszName = _T("Cfn"); break;
+   case kEdsPropID_CFn: pszName = _T("Custom function"); break;
    case kEdsPropID_SaveTo: pszName = _T("Save to"); break;
    case kEdsPropID_CurrentStorage: pszName = _T("Current storage"); break;
    case kEdsPropID_CurrentFolder: pszName = _T("Current folder"); break;
@@ -1044,6 +1051,44 @@ LPCTSTR PropertyAccess::NameFromId(EdsPropertyID propertyId) throw()
    case kEdsPropID_WBCoeffs: pszName = _T("White balance coefficients"); break;
 
    default:
+      if ((propertyId & 0xFFFF) == kEdsPropID_CFn)
+      {
+         switch (propertyId >> 16)
+         {
+         case 0x0101: return _T("Custom function: Exposure level increments");
+         case 0x0102: return _T("Custom function: ISO speed setting increments");
+         case 0x0103: return _T("Custom function: ISO expansion");
+         case 0x0104: return _T("Custom function: Bracketing auto cancel");
+         case 0x0105: return _T("Custom function: Bracketing sequence");
+         case 0x0108: return _T("Custom function: Safety shift");
+         case 0x010f: return _T("Custom function: Flash sync.speed in Av mode");
+
+         case 0x0201: return _T("Custom function: Long exposure noise reduction");
+         case 0x0202: return _T("Custom function: High ISO speed noise reduction");
+         case 0x0203: return _T("Custom function: Highlight tone priority");
+
+         case 0x0505: return _T("Custom function: Lens drive when AF impossible");
+         case 0x0506: return _T("Custom function: Lens AF stop button function");
+         case 0x050f: return _T("Custom function: AF point selection method");
+         case 0x0510: return _T("Custom function: Superimposed display");
+         case 0x050e: return _T("Custom function: AF-assist beam firing");
+         case 0x0511: return _T("Custom function: AF during live view shooting");
+         case 0x060f: return _T("Custom function: Mirror Lockup");
+
+         case 0x0701: return _T("Custom function: Shutter button/AF-ON");
+         case 0x0702: return _T("Custom function: AF-ON/AE lock button switch");
+         case 0x0704: return _T("Custom function: SET button while shooting");
+         case 0x0706: return _T("Custom function: Dial direction during Tv/Av");
+         case 0x080b: return _T("Custom function: Focusing screen");
+         case 0x080f: return _T("Custom function: Add original decision data");
+         case 0x0810: return _T("Custom function: Live view exposure simulation");
+
+         default:
+            return _T("Custom function: Unknown");
+            break;
+         }
+      }
+
       ATLASSERT(false);
       break;
    }

@@ -57,7 +57,7 @@ public:
    void GetTypeAndSize(EdsPropertyID propId, int iParam, EdsDataType& dataType, EdsUInt32& size) const;
 
    /// returns if property is available
-   bool IsPropertyAvail(unsigned int uiPropId) const throw();
+   bool IsPropertyAvail(unsigned int uiPropId, int iParam) const throw();
 
    /// enumerates device ids
    void EnumDeviceIds(std::vector<unsigned int>& vecDeviceIds);

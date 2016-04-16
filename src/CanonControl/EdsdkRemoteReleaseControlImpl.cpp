@@ -105,6 +105,11 @@ EdsError RemoteReleaseControlImpl::OnPropertyChange_(
 
 void RemoteReleaseControlImpl::OnPropertyChange(EdsPropertyEvent inEvent, EdsPropertyID inPropertyID, EdsUInt32 inParam) throw()
 {
+   // support for custom functions: passing param in the property ID
+   unsigned int uiCombinedPropertyId = inPropertyID;
+   if (inPropertyID == kEdsPropID_CFn)
+      uiCombinedPropertyId |= (inParam << 16);
+
    try
    {
       PropertyAccess pa(m_hCamera);
@@ -114,8 +119,8 @@ void RemoteReleaseControlImpl::OnPropertyChange(EdsPropertyEvent inEvent, EdsPro
          inEvent == kEdsPropertyEvent_PropertyChanged ?
             _T("Property [%s] changed to value [%s]\n") :
             _T("Property description changed for property [%s]\n"),
-         PropertyAccess::NameFromId(inPropertyID),
-         PropertyAccess::DisplayTextFromIdAndValue(inPropertyID, value));
+         PropertyAccess::NameFromId(uiCombinedPropertyId),
+         PropertyAccess::DisplayTextFromIdAndValue(uiCombinedPropertyId, value));
    }
    catch(...)
    {
@@ -128,7 +133,7 @@ void RemoteReleaseControlImpl::OnPropertyChange(EdsPropertyEvent inEvent, EdsPro
             RemoteReleaseControl::propEventPropertyChanged :
             RemoteReleaseControl::propEventPropertyDescChanged;
 
-      m_subjectPropertyEvent.Call(enPropertyEvent, inPropertyID);
+      m_subjectPropertyEvent.Call(enPropertyEvent, uiCombinedPropertyId);
    }
    catch(...)
    {
@@ -326,10 +331,20 @@ void RemoteReleaseControlImpl::AsyncSetImageProperty(const ImageProperty& imageP
 {
    LightweightMutex::LockType lock(*m_spMtxLock);
 
+   int iParam = 0;
+   unsigned int uiRealImageProperty = imageProperty.Id();
+
+   // support for custom functions: passing param in the property ID
+   if ((uiRealImageProperty & 0xFFFF) == kEdsPropID_CFn)
+   {
+      iParam = static_cast<int>(uiRealImageProperty >> 16);
+      uiRealImageProperty &= 0xFFFF;
+   }
+
    PropertyAccess p(m_hCamera);
    try
    {
-      p.Set(imageProperty.Id(), imageProperty.Value());
+      p.Set(uiRealImageProperty, imageProperty.Value(), iParam);
    }
    catch(CameraException& ex)
    {

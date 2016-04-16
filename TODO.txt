@@ -8,7 +8,6 @@ support taking/transferring CRW raw images
 EDSDK
 -----
 on protocol 0 cameras, lock UI when getting/setting property
-support custom function numbers through kEdsPropID_CFn, e.g. mirror lockup (inParam=0x060f)
 
 CDSDK
 -----
