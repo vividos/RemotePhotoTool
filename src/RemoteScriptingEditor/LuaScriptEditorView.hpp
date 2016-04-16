@@ -167,14 +167,14 @@ public:
          if (m_nInitialSearchPos >= 0)
             tf.chrg.cpMax = pT->GetTextLength();
 
-         ATLASSERT(tf.chrg.cpMax >= tf.chrg.cpMin);
+         //ATLASSERT(tf.chrg.cpMax >= tf.chrg.cpMin);
       }
       else
       {
          if (m_nInitialSearchPos >= 0)
             tf.chrg.cpMax = 0;
 
-         ATLASSERT(tf.chrg.cpMax <= tf.chrg.cpMin);
+         //ATLASSERT(tf.chrg.cpMax <= tf.chrg.cpMin);
       }
 
       int flags = bMatchCase ? SCFIND_MATCHCASE : 0;

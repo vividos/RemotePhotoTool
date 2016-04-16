@@ -56,7 +56,6 @@ Implement all bindings from CanonControl
 Implement debugging scripts
 Implement squiggly lines for Lua compile errors
 Implement breakpoints
-Fix bug when searching backwards
 
 Setup
 -----
