@@ -74,14 +74,6 @@ void ViewFinderImageWindow::OnAvailViewfinderImage(const std::vector<BYTE>& vecI
    if (vecImage.empty())
       return;
 
-   //{
-   //   static DWORD s_dwLastCall = GetTickCount();
-   //   DWORD dwNow = GetTickCount();
-   //   ATLTRACE(_T("last view finder image was %u ms ago\n"), dwNow - s_dwLastCall);
-   //
-   //   s_dwLastCall = dwNow;
-   //}
-
    DecodeJpegImage(vecImage);
 
    if (IsWindow())
