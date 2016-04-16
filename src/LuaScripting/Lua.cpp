@@ -530,10 +530,26 @@ int FuncData::OnFunctionCall(lua_State* L)
    {
       vecRetVals = data.m_fn(paramState, vecParams);
    }
-   catch (...)
+   catch (const ::Exception& ex)
    {
       // in case of exceptions, detach all values from parameter state
       paramState.DetachAll();
+
+      lua_pushstring(L, CStringA(ex.Message()).GetString());
+      throw;
+   }
+   catch (const std::exception& ex)
+   {
+      paramState.DetachAll();
+
+      lua_pushstring(L, ex.what());
+      throw;
+   }
+   catch (...)
+   {
+      paramState.DetachAll();
+
+      lua_pushstring(L, "unknown C++ exception occured");
       throw;
    }
 
@@ -603,10 +619,26 @@ std::vector<Value> Function::Call(int iResults, const std::vector<Value>& vecPar
    {
       lua_call(L, vecParam.size(), iResults);
    }
+   catch (const ::Exception& ex)
+   {
+      // in case of exceptions, detach all values from parameter state
+      state.DetachAll();
+
+      lua_pushstring(L, CStringA(ex.Message()).GetString());
+      throw;
+   }
+   catch (const std::exception& ex)
+   {
+      state.DetachAll();
+
+      lua_pushstring(L, ex.what());
+      throw;
+   }
    catch (...)
    {
-      // since the exception is re-thrown, detach all params from stack
       state.DetachAll();
+
+      lua_pushstring(L, "unknown C++ exception occured");
       throw;
    }
 
@@ -781,10 +813,26 @@ std::vector<Value> Table::CallFunction(const CString& cszName,
    {
       lua_call(L, vecParam.size() + 1, iResults);
    }
-   catch (const Lua::Exception&)
+   catch (const ::Exception& ex)
    {
-      // since the exception is re-thrown, detach all params from stack
+      // in case of exceptions, detach all values from parameter state
       state.DetachAll();
+
+      lua_pushstring(L, CStringA(ex.Message()).GetString());
+      throw;
+   }
+   catch (const std::exception& ex)
+   {
+      state.DetachAll();
+
+      lua_pushstring(L, ex.what());
+      throw;
+   }
+   catch (...)
+   {
+      state.DetachAll();
+
+      lua_pushstring(L, "unknown C++ exception occured");
       throw;
    }
 
@@ -966,10 +1014,26 @@ std::vector<Value> State::CallFunction(const CString& cszName, int iResults, con
    {
       lua_call(L, vecParam.size(), iResults);
    }
-   catch (const Lua::Exception&)
+   catch (const ::Exception& ex)
    {
-      // since the exception is re-thrown, detach all params from stack
+      // in case of exceptions, detach all values from parameter state
       DetachAll();
+
+      lua_pushstring(L, CStringA(ex.Message()).GetString());
+      throw;
+   }
+   catch (const std::exception& ex)
+   {
+      DetachAll();
+
+      lua_pushstring(L, ex.what());
+      throw;
+   }
+   catch (...)
+   {
+      DetachAll();
+
+      lua_pushstring(L, "unknown C++ exception occured");
       throw;
    }
 
@@ -1487,11 +1551,11 @@ int Thread::InternalYield(lua_State* L, int status, lua_KContext context)
       std::for_each(vecResults.begin(), vecResults.end(),
          [&](const Value& value) { value.Push(paramState); value.Detach(); });
    }
-   catch (const Lua::Exception& ex)
+   catch (const ::Exception& ex)
    {
       delete pfnCallback;
 
-      lua_pushstring(L, CStringA(ex.Message()));
+      lua_pushstring(L, CStringA(ex.Message()).GetString());
       throw;
    }
    catch (const std::exception& ex)
@@ -1505,7 +1569,7 @@ int Thread::InternalYield(lua_State* L, int status, lua_KContext context)
    {
       delete pfnCallback;
 
-      lua_pushstring(L, "unknown C++ exception thrown");
+      lua_pushstring(L, "unknown C++ exception occured");
       throw;
    }
 
