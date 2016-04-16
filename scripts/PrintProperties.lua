@@ -23,7 +23,6 @@ App = {
 
 			self:printSourceInfos(allSourceInfos);
 
-			remoteReleaseControl:close();
 			print("Finished.\n\n");
 
 		else
@@ -116,6 +115,8 @@ App = {
 		self:printReleaseControlCapabilities(remoteReleaseControl);
 
 		self:printImageProperties(remoteReleaseControl);
+
+		remoteReleaseControl:close();
 
 	end;
 
