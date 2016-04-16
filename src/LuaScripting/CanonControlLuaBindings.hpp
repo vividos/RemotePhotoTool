@@ -300,7 +300,7 @@ private:
    void SetAvailImageHandler_OnAvailImageHandler(std::shared_ptr<Viewfinder> spViewfinder,
       const std::vector<BYTE>& vecImage);
 
-   // local histogram viewfinder:getHistogram(Constants.Viewfinder.historyXxx);
+   /// local histogram viewfinder:getHistogram(Constants.Viewfinder.historyXxx);
    std::vector<Lua::Value> ViewfinderGetHistogram(std::shared_ptr<Viewfinder> spViewfinder,
       Lua::State& state, const std::vector<Lua::Value>& vecParams);
 
