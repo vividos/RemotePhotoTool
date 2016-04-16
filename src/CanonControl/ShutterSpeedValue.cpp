@@ -75,7 +75,7 @@ void ShutterSpeedValue::SetAndCheckNewRaw(unsigned int uiValue)
             else
                ATLASSERT(false);
          }
-         catch(...)
+         catch (...)
          {
             return false;
          }

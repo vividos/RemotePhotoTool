@@ -67,7 +67,7 @@ LRESULT StandardPhotoModeView::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LP
 
       m_spRemoteReleaseControl->SetReleaseSettings(settings);
    }
-   catch(CameraException& ex)
+   catch (const CameraException& ex)
    {
       CameraErrorDlg dlg(_T("Error while setting default shooting settings"), ex);
       dlg.DoModal(m_hWnd);
@@ -108,7 +108,7 @@ LRESULT StandardPhotoModeView::OnButtonRelease(WORD /*wNotifyCode*/, WORD /*wID*
    {
       m_spRemoteReleaseControl->Release();
    }
-   catch(CameraException& ex)
+   catch (const CameraException& ex)
    {
       CameraErrorDlg dlg(_T("Couldn't release shutter"), ex);
       dlg.DoModal(m_hWnd);

@@ -35,7 +35,7 @@ void ImagePropertyCombobox::UpdateValuesList()
    {
       m_spRemoteReleaseControl->EnumImagePropertyValues(m_uiPropertyId, m_vecValues);
    }
-   catch(CameraException& ex)
+   catch (const CameraException& ex)
    {
       CameraErrorDlg dlg(_T("Couldn't enumerate values for image property"), ex);
       dlg.DoModal(m_hWnd);
@@ -71,7 +71,7 @@ void ImagePropertyCombobox::UpdateValuesList()
          m_mapValueIndex.insert(std::make_pair(i, iItem));
       }
    }
-   catch(CameraException& ex)
+   catch (const CameraException& ex)
    {
       CameraErrorDlg dlg(_T("Couldn't get current value for image property"), ex);
       dlg.DoModal(m_hWnd);
@@ -122,7 +122,7 @@ void ImagePropertyCombobox::UpdateValue()
 
       SetCurSel(iterMap->second);
    }
-   catch(CameraException& ex)
+   catch (const CameraException& ex)
    {
       CString cszText(_T("Couldn't get value for image property"));
 
@@ -154,7 +154,7 @@ LRESULT ImagePropertyCombobox::OnSelChange(WORD /*wNotifyCode*/, WORD /*wID*/, H
    {
       m_spRemoteReleaseControl->SetImageProperty(m_vecValues[iIndex]);
    }
-   catch(CameraException& ex)
+   catch (const CameraException& ex)
    {
       CameraErrorDlg dlg(_T("Couldn't set image property"), ex);
       dlg.DoModal(m_hWnd);

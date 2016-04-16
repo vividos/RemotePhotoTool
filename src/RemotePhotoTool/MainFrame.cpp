@@ -741,7 +741,7 @@ std::shared_ptr<RemoteReleaseControl> MainFrame::StartRemoteReleaseControl(bool 
             m_iDownloadEventHandlerId = m_spRemoteReleaseControl->AddDownloadEventHandler(
                std::bind(&MainFrame::OnDownloadEvent, this, std::placeholders::_1, std::placeholders::_2));
          }
-         catch(CameraException& ex)
+         catch (const CameraException& ex)
          {
             CameraErrorDlg dlg(_T("Couldn't start remote release connection"), ex);
             dlg.DoModal(m_hWnd);
@@ -910,7 +910,7 @@ void MainFrame::ShowViewfinder(bool bShow)
 
       m_upViewFinderView->SetViewfinder(spViewfinder);
    }
-   catch(CameraException& ex)
+   catch (const CameraException& ex)
    {
       CameraErrorDlg dlg(_T("Couldn't start viewfinder"), ex);
       dlg.DoModal(m_hWnd);

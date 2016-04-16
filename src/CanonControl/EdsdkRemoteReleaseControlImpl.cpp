@@ -122,7 +122,7 @@ void RemoteReleaseControlImpl::OnPropertyChange(EdsPropertyEvent inEvent, EdsPro
          PropertyAccess::NameFromId(uiCombinedPropertyId),
          PropertyAccess::DisplayTextFromIdAndValue(uiCombinedPropertyId, value));
    }
-   catch(...)
+   catch (...)
    {
    }
 
@@ -135,7 +135,7 @@ void RemoteReleaseControlImpl::OnPropertyChange(EdsPropertyEvent inEvent, EdsPro
 
       m_subjectPropertyEvent.Call(enPropertyEvent, uiCombinedPropertyId);
    }
-   catch(...)
+   catch (...)
    {
    }
 }
@@ -181,11 +181,11 @@ void RemoteReleaseControlImpl::OnStateChange(EdsStateEvent inEvent, EdsUInt32 in
       if (enStateEvent != RemoteReleaseControl::stateEventInvalid)
          m_subjectStateEvent.Call(enStateEvent, inEventData);
    }
-   catch(CameraException& ex)
+   catch (const CameraException& ex)
    {
       LOG_TRACE(_T("CameraException during StateEvent handler: %s\n"), ex.Message().GetString());
    }
-   catch(...)
+   catch (...)
    {
       LOG_TRACE(_T("unknown exception during StateEvent handler\n"));
    }
@@ -225,11 +225,11 @@ EdsError RemoteReleaseControlImpl::OnObjectChange_(EdsObjectEvent inEvent, EdsBa
       if (inEvent == kEdsObjectEvent_DirItemRequestTransfer)
          prrc->OnReceivedObjectEventRequestTransfer(h);
    }
-   catch(CameraException& ex)
+   catch (const CameraException& ex)
    {
       LOG_TRACE(_T("CameraException during ObjectEvent handler: %s\n"), ex.Message().GetString());
    }
-   catch(...)
+   catch (...)
    {
       LOG_TRACE(_T("unknown exception during ObjectEvent handler\n"));
    }
@@ -303,7 +303,7 @@ bool RemoteReleaseControlImpl::GetCapability(RemoteReleaseControl::T_enRemoteCap
          break;
       }
    }
-   catch(const CameraException& ex)
+   catch (const CameraException& ex)
    {
       LOG_TRACE(_T("CameraException during GetCapability(): %s\n"), ex.Message().GetString());
    }
@@ -346,7 +346,7 @@ void RemoteReleaseControlImpl::AsyncSetImageProperty(const ImageProperty& imageP
    {
       p.Set(uiRealImageProperty, imageProperty.Value(), iParam);
    }
-   catch(CameraException& ex)
+   catch (const CameraException& ex)
    {
       LOG_TRACE(_T("CameraException during AsyncSetImageProperty(): %s, ImageProperty: %s, Value: %s\n"),
          ex.Message().GetString(),
@@ -481,7 +481,7 @@ void RemoteReleaseControlImpl::DownloadImage(Handle hDirectoryItem, ShutterRelea
          hDirectoryItem.Get(), dirItemInfo.size, hStream.Get(), err);
       EDSDK::CheckError(_T("EdsDownload"), err, __FILE__, __LINE__);
    }
-   catch(CameraException& ex)
+   catch (const CameraException& ex)
    {
       LOG_TRACE(_T("Exception while downloading image: %s"), ex.Message().GetString());
 

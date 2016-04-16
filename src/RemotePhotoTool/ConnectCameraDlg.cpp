@@ -37,7 +37,7 @@ std::shared_ptr<SourceDevice> ConnectCameraDlg::GetSourceDevice() const
          return spSourceInfo->Open();
       }
    }
-   catch(const CameraException& ex)
+   catch (const CameraException& ex)
    {
       CameraErrorDlg dlg(_T("Couldn't open camera device"), ex);
       dlg.DoModal(m_hWnd);
@@ -138,7 +138,7 @@ LRESULT ConnectCameraDlg::OnBtnInfo(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*h
          dlg.DoModal(m_hWnd);
       }
    }
-   catch(const CameraException& ex)
+   catch (const CameraException& ex)
    {
       CameraErrorDlg dlg(_T("Couldn't get camera info"), ex);
       dlg.DoModal(m_hWnd);
@@ -219,7 +219,7 @@ void ConnectCameraDlg::RefreshCameraList()
          GetDlgItem(IDOK).EnableWindow(FALSE);
       }
    }
-   catch(const CameraException& ex)
+   catch (const CameraException& ex)
    {
       CameraErrorDlg dlg(_T("Couldn't refresh camera list"), ex);
       dlg.DoModal(m_hWnd);

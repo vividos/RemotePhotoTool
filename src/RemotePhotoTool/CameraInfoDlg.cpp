@@ -27,7 +27,7 @@ LRESULT CameraInfoDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*l
    {
       cszText = CollectCameraInfo();
    }
-   catch(CameraException& ex)
+   catch (const CameraException& ex)
    {
       cszText.AppendFormat(_T("\nError while collecting camera info: %s\n"), ex.Message().GetString());
    }
@@ -105,13 +105,13 @@ void CameraInfoDlg::CollectDeviceProperties(CString& cszText)
                   vecValues[iValue].ToString().GetString());
             }
          }
-         catch (CameraException& ex)
+         catch (const CameraException& ex)
          {
             cszText.AppendFormat(_T("Error while enumerating device property values for %08x: %s\n"),
                uiPropertyId, ex.Message().GetString());
          }
       }
-      catch(CameraException& ex)
+      catch (const CameraException& ex)
       {
          cszText.AppendFormat(_T("Error while evaluating device property %08x: %s\n"),
             vecProperties[iProp], ex.Message().GetString());
@@ -272,7 +272,7 @@ void CameraInfoDlg::CollectShootingModeDetails(std::shared_ptr<RemoteReleaseCont
       {
          spRemoteReleaseControl->EnumImagePropertyValues(uiAvPropertyId, vecAvValues);
       }
-      catch(const CameraException& ex)
+      catch (const CameraException& ex)
       {
          cszText.AppendFormat(_T("Error while enumerating Av values: %s\n"), ex.Message().GetString());
       }
@@ -299,7 +299,7 @@ void CameraInfoDlg::CollectShootingModeDetails(std::shared_ptr<RemoteReleaseCont
       {
          spRemoteReleaseControl->EnumImagePropertyValues(uiTvPropertyId, vecTvValues);
       }
-      catch(const CameraException& ex)
+      catch (const CameraException& ex)
       {
          cszText.AppendFormat(_T("Exception while enumerating Tv values: %s\n"), ex.Message().GetString());
       }
@@ -326,7 +326,7 @@ void CameraInfoDlg::CollectShootingModeDetails(std::shared_ptr<RemoteReleaseCont
       {
          spRemoteReleaseControl->EnumImagePropertyValues(uiEcPropertyId, vecEcValues);
       }
-      catch(const CameraException& ex)
+      catch (const CameraException& ex)
       {
          cszText.AppendFormat(_T("Error while enumerating exposure compensation values: %s\n"), ex.Message().GetString());
       }

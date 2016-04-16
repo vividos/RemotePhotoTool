@@ -45,7 +45,7 @@ namespace LuaScriptingUnitTest
             // ok
             return;
          }
-         catch(...)
+         catch (...)
          {
             Assert::Fail(_T("must throw Lua::Exception and nothing else"));
          }

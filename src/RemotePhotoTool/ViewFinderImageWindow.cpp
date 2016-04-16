@@ -119,7 +119,7 @@ void ViewFinderImageWindow::DecodeJpegImage(const std::vector<BYTE>& vecImage)
    {
       jpegReader.Read();
    }
-   catch(...)
+   catch (...)
    {
       static bool s_bWarnedAboutJPEG = false;
       if (!s_bWarnedAboutJPEG)

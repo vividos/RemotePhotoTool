@@ -62,7 +62,7 @@ void DevicePropertyView::RefreshList()
          SetItemText(iIndex, columnReadOnly, dp.IsReadOnly() ? _T("yes") : _T("no"));
          SetItemText(iIndex, columnRaw, dp.Value().ToString());
       }
-      catch(const CameraException& ex)
+      catch (const CameraException& ex)
       {
          iIndex = InsertItem(GetItemCount(), _T("???"));
 

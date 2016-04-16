@@ -122,7 +122,7 @@ public:
       {
          Release();
       }
-      catch(...)
+      catch (...)
       {
       }
    }

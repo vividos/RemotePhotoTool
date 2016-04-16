@@ -68,12 +68,12 @@ void CmdlineApp::Run(int argc, TCHAR* argv[])
       {
          Exec(cmd);
       }
-      catch(const CameraException& ex)
+      catch (const CameraException& ex)
       {
          _tprintf(_T("CameraException was thrown: \"%s\"\n"), ex.Message().GetString());
          throw;
       }
-      catch(const Exception& ex)
+      catch (const Exception& ex)
       {
          _tprintf(_T("Exception was thrown: \"%s\"\n"), ex.Message().GetString());
          throw;

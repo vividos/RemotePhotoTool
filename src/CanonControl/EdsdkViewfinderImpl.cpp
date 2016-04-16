@@ -52,7 +52,7 @@ ViewfinderImpl::~ViewfinderImpl() throw()
 
       Close();
    }
-   catch(...)
+   catch (...)
    {
    }
 }

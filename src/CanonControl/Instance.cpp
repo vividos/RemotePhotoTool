@@ -190,7 +190,7 @@ Instance::~Instance() throw()
       // deregister camera handler
       AsyncWaitForCamera();
    }
-   catch(...)
+   catch (...)
    {
    }
 }
@@ -227,7 +227,7 @@ void Instance::OnCameraAddedHandler() throw()
    {
       fnOnCameraAdded();
    }
-   catch(...)
+   catch (...)
    {
    }
 }

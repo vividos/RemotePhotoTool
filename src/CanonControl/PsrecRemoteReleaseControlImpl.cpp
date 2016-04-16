@@ -178,7 +178,7 @@ bool RemoteReleaseControlImpl::GetCapability(RemoteReleaseControl::T_enRemoteCap
          ATLASSERT(false);
       }
    }
-   catch(const CameraException& ex)
+   catch (const CameraException& ex)
    {
       LOG_TRACE(_T("GetCapability(): caught CameraException: %s\n"), ex.Message().GetString());
    }
@@ -619,7 +619,7 @@ void RemoteReleaseControlImpl::OnEventPropertyChanged(prUInt16 propId, bool bAls
 
       m_subjectPropertyEvent.Call(RemoteReleaseControl::propEventPropertyChanged, propId);
    }
-   catch(...)
+   catch (...)
    {
    }
 }
@@ -652,7 +652,7 @@ void RemoteReleaseControlImpl::OnEventStateChanged(prUInt16 code) throw()
    {
       m_subjectStateEvent.Call(enStateEvent, 0);
    }
-   catch(...)
+   catch (...)
    {
    }
 }

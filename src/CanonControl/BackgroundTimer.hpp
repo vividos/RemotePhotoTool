@@ -32,7 +32,7 @@ public:
       {
          Stop();
       }
-      catch(...)
+      catch (...)
       {
       }
    }
@@ -70,7 +70,7 @@ private:
                m_fnCallback();
             }
          }
-         catch(...)
+         catch (...)
          {
          }
       }

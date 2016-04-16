@@ -32,7 +32,7 @@ public:
          m_ioService.stop();
          m_thread.join();
       }
-      catch(...)
+      catch (...)
       {
       }
    }

@@ -22,7 +22,7 @@ ImagePropertyValueManager::~ImagePropertyValueManager() throw()
    {
       m_rrc.RemovePropertyEventHandler(m_iPropertyHandlerId);
    }
-   catch(...)
+   catch (...)
    {
    }
 }
