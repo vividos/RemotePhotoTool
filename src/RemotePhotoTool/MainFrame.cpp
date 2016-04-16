@@ -895,7 +895,7 @@ void MainFrame::ShowViewfinder(bool bShow)
    if (m_upViewFinderView != nullptr)
       m_upViewFinderView->SetViewfinder(std::shared_ptr<Viewfinder>());
 
-   m_upViewFinderView.reset(new ViewFinderView(m_spRemoteReleaseControl));
+   m_upViewFinderView.reset(new ViewFinderView(*this, m_spRemoteReleaseControl));
    m_upViewFinderView->Create(m_splitter);
 
    try

@@ -12,6 +12,7 @@
 #include "Viewfinder.hpp"
 
 // forward references
+class IPhotoModeViewHost;
 class RemoteReleaseControl;
 
 /// view class for viewfinder
@@ -22,7 +23,7 @@ class ViewFinderView :
 {
 public:
    /// ctor
-   ViewFinderView(std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl);
+   ViewFinderView(IPhotoModeViewHost& host, std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl);
    /// dtor
    ~ViewFinderView() throw() {}
 
@@ -107,8 +108,14 @@ private:
    /// sets new zoom position
    void SetZoomPos(unsigned int uiPos);
 
+   /// updates UI elements for new zoom position
+   void UpdateZoomPosUI(unsigned int uiPos);
+
 private:
    // UI
+
+   /// host access
+   IPhotoModeViewHost& m_host;
 
    /// zoom trackbar
    CTrackBarCtrl m_tbZoom;

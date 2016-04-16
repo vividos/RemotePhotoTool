@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2016 Michael Fink
 //
 /// \file ViewFinderView.cpp View for viewfinder image
 //
@@ -9,12 +9,14 @@
 #include "stdafx.h"
 #include "resource.h"
 #include "ViewFinderView.hpp"
+#include "IPhotoModeViewHost.hpp"
 #include "RemoteReleaseControl.hpp"
 #include "CameraException.hpp"
 #include "CameraErrorDlg.hpp"
 
-ViewFinderView::ViewFinderView(std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl)
-:m_spRemoteReleaseControl(spRemoteReleaseControl),
+ViewFinderView::ViewFinderView(IPhotoModeViewHost& host, std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl)
+:m_host(host),
+ m_spRemoteReleaseControl(spRemoteReleaseControl),
  m_bShowZebraPattern(false),
  m_bShowHistogram(false)
 {
@@ -193,6 +195,8 @@ void ViewFinderView::SetupZoomControls()
       unsigned int uiCurrentPos = std::distance(m_vecAllZoomValues.begin(), iter);
 
       m_tbZoom.SetPos(uiCurrentPos);
+
+      UpdateZoomPosUI(uiCurrentPos);
    }
 }
 
@@ -213,7 +217,15 @@ void ViewFinderView::SetZoomPos(unsigned int uiPos)
       return;
 
    if (uiPos >= m_vecAllZoomValues.size())
-      uiPos = m_vecAllZoomValues.size()-1;
+      uiPos = m_vecAllZoomValues.size() - 1;
 
    m_spRemoteReleaseControl->SetImageProperty(m_vecAllZoomValues[uiPos]);
+
+   UpdateZoomPosUI(uiPos);
+}
+
+void ViewFinderView::UpdateZoomPosUI(unsigned int uiPos)
+{
+   m_host.EnableUI(ID_VIEWFINDER_ZOOM_OUT, uiPos > 0);
+   m_host.EnableUI(ID_VIEWFINDER_ZOOM_IN, uiPos < m_vecAllZoomValues.size() - 1);
 }
