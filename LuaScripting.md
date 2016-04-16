@@ -944,8 +944,8 @@ Here's an example table:
 
     devices = {
       length = 2;
-      [0] = sourceInfoFirstDevice;
-      [1] = sourceInfoSecondDevice
+      [1] = sourceInfoFirstDevice;
+      [2] = sourceInfoSecondDevice
     }
 
 The SourceInfo table object can be used to interact with the cameras further.
@@ -1041,10 +1041,10 @@ Here's an example table:
 
     deviceProerties = {
       length = 21;
-      [0] = devicePropertyIdForModelName;
-      [1] = devicePropertyIdForOwner;
+      [1] = devicePropertyIdForModelName;
+      [2] = devicePropertyIdForOwner;
       ...
-      [20] = devicePropertyIdForBatteryStatus;
+      [21] = devicePropertyIdForBatteryStatus;
     }
 
 #### DeviceProperty SourceDevice:getDeviceProperty(devicePropertyId) ####
@@ -1324,9 +1324,9 @@ in Av mode the Tv value can't be set, or in M mode the EV value can't be set.
 Here's an example table:
 
     imageProperties = {
-      length = 21;
-      [0] = imagePropertyIdShootingMode;
-      [1] = imagePropertyIdAperture;
+      length = 80;
+      [1] = imagePropertyIdShootingMode;
+      [2] = imagePropertyIdAperture;
       ...
       [80] = imagePropertyIdWhiteBalance;
     }
