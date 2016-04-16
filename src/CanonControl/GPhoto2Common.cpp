@@ -59,7 +59,7 @@ void GPhoto2::Ref::AddVersionText(CString& cszVersionText) const
 {
    const char** ppVersion = gp_library_version(GP_VERSION_SHORT);
 
-   cszVersionText.AppendFormat(_T("gPhoto2 %hs\n"), ppVersion[0]);
+   cszVersionText.AppendFormat(_T("gPhoto2 %hs\n\n"), ppVersion[0]);
 }
 
 void GPhoto2::Ref::EnumerateDevices(std::vector<std::shared_ptr<SourceInfo>>& vecSourceDevices) const
