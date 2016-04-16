@@ -263,15 +263,15 @@ ID_SCRIPTING_EDIT  BITMAP         "res\\scripting_edit.bmp"
 //
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
 IDD_ABOUTBOX DIALOGEX 0, 0, 311, 197
-STYLE DS_MODALFRAME | DS_SETFONT | WS_BORDER | WS_CAPTION | WS_DLGFRAME | WS_POPUP | WS_SYSMENU
+STYLE DS_3DLOOK | DS_CENTER | DS_SHELLFONT | WS_CAPTION | WS_VISIBLE | WS_TABSTOP | WS_POPUP | WS_THICKFRAME | WS_SYSMENU
+EXSTYLE WS_EX_WINDOWEDGE
 CAPTION "About"
 FONT 8, "MS Shell Dlg", 400, 0, 0
 BEGIN
-    DEFPUSHBUTTON   "OK", IDOK, 131, 178, 50, 14
-    CTEXT           "RemotePhotoTool %VERSION%\n\n%COPYRIGHT%", IDC_STATIC_ABOUT_VERSION, 41, 18, 152, 30
-    ICON            IDR_MAINFRAME, IDC_STATIC, 15, 20, 21, 20, SS_ICON
-    GROUPBOX        "", IDC_STATIC, 5, 5, 301, 168
-    LTEXT           "This software uses the famfamfam Silk Icon set. http://www.famfamfam.com/.\nThis software is based in part on the work of the Independent JPEG Group.\n\n", IDC_STATIC_ABOUT_INFO, 13, 50, 286, 116, 0, WS_EX_STATICEDGE
+    DEFPUSHBUTTON   "Close", IDOK, 254, 178, 50, 14
+    LTEXT           "RemotePhotoTool %VERSION%\n\n%COPYRIGHT%", IDC_STATIC_ABOUT_VERSION, 41, 9, 262, 27
+    ICON            IDR_MAINFRAME, IDC_STATIC, 8, 8, 21, 20, SS_ICON
+    LTEXT           "This software uses the famfamfam Silk Icon set. http://www.famfamfam.com/.\nThis software is based in part on the work of the Independent JPEG Group.\n\n", IDC_STATIC_ABOUT_INFO, 9, 41, 293, 131, 0, WS_EX_STATICEDGE
 END
 
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT

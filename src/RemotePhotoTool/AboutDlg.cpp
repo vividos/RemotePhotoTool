@@ -15,6 +15,8 @@
 
 void AboutDlg::SetVersionText()
 {
+   DlgResize_Init(true, true);
+
    CWindow scVersion = GetDlgItem(IDC_STATIC_ABOUT_VERSION);
 
    CString cszVersion;
