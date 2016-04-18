@@ -141,6 +141,7 @@ Here's a checklist of what to do before each release:
 - Build all projects in Win32 | Release
 - Fix cppcheck errors and doxygen warnings
 - Compile all project with /analyze and fix all warnings
+- Run all unit tests and fix all errors
 - Use Coverity to find even more warnings and fix them
 - Test built .msi setup if it installs properly
 - Do a short smoke test with available cameras
