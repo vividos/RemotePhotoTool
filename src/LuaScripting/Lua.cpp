@@ -13,6 +13,8 @@
 #include <lauxlib.h>
 #include <lualib.h>
 
+struct lua_longjmp;
+
 using namespace Lua;
 
 /// list of libraries that can be loaded using Lua::State::RequireLib()
@@ -543,6 +545,13 @@ int FuncData::OnFunctionCall(lua_State* L)
       paramState.DetachAll();
 
       lua_pushstring(L, ex.what());
+      throw;
+   }
+   catch (lua_longjmp*)
+   {
+      paramState.DetachAll();
+
+      // lua_longjmp is used for yield implementation by Lua
       throw;
    }
    catch (...)
@@ -1076,6 +1085,13 @@ void State::InternalCall(int iArguments, int iResults)
       lua_pushstring(L, ex.what());
       throw;
    }
+   catch (lua_longjmp*)
+   {
+      DetachAll();
+
+      // lua_longjmp is used for yield implementation by Lua
+      throw;
+   }
    catch (...)
    {
       DetachAll();
@@ -1090,6 +1106,8 @@ int State::OnLuaPanic(lua_State* L)
    //State::TraceStack(L);
 
    CString cszErrorMessage = lua_tostring(L, -1);
+   lua_pop(L, 1);
+
    ATLTRACE(_T("Lua Panic: %s\n"), cszErrorMessage.GetString());
 
    throw Lua::Exception(cszErrorMessage, L, __FILE__, __LINE__);
@@ -1527,6 +1545,13 @@ int Thread::InternalYield(lua_State* L, int status, lua_KContext context)
       delete pfnCallback;
 
       lua_pushstring(L, ex.what());
+      throw;
+   }
+   catch (lua_longjmp*)
+   {
+      delete pfnCallback;
+
+      // lua_longjmp is used for yield implementation by Lua
       throw;
    }
    catch (...)
