@@ -566,6 +566,9 @@ private:
    /// no-op deleter, used for non-mainState states
    static void StateDeleterNoop(lua_State*);
 
+   /// calls Lua function with number of arguments and results
+   void InternalCall(int iArguments, int iResults);
+
    /// panic error handler
    static int OnLuaPanic(lua_State* L);
 
