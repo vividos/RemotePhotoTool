@@ -82,10 +82,8 @@ App = {
 
 				local prop = sourceDevice:getDeviceProperty(devicePropertyId);
 
-				print("   property: id=" .. prop.id ..
-					", name=\"" .. prop.name ..
-					"\", value=\"" .. prop.asString ..
-					"\", readonly=" .. (prop.isReadOnly and "yes" or "no") .. "\n");
+				self:printProperty(prop);
+
 			end;
 		end;
 		print("\n");
@@ -168,14 +166,20 @@ App = {
 
 				local prop = remoteReleaseControl:getImageProperty(imagePropertyId);
 
-				print("   property: id=" .. prop.id ..
-					", name=\"" .. prop.name ..
-					"\", value=\"" .. prop.asString ..
-					"\", readonly=" .. (prop.isReadOnly and "yes" or "no") .. "\n");
+				self:printProperty(prop);
 			end;
 		end;
 		print("\n");
 
 	end;
 
+	-- prints a single device or image property (they have the same table layout)
+	printProperty = function(self, prop)
+
+		print("   property: id=" .. prop.id .. ", " ..
+			"name=\"" .. prop.name .. "\", " ..
+			"value=\"" .. prop.asString .. "(" .. prop.value .. ")\", " ..
+			"readonly=" .. (prop.isReadOnly and "yes" or "no") .. "\n");
+
+	end;
 }

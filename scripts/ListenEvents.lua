@@ -55,6 +55,16 @@ App = {
 		return remoteReleaseControl;
 	end;
 
+	-- prints a single device or image property (they have the same table layout)
+	printProperty = function(self, prop)
+
+		print("   property: id=" .. prop.id .. ", " ..
+			"name=\"" .. prop.name .. "\", " ..
+			"value=\"" .. prop.asString .. "(" .. prop.value .. ")\", " ..
+			"readonly=" .. (prop.isReadOnly and "yes" or "no") .. "\n");
+
+	end;
+
 	-- listens to events for a time, then returns
 	listenEvents = function(self, remoteReleaseControl)
 
@@ -109,10 +119,7 @@ App = {
 
 		local prop = self.remoteReleaseControl:getImageProperty(eventParam);
 
-		print("   property: id=" .. prop.id ..
-			", name=\"" .. prop.name ..
-			"\", value=\"" .. prop.asString ..
-			"\", readonly=" .. (prop.isReadOnly and "yes" or "no") .. "\n");
+		self:printProperty(prop);
 
 	end;
 
