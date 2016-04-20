@@ -1547,6 +1547,7 @@ The DeviceProperty table contains the following functions:
       id = 12345;
       name = "Camera Model";
       asString = "Canon PowerShot G9";
+      value = "Canon PowerShot G9";
       isReadOnly = true;
     }
 
@@ -1556,7 +1557,11 @@ The values have the following meaning:
   function.
 - name: The display name of the property.
 - asString: The value of the property, as displayable text.
+- value: The value of the property; type depends on property.
 - isReadOnly: Determines if the value can currently be set.
+
+The 'value' value can be of one of the following Lua types, depending on what
+the camera returns for the value: string, number, boolean, nil.
 
 There are no functions that can be called.
 
@@ -1568,6 +1573,7 @@ The ImageProperty table contains the following values:
       id = 23456;
       name = "Aperture";
       asString = "f/2.8";
+      value = 32;
       isReadOnly = false;
     }
 
@@ -1577,7 +1583,11 @@ The values have the following meaning:
   function.
 - name: The display name of the property.
 - asString: The value of the property, as displayable text.
+- value: The value of the property; type depends on property.
 - isReadOnly: Determines if the value can currently be set.
+
+The 'value' value can be of one of the following Lua types, depending on what
+the camera returns for the value: string, number, boolean, nil.
 
 There are no functions that can be called.
 

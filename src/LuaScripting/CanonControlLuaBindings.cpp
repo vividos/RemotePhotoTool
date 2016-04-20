@@ -217,6 +217,68 @@ void CanonControlLuaBindings::InitViewfinderConstants(Lua::Table& constants)
    constants.AddValue(_T("Viewfinder"), Lua::Value(viewfinder));
 }
 
+void CanonControlLuaBindings::LuaValueFromVariant(const Variant& value, Lua::Value& luaValue)
+{
+   switch (value.Type())
+   {
+   case Variant::typeBool:
+      luaValue = Lua::Value(value.Get<bool>());
+      break;
+
+   case Variant::typeString:
+      luaValue = Lua::Value(value.Get<CString>());
+      break;
+
+   case Variant::typeInt8:
+      luaValue = Lua::Value(static_cast<int>(value.Get<char>()));
+      break;
+
+   case Variant::typeUInt8:
+      luaValue = Lua::Value(static_cast<int>(value.Get<unsigned char>()));
+      break;
+
+   case Variant::typeInt16:
+      luaValue = Lua::Value(static_cast<int>(value.Get<short>()));
+      break;
+
+   case Variant::typeUInt16:
+      luaValue = Lua::Value(static_cast<int>(value.Get<unsigned short>()));
+      break;
+
+   case Variant::typeInt32:
+      luaValue = Lua::Value(value.Get<int>());
+      break;
+
+   case Variant::typeUInt32:
+      luaValue = Lua::Value(static_cast<double>(value.Get<unsigned int>()));
+      break;
+
+   case Variant::typeInt64:
+      luaValue = Lua::Value(static_cast<double>(value.Get<__int64>()));
+      break;
+
+   case Variant::typeUInt64:
+      luaValue = Lua::Value(static_cast<double>(value.Get<unsigned __int64>()));
+      break;
+
+   case Variant::typeFloat:
+      luaValue = Lua::Value(static_cast<double>(value.Get<float>()));
+      break;
+
+   case Variant::typeDouble:
+      luaValue = Lua::Value(value.Get<double>());
+      break;
+
+      //case Variant::typeByteBlock:
+      //case Variant::typeRational:
+      //case Variant::typePoint:
+      //case Variant::typeRect:
+      //case Variant::typeTime:
+   default:
+      break; // value stays nil
+   }
+}
+
 void CanonControlLuaBindings::RestartEventTimer()
 {
    m_evtTimerStopped.Reset();
@@ -570,8 +632,16 @@ void CanonControlLuaBindings::AddDeviceProperty(Lua::Table& table, const DeviceP
    table.AddValue(_T("name"), Lua::Value(deviceProperty.Name()));
    table.AddValue(_T("asString"), Lua::Value(deviceProperty.AsString()));
    table.AddValue(_T("isReadOnly"), Lua::Value(deviceProperty.IsReadOnly()));
-   // Value(), ValidValues() and ValueAsString() are not called here, since Lua users
-   // can't use Variant values anyway.
+
+   Variant value = deviceProperty.Value();
+
+   Lua::Value luaValue;
+   if (!value.IsArray())
+   {
+      LuaValueFromVariant(value, luaValue);
+   }
+
+   table.AddValue(_T("value"), luaValue);
 }
 
 std::vector<Lua::Value> CanonControlLuaBindings::SourceDeviceEnterReleaseControl(
@@ -1257,8 +1327,16 @@ void CanonControlLuaBindings::AddImageProperty(Lua::Table& table, const ImagePro
    table.AddValue(_T("name"), Lua::Value(imageProperty.Name()));
    table.AddValue(_T("asString"), Lua::Value(imageProperty.AsString()));
    table.AddValue(_T("isReadOnly"), Lua::Value(imageProperty.IsReadOnly()));
-   // Value() and ValueAsString() are not called here, since Lua users
-   // can't use Variant values anyway.
+
+   Variant value = imageProperty.Value();
+
+   Lua::Value luaValue;
+   if (!value.IsArray())
+   {
+      LuaValueFromVariant(value, luaValue);
+   }
+
+   table.AddValue(_T("value"), luaValue);
 }
 
 std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlStartViewfinder(

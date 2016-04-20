@@ -80,6 +80,9 @@ private:
    /// inits constants for Viewfinder
    void InitViewfinderConstants(Lua::Table& constants);
 
+   /// converts Variant value to Lua::Value
+   static void LuaValueFromVariant(const Variant& value, Lua::Value& luaValue);
+
    /// restarts timer for event handling
    void RestartEventTimer();
 
