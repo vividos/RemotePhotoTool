@@ -517,17 +517,84 @@ App = {
 			return;
 		end;
 
+		if (self:checkManualShootingMode(remoteReleaseControl)) then
+
+			self:setBulbShutterSpeed(remoteReleaseControl);
+			self:takeBulbModeImage(remoteReleaseControl);
+
+		end;
+
+	end;
+
+	-- checks if the connected camera has the "Manual" shooting mode
+	checkManualShootingMode = function(self, remoteReleaseControl)
+
+		local capChangeShootingMode = remoteReleaseControl:getCapability(Constants.RemoteReleaseControl.capChangeShootingMode);
+
+		local manualShootingMode = remoteReleaseControl:getShootingModeImageProperty(Constants.ShootingMode.shootingModeM);
+
+		if (capChangeShootingMode) then
+
+			-- we can change the shooting mode ourselves
+			print("Set Shooting mode M...\n");
+
+			remoteReleaseControl:setImageProperty(manualShootingMode);
+
+		else
+
+			-- we can't change the shooting mode, so just check
+			local shootingMode = remoteReleaseControl:getImagePropertyByType(Constants.ImageProperty.shootingMode);
+
+			if (shootingMode.asString == manualShootingMode.asString) then
+				print("Shooting mode M correctly set.\n");
+			else
+				print("Wrong shooting mode set! Please set your camera to Manual mode " ..
+					"(current mode is " .. shootingMode.asString .. ").\n");
+				return false;
+			end;
+
+		end;
+
+		return true;
+	end;
+
+	-- sets Bulb shutter speed, in Manual mode, if necessary
+	setBulbShutterSpeed = function(self, remoteReleaseControl)
+
+		local shutterSpeed = remoteReleaseControl:getImagePropertyByType(Constants.ImageProperty.Tv);
+
+		if (shutterSpeed.asString ~= "Bulb") then
+
+			print("Set shutter speed \"Bulb\"...\n");
+
+			-- in Canon EDSDK (for Canon DSLRs such as the 40D), shutter
+			-- speed "Bulb" has the value hex 0x0C, decimal 12
+			shutterSpeed.value = 12;
+
+			remoteReleaseControl:setImageProperty(shutterSpeed);
+
+			-- wait some time so that image property has been set
+			Sys:createEvent():wait(0.5);
+		end;
+
+	end;
+
+	-- takes an image using bulb mode of camera, if supported
+	takeBulbModeImage = function(self, remoteReleaseControl)
+
+		print("Start taking image...\n");
+
 		local bulbReleaseControl = remoteReleaseControl:startBulb()
 
 		-- wait for some seconds, then stop bulb mode
 		local event = Sys:createEvent();
 
-		event.wait(5.0);
+		event:wait(5.0);
 
 		bulbReleaseControl:stop();
 
 		local elapsed = bulbReleaseControl:elapsedTime();
-		print("elapsed time: " .. elapsed .. " seconds.");
+		print("Elapsed time: " .. elapsed .. " seconds.\n");
 
 	end;
 }
