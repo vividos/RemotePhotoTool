@@ -1523,6 +1523,8 @@ std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlClose(
 {
    spRemoteReleaseControl->Close();
 
+   m_spRemoteRelaseControl.reset();
+
    return std::vector<Lua::Value>();
 }
 
