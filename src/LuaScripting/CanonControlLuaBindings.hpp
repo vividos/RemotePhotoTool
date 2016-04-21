@@ -83,6 +83,9 @@ private:
    /// converts Variant value to Lua::Value
    static void LuaValueFromVariant(const Variant& value, Lua::Value& luaValue);
 
+   /// modifies an existing variant, keeping the type, and replacing the value with a Lua value
+   static bool ModifyVariantFromLuaValue(const Lua::Value& luaValue, Variant& value);
+
    /// restarts timer for event handling
    void RestartEventTimer();
 
@@ -254,6 +257,10 @@ private:
       std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
       Lua::State& state,
       const std::vector<Lua::Value>& vecParams);
+
+   /// remoteReleaseControl:setImageProperty(imageProperty)
+   std::vector<Lua::Value> RemoteReleaseControlSetImageProperty(std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
+      Lua::State& state, const std::vector<Lua::Value>& vecParams);
 
    /// adds ImageProperty table
    void AddImageProperty(Lua::Table& table, const ImageProperty& imageProperty,

@@ -71,7 +71,6 @@ App = {
 			-- we can change the shooting mode ourselves
 			print("Setting Shooting mode M...\n");
 
-			-- TODO not implemented yet
 			remoteReleaseControl:setImageProperty(manualShootingMode);
 
 		else

@@ -23,7 +23,6 @@ Improve speed of EnumerateDevices()
 
 Lua scripting
 -------------
-Implement setImageProperty()
 Implement supporting ShootingMode and ShutterSpeedValue
 Implement writing absolute filenames before calling onFinishedTransfer
 Add more libraries and sandbox unsafe functions

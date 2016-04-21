@@ -51,8 +51,11 @@ public:
    /// property value as string
    CString AsString() const throw();
 
-   /// value as variant
+   /// value as variant; const version; returns a copy
    Variant Value() const { return m_value; }
+
+   /// value as non-const variant; to modify value
+   Variant& Value() { return m_value; }
 
    /// returns if image property is read only
    bool IsReadOnly() const { return m_bReadOnly; }

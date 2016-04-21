@@ -1085,6 +1085,7 @@ The RemoteReleaseControl table contains the following functions:
       getImageProperty = function(imagePropertyId) { ... };
       getImagePropertyByType = function(imagePropertyType) { ... };
       getShootingModeImageProperty = function(shootingMode) { ... };
+      setImageProperty = function(imageProperty) { ... };
       numAvailableShots = function() { ... };
     
       -- viewfinder related
@@ -1473,7 +1474,33 @@ The folowing constants can be used for shootingMode:
 
 The image property returned here can be set using the
 RemoteReleaseControl.setImageProperty() function.
-(Note: function doesn't exist yet).
+
+#### RemoteReleaseControl:setImageProperty(imageProperty) ####
+
+Sets a new value for an image property. The imageProperty value passed must be
+a table with the ImageProperty table layout. There are several ways to get a
+table with this format:
+
+- Call getImageProperty() and modify the "value" field to set a different
+  value. The meaning of the value is camera and image property dependent.
+
+- Call getImagePropertyByType(), which, like getImageProperty(), returns an
+  ImageProperty table.
+
+- Call getShootingModeImageProperty() to get a predefined shooting mode value
+  that can be set.
+
+- Construct a table with the layout of the ImageProperty table; possible
+  values for the image properties can be collected by using RemotePhotoTool's
+  Camera Info dialog or the RemotePhotoToolCmdline tool with the --image-props
+  option. Note that these values always are camera-dependent!
+
+The field "id" of the table is used to identify the image property. The field
+"value" is used as a new value for the property.
+
+The new value is converted to the format expected by the camera. If it doesn't
+match, an error is reported. The following value types are possible to use in
+the "value" field: boolean, number, string.
 
 #### integer RemoteReleaseControl:numAvailableShots() ####
 

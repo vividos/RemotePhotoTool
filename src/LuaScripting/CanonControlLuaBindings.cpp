@@ -279,6 +279,70 @@ void CanonControlLuaBindings::LuaValueFromVariant(const Variant& value, Lua::Val
    }
 }
 
+bool CanonControlLuaBindings::ModifyVariantFromLuaValue(const Lua::Value& luaValue, Variant& value)
+{
+   bool boolValue = false;
+   int intValue = 0;
+   unsigned long unsignedIntValue = 0;
+   double doubleValue = 0.0;
+   CString stringValue;
+
+   switch (luaValue.GetType())
+   {
+   case Lua::Value::typeBoolean:
+      boolValue = luaValue.Get<bool>();
+      intValue = boolValue ? 1 : 0;
+      unsignedIntValue = boolValue ? 1 : 0;
+      stringValue = boolValue ? _T("1") : _T("0");
+      break;
+
+   case Lua::Value::typeNumber:
+   case Lua::Value::typeInteger:
+      intValue = luaValue.Get<int>();
+      boolValue = intValue != 0;
+      unsignedIntValue = static_cast<unsigned int>(luaValue.Get<int>());
+      doubleValue = luaValue.Get<double>();
+      if (luaValue.GetType() == Lua::Value::typeInteger)
+         stringValue.Format(_T("%i"), intValue);
+      else
+         stringValue.Format(_T("%f"), doubleValue);
+      break;
+
+   case Lua::Value::typeString:
+      stringValue = luaValue.Get<CString>();
+      intValue = _ttoi(stringValue);
+      boolValue = intValue != 0;
+      unsignedIntValue = _tcstoul(stringValue, nullptr, 10);
+      doubleValue = _ttof(stringValue);
+      break;
+
+   default:
+      ATLASSERT(false); // invalid source type
+      return false;
+      break;
+   }
+
+   switch (value.Type())
+   {
+   case Variant::typeBool:    value.Set<bool>(boolValue); break;
+   case Variant::typeString:  value.Set<CString>(stringValue); break;
+   case Variant::typeInt8:    value.Set<char>(static_cast<char>(intValue)); break;
+   case Variant::typeUInt8:   value.Set<unsigned char>(static_cast<unsigned char>(unsignedIntValue)); break;
+   case Variant::typeInt16:   value.Set<short>(static_cast<short>(intValue)); break;
+   case Variant::typeUInt16:  value.Set<unsigned short>(static_cast<unsigned short>(unsignedIntValue)); break;
+   case Variant::typeInt32:   value.Set<int>(intValue); break;
+   case Variant::typeUInt32:  value.Set<unsigned int>(unsignedIntValue); break;
+   case Variant::typeInt64:   value.Set<__int64>(static_cast<__int64>(doubleValue)); break;
+   case Variant::typeUInt64:  value.Set<unsigned __int64>(static_cast<unsigned __int64>(doubleValue)); break;
+   default:
+      ATLASSERT(false); // invalid target type
+      return false;
+      break;
+   }
+
+   return true;
+}
+
 void CanonControlLuaBindings::RestartEventTimer()
 {
    m_evtTimerStopped.Reset();
@@ -717,6 +781,10 @@ void CanonControlLuaBindings::InitRemoteReleaseControlTable(std::shared_ptr<Remo
 
    remoteReleaseControl.AddFunction("getImageProperty",
       std::bind(&CanonControlLuaBindings::RemoteReleaseControlGetImageProperty, shared_from_this(), spRemoteReleaseControl,
+         std::placeholders::_1, std::placeholders::_2));
+
+   remoteReleaseControl.AddFunction("setImageProperty",
+      std::bind(&CanonControlLuaBindings::RemoteReleaseControlSetImageProperty, shared_from_this(), spRemoteReleaseControl,
          std::placeholders::_1, std::placeholders::_2));
 
    remoteReleaseControl.AddFunction("startViewfinder",
@@ -1318,6 +1386,46 @@ std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlGetShooting
    vecRetValues.push_back(Lua::Value(table));
 
    return vecRetValues;
+}
+
+std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlSetImageProperty(
+   std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
+   Lua::State& state,
+   const std::vector<Lua::Value>& vecParams)
+{
+   if (vecParams.size() != 2)
+      throw Lua::Exception(_T("invalid number of parameters to RemoteReleaseControl:setImageProperty()"), state.GetState(), __FILE__, __LINE__);
+
+   if (vecParams[0].GetType() != Lua::Value::typeTable)
+      throw Lua::Exception(_T("first parameter must be the RemoteReleaseControl table"), state.GetState(), __FILE__, __LINE__);
+
+   if (vecParams[1].GetType() != Lua::Value::typeTable)
+      throw Lua::Exception(_T("second parameter must be image property table"), state.GetState(), __FILE__, __LINE__);
+
+   Lua::Table imagePropertyTable = vecParams[1].Get<Lua::Table>();
+
+   // first get current image property
+   unsigned int propertyId =
+      static_cast<unsigned int>(imagePropertyTable.GetValue(_T("id")).Get<int>());
+
+   ImageProperty imageProperty = spRemoteReleaseControl->GetImageProperty(propertyId);
+
+   // then set image property with new value
+   Lua::Value newValue = imagePropertyTable.GetValue(_T("value"));
+
+   if (!ModifyVariantFromLuaValue(newValue, imageProperty.Value()))
+   {
+      CString message;
+      message.Format(
+         _T("couldn't convert image property value to type expected by camera (expected: %s)"),
+         Variant::TypeAsString(imageProperty.Value().Type()));
+         
+      throw Lua::Exception(message, state.GetState(), __FILE__, __LINE__);
+   }
+
+   spRemoteReleaseControl->SetImageProperty(imageProperty);
+
+   return std::vector<Lua::Value>();
 }
 
 void CanonControlLuaBindings::AddImageProperty(Lua::Table& table, const ImageProperty& imageProperty,
