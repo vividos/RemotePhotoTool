@@ -343,6 +343,9 @@ private:
    /// once Lua has connected to remote release control, a pointer is stored here
    std::shared_ptr<RemoteReleaseControl> m_spRemoteRelaseControl;
 
+   /// when Lua opened buld release control, a pointer is stored here
+   std::shared_ptr<BulbReleaseControl> m_spBulbReleaseControl;
+
    /// set of all registered property handler ids
    std::set<int> m_setAllPropertyHandlerIds;
 

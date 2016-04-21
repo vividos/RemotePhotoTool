@@ -53,6 +53,7 @@ CanonControlLuaBindings::~CanonControlLuaBindings() throw()
    // since we need a running Lua script worker thread for this.
    ATLASSERT(m_spRemoteRelaseControl == nullptr);
    ATLASSERT(m_spViewfinder == nullptr);
+   ATLASSERT(m_spBulbReleaseControl == nullptr);
 
    try
    {
@@ -377,6 +378,13 @@ void CanonControlLuaBindings::CancelHandlers()
       m_spViewfinder->Close();
 
       m_spViewfinder.reset();
+   }
+
+   if (m_spBulbReleaseControl != nullptr)
+   {
+      m_spBulbReleaseControl->Stop();
+
+      m_spBulbReleaseControl.reset();
    }
 
    if (m_spRemoteRelaseControl != nullptr)
@@ -1508,6 +1516,7 @@ std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlStartBulb(
    Lua::State& state)
 {
    std::shared_ptr<BulbReleaseControl> spBulbReleaseControl = spRemoteReleaseControl->StartBulb();
+   m_spBulbReleaseControl = spBulbReleaseControl;
 
    Lua::Table bulbReleaseControl = state.AddTable(_T(""));
    InitBulbReleaseControlTable(spBulbReleaseControl, bulbReleaseControl);
@@ -1739,6 +1748,8 @@ std::vector<Lua::Value> CanonControlLuaBindings::BulbReleaseControlElapsedTime(s
 std::vector<Lua::Value> CanonControlLuaBindings::BulbReleaseControlStop(std::shared_ptr<BulbReleaseControl> spBulbReleaseControl)
 {
    spBulbReleaseControl->Stop();
+
+   m_spBulbReleaseControl.reset();
 
    return std::vector<Lua::Value>();
 }
