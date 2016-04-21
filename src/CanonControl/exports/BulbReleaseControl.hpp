@@ -16,7 +16,7 @@ public:
    /// dtor
    virtual ~BulbReleaseControl() throw() {}
 
-   /// returns elapsed time since bulb start
+   /// returns elapsed time, in seconds, since bulb start
    virtual double ElapsedTime() const throw() = 0;
 
    /// stops bulb method; can be used when the shared_ptr<BulbReleaseControl>

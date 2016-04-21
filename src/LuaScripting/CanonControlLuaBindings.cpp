@@ -1729,7 +1729,7 @@ std::vector<Lua::Value> CanonControlLuaBindings::BulbReleaseControlElapsedTime(s
    double dElapsed = spBulbReleaseControl->ElapsedTime();
 
    std::vector<Lua::Value> vecRetValues;
-   vecRetValues.push_back(Lua::Value(dElapsed));
+   vecRetValues.push_back(Lua::Value(dElapsed)); // already in seconds
 
    return vecRetValues;
 }

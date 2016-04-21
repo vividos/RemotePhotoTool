@@ -46,11 +46,11 @@ public:
       if (!m_bStopped)
       {
          DWORD dwNow = GetTickCount();
-         return (dwNow - m_dwStartTime) * 1000.0;
+         return (dwNow - m_dwStartTime) / 1000.0;
       }
       else
       {
-         return m_dwStartTime * 1000.0;
+         return m_dwStartTime / 1000.0;
       }
    }
 
