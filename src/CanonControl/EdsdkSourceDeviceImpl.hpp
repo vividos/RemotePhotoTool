@@ -105,7 +105,11 @@ public:
       Variant value = p.Get(uiPropertyId);
       bool bReadOnly = p.IsReadOnly(uiPropertyId);
 
-      return DeviceProperty(variantEdsdk, uiPropertyId, value, bReadOnly);
+      DeviceProperty deviceProperty(variantEdsdk, uiPropertyId, value, bReadOnly);
+
+      p.Enum(uiPropertyId, deviceProperty.ValidValues(), bReadOnly);
+
+      return deviceProperty;
    }
 
    virtual std::shared_ptr<RemoteReleaseControl> EnterReleaseControl() override
