@@ -60,7 +60,8 @@ App = {
 
 		print("   property: id=" .. prop.id .. ", " ..
 			"name=\"" .. prop.name .. "\", " ..
-			"value=\"" .. prop.asString .. "(" .. prop.value .. ")\", " ..
+			"value=\"" .. prop.asString .. "(" ..
+			(prop.value ~= nil and prop.value or "nil") .. ")\", " ..
 			"readonly=" .. (prop.isReadOnly and "yes" or "no") .. "\n");
 
 	end;
