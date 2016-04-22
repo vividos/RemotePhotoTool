@@ -690,7 +690,7 @@ std::vector<Lua::Value> CanonControlLuaBindings::SourceDeviceGetDeviceProperty(
 
    Lua::Table table = state.AddTable(_T(""));
 
-   AddDeviceProperty(table, deviceProperty, spSourceDevice);
+   AddDeviceProperty(state, table, deviceProperty);
 
    std::vector<Lua::Value> vecRetValues;
    vecRetValues.push_back(Lua::Value(table));
@@ -698,7 +698,10 @@ std::vector<Lua::Value> CanonControlLuaBindings::SourceDeviceGetDeviceProperty(
    return vecRetValues;
 }
 
-void CanonControlLuaBindings::AddDeviceProperty(Lua::Table& table, const DeviceProperty& deviceProperty, std::shared_ptr<SourceDevice> spSourceDevice)
+void CanonControlLuaBindings::AddDeviceProperty(
+   Lua::State& state,
+   Lua::Table& table,
+   const DeviceProperty& deviceProperty)
 {
    table.AddValue(_T("id"), Lua::Value(static_cast<int>(deviceProperty.Id())));
    table.AddValue(_T("name"), Lua::Value(deviceProperty.Name()));
@@ -709,11 +712,46 @@ void CanonControlLuaBindings::AddDeviceProperty(Lua::Table& table, const DeviceP
 
    Lua::Value luaValue;
    if (!value.IsArray())
-   {
       LuaValueFromVariant(value, luaValue);
-   }
 
    table.AddValue(_T("value"), luaValue);
+
+   AddDevicePropertyValidValues(state, table, deviceProperty);
+}
+
+void CanonControlLuaBindings::AddDevicePropertyValidValues(
+   Lua::State& state,
+   Lua::Table& table,
+   const DeviceProperty& deviceProperty)
+{
+   if (deviceProperty.ValidValues().empty())
+   {
+      table.AddValue(_T("validValues"), Lua::Value());
+      return;
+   }
+
+   Lua::Table validValuesTable = state.AddTable(_T(""));
+
+   size_t maxIndex = deviceProperty.ValidValues().size();
+   for (size_t index = 0; index < maxIndex; index++)
+   {
+      const Variant& validValue = deviceProperty.ValidValues()[index];
+
+      Lua::Table singleValidValueTable = state.AddTable(_T(""));
+
+      Lua::Value luaValidValue;
+      if (!validValue.IsArray())
+         LuaValueFromVariant(validValue, luaValidValue);
+
+      singleValidValueTable.AddValue(_T("value"), luaValidValue);
+      singleValidValueTable.AddValue(_T("asString"), Lua::Value(deviceProperty.ValueAsString(validValue)));
+
+      validValuesTable.AddValue(index + 1, Lua::Value(singleValidValueTable));
+   }
+
+   validValuesTable.AddValue(_T("length"), Lua::Value(static_cast<int>(maxIndex)));
+
+   table.AddValue(_T("validValues"), Lua::Value(validValuesTable));
 }
 
 std::vector<Lua::Value> CanonControlLuaBindings::SourceDeviceEnterReleaseControl(
@@ -1340,7 +1378,7 @@ std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlGetImagePro
 
    Lua::Table table = state.AddTable(_T(""));
 
-   AddImageProperty(table, imageProperty, spRemoteReleaseControl);
+   AddImageProperty(state, table, imageProperty, spRemoteReleaseControl);
 
    std::vector<Lua::Value> vecRetValues;
    vecRetValues.push_back(Lua::Value(table));
@@ -1365,7 +1403,7 @@ std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlGetImagePro
 
    Lua::Table table = state.AddTable(_T(""));
 
-   AddImageProperty(table, imageProperty, spRemoteReleaseControl);
+   AddImageProperty(state, table, imageProperty, spRemoteReleaseControl);
 
    std::vector<Lua::Value> vecRetValues;
    vecRetValues.push_back(Lua::Value(table));
@@ -1388,7 +1426,7 @@ std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlGetShooting
 
    Lua::Table table = state.AddTable(_T(""));
 
-   AddImageProperty(table, imageProperty, spRemoteReleaseControl);
+   AddImageProperty(state, table, imageProperty, spRemoteReleaseControl);
 
    std::vector<Lua::Value> vecRetValues;
    vecRetValues.push_back(Lua::Value(table));
@@ -1436,7 +1474,10 @@ std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlSetImagePro
    return std::vector<Lua::Value>();
 }
 
-void CanonControlLuaBindings::AddImageProperty(Lua::Table& table, const ImageProperty& imageProperty,
+void CanonControlLuaBindings::AddImageProperty(
+   Lua::State& state,
+   Lua::Table& table,
+   const ImageProperty& imageProperty,
    std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl)
 {
    table.AddValue(_T("id"), Lua::Value(static_cast<int>(imageProperty.Id())));
@@ -1448,11 +1489,50 @@ void CanonControlLuaBindings::AddImageProperty(Lua::Table& table, const ImagePro
 
    Lua::Value luaValue;
    if (!value.IsArray())
-   {
       LuaValueFromVariant(value, luaValue);
-   }
 
    table.AddValue(_T("value"), luaValue);
+
+   AddImagePropertyValidValues(state, table, imageProperty, spRemoteReleaseControl);
+}
+
+void CanonControlLuaBindings::AddImagePropertyValidValues(
+   Lua::State& state,
+   Lua::Table& table,
+   const ImageProperty& imageProperty,
+   std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl)
+{
+   std::vector<ImageProperty> validValues;
+   spRemoteReleaseControl->EnumImagePropertyValues(imageProperty.Id(), validValues);
+
+   if (validValues.empty())
+   {
+      table.AddValue(_T("validValues"), Lua::Value());
+      return;
+   }
+
+   Lua::Table validValuesTable = state.AddTable(_T(""));
+
+   size_t maxIndex = validValues.size();
+   for (size_t index = 0; index < maxIndex; index++)
+   {
+      const ImageProperty& validValue = validValues[index];
+
+      Lua::Table singleValidValueTable = state.AddTable(_T(""));
+
+      Lua::Value luaValidValue;
+      if (!validValue.Value().IsArray())
+         LuaValueFromVariant(validValue.Value(), luaValidValue);
+
+      singleValidValueTable.AddValue(_T("value"), luaValidValue);
+      singleValidValueTable.AddValue(_T("asString"), Lua::Value(validValue.AsString()));
+
+      validValuesTable.AddValue(index + 1, Lua::Value(singleValidValueTable));
+   }
+
+   validValuesTable.AddValue(_T("length"), Lua::Value(static_cast<int>(maxIndex)));
+
+   table.AddValue(_T("validValues"), Lua::Value(validValuesTable));
 }
 
 std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlStartViewfinder(

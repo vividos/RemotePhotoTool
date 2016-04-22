@@ -178,9 +178,19 @@ App = {
 
 		print("   property: id=" .. prop.id .. ", " ..
 			"name=\"" .. prop.name .. "\", " ..
-			"value=\"" .. prop.asString .. "(" ..
-			(prop.value ~= nil and prop.value or "nil") .. ")\", " ..
+			"value=\"" .. prop.asString ..
+			"\" (" .. (prop.value ~= nil and prop.value or "nil") .. "), " ..
 			"readonly=" .. (prop.isReadOnly and "yes" or "no") .. "\n");
+
+		if (prop.validValues ~= nil and prop.validValues.length > 0) then
+
+			for idx = 1, prop.validValues.length do
+				local validValue = prop.validValues[idx];
+				print("      valid value: " ..
+					"value=\"" .. validValue.asString .. "\" (" ..
+					(validValue.value ~= nil and validValue.value or "nil") .. ")\n");
+			end;
+		end;
 
 	end;
 }

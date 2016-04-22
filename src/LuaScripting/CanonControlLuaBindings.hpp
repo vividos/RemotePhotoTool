@@ -148,7 +148,15 @@ private:
 
    /// adds a device property values to given table
    /// { id = "property id", name = "name", asString = "value", isReadOnly = true/false end }
-   void AddDeviceProperty(Lua::Table& table, const DeviceProperty& deviceProperty, std::shared_ptr<SourceDevice> spSourceDevice);
+   void AddDeviceProperty(Lua::State& state,
+      Lua::Table& table,
+      const DeviceProperty& deviceProperty);
+
+   /// adds list of valid values for a device property
+   void AddDevicePropertyValidValues(
+      Lua::State& state,
+      Lua::Table& table,
+      const DeviceProperty& deviceProperty);
 
    /// enters release control and returns RemoteReleaseControl table
    std::vector<Lua::Value> SourceDeviceEnterReleaseControl(std::shared_ptr<SourceDevice> spSourceDevice,
@@ -263,7 +271,16 @@ private:
       Lua::State& state, const std::vector<Lua::Value>& vecParams);
 
    /// adds ImageProperty table
-   void AddImageProperty(Lua::Table& table, const ImageProperty& imageProperty,
+   void AddImageProperty(Lua::State& state,
+      Lua::Table& table,
+      const ImageProperty& imageProperty,
+      std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl);
+
+   /// adds list of valid values for an image property
+   void AddImagePropertyValidValues(
+      Lua::State& state,
+      Lua::Table& table,
+      const ImageProperty& imageProperty,
       std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl);
 
    /// local viewfinder = remoteReleaseControl:startViewfinder()
