@@ -1490,6 +1490,8 @@ table with this format:
 - Call getShootingModeImageProperty() to get a predefined shooting mode value
   that can be set.
 
+- Get a possible value from the validValues array of the ImageProperty table.
+
 - Construct a table with the layout of the ImageProperty table; possible
   values for the image properties can be collected by using RemotePhotoTool's
   Camera Info dialog or the RemotePhotoToolCmdline tool with the --image-props
@@ -1576,6 +1578,7 @@ The DeviceProperty table contains the following functions:
       asString = "Canon PowerShot G9";
       value = "Canon PowerShot G9";
       isReadOnly = true;
+      validValues = { ... };
     }
 
 The values have the following meaning:
@@ -1586,9 +1589,23 @@ The values have the following meaning:
 - asString: The value of the property, as displayable text.
 - value: The value of the property; type depends on property.
 - isReadOnly: Determines if the value can currently be set.
+- validValues: Lists the values that the property may have.
 
 The 'value' value can be of one of the following Lua types, depending on what
 the camera returns for the value: string, number, boolean, nil.
+
+The 'validValues' value is an array describing all values currently possible
+for this device property. It may be nil, meaning that there are no valid values
+that can be set, so check before accessing the value. The validValues table
+has the following format:
+
+    validValues = {
+      length = 5;
+      [1] = { value = 1.0, asString = "Full battery" };
+      [2] = { value = 2.0, asString = "Good battery" };
+      ...
+      [5] = { value = 5.0, asString = "Almost empty" };
+    }
 
 There are no functions that can be called.
 
@@ -1602,6 +1619,7 @@ The ImageProperty table contains the following values:
       asString = "f/2.8";
       value = 32;
       isReadOnly = false;
+      validValues = { ... };
     }
 
 The values have the following meaning:
@@ -1612,9 +1630,29 @@ The values have the following meaning:
 - asString: The value of the property, as displayable text.
 - value: The value of the property; type depends on property.
 - isReadOnly: Determines if the value can currently be set.
+- validValues: Lists the values that the property may have.
 
 The 'value' value can be of one of the following Lua types, depending on what
 the camera returns for the value: string, number, boolean, nil.
+
+The 'validValues' value is an array describing all values currently possible
+for this image property. It may be nil, meaning that there are no valid values
+that can be set, so check before accessing the value. The validValues table
+has the following format:
+
+    validValues = {
+      length = 10;
+      [1] = { value = 32.0, asString = "f/2.8" };
+      [2] = { value = 35.0, asString = "f/3.2" };
+      ...
+      [10] = { value = 56.0, asString = "f/8.0" };
+    }
+
+Note that the valid values can change, e.g. when the shooting mode has
+changed, or e.g. the zoom is changed on the lens, modifying available aperture
+values. All changes in valid values are notified by sending a property changed
+event; see addPropertyEventHandler() function and the
+propEventPropertyDescChanged constant.
 
 There are no functions that can be called.
 
