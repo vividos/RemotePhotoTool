@@ -50,7 +50,6 @@ Add photo mode with motion detection using viewfinder to take photos (e.g. for w
 
 RemoteScriptingEditor
 ---------------------
-Add proper toolbar
 Implement debugging scripts
 Implement breakpoints
 
