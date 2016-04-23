@@ -53,16 +53,16 @@ void LuaScriptEditorView::SetupSourceEditor()
 
    SetLexer(SCLEX_LUA);
 
-   // set Lua keywords
+   // set Lua keywords and add RemotePhotoTool specific classes
    SetKeyWords(0,
       "and break do else elseif end for function if in "
-      "local nil not or repeat return then until while");
-
-   // add RemotePhotoTool specific classes
-   SetKeyWords(1,
-      "App Sys Constants RemoteReleaseControl Viewfinder");
+      "local nil not or repeat return then until while "
+      "App Sys Constants RemoteReleaseControl SourceDevice "
+      "ImageProperty DeviceProperty ShootingMode Viewfinder "
+      "BulbReleaseControl");
 
    SetTabWidth(3);
+   SetUseTabs(true);
 
    // only notify about text edits in SCEN_CHANGE messages
    SetModEventMask(SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT);
