@@ -938,7 +938,12 @@ void State::LoadFile(const CString& cszFilename)
    int iRet = luaL_dofile(L, cszaFilename.GetString());
 
    if (iRet != 0)
-      throw Lua::Exception(_T("error while loading file"), lua_tostring(L, -1), GetState());
+   {
+      CStringA message = lua_tostring(L, -1);
+      lua_pop(L, 1);
+
+      throw Lua::Exception(_T("error while loading file"), message, GetState());
+   }
 }
 
 void State::LoadSourceString(const CString& cszLuaSource)
@@ -951,7 +956,12 @@ void State::LoadSourceString(const CString& cszLuaSource)
    int iRet = luaL_dostring(L, cszaLuaSource.GetString());
 
    if (iRet != 0)
-      throw Lua::Exception(_T("error while loading source string"), lua_tostring(L, -1), GetState());
+   {
+      CStringA message = lua_tostring(L, -1);
+      lua_pop(L, 1);
+
+      throw Lua::Exception(_T("error while loading source string"), message, GetState());
+   }
 }
 
 bool State::CheckSyntax(const CString& luaSource, std::vector<CString>& errorMessages)
