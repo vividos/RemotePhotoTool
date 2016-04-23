@@ -5,6 +5,10 @@ in this document.
 
 ## Camera SDKs ##
 
+Several SDKs are used to actually connect to and communicate with the cameras.
+
+### Canon SDKs ###
+
 The application uses the Canon EOS Digital SDK (ED-SDK). It is licensed under the
 "Digital Image Developer Programme".
 
@@ -15,6 +19,16 @@ The application uses the Canon Digital Camera Software Development Kit (CD-SDK)
 It is licensed under the "Digital Image Developer Programme".
 
 - [http://www.didp.canon-europa.com/](http://www.didp.canon-europa.com/)
+
+### gPhoto2 ###
+
+The application uses the libgphoto2 library from the gPhoto2 project. It is
+licensed under the GNU Lesser General Public License Version 2.1 (LGPL).
+
+- [http://gphoto.org/proj/libgphoto2/](http://gphoto.org/proj/libgphoto2/)
+
+- [http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html](http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+ "GNU Lesser General Public License Version 2.1 (LGPL)")
 
 ## Components and Libraries ##
 
