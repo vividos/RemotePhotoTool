@@ -954,6 +954,51 @@ void State::LoadSourceString(const CString& cszLuaSource)
       throw Lua::Exception(_T("error while loading source string"), lua_tostring(L, -1), GetState());
 }
 
+bool State::CheckSyntax(const CString& luaSource, std::vector<CString>& errorMessages)
+{
+   if (luaSource.IsEmpty())
+      return true;
+
+   try
+   {
+      lua_State* L = GetState();
+
+      CStringA ansiLuaSource(luaSource);
+
+      int ret = luaL_loadstring(L, ansiLuaSource.GetString());
+
+      switch (ret)
+      {
+      case 0:
+         return true;
+
+      case LUA_ERRSYNTAX:
+         errorMessages.push_back(CString(lua_tostring(L, -1)));
+         lua_pop(L, 1);
+         break;
+
+      case LUA_ERRMEM:
+         errorMessages.push_back(_T("memory error during checking syntax"));
+         break;
+
+      default:
+         ATLASSERT(false); // unknown return value
+         errorMessages.push_back(_T("unknown error during checking syntax"));
+         break;
+      }
+   }
+   catch (const Lua::Exception& ex)
+   {
+      errorMessages.push_back(_T("Lua exception during checking syntax: ") + ex.Message());
+   }
+   catch (...)
+   {
+      errorMessages.push_back(_T("C++ exception during checking syntax: "));
+   }
+
+   return false;
+}
+
 std::vector<Value> State::CallFunction(const CString& cszName, int iResults, const std::vector<Value>& vecParam)
 {
    lua_State* L = GetState();

@@ -506,6 +506,9 @@ public:
    /// loads Lua script code from source code string
    void LoadSourceString(const CString& cszLuaSource);
 
+   /// checks syntax of given script, and returns error messages
+   bool CheckSyntax(const CString& luaSource, std::vector<CString>& errorMessages);
+
    /// calls a function
    std::vector<Value> CallFunction(const CString& cszName,
       int iResults = 0,
