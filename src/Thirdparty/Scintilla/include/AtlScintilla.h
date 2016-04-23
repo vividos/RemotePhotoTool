@@ -1626,6 +1626,52 @@ public:
 		::SendMessage( m_hWnd, SCI_INDICSETFORE, indic, fore );
 	}
 
+   void SetIndicatorCurrent( int indic )
+   {
+      ATLASSERT(::IsWindow(m_hWnd));
+      ::SendMessage(m_hWnd, SCI_SETINDICATORCURRENT, indic, 0L);
+   }
+
+   void SetIndicatorValue( int value )
+   {
+      ATLASSERT(::IsWindow(m_hWnd));
+      ::SendMessage(m_hWnd, SCI_SETINDICATORVALUE, value, 0L);
+   }
+
+   void IndicatorFillRange( int start, int length )
+   {
+      ATLASSERT(::IsWindow(m_hWnd));
+      ::SendMessage(m_hWnd, SCI_INDICATORFILLRANGE, start, length);
+   }
+
+   //@}
+   /** @name Annotations */
+   //@{
+
+   void AnnotationSetText( int line, const char* text )
+   {
+      ATLASSERT(::IsWindow(m_hWnd));
+      ::SendMessage(m_hWnd, SCI_ANNOTATIONSETTEXT, line, (LPARAM)text);
+   }
+
+   void AnnotationSetStyle( int line, int style )
+   {
+      ATLASSERT(::IsWindow(m_hWnd));
+      ::SendMessage(m_hWnd, SCI_ANNOTATIONSETSTYLE, line, style);
+   }
+
+   void AnnotationSetVisible( int visible )
+   {
+      ATLASSERT(::IsWindow(m_hWnd));
+      ::SendMessage(m_hWnd, SCI_ANNOTATIONSETVISIBLE, visible, 0L);
+   }
+
+   void AnnotationClearAll()
+   {
+      ATLASSERT(::IsWindow(m_hWnd));
+      ::SendMessage(m_hWnd, SCI_ANNOTATIONCLEARALL, 0L, 0L);
+   }
+
 	//@}
 	/** @name Autocomplete */
 	//@{
