@@ -1,10 +1,13 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2016 Michael Fink
 //
-/// \file AppSettings.hpp Settings
+/// \file RemotePhotoTool\AppSettings.hpp Settings
 //
 #pragma once
+
+// includes
+#include "WindowPlacement.hpp"
 
 /// application settings
 class AppSettings
@@ -36,6 +39,9 @@ public:
 
    /// path for logfile
    CString m_cszLogfilePath;
+
+   /// window placement of main frame
+   WindowPlacement m_windowPlacementMainFrame;
 
 
    // actions

@@ -1,8 +1,8 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2016 Michael Fink
 //
-/// \file AppSettings.cpp Settings
+/// \file RemotePhotoTool\AppSettings.cpp Settings
 //
 
 // includes
@@ -18,6 +18,7 @@ LPCTSTR g_pszPhotomatixPath =       _T("PhotomatixPath");   ///< Photomatix path
 LPCTSTR g_pszHuginPath =            _T("HuginPath");        ///< Hugin path
 LPCTSTR g_pszLogging =              _T("Logging");          ///< "Logging" checked
 LPCTSTR g_pszLogfilePath =          _T("LogfilePath");      ///< Logging path
+LPCTSTR g_pszWindowPlacementMainFrame = _T("WindowPlacementMainFrame");  ///< Window placement for main frame
 
 /// reads string value from registry
 void ReadStringValue(CRegKey& regKey, LPCTSTR pszName, UINT uiMaxLength, CString& cszValue)
@@ -84,6 +85,8 @@ void AppSettings::Store()
    regRoot.SetStringValue(g_pszHuginPath, m_cszHuginPath);
    regRoot.SetDWORDValue(g_pszLogging, m_bLogging ? 1 : 0);
    regRoot.SetStringValue(g_pszLogfilePath, m_cszLogfilePath);
+
+   m_windowPlacementMainFrame.Store(regRoot, g_pszWindowPlacementMainFrame);
 }
 
 void AppSettings::Load()
@@ -100,4 +103,6 @@ void AppSettings::Load()
    ReadStringValue(regRoot, g_pszHuginPath, MAX_PATH, m_cszHuginPath);
    ReadBooleanValue(regRoot, g_pszLogging, m_bLogging);
    ReadStringValue(regRoot, g_pszLogfilePath, MAX_PATH, m_cszLogfilePath);
+
+   m_windowPlacementMainFrame.Load(regRoot, g_pszWindowPlacementMainFrame);
 }

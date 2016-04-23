@@ -290,6 +290,12 @@ private:
    /// enables or disables camera related UI elements
    void EnableCameraUI(bool bEnable);
 
+   /// stores window position of main frame
+   void StoreWindowPosition();
+
+   /// restores window position of main frame from stored settings
+   void RestoreWindowPosition();
+
    /// called when image property has been updated
    void OnUpdatedImageProperty(RemoteReleaseControl::T_enPropertyEvent enPropertyEvent, unsigned int uiValue);
 

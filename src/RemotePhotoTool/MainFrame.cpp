@@ -124,6 +124,8 @@ LRESULT MainFrame::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/,
    // show the connect dialog
    PostMessage(WM_COMMAND, MAKEWPARAM(ID_HOME_CONNECT, 0), 0);
 
+   RestoreWindowPosition();
+
    return 0;
 }
 
@@ -150,6 +152,8 @@ LRESULT MainFrame::OnClose(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, 
 
       CRibbonPersist(c_pszSettingsRegkey).Save(bRibbonUI, m_hgRibbonSettings);
    }
+
+   StoreWindowPosition();
 
    return 0;
 }
@@ -1010,6 +1014,29 @@ void MainFrame::EnableCameraUI(bool bEnable)
       m_upImagePropertyValueManager.reset();
 
       m_vecAllImageFormats.clear();
+   }
+}
+
+void MainFrame::StoreWindowPosition()
+{
+   m_settings.m_windowPlacementMainFrame.Get(m_hWnd);
+   m_settings.Store();
+}
+
+void MainFrame::RestoreWindowPosition()
+{
+   if (m_settings.m_windowPlacementMainFrame.showCmd != 0)
+   {
+      m_settings.m_windowPlacementMainFrame.Set(m_hWnd);
+
+      ShowWindow(m_settings.m_windowPlacementMainFrame.showCmd);
+
+      if (MonitorFromWindow(m_hWnd, MONITOR_DEFAULTTONULL) == NULL)
+      {
+         // center on desktop instead
+         SetWindowPos(HWND_TOP, 0, 0, 800, 600, SWP_SHOWWINDOW);
+         CenterWindow(GetDesktopWindow());
+      }
    }
 }
 

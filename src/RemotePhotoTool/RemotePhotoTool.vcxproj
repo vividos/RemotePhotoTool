@@ -169,6 +169,7 @@
     <ClInclude Include="ViewManager.hpp" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="WindowMessages.hpp" />
+    <ClInclude Include="WindowPlacement.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\app_exit.bmp" />
