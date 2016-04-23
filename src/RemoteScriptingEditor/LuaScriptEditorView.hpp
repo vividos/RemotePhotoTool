@@ -268,6 +268,9 @@ class LuaScriptEditorView :
    public ScintillaEditCommands<LuaScriptEditorView>,
    public ScintillaFindReplaceImpl<LuaScriptEditorView>
 {
+   /// timer id for syntax check
+   const UINT_PTR IDT_TIMER_SYNTAX_CHECK = 1;
+
    /// base class type
    typedef ScintillaWindowAdapter BaseClass;
 
@@ -309,9 +312,28 @@ public:
    }
 
 private:
+   /// called when text in edit window has changed
+   LRESULT OnChangedText(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+
+   /// called at destruction of view
+   LRESULT OnDestroy(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+
+   /// called when a timer event occurs
+   LRESULT OnTimer(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+
+   /// restarts syntax check timer
+   void RestartSyntaxCheckTimer();
+
+   /// checks syntax and highlights errors in view
+   void CheckSyntax();
+
+private:
    BEGIN_MSG_MAP(LuaScriptEditorView)
       CHAIN_MSG_MAP_ALT(FindReplaceClass, 1)
       CHAIN_MSG_MAP_ALT(EditCommandsClass, 1)
+      COMMAND_CODE_HANDLER(SCEN_CHANGE, OnChangedText)
+      MESSAGE_HANDLER(WM_DESTROY, OnDestroy)
+      MESSAGE_HANDLER(WM_TIMER, OnTimer)
    END_MSG_MAP()
 
 // Handler prototypes (uncomment arguments if needed):

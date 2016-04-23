@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2016 Michael Fink
 //
 /// \file LuaScriptEditorView.cpp View for editing Lua scripts
 //
@@ -9,12 +9,16 @@
 #include "stdafx.h"
 #include "resource.h"
 #include "LuaScriptEditorView.hpp"
+#include "Lua.hpp"
 
 /// file open filter for Lua scripting
 LPCTSTR g_pszLuaScriptingFilter =
    _T("Lua Files (*.lua)\0*.lua\0")
    _T("All Files (*.*)\0*.*\0")
    _T("");
+
+/// delay time in ms, after which a syntax check of the text in the view occurs
+const UINT c_uiSyntaxCheckDelayTimeInMs = 1000;
 
 BOOL LuaScriptEditorView::PreTranslateMessage(MSG* pMsg)
 {
@@ -59,6 +63,9 @@ void LuaScriptEditorView::SetupSourceEditor()
       "App Sys Constants RemoteReleaseControl Viewfinder");
 
    SetTabWidth(3);
+
+   // only notify about text edits in SCEN_CHANGE messages
+   SetModEventMask(SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT);
 }
 
 void LuaScriptEditorView::Init(LPCTSTR lpstrFilePath, LPCTSTR lpstrFileTitle)
@@ -107,4 +114,83 @@ bool LuaScriptEditorView::QueryClose()
    }
 
    return true;
+}
+
+LRESULT LuaScriptEditorView::OnChangedText(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& bHandled)
+{
+   bHandled = false;
+
+   RestartSyntaxCheckTimer();
+
+   return 0;
+}
+
+LRESULT LuaScriptEditorView::OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
+{
+   KillTimer(IDT_TIMER_SYNTAX_CHECK);
+
+   return 0;
+}
+
+LRESULT LuaScriptEditorView::OnTimer(UINT /*uMsg*/, WPARAM wParam, LPARAM /*lParam*/, BOOL& /*bHandled*/)
+{
+   if (wParam == IDT_TIMER_SYNTAX_CHECK)
+   {
+      KillTimer(IDT_TIMER_SYNTAX_CHECK);
+
+      CheckSyntax();
+   }
+
+   return 0;
+}
+
+void LuaScriptEditorView::RestartSyntaxCheckTimer()
+{
+   KillTimer(IDT_TIMER_SYNTAX_CHECK);
+   SetTimer(IDT_TIMER_SYNTAX_CHECK, c_uiSyntaxCheckDelayTimeInMs);
+}
+
+void LuaScriptEditorView::CheckSyntax()
+{
+   CStringA text;
+   GetText(text);
+
+   int indicatorNumber = INDIC_CONTAINER;
+
+   AnnotationClearAll();
+
+   Lua::State state;
+   std::vector<CString> errorMessages;
+   if (state.CheckSyntax(CString(text), errorMessages))
+   {
+      IndicSetStyle(indicatorNumber, INDIC_HIDDEN);
+      AnnotationSetVisible(ANNOTATION_HIDDEN);
+      return;
+   }
+
+   IndicSetStyle(indicatorNumber, INDIC_SQUIGGLE);
+   IndicSetFore(indicatorNumber, RGB(255, 0, 0)); // red
+
+   SetIndicatorCurrent(indicatorNumber);
+
+   for (size_t index = 0, maxIndex = errorMessages.size(); index < maxIndex; index++)
+   {
+      CString errorMessage = errorMessages[0];
+
+      int pos = errorMessage.Find(_T("]:"));
+      int pos2 = errorMessage.Find(_T(':'), pos + 2);
+
+      int lineNumber = _ttoi(errorMessage.Mid(pos + 2, pos2 - (pos + 2)));
+      CString error = errorMessage.Mid(pos2 + 1).Trim();
+
+      SetIndicatorValue(index);
+
+      int textStart = static_cast<int>(PositionFromLine(lineNumber - 1));
+      int textEnd = GetLineEndPosition(lineNumber - 1);
+
+      IndicatorFillRange(textStart, textEnd - textStart);
+
+      AnnotationSetText(lineNumber - 1, CStringA(error).GetString());
+      AnnotationSetVisible(ANNOTATION_BOXED);
+   }
 }
