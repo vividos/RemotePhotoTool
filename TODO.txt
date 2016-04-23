@@ -23,7 +23,7 @@ Improve speed of EnumerateDevices()
 
 Lua scripting
 -------------
-Implement supporting ShootingMode and ShutterSpeedValue
+Implement ShutterSpeedValue table
 Implement writing absolute filenames before calling onFinishedTransfer
 Add more libraries and sandbox unsafe functions
 Bindings for Exif library
@@ -51,7 +51,6 @@ Add photo mode with motion detection using viewfinder to take photos (e.g. for w
 RemoteScriptingEditor
 ---------------------
 Add proper toolbar
-Implement all bindings from CanonControl
 Implement debugging scripts
 Implement breakpoints
 
