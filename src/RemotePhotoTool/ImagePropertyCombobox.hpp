@@ -23,6 +23,8 @@ public:
    {
    }
 
+   // The NULL parameter means ATL will generate a name for the superclass
+   // The WC_COMBOBOX parameter means the superclass is based on the standard Windows combobox
    DECLARE_WND_SUPERCLASS(NULL, WC_COMBOBOX)
 
    /// sets remote release control
