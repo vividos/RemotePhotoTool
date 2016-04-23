@@ -20,8 +20,11 @@
 *.sbr
 *.sdf
 *.opensdf
+*.opendb
 _ReSharper*/
 [Tt]est[Rr]esult*
+obj/
+bin/
 
 #Ignore project folders
 bin/
@@ -52,4 +55,3 @@ src/RemoteScriptingEditor/res/Ribbon.rc
 #Ignore Coverity Self-Scan files/folders
 src/cov-int/
 src/cov-int.zip
-*.opendb
