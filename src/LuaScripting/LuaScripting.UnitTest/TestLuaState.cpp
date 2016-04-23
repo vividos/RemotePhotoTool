@@ -26,7 +26,9 @@ namespace LuaScriptingUnitTest
          state.LoadSourceString(_T("-- comment test"));
          state.LoadSourceString(_T("function run() return 42; end"));
 
-         // TODO check that run() exists instead of running the script
+         Assert::IsTrue(state.GetValue(_T("run")).GetType() == Lua::Value::typeFunction,
+            _T("run must be of type function"));
+
          state.CallFunction(_T("run"));
       }
 
@@ -96,7 +98,6 @@ namespace LuaScriptingUnitTest
 
          state.LoadSourceString(_T("function run() return; end"));
 
-         // TODO check that run() exists
          std::vector<Lua::Value> vecRetvals = state.CallFunction(_T("run"));
          Assert::AreEqual<size_t>(0, vecRetvals.size(), _T("must have returned zero return values"));
       }
@@ -108,13 +109,12 @@ namespace LuaScriptingUnitTest
 
          state.LoadSourceString(_T("function run() return 42; end"));
 
-         // TODO check that run() exists
          std::vector<Lua::Value> vecRetvals = state.CallFunction(_T("run"), 1);
          Assert::AreEqual<size_t>(1, vecRetvals.size(), _T("must have returned one return value"));
 
          const Lua::Value& value = vecRetvals[0];
          Assert::IsTrue(Lua::Value::typeNumber == value.GetType(), _T("type must be number"));
-         // TODO check value returned
+         Assert::AreEqual(value.Get<double>(), 42.0, 1e-6, _T("value must be 42"));
       }
 
       /// tests CallFunction(), with multiple return parameters
