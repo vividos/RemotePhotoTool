@@ -40,6 +40,9 @@
     <ClCompile Include="AboutDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AppSettings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -64,6 +67,9 @@
       <Filter>Resource Files</Filter>
     </ClInclude>
     <ClInclude Include="OutputWindow.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AppSettings.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

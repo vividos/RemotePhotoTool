@@ -28,8 +28,11 @@ extern LPCTSTR g_pszLuaScriptingFilter;
 LPCTSTR c_pszSettingsRegkey = _T("Software\\RemoteScriptingEditor");
 
 MainFrame::MainFrame() throw()
-:m_bScriptingFileModified(false)
+:m_bScriptingFileModified(false),
+ m_settings(c_pszSettingsRegkey)
 {
+   m_settings.Load();
+
    m_processor.SetOutputDebugStringHandler(
       std::bind(&MainFrame::OnOutputDebugString, this, std::placeholders::_1));
 }
@@ -87,6 +90,8 @@ LRESULT MainFrame::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/,
    UIEnable(ID_SCRIPT_RUN, true);
    UIEnable(ID_SCRIPT_STOP, false);
 
+   RestoreWindowPosition();
+
    return 0;
 }
 
@@ -105,6 +110,8 @@ LRESULT MainFrame::OnClose(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, 
 
       CRibbonPersist(c_pszSettingsRegkey).Save(bRibbonUI, m_hgRibbonSettings);
    }
+
+   StoreWindowPosition();
 
    return 0;
 }
@@ -284,6 +291,29 @@ LRESULT MainFrame::OnScriptStop(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndC
    m_processor.Stop();
 
    return 0;
+}
+
+void MainFrame::StoreWindowPosition()
+{
+   m_settings.m_windowPlacementMainFrame.Get(m_hWnd);
+   m_settings.Store();
+}
+
+void MainFrame::RestoreWindowPosition()
+{
+   if (m_settings.m_windowPlacementMainFrame.showCmd != 0)
+   {
+      m_settings.m_windowPlacementMainFrame.Set(m_hWnd);
+
+      ShowWindow(m_settings.m_windowPlacementMainFrame.showCmd);
+
+      if (MonitorFromWindow(m_hWnd, MONITOR_DEFAULTTONULL) == NULL)
+      {
+         // center on desktop instead
+         SetWindowPos(HWND_TOP, 0, 0, 800, 600, SWP_SHOWWINDOW);
+         CenterWindow(GetDesktopWindow());
+      }
+   }
 }
 
 void MainFrame::DoFileNew()

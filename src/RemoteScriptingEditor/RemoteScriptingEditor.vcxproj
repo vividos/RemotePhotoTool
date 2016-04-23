@@ -80,6 +80,7 @@
   <ItemGroup>
     <ClCompile Include="AboutDlg.cpp" />
     <ClCompile Include="App.cpp" />
+    <ClCompile Include="AppSettings.cpp" />
     <ClCompile Include="MainFrame.cpp" />
     <ClCompile Include="RemoteScriptingEditor.cpp" />
     <ClCompile Include="LuaScriptEditorView.cpp" />
@@ -91,6 +92,7 @@
   <ItemGroup>
     <ClInclude Include="AboutDlg.hpp" />
     <ClInclude Include="App.hpp" />
+    <ClInclude Include="AppSettings.hpp" />
     <ClInclude Include="MainFrame.hpp" />
     <ClInclude Include="LuaScriptEditorView.hpp" />
     <ClInclude Include="OutputWindow.hpp" />

@@ -11,6 +11,7 @@
 #include "OutputWindow.hpp"
 #include "CameraScriptProcessor.hpp"
 #include "LuaScheduler.hpp"
+#include "AppSettings.hpp"
 
 /// message sent when execution state has changed
 #define WM_EXECUTION_STATE_CHANGED (WM_USER+1)
@@ -121,6 +122,12 @@ private:
    /// called when message is sent when execution state has changed
    LRESULT OnMessageExecutionStateChanged(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
+   /// stores window position of main frame
+   void StoreWindowPosition();
+
+   /// restores window position of main frame from stored settings
+   void RestoreWindowPosition();
+
    /// sets up command bar
    void SetupCmdBar();
 
@@ -189,6 +196,9 @@ private:
 
 
    // model
+
+   /// application settings
+   AppSettings m_settings;
 
    /// camera script processor
    CameraScriptProcessor m_processor;
