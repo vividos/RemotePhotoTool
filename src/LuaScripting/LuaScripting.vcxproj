@@ -12,8 +12,9 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{41B565F7-F668-4425-A93D-6CABC18F6D1F}</ProjectGuid>
-    <RootNamespace>LuaScripting</RootNamespace>
     <Keyword>Win32Proj</Keyword>
+    <RootNamespace>LuaScripting</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -43,9 +44,6 @@
     <Import Project="..\RemotePhotoTool-Debug.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup>
-    <_ProjectFileVersion>11.0.51106.1</_ProjectFileVersion>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)..\lib\$(Configuration)\</OutDir>
   </PropertyGroup>

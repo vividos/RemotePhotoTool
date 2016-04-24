@@ -11,9 +11,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
+    <ProjectGuid>{051C359A-AE9E-44D6-9F67-1DF7E51E0778}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>LogicUnitTest</RootNamespace>
-    <ProjectGuid>{051C359A-AE9E-44D6-9F67-1DF7E51E0778}</ProjectGuid>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

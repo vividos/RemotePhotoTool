@@ -21,6 +21,7 @@
 *.sdf
 *.opensdf
 *.opendb
+*.VC.db
 _ReSharper*/
 [Tt]est[Rr]esult*
 obj/

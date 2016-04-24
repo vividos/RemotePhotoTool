@@ -12,6 +12,9 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{4A6E0938-3C68-44A8-A94A-EA879801D3D5}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>RemotePhotoTool</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
