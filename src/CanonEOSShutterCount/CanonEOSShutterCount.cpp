@@ -7,7 +7,7 @@
 
 // includes
 #include "stdafx.h"
-#include "EdsdkShutterCounterReader.hpp"
+#include "EDSDK\EdsdkShutterCounterReader.hpp"
 
 /// main function
 int _tmain(int, _TCHAR*[])

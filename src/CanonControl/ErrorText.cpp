@@ -8,9 +8,9 @@
 // includes
 #include "stdafx.h"
 #include "ErrorText.hpp"
-#include "CdsdkCommon.hpp"
-#include "EdsdkCommon.hpp"
-#include "PsrecCommon.hpp"
+#include "CDSDK\CdsdkCommon.hpp"
+#include "EDSDK\EdsdkCommon.hpp"
+#include "PSREC\PsrecCommon.hpp"
 
 LPCTSTR ErrorTextFromErrorId(unsigned int uiErrorId, bool bIsPsrec)
 {

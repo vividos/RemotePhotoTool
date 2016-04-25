@@ -47,28 +47,28 @@
     <ClCompile Include="Variant.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CdsdkCommon.cpp">
+    <ClCompile Include="CDSDK\CdsdkCommon.cpp">
       <Filter>CDSDK Files</Filter>
     </ClCompile>
-    <ClCompile Include="PsrecCommon.cpp">
+    <ClCompile Include="PSREC\PsrecCommon.cpp">
       <Filter>PSREC Files</Filter>
     </ClCompile>
-    <ClCompile Include="EdsdkCommon.cpp">
+    <ClCompile Include="EDSDK\EdsdkCommon.cpp">
       <Filter>EDSDK Files</Filter>
     </ClCompile>
-    <ClCompile Include="PsrecRemoteReleaseControlImpl.cpp">
+    <ClCompile Include="PSREC\PsrecRemoteReleaseControlImpl.cpp">
       <Filter>PSREC Files</Filter>
     </ClCompile>
-    <ClCompile Include="PsrecPropertyAccess.cpp">
+    <ClCompile Include="PSREC\PsrecPropertyAccess.cpp">
       <Filter>PSREC Files</Filter>
     </ClCompile>
-    <ClCompile Include="EdsdkRemoteReleaseControlImpl.cpp">
+    <ClCompile Include="EDSDK\EdsdkRemoteReleaseControlImpl.cpp">
       <Filter>EDSDK Files</Filter>
     </ClCompile>
-    <ClCompile Include="EdsdkPropertyAccess.cpp">
+    <ClCompile Include="EDSDK\EdsdkPropertyAccess.cpp">
       <Filter>EDSDK Files</Filter>
     </ClCompile>
-    <ClCompile Include="EdsdkViewfinderImpl.cpp">
+    <ClCompile Include="EDSDK\EdsdkViewfinderImpl.cpp">
       <Filter>EDSDK Files</Filter>
     </ClCompile>
     <ClCompile Include="ShutterSpeedValue.cpp">
@@ -83,13 +83,13 @@
     <ClCompile Include="ImageFormat.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CdsdkDevicePropertyAccess.cpp">
+    <ClCompile Include="CDSDK\CdsdkDevicePropertyAccess.cpp">
       <Filter>CDSDK Files</Filter>
     </ClCompile>
-    <ClCompile Include="CdsdkImagePropertyAccess.cpp">
+    <ClCompile Include="CDSDK\CdsdkImagePropertyAccess.cpp">
       <Filter>CDSDK Files</Filter>
     </ClCompile>
-    <ClCompile Include="CdsdkRemoteReleaseControlImpl.cpp">
+    <ClCompile Include="CDSDK\CdsdkRemoteReleaseControlImpl.cpp">
       <Filter>CDSDK Files</Filter>
     </ClCompile>
     <ClCompile Include="ErrorText.cpp">
@@ -98,22 +98,22 @@
     <ClCompile Include="AsyncReleaseControlThread.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="EdsdkShutterCounterReader.cpp">
+    <ClCompile Include="EDSDK\EdsdkShutterCounterReader.cpp">
       <Filter>EDSDK Files</Filter>
     </ClCompile>
-    <ClCompile Include="GPhoto2Common.cpp">
+    <ClCompile Include="gPhoto2\GPhoto2Common.cpp">
       <Filter>GPhoto2 Files</Filter>
     </ClCompile>
-    <ClCompile Include="GPhoto2SourceInfoImpl.cpp">
+    <ClCompile Include="gPhoto2\GPhoto2SourceInfoImpl.cpp">
       <Filter>GPhoto2 Files</Filter>
     </ClCompile>
-    <ClCompile Include="GPhoto2SourceDeviceImpl.cpp">
+    <ClCompile Include="gPhoto2\GPhoto2SourceDeviceImpl.cpp">
       <Filter>GPhoto2 Files</Filter>
     </ClCompile>
-    <ClCompile Include="GPhoto2RemoteReleaseControlImpl.cpp">
+    <ClCompile Include="gPhoto2\GPhoto2RemoteReleaseControlImpl.cpp">
       <Filter>GPhoto2 Files</Filter>
     </ClCompile>
-    <ClCompile Include="GPhoto2PropertyAccess.cpp">
+    <ClCompile Include="gPhoto2\GPhoto2PropertyAccess.cpp">
       <Filter>GPhoto2 Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -151,67 +151,67 @@
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CdsdkCommon.hpp">
+    <ClInclude Include="CDSDK\CdsdkCommon.hpp">
       <Filter>CDSDK Files</Filter>
     </ClInclude>
-    <ClInclude Include="CdsdkRemoteReleaseControlImpl.hpp">
+    <ClInclude Include="CDSDK\CdsdkRemoteReleaseControlImpl.hpp">
       <Filter>CDSDK Files</Filter>
     </ClInclude>
-    <ClInclude Include="CdsdkSourceDeviceImpl.hpp">
+    <ClInclude Include="CDSDK\CdsdkSourceDeviceImpl.hpp">
       <Filter>CDSDK Files</Filter>
     </ClInclude>
-    <ClInclude Include="CdsdkSourceInfoImpl.hpp">
+    <ClInclude Include="CDSDK\CdsdkSourceInfoImpl.hpp">
       <Filter>CDSDK Files</Filter>
     </ClInclude>
-    <ClInclude Include="CdsdkViewfinderImpl.hpp">
+    <ClInclude Include="CDSDK\CdsdkViewfinderImpl.hpp">
       <Filter>CDSDK Files</Filter>
     </ClInclude>
-    <ClInclude Include="EdsdkBulbReleaseControlImpl.hpp">
+    <ClInclude Include="EDSDK\EdsdkBulbReleaseControlImpl.hpp">
       <Filter>EDSDK Files</Filter>
     </ClInclude>
-    <ClInclude Include="EdsdkCommon.hpp">
+    <ClInclude Include="EDSDK\EdsdkCommon.hpp">
       <Filter>EDSDK Files</Filter>
     </ClInclude>
-    <ClInclude Include="EdsdkPropertyAccess.hpp">
+    <ClInclude Include="EDSDK\EdsdkPropertyAccess.hpp">
       <Filter>EDSDK Files</Filter>
     </ClInclude>
-    <ClInclude Include="EdsdkRemoteReleaseControlImpl.hpp">
+    <ClInclude Include="EDSDK\EdsdkRemoteReleaseControlImpl.hpp">
       <Filter>EDSDK Files</Filter>
     </ClInclude>
-    <ClInclude Include="EdsdkSourceDeviceImpl.hpp">
+    <ClInclude Include="EDSDK\EdsdkSourceDeviceImpl.hpp">
       <Filter>EDSDK Files</Filter>
     </ClInclude>
-    <ClInclude Include="EdsdkSourceInfoImpl.hpp">
+    <ClInclude Include="EDSDK\EdsdkSourceInfoImpl.hpp">
       <Filter>EDSDK Files</Filter>
     </ClInclude>
-    <ClInclude Include="EdsdkViewfinderImpl.hpp">
+    <ClInclude Include="EDSDK\EdsdkViewfinderImpl.hpp">
       <Filter>EDSDK Files</Filter>
     </ClInclude>
-    <ClInclude Include="PsrecCommon.hpp">
+    <ClInclude Include="PSREC\PsrecCommon.hpp">
       <Filter>PSREC Files</Filter>
     </ClInclude>
-    <ClInclude Include="PsrecPropertyAccess.hpp">
+    <ClInclude Include="PSREC\PsrecPropertyAccess.hpp">
       <Filter>PSREC Files</Filter>
     </ClInclude>
-    <ClInclude Include="PsrecRemoteReleaseControlImpl.hpp">
+    <ClInclude Include="PSREC\PsrecRemoteReleaseControlImpl.hpp">
       <Filter>PSREC Files</Filter>
     </ClInclude>
-    <ClInclude Include="PsrecSourceDeviceImpl.hpp">
+    <ClInclude Include="PSREC\PsrecSourceDeviceImpl.hpp">
       <Filter>PSREC Files</Filter>
     </ClInclude>
-    <ClInclude Include="PsrecSourceInfoImpl.hpp">
+    <ClInclude Include="PSREC\PsrecSourceInfoImpl.hpp">
       <Filter>PSREC Files</Filter>
     </ClInclude>
-    <ClInclude Include="PsrecVarDataParser.hpp">
+    <ClInclude Include="PSREC\PsrecVarDataParser.hpp">
       <Filter>PSREC Files</Filter>
     </ClInclude>
-    <ClInclude Include="PsrecViewfinderImpl.hpp">
+    <ClInclude Include="PSREC\PsrecViewfinderImpl.hpp">
       <Filter>PSREC Files</Filter>
     </ClInclude>
     <ClInclude Include="exports\ShutterReleaseSettings.hpp">
       <Filter>Exported Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PsrecDeviceInfo.hpp">
+    <ClInclude Include="PSREC\PsrecDeviceInfo.hpp">
       <Filter>PSREC Files</Filter>
     </ClInclude>
     <ClInclude Include="BackgroundWorkerThread.hpp">
@@ -268,10 +268,10 @@
     <ClInclude Include="BackgroundTimer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CdsdkDevicePropertyAccess.hpp">
+    <ClInclude Include="CDSDK\CdsdkDevicePropertyAccess.hpp">
       <Filter>CDSDK Files</Filter>
     </ClInclude>
-    <ClInclude Include="CdsdkImagePropertyAccess.hpp">
+    <ClInclude Include="CDSDK\CdsdkImagePropertyAccess.hpp">
       <Filter>CDSDK Files</Filter>
     </ClInclude>
     <ClInclude Include="ErrorText.hpp">
@@ -280,25 +280,25 @@
     <ClInclude Include="AsyncReleaseControlThread.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="EdsdkShutterCounterReader.hpp">
+    <ClInclude Include="EDSDK\EdsdkShutterCounterReader.hpp">
       <Filter>EDSDK Files</Filter>
     </ClInclude>
-    <ClInclude Include="GPhoto2Common.hpp">
+    <ClInclude Include="gPhoto2\GPhoto2Common.hpp">
       <Filter>GPhoto2 Files</Filter>
     </ClInclude>
-    <ClInclude Include="GPhoto2SourceInfoImpl.hpp">
+    <ClInclude Include="gPhoto2\GPhoto2SourceInfoImpl.hpp">
       <Filter>GPhoto2 Files</Filter>
     </ClInclude>
-    <ClInclude Include="GPhoto2SourceDeviceImpl.hpp">
+    <ClInclude Include="gPhoto2\GPhoto2SourceDeviceImpl.hpp">
       <Filter>GPhoto2 Files</Filter>
     </ClInclude>
-    <ClInclude Include="GPhoto2RemoteReleaseControlImpl.hpp">
+    <ClInclude Include="gPhoto2\GPhoto2RemoteReleaseControlImpl.hpp">
       <Filter>GPhoto2 Files</Filter>
     </ClInclude>
-    <ClInclude Include="GPhoto2PropertyAccess.hpp">
+    <ClInclude Include="gPhoto2\GPhoto2PropertyAccess.hpp">
       <Filter>GPhoto2 Files</Filter>
     </ClInclude>
-    <ClInclude Include="GPhoto2Include.hpp">
+    <ClInclude Include="gPhoto2\GPhoto2Include.hpp">
       <Filter>GPhoto2 Files</Filter>
     </ClInclude>
     <ClInclude Include="exports\ImageFormat.hpp">

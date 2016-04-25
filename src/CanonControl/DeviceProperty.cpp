@@ -8,10 +8,10 @@
 // includes
 #include "stdafx.h"
 #include "DeviceProperty.hpp"
-#include "CdsdkDevicePropertyAccess.hpp"
-#include "EdsdkPropertyAccess.hpp"
-#include "PsrecPropertyAccess.hpp"
-#include "GPhoto2PropertyAccess.hpp"
+#include "CDSDK\CdsdkDevicePropertyAccess.hpp"
+#include "EDSDK\EdsdkPropertyAccess.hpp"
+#include "PSREC\PsrecPropertyAccess.hpp"
+#include "gPhoto2\GPhoto2PropertyAccess.hpp"
 
 CString DeviceProperty::Name() const throw()
 {

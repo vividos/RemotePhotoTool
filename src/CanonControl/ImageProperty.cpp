@@ -8,10 +8,10 @@
 // includes
 #include "stdafx.h"
 #include "ImageProperty.hpp"
-#include "CdsdkImagePropertyAccess.hpp"
-#include "EdsdkPropertyAccess.hpp"
-#include "PsrecPropertyAccess.hpp"
-#include "GPhoto2PropertyAccess.hpp"
+#include "CDSDK\CdsdkImagePropertyAccess.hpp"
+#include "EDSDK\EdsdkPropertyAccess.hpp"
+#include "PSREC\PsrecPropertyAccess.hpp"
+#include "gPhoto2\GPhoto2PropertyAccess.hpp"
 
 CString ImageProperty::Name() const throw()
 {
