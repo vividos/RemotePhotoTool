@@ -18,8 +18,8 @@ struct lua_longjmp;
 using namespace Lua;
 
 /// list of libraries that can be loaded using Lua::State::RequireLib()
-static const luaL_Reg loadedlibs[] = {
-   { "_G", luaopen_base },
+static const luaL_Reg availableLuaLibs[] = {
+   { LUA_BASICLIBNAME, luaopen_base },
    { LUA_LOADLIBNAME, luaopen_package },
    { LUA_COLIBNAME, luaopen_coroutine },
    { LUA_TABLIBNAME, luaopen_table },
@@ -911,14 +911,14 @@ void State::RequireLib(const char* moduleName)
 {
    lua_State* L = GetState();
 
-   for (int i = 0; i < sizeof(loadedlibs) / sizeof(*loadedlibs); i++)
+   for (int i = 0; i < sizeof(availableLuaLibs) / sizeof(*availableLuaLibs); i++)
    {
-      if (loadedlibs[i].func == nullptr)
+      if (availableLuaLibs[i].func == nullptr)
          break;
 
-      if (strcmp(moduleName, loadedlibs[i].name) == 0)
+      if (strcmp(moduleName, availableLuaLibs[i].name) == 0)
       {
-         luaL_requiref(L, loadedlibs[i].name, loadedlibs[i].func, 1);
+         luaL_requiref(L, availableLuaLibs[i].name, availableLuaLibs[i].func, 1);
          lua_pop(L, 1);  // remove lib from stack
 
          return;

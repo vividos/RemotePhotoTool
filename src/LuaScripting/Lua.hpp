@@ -22,6 +22,9 @@ struct FuncData;
 // WinBase.h defines Yield(), so undef again...
 #undef Yield
 
+/// library name to load basic library, using State::RequireLib
+#define LUA_BASICLIBNAME "_G"
+
 /// \brief Lua C++ bindings classes
 /// \details The classes in this namespace provide a way to run Lua scripts
 /// and define C++ bindings to use in Lua code.
