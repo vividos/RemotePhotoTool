@@ -50,6 +50,7 @@ public:
    void InitBindings()
    {
       InitBuiltinLibs();
+      SandboxBuiltinLibs();
       InitGlobalFunctions();
       InitExtraBindings();
    }
@@ -147,18 +148,45 @@ private:
       Lua::State& state = GetState();
 
       // set up built-in libs
+      state.RequireLib(LUA_BASICLIBNAME);
       state.RequireLib(LUA_COLIBNAME);
       state.RequireLib(LUA_STRLIBNAME);
+      state.RequireLib(LUA_UTF8LIBNAME);
       state.RequireLib(LUA_TABLIBNAME);
       state.RequireLib(LUA_MATHLIBNAME);
-      state.RequireLib(LUA_UTF8LIBNAME);
-      state.RequireLib(LUA_DBLIBNAME);
+      state.RequireLib(LUA_OSLIBNAME);
 
       // omitted:
-      // basic (can load external scripts)
       // package (can load external scripts)
       // io (can write files)
-      // os (can interact with file system, start external programs)
+      // debug (can modify own code)
+   }
+
+   /// "sandboxes" the built-in libraries by removing functions not deemed
+   /// as "secure". The requirements are:
+   /// - Lua code must not load other code outside the loaded script
+   /// - Lua code must not load other libraries than specified
+   /// - Lua code must not execute external code or call the OS
+   /// Non-requirements are:
+   /// - Lua code may modify its environment (it's the only script running)
+   /// \see http://lua-users.org/wiki/SandBoxes
+   void SandboxBuiltinLibs()
+   {
+      Lua::State& state = GetState();
+
+      // basic lib
+      state.AddValue(_T("dofile"), Lua::Value());
+      state.AddValue(_T("load"), Lua::Value());
+      state.AddValue(_T("loadfile"), Lua::Value());
+
+      // os lib
+      Lua::Table os = state.GetTable(_T("os"));
+      os.AddValue(_T("execute"), Lua::Value());
+      os.AddValue(_T("exit"), Lua::Value());
+      os.AddValue(_T("getenv"), Lua::Value());
+      os.AddValue(_T("remove"), Lua::Value());
+      os.AddValue(_T("rename"), Lua::Value());
+      os.AddValue(_T("tmpname"), Lua::Value());
    }
 
    /// initializes global functions

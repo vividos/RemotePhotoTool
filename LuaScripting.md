@@ -287,6 +287,49 @@ registered for events are run when the main thread gives up its execution.
 When there are no handler registered anymore, the scheduler stops running
 again.
 
+### Sandboxing ###
+
+In order to securely run Lua scripts on your computer, the RemotePhotoTool
+provides almost all of the built-in Lua libraries described in the Lua manual.
+Some of the libraries are not loaded, or some functions of libraries are not
+available, though. This way no Lua script, either written by yourself or
+downloaded from somewhere else can modify and compromise your computer. Note
+that Lua scripts may still be able to damage your camera, so always check
+twice before running a script.
+
+The following Lua libraries are available when running under RemotePhotoTool,
+RemoteScriptingEditor or RemotePhotoToolCmdline:
+
+- Basic library (with restrictions, see below)
+- Coroutine library
+- String library
+- UTF8 library
+- Table library
+- Math library
+- OS library (with restrictions, see below)
+
+The following restrictions are made to the mentioned libraries. The Basic
+library is missing the following functions:
+
+- dofile
+- load
+- loadfile
+
+The OS library is missing the following functions:
+
+- os.execute
+- os.exit
+- os.getenv
+- os.remove
+- os.rename
+- os.tmpname
+
+The following Lua libraries are not available:
+
+- Package library
+- IO library
+- Debug library
+
 ### Camera interface ###
 
 The camera interface is provided as several additional tables and functions
