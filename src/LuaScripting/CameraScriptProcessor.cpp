@@ -91,6 +91,8 @@ public:
    /// cancels all handlers currently registered
    void CancelHandlers()
    {
+      m_spCanonControlLuaBindings->StopTimer();
+
       m_scriptWorkerThread.GetStrand().post([&]()
       {
          m_spSystemLuaBindings->CancelHandlers();
@@ -101,8 +103,6 @@ public:
    /// cleans up bindings
    void CleanupBindings()
    {
-      m_spCanonControlLuaBindings->StopTimer();
-
       m_scriptWorkerThread.GetStrand().post([&]()
       {
          // set these to nil, to allow garbage collection

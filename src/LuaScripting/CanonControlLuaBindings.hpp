@@ -387,6 +387,9 @@ private:
    /// timer for event handling
    boost::asio::deadline_timer m_timerEventHandling;
 
+   /// event that is set when the timer should stop
+   Event m_evtStopTimer;
+
    /// event that is set when the event handling timer has stopped
    Event m_evtTimerStopped;
 };

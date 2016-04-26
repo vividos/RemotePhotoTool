@@ -42,6 +42,7 @@ CanonControlLuaBindings::CanonControlLuaBindings(Lua::State& state, boost::asio:
 :m_state(state),
 m_strand(strand),
 m_timerEventHandling(m_strand.get_io_service()),
+m_evtStopTimer(true, false), // manual-reset event
 m_evtTimerStopped(true, false) // manual-reset event
 {
 }
@@ -356,7 +357,7 @@ void CanonControlLuaBindings::RestartEventTimer()
 
 void CanonControlLuaBindings::OnTimerEventHandling(const boost::system::error_code& error)
 {
-   if (error)
+   if (error || m_evtStopTimer.Wait(0))
    {
       // timer was canceled
       m_evtTimerStopped.Set();
@@ -435,6 +436,7 @@ void CanonControlLuaBindings::CancelHandlers()
 void CanonControlLuaBindings::StopTimer()
 {
    m_timerEventHandling.cancel();
+   m_evtStopTimer.Set();
 
    std::atomic<bool> finished = false;
 

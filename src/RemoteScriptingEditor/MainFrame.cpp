@@ -123,6 +123,8 @@ LRESULT MainFrame::OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/
    m_processor.GetScheduler().SetExecutionStateChangedHandler(
       LuaScheduler::T_fnOnExecutionStateChanged());
 
+   m_processor.Stop();
+
    // unregister message filtering and idle updates
    CMessageLoop* pLoop = _Module.GetMessageLoop();
    ATLASSERT(pLoop != nullptr);
