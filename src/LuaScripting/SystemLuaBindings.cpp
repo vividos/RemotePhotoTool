@@ -131,6 +131,9 @@ std::vector<Lua::Value> SystemLuaBindings::ManualResetEvent::Signal(Lua::State& 
    if (vecParams.size() != 1)
       throw Lua::Exception(_T("invalid number of parameters to Event:set()"), state.GetState(), __FILE__, __LINE__);
 
+   if (vecParams[0].GetType() != Lua::Value::typeTable)
+      throw Lua::Exception(_T("first parameter must be the ManualResetEvent table"), state.GetState(), __FILE__, __LINE__);
+
    Lua::Table manualResetEvent = vecParams[0].Get<Lua::Table>();
 
    CString cszName = manualResetEvent.GetValue(_T("__name")).Get<CString>();
@@ -147,6 +150,9 @@ std::vector<Lua::Value> SystemLuaBindings::ManualResetEvent::Reset(Lua::State& s
 {
    if (vecParams.size() != 1)
       throw Lua::Exception(_T("invalid number of parameters to Event:reset()"), state.GetState(), __FILE__, __LINE__);
+
+   if (vecParams[0].GetType() != Lua::Value::typeTable)
+      throw Lua::Exception(_T("first parameter must be the ManualResetEvent table"), state.GetState(), __FILE__, __LINE__);
 
    Lua::Table manualResetEvent = vecParams[0].Get<Lua::Table>();
 
@@ -177,6 +183,13 @@ std::vector<Lua::Value> SystemLuaBindings::ManualResetEvent::Wait(Lua::State& pa
 
    if (vecParams.size() != 1 && vecParams.size() != 2)
       throw Lua::Exception(_T("invalid number of parameters to Event:wait()"), L, __FILE__, __LINE__);
+
+   if (vecParams[0].GetType() != Lua::Value::typeTable)
+      throw Lua::Exception(_T("first parameter must be the ManualResetEvent table"), paramState.GetState(), __FILE__, __LINE__);
+
+   if (vecParams.size() == 2 &&
+      vecParams[1].GetType() != Lua::Value::typeNumber)
+      throw Lua::Exception(_T("second parameter must be the timeout value in seconds"), paramState.GetState(), __FILE__, __LINE__);
 
    Lua::Table manualResetEvent = vecParams[0].Get<Lua::Table>();
 
