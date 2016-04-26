@@ -125,10 +125,11 @@ LRESULT LuaScriptEditorView::OnChangedText(WORD /*wNotifyCode*/, WORD /*wID*/, H
    return 0;
 }
 
-LRESULT LuaScriptEditorView::OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
+LRESULT LuaScriptEditorView::OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& bHandled)
 {
    KillTimer(IDT_TIMER_SYNTAX_CHECK);
 
+   bHandled = false;
    return 0;
 }
 
