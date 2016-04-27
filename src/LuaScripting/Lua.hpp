@@ -117,7 +117,7 @@ private:
 };
 
 /// \brief Checks stack for consistency in dtor (same number of values on stack)
-/// \details This helper class cann be used to ensure that in a local
+/// \details This helper class can be used to ensure that in a local
 /// function, the Lua stack of values used is balanced, so that a function
 /// doesn't "leak" values on the stack, which may lead to a stack overflow.
 class StackChecker
@@ -173,7 +173,7 @@ private:
    void OnRemoveStackValue(int iStackIndex);
 
 private:
-   /// the state where the value is stored on
+   /// the state where the value is stored in
    State& m_state;
 
    /// absolute stack index, or -1 when detached
@@ -433,8 +433,8 @@ private:
 };
 
 /// \brief Lua userdata
-/// \details represents a memory block that is managed by Lua. When creating
-/// a userdata, the size of the memory block has to be specified.
+/// \details represents a memory block that is managed by Lua. The size of the
+/// memory block has to be specified when creating a userdata value.
 class Userdata
 {
 public:
