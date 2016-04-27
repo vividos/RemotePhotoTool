@@ -132,6 +132,7 @@ private:
 
    BEGIN_MSG_MAP(MainFrame)
       MESSAGE_HANDLER(WM_CREATE, OnCreate)
+      MESSAGE_HANDLER(WM_SHOWWINDOW, OnShowWindow)
       MESSAGE_HANDLER(WM_CLOSE, OnClose)
       MESSAGE_HANDLER(WM_DESTROY, OnDestroy)
       MESSAGE_HANDLER(WM_SIZE, OnSize)
@@ -169,6 +170,8 @@ private:
 
    /// called when main frame is being created
    LRESULT OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+   /// called when window is about to being shown
+   LRESULT OnShowWindow(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
    /// called when main frame is being closed by [x]
    LRESULT OnClose(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
    /// called when main frame is being destroyed

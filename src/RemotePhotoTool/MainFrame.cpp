@@ -124,7 +124,18 @@ LRESULT MainFrame::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/,
    // show the connect dialog
    PostMessage(WM_COMMAND, MAKEWPARAM(ID_HOME_CONNECT, 0), 0);
 
-   RestoreWindowPosition();
+   return 0;
+}
+
+LRESULT MainFrame::OnShowWindow(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
+{
+   static bool s_inited = false;
+
+   if (!s_inited)
+   {
+      s_inited = true;
+      RestoreWindowPosition();
+   }
 
    return 0;
 }

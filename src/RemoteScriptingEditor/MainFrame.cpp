@@ -90,7 +90,18 @@ LRESULT MainFrame::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/,
    UIEnable(ID_SCRIPT_RUN, true);
    UIEnable(ID_SCRIPT_STOP, false);
 
-   RestoreWindowPosition();
+   return 0;
+}
+
+LRESULT MainFrame::OnShowWindow(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
+{
+   static bool s_inited = false;
+
+   if (!s_inited)
+   {
+      s_inited = true;
+      RestoreWindowPosition();
+   }
 
    return 0;
 }
@@ -306,8 +317,6 @@ void MainFrame::RestoreWindowPosition()
    if (m_settings.m_windowPlacementMainFrame.showCmd != 0)
    {
       m_settings.m_windowPlacementMainFrame.Set(m_hWnd);
-
-      ShowWindow(m_settings.m_windowPlacementMainFrame.showCmd);
 
       if (MonitorFromWindow(m_hWnd, MONITOR_DEFAULTTONULL) == NULL)
       {
