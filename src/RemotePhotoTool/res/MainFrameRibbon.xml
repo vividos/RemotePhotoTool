@@ -104,18 +104,14 @@
       <!-- Application Menu -->
       <Ribbon.ApplicationMenu>
         <ApplicationMenu CommandName="AppMenu">
-          <ApplicationMenu.RecentItems>
-            <RecentItems CommandName="RecentFiles" MaxCount="16" EnablePinning="false"/>
-          </ApplicationMenu.RecentItems>
-
-          <MenuGroup Class="StandardItems">
+          <MenuGroup Class="MajorItems">
             <Button CommandName="phototool_HOME_CONNECT"/>
             <Button CommandName="phototool_HOME_SETTINGS"/>
           </MenuGroup>
-          <MenuGroup>
+          <MenuGroup Class="MajorItems">
             <Button CommandName="phototool_PREV_IMAGES_SHOW"/>
           </MenuGroup>
-          <MenuGroup>
+          <MenuGroup Class="MajorItems">
             <Button CommandName="wtl_APP_EXIT"/>
           </MenuGroup>
         </ApplicationMenu>
