@@ -106,6 +106,21 @@ LRESULT MainFrame::OnShowWindow(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lPara
    return 0;
 }
 
+LRESULT MainFrame::OnSetFocus(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+{
+   // Just setting the focus on the view doesn't work, since the frame window
+   // wants to re-set it to the client window (which is the splitter).
+   // And chaining the messages to m_splitter also doesn't work, because it
+   // may not be initialized yet. So call the splitter class handler and
+   // don't let the frame window base class (CFrameWindowImpleBase) set any
+   // focus.
+
+   LRESULT result = m_splitter.OnSetFocus(uMsg, wParam, lParam, bHandled);
+
+   bHandled = true;
+   return result;
+}
+
 LRESULT MainFrame::OnClose(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& bHandled)
 {
    if (!m_view.QueryClose())
@@ -529,6 +544,9 @@ void MainFrame::SetupView()
    m_splitter.SetSinglePaneMode(SPLIT_PANE_NONE);
 
    m_splitter.SetSplitterPosPct(75);
+
+   // when getting focus, activate pane 0
+   m_splitter.SetDefaultActivePane(0);
 
    UISetCheck(ID_VIEW_OUTPUT, true);
 }
