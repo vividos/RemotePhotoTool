@@ -2,35 +2,34 @@
 
   <Application.Commands>
     <!-- RemoteScriptingEditor.rc Commands -->
-    <Command Name="wtl_APP_ABOUT" Symbol="ID_APP_ABOUT" Id="0xE140"/>
-    <Command Name="wtl_APP_EXIT" Symbol="ID_APP_EXIT" Id="0xE141"/>
+    <Command Name="wtl_APP_ABOUT" Symbol="ID_APP_ABOUT" Id="0xE140" Keytip="?" />
+    <Command Name="wtl_APP_EXIT" Symbol="ID_APP_EXIT" Id="0xE141" Keytip="X" />
 
-    <Command Name="wtl_FILE_NEW" Symbol="ID_FILE_NEW" Id="0xE100"/>
-    <Command Name="wtl_FILE_OPEN" Symbol="ID_FILE_OPEN" Id="0xE101"/>
-    <Command Name="wtl_FILE_CLOSE" Symbol="ID_FILE_CLOSE" Id="0xE102"/>
-    <Command Name="wtl_FILE_SAVE" Symbol="ID_FILE_SAVE" Id="0xE103"/>
-    <Command Name="wtl_FILE_SAVE_AS" Symbol="ID_FILE_SAVE_AS" Id="0xE104"/>
+    <Command Name="wtl_FILE_NEW" Symbol="ID_FILE_NEW" Id="0xE100" Keytip="N" />
+    <Command Name="wtl_FILE_OPEN" Symbol="ID_FILE_OPEN" Id="0xE101" Keytip="O" />
+    <Command Name="wtl_FILE_SAVE" Symbol="ID_FILE_SAVE" Id="0xE103" Keytip="S" />
+    <Command Name="wtl_FILE_SAVE_AS" Symbol="ID_FILE_SAVE_AS" Id="0xE104" Keytip="A" />
 
-    <Command Name="wtl_EDIT_CUT" Symbol="ID_EDIT_CUT" Id="0xE123"/>
-    <Command Name="wtl_EDIT_COPY" Symbol="ID_EDIT_COPY" Id="0xE122"/>
-    <Command Name="wtl_EDIT_PASTE" Symbol="ID_EDIT_PASTE" Id="0xE125"/>
-    <Command Name="wtl_EDIT_FIND" Symbol="ID_EDIT_FIND" Id="0xE124"/>
-    <Command Name="wtl_EDIT_REPEAT" Symbol="ID_EDIT_REPEAT" Id="0xE128"/>
-    <Command Name="wtl_EDIT_REPLACE" Symbol="ID_EDIT_REPLACE" Id="0xE129"/>
-    <Command Name="wtl_EDIT_SELECT_ALL" Symbol="ID_EDIT_SELECT_ALL" Id="0xE12A"/>
-    <Command Name="wtl_EDIT_UNDO" Symbol="ID_EDIT_UNDO" Id="0xE12B"/>
-    <Command Name="wtl_EDIT_REDO" Symbol="ID_EDIT_REDO" Id="0xE12C"/>
+    <Command Name="wtl_EDIT_CUT" Symbol="ID_EDIT_CUT" Id="0xE123" Keytip="X" />
+    <Command Name="wtl_EDIT_COPY" Symbol="ID_EDIT_COPY" Id="0xE122" Keytip="C" />
+    <Command Name="wtl_EDIT_PASTE" Symbol="ID_EDIT_PASTE" Id="0xE125" Keytip="V" />
+    <Command Name="wtl_EDIT_FIND" Symbol="ID_EDIT_FIND" Id="0xE124" Keytip="F" />
+    <Command Name="wtl_EDIT_REPEAT" Symbol="ID_EDIT_REPEAT" Id="0xE128" Keytip="E" />
+    <Command Name="wtl_EDIT_REPLACE" Symbol="ID_EDIT_REPLACE" Id="0xE129" Keytip="H" />
+    <Command Name="wtl_EDIT_SELECT_ALL" Symbol="ID_EDIT_SELECT_ALL" Id="0xE12A" Keytip="L" />
+    <Command Name="wtl_EDIT_UNDO" Symbol="ID_EDIT_UNDO" Id="0xE12B" Keytip="Z" />
+    <Command Name="wtl_EDIT_REDO" Symbol="ID_EDIT_REDO" Id="0xE12C"  Keytip="D" />
 
-    <Command Name="wtl_SCRIPT_RUN" Symbol="ID_SCRIPT_RUN" Id="32780"/>
-    <Command Name="wtl_SCRIPT_STOP" Symbol="ID_SCRIPT_STOP" Id="32781"/>
+    <Command Name="wtl_SCRIPT_RUN" Symbol="ID_SCRIPT_RUN" Id="32780" Keytip="R" />
+    <Command Name="wtl_SCRIPT_STOP" Symbol="ID_SCRIPT_STOP" Id="32781" Keytip="T" />
 
     <Command Name="RecentFiles" Symbol="ID_RIBBON_RECENT_FILES" LabelTitle="Recent Files" />
 
-    <Command Name="wtl_VIEW_RIBBON" Symbol="ID_VIEW_RIBBON" Id="0xE804"/>
-    <Command Name="wtl_VIEW_OUTPUT" Symbol="ID_VIEW_OUTPUT" Id="32782"/>
+    <Command Name="wtl_VIEW_RIBBON" Symbol="ID_VIEW_RIBBON" Id="0xE804" Keytip="B" />
+    <Command Name="wtl_VIEW_OUTPUT" Symbol="ID_VIEW_OUTPUT" Id="32782" Keytip="P" />
 
     <!-- Tabs -->
-    <Command Name="TabHome" Symbol="ID_TAB_HOME" LabelTitle="Home" />
+    <Command Name="TabHome" Symbol="ID_TAB_HOME" LabelTitle="Home" Keytip="H" />
 
     <!-- Groups -->
     <Command Name="GroupFile" Symbol="ID_GROUP_FILE" LabelTitle="File" />
