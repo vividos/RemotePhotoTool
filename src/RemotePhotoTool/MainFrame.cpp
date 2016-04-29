@@ -585,7 +585,12 @@ HBITMAP MainFrame::OnRibbonQueryItemImage(UINT32 uCtrlID, UINT32 uItem)
    RibbonUI::ICtrl& ctrl = GetRibbonCtrl(uCtrlID);
    IRibbonCombobox* pCombo = dynamic_cast<IRibbonCombobox*>(&ctrl);
    if (pCombo == nullptr)
+   {
+      if (uCtrlID == ID_CAMERA_SETTINGS_IMAGE_FORMAT)
+         return DefRibbonQueryItemImage(uCtrlID - 1, 0);
+
       return DefRibbonQueryItemImage(uCtrlID, uItem);
+   }
 
    return pCombo->OnRibbonQueryItemImage(uItem);
 }
