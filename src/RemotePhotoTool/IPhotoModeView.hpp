@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2016 Michael Fink
 //
 /// \file IPhotoModeView.hpp Interface for photo mode views
 //
@@ -18,9 +18,6 @@ public:
 
    /// creates view
    virtual HWND CreateView(HWND hWndParent) = 0;
-
-   /// sets source device
-   virtual void SetSourceDevice(std::shared_ptr<SourceDevice> spSourceDevice) = 0;
 
    /// translates message
    virtual BOOL PreTranslateMessage(MSG* pMsg) = 0;

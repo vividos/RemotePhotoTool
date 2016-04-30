@@ -66,11 +66,10 @@ public:
    /// sets remote release control
    void SetRemoteReleaseControl(std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl)
    {
-      ATLASSERT(spRemoteReleaseControl != nullptr);
-
       m_spRemoteReleaseControl = spRemoteReleaseControl;
 
-      m_uiPropertyId = m_spRemoteReleaseControl->MapImagePropertyTypeToId(m_enImagePropertyType);
+      if (m_spRemoteReleaseControl != nullptr)
+         m_uiPropertyId = m_spRemoteReleaseControl->MapImagePropertyTypeToId(m_enImagePropertyType);
    }
 
    // virtual methods from IImagePropertyControl
@@ -81,7 +80,8 @@ public:
    /// updates list of values
    virtual void UpdateValuesList() override
    {
-      ATLASSERT(m_spRemoteReleaseControl != nullptr);
+      if (m_spRemoteReleaseControl == nullptr)
+         return;
 
       LightweightMutex::LockType lock(m_mtxValues);
 
@@ -106,7 +106,8 @@ public:
    /// updates current value
    virtual void UpdateValue() override
    {
-      ATLASSERT(m_spRemoteReleaseControl != nullptr);
+      if (m_spRemoteReleaseControl == nullptr)
+         return;
 
       CString cszPropertyName;
 
@@ -226,7 +227,8 @@ private:
    /// sets new image property
    void SetImageProperty(ImageProperty& imageProperty)
    {
-      ATLASSERT(m_spRemoteReleaseControl != nullptr);
+      if (m_spRemoteReleaseControl = nullptr)
+         return;
 
       try
       {

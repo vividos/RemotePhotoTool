@@ -39,11 +39,6 @@ private:
       return CDialogImpl<StandardPhotoModeView>::Create(hWndParent);
    }
 
-   virtual void SetSourceDevice(std::shared_ptr<SourceDevice> spSourceDevice) override
-   {
-      m_spSourceDevice = spSourceDevice;
-   }
-
    virtual BOOL PreTranslateMessage(MSG* pMsg) override { return CWindow::IsDialogMessage(pMsg); }
 
    virtual void DestroyView() override
@@ -103,9 +98,6 @@ private:
    IPhotoModeViewHost& m_host;
 
    // model
-
-   /// source device
-   std::shared_ptr<SourceDevice> m_spSourceDevice;
 
    /// remote release control
    std::shared_ptr<RemoteReleaseControl> m_spRemoteReleaseControl;

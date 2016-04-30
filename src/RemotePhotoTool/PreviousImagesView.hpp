@@ -36,10 +36,6 @@ private:
 
    virtual HWND CreateView(HWND hWndParent) override;
 
-   virtual void SetSourceDevice(std::shared_ptr<SourceDevice> /*spSourceDevice*/) override
-   {
-   }
-
    virtual BOOL PreTranslateMessage(MSG* /*pMsg*/) override
    {
       return FALSE;

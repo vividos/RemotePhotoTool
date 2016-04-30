@@ -20,11 +20,9 @@
 #include "ShutterReleaseSettings.hpp"
 #include "PreviousImagesManager.hpp"
 #include "RemoteReleaseControl.hpp"
+#include "CameraConnectionManager.hpp"
 #include <atlsplit.h>
 #include <atlctrlx.h>
-
-// forward references
-class SourceDevice;
 
 /// \brief application main frame
 /// \details uses ribbon for commands
@@ -43,9 +41,6 @@ public:
    MainFrame();
    /// dtor
    virtual ~MainFrame() throw();
-
-   /// returns if a camera is connected
-   bool IsConnected() const throw() { return m_spSourceDevice != nullptr; }
 
    DECLARE_FRAME_WND_CLASS(NULL, IDR_MAINFRAME)
 
@@ -243,7 +238,9 @@ private:
 private:
    // virtual methods from IPhotoModeViewHost
 
-   virtual std::shared_ptr<RemoteReleaseControl> StartRemoteReleaseControl(bool bStart) override;
+   virtual std::shared_ptr<SourceDevice> GetSourceDevice() override;
+
+   virtual std::shared_ptr<RemoteReleaseControl> GetRemoteReleaseControl() override;
 
    virtual AppSettings& GetAppSettings() throw() override { return m_settings; }
 
@@ -281,11 +278,20 @@ private:
    /// sets new photo mode view
    void SetNewView(T_enViewType enViewType);
 
+   /// disconnects camera and updates UI
+   void DisconnectCamera();
+
    /// shows or hides viewfinder
    void ShowViewfinder(bool bShow);
 
    /// enables or disables photo modes (and live view)
    void EnablePhotoModes(bool bEnable);
+
+   /// enables or disables viewfinder UI element, depending on if it's available
+   void EnableViewfinder(bool bEnable);
+
+   /// enables or disables viewfinder ribbon commands
+   void EnableViewfinderCommands(bool bEnable);
 
    /// enables or disables scripting related UI elements
    void EnableScriptingUI(bool bScripting);
@@ -304,6 +310,9 @@ private:
 
    /// sets up image property manager
    void SetupImagePropertyManager();
+
+   /// cleans up image property manager
+   void CleanupImagePropertyManager();
 
    /// updates values that depend on shooting mode changes
    void UpdateShootingModeDependentValues();
@@ -388,17 +397,14 @@ private:
    /// application settings
    AppSettings m_settings;
 
+   /// manager for camera connection
+   CameraConnectionManager m_connection;
+
    /// image file manager
    std::unique_ptr<ImageFileManager> m_upImageFileManager;
 
    /// previous images manager
    PreviousImagesManager m_previousImagesManager;
-
-   /// current source device
-   std::shared_ptr<SourceDevice> m_spSourceDevice;
-
-   /// current remote release control
-   std::shared_ptr<RemoteReleaseControl> m_spRemoteReleaseControl;
 
    /// handler id for state event handler
    int m_iStateEventHandlerId;

@@ -38,11 +38,6 @@ private:
       return CDialogImpl<HDRPanoramaPhotoModeView>::Create(hWndParent);
    }
 
-   virtual void SetSourceDevice(std::shared_ptr<SourceDevice> spSourceDevice) override
-   {
-      m_spSourceDevice = spSourceDevice;
-   }
-
    virtual BOOL PreTranslateMessage(MSG* pMsg) override { return CWindow::IsDialogMessage(pMsg); }
 
    virtual void DestroyView() override
@@ -121,9 +116,6 @@ private:
 
    /// photo mode manager
    HDRPhotoModeManager m_manager;
-
-   /// source device
-   std::shared_ptr<SourceDevice> m_spSourceDevice;
 
    /// remote release control
    std::shared_ptr<RemoteReleaseControl> m_spRemoteReleaseControl;

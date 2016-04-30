@@ -32,8 +32,10 @@ void DevicePropertyView::Init()
 
 void DevicePropertyView::RefreshList()
 {
-   ATLASSERT(m_spSourceDevice != nullptr);
-   SourceDevice& sd = *m_spSourceDevice;
+   std::shared_ptr<SourceDevice> spSourceDevice = m_host.GetSourceDevice();
+
+   ATLASSERT(spSourceDevice != nullptr);
+   SourceDevice& sd = *spSourceDevice;
 
    SetRedraw(FALSE);
 

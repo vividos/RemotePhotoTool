@@ -121,6 +121,9 @@
     <ClCompile Include="LuaScriptViewerView.cpp">
       <Filter>UI Files\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CameraConnectionManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -236,6 +239,9 @@
     </ClInclude>
     <ClInclude Include="WindowPlacement.hpp">
       <Filter>UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraConnectionManager.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

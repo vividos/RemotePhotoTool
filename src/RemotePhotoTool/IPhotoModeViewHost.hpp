@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2015 Michael Fink
+// Copyright (C) 2008-2016 Michael Fink
 //
 /// \file IPhotoModeViewHost.hpp Interface for host of photo mode views
 //
@@ -21,8 +21,11 @@ public:
    /// dtor
    virtual ~IPhotoModeViewHost() throw() { }
 
-   /// start/stop remote release control
-   virtual std::shared_ptr<RemoteReleaseControl> StartRemoteReleaseControl(bool bStart) = 0;
+   /// returns source device
+   virtual std::shared_ptr<SourceDevice> GetSourceDevice() = 0;
+
+   /// returns remote release control
+   virtual std::shared_ptr<RemoteReleaseControl> GetRemoteReleaseControl() = 0;
 
    /// returns application settings
    virtual AppSettings& GetAppSettings() throw() = 0;

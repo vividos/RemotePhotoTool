@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2016 Michael Fink
 //
 /// \file StandardPhotoModeView.cpp View for taking standard photos
 //
@@ -30,13 +30,7 @@ LRESULT StandardPhotoModeView::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LP
 {
    DoDataExchange(DDX_LOAD);
 
-   m_spRemoteReleaseControl = m_host.StartRemoteReleaseControl(true);
-   if (m_spRemoteReleaseControl == nullptr)
-   {
-      AtlMessageBox(m_hWnd, _T("Couldn't start remote release control."), IDR_MAINFRAME, MB_OK);
-      DestroyWindow();
-      return 0;
-   }
+   m_spRemoteReleaseControl = m_host.GetRemoteReleaseControl();
 
    SetupImagePropertyManager();
 

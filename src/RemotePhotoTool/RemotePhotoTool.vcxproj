@@ -102,6 +102,7 @@
     <ClCompile Include="AboutDlg.cpp" />
     <ClCompile Include="App.cpp" />
     <ClCompile Include="AppSettings.cpp" />
+    <ClCompile Include="CameraConnectionManager.cpp" />
     <ClCompile Include="CameraInfoDlg.cpp" />
     <ClCompile Include="ConnectCameraDlg.cpp" />
     <ClCompile Include="DevicePropertyView.cpp" />
@@ -136,6 +137,7 @@
     <ClInclude Include="App.hpp" />
     <ClInclude Include="AppSettings.hpp" />
     <ClInclude Include="BlankView.hpp" />
+    <ClInclude Include="CameraConnectionManager.hpp" />
     <ClInclude Include="CameraErrorDlg.hpp" />
     <ClInclude Include="CameraInfoDlg.hpp" />
     <ClInclude Include="ConnectCameraDlg.hpp" />

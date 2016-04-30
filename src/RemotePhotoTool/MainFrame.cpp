@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2016 Michael Fink
 //
 /// \file MainFrame.cpp Main application frame
 //
@@ -70,7 +70,7 @@ BOOL MainFrame::OnIdle()
    bool bConnected =
       m_enCurrentViewType != viewBlank &&
       m_enCurrentViewType != viewPreviousImages &&
-      m_spSourceDevice != nullptr;
+      m_connection.IsConnected();
 
    SetRibbonContextAvail(ID_TAB_GROUP_CONTEXT_CAMERA, bConnected ?
       UI_CONTEXTAVAILABILITY_AVAILABLE : UI_CONTEXTAVAILABILITY_NOTAVAILABLE);
@@ -113,13 +113,9 @@ LRESULT MainFrame::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/,
       UISetCheck(ID_VIEW_RIBBON, bRibbonUI);
    }
 
-   UIEnable(ID_VIEWFINDER_SHOW, false);
-
    UISetCheck(ID_CAMERA_SETTINGS_SAVETO_BOTH, true);
 
-   EnablePhotoModes(false);
-   EnableScriptingUI(false);
-   EnableCameraUI(false);
+   DisconnectCamera(); // to init UI states
 
    // show the connect dialog
    PostMessage(WM_COMMAND, MAKEWPARAM(ID_HOME_CONNECT, 0), 0);
@@ -142,7 +138,9 @@ LRESULT MainFrame::OnShowWindow(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lPara
 
 LRESULT MainFrame::OnClose(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& bHandled)
 {
-   if (this->m_spRemoteReleaseControl != NULL)
+   bHandled = false; // let app process message
+
+   if (m_connection.IsConnected())
    {
       int iRet = AtlMessageBox(m_hWnd, _T("You are currently connected to a camera. Really quit RemotePhotoTool?"),
          IDR_MAINFRAME, MB_YESNO | MB_ICONQUESTION);
@@ -151,9 +149,7 @@ LRESULT MainFrame::OnClose(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, 
          return 0;
    }
 
-   EnableCameraUI(false);
-
-   bHandled = false; // let app process message
+   DisconnectCamera();
 
    if (RunTimeHelper::IsRibbonUIAvailable())
    {
@@ -252,14 +248,7 @@ LRESULT MainFrame::OnHomeConnect(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWnd
    m_upView.reset(new BlankView);
    m_enCurrentViewType = viewBlank;
 
-   ShowViewfinder(false);
-
-   m_spRemoteReleaseControl.reset();
-   m_spSourceDevice.reset();
-
-   EnablePhotoModes(false);
-   EnableScriptingUI(false);
-   EnableCameraUI(false);
+   DisconnectCamera();
 
    m_hWndView = m_upView->CreateView(m_splitter);
 
@@ -275,9 +264,23 @@ LRESULT MainFrame::OnHomeConnect(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWnd
          return 0;
 
       // set new device remote connection
-      m_spSourceDevice = dlg.GetSourceDevice();
-      if (m_spSourceDevice == nullptr)
+      std::shared_ptr<SourceDevice> spSourceDevice = dlg.GetSourceDevice();
+
+      if (spSourceDevice == nullptr)
          return 0;
+
+      if (m_connection.Connect(m_hWnd, spSourceDevice))
+      {
+         EnableCameraUI(true);
+         EnableViewfinder(true);
+
+         // add event handler
+         m_iStateEventHandlerId = m_connection.GetRemoteReleaseControl()->AddStateEventHandler(
+            std::bind(&MainFrame::OnStateEvent, this, std::placeholders::_1, std::placeholders::_2));
+
+         m_iDownloadEventHandlerId = m_connection.GetRemoteReleaseControl()->AddDownloadEventHandler(
+            std::bind(&MainFrame::OnDownloadEvent, this, std::placeholders::_1, std::placeholders::_2));
+      }
    }
    catch (...)
    {
@@ -286,10 +289,6 @@ LRESULT MainFrame::OnHomeConnect(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWnd
 
    // start with standard view
    SetNewView(T_enViewType::viewStandard);
-
-   // enable viewfinder button when source device is capable
-   bool bViewFinderAvail = m_spSourceDevice->GetDeviceCapability(SourceDevice::capRemoteViewfinder);
-   UIEnable(ID_VIEWFINDER_SHOW, bViewFinderAvail);
 
    UpdateTitle();
 
@@ -353,7 +352,7 @@ LRESULT MainFrame::OnCameraSettingsSaveToSelChanged(UI_EXECUTIONVERB verb, WORD 
 {
    if (verb == UI_EXECUTIONVERB_EXECUTE &&
       uSel != UI_COLLECTION_INVALIDINDEX &&
-      m_spRemoteReleaseControl != nullptr)
+      m_connection.IsConnected())
    {
       ShutterReleaseSettings::T_enSaveTarget enSaveTarget =
          static_cast<ShutterReleaseSettings::T_enSaveTarget>(uSel + 1);
@@ -390,12 +389,12 @@ void MainFrame::SetCameraSettingsSaveTo(ShutterReleaseSettings::T_enSaveTarget e
 {
    m_releaseSettings.SaveTarget(enSaveTarget);
 
-   if (m_spRemoteReleaseControl == nullptr)
+   if (!m_connection.IsConnected())
       return;
 
    try
    {
-      m_spRemoteReleaseControl->SetReleaseSettings(m_releaseSettings);
+      m_connection.GetRemoteReleaseControl()->SetReleaseSettings(m_releaseSettings);
    }
    catch (CameraException& ex)
    {
@@ -419,13 +418,13 @@ LRESULT MainFrame::OnCameraSettingsImageFormatSelChanged(UI_EXECUTIONVERB verb, 
    if (verb == UI_EXECUTIONVERB_EXECUTE &&
       uSel != UI_COLLECTION_INVALIDINDEX &&
       !m_vecAllImageFormats.empty() &&
-      m_spRemoteReleaseControl != nullptr)
+      m_connection.IsConnected())
    {
       size_t indexImageFormat = uSel;
 
       const ImageProperty& imageFormat = m_vecAllImageFormats[indexImageFormat];
 
-      m_spRemoteReleaseControl->SetImageProperty(imageFormat);
+      m_connection.GetRemoteReleaseControl()->SetImageProperty(imageFormat);
    }
 
    return 0;
@@ -609,11 +608,11 @@ void MainFrame::UpdateTitle()
    CString cszTitle(MAKEINTRESOURCE(IDR_MAINFRAME));
 
    // connected?
-   if (IsConnected())
+   if (m_connection.IsConnected())
    {
       // app title + camera model name
       cszTitle.AppendFormat(_T(" - %s"),
-         m_spSourceDevice->ModelName().GetString());
+         m_connection.GetSourceDevice()->ModelName().GetString());
    }
 
    // just app title
@@ -733,64 +732,14 @@ void MainFrame::SetupStatusBar()
    SetPaneWidths(arrWidths, sizeof(arrWidths) / sizeof(int));
 }
 
-std::shared_ptr<RemoteReleaseControl> MainFrame::StartRemoteReleaseControl(bool bStart)
+std::shared_ptr<SourceDevice> MainFrame::GetSourceDevice()
 {
-   ATLASSERT(m_spSourceDevice != nullptr); // must be connected to device!
-   if (m_spSourceDevice == nullptr)
-      return std::shared_ptr<RemoteReleaseControl>();
+   return m_connection.GetSourceDevice();
+}
 
-   if (bStart)
-   {
-      if (m_spRemoteReleaseControl == nullptr)
-      {
-         try
-         {
-            m_spRemoteReleaseControl = m_spSourceDevice->EnterReleaseControl();
-
-            EnableCameraUI(true);
-
-            // check viewfinder
-            bool bAvailViewfinder = m_spRemoteReleaseControl->GetCapability(RemoteReleaseControl::capViewfinder);
-
-            UIEnable(ID_VIEWFINDER_SHOW, bAvailViewfinder, true);
-
-            // add event handler
-            m_iStateEventHandlerId = m_spRemoteReleaseControl->AddStateEventHandler(
-               std::bind(&MainFrame::OnStateEvent, this, std::placeholders::_1, std::placeholders::_2));
-
-            m_iDownloadEventHandlerId = m_spRemoteReleaseControl->AddDownloadEventHandler(
-               std::bind(&MainFrame::OnDownloadEvent, this, std::placeholders::_1, std::placeholders::_2));
-         }
-         catch (const CameraException& ex)
-         {
-            CameraErrorDlg dlg(_T("Couldn't start remote release connection"), ex);
-            dlg.DoModal(m_hWnd);
-
-            m_spRemoteReleaseControl.reset();
-
-            UIEnable(ID_VIEWFINDER_SHOW, false, true);
-            EnableCameraUI(false);
-         }
-      }
-   }
-   else
-   {
-      if (m_spRemoteReleaseControl != nullptr)
-      {
-         m_spRemoteReleaseControl->RemoveStateEventHandler(m_iStateEventHandlerId);
-         m_iStateEventHandlerId = -1;
-
-         m_spRemoteReleaseControl->RemoveDownloadEventHandler(m_iDownloadEventHandlerId);
-         m_iDownloadEventHandlerId = -1;
-      }
-
-      m_spRemoteReleaseControl.reset();
-
-      UIEnable(ID_VIEWFINDER_SHOW, false, true);
-      EnableCameraUI(false);
-   }
-
-   return m_spRemoteReleaseControl;
+std::shared_ptr<RemoteReleaseControl> MainFrame::GetRemoteReleaseControl()
+{
+   return m_connection.GetRemoteReleaseControl();
 }
 
 void MainFrame::SetStatusText(const CString& cszText, unsigned int uiPane)
@@ -811,6 +760,7 @@ void MainFrame::LockActionMode(bool bLock)
    }
 
    EnablePhotoModes(!bLock);
+   EnableViewfinder(!bLock);
 }
 
 void MainFrame::EnableUI(int nID, bool bEnable)
@@ -839,7 +789,6 @@ void MainFrame::SetNewView(T_enViewType enViewType)
    }
 
    m_upView = ViewManager::CreateView(*this, enViewType);
-   m_upView->SetSourceDevice(m_spSourceDevice);
 
    m_hWndView = m_upView->CreateView(m_splitter);
    if (m_hWndView == nullptr)
@@ -865,6 +814,7 @@ void MainFrame::SetNewView(T_enViewType enViewType)
       enViewType != viewPreviousImages;
 
    EnablePhotoModes(bEnable);
+   EnableViewfinder(bEnable);
 
    bool bScripting = enViewType == viewScripting;
    EnableScriptingUI(bScripting);
@@ -877,24 +827,10 @@ void MainFrame::SetNewView(T_enViewType enViewType)
 
 void MainFrame::ShowViewfinder(bool bShow)
 {
-   UIEnable(ID_VIEWFINDER_AUTO_FOCUS, bShow);
-   UIEnable(ID_VIEWFINDER_AUTO_WB, bShow);
-   UIEnable(ID_VIEWFINDER_ZOOM_IN, bShow);
-   UIEnable(ID_VIEWFINDER_ZOOM_OUT, bShow);
-   UIEnable(ID_VIEWFINDER_LINES_MODE, bShow);
-   UIEnable(ID_VIEWFINDER_LINES_MODE_NONE, bShow);
-   UIEnable(ID_VIEWFINDER_LINES_MODE_RULEOFTHIRDS, bShow);
-   UIEnable(ID_VIEWFINDER_LINES_MODE_GOLDENRATIO, bShow);
-   UIEnable(ID_VIEWFINDER_OUTPUT_TYPE, bShow);
-   UIEnable(ID_VIEWFINDER_OUTPUT_TYPE_LCD, bShow);
-   UIEnable(ID_VIEWFINDER_OUTPUT_TYPE_VIDEO_OUT, bShow);
-   UIEnable(ID_VIEWFINDER_OUTPUT_TYPE_OFF, bShow);
-   UIEnable(ID_VIEWFINDER_SHOW_OVEREXPOSED, bShow);
-   UIEnable(ID_VIEWFINDER_SHOW_OVERLAY_IMAGE, bShow);
-   UIEnable(ID_VIEWFINDER_HISTOGRAM, bShow);
-
    if (!bShow)
    {
+      EnableViewfinderCommands(false);
+
       if (m_upViewFinderView == nullptr)
          return;
 
@@ -910,39 +846,57 @@ void MainFrame::ShowViewfinder(bool bShow)
       return;
    }
 
-   std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl = StartRemoteReleaseControl(true);
-   if (spRemoteReleaseControl == nullptr)
-      return; // couldn't start release control
+   std::shared_ptr<Viewfinder> spViewfinder = m_connection.StartViewfinder(m_hWnd);
 
-   bool bAvailViewfinder = m_spRemoteReleaseControl->GetCapability(RemoteReleaseControl::capViewfinder);
-   if (!bAvailViewfinder)
-      return; // viewfinder not avail; button should be disabled already, though
-
-   if (m_upViewFinderView != nullptr)
-      m_upViewFinderView->SetViewfinder(std::shared_ptr<Viewfinder>());
-
-   m_upViewFinderView.reset(new ViewFinderView(*this, m_spRemoteReleaseControl));
-   m_upViewFinderView->Create(m_splitter);
-
-   try
+   if (spViewfinder != nullptr)
    {
-      std::shared_ptr<Viewfinder> spViewfinder = m_spRemoteReleaseControl->StartViewfinder();
+      EnableViewfinderCommands(true);
 
+      if (m_upViewFinderView != nullptr)
+         m_upViewFinderView->SetViewfinder(std::shared_ptr<Viewfinder>());
+
+      m_upViewFinderView.reset(new ViewFinderView(*this, m_connection.GetRemoteReleaseControl()));
+      m_upViewFinderView->Create(m_splitter);
       m_upViewFinderView->SetViewfinder(spViewfinder);
+
+      m_splitter.SetSplitterPanes(m_hWndView, *m_upViewFinderView);
+      m_splitter.SetSinglePaneMode(SPLIT_PANE_NONE);
+      m_splitter.SetSplitterPosPct(30);
+
+      SetRibbonContextAvail(ID_TAB_GROUP_CONTEXT_VIEWFINDER, UI_CONTEXTAVAILABILITY_ACTIVE);
    }
-   catch (const CameraException& ex)
+   else
    {
-      CameraErrorDlg dlg(_T("Couldn't start viewfinder"), ex);
-      dlg.DoModal(m_hWnd);
+      EnableViewfinderCommands(true);
+   }
+}
 
-      return;
+void MainFrame::DisconnectCamera()
+{
+   ShowViewfinder(false);
+
+   if (m_connection.IsConnected())
+   {
+      std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl =
+         m_connection.GetRemoteReleaseControl();
+
+      spRemoteReleaseControl->RemoveStateEventHandler(m_iStateEventHandlerId);
+      m_iStateEventHandlerId = -1;
+
+      spRemoteReleaseControl->RemoveDownloadEventHandler(m_iDownloadEventHandlerId);
+      m_iDownloadEventHandlerId = -1;
+
+      CleanupImagePropertyManager();
+
+      m_connection.Disconnect();
    }
 
-   m_splitter.SetSplitterPanes(m_hWndView, *m_upViewFinderView);
-   m_splitter.SetSinglePaneMode(SPLIT_PANE_NONE);
-   m_splitter.SetSplitterPosPct(30);
+   EnablePhotoModes(false);
+   EnableViewfinder(false);
+   EnableScriptingUI(false);
+   EnableCameraUI(false);
 
-   SetRibbonContextAvail(ID_TAB_GROUP_CONTEXT_VIEWFINDER, UI_CONTEXTAVAILABILITY_ACTIVE);
+   UpdateTitle();
 }
 
 void MainFrame::EnablePhotoModes(bool bEnable)
@@ -956,17 +910,39 @@ void MainFrame::EnablePhotoModes(bool bEnable)
    UIEnable(ID_PHOTO_MODE_SCRIPTING, true); // scripting is always enabled
    UIEnable(ID_PHOTO_MODE_DEVICE_PROPERTIES, bEnable);
    UIEnable(ID_PHOTO_MODE_IMAGE_PROPERTIES, bEnable);
+}
 
+void MainFrame::EnableViewfinder(bool bEnable)
+{
    if (bEnable)
    {
       bool bViewFinderAvail =
-         m_spSourceDevice != nullptr &&
-         m_spSourceDevice->GetDeviceCapability(SourceDevice::capRemoteViewfinder);
+         m_connection.IsConnected() &&
+         m_connection.GetRemoteReleaseControl()->GetCapability(RemoteReleaseControl::capViewfinder);
 
       UIEnable(ID_VIEWFINDER_SHOW, bViewFinderAvail);
    }
    else
       UIEnable(ID_VIEWFINDER_SHOW, false);
+}
+
+void MainFrame::EnableViewfinderCommands(bool bEnable)
+{
+   UIEnable(ID_VIEWFINDER_AUTO_FOCUS, bEnable);
+   UIEnable(ID_VIEWFINDER_AUTO_WB, bEnable);
+   UIEnable(ID_VIEWFINDER_ZOOM_IN, bEnable);
+   UIEnable(ID_VIEWFINDER_ZOOM_OUT, bEnable);
+   UIEnable(ID_VIEWFINDER_LINES_MODE, bEnable);
+   UIEnable(ID_VIEWFINDER_LINES_MODE_NONE, bEnable);
+   UIEnable(ID_VIEWFINDER_LINES_MODE_RULEOFTHIRDS, bEnable);
+   UIEnable(ID_VIEWFINDER_LINES_MODE_GOLDENRATIO, bEnable);
+   UIEnable(ID_VIEWFINDER_OUTPUT_TYPE, bEnable);
+   UIEnable(ID_VIEWFINDER_OUTPUT_TYPE_LCD, bEnable);
+   UIEnable(ID_VIEWFINDER_OUTPUT_TYPE_VIDEO_OUT, bEnable);
+   UIEnable(ID_VIEWFINDER_OUTPUT_TYPE_OFF, bEnable);
+   UIEnable(ID_VIEWFINDER_SHOW_OVEREXPOSED, bEnable);
+   UIEnable(ID_VIEWFINDER_SHOW_OVERLAY_IMAGE, bEnable);
+   UIEnable(ID_VIEWFINDER_HISTOGRAM, bEnable);
 }
 
 void MainFrame::EnableScriptingUI(bool bScripting)
@@ -995,21 +971,24 @@ void MainFrame::EnableCameraUI(bool bEnable)
    UIEnable(ID_CAMERA_SETTINGS_SAVETO_BOTH, bEnable);
    UIEnable(ID_CAMERA_SETTINGS_IMAGE_FORMAT, bEnable);
 
-   if (bEnable && m_spRemoteReleaseControl != nullptr)
+   if (bEnable && m_connection.IsConnected())
    {
       SetupImagePropertyManager();
 
+      std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl =
+         m_connection.GetRemoteReleaseControl();
+
       // shooting mode change supported?
-      bool bChangePossible = m_spRemoteReleaseControl->GetCapability(RemoteReleaseControl::capChangeShootingMode);
+      bool bChangePossible = spRemoteReleaseControl->GetCapability(RemoteReleaseControl::capChangeShootingMode);
       UIEnable(ID_CAMERA_SHOOTING_MODE, bChangePossible);
 
       // wait for changes in shooting mode property
-      m_iImagePropertyHandlerId = m_spRemoteReleaseControl->AddPropertyEventHandler(
+      m_iImagePropertyHandlerId = spRemoteReleaseControl->AddPropertyEventHandler(
          std::bind(&MainFrame::OnUpdatedImageProperty, this, std::placeholders::_1, std::placeholders::_2));
 
       // update list of image formats
-      unsigned int uiPropertyId = m_spRemoteReleaseControl->MapImagePropertyTypeToId(T_enImagePropertyType::propImageFormat);
-      m_spRemoteReleaseControl->EnumImagePropertyValues(uiPropertyId, m_vecAllImageFormats);
+      unsigned int uiPropertyId = spRemoteReleaseControl->MapImagePropertyTypeToId(T_enImagePropertyType::propImageFormat);
+      spRemoteReleaseControl->EnumImagePropertyValues(uiPropertyId, m_vecAllImageFormats);
 
       size_t maxImageFormat = m_vecAllImageFormats.size();
       m_cbCameraSettingsImageFormat.Resize(maxImageFormat);
@@ -1024,10 +1003,9 @@ void MainFrame::EnableCameraUI(bool bEnable)
 
    if (!bEnable)
    {
-      if (m_iImagePropertyHandlerId != -1 && m_spRemoteReleaseControl != nullptr)
-         m_spRemoteReleaseControl->RemovePropertyEventHandler(m_iImagePropertyHandlerId);
-
-      m_upImagePropertyValueManager.reset();
+      if (m_iImagePropertyHandlerId != -1 &&
+         m_connection.IsConnected())
+         m_connection.GetRemoteReleaseControl()->RemovePropertyEventHandler(m_iImagePropertyHandlerId);
 
       m_vecAllImageFormats.clear();
    }
@@ -1059,8 +1037,8 @@ void MainFrame::RestoreWindowPosition()
 void MainFrame::OnUpdatedImageProperty(RemoteReleaseControl::T_enPropertyEvent enPropertyEvent, unsigned int uiValue)
 {
    if (enPropertyEvent == RemoteReleaseControl::propEventPropertyChanged &&
-      m_spRemoteReleaseControl != nullptr &&
-      uiValue == m_spRemoteReleaseControl->MapImagePropertyTypeToId(propShootingMode))
+      m_connection.IsConnected() &&
+      uiValue == m_connection.GetRemoteReleaseControl()->MapImagePropertyTypeToId(propShootingMode))
    {
       // shooting mode has changed; update some fields
       UpdateShootingModeDependentValues();
@@ -1069,13 +1047,15 @@ void MainFrame::OnUpdatedImageProperty(RemoteReleaseControl::T_enPropertyEvent e
 
 void MainFrame::SetupImagePropertyManager()
 {
-   m_upImagePropertyValueManager.reset(new ImagePropertyValueManager(*m_spRemoteReleaseControl));
+   std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl = m_connection.GetRemoteReleaseControl();
 
-   m_cbCameraSettingsShootingMode.SetRemoteReleaseControl(m_spRemoteReleaseControl);
-   m_cbCameraSettingsAv.SetRemoteReleaseControl(m_spRemoteReleaseControl);
-   m_cbCameraSettingsTv.SetRemoteReleaseControl(m_spRemoteReleaseControl);
-   m_cbCameraSettingsExposure.SetRemoteReleaseControl(m_spRemoteReleaseControl);
-   m_cbCameraSettingsIso.SetRemoteReleaseControl(m_spRemoteReleaseControl);
+   m_upImagePropertyValueManager.reset(new ImagePropertyValueManager(*spRemoteReleaseControl));
+
+   m_cbCameraSettingsShootingMode.SetRemoteReleaseControl(spRemoteReleaseControl);
+   m_cbCameraSettingsAv.SetRemoteReleaseControl(spRemoteReleaseControl);
+   m_cbCameraSettingsTv.SetRemoteReleaseControl(spRemoteReleaseControl);
+   m_cbCameraSettingsExposure.SetRemoteReleaseControl(spRemoteReleaseControl);
+   m_cbCameraSettingsIso.SetRemoteReleaseControl(spRemoteReleaseControl);
 
    m_upImagePropertyValueManager->AddControl(m_cbCameraSettingsShootingMode);
    m_upImagePropertyValueManager->AddControl(m_cbCameraSettingsAv);
@@ -1086,12 +1066,23 @@ void MainFrame::SetupImagePropertyManager()
    m_upImagePropertyValueManager->UpdateControls();
 
    m_upImagePropertyValueManager->UpdateProperty(
-      m_spRemoteReleaseControl->MapImagePropertyTypeToId(propShootingMode));
+      spRemoteReleaseControl->MapImagePropertyTypeToId(propShootingMode));
+}
+
+void MainFrame::CleanupImagePropertyManager()
+{
+   m_cbCameraSettingsShootingMode.SetRemoteReleaseControl(nullptr);
+   m_cbCameraSettingsAv.SetRemoteReleaseControl(nullptr);
+   m_cbCameraSettingsTv.SetRemoteReleaseControl(nullptr);
+   m_cbCameraSettingsExposure.SetRemoteReleaseControl(nullptr);
+   m_cbCameraSettingsIso.SetRemoteReleaseControl(nullptr);
+
+   m_upImagePropertyValueManager.reset();
 }
 
 void MainFrame::UpdateShootingModeDependentValues()
 {
-   ShootingMode shootingMode(m_spRemoteReleaseControl);
+   ShootingMode shootingMode(m_connection.GetRemoteReleaseControl());
 
    ImageProperty currentMode = shootingMode.Current();
 
@@ -1140,21 +1131,7 @@ void MainFrame::OnStateEvent(RemoteReleaseControl::T_enStateEvent enStateEvent, 
 {
    if (enStateEvent == RemoteReleaseControl::stateEventCameraShutdown)
    {
-      // quit viewfinder
-      if (m_upViewFinderView != nullptr)
-         ShowViewfinder(false);
-
-      // quit remote release
-      StartRemoteReleaseControl(false);
-
-      // clear source device
-      m_spSourceDevice.reset();
-
-      EnablePhotoModes(false);
-      EnableScriptingUI(false);
-      EnableCameraUI(false);
-
-      UpdateTitle();
+      DisconnectCamera();
 
       // show connect dialog
       PostMessage(WM_COMMAND, MAKEWPARAM(ID_HOME_CONNECT, 0));

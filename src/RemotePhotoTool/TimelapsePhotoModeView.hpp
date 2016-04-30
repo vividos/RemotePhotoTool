@@ -36,12 +36,10 @@ private:
       return CDialogImpl<TimeLapsePhotoModeView>::Create(hWndParent);
    }
 
-   virtual void SetSourceDevice(std::shared_ptr<SourceDevice> spSourceDevice) override
+   virtual BOOL PreTranslateMessage(MSG* pMsg) override
    {
-      m_spSourceDevice = spSourceDevice;
+      return CWindow::IsDialogMessage(pMsg);
    }
-
-   virtual BOOL PreTranslateMessage(MSG* pMsg) override { return CWindow::IsDialogMessage(pMsg); }
 
    virtual void DestroyView() override
    {

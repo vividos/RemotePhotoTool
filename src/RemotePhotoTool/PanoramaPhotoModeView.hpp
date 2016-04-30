@@ -41,11 +41,6 @@ private:
       return CDialogImpl<PanoramaPhotoModeView>::Create(hWndParent);
    }
 
-   virtual void SetSourceDevice(std::shared_ptr<SourceDevice> spSourceDevice) override
-   {
-      m_spSourceDevice = spSourceDevice;
-   }
-
    virtual BOOL PreTranslateMessage(MSG* pMsg) override { return CWindow::IsDialogMessage(pMsg); }
 
    virtual bool CanClose() const override;
@@ -114,7 +109,4 @@ private:
 
    /// manager for panorama photo mode
    PanoramaPhotoModeManager m_manager;
-
-   /// source device
-   std::shared_ptr<SourceDevice> m_spSourceDevice;
 };

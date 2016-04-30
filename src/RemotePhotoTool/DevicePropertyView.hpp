@@ -57,16 +57,11 @@ private:
 
    virtual HWND CreateView(HWND hWndParent) override
    {
-      HWND hwnd = BaseClass::Create(hWndParent, rcDefault/*, NULL, WS_VISIBLE | LVS_REPORT*/);
+      HWND hwnd = BaseClass::Create(hWndParent, rcDefault);
 
       Init();
 
       return hwnd;
-   }
-
-   virtual void SetSourceDevice(std::shared_ptr<SourceDevice> spSourceDevice) override
-   {
-      m_spSourceDevice = spSourceDevice;
    }
 
    virtual BOOL PreTranslateMessage(MSG* /*pMsg*/) override
@@ -92,7 +87,4 @@ private:
 private:
    /// host access
    IPhotoModeViewHost& m_host;
-
-   /// source device
-   std::shared_ptr<SourceDevice> m_spSourceDevice;
 };

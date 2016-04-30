@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2016 Michael Fink
 //
 /// \file PanoramaPhotoModeView.cpp View for taking panorama photos
 //
@@ -36,13 +36,7 @@ LRESULT PanoramaPhotoModeView::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LP
 {
    DoDataExchange(DDX_LOAD);
 
-   std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl = m_host.StartRemoteReleaseControl(true);
-   if (spRemoteReleaseControl == nullptr)
-   {
-      AtlMessageBox(m_hWnd, _T("Couldn't start remote release control."), IDR_MAINFRAME, MB_OK);
-      DestroyWindow();
-      return 0;
-   }
+   std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl = m_host.GetRemoteReleaseControl();
 
    if (!m_manager.Init(spRemoteReleaseControl))
       return FALSE;

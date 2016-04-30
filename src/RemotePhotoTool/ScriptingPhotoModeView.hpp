@@ -37,11 +37,6 @@ private:
 
    virtual HWND CreateView(HWND hWndParent) override;
 
-   virtual void SetSourceDevice(std::shared_ptr<SourceDevice> spSourceDevice) override
-   {
-      m_spSourceDevice = spSourceDevice;
-   }
-
    virtual BOOL PreTranslateMessage(MSG* /*pMsg*/) override { return FALSE; }
 
    virtual void DestroyView() override
@@ -104,9 +99,6 @@ private:
    IPhotoModeViewHost& m_host;
 
    // model
-
-   /// source device
-   std::shared_ptr<SourceDevice> m_spSourceDevice;
 
    /// remote release control
    std::shared_ptr<RemoteReleaseControl> m_spRemoteReleaseControl;

@@ -24,11 +24,6 @@ public:
          WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN, WS_EX_CLIENTEDGE);
    }
 
-   virtual void SetSourceDevice(std::shared_ptr<SourceDevice> spSourceDevice) override
-   {
-      spSourceDevice;
-   }
-
    virtual BOOL PreTranslateMessage(MSG* pMsg) override
    {
       pMsg;
