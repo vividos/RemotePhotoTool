@@ -6,6 +6,9 @@
 //
 #pragma once
 
+/// \brief window placement class
+/// \details stores window coordinates and maximized state for storing and
+/// restoring.
 class WindowPlacement : public WINDOWPLACEMENT
 {
 public:
@@ -29,35 +32,35 @@ public:
    }
 
    /// stores window placement in registy key, with given prefix
-   void Store(CRegKey& regRoot, LPCTSTR pszPrefix) const
+   void Store(CRegKey& regRoot, const CString& cszPrefix) const
    {
-      regRoot.SetDWORDValue(CString(pszPrefix) + _T("_Flags"), flags);
-      regRoot.SetDWORDValue(CString(pszPrefix) + _T("_ShowCmd"), showCmd);
-      regRoot.SetDWORDValue(CString(pszPrefix) + _T("_MinPositionX"), ptMinPosition.x);
-      regRoot.SetDWORDValue(CString(pszPrefix) + _T("_MinPositionY"), ptMinPosition.y);
-      regRoot.SetDWORDValue(CString(pszPrefix) + _T("_MaxPositionX"), ptMaxPosition.x);
-      regRoot.SetDWORDValue(CString(pszPrefix) + _T("_MaxPositionY"), ptMaxPosition.y);
-      regRoot.SetDWORDValue(CString(pszPrefix) + _T("_NormalPositionLeft"), rcNormalPosition.left);
-      regRoot.SetDWORDValue(CString(pszPrefix) + _T("_NormalPositionTop"), rcNormalPosition.top);
-      regRoot.SetDWORDValue(CString(pszPrefix) + _T("_NormalPositionRight"), rcNormalPosition.right);
-      regRoot.SetDWORDValue(CString(pszPrefix) + _T("_NormalPositionBottom"), rcNormalPosition.bottom);
+      regRoot.SetDWORDValue(cszPrefix + _T("_Flags"), flags);
+      regRoot.SetDWORDValue(cszPrefix + _T("_ShowCmd"), showCmd);
+      regRoot.SetDWORDValue(cszPrefix + _T("_MinPositionX"), ptMinPosition.x);
+      regRoot.SetDWORDValue(cszPrefix + _T("_MinPositionY"), ptMinPosition.y);
+      regRoot.SetDWORDValue(cszPrefix + _T("_MaxPositionX"), ptMaxPosition.x);
+      regRoot.SetDWORDValue(cszPrefix + _T("_MaxPositionY"), ptMaxPosition.y);
+      regRoot.SetDWORDValue(cszPrefix + _T("_NormalPositionLeft"), rcNormalPosition.left);
+      regRoot.SetDWORDValue(cszPrefix + _T("_NormalPositionTop"), rcNormalPosition.top);
+      regRoot.SetDWORDValue(cszPrefix + _T("_NormalPositionRight"), rcNormalPosition.right);
+      regRoot.SetDWORDValue(cszPrefix + _T("_NormalPositionBottom"), rcNormalPosition.bottom);
    }
 
    /// loads window placement from registy key, with given prefix
-   void Load(CRegKey& regRoot, LPCTSTR pszPrefix)
+   void Load(CRegKey& regRoot, const CString& cszPrefix)
    {
       showCmd = 0; // default value, to decide if load was successful
 
-      ReadIntegerValue(regRoot, CString(pszPrefix) + _T("_Flags"), flags);
-      ReadIntegerValue(regRoot, CString(pszPrefix) + _T("_ShowCmd"), showCmd);
-      ReadIntegerValue(regRoot, CString(pszPrefix) + _T("_MinPositionX"), ptMinPosition.x);
-      ReadIntegerValue(regRoot, CString(pszPrefix) + _T("_MinPositionY"), ptMinPosition.y);
-      ReadIntegerValue(regRoot, CString(pszPrefix) + _T("_MaxPositionX"), ptMaxPosition.x);
-      ReadIntegerValue(regRoot, CString(pszPrefix) + _T("_MaxPositionY"), ptMaxPosition.y);
-      ReadIntegerValue(regRoot, CString(pszPrefix) + _T("_NormalPositionLeft"), rcNormalPosition.left);
-      ReadIntegerValue(regRoot, CString(pszPrefix) + _T("_NormalPositionTop"), rcNormalPosition.top);
-      ReadIntegerValue(regRoot, CString(pszPrefix) + _T("_NormalPositionRight"), rcNormalPosition.right);
-      ReadIntegerValue(regRoot, CString(pszPrefix) + _T("_NormalPositionBottom"), rcNormalPosition.bottom);
+      ReadIntegerValue(regRoot, cszPrefix + _T("_Flags"), flags);
+      ReadIntegerValue(regRoot, cszPrefix + _T("_ShowCmd"), showCmd);
+      ReadIntegerValue(regRoot, cszPrefix + _T("_MinPositionX"), ptMinPosition.x);
+      ReadIntegerValue(regRoot, cszPrefix + _T("_MinPositionY"), ptMinPosition.y);
+      ReadIntegerValue(regRoot, cszPrefix + _T("_MaxPositionX"), ptMaxPosition.x);
+      ReadIntegerValue(regRoot, cszPrefix + _T("_MaxPositionY"), ptMaxPosition.y);
+      ReadIntegerValue(regRoot, cszPrefix + _T("_NormalPositionLeft"), rcNormalPosition.left);
+      ReadIntegerValue(regRoot, cszPrefix + _T("_NormalPositionTop"), rcNormalPosition.top);
+      ReadIntegerValue(regRoot, cszPrefix + _T("_NormalPositionRight"), rcNormalPosition.right);
+      ReadIntegerValue(regRoot, cszPrefix + _T("_NormalPositionBottom"), rcNormalPosition.bottom);
    }
 
 private:
