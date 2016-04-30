@@ -21,8 +21,6 @@
 #include "PreviousImagesManager.hpp"
 #include "RemoteReleaseControl.hpp"
 #include "CameraConnectionManager.hpp"
-#include <atlsplit.h>
-#include <atlctrlx.h>
 
 /// \brief application main frame
 /// \details uses ribbon for commands
