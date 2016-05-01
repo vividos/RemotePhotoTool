@@ -25,12 +25,12 @@ Lua scripting
 -------------
 Implement ShutterSpeedValue table
 Implement writing absolute filenames before calling onFinishedTransfer
-Add more libraries and sandbox unsafe functions
 Bindings for Exif library
-Bindings for ImageMagick library
+Bindings for ImageMagick library or GD lib
 
 RemotePhotoTool
 ---------------
+Make application DPI-aware
 Previous Images browser: scan folder for images, on startup
 Nice toolbar icons
 implement timelapse shooting, video output
