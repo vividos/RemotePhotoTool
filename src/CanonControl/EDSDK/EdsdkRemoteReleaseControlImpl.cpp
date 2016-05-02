@@ -413,14 +413,21 @@ void RemoteReleaseControlImpl::AsyncRelease()
    if ((saveTarget & ShutterReleaseSettings::saveToHost) != 0)
       SetCapacity();
 
-   // send command
-   EdsError err = EdsSendCommand(m_hCamera.Get(), kEdsCameraCommand_TakePicture, 0);
-   LOG_TRACE(_T("EdsSendCommand(%08x, TakePicture, 0) returned %08x\n"), m_hCamera.Get(), err);
+   // lock UI
+   EdsError errUILock = EdsSendStatusCommand(m_hCamera.Get(), kEdsCameraStatusCommand_UILock, 0);
+   LOG_TRACE(_T("EdsSendCommand(%08x, UILock, 0) returned %08x\n"), m_hCamera.Get(), errUILock);
 
-   // no error checking, since we're on the background thread
-   //EDSDK::CheckError(_T("EdsSendCommand"), err, __FILE__, __LINE__);
-   if (err != EDS_ERR_OK)
-      m_subjectStateEvent.Call(RemoteReleaseControl::stateEventReleaseError, err);
+   // send command
+   EdsError errTakePicture = EdsSendCommand(m_hCamera.Get(), kEdsCameraCommand_TakePicture, 0);
+   LOG_TRACE(_T("EdsSendCommand(%08x, TakePicture, 0) returned %08x\n"), m_hCamera.Get(), errTakePicture);
+
+   // unlock UI
+   errUILock = EdsSendStatusCommand(m_hCamera.Get(), kEdsCameraStatusCommand_UIUnLock, 0);
+   LOG_TRACE(_T("EdsSendCommand(%08x, UIUnLock, 0) returned %08x\n"), m_hCamera.Get(), errUILock);
+
+   // no error checking with EDSDK::CheckError(), since we're on the background thread
+   if (errTakePicture != EDS_ERR_OK)
+      m_subjectStateEvent.Call(RemoteReleaseControl::stateEventReleaseError, errTakePicture);
 }
 
 void RemoteReleaseControlImpl::OnReceivedObjectEventRequestTransfer(Handle hDirectoryItem)
