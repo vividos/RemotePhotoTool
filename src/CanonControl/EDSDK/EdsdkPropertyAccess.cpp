@@ -1069,6 +1069,20 @@ LPCTSTR PropertyAccess::NameFromId(EdsPropertyID propertyId) throw()
       {
          switch (propertyId >> 16)
          {
+            // EOS 400D
+         case 0x0001: return _T("Custom function: SET button/Cross keys function");
+         case 0x0002: return _T("Custom function: Long exposure noise reduction");
+         case 0x0003: return _T("Custom function: Flash sync. speed in Av mode");
+         case 0x0004: return _T("Custom function: Shutter/AE lock button");
+         case 0x0005: return _T("Custom function: AF-assist beam");
+         case 0x0006: return _T("Custom function: Exposure level increments");
+         case 0x0007: return _T("Custom function: Mirror lockup");
+         case 0x0008: return _T("Custom function: E-TTL II");
+         case 0x0009: return _T("Custom function: Shutter curtain sync.");
+         case 0x000a: return _T("Custom function: Magnified view");
+         case 0x000b: return _T("Custom function: LCD display when power ON");
+
+            // EOS 40D, all newer EOS cameras?
          case 0x0101: return _T("Custom function: Exposure level increments");
          case 0x0102: return _T("Custom function: ISO speed setting increments");
          case 0x0103: return _T("Custom function: ISO expansion");
