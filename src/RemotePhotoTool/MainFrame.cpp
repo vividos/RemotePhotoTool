@@ -1131,7 +1131,12 @@ void MainFrame::OnStateEvent(RemoteReleaseControl::T_enStateEvent enStateEvent, 
 {
    if (enStateEvent == RemoteReleaseControl::stateEventCameraShutdown)
    {
-      DisconnectCamera();
+      // don't disconnect, only disable all buttons, since we're in the
+      // state event handler
+      EnablePhotoModes(false);
+      EnableViewfinder(false);
+      EnableScriptingUI(false);
+      EnableCameraUI(false);
 
       // show connect dialog
       PostMessage(WM_COMMAND, MAKEWPARAM(ID_HOME_CONNECT, 0));
