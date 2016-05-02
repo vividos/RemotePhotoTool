@@ -85,7 +85,7 @@ EdsError RemoteReleaseControlImpl::OnPropertyChange_(
    EdsVoid* inContext) throw()
 {
    inParam;
-   //LOG_TRACE(_T("OnPropertyChange(event = %u (%s), propId = %08x, param = %u, ctx) called\n"),
+   //LOG_TRACE(_T("OnPropertyChange(event = %04x (%s), propId = %08x, param = %u, ctx) called\n"),
    //   inEvent,
    //   inEvent == kEdsPropertyEvent_PropertyChanged ? _T("PropertyChanged") :
    //      inEvent == kEdsPropertyEvent_PropertyDescChanged ? _T("PropertyDescChanged") : _T("???"),
@@ -142,7 +142,7 @@ void RemoteReleaseControlImpl::OnPropertyChange(EdsPropertyEvent inEvent, EdsPro
 
 EdsError RemoteReleaseControlImpl::OnStateChange_(EdsStateEvent inEvent, EdsUInt32 inEventData, EdsVoid *inContext) throw()
 {
-   LOG_TRACE(_T("OnStateChange(event = %u (%s), eventData = %08x, ctx) called\n"),
+   LOG_TRACE(_T("OnStateChange(event = %04x (%s), eventData = %08x, ctx) called\n"),
       inEvent,
       inEvent == kEdsStateEvent_Shutdown ? _T("Shutdown") :
          inEvent == kEdsStateEvent_JobStatusChanged ? _T("JobStatusChanged") :
@@ -200,7 +200,7 @@ void RemoteReleaseControlImpl::OnStateChange(EdsStateEvent inEvent, EdsUInt32 in
 
 EdsError RemoteReleaseControlImpl::OnObjectChange_(EdsObjectEvent inEvent, EdsBaseRef inRef, EdsVoid *inContext) throw()
 {
-   LOG_TRACE(_T("OnObjectChange(event = %u (%s), inRef = %08x, ctx) called\n"),
+   LOG_TRACE(_T("OnObjectChange(event = %04x (%s), inRef = %08x, ctx) called\n"),
       inEvent,
       inEvent == kEdsObjectEvent_VolumeInfoChanged ? _T("VolumeInfoChanged") :
       inEvent == kEdsObjectEvent_VolumeUpdateItems ? _T("VolumeUpdateItems") :
