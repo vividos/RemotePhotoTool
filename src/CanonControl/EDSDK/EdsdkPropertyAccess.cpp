@@ -1110,6 +1110,7 @@ LPCTSTR PropertyAccess::NameFromId(EdsPropertyID propertyId) throw()
          case 0x080b: return _T("Custom function: Focusing screen");
          case 0x080f: return _T("Custom function: Add original decision data");
          case 0x0810: return _T("Custom function: Live view exposure simulation");
+         case 0x0811: return _T("Custom function: Add image verification data"); // Canon EOS 550D
 
          default:
             return _T("Custom function: Unknown");
