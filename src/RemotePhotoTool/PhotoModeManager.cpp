@@ -36,6 +36,8 @@ bool HDRPhotoModeManager::Init(std::shared_ptr<RemoteReleaseControl> spRemoteRel
          m_host.GetImageFileManager().NextFilename(imageTypeHDR);
       settings.Filename(cszFilename);
 
+      settings.HandlerOnFinishedTransfer(nullptr);
+
       m_spRemoteReleaseControl->SetReleaseSettings(settings);
    }
    catch (CameraException& ex)
@@ -280,6 +282,8 @@ bool PanoramaPhotoModeManager::Init(std::shared_ptr<RemoteReleaseControl> spRemo
       CString cszFilename =
          m_host.GetImageFileManager().NextFilename(imageTypePano);
       settings.Filename(cszFilename);
+
+      settings.HandlerOnFinishedTransfer(nullptr);
 
       m_spRemoteReleaseControl->SetReleaseSettings(settings);
    }
