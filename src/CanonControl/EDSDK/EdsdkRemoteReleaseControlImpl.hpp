@@ -65,6 +65,9 @@ public:
       }
 
       SetSaveToFlag(settings.SaveTarget(), true);
+
+      if ((settings.SaveTarget() & ShutterReleaseSettings::saveToHost) != 0)
+         SetCapacity();
    }
 
    virtual int AddPropertyEventHandler(RemoteReleaseControl::T_fnOnPropertyChanged fnOnPropertyChanged) override
@@ -249,6 +252,9 @@ public:
 
    /// sets SaveTo flag
    void SetSaveToFlag(ShutterReleaseSettings::T_enSaveTarget enSaveTarget, bool bAsynchronous);
+
+   /// sets capacity of host system
+   void SetCapacity();
 
    /// asynchronous release method
    void AsyncRelease();

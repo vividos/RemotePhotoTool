@@ -384,6 +384,19 @@ void RemoteReleaseControlImpl::SetSaveToFlag(ShutterReleaseSettings::T_enSaveTar
       SyncSetImageProperty(ip);
 }
 
+void RemoteReleaseControlImpl::SetCapacity()
+{
+   // assume a max. image size of 100 MB
+   EdsCapacity capacity = { 0 };
+   capacity.bytesPerSector = 512;
+   capacity.numberOfFreeClusters = 100 * 1000 * 2;
+   capacity.reset = true;
+
+   EdsError err = EdsSetCapacity(m_hCamera.Get(), capacity);
+   LOG_TRACE(_T("EdsSetCapacity(%08x, Capacity) returned %08x\n"), m_hCamera.Get(), err);
+   EDSDK::CheckError(_T("EdsSetCapacity"), err, __FILE__, __LINE__);
+}
+
 void RemoteReleaseControlImpl::AsyncRelease()
 {
    m_evtShutterReleaseOccured.Reset();
@@ -396,6 +409,9 @@ void RemoteReleaseControlImpl::AsyncRelease()
    }
 
    SetSaveToFlag(saveTarget, false); // synchronous
+
+   if ((saveTarget & ShutterReleaseSettings::saveToHost) != 0)
+      SetCapacity();
 
    // send command
    EdsError err = EdsSendCommand(m_hCamera.Get(), kEdsCameraCommand_TakePicture, 0);
