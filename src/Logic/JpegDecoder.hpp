@@ -33,11 +33,17 @@ struct JpegDecoder : public boost::noncopyable
    /// dtor
    ~JpegDecoder() throw()
    {
-      boolean b = jpeg_finish_decompress(&cinfo);
-      ATLASSERT(b == TRUE); b; // no suspending data source
+      try
+      {
+         boolean b = jpeg_finish_decompress(&cinfo);
+         ATLASSERT(b == TRUE); b; // no suspending data source
 
-      // release the JPEG decompression object
-      jpeg_destroy_decompress(&cinfo);
+                                  // release the JPEG decompression object
+         jpeg_destroy_decompress(&cinfo);
+      }
+      catch (...)
+      {
+      }
    }
 
    /// reads image info
