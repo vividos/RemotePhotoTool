@@ -167,7 +167,8 @@ void HDRPhotoModeManager::RecalcAEBShutterSpeedList(size_t uiNumShots)
 
 void HDRPhotoModeManager::ReleaseAEBFirst()
 {
-   // disable viewfinder while shooting
+   // disable viewfinder while shooting, if supported by camera
+   if (m_spRemoteReleaseControl->GetCapability(RemoteReleaseControl::capViewfinder))
    {
       ViewFinderView* pViewfinder = m_host.GetViewFinderView();
 
@@ -185,7 +186,8 @@ void HDRPhotoModeManager::ReleaseAEBFirst()
    m_vecAEBFilenameList.clear();
    m_uiCurrentAEBShutterSpeed = 0;
 
-   if (!m_bViewfinderActiveBeforeStart)
+   if (m_spRemoteReleaseControl->GetCapability(RemoteReleaseControl::capViewfinder) &&
+      !m_bViewfinderActiveBeforeStart)
    {
       try
       {
