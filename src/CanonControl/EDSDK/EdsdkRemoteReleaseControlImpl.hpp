@@ -244,8 +244,8 @@ public:
 
    virtual void Close() override;
 
-   /// async method to set image property (called in worker thread by SetImageProperty)
-   void AsyncSetImageProperty(const ImageProperty& imageProperty);
+   /// synchronous method to set image property (called in worker thread by SetImageProperty)
+   void SyncSetImageProperty(const ImageProperty& imageProperty);
 
    /// sets SaveTo flag
    void SetSaveToFlag(ShutterReleaseSettings::T_enSaveTarget enSaveTarget, bool bAsynchronous);

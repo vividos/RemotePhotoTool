@@ -324,10 +324,10 @@ void RemoteReleaseControlImpl::SetImageProperty(const ImageProperty& imageProper
    }
 
    m_upReleaseThread->GetIoService().post(
-      std::bind(&RemoteReleaseControlImpl::AsyncSetImageProperty, this, imageProperty));
+      std::bind(&RemoteReleaseControlImpl::SyncSetImageProperty, this, imageProperty));
 }
 
-void RemoteReleaseControlImpl::AsyncSetImageProperty(const ImageProperty& imageProperty)
+void RemoteReleaseControlImpl::SyncSetImageProperty(const ImageProperty& imageProperty)
 {
    LightweightMutex::LockType lock(*m_spMtxLock);
 
@@ -348,7 +348,7 @@ void RemoteReleaseControlImpl::AsyncSetImageProperty(const ImageProperty& imageP
    }
    catch (const CameraException& ex)
    {
-      LOG_TRACE(_T("CameraException during AsyncSetImageProperty(): %s, ImageProperty: %s, Value: %s\n"),
+      LOG_TRACE(_T("CameraException during SyncSetImageProperty(): %s, ImageProperty: %s, Value: %s\n"),
          ex.Message().GetString(),
          imageProperty.Name().GetString(),
          imageProperty.AsString().GetString());
@@ -381,7 +381,7 @@ void RemoteReleaseControlImpl::SetSaveToFlag(ShutterReleaseSettings::T_enSaveTar
    if (bAsynchronous)
       SetImageProperty(ip);
    else
-      AsyncSetImageProperty(ip);
+      SyncSetImageProperty(ip);
 }
 
 void RemoteReleaseControlImpl::AsyncRelease()
