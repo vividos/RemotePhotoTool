@@ -247,7 +247,9 @@ CString FormatIsoValue(Variant value)
    case 0xffffffff:
       return _T("Invalid");
    default:
-      if (uiIso >= 0x48 && uiIso <= 0x78)
+      // 0x48 => ISO 100
+      // 0x98 => ISO 102400
+      if (uiIso >= 0x48 && uiIso <= 0x98)
       {
          ATLASSERT((uiIso & 7) == 0); // must be divisable by 8
 
