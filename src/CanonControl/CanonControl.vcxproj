@@ -151,6 +151,7 @@
     <ClInclude Include="gPhoto2\GPhoto2RemoteReleaseControlImpl.hpp" />
     <ClInclude Include="gPhoto2\GPhoto2SourceDeviceImpl.hpp" />
     <ClInclude Include="gPhoto2\GPhoto2SourceInfoImpl.hpp" />
+    <ClInclude Include="PsrecCameraEventData.hpp" />
     <ClInclude Include="PSREC\PsrecViewfinderImpl.hpp" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="CDSDK\CdsdkCommon.hpp" />
