@@ -2,7 +2,7 @@
 <!--
 
   RemotePhotoTool - remote camera control software
-  Copyright (C) 2008-2015 Michael Fink
+  Copyright (C) 2008-2016 Michael Fink
 
   SdkFiles.wxs - Thirdparty SDK file components (fragment)
 
@@ -98,6 +98,42 @@
          <File Id="CDPROC.exe" Name="CDPROC.exe" DiskId="1" KeyPath="yes" Source="$(var.BinaryFolder)\CDPROC.exe" />
        </Component>
      </ComponentGroup>
+     <!-- ***************************************** -->
+
+     <ComponentGroup Id="gPhoto2Files">
+        <Component Id="Libgphoto2Dll" Guid="7C1E82B4-8642-482D-82C6-D6F54DD6D260" Directory="INSTALLDIR">
+          <File Id="Libgphoto2Dll" Name="libgphoto2.dll" DiskId="1" KeyPath="yes" Source="$(var.BinaryFolder)\libgphoto2.dll" />
+        </Component>
+
+        <Component Id="Libgphoto2PortDll" Guid="4853202F-C069-4443-A412-DA68681963F4" Directory="INSTALLDIR">
+          <File Id="Libgphoto2PortDll" Name="libgphoto2_port.dll" DiskId="1" KeyPath="yes" Source="$(var.BinaryFolder)\libgphoto2_port.dll" />
+        </Component>
+
+       <Component Id="CamlibsCanonDll" Guid="6ADBA477-CFBD-45A9-8B80-14206837F65D" Directory="Camlibs">
+          <File Id="CamlibsCanonDll" Name="canon.dll" DiskId="1" KeyPath="yes" Source="$(var.BinaryFolder)\camlibs\canon.dll" />
+        </Component>
+
+       <Component Id="CamlibsPtp2Dll" Guid="6D7F4001-E849-4236-98F8-AD5BDE019988" Directory="Camlibs">
+          <File Id="CamlibsPtp2Dll" Name="ptp2.dll" DiskId="1" KeyPath="yes" Source="$(var.BinaryFolder)\camlibs\ptp2.dll" />
+        </Component>
+
+        <Component Id="IolibsDiskDll" Guid="3B938FBC-A246-41AD-9524-4A9FFDCECFBA" Directory="Iolibs">
+          <File Id="IolibsDiskDll" Name="disk.dll" DiskId="1" KeyPath="yes" Source="$(var.BinaryFolder)\iolibs\disk.dll" />
+        </Component>
+
+        <Component Id="IolibsLibusb10Dll" Guid="4D28648D-CDB2-4EAB-9A28-885290503610" Directory="Iolibs">
+          <File Id="IolibsLibusb10Dll" Name="libusb-1.0.dll" DiskId="1" KeyPath="yes" Source="$(var.BinaryFolder)\iolibs\libusb-1.0.dll" />
+        </Component>
+
+        <Component Id="IolibsLibusb1Dll" Guid="0A0EA321-38D2-440B-89AA-856E2A4A94F9" Directory="Iolibs">
+          <File Id="IolibsLibusb1Dll" Name="libusb1.dll" DiskId="1" KeyPath="yes" Source="$(var.BinaryFolder)\iolibs\libusb1.dll" />
+        </Component>
+
+        <Component Id="IolibsPtpipDll" Guid="BCE23798-7EE0-4D03-9753-E49247BACC4F" Directory="Iolibs">
+          <File Id="IolibsPtpipDll" Name="ptpip.dll" DiskId="1" KeyPath="yes" Source="$(var.BinaryFolder)\iolibs\ptpip.dll" />
+        </Component>
+
+      </ComponentGroup>
      <!-- ***************************************** -->
 
    </Fragment>

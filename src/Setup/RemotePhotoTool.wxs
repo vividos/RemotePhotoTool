@@ -42,6 +42,8 @@
       <Directory Id="ProgramFilesFolder">
         <Directory Id="MainAppFolder" Name="$(var.ProductName)">
           <Directory Id="INSTALLDIR" Name=".">
+            <Directory Id="Camlibs" Name="camlibs" />
+            <Directory Id="Iolibs" Name="iolibs" />
           </Directory>
         </Directory>
       </Directory>
@@ -58,6 +60,7 @@
       <ComponentGroupRef Id="EdsdkFiles" />
       <ComponentGroupRef Id="PsrecFiles" />
       <ComponentGroupRef Id="CdsdkFiles" />
+      <ComponentGroupRef Id="gPhoto2Files" />
       <ComponentGroupRef Id="ScintillaFiles" />
     </Feature>
 
