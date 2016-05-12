@@ -110,6 +110,7 @@ BEGIN
         END
         MENUITEM "Show overe&xposed", ID_VIEWFINDER_SHOW_OVEREXPOSED
         MENUITEM "Show overlay i&mage", ID_VIEWFINDER_SHOW_OVERLAY_IMAGE
+        MENUITEM "Show &histogram", ID_VIEWFINDER_HISTOGRAM
     END
     POPUP "&View"
     BEGIN

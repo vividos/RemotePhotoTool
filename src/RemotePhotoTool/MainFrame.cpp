@@ -662,6 +662,10 @@ void MainFrame::SetupRibbonBar()
    // remove photo modes that aren't implemented yet
    m_CmdBar.GetMenu().DeleteMenu(ID_PHOTO_MODE_TIMELAPSE, MF_BYCOMMAND);
    m_CmdBar.GetMenu().DeleteMenu(ID_PHOTO_MODE_PHOTOSTACK, MF_BYCOMMAND);
+
+   // remove functions not implemented yet
+   m_CmdBar.GetMenu().DeleteMenu(ID_VIEWFINDER_SHOW_OVERLAY_IMAGE, MF_BYCOMMAND);
+   m_CmdBar.GetMenu().DeleteMenu(ID_VIEWFINDER_HISTOGRAM, MF_BYCOMMAND);
 }
 
 /// sets button text for toolbar button
@@ -710,6 +714,10 @@ void MainFrame::SetupToolbar()
       // remove photo modes that aren't implemented yet
       tb.HideButton(ID_PHOTO_MODE_TIMELAPSE);
       tb.HideButton(ID_PHOTO_MODE_PHOTOSTACK);
+
+      // remove functions not implemented yet
+      tb.HideButton(ID_VIEWFINDER_SHOW_OVERLAY_IMAGE);
+      tb.HideButton(ID_VIEWFINDER_HISTOGRAM);
    }
 }
 
