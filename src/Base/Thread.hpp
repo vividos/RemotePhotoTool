@@ -34,16 +34,20 @@ typedef struct tagTHREADNAME_INFO
 class Thread
 {
 public:
-   /// sets thread name for current or specified thread
+   /// sets thread name for current or specified thread; unicode version
+   static void SetName(LPCWSTR pszThreadName, DWORD dwThreadId = DWORD(-1)) throw()
+   {
+      Thread::SetName(CStringA(pszThreadName), dwThreadId);
+   }
+
+   /// sets thread name for current or specified thread; ansi version
    /// \note from http://msdn.microsoft.com/en-us/library/xcb2z8hs.aspx
-   static void SetName(LPCTSTR pszThreadName, DWORD dwThreadId = DWORD(-1)) throw()
+   static void SetName(LPCSTR pszThreadName, DWORD dwThreadId = DWORD(-1)) throw()
    {
 #ifdef WIN32
-      USES_CONVERSION;
-
       THREADNAME_INFO info;
       info.dwType = 0x1000;
-      info.szName = T2CA(pszThreadName);
+      info.szName = pszThreadName;
       info.dwThreadID = dwThreadId;
       info.dwFlags = 0;
 
