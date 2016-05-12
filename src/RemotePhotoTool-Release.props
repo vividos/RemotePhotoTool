@@ -7,6 +7,7 @@
     <_PropertySheetDisplayName>RemotePhotoTool-Release</_PropertySheetDisplayName>
     <OutDir>$(SolutionDir)..\bin\$(Configuration)\</OutDir>
     <LinkIncremental>false</LinkIncremental>
+    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
