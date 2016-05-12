@@ -52,14 +52,14 @@ void CmdlineApp::Run(int argc, TCHAR* argv[])
    AppOptions options(m_vecCommandList);
    options.Parse(argc, argv);
 
+   if (options.IsSelectedHelpOption())
+      return;
+
    if (m_vecCommandList.empty())
    {
       options.OutputHelp();
       return;
    }
-
-   if (options.IsSelectedHelpOption())
-      return;
 
    // run command list
    std::for_each(m_vecCommandList.begin(), m_vecCommandList.end(), [&](const AppCommand& cmd)
