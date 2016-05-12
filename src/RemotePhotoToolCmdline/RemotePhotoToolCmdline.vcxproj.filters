@@ -43,9 +43,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\..\TODO.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ResourceCompile Include="versioninfo.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
