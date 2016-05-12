@@ -47,6 +47,8 @@ Add option to change energy saving options (to prevent shutting down during oper
 Store IPTC data in every image taken
 Add geotagging for PCs that have a GPS receiver built in
 Add photo mode with motion detection using viewfinder to take photos (e.g. for wildlife photography)
+Fix refreshing comboboxes when switching to M mode on camera
+Fix bug where images are only transferred to host, on EOS 400D
 
 RemoteScriptingEditor
 ---------------------
