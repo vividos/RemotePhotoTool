@@ -10,8 +10,9 @@
 - Collect general infos about connected camera, including device properties
 - Support different photo modes, including:
   - Normal photo mode
-  - HDR mode (takes N different photos in a row and processes them via Photomatix)
-  - Panorama mode (takes N photos and stitches them together via Hugin)
+  - HDR mode (takes photos in a row with HDR bracketing and processes them via Photomatix)
+  - Panorama mode (takes photos and stitches them together via Hugin)
+  - HDR Panorama mode (takes photos with HDR bracketing and stitches them together via Hugin)
 - Display of all device and image properties
   - Image properties are updated live when they change
 - Live Viewfinder support
@@ -19,7 +20,10 @@
   - Zoom in/out for cameras that support it
   - Helper lines (for rule of thirds and golden ratio)
   - Show overexposed areas by showing a zebra style pattern
+  - Set Video Out mode to show viewfinder on LCD
 - Support for Lua scripts to remote control connected cameras
+  - Rich Lua bindings to C++ library controlling the camera
+  - Syntax-highlighting editor with instant Lua syntax error highlighting
 - Support for third party applications:
   - Hugin for Panorama stitching
   - Photomatix Pro for HDR image generation
@@ -34,3 +38,4 @@
   - Windows 7 32-bit/64-bit
   - Windows 8
   - Windows 8.1
+  - Windows 10

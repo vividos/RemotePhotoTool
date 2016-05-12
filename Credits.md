@@ -30,6 +30,11 @@ licensed under the GNU Lesser General Public License Version 2.1 (LGPL).
 - [http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html](http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
  "GNU Lesser General Public License Version 2.1 (LGPL)")
 
+The application uses a Microsoft Visual Studio 2015 port of gPhoto2, which is
+available using github, and is also licensed under the LGPL license:
+
+- [https://github.com/vividos/libgphoto2](https://github.com/vividos/libgphoto2)
+
 ## Components and Libraries ##
 
 ### Boost ###

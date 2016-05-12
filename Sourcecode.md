@@ -21,23 +21,32 @@ The main package folder contains the following folders (most of them created by 
 building the app):
 
 - bin: Contains built binaries, including the setup.
+- images: Contains images for the Screenshot.md file
 - intermediate: Contains object files needed by the build to create the app.
 - lib: Contains library files needed by the build to create the app.
+- pages: Contains the github pages html files.
+- scripts: Contains Lua scripts to demo the Lua scripting functions.
 - src: Contains the source code.
+- tools: Contains tools useful while developing.
 
 ### src folder ###
 
 The `"src"` folder has the following projects:
 
 - Base: Contains a base static library with classes common to several other of my projects
-- Base.UnitTest: Unit tests for Base library.
+- Base\Base.UnitTest: Unit tests for Base library.
 - CanonControl: Contains a static library to control the various cameras. See below for details.
+- CanonControl\exports: Contains header files with public classes of CanonControl library.
+- CanonEOSShutterCount: Contains a command line tool to read out shutter count of EOS cameras.
 - cppcheck: Tool project to run installed cppcheck tool on all source code to check for coding errors.
 - doxygen: Tool project to run doxygen tool on all source code to generate source documentation.
-- Lua: Contains Lua C sourcecode.
+- Logic: Contains business-logic classes used by RemotePhotoTool and RemoteScriptingEditor.
 - LuaScripting: Contains a static library to enable scripting of remote controlling cameras.
-- LuaScripting.UnitTest: Unit tests for LuaScripting library.
+- LuaScripting\lua-x.x.x: Contains Lua C sourcecode for a specific Lua version.
+- LuaScripting\LuaScripting.UnitTest: Unit tests for LuaScripting library.
 - RemotePhotoTool: The main application.
+- RemotePhotoTool.CameraControl: A C# bindings project (using C++/CLI) to provide functions of the
+  CanonControl library to .NET users.
 - RemotePhotoToolCmdline: Command line application to remote control a camera.
 - RemoteScriptingEditor: Lua scripting editor to debug scripts to remote control a camera.
 - Setup: Contains the setup project.
@@ -46,15 +55,15 @@ The `"src"` folder has the following projects:
 ### CanonControl ###
 
 The CanonControl library is an encapsulation for the SDKs used in the main application. You
-can find all public header files in the `"export"` folder. All other files are only used inside
+can find all public header files in the `"exports"` folder. All other files are only used inside
 the library. The library contains several files with the Edsdk, Cdsdk and Psrec prefix that
-implement the interfaces from the `"export"` folder. The main starting point is the static
+implement the interfaces from the `"exports"` folder. The main starting point is the static
 function
 
     `Instance Instance::Get();`
 
 that returns the current instance of the library to access remote cameras. All further operations
-should be obvious from the public functions and classes.   
+should be obvious from the public functions and classes.
 
 ### Main application ###
 
@@ -62,7 +71,7 @@ The main application uses the public interface of the `CanonControl` library to 
 cameras and is unaware of different SDKs and camera models. The application uses the ribbon menu
 band interface for UI. It supports several "photo modes" that can be switched between, as long
 as the camera is connected. The photo modes have different scope and don't present all properties
-the remote contro can be set to. The application supports calling installed instances of the
+the remote camera can be set to. The application supports calling installed instances of the
 programs "Hugin" (for panorama stitching) and "Photomatix Pro" (for HDR generation).
 
 # Installation of components #
@@ -84,7 +93,7 @@ Driver Kit 7.1.0"). With the Visual Studio Community 2015 version, this is no lo
 
 The application uses WTL, on top of ATL, for the user interface. Download WTL 9.1.5321 (or any
 later version) from this website:
-http://sourceforge.net/projects/wtl/
+- http://sourceforge.net/projects/wtl/
 
 You need to click on "Browse all files" and select WTL 9.1 to get to the proper folder. Here's
 a link to the version I use:
@@ -114,13 +123,13 @@ following command line commands (e.g. in a .cmd file) to compile Boost:
 This should generate the appropriate lib files in the `"stage\lib"` folder, for the library
 Boost.System.
 
-## WiX 3.10 ##
+## WiX 3.10.2 ##
 
-To build the setup, you need to install the "Windows Installer for XML 3.10" package. Go to this
+To build the setup, you need to install the "Windows Installer for XML 3.10.2" package. Go to this
 website:
 [http://wix.codeplex.com/](http://wix.codeplex.com/)
 
-Go to "Downloads" and download the "Wix310.exe" under the "WiX Toolset v3.10" release. Later releases
+Go to "Downloads" and download the "Wix310.exe" under the "WiX Toolset v3.10.2" release. Later releases
 of WiX may or may not work. Install the package on your system.
 
 ## RemotePhotoTool ##

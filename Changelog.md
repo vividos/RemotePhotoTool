@@ -9,7 +9,7 @@ This is a minor feature and major bugfix release.
 
 ### tl;dr ###
 
-There are some new UI stuff, e.g. setting Image Format and Video Out, and
+There is some new UI stuff, e.g. setting Image Format and Video Out, and
 storing window position. Lua scripting support was extended, including
 completed Lua bindings and live Lua syntax checking in the editor. Two new
 command line tools were introduced. And many many bugs were fixed.
