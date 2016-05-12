@@ -227,7 +227,7 @@ private:
    /// sets new image property
    void SetImageProperty(ImageProperty& imageProperty)
    {
-      if (m_spRemoteReleaseControl = nullptr)
+      if (m_spRemoteReleaseControl == nullptr)
          return;
 
       try
