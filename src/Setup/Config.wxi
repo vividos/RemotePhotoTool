@@ -9,19 +9,21 @@
 -->
 <Include xmlns="http://schemas.microsoft.com/wix/2006/wi">
 
-  <!-- Note: when creating a new version, update the version block, and use a new ProductId below -->
+  <!-- Note: when creating a new version, update the version block -->
   
   <?include BuildNumber.wxi ?>
 
   <!-- version -->
   <?define MajorVersion = "1" ?>
-  <?define MinorVersion = "4" ?>
+  <?define MinorVersion = "5" ?>
   <?define SubVersion = "0" ?>
   <?define Version = "$(var.MajorVersion).$(var.MinorVersion).$(var.SubVersion).$(var.BuildNumber)" ?>
 
   <!-- settings -->
   <?define ProductName = "RemotePhotoTool" ?>
   <?define ProductNameVersion = "RemotePhotoTool $(var.MajorVersion).$(var.MinorVersion).$(var.SubVersion) Build $(var.BuildNumber)" ?>
+  <!-- don't update the UpgradeCode, unless you want two different version of
+  RemotePhotoTool to coexist on a PC (which we don't want) -->
   <?define UpgradeCode = "4B6144A9-117D-4418-8097-3EF4E6A6EB93" ?>
 
   <!-- set folder variables -->
