@@ -10,6 +10,8 @@
 #include "HuginInterface.hpp"
 #include "Path.hpp"
 #include "Process.hpp"
+#include <array>
+#include <tuple>
 
 HuginInterface::HuginInterface(const CString& cszInstallPath)
 :m_cszInstallPath(cszInstallPath)
@@ -70,27 +72,38 @@ void HuginInterface::RunStitcher(const CString& cszPtoScript, const CString& csz
 
 void HuginInterface::Detect()
 {
-   LPCTSTR apszRegKeys[] =
+   std::array<std::tuple<HKEY, LPCTSTR, LPCTSTR>, 2> regKeys
    {
-      _T("Software\\hugin"), _T("startDir"),
+      std::tuple<HKEY, LPCTSTR, LPCTSTR> {
+         HKEY_CURRENT_USER, _T("Software\\hugin"), _T("startDir")
+      },
+      std::tuple<HKEY, LPCTSTR, LPCTSTR> {
+         HKEY_LOCAL_MACHINE, _T("Software\\WOW6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Hugin"), _T("DisplayIcon")
+      }
+      //HKEY_CLASSES_ROOT\Applications\hugin.exe\shell\open\command
    };
 
    CString cszInstallPath;
-   for (int i=0, iMax=sizeof(apszRegKeys)/sizeof(*apszRegKeys); i<iMax; i+=2)
+   for (int i=0, iMax=regKeys.size(); i<iMax; i++)
    {
       CRegKey regKey;
-      if (ERROR_SUCCESS != regKey.Open(HKEY_CURRENT_USER, apszRegKeys[i+0], KEY_READ))
+      if (ERROR_SUCCESS != regKey.Open(std::get<0>(regKeys[i]), std::get<1>(regKeys[i]), KEY_READ))
          continue;
 
       DWORD dwLength = MAX_PATH;
       LPTSTR pszBuffer = cszInstallPath.GetBuffer(MAX_PATH);
-      regKey.QueryStringValue(apszRegKeys[i+1], pszBuffer, &dwLength);
+      regKey.QueryStringValue(std::get<2>(regKeys[i]), pszBuffer, &dwLength);
       cszInstallPath.ReleaseBuffer();
 
       if (!cszInstallPath.IsEmpty())
       {
-         if (cszInstallPath.Right(1) != _T("\\"))
-            cszInstallPath += _T("\\");
+         CString cszInstallPathLower(cszInstallPath);
+         cszInstallPathLower.MakeLower();
+
+         if (cszInstallPathLower.Find(_T(".exe")) != -1)
+            cszInstallPath = Path(cszInstallPath).DirectoryName();
+
+         Path::AddEndingBackslash(cszInstallPath);
 
          break;
       }
