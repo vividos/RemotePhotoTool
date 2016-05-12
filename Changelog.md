@@ -3,6 +3,104 @@
 Note: For the complete changelog, including internal changes, you can always go to
 the git sourcecode repository at [https://github.com/vividos/RemotePhotoTool](https://github.com/vividos/RemotePhotoTool).
 
+## 2016-05-12: Version 1.5.0 Build 121 ##
+
+This is a minor feature and major bugfix release.
+
+### tl;dr ###
+
+There are some new UI stuff, e.g. setting Image Format and Video Out, and
+storing window position. Lua scripting support was extended, including
+completed Lua bindings and live Lua syntax checking in the editor. Two new
+command line tools were introduced. And many many bugs were fixed.
+
+### New features ###
+
+#### UI ####
+
+Implemented setting Image Format on the Camera contextual tab, so that The
+user can change the image format used for the next shot.
+
+Implemented setting Video Out on the Camera contextual ribbon, so that
+viewfinder image is also shown on LCD display; only works on Powershot
+cameras.
+
+Both RemotePhotoTool and RemoteScriptingEditor now remember their last window
+position and will start in the same position and maximize state.
+
+About dialogs are now resizable.
+
+#### Lua scripting ####
+
+Completed implementation of Lua bindings to the internal CanonControl library;
+now all functions can be carried out that can be done in the UI. Among these
+are:
+- Setting Video Out for viewfinder
+- Adding / removing handler for download, state and property events
+- Getting / setting image properties
+- Special function to get shooting mode image properties
+- Getting capabilities and histogram from viewfinder
+- ImageProperty and DeviceProperty tables now have two new properties: value
+  and validValues.
+
+Also some example Lua scripts were added to the github repository, e.g. for
+Bulb shooting or listening to camera events.
+
+Lua scripts can now use more built-in Lua libraries, such as the Basic library
+or the OS library. The security critical functions are "sandboxed"; see Lua
+manual for more infos.
+
+RemoteScriptingEditor will now show Lua syntax errors directly in the editor,
+with squiggly lines in the line with the error, and an annotation box below
+the line, containing the exact Lua interpreter error message. The syntax
+checks are done live, when not typing for one second.
+
+#### Tools ####
+
+Added new command line tool RemotePhotoToolCmdline.exe that can be used to
+access and control one of the connected cameras. Start the tool with the
+--help option to see all command line options.
+
+Added new command line tool CanonEOSShutterCount.exe that reads out the
+shutter count of the first connected Canon EOS DSLR camera. Note that this
+doesn't work with all EOS models.
+
+#### Camera specific ####
+
+EOS cameras that report a "will soon shut down" event will automatically kept
+switched on while connected to RemotePhotoTool, or when executing a Lua
+script.
+
+EOS and Powershot cameras: More property names are available for previously
+unknown properties.
+
+### Bug fixes ###
+
+- Exif info in the Previous Images view are now displayed more user-friendly.
+- Fixed texts output in the Camera Info dialog.
+- Powershot / EOS cameras: When there was an error during shutter release,
+  sometimes the UI didn't show the error text.
+- Fixed crashes when running Lua scripts.
+- Powershot cameras: Fixed error showing when first connecting to a camera,
+  but operation continues normally; this was a timing problem, reading a
+  property from camera that isn't ready yet.
+- Zoom in/out buttons are now disabled when at start or end of zoom range.
+- Fixed bug where ribbon buttons were disabled when changing to the Lua
+  scripting photo mode.
+- RemoteScriptingEditor now got a proper toolbar, for those using Windows XP
+  that can't or don't like to use the ribbon menu.
+- Corrected ribbon bar key tips, so that the two applications can also be used
+  only using a keyboard.
+- Removed "Recent files" ribbon menu in RemotePhotoTool, as it makes no sense.
+- Fixed taking images with some EOS cameras that want to know the "capacity"
+  of the host PC to display a "remaining images" number on the camera display.
+  This occured with the Canon EOS 400D while testing.
+- Fixed many bugs when running Lua scripts; Lua values weren't properly
+  ref-counted.
+- Fixed errors in Lua scripts provided by github repository.
+- Fixed other various crashes when interacting with cameras in
+  RemotePhotoTool.
+
 ## 2016-03-05: Version 1.4.0 Build 120 ##
 
 Implemented the Lua Scripting Photo Mode. This photo mode lets you load a script written in the
