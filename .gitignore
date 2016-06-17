@@ -26,6 +26,7 @@ _ReSharper*/
 [Tt]est[Rr]esult*
 obj/
 bin/
+src/packages/
 
 #Ignore project folders
 bin/
