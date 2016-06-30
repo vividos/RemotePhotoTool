@@ -10,6 +10,8 @@
 #include "SystemLuaBindings.hpp"
 #include "LuaScheduler.hpp"
 
+#pragma warning(disable: 28159) // Consider using 'GetTickCount64' instead of 'GetTickCount'. Reason: GetTickCount overflows roughly every 49 days.  Code that does not take that into account can loop indefinitely.  GetTickCount64 operates on 64 bit values and does not have that problem
+
 /// poll time for manual-reset events
 const unsigned int c_uiManualResetEventPollTimeInMs = 50;
 
