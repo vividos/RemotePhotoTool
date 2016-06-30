@@ -13,6 +13,7 @@
 #include "PsrecVarDataParser.hpp"
 #include "PsrecCameraEventData.hpp"
 #include "AsyncReleaseControlThread.hpp"
+#include "Timer.hpp"
 
 using namespace PSREC;
 
@@ -317,7 +318,8 @@ void RemoteReleaseControlImpl::AsyncRelease()
    val.SetType(Variant::typeUInt16);
    pa.Set(prPTP_DEV_PROP_CAPTURE_TRANSFER_MODE, val);
 
-   DWORD dwStart = GetTickCount();
+   Timer releaseTimer;
+   releaseTimer.Start();
 
    // may return prWAIT_TIMEOUT_ERROR?, prINVALID_FN_CALL, prINVALID_HANDLE, prMEM_ALLOC_FAILED or @ERR
    prResponse err = PR_RC_Release(m_hCamera);
@@ -328,8 +330,8 @@ void RemoteReleaseControlImpl::AsyncRelease()
 
    CheckError(_T("PR_RC_Release"), err, __FILE__, __LINE__);
 
-   DWORD dwEnd = GetTickCount();
-   LOG_TRACE(_T("PR_RC_Release took %u ms\n"), dwEnd-dwStart);
+   releaseTimer.Stop();
+   LOG_TRACE(_T("PR_RC_Release took %u ms\n"), unsigned(releaseTimer.Elapsed() * 1000));
 
    // wait for event
    m_evtReleaseImageReady.Wait();
