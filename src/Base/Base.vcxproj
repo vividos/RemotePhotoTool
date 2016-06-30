@@ -93,6 +93,7 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="SystemException.hpp" />
     <ClInclude Include="Thread.hpp" />
+    <ClInclude Include="Timer.hpp" />
     <ClInclude Include="Wtl.hpp" />
   </ItemGroup>
   <ItemGroup>
