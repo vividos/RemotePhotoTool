@@ -38,8 +38,9 @@ extern "C" {
 #endif
 
 #ifdef WIN32
-#undef CAMLIBS
-#define CAMLIBS "."
+#ifndef CAMLIBS
+#define CAMLIBS "camlibs"
+#endif
 #endif
 
 #include <gphoto2/gphoto2-port.h>
