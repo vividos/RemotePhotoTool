@@ -1,0 +1,31 @@
+﻿<Window x:Class="WpfDotNetCameraControl.View.CameraConnectWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfDotNetCameraControl.ViewModel"
+        mc:Ignorable="d"
+        Title="Connect to camera" Height="300" Width="600">
+    <Grid>
+        <ListBox x:Name="listBox" HorizontalAlignment="Left" Height="250" Margin="10,10,0,0" VerticalAlignment="Top" Width="467"
+                 ItemsSource="{Binding Path=CameraList, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" MinWidth="100" MinHeight="50">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="pack://application:,,,/Resources/camera.png" />
+                        <TextBlock Text="{Binding Name, Mode=OneTime}" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <Button x:Name="buttonOpenCamera" Content="Open camera" HorizontalAlignment="Left"
+                Margin="482,10,0,0" VerticalAlignment="Top" Width="102" Height="26"
+                IsEnabled="{Binding Source=IsEnabledOpenCameraButton, Mode=OneWay }"
+                Click="OnClickedButtonOpenCamera" />
+
+        <Button x:Name="buttonExit" Content="Exit" HorizontalAlignment="Left"
+                Margin="482,41,0,0" VerticalAlignment="Top" Width="102" Height="26"
+                Click="OnClickedButtonExit"/>
+    </Grid>
+</Window>
