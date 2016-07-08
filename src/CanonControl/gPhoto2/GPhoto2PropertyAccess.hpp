@@ -19,7 +19,7 @@ namespace GPhoto2
 {
 
 /// access to properties of gPhoto2 camera
-class PropertyAccess
+class PropertyAccess : public std::enable_shared_from_this<PropertyAccess>
 {
 public:
    /// ctor
@@ -38,10 +38,10 @@ public:
    DeviceProperty GetDeviceProperty(unsigned int uiPropertyId) const;
 
    /// returns displayable text from property id and value
-   static CString DisplayTextFromIdAndValue(unsigned int propId, Variant value);
+   CString DisplayTextFromIdAndValue(unsigned int propId, Variant value);
 
    /// returns name from given id
-   static LPCTSTR NameFromId(unsigned int propId) throw();
+   LPCTSTR NameFromId(unsigned int propId) throw();
 
 private:
    /// reads property value from widget and stores it as variant value
@@ -51,7 +51,7 @@ private:
    static void ReadValidValues(DeviceProperty& dp, CameraWidget* widget, int type);
 
    /// recursively adds all properties found in sub-widgets
-   void RecursiveAddProperties(CameraWidget* widget, std::vector<unsigned int>& vecDeviceProperties) const;
+   void RecursiveAddProperties(CameraWidget* widget, std::map<unsigned int, CameraWidget*>& mapDeviceProperties) const;
 
    /// dumps widget tree to logging
    static void DumpWidgetTree(CameraWidget* widget, int indendationLevel);
@@ -65,6 +65,9 @@ private:
 
    /// camera widget with all configurable properties
    std::shared_ptr<CameraWidget> m_spWidget;
+
+   /// device properties (cached)
+   std::map<unsigned int, CameraWidget*> m_mapDeviceProperties;
 };
 
 } // namespace GPhoto2

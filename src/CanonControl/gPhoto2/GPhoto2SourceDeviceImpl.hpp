@@ -45,7 +45,7 @@ private:
    std::shared_ptr<_Camera> m_spCamera;
 
    /// access to camera properties
-   PropertyAccess m_properties;
+   std::shared_ptr<PropertyAccess> m_spProperties;
 };
 
 } // namespace GPhoto2

@@ -25,6 +25,10 @@ PropertyAccess::PropertyAccess(std::shared_ptr<_GPContext> spContext, std::share
    CheckError(_T("gp_camera_get_config"), ret, __FILE__, __LINE__);
 
    m_spWidget.reset(widget, gp_widget_free);
+
+   // note: we only enumerate device properties once, or else the ids would change
+   DumpWidgetTree(m_spWidget.get(), 0);
+   RecursiveAddProperties(m_spWidget.get(), m_mapDeviceProperties);
 }
 
 /// looks up child widget by widget name or label
@@ -114,8 +118,11 @@ std::vector<unsigned int> PropertyAccess::EnumDeviceProperties() const
 {
    std::vector<unsigned int> vecDeviceProperties;
 
-   DumpWidgetTree(m_spWidget.get(), 0);
-   RecursiveAddProperties(m_spWidget.get(), vecDeviceProperties);
+   std::for_each(m_mapDeviceProperties.begin(), m_mapDeviceProperties.end(),
+      [&vecDeviceProperties](std::pair<unsigned int, CameraWidget*> value)
+   {
+      vecDeviceProperties.push_back(value.first);
+   });
 
    return vecDeviceProperties;
 }
@@ -137,7 +144,8 @@ DeviceProperty PropertyAccess::GetDeviceProperty(unsigned int propId) const
    Variant value;
    ReadPropertyValue(child, value, type);
 
-   DeviceProperty dp(T_enSDKVariant::variantGphoto2, propId, value, readonly != 0);
+   DeviceProperty dp(T_enSDKVariant::variantGphoto2, propId, value, readonly != 0,
+      std::static_pointer_cast<void>(std::const_pointer_cast<PropertyAccess>(shared_from_this())));
 
    ReadValidValues(dp, child, type);
 
@@ -244,13 +252,20 @@ CString PropertyAccess::DisplayTextFromIdAndValue(unsigned int propId, Variant v
 
 LPCTSTR PropertyAccess::NameFromId(unsigned int propId) throw()
 {
-   // TODO implement
-   propId;
+   if (m_mapDeviceProperties.find(propId) == m_mapDeviceProperties.end())
+   {
+      return _T("???");
+   }
 
-   return _T("???");
+   const char* label = nullptr;
+   gp_widget_get_label(m_mapDeviceProperties[propId], &label);
+
+   static CString s_propName(label);
+
+   return s_propName.GetString();
 }
 
-void PropertyAccess::RecursiveAddProperties(CameraWidget* widget, std::vector<unsigned int>& vecDeviceProperties) const
+void PropertyAccess::RecursiveAddProperties(CameraWidget* widget, std::map<unsigned int, CameraWidget*>& mapDeviceProperties) const
 {
    int count = gp_widget_count_children(widget);
 
@@ -265,7 +280,7 @@ void PropertyAccess::RecursiveAddProperties(CameraWidget* widget, std::vector<un
          CameraWidget* child = nullptr;
          gp_widget_get_child(widget, i, &child);
 
-         RecursiveAddProperties(child, vecDeviceProperties);
+         RecursiveAddProperties(child, mapDeviceProperties);
       }
    }
    else
@@ -279,7 +294,7 @@ void PropertyAccess::RecursiveAddProperties(CameraWidget* widget, std::vector<un
          ret = gp_widget_get_id(widget, &id);
          CheckError(_T("gp_widget_get_id"), ret, __FILE__, __LINE__);
 
-         vecDeviceProperties.push_back(static_cast<unsigned int>(id));
+         mapDeviceProperties.insert(std::make_pair(static_cast<unsigned int>(id), widget));
       }
 }
 

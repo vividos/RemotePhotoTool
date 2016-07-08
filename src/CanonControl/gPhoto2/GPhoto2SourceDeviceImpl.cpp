@@ -19,7 +19,7 @@ using GPhoto2::SourceDeviceImpl;
 SourceDeviceImpl::SourceDeviceImpl(std::shared_ptr<_GPContext> spContext, std::shared_ptr<_Camera> spCamera)
    :m_spContext(spContext),
    m_spCamera(spCamera),
-   m_properties(spContext, spCamera)
+   m_spProperties(new PropertyAccess(spContext, spCamera))
 {
 }
 
@@ -32,10 +32,10 @@ bool SourceDeviceImpl::GetDeviceCapability(T_enDeviceCapability enDeviceCapabili
    switch (enDeviceCapability)
    {
    case capRemoteReleaseControl:
-      return m_properties.GetCameraOperationAbility(CameraOperation::GP_OPERATION_CAPTURE_IMAGE);
+      return m_spProperties->GetCameraOperationAbility(CameraOperation::GP_OPERATION_CAPTURE_IMAGE);
 
    case capRemoteViewfinder:
-      return m_properties.GetCameraOperationAbility(CameraOperation::GP_OPERATION_CAPTURE_PREVIEW);
+      return m_spProperties->GetCameraOperationAbility(CameraOperation::GP_OPERATION_CAPTURE_PREVIEW);
 
    default:
       ATLASSERT(false);
@@ -47,22 +47,22 @@ bool SourceDeviceImpl::GetDeviceCapability(T_enDeviceCapability enDeviceCapabili
 
 CString SourceDeviceImpl::ModelName() const
 {
-   return m_properties.GetText("model");
+   return m_spProperties->GetText("model");
 }
 
 CString SourceDeviceImpl::SerialNumber() const
 {
-   return m_properties.GetText("serialnumber");
+   return m_spProperties->GetText("serialnumber");
 }
 
 std::vector<unsigned int> SourceDeviceImpl::EnumDeviceProperties() const
 {
-   return m_properties.EnumDeviceProperties();
+   return m_spProperties->EnumDeviceProperties();
 }
 
 DeviceProperty SourceDeviceImpl::GetDeviceProperty(unsigned int uiPropertyId) const
 {
-   return m_properties.GetDeviceProperty(uiPropertyId);
+   return m_spProperties->GetDeviceProperty(uiPropertyId);
 }
 
 std::shared_ptr<RemoteReleaseControl> SourceDeviceImpl::EnterReleaseControl()

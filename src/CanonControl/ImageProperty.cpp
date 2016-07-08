@@ -24,7 +24,8 @@ CString ImageProperty::Name() const throw()
       case variantCdsdk: cszName = CDSDK::ImagePropertyAccess::NameFromId(m_uiImageProperty); break;
       case variantEdsdk: cszName = EDSDK::PropertyAccess::NameFromId(m_uiImageProperty); break;
       case variantPsrec: cszName = PSREC::PropertyAccess::NameFromId(static_cast<prUInt16>(m_uiImageProperty & 0xFFFF)); break;
-      case variantGphoto2: cszName = GPhoto2::PropertyAccess::NameFromId(m_uiImageProperty); break;
+      case variantGphoto2:
+         cszName = std::static_pointer_cast<GPhoto2::PropertyAccess>(m_spImpl)->NameFromId(m_uiImageProperty); break;
       default:
          ATLASSERT(false);
          LOG_TRACE(_T("invalid SDK variant in DeviceProperty::Name()\n"));
@@ -54,7 +55,8 @@ CString ImageProperty::ValueAsString(Variant value) const throw()
       case variantCdsdk: return CDSDK::ImagePropertyAccess::DisplayTextFromIdAndValue(m_uiImageProperty, value);
       case variantEdsdk: return EDSDK::PropertyAccess::DisplayTextFromIdAndValue(m_uiImageProperty, value);
       case variantPsrec: return PSREC::PropertyAccess::DisplayTextFromIdAndValue(static_cast<prUInt16>(m_uiImageProperty & 0xFFFF), value);
-      case variantGphoto2: return GPhoto2::PropertyAccess::DisplayTextFromIdAndValue(m_uiImageProperty, value);
+      case variantGphoto2:
+         return std::static_pointer_cast<GPhoto2::PropertyAccess>(m_spImpl)->DisplayTextFromIdAndValue(m_uiImageProperty, value);
       default:
          ATLASSERT(false);
          LOG_TRACE(_T("invalid SDK variant in ImageProperty::ValueAsString()\n"));

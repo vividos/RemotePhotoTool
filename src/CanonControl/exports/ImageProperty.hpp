@@ -87,11 +87,13 @@ private:
    friend class ImageFormat;
 
    /// ctor
-   ImageProperty(T_enSDKVariant enSDKVariant, unsigned int uiImageProperty, Variant value, bool bReadOnly)
+   ImageProperty(T_enSDKVariant enSDKVariant, unsigned int uiImageProperty, Variant value, bool bReadOnly,
+      std::shared_ptr<void> spImpl = std::shared_ptr<void>())
       :m_enSDKVariant(enSDKVariant),
        m_uiImageProperty(uiImageProperty),
        m_value(value),
-       m_bReadOnly(bReadOnly)
+       m_bReadOnly(bReadOnly),
+       m_spImpl(spImpl)
    {
    }
 
@@ -113,4 +115,7 @@ private:
 
    /// indicates if value is read only
    bool m_bReadOnly;
+
+   /// pointer to implementation; may be null
+   std::shared_ptr<void> m_spImpl;
 };

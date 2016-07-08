@@ -42,11 +42,13 @@ private:
    friend GPhoto2::PropertyAccess;
 
    /// ctor
-   DeviceProperty(T_enSDKVariant enSDKVariant, unsigned int uiPropertyId, Variant value, bool bReadOnly)
+   DeviceProperty(T_enSDKVariant enSDKVariant, unsigned int uiPropertyId, Variant value, bool bReadOnly,
+      std::shared_ptr<void> spImpl = std::shared_ptr<void>())
       :m_enSDKVariant(enSDKVariant),
        m_uiPropertyId(uiPropertyId),
        m_value(value),
-       m_bReadOnly(bReadOnly)
+       m_bReadOnly(bReadOnly),
+       m_spImpl(spImpl)
    {
    }
 
@@ -68,4 +70,7 @@ private:
 
    /// valid values
    std::vector<Variant> m_vecValidValues;
+
+   /// pointer to implementation; may be null
+   std::shared_ptr<void> m_spImpl;
 };
