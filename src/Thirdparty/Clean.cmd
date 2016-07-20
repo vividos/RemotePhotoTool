@@ -51,3 +51,5 @@ del %OUTDIR%iolibs\libusb1.dll 2> nul
 del %OUTDIR%iolibs\ptpip.dll 2> nul
 rmdir %OUTDIR%camlibs 2> nul
 rmdir %OUTDIR%iolibs 2> nul
+
+exit 0
