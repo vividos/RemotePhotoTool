@@ -82,17 +82,27 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="RemotePhotoTool.CameraControl.BulbReleaseControl.hpp" />
+    <ClInclude Include="RemotePhotoTool.CameraControl.DeviceProperty.hpp" />
+    <ClInclude Include="RemotePhotoTool.CameraControl.ImageProperty.hpp" />
     <ClInclude Include="RemotePhotoTool.CameraControl.Instance.hpp" />
+    <ClInclude Include="RemotePhotoTool.CameraControl.RemoteReleaseControl.hpp" />
     <ClInclude Include="RemotePhotoTool.CameraControl.SourceDevice.hpp" />
     <ClInclude Include="RemotePhotoTool.CameraControl.SourceInfo.hpp" />
+    <ClInclude Include="RemotePhotoTool.CameraControl.Viewfinder.hpp" />
     <ClInclude Include="RemotePhotoTool.LuaScripting.CameraScriptProcessor.hpp" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
+    <ClCompile Include="RemotePhotoTool.CameraControl.BulbReleaseControl.cpp" />
+    <ClCompile Include="RemotePhotoTool.CameraControl.DeviceProperty.cpp" />
+    <ClCompile Include="RemotePhotoTool.CameraControl.ImageProperty.cpp" />
     <ClCompile Include="RemotePhotoTool.CameraControl.Instance.cpp" />
+    <ClCompile Include="RemotePhotoTool.CameraControl.RemoteReleaseControl.cpp" />
     <ClCompile Include="RemotePhotoTool.CameraControl.SourceDevice.cpp" />
     <ClCompile Include="RemotePhotoTool.CameraControl.SourceInfo.cpp" />
+    <ClCompile Include="RemotePhotoTool.CameraControl.Viewfinder.cpp" />
     <ClCompile Include="RemotePhotoTool.LuaScripting.CameraScriptProcessor.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

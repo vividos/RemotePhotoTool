@@ -17,19 +17,23 @@ namespace RemotePhotoTool
    {
       ref class SourceDevice;
 
+      /// infos about a source camera
       public ref class SourceInfo
       {
       public:
+         /// returns name of source camera
          property System::String^ Name
          {
             System::String^ get();
          }
 
+         /// returns device id of source camera
          property System::String^ DeviceId
          {
             System::String^ get();
          }
 
+         /// opens source device for use
          SourceDevice^ Open();
 
          /// finalizer
@@ -43,6 +47,7 @@ namespace RemotePhotoTool
          SourceInfo(std::shared_ptr<::SourceInfo> sourceInfo);
 
       private:
+         /// implementation
          std::shared_ptr<::SourceInfo>* m_sourceInfo;
       };
    }

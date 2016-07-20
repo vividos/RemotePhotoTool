@@ -26,6 +26,21 @@
     <ClInclude Include="RemotePhotoTool.LuaScripting.CameraScriptProcessor.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="RemotePhotoTool.CameraControl.RemoteReleaseControl.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RemotePhotoTool.CameraControl.ImageProperty.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RemotePhotoTool.CameraControl.DeviceProperty.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RemotePhotoTool.CameraControl.Viewfinder.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RemotePhotoTool.CameraControl.BulbReleaseControl.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp">
@@ -44,6 +59,21 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RemotePhotoTool.LuaScripting.CameraScriptProcessor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RemotePhotoTool.CameraControl.RemoteReleaseControl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RemotePhotoTool.CameraControl.ImageProperty.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RemotePhotoTool.CameraControl.DeviceProperty.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RemotePhotoTool.CameraControl.Viewfinder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RemotePhotoTool.CameraControl.BulbReleaseControl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
