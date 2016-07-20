@@ -45,3 +45,16 @@ namespace GPhoto2
    class PropertyAccess;
    class RemoteReleaseControlImpl;
 }
+
+// forward references when compiling with C++/CLI
+namespace RemotePhotoTool
+{
+   namespace CameraControl
+   {
+#ifdef _MANAGED
+      ref class DeviceProperty;
+#else
+      class DeviceProperty;
+#endif
+   }
+}

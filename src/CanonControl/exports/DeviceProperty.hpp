@@ -40,6 +40,7 @@ private:
    friend CDSDK::SourceDeviceImpl;
    friend PSREC::SourceDeviceImpl;
    friend GPhoto2::PropertyAccess;
+   friend RemotePhotoTool::CameraControl::DeviceProperty;
 
    /// ctor
    DeviceProperty(T_enSDKVariant enSDKVariant, unsigned int uiPropertyId, Variant value, bool bReadOnly,
@@ -54,6 +55,12 @@ private:
 
    /// returns valid values as list of variants; non-const version
    std::vector<Variant>& ValidValues() { return m_vecValidValues; }
+
+   /// constructs a new device property based on this property, with another value
+   DeviceProperty PropertyFromVariantValue(const Variant& value)
+   {
+      return DeviceProperty(m_enSDKVariant, m_uiPropertyId, value, m_bReadOnly, m_spImpl);
+   }
 
 private:
    /// SDK variant
