@@ -3044,7 +3044,7 @@ public:
 		}
 		for (int nIndex=0,nLength=GetLength();nIndex<nLength;nIndex+=(int)dwWritten)
 		{
-			dwWritten=(DWORD)(nLength-nIndex)>sizeof(szBuffer-1) ? sizeof(szBuffer-1) : (DWORD)(nLength-nIndex);
+			dwWritten=(DWORD)(nLength-nIndex)>(sizeof(szBuffer)-1) ? (sizeof(szBuffer)-1) : (DWORD)(nLength-nIndex);
 			Tr.chrg.cpMin=nIndex;
 			Tr.chrg.cpMax=nIndex+(long)dwWritten;
 			GetTextRange(Tr);
