@@ -27,7 +27,7 @@ extern LPCTSTR g_pszLuaScriptingFilter;
 /// settings registry key (subkey "Ribbon" is used for menu band)
 LPCTSTR c_pszSettingsRegkey = _T("Software\\RemoteScriptingEditor");
 
-MainFrame::MainFrame() throw()
+MainFrame::MainFrame()
 :m_bScriptingFileModified(false),
  m_settings(c_pszSettingsRegkey)
 {
