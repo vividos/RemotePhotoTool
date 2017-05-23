@@ -27,6 +27,7 @@ _ReSharper*/
 obj/
 bin/
 src/packages/
+src/.vs/
 
 #Ignore project folders
 bin/
