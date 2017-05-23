@@ -35,10 +35,6 @@
 #include <atltypes.h>
 #include <atlwin.h>
 
-#if (_ATL_VER < 0x0800)
-#error ATL 8.0 or higher is needed!
-#endif
-
 // for _stdcallthunk
 #include <atlstdthunk.h>
 
