@@ -369,7 +369,7 @@ void PropertyAccess::Set(EdsPropertyID propId, Variant value, int iParam)
 
    LOG_TRACE(_T("Property [%s] set to value [%s]\n"),
       PropertyAccess::NameFromId(propId),
-      PropertyAccess::DisplayTextFromIdAndValue(propId, value));
+      PropertyAccess::DisplayTextFromIdAndValue(propId, value).GetString());
 
    // now set the property
    EdsError err = EdsSetPropertyData(m_h, propId, iParam, size, &vecData[0]);

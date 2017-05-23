@@ -120,7 +120,7 @@ void RemoteReleaseControlImpl::OnPropertyChange(EdsPropertyEvent inEvent, EdsPro
             _T("Property [%s] changed to value [%s]\n") :
             _T("Property description changed for property [%s]\n"),
          PropertyAccess::NameFromId(uiCombinedPropertyId),
-         PropertyAccess::DisplayTextFromIdAndValue(uiCombinedPropertyId, value));
+         PropertyAccess::DisplayTextFromIdAndValue(uiCombinedPropertyId, value).GetString());
    }
    catch (...)
    {
