@@ -1,4 +1,0 @@
-[submodule "pages"]
-	path = pages
-	url = https://github.com/vividos/RemotePhotoTool.git
-	branch = gh-pages
