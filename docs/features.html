@@ -1,0 +1,174 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>RemotePhotoTool - Features</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/bootstrap-theme.min.css" rel="stylesheet" />
+    <link href="css/styles.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+    <!-- navbar -->
+    <div class="navbar navbar-inverse navbar-static-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">RemotePhotoTool</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="index.html">Home</a>
+                    </li>
+                    <li>
+                        <a href="download.html">Download</a>
+                    </li>
+                    <li class="active">
+                        <a href="features.html">Features</a>
+                    </li>
+                    <li>
+                        <a href="screenshots.html">Screenshots</a>
+                    </li>
+                    <li>
+                        <a href="cameras.html">Supported cameras</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <a id="forkme_banner" href="https://github.com/vividos/RemotePhotoTool">View on GitHub</a>
+
+
+    <div class="container theme-showcase" role="main">
+        <div class="page-header">
+            <a name="features"></a>
+            <h1>Features</h1>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-4 jumbotron-block">
+                <h2>Remotely control</h2>
+                <p>
+                    Control your camera from the PC, including:
+                    <ul>
+                        <li>Common settings like Aperture, Shutter speed, ISO</li>
+                        <li>Release shutter from your PC</li>
+                        <li>Or even use the camera's release button</li>
+                    </ul>
+                </p>
+            </div>
+            <div class="col-lg-4 jumbotron-block">
+                <h2>Photo modes</h2>
+                <p>
+                    Support different photo modes, including:
+                    <ul>
+                        <li>Normal photo mode</li>
+                        <li>HDR mode (takes N different photos in a row and processes them via Photomatix)</li>
+                        <li>Panorama mode (takes N photos and stitches them together via Hugin)</li>
+                    </ul>
+                </p>
+            </div>
+            <div class="col-lg-4 jumbotron-block">
+                <h2>Transfer images</h2>
+                <p>
+                    Taken images are:
+                    <ul>
+                        <li>Automatically transferred to PC</li>
+                        <li>Images on the PC are sorted in folders, by date</li>
+                        <li>Subfolders can be used to store HDR and Panorama images separately</li>
+                    </ul>
+                </p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-4 jumbotron-block">
+                <h2>Live Viewfinder</h2>
+                <p>
+                    Shows a preview of the camera view, and lets you:
+                    <ul>
+                        <li>Auto focus, auto white balance functions</li>
+                        <li>Zoom in/out for cameras that support it</li>
+                        <li>Helper lines (for rule of thirds and golden ratio)</li>
+                        <li>Show overexposed areas by showing a zebra style pattern</li>
+                    </ul>
+                </p>
+            </div>
+            <div class="col-lg-4 jumbotron-block">
+                <h2>Lua scripting</h2>
+                <p>
+                    Run <a href="http://www.lua.org/">Lua</a> scripts on your PC to control the connected camera. You can:
+                    <ul>
+                        <li>Get camera infos, such as aperture, shutter speed, etc.</li>
+                        <li>Remotely release shutter</li>
+						<li>Transfer images back to the PC</li>
+                    </ul>
+                </p>
+            </div>
+            <div class="col-lg-4 jumbotron-block">
+                <h2>Camera support</h2>
+                <p>
+                    Many camera models are supported:
+                    <ul>
+                        <li>Canon EOS DSLRs</li>
+                        <li>Some Canon Powershot cameras</li>
+                        <li>See full list at <a href="cameras.html">Supported cameras</a></li>
+                    </ul>
+                </p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-4 jumbotron-block">
+                <h2>Third party applications</h2>
+                <p>
+                    Built-in support for running these external applications:
+                    <ul>
+                        <li><a href="http://hugin.sourceforge.net/">Hugin</a> for Panorama stitching</li>
+                        <li><a href="www.hdrsoft.com/download.html">Photomatix Pro</a> for HDR image generation</li>
+                    </ul>
+                </p>
+            </div>
+            <div class="col-lg-4 jumbotron-block">
+                <h2>Detailed infos about cameras</h2>
+                <p>
+                    <ul>
+                        <li>Collect general infos about connected camera, including device properties</li>
+                        <li>Display of all device and image properties</li>
+                        <li>Image properties are updated live when they change</li>
+                    </ul>
+                </p>
+            </div>
+            <div class="col-lg-4 jumbotron-block">
+                <h2>Supported operating systems</h2>
+                <p>
+                    <ul>
+                        <li>Windows XP</li>
+                        <li>Windows Vista</li>
+                        <li>Windows 7 32-bit/64-bit</li>
+                        <li>Windows 8</li>
+                        <li>Windows 8.1</li>
+                        <li>Windows 10</li>
+                    </ul>
+                </p>
+            </div>
+        </div>
+
+    </div>
+    <!-- /container -->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+</body>
+</html>
