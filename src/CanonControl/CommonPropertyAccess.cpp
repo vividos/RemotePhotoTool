@@ -305,7 +305,7 @@ CString FormatCompensationValue(Variant value, bool bIsEdsdk)
          iFract == 0 ? _T("%c%u") : _T("%c%u (%s)"),
          cSign,
          iInt,
-         cszFract);
+         cszFract.GetString());
    }
 
    return cszValue;
