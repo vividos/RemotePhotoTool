@@ -112,9 +112,6 @@
     <ClCompile Include="ScriptingPhotoModeView.cpp">
       <Filter>Photo Mode Files\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TimelapsePhotoModeView.cpp">
-      <Filter>Photo Mode Files\Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="PreviousImagesView.cpp">
       <Filter>Photo Mode Files\Source Files</Filter>
     </ClCompile>
@@ -123,6 +120,9 @@
     </ClCompile>
     <ClCompile Include="CameraConnectionManager.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TimeLapsePhotoModeView.cpp">
+      <Filter>Photo Mode Files\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -219,9 +219,6 @@
     <ClInclude Include="ScriptingPhotoModeView.hpp">
       <Filter>Photo Mode Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TimelapsePhotoModeView.hpp">
-      <Filter>Photo Mode Files\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="PhotoStackingPhotoModeView.hpp">
       <Filter>Photo Mode Files\Header Files</Filter>
     </ClInclude>
@@ -242,6 +239,9 @@
     </ClInclude>
     <ClInclude Include="CameraConnectionManager.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TimeLapsePhotoModeView.hpp">
+      <Filter>Photo Mode Files\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
