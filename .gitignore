@@ -58,3 +58,9 @@ src/RemoteScriptingEditor/res/Ribbon.rc
 #Ignore Coverity Self-Scan files/folders
 src/cov-int/
 src/cov-int.zip
+
+#Ignore SonarQube files/folders
+src/ThirdParty/SonarQube/build-wrapper-win-x86/
+src/ThirdParty/SonarQube/sonar-scanner-msbuild/
+src/.sonarqube/
+src/bw-output/
