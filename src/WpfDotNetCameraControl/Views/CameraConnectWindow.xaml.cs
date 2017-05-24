@@ -1,7 +1,8 @@
-﻿using System.Windows;
-using WpfDotNetCameraControl.ViewModel;
+﻿using RemotePhotoTool.CameraControl;
+using System.Windows;
+using WpfDotNetCameraControl.ViewModels;
 
-namespace WpfDotNetCameraControl.View
+namespace WpfDotNetCameraControl.Views
 {
     /// <summary>
     /// Interaction logic for CameraConnectWindow.xaml
@@ -31,7 +32,19 @@ namespace WpfDotNetCameraControl.View
         /// <param name="args">event args</param>
         private void OnClickedButtonOpenCamera(object sender, RoutedEventArgs args)
         {
-            // TODO implement
+            if (this.ViewModel.SelectedCamera == null)
+            {
+                return;
+            }
+
+            var sourceDevice = this.ViewModel.SelectedCamera.Open();
+
+            RemoteReleaseControl control = sourceDevice.EnterReleaseControl();
+
+            var remoteControlWindow = new RemoteControlWindow(sourceDevice, control);
+            remoteControlWindow.Show();
+
+            this.Close();
         }
 
         /// <summary>

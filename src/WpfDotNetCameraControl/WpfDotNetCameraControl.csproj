@@ -71,11 +71,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="View\CameraConnectWindow.xaml">
+    <Page Include="Views\CameraConnectWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\MainWindow.xaml">
+    <Page Include="Views\RemoteControlWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -83,12 +83,13 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ViewModel\CameraConnectViewModel.cs" />
-    <Compile Include="View\CameraConnectWindow.xaml.cs">
+    <Compile Include="ViewModels\CameraConnectViewModel.cs" />
+    <Compile Include="Views\CameraConnectWindow.xaml.cs">
       <DependentUpon>CameraConnectWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
+    <Compile Include="ViewModels\RemoteControlViewModel.cs" />
+    <Compile Include="Views\RemoteControlWindow.xaml.cs">
+      <DependentUpon>RemoteControlWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

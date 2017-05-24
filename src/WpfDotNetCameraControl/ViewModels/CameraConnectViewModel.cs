@@ -3,7 +3,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 
-namespace WpfDotNetCameraControl.ViewModel
+namespace WpfDotNetCameraControl.ViewModels
 {
     /// <summary>
     /// View model for the Camera connect view
@@ -34,13 +34,15 @@ namespace WpfDotNetCameraControl.ViewModel
             {
                 this.cameraList = value;
 
-                if (this.PropertyChanged != null)
-                {
-                    this.PropertyChanged(this, new PropertyChangedEventArgs(nameof(this.CameraList)));
-                    this.PropertyChanged(this, new PropertyChangedEventArgs(nameof(this.IsEnabledOpenCameraButton)));
-                }
+                this.OnPropertyChanged(nameof(this.CameraList));
+                this.OnPropertyChanged(nameof(this.IsEnabledOpenCameraButton));
             }
         }
+
+        /// <summary>
+        /// Property that stores the currently selected camera
+        /// </summary>
+        public SourceInfo SelectedCamera { get; set; }
 
         /// <summary>
         /// Returns if the camera open button is enabled
@@ -50,10 +52,26 @@ namespace WpfDotNetCameraControl.ViewModel
             get { return this.cameraList.Count > 0; }
         }
 
+        #region INotifyPropertyChanged implementation
         /// <summary>
         /// Event that is triggered when a property has changed
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        /// Call this method to signal that a property has changed
+        /// </summary>
+        /// <param name="propertyName">property name; use C# 6 nameof() operator</param>
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            if (this.PropertyChanged != null)
+            {
+                this.PropertyChanged(
+                    this,
+                    new PropertyChangedEventArgs(propertyName));
+            }
+        }
+        #endregion
 
         /// <summary>
         /// Constructs a new view model object; starts waiting for cameras to connect.
@@ -69,14 +87,6 @@ namespace WpfDotNetCameraControl.ViewModel
         }
 
         /// <summary>
-        /// Cleans up view model; unregisters camera connect handler.
-        /// </summary>
-        public void Dispose()
-        {
-            this.instance.AsyncWaitForCamera();
-        }
-
-        /// <summary>
         /// Handler that is called when camera list has changed.
         /// </summary>
         private void OnCameraAdded()
@@ -84,5 +94,21 @@ namespace WpfDotNetCameraControl.ViewModel
             var sourceInfoList = this.instance.EnumerateDevices();
             this.CameraList = new ObservableCollection<SourceInfo>(sourceInfoList);
         }
+
+        #region IDisposable implementation
+        /// <summary>
+        /// Cleans up view model; unregisters camera connect handler.
+        /// </summary>
+        public void Dispose()
+        {
+            if (this.instance != null)
+            {
+                this.instance.AsyncWaitForCamera();
+
+                this.instance.Dispose();
+                this.instance = null;
+            }
+        }
+        #endregion
     }
 }
