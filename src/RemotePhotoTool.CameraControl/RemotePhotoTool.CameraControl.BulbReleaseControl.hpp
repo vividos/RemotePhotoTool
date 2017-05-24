@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2016 Michael Fink
+// Copyright (C) 2008-2017 Michael Fink
 //
 /// \file RemotePhotoTool.CameraControl.BulbReleaseControl.hpp BulbReleaseControl wrapper class
 //
@@ -18,7 +18,15 @@ namespace RemotePhotoTool
       public ref class BulbReleaseControl
       {
       public:
-         // TODO implement
+         /// property elapsed time
+         property System::TimeSpan ElapsedTime
+         {
+            System::TimeSpan get();
+         }
+
+         /// stops bulb shooting; usefuly if you don't want to Dispose() this
+         /// object yet.
+         void Stop();
 
          /// finalizer
          !BulbReleaseControl();

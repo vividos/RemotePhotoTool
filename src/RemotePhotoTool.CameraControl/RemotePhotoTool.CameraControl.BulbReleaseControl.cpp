@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2016 Michael Fink
+// Copyright (C) 2008-2017 Michael Fink
 //
 /// \file RemotePhotoTool.CameraControl.BulbReleaseControl.cpp BulbReleaseControl wrapper class
 //
@@ -9,6 +9,16 @@
 #include "stdafx.h"
 #include "RemotePhotoTool.CameraControl.BulbReleaseControl.hpp"
 #include "BulbReleaseControl.hpp"
+
+System::TimeSpan RemotePhotoTool::CameraControl::BulbReleaseControl::ElapsedTime::get()
+{
+   return System::TimeSpan::FromSeconds(m_bulbReleaseControl->get()->ElapsedTime());
+}
+
+void RemotePhotoTool::CameraControl::BulbReleaseControl::Stop()
+{
+   m_bulbReleaseControl->get()->Stop();
+}
 
 /// cleans up unmanaged resources
 RemotePhotoTool::CameraControl::BulbReleaseControl::!BulbReleaseControl()

@@ -56,7 +56,12 @@ RemotePhotoTool::CameraControl::SourceDevice::EnterReleaseControl()
    std::shared_ptr<::RemoteReleaseControl> spRemoteReleaseControl =
       m_sourceDevice->get()->EnterReleaseControl();
 
-   return gcnew RemotePhotoTool::CameraControl::RemoteReleaseControl(spRemoteReleaseControl);
+   auto remoteReleaseControl =
+      gcnew RemotePhotoTool::CameraControl::RemoteReleaseControl(spRemoteReleaseControl);
+
+   remoteReleaseControl->InitEventHandler();
+
+   return remoteReleaseControl;
 }
 
 /// cleans up unmanaged resources

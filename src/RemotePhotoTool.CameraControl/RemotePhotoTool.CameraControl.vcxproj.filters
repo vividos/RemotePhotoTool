@@ -41,6 +41,12 @@
     <ClInclude Include="RemotePhotoTool.CameraControl.BulbReleaseControl.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="RemotePhotoTool.CameraControl.ShutterReleaseSettings.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RemotePhotoTool.CameraControl.ImagePropertyType.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp">
@@ -74,6 +80,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RemotePhotoTool.CameraControl.BulbReleaseControl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RemotePhotoTool.CameraControl.ShutterReleaseSettings.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

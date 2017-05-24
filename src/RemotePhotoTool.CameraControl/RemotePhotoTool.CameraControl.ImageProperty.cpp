@@ -42,6 +42,11 @@ RemotePhotoTool::CameraControl::ImageProperty::~ImageProperty()
 {
 }
 
+::ImageProperty* RemotePhotoTool::CameraControl::ImageProperty::GetRaw()
+{
+   return m_imageProperty->get();
+}
+
 RemotePhotoTool::CameraControl::ImageProperty::ImageProperty(
    const ::ImageProperty& imageProperty)
 :m_imageProperty(new std::shared_ptr<::ImageProperty>(new ::ImageProperty(imageProperty)))

@@ -85,8 +85,10 @@
     <ClInclude Include="RemotePhotoTool.CameraControl.BulbReleaseControl.hpp" />
     <ClInclude Include="RemotePhotoTool.CameraControl.DeviceProperty.hpp" />
     <ClInclude Include="RemotePhotoTool.CameraControl.ImageProperty.hpp" />
+    <ClInclude Include="RemotePhotoTool.CameraControl.ImagePropertyType.hpp" />
     <ClInclude Include="RemotePhotoTool.CameraControl.Instance.hpp" />
     <ClInclude Include="RemotePhotoTool.CameraControl.RemoteReleaseControl.hpp" />
+    <ClInclude Include="RemotePhotoTool.CameraControl.ShutterReleaseSettings.hpp" />
     <ClInclude Include="RemotePhotoTool.CameraControl.SourceDevice.hpp" />
     <ClInclude Include="RemotePhotoTool.CameraControl.SourceInfo.hpp" />
     <ClInclude Include="RemotePhotoTool.CameraControl.Viewfinder.hpp" />
@@ -100,6 +102,7 @@
     <ClCompile Include="RemotePhotoTool.CameraControl.ImageProperty.cpp" />
     <ClCompile Include="RemotePhotoTool.CameraControl.Instance.cpp" />
     <ClCompile Include="RemotePhotoTool.CameraControl.RemoteReleaseControl.cpp" />
+    <ClCompile Include="RemotePhotoTool.CameraControl.ShutterReleaseSettings.cpp" />
     <ClCompile Include="RemotePhotoTool.CameraControl.SourceDevice.cpp" />
     <ClCompile Include="RemotePhotoTool.CameraControl.SourceInfo.cpp" />
     <ClCompile Include="RemotePhotoTool.CameraControl.Viewfinder.cpp" />

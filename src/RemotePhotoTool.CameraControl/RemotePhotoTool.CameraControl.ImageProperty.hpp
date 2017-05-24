@@ -52,7 +52,11 @@ namespace RemotePhotoTool
          /// ctor
          ImageProperty(const ::ImageProperty& imageProperty);
 
+         /// returns raw image property
+         ::ImageProperty* GetRaw();
+
       private:
+         /// implementation
          std::shared_ptr<::ImageProperty>* m_imageProperty;
       };
    }

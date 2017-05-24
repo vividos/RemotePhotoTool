@@ -59,6 +59,7 @@ namespace RemotePhotoTool
          DeviceProperty(const ::DeviceProperty& deviceProperty);
 
       private:
+         /// implementation
          std::shared_ptr<::DeviceProperty>* m_deviceProperty;
       };
    }
