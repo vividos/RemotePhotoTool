@@ -29,6 +29,14 @@ void RemotePhotoTool::CameraControl::RemoteReleaseControl::SetReleaseSettings(Sh
 }
 
 RemotePhotoTool::CameraControl::ImageProperty^
+RemotePhotoTool::CameraControl::RemoteReleaseControl::GetImageProperty(unsigned int imagePropertyId)
+{
+   ::ImageProperty imageProperty = m_remoteReleaseControl->get()->GetImageProperty(imagePropertyId);
+
+   return gcnew RemotePhotoTool::CameraControl::ImageProperty(imageProperty, *m_remoteReleaseControl);
+}
+
+RemotePhotoTool::CameraControl::ImageProperty^
 RemotePhotoTool::CameraControl::RemoteReleaseControl::GetImagePropertyByType(ImagePropertyType imagePropertyType)
 {
    T_enImagePropertyType enImagePropertyType =
@@ -36,18 +44,16 @@ RemotePhotoTool::CameraControl::RemoteReleaseControl::GetImagePropertyByType(Ima
 
    unsigned int imagePropertyId = m_remoteReleaseControl->get()->MapImagePropertyTypeToId(enImagePropertyType);
 
-   ::ImageProperty imageProperty = m_remoteReleaseControl->get()->GetImageProperty(imagePropertyId);
-
-   return gcnew RemotePhotoTool::CameraControl::ImageProperty(imageProperty);
+   return GetImageProperty(imagePropertyId);
 }
 
 RemotePhotoTool::CameraControl::ImageProperty^
-RemotePhotoTool::CameraControl::RemoteReleaseControl::MapShootingModeToImagePropertyValue(ShootingMode shootingMode)
+RemotePhotoTool::CameraControl::RemoteReleaseControl::GetShootingModeImageProperty(ShootingMode shootingMode)
 {
    ::ImageProperty imageProperty = m_remoteReleaseControl->get()->MapShootingModeToImagePropertyValue(
       static_cast<::RemoteReleaseControl::T_enShootingMode>(shootingMode));
 
-   return gcnew RemotePhotoTool::CameraControl::ImageProperty(imageProperty);
+   return gcnew RemotePhotoTool::CameraControl::ImageProperty(imageProperty, *m_remoteReleaseControl);
 }
 
 System::Collections::Generic::List<RemotePhotoTool::CameraControl::ImageProperty^>^
@@ -63,7 +69,8 @@ RemotePhotoTool::CameraControl::RemoteReleaseControl::EnumImageProperties()
 
       ::ImageProperty imageProperty = m_remoteReleaseControl->get()->GetImageProperty(imagePropertyId);
 
-      imagePropertyCollection->Add(gcnew RemotePhotoTool::CameraControl::ImageProperty(imageProperty));
+      imagePropertyCollection->Add(
+         gcnew RemotePhotoTool::CameraControl::ImageProperty(imageProperty, *m_remoteReleaseControl));
    }
 
    return imagePropertyCollection;

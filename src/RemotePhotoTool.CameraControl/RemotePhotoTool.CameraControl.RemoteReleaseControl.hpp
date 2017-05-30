@@ -131,11 +131,14 @@ namespace RemotePhotoTool
          // image property methods
          ////////////////////////////////////////////////
 
+         /// gets image property by image property ID
+         ImageProperty^ GetImageProperty(unsigned int imagePropertyId);
+
          /// gets image property by image property type
          ImageProperty^ GetImagePropertyByType(ImagePropertyType imagePropertyType);
 
          /// maps shooting mode type to image property value
-         ImageProperty^ MapShootingModeToImagePropertyValue(ShootingMode shootingMode);
+         ImageProperty^ GetShootingModeImageProperty(ShootingMode shootingMode);
 
          /// enumerate all possible image properties that can be get/set
          System::Collections::Generic::List<ImageProperty^>^ EnumImageProperties();

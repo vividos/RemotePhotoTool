@@ -10,6 +10,7 @@
 #include "Instance.hpp"
 
 class ImageProperty;
+class RemoteReleaseControl;
 
 namespace RemotePhotoTool
 {
@@ -42,6 +43,12 @@ namespace RemotePhotoTool
             bool get();
          }
 
+         /// returns list of currently valid values for this image property
+         property System::Collections::Generic::List<ImageProperty^>^ ValidValues
+         {
+            System::Collections::Generic::List<ImageProperty^>^ get();
+         }
+
          /// finalizer
          !ImageProperty();
 
@@ -50,7 +57,8 @@ namespace RemotePhotoTool
 
       internal:
          /// ctor
-         ImageProperty(const ::ImageProperty& imageProperty);
+         ImageProperty(const ::ImageProperty& imageProperty,
+            std::shared_ptr<::RemoteReleaseControl>& remoteReleaseControl);
 
          /// returns raw image property
          ::ImageProperty* GetRaw();
@@ -58,6 +66,9 @@ namespace RemotePhotoTool
       private:
          /// implementation
          std::shared_ptr<::ImageProperty>* m_imageProperty;
+
+         /// release control
+         std::shared_ptr<::RemoteReleaseControl>* m_remoteReleaseControl;
       };
    }
 }
