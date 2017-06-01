@@ -129,6 +129,9 @@ public:
       if (m_enType == typeUInt32)
          return IsValueEqual<unsigned int>(rhs);
       else
+      if (m_enType == typeUInt16)
+         return IsValueEqual<unsigned short>(rhs);
+      else
       if (m_enType == typeUInt8)
          return IsValueEqual<unsigned char>(rhs);
       else
