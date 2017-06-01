@@ -88,7 +88,11 @@ RemotePhotoTool::CameraControl::RemoteReleaseControl::StartViewfinder()
    std::shared_ptr<::Viewfinder> spViewfinder =
       m_remoteReleaseControl->get()->StartViewfinder();
 
-   return gcnew RemotePhotoTool::CameraControl::Viewfinder(spViewfinder);
+   auto viewfinder = gcnew RemotePhotoTool::CameraControl::Viewfinder(spViewfinder);
+
+   viewfinder->InitEventHandler();
+
+   return viewfinder;
 }
 
 unsigned int RemotePhotoTool::CameraControl::RemoteReleaseControl::NumAvailableShots::get()
