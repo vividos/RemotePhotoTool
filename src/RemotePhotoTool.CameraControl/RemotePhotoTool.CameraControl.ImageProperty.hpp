@@ -16,7 +16,7 @@ namespace RemotePhotoTool
 {
    namespace CameraControl
    {
-      public ref class ImageProperty
+      public ref class ImageProperty : public System::IEquatable<ImageProperty^>
       {
       public:
          /// image property id
@@ -48,6 +48,9 @@ namespace RemotePhotoTool
          {
             System::Collections::Generic::List<ImageProperty^>^ get();
          }
+
+         //#region IEquatable implementation
+         virtual bool Equals(ImageProperty^ other);
 
          /// finalizer
          !ImageProperty();

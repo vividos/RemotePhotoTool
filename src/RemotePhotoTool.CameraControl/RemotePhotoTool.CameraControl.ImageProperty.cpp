@@ -57,6 +57,14 @@ RemotePhotoTool::CameraControl::ImageProperty::ValidValues::get()
    return imagePropertyCollection;
 }
 
+bool RemotePhotoTool::CameraControl::ImageProperty::Equals(
+   RemotePhotoTool::CameraControl::ImageProperty^ other)
+{
+   return
+      this->m_imageProperty->get()->Id() == other->m_imageProperty->get()->Id() &&
+      this->m_imageProperty->get()->Value() == other->m_imageProperty->get()->Value();
+}
+
 /// cleans up unmanaged resources
 RemotePhotoTool::CameraControl::ImageProperty::!ImageProperty()
 {
