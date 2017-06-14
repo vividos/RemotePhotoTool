@@ -17,6 +17,7 @@ struct AppCommand
       openDevice,       ///< opens device
       closeDevice,      ///< closes device
       deviceInfo,       ///< outputs device info
+      showFilesystem,   ///< shows file system, with given relative path
       deviceProperties, ///< outputs device properties
       checkUnknownDeviceProps, ///< checks for unknown device properties
       imageProperties,  ///< outputs image properties

@@ -17,6 +17,7 @@
 #include "Instance.hpp"
 #include "SourceInfo.hpp"
 #include "SourceDevice.hpp"
+#include "CameraFileSystem.hpp"
 #include "RemoteReleaseControl.hpp"
 #include "ShutterReleaseSettings.hpp"
 #include "Filesystem.hpp"
@@ -93,6 +94,7 @@ void CmdlineApp::Exec(const AppCommand& cmd)
       m_spReleaseControl.reset();
       break;
    case AppCommand::deviceInfo: OutputDeviceInfo(); break;
+   case AppCommand::showFilesystem: ShowFileSystem(cmd.m_cszData); break;
    case AppCommand::deviceProperties: ListDeviceProperties(); break;
    case AppCommand::checkUnknownDeviceProps: CheckUnknownDeviceProperties(); break;
    case AppCommand::imageProperties: ListImageProperties(); break;
@@ -216,11 +218,76 @@ void CmdlineApp::OutputDeviceInfo()
    _tprintf(_T("Device capabilities\n"));
    bool bCanRelease = m_spSourceDevice->GetDeviceCapability(SourceDevice::capRemoteReleaseControl);
    bool bCanUseViewfinder = m_spSourceDevice->GetDeviceCapability(SourceDevice::capRemoteViewfinder);
+   bool canUseFilesystem = m_spSourceDevice->GetDeviceCapability(SourceDevice::capCameraFileSystem);
 
    _tprintf(_T("can release shutter: %s\n"), bCanRelease ? _T("yes") : _T("no"));
    _tprintf(_T("can use remote viewfinder: %s\n"), bCanUseViewfinder ? _T("yes") : _T("no"));
+   _tprintf(_T("can use file system: %s\n"), canUseFilesystem ? _T("yes") : _T("no"));
 
    _tprintf(_T("\n"));
+}
+
+/// recursively lists all files and folders in camera file system, starting from given path
+void ListFilesAndFolders(std::shared_ptr<CameraFileSystem> spFileSystem, const CString& path)
+{
+   _tprintf(_T("Path: %s\n"), path.GetString());
+
+   _tprintf(_T("Folders:\n"));
+   std::vector<CString> allFolders = spFileSystem->EnumFolders(path);
+
+   for (size_t index = 0, maxIndex = allFolders.size(); index < maxIndex; index++)
+   {
+      _tprintf(_T("[%Iu] %s\n"), index, allFolders[index].GetString());
+   }
+
+   _tprintf(_T("%Iu folder(s) found.\n\n"), allFolders.size());
+
+   _tprintf(_T("Files:\n"));
+   std::vector<FileInfo> allFiles = spFileSystem->EnumFiles(path);
+
+   for (size_t index = 0, maxIndex = allFiles.size(); index < maxIndex; index++)
+   {
+      const FileInfo& fileInfo = allFiles[index];
+
+      _tprintf(_T("File \"%s\"\n"), fileInfo.m_filename.GetString());
+   }
+
+   _tprintf(_T("%Iu file(s) found.\n\n"), allFiles.size());
+
+   for (size_t index = 0, maxIndex = allFolders.size(); index < maxIndex; index++)
+   {
+      CString subPath = path + CameraFileSystem::PathSeparator + allFolders[index];
+
+      ListFilesAndFolders(spFileSystem, subPath);
+   }
+}
+
+void CmdlineApp::ShowFileSystem(const CString& path)
+{
+   _tprintf(_T("Shows file system\n"));
+
+   if (m_spSourceDevice == nullptr)
+   {
+      _tprintf(_T("No device was opened before.\n"));
+      return;
+   }
+
+   bool canUseFilesystem = m_spSourceDevice->GetDeviceCapability(SourceDevice::capCameraFileSystem);
+   if (!canUseFilesystem)
+   {
+      _tprintf(_T("File system can't be accessed on this device.\n\n"));
+      return;
+   }
+
+   std::shared_ptr<CameraFileSystem> spFileSystem = m_spSourceDevice->GetFileSystem();
+
+   if (spFileSystem == nullptr)
+   {
+      _tprintf(_T("File system couldn't be opened.\n"));
+      return;
+   }
+
+   ListFilesAndFolders(spFileSystem, path);
 }
 
 void CmdlineApp::ListDeviceProperties()

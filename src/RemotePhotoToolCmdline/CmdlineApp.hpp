@@ -36,6 +36,7 @@ private:
    void ListDevices();                          ///< outputs list of devices
    void OpenByName(const CString& cszName);     ///< opens device by name
    void OutputDeviceInfo();                     ///< outputs device infos
+   void ShowFileSystem(const CString& path);    ///< shows file system infos
    void ListDeviceProperties();                 ///< outputs device properties
    void CheckUnknownDeviceProperties();         ///< checks for unknown device properties
    void PrintValidDevicePropertyValues(const DeviceProperty& dp) const; ///< prints valid device property values
