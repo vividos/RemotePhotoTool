@@ -37,6 +37,9 @@ bool SourceDeviceImpl::GetDeviceCapability(T_enDeviceCapability enDeviceCapabili
    case capRemoteViewfinder:
       return m_spProperties->GetCameraOperationAbility(CameraOperation::GP_OPERATION_CAPTURE_PREVIEW);
 
+   case capCameraFileSystem:
+      return false; // not implemented yet
+
    default:
       ATLASSERT(false);
       break;
@@ -63,6 +66,11 @@ std::vector<unsigned int> SourceDeviceImpl::EnumDeviceProperties() const
 DeviceProperty SourceDeviceImpl::GetDeviceProperty(unsigned int uiPropertyId) const
 {
    return m_spProperties->GetDeviceProperty(uiPropertyId);
+}
+
+std::shared_ptr<CameraFileSystem> SourceDeviceImpl::GetFileSystem()
+{
+   return std::shared_ptr<CameraFileSystem>();
 }
 
 std::shared_ptr<RemoteReleaseControl> SourceDeviceImpl::EnterReleaseControl()

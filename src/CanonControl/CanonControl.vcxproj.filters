@@ -116,6 +116,9 @@
     <ClCompile Include="gPhoto2\GPhoto2PropertyAccess.cpp">
       <Filter>GPhoto2 Files</Filter>
     </ClCompile>
+    <ClCompile Include="EDSDK\EdsdkCameraFileSystemImpl.cpp">
+      <Filter>EDSDK Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="exports\BulbReleaseControl.hpp">
@@ -306,6 +309,12 @@
     </ClInclude>
     <ClInclude Include="PsrecCameraEventData.hpp">
       <Filter>PSREC Files</Filter>
+    </ClInclude>
+    <ClInclude Include="exports\CameraFileSystem.hpp">
+      <Filter>Exported Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EDSDK\EdsdkCameraFileSystemImpl.hpp">
+      <Filter>EDSDK Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -51,6 +51,9 @@ public:
       case SourceDevice::capRemoteViewfinder:
          return (m_faculty & cdRELEASE_CONTROL_CAP_VIEWFINDER) != 0;
 
+      case SourceDevice::capCameraFileSystem:
+         return false; // not implemented yet
+
       default:
          ATLASSERT(false);
          break;
@@ -131,6 +134,17 @@ public:
          uiPropertyId == cdDEVICE_PROP_OWNER_NAME;
 
       return DeviceProperty(variantCdsdk, uiPropertyId, value, !bReadWrite);
+   }
+
+   virtual std::shared_ptr<CameraFileSystem> GetFileSystem() override
+   {
+      if (!GetDeviceCapability(capCameraFileSystem))
+      {
+         throw CameraException(_T("CDSDK::SourceDevice::GetFileSystem"), _T("Not supported"),
+            cdERROR_CDSDK_COMPONENTID | cdNOT_SUPPORTED, __FILE__, __LINE__);
+      }
+
+      return std::shared_ptr<CameraFileSystem>();
    }
 
    virtual std::shared_ptr<RemoteReleaseControl> EnterReleaseControl() override

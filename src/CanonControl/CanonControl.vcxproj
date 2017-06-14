@@ -84,6 +84,7 @@
     <ClCompile Include="CDSDK\CdsdkImagePropertyAccess.cpp" />
     <ClCompile Include="CDSDK\CdsdkRemoteReleaseControlImpl.cpp" />
     <ClCompile Include="CommonPropertyAccess.cpp" />
+    <ClCompile Include="EDSDK\EdsdkCameraFileSystemImpl.cpp" />
     <ClCompile Include="EDSDK\EdsdkShutterCounterReader.cpp" />
     <ClCompile Include="ErrorText.cpp" />
     <ClCompile Include="gPhoto2\GPhoto2Common.cpp" />
@@ -128,9 +129,11 @@
     <ClInclude Include="BackgroundWorkerThread.hpp" />
     <ClInclude Include="CDSDK\CdsdkDevicePropertyAccess.hpp" />
     <ClInclude Include="CommonPropertyAccess.hpp" />
+    <ClInclude Include="EDSDK\EdsdkCameraFileSystemImpl.hpp" />
     <ClInclude Include="EDSDK\EdsdkShutterCounterReader.hpp" />
     <ClInclude Include="ErrorText.hpp" />
     <ClInclude Include="exports\BulbReleaseControl.hpp" />
+    <ClInclude Include="exports\CameraFileSystem.hpp" />
     <ClInclude Include="exports\ImageFormat.hpp" />
     <ClInclude Include="exports\Instance.hpp" />
     <ClInclude Include="exports\CameraException.hpp" />

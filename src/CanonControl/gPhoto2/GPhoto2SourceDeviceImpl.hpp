@@ -35,6 +35,8 @@ public:
 
    virtual DeviceProperty GetDeviceProperty(unsigned int uiPropertyId) const override;
 
+   virtual std::shared_ptr<CameraFileSystem> GetFileSystem() override;
+
    virtual std::shared_ptr<RemoteReleaseControl> EnterReleaseControl() override;
 
 private:

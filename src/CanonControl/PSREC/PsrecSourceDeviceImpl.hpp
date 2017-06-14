@@ -87,6 +87,9 @@ public:
          }
          break;
 
+      case SourceDevice::capCameraFileSystem:
+         return false; // not supported by PS-ReC
+
       default:
          ATLASSERT(false);
       }
@@ -136,6 +139,17 @@ public:
       dp.m_vecValidValues = desc.m_vecAllValues;
 
       return dp;
+   }
+
+   virtual std::shared_ptr<CameraFileSystem> GetFileSystem() override
+   {
+      if (!GetDeviceCapability(capCameraFileSystem))
+      {
+         throw CameraException(_T("PSREC::SourceDevice::GetFileSystem"), _T("Not supported"),
+            prERROR_PRSDK_COMPONENTID | prNOT_SUPPORTED, __FILE__, __LINE__);
+      }
+
+      return std::shared_ptr<CameraFileSystem>();
    }
 
    virtual std::shared_ptr<RemoteReleaseControl> EnterReleaseControl() override

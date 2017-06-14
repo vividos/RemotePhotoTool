@@ -10,6 +10,7 @@
 #include "DeviceProperty.hpp"
 
 // forward references
+class CameraFileSystem;
 class RemoteReleaseControl;
 
 /// camera source device
@@ -24,6 +25,7 @@ public:
    {
       capRemoteReleaseControl = 0,  ///< indicates if device supports remote release control
       capRemoteViewfinder = 1,      ///< indicates if device supports remote viewfinder
+      capCameraFileSystem = 2,      ///< indicates if device supports file system access
    };
 
    /// returns device capability
@@ -40,6 +42,9 @@ public:
 
    /// returns property object for given property id
    virtual DeviceProperty GetDeviceProperty(unsigned int uiPropertyId) const = 0;
+
+   /// returns camera file system instance
+   virtual std::shared_ptr<CameraFileSystem> GetFileSystem() = 0;
 
    /// enters remote release control and returns class to let the user control release
    virtual std::shared_ptr<RemoteReleaseControl> EnterReleaseControl() = 0;

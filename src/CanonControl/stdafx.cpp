@@ -7,3 +7,6 @@
 
 // includes
 #include "stdafx.h"
+#include "CameraFileSystem.hpp"
+
+LPCTSTR CameraFileSystem::PathSeparator = _T("/");

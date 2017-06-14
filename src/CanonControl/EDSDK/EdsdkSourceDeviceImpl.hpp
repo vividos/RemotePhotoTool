@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2017 Michael Fink
 //
 /// \file EdsdkSourceDeviceImpl.hpp EDSDK - SourceDevice impl
 //
@@ -8,6 +8,7 @@
 
 // includes
 #include "SourceDevice.hpp"
+#include "EdsdkCameraFileSystemImpl.hpp"
 #include "EdsdkRemoteReleaseControlImpl.hpp"
 #include "EdsdkShutterCounterReader.hpp"
 
@@ -49,6 +50,10 @@ public:
          return true;
 
       case SourceDevice::capRemoteViewfinder:
+         // supported on all camera models
+         return true;
+
+      case SourceDevice::capCameraFileSystem:
          // supported on all camera models
          return true;
 
@@ -110,6 +115,13 @@ public:
       p.Enum(uiPropertyId, deviceProperty.ValidValues(), bReadOnly);
 
       return deviceProperty;
+   }
+
+   virtual std::shared_ptr<CameraFileSystem> GetFileSystem() override
+   {
+      std::shared_ptr<SourceDevice> spSourceDevice = shared_from_this();
+
+      return std::shared_ptr<CameraFileSystem>(new EDSDK::CameraFileSystemImpl(spSourceDevice, m_hCamera));
    }
 
    virtual std::shared_ptr<RemoteReleaseControl> EnterReleaseControl() override
