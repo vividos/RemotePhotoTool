@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2017 Michael Fink
 //
 /// \file PsrecSourceDeviceImpl.hpp PS-ReC - SourceDevice impl
 //
@@ -12,6 +12,8 @@
 #include "PsrecRemoteReleaseControlImpl.hpp"
 #include "PsrecPropertyAccess.hpp"
 #include "PsrecDeviceInfo.hpp"
+#include "../WIA/WiaCommon.hpp"
+#include "../WIA/WiaSourceInfoImpl.hpp"
 
 namespace PSREC
 {
@@ -25,7 +27,8 @@ public:
    /// ctor
    SourceDeviceImpl(RefSp spRef, prDeviceInfoTable& deviceInfo)
       :m_spRef(spRef),
-       m_hCamera(0)
+       m_hCamera(0),
+       m_deviceId(reinterpret_cast<wchar_t*>(deviceInfo.DeviceInternalName))
    {
       LOG_TRACE(_T("about to call PR_CreateCameraObject...\n"));
 
@@ -88,7 +91,7 @@ public:
          break;
 
       case SourceDevice::capCameraFileSystem:
-         return false; // not supported by PS-ReC
+         return true; // supported through WIA
 
       default:
          ATLASSERT(false);
@@ -149,7 +152,13 @@ public:
             prERROR_PRSDK_COMPONENTID | prNOT_SUPPORTED, __FILE__, __LINE__);
       }
 
-      return std::shared_ptr<CameraFileSystem>();
+      // support file system using WIA
+      WIA::RefSp wiaRef = std::make_shared<WIA::Ref>();
+      std::shared_ptr<SourceInfo> sourceInfo = std::make_shared<WIA::SourceInfoImpl>(wiaRef, m_deviceId, m_spDeviceInfo->m_cszModel);
+
+      std::shared_ptr<SourceDevice> sourceDevice = sourceInfo->Open();
+
+      return sourceDevice->GetFileSystem();
    }
 
    virtual std::shared_ptr<RemoteReleaseControl> EnterReleaseControl() override
@@ -177,6 +186,9 @@ private:
 
    /// device info
    std::shared_ptr<DeviceInfo> m_spDeviceInfo;
+
+   /// device id
+   CString m_deviceId;
 };
 
 } // namespace PSREC
