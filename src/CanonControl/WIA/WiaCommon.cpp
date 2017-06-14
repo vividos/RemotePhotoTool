@@ -9,29 +9,12 @@
 #include "stdafx.h"
 #include "WiaCommon.hpp"
 #include "WiaSourceInfoImpl.hpp"
+#include "WiaPropertyAccess.hpp"
 #include "ErrorMessage.hpp"
-#include <propvarutil.h>
 
 #pragma comment(lib, "wiaguid.lib")
-#pragma comment(lib, "propsys.lib")
 
 using namespace WIA;
-
-CString StringFromPropVariant(const PROPVARIANT& propVariant, ULONG elementIndex = 0)
-{
-   CString text;
-
-   PWSTR pszValue;
-   HRESULT hr = PropVariantGetStringElem(propVariant, elementIndex, &pszValue);
-
-   if (SUCCEEDED(hr))
-   {
-      text = pszValue;
-      CoTaskMemFree(pszValue);
-   }
-
-   return text;
-}
 
 /// returns an error text from HRESULT value
 CString ErrorFromHRESULT(HRESULT hr)
@@ -132,8 +115,8 @@ void Ref::EnumerateDevices(std::vector<std::shared_ptr<SourceInfo>>& sourceInfoL
          hr = wiaPropertyStorage->GetCount(&numProperties);
          ATLASSERT(SUCCEEDED(hr));
 
-         PROPSPEC propSpec[3] = { 0 };
-         PROPVARIANT propVariant[3] = { 0 };
+         PROPSPEC propSpec[2] = { 0 };
+         PROPVARIANT propVariant[2] = { 0 };
 
          const ULONG propertyCount = sizeof(propSpec) / sizeof(propSpec[0]);
 
@@ -144,16 +127,13 @@ void Ref::EnumerateDevices(std::vector<std::shared_ptr<SourceInfo>>& sourceInfoL
          propSpec[1].ulKind = PRSPEC_PROPID;
          propSpec[1].propid = WIA_DIP_DEV_NAME;
 
-         propSpec[2].ulKind = PRSPEC_PROPID;
-         propSpec[2].propid = WIA_DIP_DEV_DESC;
-
          hr = wiaPropertyStorage->ReadMultiple(propertyCount, propSpec, propVariant);
          if (SUCCEEDED(hr))
          {
             RefSp ref = const_cast<Ref*>(this)->shared_from_this();
 
-            CString deviceId = StringFromPropVariant(propVariant[0]);
-            CString deviceName = StringFromPropVariant(propVariant[1]);
+            CString deviceId = PropertyAccess::StringFromPropVariant(propVariant[0]);
+            CString deviceName = PropertyAccess::StringFromPropVariant(propVariant[1]);
 
             sourceInfoList.push_back(
                std::make_shared<SourceInfoImpl>(ref, deviceId, deviceName));
