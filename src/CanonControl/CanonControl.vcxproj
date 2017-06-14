@@ -110,8 +110,10 @@
     <ClCompile Include="Variant.cpp" />
     <ClCompile Include="CDSDK\CdsdkCommon.cpp" />
     <ClCompile Include="PSREC\PsrecCommon.cpp" />
+    <ClCompile Include="WIA\WiaCameraFileSystemImpl.cpp" />
     <ClCompile Include="WIA\WiaCommon.cpp" />
     <ClCompile Include="WIA\WiaPropertyAccess.cpp" />
+    <ClCompile Include="WIA\WiaSourceDeviceImpl.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Thirdparty\CDSDK\inc\cdAPI.h" />
@@ -179,6 +181,7 @@
     <ClInclude Include="PSREC\PsrecSourceDeviceImpl.hpp" />
     <ClInclude Include="PSREC\PsrecSourceInfoImpl.hpp" />
     <ClInclude Include="PSREC\PsrecVarDataParser.hpp" />
+    <ClInclude Include="WIA\WiaCameraFileSystemImpl.hpp" />
     <ClInclude Include="WIA\WiaCommon.hpp" />
     <ClInclude Include="WIA\WiaPropertyAccess.hpp" />
     <ClInclude Include="WIA\WiaSourceDeviceImpl.hpp" />

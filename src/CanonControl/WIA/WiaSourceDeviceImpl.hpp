@@ -34,64 +34,19 @@ namespace WIA
       {
       }
 
-      virtual bool GetDeviceCapability(SourceDevice::T_enDeviceCapability deviceCapability) const override
-      {
-         deviceCapability;
-         /*
-         switch (enDeviceCapability)
-         {
-         case SourceDevice::capRemoteReleaseControl:
-            // supported on all camera models
-            return true;
+      virtual bool GetDeviceCapability(SourceDevice::T_enDeviceCapability deviceCapability) const override;
 
-         case SourceDevice::capRemoteViewfinder:
-            // supported on all camera models
-            return true;
+      virtual CString ModelName() const override;
 
-         case SourceDevice::capCameraFileSystem:
-            // supported on all camera models
-            return true;
+      virtual CString SerialNumber() const override;
 
-         default:
-            ATLASSERT(false);
-         }
-         */
+      virtual std::vector<unsigned int> EnumDeviceProperties() const override;
 
-         return false;
-      }
+      virtual DeviceProperty GetDeviceProperty(unsigned int propertyId) const override;
 
-      virtual CString ModelName() const override
-      {
-         // TODO implement
-         return CString();
-      }
+      virtual std::shared_ptr<CameraFileSystem> GetFileSystem() override;
 
-      virtual CString SerialNumber() const override
-      {
-         // TODO implement
-         return CString();
-      }
-
-      virtual std::vector<unsigned int> EnumDeviceProperties() const override
-      {
-         throw CameraException(_T(""), _T(""), 0, __FILE__, __LINE__);
-      }
-
-      virtual DeviceProperty GetDeviceProperty(unsigned int propertyId) const override
-      {
-         propertyId;
-         throw CameraException(_T(""), _T(""), 0, __FILE__, __LINE__);
-      }
-
-      virtual std::shared_ptr<CameraFileSystem> GetFileSystem() override
-      {
-         throw CameraException(_T(""), _T(""), 0, __FILE__, __LINE__);
-      }
-
-      virtual std::shared_ptr<RemoteReleaseControl> EnterReleaseControl() override
-      {
-         throw CameraException(_T(""), _T(""), 0, __FILE__, __LINE__);
-      }
+      virtual std::shared_ptr<RemoteReleaseControl> EnterReleaseControl() override;
 
    private:
       /// WIA reference

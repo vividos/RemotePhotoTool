@@ -125,6 +125,12 @@
     <ClCompile Include="WIA\WiaCommon.cpp">
       <Filter>WIA Files</Filter>
     </ClCompile>
+    <ClCompile Include="WIA\WiaSourceDeviceImpl.cpp">
+      <Filter>WIA Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WIA\WiaCameraFileSystemImpl.cpp">
+      <Filter>WIA Files</Filter>
+    </ClCompile>
     <ClCompile Include="WIA\WiaPropertyAccess.cpp">
       <Filter>WIA Files</Filter>
     </ClCompile>
@@ -332,6 +338,9 @@
       <Filter>WIA Files</Filter>
     </ClInclude>
     <ClInclude Include="WIA\WiaSourceDeviceImpl.hpp">
+      <Filter>WIA Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WIA\WiaCameraFileSystemImpl.hpp">
       <Filter>WIA Files</Filter>
     </ClInclude>
     <ClInclude Include="WIA\WiaPropertyAccess.hpp">
