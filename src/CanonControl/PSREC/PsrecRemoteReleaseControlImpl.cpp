@@ -101,6 +101,7 @@ bool RemoteReleaseControlImpl::GetCapability(RemoteReleaseControl::T_enRemoteCap
          {
             return false;
          }
+         break;
 
       case RemoteReleaseControl::capZoomControl:
          try
@@ -114,6 +115,7 @@ bool RemoteReleaseControlImpl::GetCapability(RemoteReleaseControl::T_enRemoteCap
          {
             return false;
          }
+         break;
 
       case RemoteReleaseControl::capViewfinder:
          return di.m_setOperationsSupported.find(prPTP_RC_INITIATE_VIEW_FINDER) != di.m_setOperationsSupported.end();
@@ -134,12 +136,14 @@ bool RemoteReleaseControlImpl::GetCapability(RemoteReleaseControl::T_enRemoteCap
 
       default:
          ATLASSERT(false);
+         break;
       }
    }
    catch (const CameraException& ex)
    {
       LOG_TRACE(_T("GetCapability(): caught CameraException: %s\n"), ex.Message().GetString());
    }
+
    return false;
 }
 

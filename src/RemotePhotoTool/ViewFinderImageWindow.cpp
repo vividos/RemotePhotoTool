@@ -216,7 +216,7 @@ void ViewFinderImageWindow::TraceViewfinderFps()
    {
       CString cszText;
       cszText.Format(_T("Viewfinder: %lu fps"), s_uiViewfinderImageCount * 1000 / dwElapsed);
-      ATLTRACE(_T("%s\n"), cszText);
+      ATLTRACE(_T("%s\n"), cszText.GetString());
 
       s_uiViewfinderImageCount = 0;
       s_dwLastFpsTime = dwNow;
