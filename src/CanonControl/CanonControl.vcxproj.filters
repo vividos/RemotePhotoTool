@@ -33,6 +33,9 @@
     <Filter Include="GPhoto2 Files">
       <UniqueIdentifier>{ffbda97f-5566-4577-be2c-0403704f759f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="WIA Files">
+      <UniqueIdentifier>{1cf0c2b6-905e-4408-88c5-acc3da85522b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DeviceProperty.cpp">
@@ -118,6 +121,9 @@
     </ClCompile>
     <ClCompile Include="EDSDK\EdsdkCameraFileSystemImpl.cpp">
       <Filter>EDSDK Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WIA\WiaCommon.cpp">
+      <Filter>WIA Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -315,6 +321,15 @@
     </ClInclude>
     <ClInclude Include="EDSDK\EdsdkCameraFileSystemImpl.hpp">
       <Filter>EDSDK Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WIA\WiaCommon.hpp">
+      <Filter>WIA Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WIA\WiaSourceInfoImpl.hpp">
+      <Filter>WIA Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WIA\WiaSourceDeviceImpl.hpp">
+      <Filter>WIA Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

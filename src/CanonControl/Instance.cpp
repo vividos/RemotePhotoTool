@@ -13,6 +13,7 @@
 #include "CDSDK\CdsdkSourceInfoImpl.hpp"
 #include "PSREC\PsrecCommon.hpp"
 #include "gPhoto2\GPhoto2Common.hpp"
+#include "WIA\WiaCommon.hpp"
 #include "LightweightMutex.hpp"
 #include "BackgroundWorkerThread.hpp"
 #include "BackgroundTimer.hpp"
@@ -29,11 +30,13 @@ public:
    Impl(EDSDK::RefSp spEdSdkRef,
       CDSDK::RefSp spCdSdkRef,
       PSREC::RefSp spPsRecRef,
-      GPhoto2::RefSp spGPhoto2Ref)
+      GPhoto2::RefSp spGPhoto2Ref,
+      WIA::RefSp spWiaRef)
       :m_spEdSdkRef(spEdSdkRef),
        m_spCdSdkRef(spCdSdkRef),
        m_spPsRecRef(spPsRecRef),
        m_spGPhoto2Ref(spGPhoto2Ref),
+       m_spWiaRef(spWiaRef),
        m_uiPollNumDevices(0)
    {
    }
@@ -42,11 +45,13 @@ public:
    static std::weak_ptr<CDSDK::Ref> m_wpCdSdkRef; ///< weak ref to CDSDK
    static std::weak_ptr<PSREC::Ref> m_wpPsRecRef; ///< weak ref to PSREC
    static std::weak_ptr<GPhoto2::Ref> m_wpGPhoto2Ref; ///< weak ref to gPhoto2
+   static std::weak_ptr<WIA::Ref> m_wpWiaRef; ///< weak ref to WIA
 
    EDSDK::RefSp m_spEdSdkRef; ///< EDSDK reference
    CDSDK::RefSp m_spCdSdkRef; ///< CDSDK reference
    PSREC::RefSp m_spPsRecRef; ///< PSREC reference
    GPhoto2::RefSp m_spGPhoto2Ref; ///< gPhoto2 reference
+   WIA::RefSp m_spWiaRef; ///< WIA reference
 
    /// returns current impl
    static std::shared_ptr<Impl> Get();
@@ -86,6 +91,7 @@ std::weak_ptr<EDSDK::Ref> Instance::Impl::m_wpEdSdkRef;
 std::weak_ptr<CDSDK::Ref> Instance::Impl::m_wpCdSdkRef;
 std::weak_ptr<PSREC::Ref> Instance::Impl::m_wpPsRecRef;
 std::weak_ptr<GPhoto2::Ref> Instance::Impl::m_wpGPhoto2Ref;
+std::weak_ptr<WIA::Ref> Instance::Impl::m_wpWiaRef;
 
 
 std::shared_ptr<Instance::Impl> Instance::Impl::Get()
@@ -106,7 +112,11 @@ std::shared_ptr<Instance::Impl> Instance::Impl::Get()
    if (spGPhoto2Ref == nullptr)
       m_wpGPhoto2Ref = spGPhoto2Ref = GPhoto2::RefSp(new GPhoto2::Ref);
 
-   return std::make_shared<Instance::Impl>(spEdSdkRef, spCdSdkRef, spPsRecRef, spGPhoto2Ref);
+   WIA::RefSp spWiaRef = m_wpWiaRef.lock();
+   if (spWiaRef == nullptr)
+      m_wpWiaRef = spWiaRef = WIA::RefSp(new WIA::Ref);
+
+   return std::make_shared<Instance::Impl>(spEdSdkRef, spCdSdkRef, spPsRecRef, spGPhoto2Ref, spWiaRef);
 }
 
 void Instance::Impl::StartPollCamera()
@@ -207,6 +217,7 @@ CString Instance::Version() const
    m_spImpl->m_spPsRecRef->AddVersionText(cszVersionText);
    m_spImpl->m_spCdSdkRef->AddVersionText(cszVersionText);
    m_spImpl->m_spGPhoto2Ref->AddVersionText(cszVersionText);
+   m_spImpl->m_spWiaRef->AddVersionText(cszVersionText);
 
    return cszVersionText;
 }
@@ -242,12 +253,14 @@ void Instance::AsyncWaitForCamera(T_fnOnCameraAdded fnOnCameraAdded)
    if (fnOnCameraAdded != nullptr)
    {
       m_spImpl->m_spEdSdkRef->AsyncWaitForCamera(true, std::bind(&Instance::OnCameraAddedHandler, this));
+      m_spImpl->m_spWiaRef->AsyncWaitForCamera(true, std::bind(&Instance::OnCameraAddedHandler, this));
 
       m_spImpl->StartPollCamera();
    }
    else
    {
       m_spImpl->m_spEdSdkRef->AsyncWaitForCamera(false);
+      m_spImpl->m_spWiaRef->AsyncWaitForCamera(false);
 
       m_spImpl->StopPollCamera();
    }
@@ -283,6 +296,14 @@ void Instance::EnumerateDevices(std::vector<std::shared_ptr<SourceInfo>>& vecSou
    try
    {
       //m_spImpl->m_spGPhoto2Ref->EnumerateDevices(vecSourceDevices);
+   }
+   catch (...)
+   {
+   }
+
+   try
+   {
+      m_spImpl->m_spWiaRef->EnumerateDevices(vecSourceDevices);
    }
    catch (...)
    {
