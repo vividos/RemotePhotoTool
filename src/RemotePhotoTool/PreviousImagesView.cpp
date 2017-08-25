@@ -10,7 +10,7 @@
 #include "resource.h"
 #include "PreviousImagesView.hpp"
 #include "IPhotoModeViewHost.hpp"
-#include "Path.hpp"
+#include <ulib/Path.hpp>
 #include <shellapi.h>
 
 /// padding pixels between image and image info
@@ -284,7 +284,7 @@ void PreviousImagesView::OpenFolder(const CString& cszImageFilename)
 
    // workaround for systems where ILCreateFromPath() fails; opens a new explorer
    // window each time it is called.
-   CString cszFolderName = Path(cszImageFilename).DirectoryName();
+   CString cszFolderName = Path(cszImageFilename).FolderName();
 
    CString cszArgs;
    cszArgs.Format(_T("/select, \"%s\""), cszImageFilename.GetString());
@@ -293,7 +293,7 @@ void PreviousImagesView::OpenFolder(const CString& cszImageFilename)
 
 void PreviousImagesView::EditImage(const CString& cszImageFilename)
 {
-   CString cszFolderName = Path(cszImageFilename).DirectoryName();
+   CString cszFolderName = Path(cszImageFilename).FolderName();
 
    ::ShellExecute(m_hWnd, _T("edit"), cszImageFilename, NULL, cszFolderName, SW_SHOWNORMAL);
 }

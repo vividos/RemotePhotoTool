@@ -7,9 +7,9 @@
 #pragma once
 
 // includes
-#include "Asio.hpp"
+#include <ulib/config/BoostAsio.hpp>
 #include <thread>
-#include "Thread.hpp"
+#include <ulib/thread/Thread.hpp>
 #include "CameraException.hpp"
 #include "Logging.hpp"
 #include "Lua.hpp"

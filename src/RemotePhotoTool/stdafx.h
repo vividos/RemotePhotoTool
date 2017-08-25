@@ -6,11 +6,12 @@
 //
 #pragma once
 
-/// compile for Windows 7 target to have Ribbon code available
-#define _WIN32_WINNT _WIN32_WINNT_WIN7
+// includes
+#include <SDKDDKVer.h>
+#include <ulib/config/BoostAsio.hpp>
 
 // WTL includes
-#include "Wtl.hpp"
+#include <ulib/config/Wtl.hpp>
 #include <atlsplit.h>
 #include <atlctrlx.h>
 

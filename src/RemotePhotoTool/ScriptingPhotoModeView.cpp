@@ -11,9 +11,9 @@
 #include "ScriptingPhotoModeView.hpp"
 #include "IPhotoModeViewHost.hpp"
 #include "Lua.hpp"
-#include "Path.hpp"
+#include <ulib/Path.hpp>
 #include "Filesystem.hpp"
-#include "Process.hpp"
+#include <ulib/win32/Process.hpp>
 
 /// file open filter for Lua scripting
 LPCTSTR g_pszLuaScriptingFilter =
@@ -113,15 +113,15 @@ void ScriptingPhotoModeView::EditScript(const CString& cszFilename)
       return;
 
    CString cszEditorFilename =
-      Path::Combine(Path(App_GetFilename()).DirectoryName(), _T("RemoteScriptingEditor.exe")).ToString();
+      Path::Combine(Path(App_GetFilename()).FolderName(), _T("RemoteScriptingEditor.exe"));
 
    CString cszCommandLine;
    cszCommandLine.Format(_T("\"%s\" \"%s\""),
       cszEditorFilename.GetString(),
       cszFilename.GetString());
 
-   Process process;
-   process.WorkingDirectory(Path(cszFilename).DirectoryName());
+   Win32::Process process;
+   process.WorkingDirectory(Path(cszFilename).FolderName());
    bool bRet = process.Create(cszCommandLine);
 
    if (bRet)

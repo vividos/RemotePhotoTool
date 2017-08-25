@@ -13,9 +13,9 @@
 #include "PsrecPropertyAccess.hpp"
 #include "PsrecDeviceInfo.hpp"
 #include "PsrecViewfinderImpl.hpp"
-#include "Observer.hpp"
-#include "LightweightMutex.hpp"
-#include "Event.hpp"
+#include <ulib/Observer.hpp>
+#include <ulib/thread/LightweightMutex.hpp>
+#include <ulib/thread/Event.hpp>
 
 // forward references
 class AsyncReleaseControlThread;
@@ -197,13 +197,13 @@ private:
    ShutterReleaseSettings m_shutterReleaseSettings;
 
    /// event that is set when image is ready after calling Release()
-   Event m_evtReleaseImageReady;
+   AutoResetEvent m_evtReleaseImageReady;
 
    /// indicates that an image transfer is in progress, from a call to Release()
-   Event m_evtReleaseImageTransferInProgress;
+   ManualResetEvent m_evtReleaseImageTransferInProgress;
 
    /// indicates that image transfer is done
-   Event m_evtReleaseImageTransferDone;
+   ManualResetEvent m_evtReleaseImageTransferDone;
 
    /// handle to image created by Release() call
    prObjectHandle m_hReleaseImage;

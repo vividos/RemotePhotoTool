@@ -14,7 +14,7 @@
 #include "RemoteReleaseControl.hpp"
 #include "Viewfinder.hpp"
 #include "BulbReleaseControl.hpp"
-#include "Asio.hpp"
+#include <ulib/config/BoostAsio.hpp>
 #include <atomic>
 
 /// name for Lua value in App object to store handler for asyncWaitForCamera()
@@ -42,8 +42,8 @@ CanonControlLuaBindings::CanonControlLuaBindings(Lua::State& state, boost::asio:
 :m_state(state),
 m_strand(strand),
 m_timerEventHandling(m_strand.get_io_service()),
-m_evtStopTimer(true, false), // manual-reset event
-m_evtTimerStopped(true, false) // manual-reset event
+m_evtStopTimer(false),
+m_evtTimerStopped(false)
 {
 }
 
@@ -1467,7 +1467,7 @@ std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlSetImagePro
       message.Format(
          _T("couldn't convert image property value to type expected by camera (expected: %s)"),
          Variant::TypeAsString(imageProperty.Value().Type()));
-         
+
       throw Lua::Exception(message, state.GetState(), __FILE__, __LINE__);
    }
 

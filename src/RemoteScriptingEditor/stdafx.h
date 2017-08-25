@@ -10,7 +10,7 @@
 #define _WIN32_WINNT _WIN32_WINNT_WIN7
 
 // WTL includes
-#include "Wtl.hpp"
+#include <ulib/config/Wtl.hpp>
 #include <atlsplit.h>
 
 // Scintilla include

@@ -8,9 +8,9 @@
 // includes
 #include "stdafx.h"
 #include "ImageTypeScanner.hpp"
-#include "CommandLineParser.hpp"
-#include "Path.hpp"
-#include "FileFinder.hpp"
+#include <ulib/CommandLineParser.hpp>
+#include <ulib/Path.hpp>
+#include <ulib/FileFinder.hpp>
 #include "Exif.hpp"
 #include <map>
 
@@ -173,7 +173,7 @@ private:
             if (filesList.ImageFileInfoList().empty())
                return;
 
-            CString baseFolder = Path(filesList.ImageFileInfoList()[0].Filename()).DirectoryName();
+            CString baseFolder = Path(filesList.ImageFileInfoList()[0].Filename()).FolderName();
 
             // image type must be in map
             ATLASSERT(mapImageTypeToCurrentCount.find(filesList.ImageType()) != mapImageTypeToCurrentCount.end());

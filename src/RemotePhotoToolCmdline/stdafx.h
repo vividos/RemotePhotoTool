@@ -9,7 +9,7 @@
 /// compile for Windows XP target
 #define _WIN32_WINNT 0x0501
 
-#include "Atl.hpp"
+#include <ulib/config/Atl.hpp>
 
 // Standard C++ Library includes
 #include <vector>

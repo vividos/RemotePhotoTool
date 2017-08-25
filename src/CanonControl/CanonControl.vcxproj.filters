@@ -363,5 +363,6 @@
     <None Include="..\Thirdparty\PSREC\Doc\PSReCSDK110eUserGuide.pdf">
       <Filter>PSREC Files\SDK Files</Filter>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

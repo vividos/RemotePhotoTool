@@ -14,10 +14,10 @@
 #include "PSREC\PsrecCommon.hpp"
 #include "gPhoto2\GPhoto2Common.hpp"
 #include "WIA\WiaCommon.hpp"
-#include "LightweightMutex.hpp"
+#include <ulib/thread/LightweightMutex.hpp>
 #include "BackgroundWorkerThread.hpp"
 #include "BackgroundTimer.hpp"
-#include "Wtl.hpp" // for RunTimeHelper
+#include <ulib/config/Wtl.hpp> // for RunTimeHelper
 
 
 // Instance::Impl

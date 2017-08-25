@@ -13,7 +13,7 @@
 #include "PsrecVarDataParser.hpp"
 #include "PsrecCameraEventData.hpp"
 #include "AsyncReleaseControlThread.hpp"
-#include "Timer.hpp"
+#include <ulib/Timer.hpp>
 
 using namespace PSREC;
 
@@ -29,9 +29,9 @@ RemoteReleaseControlImpl::RemoteReleaseControlImpl(prHandle hCamera, std::shared
 :m_spSourceDevice(spSourceDevice),
  m_hCamera(hCamera),
  m_upReleaseThread(new AsyncReleaseControlThread),
- m_evtReleaseImageReady(false, false), // auto-reset event
- m_evtReleaseImageTransferInProgress(true, false), // manual-reset event
- m_evtReleaseImageTransferDone(true, false), // manual-reset event
+ m_evtReleaseImageReady(false),
+ m_evtReleaseImageTransferInProgress(false),
+ m_evtReleaseImageTransferDone(false),
  m_hReleaseImage(0),
  m_fdImageTransfer(nullptr)
 {

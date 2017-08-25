@@ -8,7 +8,7 @@
 
 // includes
 #include "AppCommand.hpp"
-#include "ProgramOptions.hpp"
+#include <ulib/ProgramOptions.hpp>
 
 /// options for command line application
 class AppOptions: public ProgramOptions

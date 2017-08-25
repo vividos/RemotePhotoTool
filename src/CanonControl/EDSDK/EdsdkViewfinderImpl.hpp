@@ -9,8 +9,8 @@
 // includes
 #include "Viewfinder.hpp"
 #include "EdsdkCommon.hpp"
-#include "Asio.hpp"
-#include "Event.hpp"
+#include <ulib/config/BoostAsio.hpp>
+#include <ulib/thread/Event.hpp>
 #include <atomic>
 
 // forward references
@@ -70,7 +70,7 @@ private:
    std::shared_ptr<LightweightMutex> m_spMtxLock;
 
    /// event to signal that timer has stopped
-   Event m_evtTimerStopped;
+   ManualResetEvent m_evtTimerStopped;
 
    /// indicates if worker thread is in GetImage()
    std::atomic<bool> m_bInGetImage;

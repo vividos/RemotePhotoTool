@@ -9,7 +9,7 @@
 #include "stdafx.h"
 #include "EdsdkRemoteReleaseControlImpl.hpp"
 #include "ShutterReleaseSettings.hpp"
-#include "Path.hpp"
+#include <ulib/Path.hpp>
 #include "AsyncReleaseControlThread.hpp"
 
 using namespace EDSDK;
@@ -20,7 +20,7 @@ RemoteReleaseControlImpl::RemoteReleaseControlImpl(std::shared_ptr<SourceDevice>
  m_upReleaseThread(new AsyncReleaseControlThread),
  m_spMtxLock(new LightweightMutex),
  m_shutterReleaseSettings(ShutterReleaseSettings::saveToCamera), // default is to just save to camera
- m_evtShutterReleaseOccured(true, false), // manual-reset event
+ m_evtShutterReleaseOccured(false),
  m_uiCurrentZoomPos(kEdsEvfZoom_Fit)
 {
    LOG_TRACE(_T("Start registering event handler\n"));
@@ -476,7 +476,7 @@ void RemoteReleaseControlImpl::DownloadImage(Handle hDirectoryItem, ShutterRelea
 
       // camera tells us name of file; add to output folder here
       CString cszFilename = Path::Combine(
-         Path(settings.Filename()).DirectoryName(),
+         Path(settings.Filename()).FolderName(),
          dirItemInfo.szFileName);
 
       settings.Filename(cszFilename);

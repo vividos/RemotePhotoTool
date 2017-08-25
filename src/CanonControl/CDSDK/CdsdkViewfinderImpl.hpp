@@ -9,7 +9,7 @@
 // includes
 #include "Viewfinder.hpp"
 #include "CdsdkCommon.hpp"
-#include "LightweightMutex.hpp"
+#include <ulib/thread/LightweightMutex.hpp>
 
 namespace CDSDK
 {

@@ -8,11 +8,11 @@
 // includes
 #include "stdafx.h"
 #include "App.hpp"
-#include "ProgramOptions.hpp"
+#include <ulib/ProgramOptions.hpp>
 #include "Filesystem.hpp"
 #include "resource.h"
 #include "MainFrame.hpp"
-#include "CrashReporter.hpp"
+#include <ulib/CrashReporter.hpp>
 #include <crtdbg.h>
 #include <wia.h>
 
@@ -61,7 +61,7 @@ void App::InitCrashReporter()
    if (!Directory_Exists(cszFolder))
       CreateDirectory(cszFolder, NULL);
 
-   CrashReporter::Init(cszFolder);
+   CrashReporter::Init(cszFolder, _T("RemotePhotoTool"));
 }
 
 int App::Run(LPCTSTR /*lpstrCmdLine*/, int nCmdShow)

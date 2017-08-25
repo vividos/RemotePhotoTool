@@ -7,8 +7,7 @@
 #pragma once
 
 // includes
-#include "LightweightMutex.hpp"
-#include "Event.hpp"
+#include <ulib/thread/LightweightMutex.hpp>
 #include "Viewfinder.hpp"
 #include "resource.h"
 

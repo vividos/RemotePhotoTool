@@ -9,7 +9,7 @@
 #include "stdafx.h"
 #include "MainFrame.hpp"
 #include "AboutDlg.hpp"
-#include "Exception.hpp"
+#include <ulib/Exception.hpp>
 #include "BlankView.hpp"
 #include "ConnectCameraDlg.hpp"
 #include "SettingsDlg.hpp"
@@ -21,7 +21,7 @@
 #include "CameraException.hpp"
 #include "CameraErrorDlg.hpp"
 #include "Logging.hpp"
-#include "Thread.hpp"
+#include <ulib/thread/Thread.hpp>
 
 /// settings registry key (subkey "Ribbon" is used for menu band)
 LPCTSTR c_pszSettingsRegkey = _T("Software\\RemotePhotoTool");

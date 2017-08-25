@@ -9,9 +9,9 @@
 // includes
 #include "Lua.hpp"
 #include "Instance.hpp"
-#include "RecursiveMutex.hpp"
-#include "Event.hpp"
-#include "Asio.hpp"
+#include <ulib/thread/RecursiveMutex.hpp>
+#include <ulib/thread/Event.hpp>
+#include <ulib/config/BoostAsio.hpp>
 #include "ShutterReleaseSettings.hpp"
 #include "RemoteReleaseControl.hpp"
 
@@ -388,8 +388,8 @@ private:
    boost::asio::deadline_timer m_timerEventHandling;
 
    /// event that is set when the timer should stop
-   Event m_evtStopTimer;
+   ManualResetEvent m_evtStopTimer;
 
    /// event that is set when the event handling timer has stopped
-   Event m_evtTimerStopped;
+   ManualResetEvent m_evtTimerStopped;
 };

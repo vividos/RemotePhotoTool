@@ -347,5 +347,6 @@
     <None Include="res\toolbar_big.xcf">
       <Filter>Resource Files\Bitmap Files</Filter>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

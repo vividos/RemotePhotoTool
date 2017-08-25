@@ -9,7 +9,7 @@
 // includes
 #include "Instance.hpp"
 #include "CameraException.hpp"
-#include "LightweightMutex.hpp"
+#include <ulib/thread/LightweightMutex.hpp>
 #include <wia_lh.h>
 
 /// Windows Image Acquisition interface

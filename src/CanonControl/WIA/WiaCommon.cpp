@@ -10,7 +10,7 @@
 #include "WiaCommon.hpp"
 #include "WiaSourceInfoImpl.hpp"
 #include "WiaPropertyAccess.hpp"
-#include "ErrorMessage.hpp"
+#include <ulib/win32/ErrorMessage.hpp>
 
 #pragma comment(lib, "wiaguid.lib")
 
@@ -21,7 +21,7 @@ CString ErrorFromHRESULT(HRESULT hr)
 {
    if (HRESULT_FACILITY(hr) != FACILITY_WIA)
    {
-      return Win32::ErrorMessage(hr).Get();
+      return Win32::ErrorMessage(hr).ToString();
    }
 
    switch (hr)

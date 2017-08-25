@@ -8,19 +8,17 @@
 // includes
 #include "stdafx.h"
 #include "Filesystem.hpp"
-#include "FileFinder.hpp"
-#include <ShlObj.h>
+#include <ulib/FileFinder.hpp>
+#include <ulib/Path.hpp>
 
 bool Directory_Exists(const CString& cszPath) throw()
 {
-   DWORD dwAttr = GetFileAttributes(cszPath);
-   return (dwAttr != INVALID_FILE_ATTRIBUTES) && ((dwAttr & FILE_ATTRIBUTE_DIRECTORY) != 0);
+   return Path(cszPath).FolderExists();
 }
 
 bool File_Exists(const CString& cszPath) throw()
 {
-   DWORD dwAttr = GetFileAttributes(cszPath);
-   return (dwAttr != INVALID_FILE_ATTRIBUTES) && ((dwAttr & FILE_ATTRIBUTE_DIRECTORY) == 0);
+   return Path(cszPath).FileExists();
 }
 
 CString App_GetFilename()
@@ -39,15 +37,7 @@ CString App_GetAppDataFolder(T_enAppDataFolderType enAppDataFolderType)
       enAppDataFolderType == CSIDL_LOCAL_APPDATA ||
       enAppDataFolderType == CSIDL_APPDATA);
 
-   CString cszAppData;
-
-   SHGetFolderPath(NULL,
-      int(enAppDataFolderType),
-      NULL, SHGFP_TYPE_CURRENT,
-      cszAppData.GetBuffer(MAX_PATH));
-   cszAppData.ReleaseBuffer();
-
-   return cszAppData;
+   return Path::SpecialFolder(int(enAppDataFolderType));
 }
 
 std::vector<CString> FindAllInPath(const CString& cszPath, const CString& cszFileSpec, bool bFindFolders, bool bRecursive)

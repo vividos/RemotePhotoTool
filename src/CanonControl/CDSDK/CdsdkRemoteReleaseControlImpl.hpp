@@ -11,8 +11,8 @@
 #include "CdsdkCommon.hpp"
 #include "CdsdkImagePropertyAccess.hpp"
 #include "ShutterReleaseSettings.hpp"
-#include "Observer.hpp"
-#include "LightweightMutex.hpp"
+#include <ulib/Observer.hpp>
+#include <ulib/thread/LightweightMutex.hpp>
 
 // forward references
 class AsyncReleaseControlThread;

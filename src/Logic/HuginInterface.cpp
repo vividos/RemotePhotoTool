@@ -8,8 +8,8 @@
 // includes
 #include "StdAfx.h"
 #include "HuginInterface.hpp"
-#include "Path.hpp"
-#include "Process.hpp"
+#include <ulib/Path.hpp>
+#include <ulib/win32/Process.hpp>
 #include <array>
 #include <tuple>
 
@@ -36,7 +36,7 @@ void HuginInterface::RunUI(const std::vector<CString>& vecImageFilenames)
       cszCommandLine += _T("\"");
    }
 
-   Process process;
+   Win32::Process process;
    process.WorkingDirectory(m_cszInstallPath);
    bool bRet = process.Create(cszCommandLine);
 
@@ -63,7 +63,7 @@ void HuginInterface::RunStitcher(const CString& cszPtoScript, const CString& csz
    cszCommandLine += cszFilename;
    cszCommandLine += _T("\"");
 
-   Process process;
+   Win32::Process process;
    process.WorkingDirectory(m_cszInstallPath);
    bool bRet = process.Create(cszCommandLine);
 
@@ -101,7 +101,7 @@ void HuginInterface::Detect()
          cszInstallPathLower.MakeLower();
 
          if (cszInstallPathLower.Find(_T(".exe")) != -1)
-            cszInstallPath = Path(cszInstallPath).DirectoryName();
+            cszInstallPath = Path(cszInstallPath).FolderName();
 
          Path::AddEndingBackslash(cszInstallPath);
 

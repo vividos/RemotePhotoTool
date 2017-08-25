@@ -9,7 +9,7 @@
 // includes
 #include "Viewfinder.hpp"
 #include "PsrecCommon.hpp"
-#include "LightweightMutex.hpp"
+#include <ulib/thread/LightweightMutex.hpp>
 
 namespace PSREC
 {

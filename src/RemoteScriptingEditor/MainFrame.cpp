@@ -13,7 +13,7 @@
 #include "LuaScriptEditorView.hpp"
 #include "MainFrame.hpp"
 #include "Lua.hpp"
-#include "Path.hpp"
+#include <ulib/Path.hpp>
 #include "Instance.hpp"
 
 extern LPCTSTR g_pszLuaScriptingFilter;

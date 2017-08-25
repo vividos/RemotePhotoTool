@@ -9,8 +9,8 @@
 #pragma once
 
 // includes
-#include "Asio.hpp"
-#include "LightweightMutex.hpp"
+#include <ulib/config/BoostAsio.hpp>
+#include <ulib/thread/LightweightMutex.hpp>
 
 /// background timer
 class BackgroundTimer: public std::enable_shared_from_this<BackgroundTimer>

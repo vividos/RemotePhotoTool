@@ -8,8 +8,8 @@
 
 // includes
 #include "PreviousImageInfo.hpp"
-#include "LightweightMutex.hpp"
-#include "Asio.hpp"
+#include <ulib/thread/LightweightMutex.hpp>
+#include <ulib/config/BoostAsio.hpp>
 #include <map>
 #include <set>
 #include <memory>

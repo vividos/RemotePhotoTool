@@ -6,7 +6,7 @@
 //
 #pragma once
 
-#include "Exception.hpp"
+#include <ulib/Exception.hpp>
 #include <jpeglib.h>
 #include "JpegMemorySourceManager.hpp"
 

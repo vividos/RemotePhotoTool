@@ -17,7 +17,7 @@ ViewfinderImpl::ViewfinderImpl(Handle hSourceDevice, boost::asio::io_service& io
 :m_hSourceDevice(hSourceDevice),
 m_ioService(ioService),
 m_spMtxLock(spMtxLock),
-m_evtTimerStopped(true, false) // manual-reset event
+m_evtTimerStopped(false)
 {
    // Get the output device for the live view image
    PropertyAccess p(hSourceDevice);

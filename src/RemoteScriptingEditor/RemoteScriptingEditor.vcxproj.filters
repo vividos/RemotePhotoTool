@@ -161,5 +161,6 @@
     <None Include="res\edit_replace.xcf">
       <Filter>Resource Files\Bitmap Files</Filter>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

@@ -182,7 +182,7 @@ void Ref::OnIdle()
    }
 }
 
-void EDSDK::MsgWaitForEvent(Event& evt) throw()
+void EDSDK::MsgWaitForEvent(ManualResetEvent& evt) throw()
 {
    LOG_TRACE(_T("MsgWaitForEvent started\n"));
 

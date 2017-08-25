@@ -12,9 +12,9 @@
 #include "EdsdkPropertyAccess.hpp"
 #include "EdsdkViewfinderImpl.hpp"
 #include "EdsdkBulbReleaseControlImpl.hpp"
-#include "Observer.hpp"
-#include "LightweightMutex.hpp"
-#include "Event.hpp"
+#include <ulib/Observer.hpp>
+#include <ulib/thread/LightweightMutex.hpp>
+#include <ulib/thread/Event.hpp>
 #include <thread>
 
 // forward references
@@ -301,7 +301,7 @@ private:
    ShutterReleaseSettings m_shutterReleaseSettings;
 
    /// event that gets set when a shutter release occured; used in Release()
-   Event m_evtShutterReleaseOccured;
+   ManualResetEvent m_evtShutterReleaseOccured;
 
    /// currently set zoom position (must be managed by ourselves)
    unsigned int m_uiCurrentZoomPos;

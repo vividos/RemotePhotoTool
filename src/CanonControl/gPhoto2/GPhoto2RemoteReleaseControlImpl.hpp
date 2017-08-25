@@ -10,8 +10,8 @@
 #include "GPhoto2Common.hpp"
 #include "RemoteReleaseControl.hpp"
 #include "ShutterReleaseSettings.hpp"
-#include "Observer.hpp"
-#include "LightweightMutex.hpp"
+#include <ulib/Observer.hpp>
+#include <ulib/thread/LightweightMutex.hpp>
 
 // forward references
 class AsyncReleaseControlThread;

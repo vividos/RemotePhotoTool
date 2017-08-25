@@ -8,8 +8,8 @@
 // includes
 #include "StdAfx.h"
 #include "PhotomatixInterface.hpp"
-#include "Path.hpp"
-#include "Process.hpp"
+#include <ulib/Path.hpp>
+#include <ulib/win32/Process.hpp>
 
 PhotomatixInterface::PhotomatixInterface(const CString& cszInstallPath)
 :m_cszInstallPath(cszInstallPath)
@@ -34,7 +34,7 @@ void PhotomatixInterface::RunUI(const std::vector<CString>& vecImageFilenames)
       cszCommandLine += _T("\"");
    }
 
-   Process process;
+   Win32::Process process;
    process.WorkingDirectory(m_cszInstallPath);
    bool bRet = process.Create(cszCommandLine);
 

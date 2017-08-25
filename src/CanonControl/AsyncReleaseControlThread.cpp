@@ -8,7 +8,7 @@
 // includes
 #include "stdafx.h"
 #include "AsyncReleaseControlThread.hpp"
-#include "Thread.hpp"
+#include <ulib/thread/Thread.hpp>
 
 void AsyncReleaseControlThread::Run()
 {

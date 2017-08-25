@@ -8,8 +8,8 @@
 
 // includes
 #include "Lua.hpp"
-#include "Asio.hpp"
-#include "Event.hpp"
+#include <ulib/config/BoostAsio.hpp>
+#include <ulib/thread/Event.hpp>
 
 // forward references
 struct SystemEvent;
@@ -86,7 +86,7 @@ private:
 
    private:
       /// actual manual-reset event
-      Event m_event;
+      ::ManualResetEvent m_event;
 
       /// wait timer
       boost::asio::deadline_timer m_timerWait;

@@ -10,7 +10,7 @@
 #include "PreviousImagesManager.hpp"
 #include "JpegMemoryReader.hpp"
 #include "Exif.hpp"
-#include "Thread.hpp"
+#include <ulib/thread/Thread.hpp>
 
 /// list of tags to read and store in PreviousImageInfo; must exactly
 /// match the list in T_enImageInfoType

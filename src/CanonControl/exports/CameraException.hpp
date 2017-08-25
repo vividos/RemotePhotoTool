@@ -7,7 +7,7 @@
 #pragma once
 
 // includes
-#include "Exception.hpp"
+#include <ulib/Exception.hpp>
 
 /// camera exception
 class CameraException: public Exception

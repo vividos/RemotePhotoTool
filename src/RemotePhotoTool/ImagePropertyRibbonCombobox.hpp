@@ -12,7 +12,7 @@
 #include "RemoteReleaseControl.hpp"
 #include "CameraException.hpp"
 #include "CameraErrorDlg.hpp"
-#include "LightweightMutex.hpp"
+#include <ulib/thread/LightweightMutex.hpp>
 
 // forward references
 class MainFrame;

@@ -8,8 +8,8 @@
 // includes
 #include "stdafx.h"
 #include "Logging.hpp"
-#include "Path.hpp"
-#include "LightweightMutex.hpp"
+#include <ulib/Path.hpp>
+#include <ulib/thread/LightweightMutex.hpp>
 #include <atomic>
 #include <ctime>
 //#include <boost/log/trivial.hpp>

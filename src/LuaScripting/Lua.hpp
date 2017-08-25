@@ -13,7 +13,7 @@
 #include <vector>
 #include <boost/any.hpp>
 #include <boost/optional.hpp>
-#include "Exception.hpp"
+#include <ulib/Exception.hpp>
 
 // forward references
 struct lua_State;

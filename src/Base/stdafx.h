@@ -6,10 +6,7 @@
 //
 #pragma once
 
-/// compile for Windows XP target
-#include <WinSDKVer.h>
-#define _WIN32_WINNT _WIN32_WINNT_WINXP
-#include <SDKDDKVer.h>
-
 // includes
-#include "Atl.hpp"
+#include <SDKDDKVer.h>
+#include <ulib/config/BoostAsio.hpp>
+#include <ulib/config/Atl.hpp>

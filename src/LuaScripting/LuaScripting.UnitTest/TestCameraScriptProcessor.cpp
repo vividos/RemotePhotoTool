@@ -10,7 +10,7 @@
 #include "CppUnitTest.h"
 #include "CameraScriptProcessor.hpp"
 #include "LuaScheduler.hpp"
-#include "Event.hpp"
+#include <ulib/thread/Event.hpp>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -57,7 +57,7 @@ namespace LuaScriptingUnitTest
          // set up
          CameraScriptProcessor csp;
 
-         Event evtWaitIdle(true, false); // manual-reset
+         ManualResetEvent evtWaitIdle(false);
          csp.GetScheduler().SetExecutionStateChangedHandler([&](LuaScheduler::T_enExecutionState enExecutionState)
          {
             if (enExecutionState == LuaScheduler::stateIdle)

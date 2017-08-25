@@ -7,8 +7,8 @@
 
 // includes
 #include <thread>
-#include "Asio.hpp"
-#include "Thread.hpp"
+#include <ulib/config/BoostAsio.hpp>
+#include <ulib/thread/Thread.hpp>
 
 /// background worker thread
 class BackgroundWorkerThread

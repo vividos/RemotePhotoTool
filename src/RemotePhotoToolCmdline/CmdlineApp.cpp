@@ -8,11 +8,11 @@
 // includes
 #include "stdafx.h"
 #include "CmdlineApp.hpp"
-#include "Exception.hpp"
+#include <ulib/Exception.hpp>
 #include "CameraException.hpp"
 #include "AppCommand.hpp"
 #include "AppOptions.hpp"
-#include "Event.hpp"
+#include <ulib/thread/Event.hpp>
 #include "CameraScriptProcessor.hpp"
 #include "Instance.hpp"
 #include "SourceInfo.hpp"
@@ -21,7 +21,7 @@
 #include "RemoteReleaseControl.hpp"
 #include "ShutterReleaseSettings.hpp"
 #include "Filesystem.hpp"
-#include "CrashReporter.hpp"
+#include <ulib/CrashReporter.hpp>
 #include "..\version.h"
 #include <thread>
 
@@ -44,7 +44,7 @@ void CmdlineApp::InitCrashReporter()
    if (!Directory_Exists(cszFolder))
       CreateDirectory(cszFolder, NULL);
 
-   CrashReporter::Init(cszFolder);
+   CrashReporter::Init(cszFolder, _T("RemotePhotoToolCmdline"));
 }
 
 void CmdlineApp::Run(int argc, TCHAR* argv[])
@@ -530,7 +530,7 @@ void CmdlineApp::ListenToEvents()
    _tprintf(_T("Press any key to exit listening for events...\n\n"));
 
    // wait for key and run OnIdle() in the meantime
-   Event evtStop(true, false);
+   ManualResetEvent evtStop(false);
    std::thread idleThread([&evtStop]()
    {
       (void)fgetc(stdin);
@@ -568,12 +568,12 @@ void CmdlineApp::ReleaseShutter()
    unsigned int uiNumAvailShot = m_spReleaseControl->NumAvailableShots();
    _tprintf(_T("Memory for %u images available\n"), uiNumAvailShot);
 
-   Event evtPictureTaken(true, false);
+   ManualResetEvent evtPictureTaken(false);
 
    // add handler to signal when picture was taken
    ShutterReleaseSettings settings(
       ShutterReleaseSettings::saveToBoth,
-      std::bind(&Event::Set, &evtPictureTaken));
+      std::bind(&ManualResetEvent::Set, &evtPictureTaken));
 
    m_spReleaseControl->SetReleaseSettings(settings);
 

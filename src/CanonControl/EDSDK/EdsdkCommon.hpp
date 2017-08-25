@@ -10,12 +10,10 @@
 #include "edsdk.h"
 #include "Instance.hpp"
 #include "CameraException.hpp"
-#include "LightweightMutex.hpp"
-#include "RecursiveMutex.hpp"
+#include <ulib/thread/Event.hpp>
+#include <ulib/thread/LightweightMutex.hpp>
+#include <ulib/thread/RecursiveMutex.hpp>
 #include "ErrorText.hpp"
-
-// forward references
-class Event;
 
 /// EOS Digital Camera SDK interface
 namespace EDSDK
@@ -209,6 +207,6 @@ private:
 };
 
 /// waits for message and does window and EDSDK processing while waiting
-void MsgWaitForEvent(Event& evt) throw();
+void MsgWaitForEvent(ManualResetEvent& evt) throw();
 
 } // namespace EDSDK
