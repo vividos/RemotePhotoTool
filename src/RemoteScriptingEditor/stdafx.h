@@ -11,7 +11,6 @@
 
 // WTL includes
 #include <ulib/config/Wtl.hpp>
-#include <atlsplit.h>
 
 // Scintilla include
 #pragma warning(push)
