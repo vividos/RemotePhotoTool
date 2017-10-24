@@ -205,6 +205,14 @@ Instance::~Instance() throw()
    }
 }
 
+Instance& Instance::operator=(const Instance& instance)
+{
+   if (&instance != this)
+      m_spImpl = instance.m_spImpl;
+
+   return *this;
+}
+
 Instance Instance::Get()
 {
    return Instance(Impl::Get());

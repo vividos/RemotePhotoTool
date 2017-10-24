@@ -53,7 +53,7 @@ void WIA::CheckError(const CString& function, HRESULT hr, LPCSTR file, UINT line
    message.Format(_T("Error in function \"%s\": %s (%08x)"),
       function.GetString(),
       ErrorFromHRESULT(hr).GetString(),
-      hr);
+      (DWORD)hr);
 
    throw CameraException(function, message, hr, file, line);
 }

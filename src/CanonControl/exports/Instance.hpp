@@ -31,6 +31,9 @@ public:
    /// dtor
    ~Instance() throw();
 
+   /// assignment operator
+   Instance& operator=(const Instance& instance);
+
    /// returns version numbers and strings of all SDKs supported (multiline)
    CString Version() const;
 
