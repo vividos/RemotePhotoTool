@@ -98,7 +98,7 @@
   <ImportGroup Label="ExtensionTargets">
     <Import Project="..\..\packages\boost_system-vc141.1.65.1.0\build\native\boost_system-vc141.targets" Condition="Exists('..\..\packages\boost_system-vc141.1.65.1.0\build\native\boost_system-vc141.targets')" />
     <Import Project="..\..\packages\boost.1.65.1.0\build\native\boost.targets" Condition="Exists('..\..\packages\boost.1.65.1.0\build\native\boost.targets')" />
-    <Import Project="..\..\packages\Vividos.UlibCpp.Static.4.0.1\build\native\Vividos.UlibCpp.Static.targets" Condition="Exists('..\..\packages\Vividos.UlibCpp.Static.4.0.1\build\native\Vividos.UlibCpp.Static.targets')" />
+    <Import Project="..\..\packages\Vividos.UlibCpp.Static.4.1.0\build\native\Vividos.UlibCpp.Static.targets" Condition="Exists('..\..\packages\Vividos.UlibCpp.Static.4.1.0\build\native\Vividos.UlibCpp.Static.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
@@ -106,6 +106,6 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\..\packages\boost_system-vc141.1.65.1.0\build\native\boost_system-vc141.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\boost_system-vc141.1.65.1.0\build\native\boost_system-vc141.targets'))" />
     <Error Condition="!Exists('..\..\packages\boost.1.65.1.0\build\native\boost.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\boost.1.65.1.0\build\native\boost.targets'))" />
-    <Error Condition="!Exists('..\..\packages\Vividos.UlibCpp.Static.4.0.1\build\native\Vividos.UlibCpp.Static.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Vividos.UlibCpp.Static.4.0.1\build\native\Vividos.UlibCpp.Static.targets'))" />
+    <Error Condition="!Exists('..\..\packages\Vividos.UlibCpp.Static.4.1.0\build\native\Vividos.UlibCpp.Static.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Vividos.UlibCpp.Static.4.1.0\build\native\Vividos.UlibCpp.Static.targets'))" />
   </Target>
 </Project>
