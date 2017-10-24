@@ -47,8 +47,14 @@ namespace WIA
 
    private:
       // virtual methods from IUnknown
+
+      /// queries COM object for given interface and returns it
       virtual HRESULT STDMETHODCALLTYPE QueryInterface(REFIID riid, void** ppvObject) override;
+
+      /// increases reference count
       virtual ULONG STDMETHODCALLTYPE AddRef() override;
+
+      /// decreases reference count
       virtual ULONG STDMETHODCALLTYPE Release() override;
 
       // virtual methods from IWiaEventCallback
