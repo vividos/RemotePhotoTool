@@ -7,6 +7,73 @@
         mc:Ignorable="d"
         Title="{Binding CameraName, Mode=OneTime}" Width="1000" Height="600">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="800" />
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Column="0">
+
+            <Button Width="150" Height="50"
+                    Command="{Binding ReleaseShutterCommand}"
+                    Content="Release Shutter" />
+
+            <!-- grid with some combo boxes -->
+            <Grid Margin="8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="3*" />
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <!-- shooting mode -->
+                <Label Grid.Row="0" Grid.Column="0">Mode</Label>
+                <ComboBox Grid.Row="0" Grid.Column="1" Margin="2"
+                          ItemsSource="{Binding ShootingModeList, Mode=OneWay}"
+                          DisplayMemberPath="DisplayText"
+                          SelectedValue="{Binding SelectedShootingMode, Mode=TwoWay}"
+                          IsEnabled="{Binding IsEnabledShootingMode, Mode=OneWay}" />
+
+                <!-- aperture -->
+                <Label Grid.Row="1" Grid.Column="0">Av</Label>
+                <ComboBox Grid.Row="1" Grid.Column="1" Margin="2"
+                          ItemsSource="{Binding ApertureList, Mode=OneWay}"
+                          DisplayMemberPath="DisplayText"
+                          SelectedValue="{Binding SelectedAperture, Mode=TwoWay}"
+                          IsEnabled="{Binding IsEnabledAv, Mode=OneWay}" />
+
+                <!-- shutter speed -->
+                <Label Grid.Row="2" Grid.Column="0">Tv</Label>
+                <ComboBox Grid.Row="2" Grid.Column="1" Margin="2"
+                          ItemsSource="{Binding ShutterSpeedList, Mode=OneWay}"
+                          DisplayMemberPath="DisplayText"
+                          SelectedValue="{Binding SelectedShutterSpeed, Mode=TwoWay}"
+                          IsEnabled="{Binding IsEnabledTv, Mode=OneWay}" />
+
+                <!-- ISO speed -->
+                <Label Grid.Row="3" Grid.Column="0">ISO</Label>
+                <ComboBox Grid.Row="3" Grid.Column="1" Margin="2"
+                          ItemsSource="{Binding IsoSettingsList, Mode=OneWay}"
+                          DisplayMemberPath="DisplayText"
+                          SelectedValue="{Binding SelectedIsoSetting, Mode=TwoWay}"
+                          IsEnabled="{Binding IsEnabledISO, Mode=OneWay}" />
+            </Grid>
+
+            <CheckBox Content="Live Viewfinder" HorizontalAlignment="Left"
+                      IsEnabled="{Binding IsViewfinderEnabled, Mode=OneTime}"
+                      IsChecked="{Binding IsViewfinderChecked, Mode=TwoWay}"
+                      />
+
+            <Image Grid.Column="1"
+                   x:Name="viewfinderImage"
+                   Source="{Binding ViewfinderImage, Mode=OneWay}" />
+        </StackPanel>
 
     </Grid>
 </Window>
