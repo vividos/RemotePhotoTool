@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2016 Michael Fink
+// Copyright (C) 2008-2017 Michael Fink
 //
 /// \file RemotePhotoTool.LuaScripting.CameraScriptProcessor.hpp Camera script processor
 //
@@ -13,6 +13,16 @@ namespace RemotePhotoTool
 {
    namespace LuaScripting
    {
+      /// execution state of Lua scheduler
+      public enum LuaSchedulerExecutionState
+      {
+         StateIdle = 0,    ///< processor is idle and a function can be run
+         StateRunning = 1, ///< processor is currently running
+         StateYield = 2,   ///< a script yielded, and processor is waiting for resuming
+         StateDebug = 3,   ///< script debugger is attached and is waiting for a script debug command
+         StateError = 4    ///< processor is in an error state
+      };
+
       public ref class CameraScriptProcessor
       {
       public:
