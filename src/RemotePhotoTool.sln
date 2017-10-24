@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2005
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RemotePhotoTool", "RemotePhotoTool\RemotePhotoTool.vcxproj", "{CDEDF8B5-A808-4995-97EB-1289A84FF7ED}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -220,5 +220,8 @@ Global
 		{C1CB4553-07D9-4CF2-90CC-0BB23584AD00} = {82A43ECD-CEA0-4720-922D-9208C5310730}
 		{A8EAA77D-1747-4E3F-987C-EEC2308C6D26} = {0ED83E22-FDDB-4917-8B66-8082B7641FDF}
 		{ED6E5CE5-526C-4F2E-BDAF-DCE758F32F3F} = {82A43ECD-CEA0-4720-922D-9208C5310730}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {121BFA7B-29E4-4BFB-B071-E51A5FA3D0A2}
 	EndGlobalSection
 EndGlobal
