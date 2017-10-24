@@ -8,13 +8,6 @@
 // includes
 #include "stdafx.h"
 #include "Filesystem.hpp"
-#include <ulib/FileFinder.hpp>
-#include <ulib/Path.hpp>
-
-bool Directory_Exists(const CString& cszPath) throw()
-{
-   return Path(cszPath).FolderExists();
-}
 
 CString App_GetFilename()
 {
