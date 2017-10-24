@@ -10,6 +10,7 @@
 #include "ImageFileManager.hpp"
 #include "Filesystem.hpp"
 #include <ulib/Path.hpp>
+#include <ulib/FileFinder.hpp>
 #include <ctime>
 #include <algorithm>
 
@@ -24,19 +25,19 @@ CString ImageFileManager::NextFilename(T_enImageType enImageType, bool bStartNew
 {
    CString cszPath = m_settings.m_cszProjectsFolder;
 
-   if (!Directory_Exists(cszPath))
+   if (!Path(cszPath).FolderExists())
       CreateDirectory(cszPath, nullptr);
 
    if (m_settings.m_bCurrentDateSubfolder)
       AddCurrentDate(cszPath);
 
-   if (!Directory_Exists(cszPath))
+   if (!Path(cszPath).FolderExists())
       CreateDirectory(cszPath, nullptr);
 
    if (m_settings.m_bImageTypeSubfolder)
       AddImageTypePath(cszPath, enImageType, bStartNewSeries);
 
-   if (!Directory_Exists(cszPath))
+   if (!Path(cszPath).FolderExists())
       CreateDirectory(cszPath, nullptr);
 
    CString cszImageFilename;
@@ -46,7 +47,7 @@ CString ImageFileManager::NextFilename(T_enImageType enImageType, bool bStartNew
       cszImageFilename.Format(_T("IMG_%04u.jpg"), uiImageNr);
       uiImageNr++;
 
-   } while (File_Exists(Path::Combine(cszPath, cszImageFilename)));
+   } while (Path(Path::Combine(cszPath, cszImageFilename)).FileExists());
 
    m_uiNextImageIndex = uiImageNr-1;
 
@@ -123,7 +124,7 @@ void ImageFileManager::FindLastUsedFilename()
 
    // find max. image number in newest subfolder; when empty, look at previous subfolder
    std::vector<CString> vecAllFolders =
-      FindAllInPath(
+      FileFinder::FindAllInPath(
          Path::Combine(m_settings.m_cszProjectsFolder, _T("")),
          _T("*.*"), true, false);
 
@@ -132,7 +133,7 @@ void ImageFileManager::FindLastUsedFilename()
    for (std::vector<CString>::const_reverse_iterator iter = vecAllFolders.rbegin(); iter != vecAllFolders.rend(); ++iter)
    {
       std::vector<CString> vecAllImageFiles =
-         FindAllInPath(*iter, _T("IMG_*.*"), false, true);
+         FileFinder::FindAllInPath(*iter, _T("IMG_*.*"), false, true);
 
       if (vecAllImageFiles.empty())
          continue; // try previous subfolder

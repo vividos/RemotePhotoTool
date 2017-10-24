@@ -16,11 +16,6 @@ bool Directory_Exists(const CString& cszPath) throw()
    return Path(cszPath).FolderExists();
 }
 
-bool File_Exists(const CString& cszPath) throw()
-{
-   return Path(cszPath).FileExists();
-}
-
 CString App_GetFilename()
 {
    CString cszFilename;
@@ -29,47 +24,4 @@ CString App_GetFilename()
    cszFilename.ReleaseBuffer();
 
    return cszFilename;
-}
-
-CString App_GetAppDataFolder(T_enAppDataFolderType enAppDataFolderType)
-{
-   ATLASSERT(enAppDataFolderType == CSIDL_COMMON_APPDATA ||
-      enAppDataFolderType == CSIDL_LOCAL_APPDATA ||
-      enAppDataFolderType == CSIDL_APPDATA);
-
-   return Path::SpecialFolder(int(enAppDataFolderType));
-}
-
-std::vector<CString> FindAllInPath(const CString& cszPath, const CString& cszFileSpec, bool bFindFolders, bool bRecursive)
-{
-   std::vector<CString> vecFilenames;
-
-   FileFinder finder(cszPath, cszFileSpec);
-   if (finder.IsValid())
-   {
-      do
-      {
-         if (finder.IsDot())
-            continue;
-
-         if (bRecursive && finder.IsFolder())
-         {
-            std::vector<CString> vecSubfolderFilenames =
-               FindAllInPath(finder.Filename(), cszFileSpec, bFindFolders, true);
-
-            vecFilenames.insert(vecFilenames.end(), vecSubfolderFilenames.begin(), vecSubfolderFilenames.end());
-         }
-
-         if (bFindFolders && finder.IsFile())
-            continue;
-
-         if (!bFindFolders && finder.IsFolder())
-            continue;
-
-         vecFilenames.push_back(finder.Filename());
-
-      } while (finder.Next());
-   }
-
-   return vecFilenames;
 }

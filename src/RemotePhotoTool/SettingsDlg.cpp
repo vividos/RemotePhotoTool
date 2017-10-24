@@ -12,6 +12,7 @@
 #include "HuginInterface.hpp"
 #include "PhotomatixInterface.hpp"
 #include "Filesystem.hpp"
+#include <ulib/Path.hpp>
 
 SettingsDlg::SettingsDlg(AppSettings& settings)
 :m_settings(settings)
@@ -103,7 +104,7 @@ void SettingsDlg::SelectLogFolder()
 
       cszFolder += _T("\\RemotePhotoTool\\");
 
-      if (!Directory_Exists(cszFolder))
+      if (!Path(cszFolder).FolderExists())
          CreateDirectory(cszFolder, NULL);
 
       m_settings.m_cszLogfilePath = cszFolder;

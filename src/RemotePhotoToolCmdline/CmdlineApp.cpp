@@ -21,9 +21,11 @@
 #include "RemoteReleaseControl.hpp"
 #include "ShutterReleaseSettings.hpp"
 #include "Filesystem.hpp"
+#include <ulib/Path.hpp>
 #include <ulib/CrashReporter.hpp>
 #include "..\version.h"
 #include <thread>
+#include <shlobj.h>
 
 CmdlineApp::CmdlineApp()
 {
@@ -34,14 +36,14 @@ CmdlineApp::CmdlineApp()
 
 void CmdlineApp::InitCrashReporter()
 {
-   CString cszFolder = App_GetAppDataFolder(appDataUserNonRoaming) + _T("\\RemotePhotoToolCmdline\\");
+   CString cszFolder = Path::SpecialFolder(CSIDL_LOCAL_APPDATA) + _T("\\RemotePhotoToolCmdline\\");
 
-   if (!Directory_Exists(cszFolder))
+   if (!Path(cszFolder).FolderExists())
       CreateDirectory(cszFolder, NULL);
 
    cszFolder += _T("crashdumps\\");
 
-   if (!Directory_Exists(cszFolder))
+   if (!Path(cszFolder).FolderExists())
       CreateDirectory(cszFolder, NULL);
 
    CrashReporter::Init(cszFolder, _T("RemotePhotoToolCmdline"));

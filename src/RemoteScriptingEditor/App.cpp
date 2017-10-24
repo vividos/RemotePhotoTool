@@ -13,8 +13,10 @@
 #include "resource.h"
 #include "MainFrame.hpp"
 #include "Filesystem.hpp"
+#include <ulib/Path.hpp>
 #include <ulib/CrashReporter.hpp>
 #include <crtdbg.h>
+#include <shlobj.h>
 
 /// WTL app module
 CAppModule _Module;
@@ -49,14 +51,14 @@ App::~App() throw()
 
 void App::InitCrashReporter()
 {
-   CString cszFolder = App_GetAppDataFolder(appDataUserNonRoaming) + _T("\\RemotePhotoTool\\");
+   CString cszFolder = Path::SpecialFolder(CSIDL_LOCAL_APPDATA) + _T("\\RemotePhotoTool\\");
 
-   if (!Directory_Exists(cszFolder))
+   if (!Path(cszFolder).FolderExists())
       CreateDirectory(cszFolder, NULL);
 
    cszFolder += _T("crashdumps\\");
 
-   if (!Directory_Exists(cszFolder))
+   if (!Path(cszFolder).FolderExists())
       CreateDirectory(cszFolder, NULL);
 
    CrashReporter::Init(cszFolder, _T("RemotePhotoTool"));
