@@ -2,6 +2,8 @@
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows.Input;
+using WpfDotNetCameraControl.Helper;
 
 namespace WpfDotNetCameraControl.ViewModels
 {
@@ -52,6 +54,11 @@ namespace WpfDotNetCameraControl.ViewModels
             get { return this.cameraList.Count > 0; }
         }
 
+        /// <summary>
+        /// Command to execute when open camera button has been pressed
+        /// </summary>
+        public ICommand OpenCameraCommand { get; private set; }
+
         #region INotifyPropertyChanged implementation
         /// <summary>
         /// Event that is triggered when a property has changed
@@ -83,7 +90,27 @@ namespace WpfDotNetCameraControl.ViewModels
             var sourceInfoList = this.instance.EnumerateDevices();
             this.CameraList = new ObservableCollection<SourceInfo>(sourceInfoList);
 
+            this.OpenCameraCommand = new CommandHandler(this.OpenCamera);
+
             this.instance.AsyncWaitForCamera(this.OnCameraAdded);
+        }
+
+        /// <summary>
+        /// Called when the Open button is clicked; opens the camera and shows the remote control
+        /// window.
+        /// </summary>
+        private void OpenCamera()
+        {
+            if (this.SelectedCamera == null)
+            {
+                return;
+            }
+
+            this.instance.AsyncWaitForCamera();
+
+            var sourceDevice = this.SelectedCamera.Open();
+
+            RemoteReleaseControl control = sourceDevice.EnterReleaseControl();
         }
 
         /// <summary>
