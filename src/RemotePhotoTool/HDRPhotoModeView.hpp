@@ -42,8 +42,7 @@ private:
 
    virtual void DestroyView() override
    {
-      BOOL bRet = DestroyWindow();
-      ATLASSERT(TRUE == bRet); bRet;
+      ATLVERIFY(TRUE == DestroyWindow());
    }
 
 private:

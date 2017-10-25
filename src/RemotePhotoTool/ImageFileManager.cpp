@@ -59,8 +59,7 @@ void ImageFileManager::AddCurrentDate(CString& cszPath)
    time_t nowtime = time(&nowtime);
 
    struct tm nowtm = {0};
-   errno_t err = localtime_s(&nowtm, &nowtime);
-   err; ATLASSERT(err ==  0);
+   ATLVERIFY(0 == localtime_s(&nowtm, &nowtime));
 
    CString cszDate;
    _tcsftime(cszDate.GetBuffer(256), 256, _T("%Y-%m-%d"), &nowtm);

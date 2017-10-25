@@ -98,8 +98,7 @@ void SettingsDlg::SelectLogFolder()
    {
       // get non-roaming app data folder
       CString cszFolder;
-      BOOL bRet = SHGetSpecialFolderPath(m_hWnd, cszFolder.GetBuffer(MAX_PATH), CSIDL_LOCAL_APPDATA, TRUE);
-      ATLASSERT(TRUE == bRet); bRet;
+      ATLVERIFY(TRUE == SHGetSpecialFolderPath(m_hWnd, cszFolder.GetBuffer(MAX_PATH), CSIDL_LOCAL_APPDATA, TRUE));
       cszFolder.ReleaseBuffer();
 
       cszFolder += _T("\\RemotePhotoTool\\");

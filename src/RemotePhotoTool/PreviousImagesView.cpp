@@ -43,8 +43,7 @@ void PreviousImagesView::DestroyView()
    ATLASSERT(pLoop != nullptr);
    pLoop->RemoveIdleHandler(this);
 
-   BOOL bRet = DestroyWindow();
-   ATLASSERT(TRUE == bRet); bRet;
+   ATLVERIFY(TRUE == DestroyWindow());
 }
 
 BOOL PreviousImagesView::OnIdle()

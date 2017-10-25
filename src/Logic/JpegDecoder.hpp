@@ -35,10 +35,10 @@ struct JpegDecoder : public boost::noncopyable
    {
       try
       {
-         boolean b = jpeg_finish_decompress(&cinfo);
-         ATLASSERT(b == TRUE); b; // no suspending data source
+         // no suspending data source
+         ATLVERIFY(TRUE == jpeg_finish_decompress(&cinfo));
 
-                                  // release the JPEG decompression object
+         // release the JPEG decompression object
          jpeg_destroy_decompress(&cinfo);
       }
       catch (...)
@@ -89,7 +89,8 @@ private:
    /// outputs error message
    static void OnOutput(j_common_ptr cinfo)
    {
-      cinfo; ATLTRACE(FormatErrorMessage(cinfo));
+      UNUSED(cinfo);
+      ATLTRACE(FormatErrorMessage(cinfo));
    }
 
    /// throws error

@@ -376,7 +376,7 @@ LPCTSTR RemoteReleaseControlImpl::EventNameFromCode(prUInt16 uiEventCode) throw(
 
 prResponse prSTDCALL RemoteReleaseControlImpl::OnCameraEvent_(prHandle hCamera, prContext Context, prVoid* pEventData)
 {
-   hCamera;
+   UNUSED(hCamera);
 
    RemoteReleaseControlImpl* pThis = reinterpret_cast<RemoteReleaseControlImpl*>(Context);
 

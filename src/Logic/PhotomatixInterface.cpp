@@ -36,9 +36,7 @@ void PhotomatixInterface::RunUI(const std::vector<CString>& vecImageFilenames)
 
    Win32::Process process;
    process.WorkingDirectory(m_cszInstallPath);
-   bool bRet = process.Create(cszCommandLine);
-
-   ATLASSERT(true == bRet); bRet;
+   ATLVERIFY(true == process.Create(cszCommandLine));
 }
 
 void PhotomatixInterface::Detect()

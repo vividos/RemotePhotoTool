@@ -11,6 +11,7 @@
 #include <ulib/config/BoostAsio.hpp>
 
 // WTL includes
+#include <ulib/config/Common.hpp>
 #include <ulib/config/Wtl.hpp>
 
 // Scintilla include

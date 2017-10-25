@@ -26,14 +26,13 @@ public:
 
    virtual BOOL PreTranslateMessage(MSG* pMsg) override
    {
-      pMsg;
+      UNUSED(pMsg);
       return FALSE;
    }
 
    virtual void DestroyView() override
    {
-      BOOL bRet = DestroyWindow();
-      ATLASSERT(TRUE == bRet); bRet;
+      ATLVERIFY(TRUE == DestroyWindow());
    }
 
 private:

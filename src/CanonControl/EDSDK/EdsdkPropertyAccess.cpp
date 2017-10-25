@@ -529,10 +529,11 @@ union ImageFormatBitSet
    unsigned int uiValue;
 
    /// bit set
+   // NOSONAR
    struct
    {
       // secondary image values
-      EdsCompressQuality compressQuality2nd : 4; // 0-3
+      EdsCompressQuality compressQuality2nd : 4; // 0-3 // NOSONAR
       EdsImageType imageType2nd : 4; // 4-7
       EdsImageSize imageSize2nd : 4; // 8-11
       unsigned int reserved1 : 4;

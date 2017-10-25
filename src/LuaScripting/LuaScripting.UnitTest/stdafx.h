@@ -8,6 +8,7 @@
 
 // includes
 #include <SDKDDKVer.h>
+#include <ulib/config/Common.hpp>
 #include <ulib/config/Atl.hpp>
 #include "CppUnitTest.h"
 

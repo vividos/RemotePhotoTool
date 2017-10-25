@@ -675,8 +675,7 @@ void SetToolbarButtonText(CToolBarCtrl& tb, int iId, LPCTSTR pszText)
    info.cbSize = sizeof(info);
    info.dwMask = TBIF_STYLE;
 
-   BOOL bRet = tb.GetButtonInfo(iId, &info);
-   ATLASSERT(TRUE == bRet); bRet;
+   ATLVERIFY(TRUE == tb.GetButtonInfo(iId, &info));
 
    info.fsStyle |= BTNS_SHOWTEXT;
 
@@ -684,8 +683,7 @@ void SetToolbarButtonText(CToolBarCtrl& tb, int iId, LPCTSTR pszText)
    info.pszText = const_cast<LPWSTR>(pszText);
    info.cchText = _tcslen(pszText);
 
-   bRet = tb.SetButtonInfo(iId, &info);
-   ATLASSERT(TRUE == bRet); bRet;
+   ATLVERIFY(TRUE == tb.SetButtonInfo(iId, &info));
 }
 
 void MainFrame::SetupToolbar()

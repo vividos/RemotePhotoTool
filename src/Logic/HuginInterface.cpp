@@ -38,9 +38,7 @@ void HuginInterface::RunUI(const std::vector<CString>& vecImageFilenames)
 
    Win32::Process process;
    process.WorkingDirectory(m_cszInstallPath);
-   bool bRet = process.Create(cszCommandLine);
-
-   ATLASSERT(true == bRet); bRet;
+   ATLVERIFY(true == process.Create(cszCommandLine));
 }
 
 void HuginInterface::RunStitcher(const CString& cszPtoScript, const CString& cszOutputFile)
@@ -65,9 +63,7 @@ void HuginInterface::RunStitcher(const CString& cszPtoScript, const CString& csz
 
    Win32::Process process;
    process.WorkingDirectory(m_cszInstallPath);
-   bool bRet = process.Create(cszCommandLine);
-
-   ATLASSERT(true == bRet); bRet;
+   ATLVERIFY(true == process.Create(cszCommandLine));
 }
 
 void HuginInterface::Detect()

@@ -40,9 +40,10 @@ namespace PSREC
          m_uiEventCode = ReadUint16();
          prUInt32 uiTransactionId = ReadUint32();
 
-         uiContainerType; uiTransactionId; // unused
+         UNUSED(uiContainerType);
+         UNUSED(uiTransactionId);
 
-                                           // read all parameters
+         // read all parameters
          for (unsigned int ui = 0; ui < uiNumParam; ui++)
             m_vecParams.push_back(ReadUint32());
       }

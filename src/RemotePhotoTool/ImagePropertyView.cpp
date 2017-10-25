@@ -41,8 +41,7 @@ void ImagePropertyView::DestroyView()
    if (m_iPropertyEventId != -1 && m_spRemoteReleaseControl != nullptr)
       m_spRemoteReleaseControl->RemovePropertyEventHandler(m_iPropertyEventId);
 
-   BOOL bRet = DestroyWindow();
-   ATLASSERT(TRUE == bRet); bRet;
+   ATLVERIFY(TRUE == DestroyWindow());
 }
 
 void ImagePropertyView::OnPropertyChanged(RemoteReleaseControl::T_enPropertyEvent /*enPropertyEvent*/, unsigned int uiPropertyId)

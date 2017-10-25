@@ -245,7 +245,7 @@ void PropertyAccess::ReadValidValues(DeviceProperty& dp, CameraWidget* widget, i
 CString PropertyAccess::DisplayTextFromIdAndValue(unsigned int propId, Variant value)
 {
    // TODO implement
-   propId;
+   UNUSED(propId);
 
    return value.ToString();
 }

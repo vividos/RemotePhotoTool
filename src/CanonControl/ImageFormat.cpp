@@ -8,9 +8,9 @@
 // includes
 #include "stdafx.h"
 #include "ImageFormat.hpp"
-#include "EDSDK\EdsdkPropertyAccess.hpp"
-#include "CDSDK\CdsdkImagePropertyAccess.hpp"
-#include "PSREC\PsrecPropertyAccess.hpp"
+#include "EDSDK/EdsdkPropertyAccess.hpp"
+#include "CDSDK/CdsdkImagePropertyAccess.hpp"
+#include "PSREC/PsrecPropertyAccess.hpp"
 
 CString ImageFormat::ToString() const
 {

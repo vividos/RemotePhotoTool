@@ -84,7 +84,7 @@ EdsError RemoteReleaseControlImpl::OnPropertyChange_(
    EdsUInt32 inParam,
    EdsVoid* inContext) throw()
 {
-   inParam;
+   UNUSED(inParam);
    //LOG_TRACE(_T("OnPropertyChange(event = %04x (%s), propId = %08x, param = %u, ctx) called\n"),
    //   inEvent,
    //   inEvent == kEdsPropertyEvent_PropertyChanged ? _T("PropertyChanged") :

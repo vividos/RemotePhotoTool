@@ -154,7 +154,7 @@ public:
    /// returns data as signed rational
    ExifSRational GetSRational(unsigned long ulIndex) const
    {
-      ulIndex;
+      UNUSED(ulIndex);
       ATLASSERT(m_spEntry->parent->parent != NULL);
       ATLASSERT(m_spEntry->format == EXIF_FORMAT_SRATIONAL);
       ATLASSERT(ulIndex <= m_spEntry->components);
@@ -167,7 +167,7 @@ public:
    /// returns data as unsigned rational
    ExifRational GetRational(unsigned long ulIndex) const
    {
-      ulIndex;
+      UNUSED(ulIndex);
       ATLASSERT(m_spEntry->parent->parent != NULL);
       ATLASSERT(m_spEntry->format == EXIF_FORMAT_RATIONAL);
       ATLASSERT(ulIndex <= m_spEntry->components);

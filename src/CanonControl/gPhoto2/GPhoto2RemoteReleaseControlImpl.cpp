@@ -63,14 +63,14 @@ void RemoteReleaseControlImpl::SetReleaseSettings(const ShutterReleaseSettings& 
 unsigned int RemoteReleaseControlImpl::MapImagePropertyTypeToId(T_enImagePropertyType enImagePropertyType) const
 {
    // TODO implement
-   enImagePropertyType;
+   UNUSED(enImagePropertyType);
    return 0;
 }
 
 ImageProperty RemoteReleaseControlImpl::MapShootingModeToImagePropertyValue(T_enShootingMode enShootingMode) const
 {
    // TODO implement
-   enShootingMode;
+   UNUSED(enShootingMode);
 
    Variant value;
    value.Set<unsigned char>(42);
@@ -98,13 +98,13 @@ ImageProperty RemoteReleaseControlImpl::GetImageProperty(unsigned int uiImagePro
 void RemoteReleaseControlImpl::SetImageProperty(const ImageProperty& imageProperty)
 {
    // TODO implement
-   imageProperty;
+   UNUSED(imageProperty);
 }
 
 void RemoteReleaseControlImpl::EnumImagePropertyValues(unsigned int uiImagePropertyId, std::vector<ImageProperty>& vecValues) const
 {
    // TODO implement
-   uiImagePropertyId;
+   UNUSED(uiImagePropertyId);
    vecValues.clear();
 }
 
@@ -123,7 +123,7 @@ unsigned int RemoteReleaseControlImpl::NumAvailableShots() const
 void RemoteReleaseControlImpl::SendCommand(T_enCameraCommand enCameraCommand)
 {
    // TODO implement
-   enCameraCommand;
+   UNUSED(enCameraCommand);
 }
 
 void RemoteReleaseControlImpl::Release()

@@ -30,8 +30,7 @@ App::App(HINSTANCE hInstance) throw()
 #endif
 
    // note: Apartment Threading needed for Canon ED-SDK
-   HRESULT hRes = ::CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
-   ATLASSERT(SUCCEEDED(hRes));
+   ATLVERIFY(SUCCEEDED(::CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED)));
 
    // this resolves ATL window thunking problem when Microsoft Layer for Unicode (MSLU) is used
 #pragma warning(suppress: 6387)
@@ -39,8 +38,7 @@ App::App(HINSTANCE hInstance) throw()
 
    AtlInitCommonControls(ICC_WIN95_CLASSES);
 
-   hRes = _Module.Init(NULL, hInstance);
-   ATLASSERT(SUCCEEDED(hRes));
+   ATLVERIFY(SUCCEEDED(_Module.Init(NULL, hInstance)));
 }
 
 App::~App() throw()

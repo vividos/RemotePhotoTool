@@ -1120,7 +1120,7 @@ void State::InternalCall(int iArguments, int iResults)
    }
    //catch (const Lua::Exception& ex)
    //{
-   //   
+   //
    //   DetachAll();
 
    //   throw;
@@ -1229,7 +1229,7 @@ CString EnumTableIndices(lua_State* L, int iIndex)
 
 void State::TraceValue(lua_State* L, int iIndex, int iStackDepth, bool bIsUpvalue)
 {
-   iStackDepth;
+   UNUSED(iStackDepth);
 
    CString cszType(lua_typename(L, lua_type(L, iIndex)));
 
@@ -1560,7 +1560,8 @@ std::pair<Thread::T_enThreadStatus, std::vector<Lua::Value>> Thread::InternalRes
 
 int Thread::InternalYield(lua_State* L, int status, lua_KContext context)
 {
-   ATLASSERT(status == LUA_YIELD); status; // Lua docs says it always passes this value
+   ATLASSERT(status == LUA_YIELD); // Lua docs says it always passes this value
+   UNUSED(status);
 
    State::TraceStack(L);
 
