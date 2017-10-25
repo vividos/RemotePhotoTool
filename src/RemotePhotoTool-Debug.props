@@ -35,6 +35,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
     <BuildLog>
       <Path>$(SolutionDir)..\intermediate\$(Configuration)\$(ProjectName)\$(MSBuildProjectName).log</Path>
