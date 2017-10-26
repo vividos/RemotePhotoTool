@@ -1,13 +1,13 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2016 Michael Fink
+// Copyright (C) 2008-2017 Michael Fink
 //
 /// \file RemoteScriptingEditor\AppSettings.hpp Settings
 //
 #pragma once
 
 // includes
-#include "..\RemotePhotoTool\WindowPlacement.hpp"
+#include "../RemotePhotoTool/WindowPlacement.hpp"
 
 /// application settings
 class AppSettings

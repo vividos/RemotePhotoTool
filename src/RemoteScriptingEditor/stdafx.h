@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2017 Michael Fink
 //
 /// \file RemoteScriptingEditor\stdafx.h Precompiled header support
 //
@@ -16,7 +16,7 @@
 // Scintilla include
 #pragma warning(push)
 #pragma warning(disable: 4100) // unreferenced formal parameter
-#include <atlscintilla.h>
+#include <AtlScintilla.h>
 #include <SciLexer.h>
 #pragma warning(pop)
 

@@ -1,13 +1,13 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2017 Michael Fink
 //
 /// \file RemoteScriptingEditor\MainFrame.cpp Main application frame
 //
 
 // includes
 #include "stdafx.h"
-#include "res\Ribbon.h"
+#include "res/Ribbon.h"
 #include "resource.h"
 #include "AboutDlg.hpp"
 #include "LuaScriptEditorView.hpp"

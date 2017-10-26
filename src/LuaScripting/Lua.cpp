@@ -1,12 +1,12 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2015 Michael Fink
+// Copyright (C) 2008-2017 Michael Fink
 //
 /// \file Lua.cpp Lua wrapper classes
 //
 
 // includes
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "Lua.hpp"
 
 #include <lua.h>
@@ -242,6 +242,9 @@ Value::Value(const Value& val)
 
 Value& Value::operator=(const Value& val)
 {
+   if (this == &val)
+      return *this;
+
    m_value = val.m_value;
    m_enType = val.m_enType;
    m_spRef = val.GetRef();
@@ -599,6 +602,9 @@ Function::Function(const Function& func)
 
 Function& Function::operator=(const Function& func)
 {
+   if (this == &func)
+      return *this;
+
    m_spRef = func.GetRef();
 
    return *this;
@@ -685,6 +691,9 @@ Table::Table(const Table& table)
 
 Table& Table::operator=(const Table& table)
 {
+   if (this == &table)
+      return *this;
+
    m_spRef = table.GetRef();
 
    return *this;
@@ -858,6 +867,9 @@ Userdata::Userdata(const Userdata& userdata)
 
 Userdata& Userdata::operator=(const Userdata& userdata)
 {
+   if (this == &userdata)
+      return *this;
+
    m_spRef = userdata.GetRef();
    m_pUserdata = userdata.m_pUserdata;
    m_uiSize = userdata.m_uiSize;

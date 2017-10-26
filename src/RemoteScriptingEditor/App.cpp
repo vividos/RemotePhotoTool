@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2017 Michael Fink
 //
 /// \file RemoteScriptingEditor/App.cpp Application
 //
@@ -9,14 +9,14 @@
 #include "stdafx.h"
 #include "App.hpp"
 #include <ulib/ProgramOptions.hpp>
-#include "res\Ribbon.h"
+#include "res/Ribbon.h"
 #include "resource.h"
 #include "MainFrame.hpp"
 #include "Filesystem.hpp"
 #include <ulib/Path.hpp>
 #include <ulib/CrashReporter.hpp>
 #include <crtdbg.h>
-#include <shlobj.h>
+#include <ShlObj.h>
 
 /// WTL app module
 CAppModule _Module;
