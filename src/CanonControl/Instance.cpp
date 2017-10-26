@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2016 Michael Fink
+// Copyright (C) 2008-2017 Michael Fink
 //
 /// \file Instance.cpp Canon control - Instance class
 //
@@ -17,7 +17,6 @@
 #include <ulib/thread/LightweightMutex.hpp>
 #include "BackgroundWorkerThread.hpp"
 #include "BackgroundTimer.hpp"
-#include <ulib/config/Wtl.hpp> // for RunTimeHelper
 
 
 // Instance::Impl
@@ -125,7 +124,6 @@ void Instance::Impl::StartPollCamera()
    {
       std::vector<std::shared_ptr<SourceInfo>> vecSourceDevices;
 
-      if (!RunTimeHelper::IsVista())
          m_spCdSdkRef->EnumerateDevices(vecSourceDevices);
 
       m_spPsRecRef->EnumerateDevices(vecSourceDevices);
@@ -160,9 +158,6 @@ void Instance::Impl::PollCamera()
 {
    std::vector<std::shared_ptr<SourceInfo>> vecSourceDevices;
 
-   // Note: CDSDK shows wait cursor for a small time, so only enumerate on XP or lower
-   // since the camera would't work on Vista and above anyway.
-   if (!RunTimeHelper::IsVista())
       m_spCdSdkRef->EnumerateDevices(vecSourceDevices);
 
    m_spPsRecRef->EnumerateDevices(vecSourceDevices);

@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2017 Michael Fink
 //
 /// \file CdsdkCommon.cpp CDSDK - Common functions
 //
@@ -11,6 +11,7 @@
 #include "CameraException.hpp"
 #include "CdsdkSourceInfoImpl.hpp"
 #include "ErrorText.hpp"
+#include <ulib/config/Wtl.hpp> // for RunTimeHelper
 
 using namespace CDSDK;
 
@@ -107,6 +108,11 @@ cdError CDEnumDeviceReset_SEH(cdUInt32 Kind, cdHEnum* phEnum)
 
 void Ref::EnumerateDevices(std::vector<std::shared_ptr<SourceInfo>>& vecSourceDevices) const
 {
+   // Note: CDSDK shows wait cursor for a small time, so only enumerate on XP or lower
+   // since the camera would't work on Vista and above anyway.
+   if (RunTimeHelper::IsVista())
+      return;
+
    cdUInt32 uiCount = 0;
    cdHEnum hEnum = 0;
 
