@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2017 Michael Fink
 //
 /// \file PsrecCommon.hpp PS-ReC common header
 //
@@ -13,6 +13,7 @@
 #include "SourceInfo.hpp"
 #include "CameraException.hpp"
 #include "ErrorText.hpp"
+#include "SdkReferenceBase.hpp"
 
 /// Powershot Remote Capture SDK (PS-ReC) interface
 namespace PSREC
@@ -22,7 +23,7 @@ namespace PSREC
 void CheckError(const CString& cszFunction, prResponse err, LPCSTR pszFile, UINT uiLine);
 
 /// SDK reference
-class Ref: public std::enable_shared_from_this<Ref>
+class Ref: public SdkReferenceBase, std::enable_shared_from_this<Ref>
 {
 public:
    /// ctor
@@ -31,10 +32,13 @@ public:
    ~Ref() throw();
 
    /// adds verwion text
-   void AddVersionText(CString& cszVersionText) const;
+   virtual void AddVersionText(CString& versionText) const override;
 
    /// enumerates devices
-   void EnumerateDevices(std::vector<std::shared_ptr<SourceInfo>>& vecSourceDevices) const;
+   virtual void EnumerateDevices(std::vector<std::shared_ptr<SourceInfo>>& sourceDevicesList) const override;
+
+   /// returns if AsyncWaitForCamera() is possible for this SDK
+   virtual bool IsAsyncWaitPossible() const override { return false; }
 };
 
 /// shared pointer to SDK reference

@@ -346,6 +346,9 @@
     <ClInclude Include="WIA\WiaPropertyAccess.hpp">
       <Filter>WIA Files</Filter>
     </ClInclude>
+    <ClInclude Include="SdkReferenceBase.hpp">
+      <Filter>Exported Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Thirdparty\CDSDK\Doc\CDSDK73UserGuide.doc">

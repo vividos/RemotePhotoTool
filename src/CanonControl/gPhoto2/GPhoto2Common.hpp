@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2016 Michael Fink
+// Copyright (C) 2008-2017 Michael Fink
 //
 /// \file GPhoto2Common.hpp gPhoto2 - Common functions
 //
@@ -9,6 +9,7 @@
 // includes
 #include "Instance.hpp"
 #include "CameraException.hpp"
+#include "SdkReferenceBase.hpp"
 
 // forward references
 struct _GPContext;
@@ -21,7 +22,7 @@ namespace GPhoto2
 void CheckError(const CString& cszFunction, int err, LPCSTR pszFile, UINT uiLine);
 
 /// gPhoto2 reference
-class Ref: public std::enable_shared_from_this<Ref>
+class Ref: public SdkReferenceBase, public std::enable_shared_from_this<Ref>
 {
 public:
    /// ctor
@@ -30,10 +31,13 @@ public:
    ~Ref() throw();
 
    /// adds gPhoto2 version text
-   void AddVersionText(CString& cszVersionText) const;
+   virtual void AddVersionText(CString& versionText) const override;
 
    /// enumerates cameras
-   void EnumerateDevices(std::vector<std::shared_ptr<SourceInfo>>& vecSourceDevices) const;
+   virtual void EnumerateDevices(std::vector<std::shared_ptr<SourceInfo>>& sourceDevicesList) const override;
+
+   /// returns if AsyncWaitForCamera() is possible for this SDK
+   virtual bool IsAsyncWaitPossible() const override { return false; }
 
 private:
    /// gPhoto2 context

@@ -9,6 +9,7 @@
 // includes
 #include "Instance.hpp"
 #include "CameraException.hpp"
+#include "SdkReferenceBase.hpp"
 #include <ulib/thread/LightweightMutex.hpp>
 #include <wia_lh.h>
 
@@ -21,6 +22,7 @@ namespace WIA
    /// WIA reference
    /// \see https://msdn.microsoft.com/en-us/library/windows/desktop/ms629859%28v=vs.85%29.aspx
    class Ref :
+      public SdkReferenceBase,
       public std::enable_shared_from_this<Ref>,
       public IWiaEventCallback
    {
@@ -30,14 +32,16 @@ namespace WIA
       /// dtor
       ~Ref() throw();
 
-      /// adds EDSDK version text
-      void AddVersionText(CString& versionText) const;
+      /// adds WIA version text
+      virtual void AddVersionText(CString& versionText) const override;
 
       /// enumerates cameras
-      void EnumerateDevices(std::vector<std::shared_ptr<SourceInfo>>& sourceInfoList) const;
+      virtual void EnumerateDevices(std::vector<std::shared_ptr<SourceInfo>>& sourceInfoList) const override;
 
+      /// returns if AsyncWaitForCamera() is possible for this SDK
+      virtual bool IsAsyncWaitPossible() const override { return true; }
       /// starts waiting for camera
-      void AsyncWaitForCamera(bool bStart, std::function<void()> fnOnCameraConnected = std::function<void()>());
+      virtual void AsyncWaitForCamera(bool bStart, std::function<void()> fnOnCameraConnected = std::function<void()>()) override;
 
       /// returns WIA device manager
       CComPtr<IWiaDevMgr> GetWiaDeviceManager()

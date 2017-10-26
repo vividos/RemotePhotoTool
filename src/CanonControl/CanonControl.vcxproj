@@ -160,6 +160,7 @@
     <ClInclude Include="gPhoto2\GPhoto2SourceInfoImpl.hpp" />
     <ClInclude Include="PsrecCameraEventData.hpp" />
     <ClInclude Include="PSREC\PsrecViewfinderImpl.hpp" />
+    <ClInclude Include="SdkReferenceBase.hpp" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="CDSDK\CdsdkCommon.hpp" />
     <ClInclude Include="CDSDK\CdsdkImagePropertyAccess.hpp" />

@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2017 Michael Fink
 //
 /// \file EdsdkCommon.hpp EDSDK - Common functions
 //
@@ -14,6 +14,7 @@
 #include <ulib/thread/LightweightMutex.hpp>
 #include <ulib/thread/RecursiveMutex.hpp>
 #include "ErrorText.hpp"
+#include "SdkReferenceBase.hpp"
 
 /// EOS Digital Camera SDK interface
 namespace EDSDK
@@ -23,7 +24,7 @@ namespace EDSDK
 extern void CheckError(const CString& cszFunction, EdsError err, LPCSTR pszFile, UINT uiLine);
 
 /// SDK reference
-class Ref: public std::enable_shared_from_this<Ref>
+class Ref: public SdkReferenceBase, public std::enable_shared_from_this<Ref>
 {
 public:
    /// ctor
@@ -32,13 +33,16 @@ public:
    ~Ref() throw();
 
    /// adds EDSDK version text
-   void AddVersionText(CString& cszVersionText) const;
+   virtual void AddVersionText(CString& cszVersionText) const override;
 
    /// enumerates cameras
-   void EnumerateDevices(std::vector<std::shared_ptr<SourceInfo>>& vecSourceDevices) const;
+   virtual void EnumerateDevices(std::vector<std::shared_ptr<SourceInfo>>& vecSourceDevices) const override;
+
+   /// returns if AsyncWaitForCamera() is possible for this SDK
+   virtual bool IsAsyncWaitPossible() const override { return true; }
 
    /// starts waiting for camera
-   void AsyncWaitForCamera(bool bStart, std::function<void()> fnOnCameraConnected = std::function<void()>());
+   virtual void AsyncWaitForCamera(bool bStart, std::function<void()> fnOnCameraConnected = std::function<void()>()) override;
 
    /// called to do idle processing
    static void OnIdle();
