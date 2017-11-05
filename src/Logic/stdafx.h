@@ -11,3 +11,9 @@
 #include <ulib/config/BoostAsio.hpp>
 #include <ulib/config/Common.hpp>
 #include <ulib/config/Atl.hpp>
+
+// redefine ATLVERIFY when analyzing using Coverity Scan
+#if !defined(_DEBUG) && defined(__COVERITY__)
+#undef ATLVERIFY
+#define ATLVERIFY(expr) (void)(expr)
+#endif
