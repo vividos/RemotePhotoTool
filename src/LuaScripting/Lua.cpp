@@ -86,7 +86,14 @@ CString Lua::Exception::ReadStackTrace(lua_State* L)
       }
    }
 
-   cszInfo.Trim();
+   try
+   {
+      cszInfo.Trim();
+   }
+   catch (const CAtlException&)
+   {
+      // ignore CString exceptions
+   }
 
    return cszInfo;
 }
@@ -1189,7 +1196,16 @@ void State::TraceStack(lua_State* L)
    ATLTRACE(_T("Tracing stack, %i entries:\n"), iStackDepth);
 
    for (int iIndex = 1; iIndex <= iStackDepth; iIndex++)
-      TraceValue(L, iIndex, iStackDepth, false);
+   {
+      try
+      {
+         TraceValue(L, iIndex, iStackDepth, false);
+      }
+      catch (const CAtlException&)
+      {
+         // ignore CString exceptions
+      }
+   }
 
    ATLTRACE(_T("End tracing stack.\n"));
 }

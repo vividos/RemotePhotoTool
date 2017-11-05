@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2016 Michael Fink
+// Copyright (C) 2008-2017 Michael Fink
 //
 /// \file PhotomatixInterface.hpp Interface to Photomatix HDR image creation software
 //
@@ -8,9 +8,10 @@
 
 // includes
 #include <vector>
+#include "ExternalApplicationInterface.hpp"
 
 /// interface to Photomatix application
-class PhotomatixInterface
+class PhotomatixInterface : private ExternalApplicationInterface
 {
 public:
    /// ctor
@@ -26,8 +27,8 @@ public:
    /// returns if hugin is installed on this machine
    bool IsInstalled() const { return !m_cszInstallPath.IsEmpty(); }
 
-   /// runs hugin UI with given images
-   void RunUI(const std::vector<CString>& vecImageFilenames);
+   /// runs Photomatix UI with given images
+   void RunUI(const std::vector<CString>& imageFilenamesList);
 
 private:
    /// detects photomatix install path

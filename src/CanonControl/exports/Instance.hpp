@@ -50,7 +50,7 @@ private:
    class Impl;
 
    /// ctor
-   Instance(std::shared_ptr<Impl> spImpl);
+   explicit Instance(std::shared_ptr<Impl> spImpl);
 
    /// handler when camera is connected
    void OnCameraAddedHandler();

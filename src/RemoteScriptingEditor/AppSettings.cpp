@@ -18,14 +18,11 @@ AppSettings::AppSettings(LPCTSTR pszSettingsRegkey)
 
 void AppSettings::Store()
 {
-   // open root key
+   // open root key and try to create key
    CRegKey regRoot;
-   if (ERROR_SUCCESS != regRoot.Open(HKEY_CURRENT_USER, m_pszSettingsRegkey))
-   {
-      // try to create key
-      if (ERROR_SUCCESS != regRoot.Create(HKEY_CURRENT_USER, m_pszSettingsRegkey))
-         return;
-   }
+   if (ERROR_SUCCESS != regRoot.Open(HKEY_CURRENT_USER, m_pszSettingsRegkey) &&
+      ERROR_SUCCESS != regRoot.Create(HKEY_CURRENT_USER, m_pszSettingsRegkey))
+      return;
 
    m_windowPlacementMainFrame.Store(regRoot, g_pszWindowPlacementMainFrame);
 }

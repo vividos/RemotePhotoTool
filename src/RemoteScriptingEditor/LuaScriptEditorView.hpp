@@ -255,6 +255,9 @@ private:
       case ID_EDIT_SELECT_ALL:   wnd.SendMessage(EM_SETSEL, 0, -1); break;
       case ID_EDIT_UNDO:   wnd.SendMessage(EM_UNDO); break;
       case ID_EDIT_REDO:   wnd.SendMessage(EM_REDO); break;
+      default:
+         ATLASSERT(false);
+         break;
       }
 
       return 0;
@@ -282,7 +285,10 @@ class LuaScriptEditorView :
 
 public:
    /// ctor
-   LuaScriptEditorView() {}
+   LuaScriptEditorView()
+   {
+      // nothing to do here
+   }
 
    /// pre-translates messages
    BOOL PreTranslateMessage(MSG* pMsg);

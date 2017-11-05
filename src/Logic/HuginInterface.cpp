@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2016 Michael Fink
+// Copyright (C) 2008-2017 Michael Fink
 //
 /// \file HuginInterface.cpp Interface to Hugin panorama stitching software
 //
@@ -20,25 +20,12 @@ HuginInterface::HuginInterface(const CString& cszInstallPath)
       Detect();
 }
 
-void HuginInterface::RunUI(const std::vector<CString>& vecImageFilenames)
+void HuginInterface::RunUI(const std::vector<CString>& imageFilenamesList)
 {
-   CString cszCommandLine = Path::Combine(m_cszInstallPath, _T("hugin.exe"));
-
-   CString cszFilename;
-   for (size_t i=0,iMax=vecImageFilenames.size(); i<iMax; i++)
-   {
-      cszFilename = vecImageFilenames[i];
-      cszFilename.TrimLeft(_T('\"'));
-      cszFilename.TrimRight(_T('\"'));
-
-      cszCommandLine += _T(" \"");
-      cszCommandLine += cszFilename;
-      cszCommandLine += _T("\"");
-   }
-
-   Win32::Process process;
-   process.WorkingDirectory(m_cszInstallPath);
-   ATLVERIFY(true == process.Create(cszCommandLine));
+   RunApplication(
+      Path::Combine(m_cszInstallPath, _T("hugin.exe")),
+      m_cszInstallPath,
+      imageFilenamesList);
 }
 
 void HuginInterface::RunStitcher(const CString& cszPtoScript, const CString& cszOutputFile)

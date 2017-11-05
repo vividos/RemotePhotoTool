@@ -107,11 +107,8 @@ bool LuaScriptEditorView::QueryClose()
 
    if (iRet == IDCANCEL)
       return false;
-   else if (iRet == IDYES)
-   {
-      if (!DoFileSaveAs())
-         return false;
-   }
+   else if (iRet == IDYES && !DoFileSaveAs())
+      return false;
 
    return true;
 }

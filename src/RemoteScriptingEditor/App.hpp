@@ -11,7 +11,7 @@ class App
 {
 public:
    /// ctor
-   App(HINSTANCE hInstance);
+   explicit App(HINSTANCE hInstance);
    /// dtor
    ~App();
 

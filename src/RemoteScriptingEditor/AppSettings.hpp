@@ -14,7 +14,7 @@ class AppSettings
 {
 public:
    /// ctor
-   AppSettings(LPCTSTR pszSettingsRegkey);
+   explicit AppSettings(LPCTSTR pszSettingsRegkey);
 
 
    // properties

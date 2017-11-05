@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2016 Michael Fink
+// Copyright (C) 2008-2017 Michael Fink
 //
 /// \file HuginInterface.hpp Interface to Hugin panorama stitching software
 //
@@ -8,9 +8,10 @@
 
 // includes
 #include <vector>
+#include "ExternalApplicationInterface.hpp"
 
 /// interface to hugin application
-class HuginInterface
+class HuginInterface : private ExternalApplicationInterface
 {
 public:
    /// ctor
@@ -27,7 +28,7 @@ public:
    bool IsInstalled() const { return !m_cszInstallPath.IsEmpty(); }
 
    /// runs hugin UI with given images
-   void RunUI(const std::vector<CString>& vecImageFilenames);
+   void RunUI(const std::vector<CString>& imageFilenamesList);
 
    /// runs stitcher with given pto script and output file
    void RunStitcher(const CString& cszPtoScript, const CString& cszOutputFile);

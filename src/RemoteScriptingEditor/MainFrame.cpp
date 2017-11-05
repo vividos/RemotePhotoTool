@@ -190,11 +190,8 @@ LRESULT MainFrame::OnFileOpen(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl
    if (iRet == IDOK)
    {
       bool bRet = m_view.QueryClose();
-      if (!bRet)
-      {
-         if (!DoFileSaveAs())
-            return 0;
-      }
+      if (!bRet && !DoFileSaveAs())
+         return 0;
 
       if (DoFileOpen(dlg.m_ofn.lpstrFile, dlg.m_ofn.lpstrFileTitle))
       {
@@ -202,6 +199,7 @@ LRESULT MainFrame::OnFileOpen(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl
          m_mru.WriteToRegistry(c_pszSettingsRegkey);
       }
    }
+
    return 0;
 }
 
@@ -223,11 +221,8 @@ LRESULT MainFrame::OnFileRecent(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/
 {
    // check if we have to save the current one
    bool bRet = !m_view.QueryClose();
-   if (bRet)
-   {
-      if (!m_view.DoFileSaveAs())
-         return 0;
-   }
+   if (bRet && !m_view.DoFileSaveAs())
+      return 0;
 
    // get file name from the MRU list
    CString cszFile;
@@ -271,11 +266,8 @@ LRESULT MainFrame::OnViewOutput(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndC
 
 LRESULT MainFrame::OnScriptRun(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
-   if (m_view.GetModify())
-   {
-      if (!DoFileSave())
-         return 0;
-   }
+   if (m_view.GetModify() && !DoFileSave())
+      return 0;
 
    CString cszFilename = m_view.GetFilePath();
    if (cszFilename.IsEmpty())
