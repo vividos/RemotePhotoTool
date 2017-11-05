@@ -84,6 +84,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Helper\CommandHandler.cs" />
+    <Compile Include="Helper\NavigationService.cs" />
     <Compile Include="ViewModels\CameraConnectViewModel.cs" />
     <Compile Include="Views\CameraConnectWindow.xaml.cs">
       <DependentUpon>CameraConnectWindow.xaml</DependentUpon>

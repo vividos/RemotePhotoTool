@@ -1,5 +1,6 @@
 ﻿using RemotePhotoTool.CameraControl;
 using System.Windows;
+using WpfDotNetCameraControl.Helper;
 
 namespace WpfDotNetCameraControl
 {
@@ -8,6 +9,11 @@ namespace WpfDotNetCameraControl
     /// </summary>
     public partial class App : Application
     {
+        /// <summary>
+        /// Navigation service for application
+        /// </summary>
+        public NavigationService NavigationService { get; private set; }
+
         /// <summary>
         /// Camera control instance used in the application
         /// </summary>
@@ -18,6 +24,8 @@ namespace WpfDotNetCameraControl
         /// </summary>
         public App()
         {
+            this.NavigationService = new NavigationService();
+
             this.Instance = Instance.Get();
         }
     }

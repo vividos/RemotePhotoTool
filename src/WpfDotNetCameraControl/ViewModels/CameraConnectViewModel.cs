@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
 using WpfDotNetCameraControl.Helper;
+using WpfDotNetCameraControl.Views;
 
 namespace WpfDotNetCameraControl.ViewModels
 {
@@ -110,7 +111,8 @@ namespace WpfDotNetCameraControl.ViewModels
 
             var sourceDevice = this.SelectedCamera.Open();
 
-            RemoteReleaseControl control = sourceDevice.EnterReleaseControl();
+            var navigationService = (App.Current as App).NavigationService;
+            navigationService.NavigateTo(NavigationService.PageRemoteControl);
         }
 
         /// <summary>

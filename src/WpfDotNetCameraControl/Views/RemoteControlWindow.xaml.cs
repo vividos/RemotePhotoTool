@@ -17,11 +17,12 @@ namespace WpfDotNetCameraControl.Views
         /// <summary>
         /// Constructs a new remote control window
         /// </summary>
-        /// <param name="device">source device object</param>
-        /// <param name="control">remote release control object</param>
-        public RemoteControlWindow(SourceDevice device, RemoteReleaseControl control)
+        /// <param name="sourceDevice">source device object</param>
+        public RemoteControlWindow(SourceDevice sourceDevice)
         {
-            this.ViewModel = new RemoteControlViewModel(device, control);
+            RemoteReleaseControl control = sourceDevice.EnterReleaseControl();
+
+            this.ViewModel = new RemoteControlViewModel(sourceDevice, control);
             this.DataContext = this.ViewModel;
 
             this.InitializeComponent();

@@ -39,9 +39,7 @@ namespace WpfDotNetCameraControl.Views
 
             var sourceDevice = this.ViewModel.SelectedCamera.Open();
 
-            RemoteReleaseControl control = sourceDevice.EnterReleaseControl();
-
-            var remoteControlWindow = new RemoteControlWindow(sourceDevice, control);
+            var remoteControlWindow = new RemoteControlWindow(sourceDevice);
             remoteControlWindow.Show();
 
             this.Close();
