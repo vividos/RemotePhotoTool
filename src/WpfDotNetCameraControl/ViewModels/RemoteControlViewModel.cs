@@ -174,8 +174,6 @@ namespace WpfDotNetCameraControl.ViewModels
             this.ShootingModeList = new ObservableCollection<ImageProperty>(currentShootingMode.ValidValues);
             this.SelectedShootingMode = currentShootingMode;
 
-            new ObservableCollection<ImageProperty>();
-
             this.IsEnabledAv = false;
             this.IsEnabledTv = false;
             this.IsEnabledISO = true;
