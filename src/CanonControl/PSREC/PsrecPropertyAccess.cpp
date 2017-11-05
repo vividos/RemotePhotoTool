@@ -806,7 +806,7 @@ void PropertyAccess::EnumImageFormatPropertyValues(std::vector<ImageProperty>& v
    }
 }
 
-LPCTSTR PropertyAccess::NameFromId(prUInt16 propertyId) throw()
+LPCTSTR PropertyAccess::NameFromId(prUInt16 propertyId)
 {
    LPCTSTR pszName = _T("???");
    switch (propertyId)

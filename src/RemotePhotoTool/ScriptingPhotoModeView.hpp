@@ -25,9 +25,9 @@ class ScriptingPhotoModeView :
 {
 public:
    /// ctor
-   ScriptingPhotoModeView(IPhotoModeViewHost& host) throw();
+   ScriptingPhotoModeView(IPhotoModeViewHost& host);
    /// dtor
-   virtual ~ScriptingPhotoModeView() throw() {}
+   virtual ~ScriptingPhotoModeView() {}
 
    /// dialog id
    enum { IDD = IDD_PHOTOMODE_STANDARD_FORM };

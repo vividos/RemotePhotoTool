@@ -28,9 +28,9 @@ public:
    /// ctor
    ViewfinderImpl(Handle hSourceDevice, boost::asio::io_service& ioService, std::shared_ptr<LightweightMutex> spMtxLock);
    /// dtor
-   virtual ~ViewfinderImpl() throw();
+   virtual ~ViewfinderImpl();
 
-   virtual bool GetCapability(T_enViewfinderCapability enViewfinderCapability) const throw() override;
+   virtual bool GetCapability(T_enViewfinderCapability enViewfinderCapability) const override;
 
    virtual void SetOutputType(Viewfinder::T_enOutputType enOutputType) override;
 

@@ -35,7 +35,7 @@ public:
    }
 
    /// dtor
-   virtual ~ViewfinderImpl() throw()
+   virtual ~ViewfinderImpl()
    {
       try
       {
@@ -48,7 +48,7 @@ public:
       }
    }
 
-   virtual bool GetCapability(T_enViewfinderCapability enViewfinderCapability) const throw() override
+   virtual bool GetCapability(T_enViewfinderCapability enViewfinderCapability) const override
    {
       switch (enViewfinderCapability)
       {
@@ -167,7 +167,7 @@ private:
    }
 
    /// returns source
-   cdHSource GetSource() const throw();
+   cdHSource GetSource() const;
 
 private:
    /// source device

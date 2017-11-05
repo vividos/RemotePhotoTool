@@ -29,7 +29,7 @@ public:
    }
 
    /// dtor
-   virtual ~SourceDeviceImpl() throw()
+   virtual ~SourceDeviceImpl()
    {
       // Ugly workaround: EdsCloseSession() may lock up; call EdsGetEvent() to process internal events.
       // This should probably go into an Idle handler for the SDK.

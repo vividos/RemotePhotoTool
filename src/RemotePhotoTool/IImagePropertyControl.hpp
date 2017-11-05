@@ -11,7 +11,7 @@ class IImagePropertyControl
 {
 public:
    /// dtor
-   virtual ~IImagePropertyControl() throw()
+   virtual ~IImagePropertyControl()
    {
    }
 

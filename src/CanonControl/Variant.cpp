@@ -9,7 +9,7 @@
 #include "StdAfx.h"
 #include "Variant.hpp"
 
-Variant::Variant() throw()
+Variant::Variant()
 :m_enType(typeInvalid),
  m_bIsArray(false)
 {
@@ -140,7 +140,7 @@ CString Variant::ToString() const
    return cszValue;
 }
 
-LPCTSTR Variant::TypeAsString(VariantType vt) throw()
+LPCTSTR Variant::TypeAsString(VariantType vt)
 {
    switch(vt)
    {

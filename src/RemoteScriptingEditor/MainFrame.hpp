@@ -29,7 +29,7 @@ class MainFrame :
 
 public:
    /// ctor
-   MainFrame() throw();
+   MainFrame();
 
    /// sets filename of file to open at start
    void OpenFileAtStart(const CString& cszFilename)

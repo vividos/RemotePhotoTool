@@ -21,9 +21,9 @@ class PhotoStackingPhotoModeView :
 {
 public:
    /// ctor
-   PhotoStackingPhotoModeView(IPhotoModeViewHost& host) throw();
+   PhotoStackingPhotoModeView(IPhotoModeViewHost& host);
    /// dtor
-   virtual ~PhotoStackingPhotoModeView() throw() {}
+   virtual ~PhotoStackingPhotoModeView() {}
 
    /// dialog id
    enum { IDD = IDD_PHOTOMODE_PHOTO_STACKING_FORM };

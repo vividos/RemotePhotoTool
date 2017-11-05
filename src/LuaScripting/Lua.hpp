@@ -92,20 +92,20 @@ public:
    }
 
    /// returns Lua error message
-   const CString& LuaErrorMessage() const throw() { return m_cszLuaErrorMessage; }
+   const CString& LuaErrorMessage() const { return m_cszLuaErrorMessage; }
 
    /// returns Lua source file name where error occured
-   const CString& LuaSourceFile() const throw() { return m_cszLuaSourceFile; }
+   const CString& LuaSourceFile() const { return m_cszLuaSourceFile; }
 
    /// returns line number where error occured
-   UINT LuaLineNumber() const throw() { return m_uiLuaLineNumber; }
+   UINT LuaLineNumber() const { return m_uiLuaLineNumber; }
 
 private:
    /// formats message from Lua state
-   static CString MessageFromState(const CString& cszMessage, lua_State* L) throw();
+   static CString MessageFromState(const CString& cszMessage, lua_State* L);
 
    /// reads stack trace from Lua state
-   static CString ReadStackTrace(lua_State* L) throw();
+   static CString ReadStackTrace(lua_State* L);
 
    /// parses Lua message
    void ParseLuaError(LPCSTR pszaText);
@@ -149,13 +149,13 @@ public:
    /// ctor
    Ref(State& state, int iStackIndex);
    /// dtor
-   ~Ref() throw();
+   ~Ref();
 
    /// returns state
-   State& GetState() throw() { return m_state; }
+   State& GetState() { return m_state; }
 
    /// returns absolute stack index of value, or -1 when not on stack
-   int GetStackIndex() const throw() { return m_iStackIndex; }
+   int GetStackIndex() const { return m_iStackIndex; }
 
 private:
    friend Value;
@@ -240,10 +240,10 @@ public:
    Value& operator=(const Value& val);
 
    /// dtor
-   ~Value() throw();
+   ~Value();
 
    /// returns type
-   T_enType GetType() const throw() { return m_enType; }
+   T_enType GetType() const { return m_enType; }
 
    /// returns value
    template <typename T>
@@ -337,7 +337,7 @@ public:
    Function& operator=(const Function& func);
 
    /// dtor
-   ~Function() throw();
+   ~Function();
 
    /// calls function
    std::vector<Value> Call(int iResults = 0,
@@ -380,7 +380,7 @@ public:
    Table& operator=(const Table& table);
 
    /// dtor
-   ~Table() throw();
+   ~Table();
 
    /// adds a value to the table, using a string as key
    Table& AddValue(const CString& key, const Value& value);
@@ -445,17 +445,17 @@ public:
    Userdata& operator=(const Userdata& userdata);
 
    /// dtor
-   ~Userdata() throw();
+   ~Userdata();
 
    /// returns size of userdata memory block
-   size_t Size() const throw() { return m_uiSize; }
+   size_t Size() const { return m_uiSize; }
 
    /// returns userdata memory block
-   void* Data() const throw() { return m_pUserdata;  }
+   void* Data() const { return m_pUserdata;  }
 
    /// returns userdata memory block, as typed pointer
    template <typename T>
-   T* Data() const throw() { return reinterpret_cast<T*>(m_pUserdata); }
+   T* Data() const { return reinterpret_cast<T*>(m_pUserdata); }
 
    /// returns ref object
    std::shared_ptr<Ref> GetRef() const { return m_spRef; }
@@ -555,7 +555,7 @@ public:
    lua_State* GetState() { return m_spState.get(); }
 
    /// returns the Lua version used
-   static LPCTSTR GetVersion() throw();
+   static LPCTSTR GetVersion();
 
 private:
    friend Ref;
@@ -594,7 +594,7 @@ private:
    void DetachAll();
 
    /// helper function to clean up ref when it only has one reference left
-   static void CleanupRef(std::shared_ptr<Ref>& spRef) throw();
+   static void CleanupRef(std::shared_ptr<Ref>& spRef);
 
 private:
    /// Lua state
@@ -622,7 +622,7 @@ public:
    Thread(Lua::State& state);
 
    /// dtor
-   ~Thread() throw();
+   ~Thread();
 
    /// callback function for Yield() that is called when thread is being Resume()d
    typedef std::function<std::vector<Lua::Value>(Lua::State&, const std::vector<Lua::Value>&)> T_fnYieldCallback;
@@ -638,7 +638,7 @@ public:
    // thread handling
 
    /// returns status of Lua thread
-   T_enThreadStatus Status() const throw();
+   T_enThreadStatus Status() const;
 
    /// starts a function running in this thread, with given function and params,
    /// and returns new status and return values. Status must be statusOK (the thread

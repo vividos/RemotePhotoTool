@@ -28,7 +28,7 @@ public:
    /// ctor
    Ref();
    /// dtor
-   ~Ref() throw();
+   ~Ref();
 
    /// adds gPhoto2 version text
    virtual void AddVersionText(CString& versionText) const override;

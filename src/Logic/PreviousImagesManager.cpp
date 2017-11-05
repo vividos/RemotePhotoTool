@@ -34,7 +34,7 @@ m_upDefaultWork(new boost::asio::io_service::work(m_ioService))
    m_upThread.reset(new std::thread(std::bind(&PreviousImagesManager::RunWorkerThread, this)));
 }
 
-PreviousImagesManager::~PreviousImagesManager() throw()
+PreviousImagesManager::~PreviousImagesManager()
 {
    try
    {
@@ -46,7 +46,7 @@ PreviousImagesManager::~PreviousImagesManager() throw()
    }
 }
 
-bool PreviousImagesManager::ImagesAvail() const throw()
+bool PreviousImagesManager::ImagesAvail() const
 {
    LightweightMutex::LockType lock(const_cast<PreviousImagesManager*>(this)->m_mtxPreviousImagesList);
 

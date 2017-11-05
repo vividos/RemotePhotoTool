@@ -14,7 +14,7 @@ class BlankView : public CWindowImpl<BlankView>, public IPhotoModeView
 {
 public:
    /// dtor
-   virtual ~BlankView() throw() {}
+   virtual ~BlankView() {}
 
    DECLARE_WND_CLASS_EX(NULL, CS_HREDRAW | CS_VREDRAW, COLOR_APPWORKSPACE)
 

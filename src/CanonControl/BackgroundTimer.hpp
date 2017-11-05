@@ -26,7 +26,7 @@ public:
       ATLASSERT(fnCallback != nullptr);
    }
    /// dtor
-   ~BackgroundTimer() throw()
+   ~BackgroundTimer()
    {
       try
       {

@@ -164,7 +164,7 @@ Instance::Instance(const Instance& instance)
 {
 }
 
-Instance::~Instance() throw()
+Instance::~Instance()
 {
    try
    {
@@ -198,12 +198,12 @@ CString Instance::Version() const
    return versionText;
 }
 
-void Instance::EnableLogging(bool bEnable, const CString& cszLogfilePath) throw()
+void Instance::EnableLogging(bool bEnable, const CString& cszLogfilePath)
 {
    LogConfigure(bEnable, cszLogfilePath);
 }
 
-void Instance::OnCameraAddedHandler() throw()
+void Instance::OnCameraAddedHandler()
 {
    LightweightMutex::LockType lock(m_spImpl->m_mtxFnOnCameraAdded);
 

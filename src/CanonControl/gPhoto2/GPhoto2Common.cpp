@@ -51,7 +51,7 @@ GPhoto2::Ref::Ref()
    gp_context_set_message_func(context, ctx_message_func, nullptr);
 }
 
-GPhoto2::Ref::~Ref() throw()
+GPhoto2::Ref::~Ref()
 {
 }
 

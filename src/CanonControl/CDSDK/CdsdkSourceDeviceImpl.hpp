@@ -35,7 +35,7 @@ public:
    }
 
    /// dtor
-   virtual ~SourceDeviceImpl() throw()
+   virtual ~SourceDeviceImpl()
    {
       cdError err = CDCloseSource(m_hSource);
       LOG_TRACE(_T("CDCloseSource(%08x) returned %08x\n"), m_hSource, err);
@@ -190,7 +190,7 @@ public:
    }
 
    /// returns source
-   cdHSource GetSource() const throw() { return m_hSource; }
+   cdHSource GetSource() const { return m_hSource; }
 
 private:
    /// source device handle
@@ -206,12 +206,12 @@ private:
    cdReleaseControlFaculty m_faculty;
 };
 
-inline cdHSource RemoteReleaseControlImpl::GetSource() const throw()
+inline cdHSource RemoteReleaseControlImpl::GetSource() const
 {
    return m_spSourceDevice->GetSource();
 }
 
-inline cdHSource ViewfinderImpl::GetSource() const throw()
+inline cdHSource ViewfinderImpl::GetSource() const
 {
    return m_spSourceDevice->GetSource();
 }

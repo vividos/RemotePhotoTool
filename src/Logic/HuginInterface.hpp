@@ -19,12 +19,12 @@ public:
    // properties
 
    /// install path; ends with a trailing backslash
-   CString InstallPath() const throw() { return m_cszInstallPath; }
+   CString InstallPath() const { return m_cszInstallPath; }
 
    // methods
 
    /// returns if hugin is installed on this machine
-   bool IsInstalled() const throw() { return !m_cszInstallPath.IsEmpty(); }
+   bool IsInstalled() const { return !m_cszInstallPath.IsEmpty(); }
 
    /// runs hugin UI with given images
    void RunUI(const std::vector<CString>& vecImageFilenames);

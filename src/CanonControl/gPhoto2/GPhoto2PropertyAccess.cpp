@@ -250,7 +250,7 @@ CString PropertyAccess::DisplayTextFromIdAndValue(unsigned int propId, Variant v
    return value.ToString();
 }
 
-LPCTSTR PropertyAccess::NameFromId(unsigned int propId) throw()
+LPCTSTR PropertyAccess::NameFromId(unsigned int propId)
 {
    if (m_mapDeviceProperties.find(propId) == m_mapDeviceProperties.end())
    {

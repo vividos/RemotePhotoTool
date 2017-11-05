@@ -25,7 +25,7 @@ public:
    }
 
    /// dtor
-   ~AsyncReleaseControlThread() throw()
+   ~AsyncReleaseControlThread()
    {
       try
       {
@@ -41,7 +41,7 @@ public:
    }
 
    /// returns io service
-   boost::asio::io_service& GetIoService() throw() { return m_ioService; }
+   boost::asio::io_service& GetIoService() { return m_ioService; }
 
    /// posts function to execute in thread
    void Post(std::function<void()> fn)

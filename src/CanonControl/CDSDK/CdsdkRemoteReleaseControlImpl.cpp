@@ -45,7 +45,7 @@ m_releaseControlFaculty(0)
    CheckError(_T("CDRegisterEventCallbackFunction"), err, __FILE__, __LINE__);
 }
 
-RemoteReleaseControlImpl::~RemoteReleaseControlImpl() throw()
+RemoteReleaseControlImpl::~RemoteReleaseControlImpl()
 {
    try
    {
@@ -74,7 +74,7 @@ void RemoteReleaseControlImpl::Close()
    CheckError(_T("CDExitReleaseControl"), err, __FILE__, __LINE__);
 }
 
-bool RemoteReleaseControlImpl::GetCapability(RemoteReleaseControl::T_enRemoteCapability enCapability) const throw()
+bool RemoteReleaseControlImpl::GetCapability(RemoteReleaseControl::T_enRemoteCapability enCapability) const
 {
    switch (enCapability)
    {

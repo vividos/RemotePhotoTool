@@ -38,7 +38,7 @@ public:
    /// ctor
    MainFrame();
    /// dtor
-   virtual ~MainFrame() throw();
+   virtual ~MainFrame();
 
    DECLARE_FRAME_WND_CLASS(NULL, IDR_MAINFRAME)
 
@@ -240,15 +240,15 @@ private:
 
    virtual std::shared_ptr<RemoteReleaseControl> GetRemoteReleaseControl() override;
 
-   virtual AppSettings& GetAppSettings() throw() override { return m_settings; }
+   virtual AppSettings& GetAppSettings() override { return m_settings; }
 
-   virtual ImageFileManager& GetImageFileManager() throw() override { return *m_upImageFileManager; }
+   virtual ImageFileManager& GetImageFileManager() override { return *m_upImageFileManager; }
 
-   virtual PreviousImagesManager& GetPreviousImagesManager() throw() override { return m_previousImagesManager; }
+   virtual PreviousImagesManager& GetPreviousImagesManager() override { return m_previousImagesManager; }
 
-   virtual ViewFinderView* GetViewFinderView() throw() override { return m_upViewFinderView.get(); }
+   virtual ViewFinderView* GetViewFinderView() override { return m_upViewFinderView.get(); }
 
-   virtual ShutterReleaseSettings& GetReleaseSettings() throw() override { return m_releaseSettings; }
+   virtual ShutterReleaseSettings& GetReleaseSettings() override { return m_releaseSettings; }
 
    virtual void SetStatusText(const CString& cszText, unsigned int uiPane = 0) override;
 

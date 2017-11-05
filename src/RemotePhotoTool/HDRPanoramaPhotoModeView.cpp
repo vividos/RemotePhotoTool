@@ -11,7 +11,7 @@
 #include "HDRPanoramaPhotoModeView.hpp"
 #include "IPhotoModeViewHost.hpp"
 
-HDRPanoramaPhotoModeView::HDRPanoramaPhotoModeView(IPhotoModeViewHost& host) throw()
+HDRPanoramaPhotoModeView::HDRPanoramaPhotoModeView(IPhotoModeViewHost& host)
 :m_host(host),
  m_manager(host, m_hWnd),
  m_cbShutterSpeed(propTv),

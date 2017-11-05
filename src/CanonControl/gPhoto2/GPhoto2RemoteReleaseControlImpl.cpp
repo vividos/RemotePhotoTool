@@ -19,7 +19,7 @@ RemoteReleaseControlImpl::RemoteReleaseControlImpl(std::shared_ptr<_GPContext> s
 {
 }
 
-RemoteReleaseControlImpl::~RemoteReleaseControlImpl() throw()
+RemoteReleaseControlImpl::~RemoteReleaseControlImpl()
 {
    try
    {
@@ -30,7 +30,7 @@ RemoteReleaseControlImpl::~RemoteReleaseControlImpl() throw()
    }
 }
 
-bool RemoteReleaseControlImpl::GetCapability(T_enRemoteCapability enRemoteCapability) const throw()
+bool RemoteReleaseControlImpl::GetCapability(T_enRemoteCapability enRemoteCapability) const
 {
    // TODO implement
    switch (enRemoteCapability)

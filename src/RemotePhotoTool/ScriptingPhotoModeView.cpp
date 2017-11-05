@@ -22,7 +22,7 @@ _T("All Files (*.*)\0*.*\0")
 _T("");
 
 
-ScriptingPhotoModeView::ScriptingPhotoModeView(IPhotoModeViewHost& host) throw()
+ScriptingPhotoModeView::ScriptingPhotoModeView(IPhotoModeViewHost& host)
 :CSplitterWindowImpl<ScriptingPhotoModeView>(false), // horizontal
 m_host(host)
 {

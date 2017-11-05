@@ -13,7 +13,7 @@
 #include "PSREC/PsrecPropertyAccess.hpp"
 #include "gPhoto2/GPhoto2PropertyAccess.hpp"
 
-CString ImageProperty::Name() const throw()
+CString ImageProperty::Name() const
 {
    try
    {
@@ -41,12 +41,12 @@ CString ImageProperty::Name() const throw()
    }
 }
 
-CString ImageProperty::AsString() const throw()
+CString ImageProperty::AsString() const
 {
    return ValueAsString(m_value);
 }
 
-CString ImageProperty::ValueAsString(Variant value) const throw()
+CString ImageProperty::ValueAsString(Variant value) const
 {
    try
    {

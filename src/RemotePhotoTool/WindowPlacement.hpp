@@ -20,13 +20,13 @@ public:
    }
 
    /// sets window placement for window
-   void Set(HWND hWnd) throw()
+   void Set(HWND hWnd)
    {
       ::SetWindowPlacement(hWnd, (WINDOWPLACEMENT*)this);
    }
 
    /// gets window placement from window
-   void Get(HWND hWnd) const throw()
+   void Get(HWND hWnd) const
    {
       ::GetWindowPlacement(hWnd, (WINDOWPLACEMENT*)this);
    }

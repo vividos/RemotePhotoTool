@@ -37,7 +37,7 @@ public:
    CanonControlLuaBindings(Lua::State& state, boost::asio::io_service::strand& strand);
 
    /// dtor; cleans up bindings
-   virtual ~CanonControlLuaBindings() throw();
+   virtual ~CanonControlLuaBindings();
 
    /// sets output debug string handler
    void SetOutputDebugStringHandler(T_fnOutputDebugString fnOutputDebugString)
@@ -57,7 +57,7 @@ public:
 
 private:
    /// returns Lua state object
-   Lua::State& GetState() throw() { return m_state; }
+   Lua::State& GetState() { return m_state; }
 
    /// inits constants used in various calls
    void InitConstants();

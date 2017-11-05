@@ -39,7 +39,7 @@ public:
    }
 
    /// address-of operator
-   EdsBaseRef* operator&() throw() { return &m_handle; }
+   EdsBaseRef* operator&() { return &m_handle; }
 
    /// value operator for EdsBaseRef type common to all handles
    operator EdsBaseRef() const { return m_handle; }
@@ -89,7 +89,7 @@ ShutterCounterReader::ShutterCounterReader()
       m_fnEdsInitializeSDK();
 }
 
-ShutterCounterReader::~ShutterCounterReader() throw()
+ShutterCounterReader::~ShutterCounterReader()
 {
    if (m_fnEdsTerminateSDK != nullptr)
       m_fnEdsTerminateSDK();

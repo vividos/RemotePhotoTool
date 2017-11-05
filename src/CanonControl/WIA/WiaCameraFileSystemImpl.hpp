@@ -27,7 +27,7 @@ namespace WIA
       }
 
       /// dtor
-      virtual ~CameraFileSystemImpl() throw()
+      virtual ~CameraFileSystemImpl()
       {
       }
 

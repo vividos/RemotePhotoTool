@@ -40,19 +40,19 @@ public:
    // get methods
 
    /// returns filename of image
-   const CString& Filename() const throw() { return m_cszFilename; }
+   const CString& Filename() const { return m_cszFilename; }
 
    /// returns width of image
-   unsigned int Width() const throw() { return m_uiWidth; }
+   unsigned int Width() const { return m_uiWidth; }
 
    /// returns height of image
-   unsigned int Height() const throw() { return m_uiHeight; }
+   unsigned int Height() const { return m_uiHeight; }
 
    /// returns RGB bitmap data
-   const std::vector<BYTE>& BitmapData() const throw() { return m_vecBitmapData; }
+   const std::vector<BYTE>& BitmapData() const { return m_vecBitmapData; }
 
    /// returns one of the info texts for this image
-   CString InfoText(T_enImageInfoType enImageInfoType) const throw()
+   CString InfoText(T_enImageInfoType enImageInfoType) const
    {
       ATLASSERT(enImageInfoType < PreviousImageInfo::typeMaxValue);
 
@@ -60,24 +60,24 @@ public:
    }
 
    /// returns if the image data is already loaded (BitmapData() and InfoText())
-   bool IsLoaded() const throw() { return m_bIsLoaded; }
+   bool IsLoaded() const { return m_bIsLoaded; }
 
    // set methods
 
    /// sets filename of image
-   void Filename(const CString& cszFilename) throw() { m_cszFilename = cszFilename; }
+   void Filename(const CString& cszFilename) { m_cszFilename = cszFilename; }
 
    /// sets width of image
-   void Width(unsigned int uiWidth) throw(){ m_uiWidth = uiWidth; }
+   void Width(unsigned int uiWidth){ m_uiWidth = uiWidth; }
 
    /// sets height of image
-   void Height(unsigned int uiHeight) throw() { m_uiHeight = uiHeight; }
+   void Height(unsigned int uiHeight) { m_uiHeight = uiHeight; }
 
    /// sets bitmap data
-   void BitmapData(std::vector<BYTE>& vecBitmapData) throw() { m_vecBitmapData = vecBitmapData; }
+   void BitmapData(std::vector<BYTE>& vecBitmapData) { m_vecBitmapData = vecBitmapData; }
 
    /// sets an info text for the image
-   void InfoText(T_enImageInfoType enImageInfoType, const CString& cszText) throw()
+   void InfoText(T_enImageInfoType enImageInfoType, const CString& cszText)
    {
       ATLASSERT(enImageInfoType < PreviousImageInfo::typeMaxValue);
 
@@ -88,7 +88,7 @@ protected:
    friend class PreviousImagesManager;
 
    /// sets the flag that all image data is loaded
-   void SetLoaded() throw() { m_bIsLoaded = true; }
+   void SetLoaded() { m_bIsLoaded = true; }
 
 private:
    /// filename of stored file

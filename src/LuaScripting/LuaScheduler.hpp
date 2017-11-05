@@ -31,10 +31,10 @@ public:
    }
 
    /// returns Lua state object
-   Lua::State& GetState() throw() { return m_state; }
+   Lua::State& GetState() { return m_state; }
 
    /// returns Lua thread object
-   Lua::Thread& GetThread() throw() { return m_thread; }
+   Lua::Thread& GetThread() { return m_thread; }
 
    /// function type to notify about execution state changes
    typedef std::function<void(T_enExecutionState)> T_fnOnExecutionStateChanged;

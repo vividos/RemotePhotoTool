@@ -46,7 +46,7 @@ MainFrame::MainFrame()
    m_releaseSettings.SaveTarget(ShutterReleaseSettings::saveToBoth);
 }
 
-MainFrame::~MainFrame() throw()
+MainFrame::~MainFrame()
 {
    LOG_TRACE(_T("RemotePhotoTool finished.\n"));
    LOG_TRACE(_T("************************************************************\n"));

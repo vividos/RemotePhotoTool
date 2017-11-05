@@ -36,17 +36,17 @@ public:
    }
 
    /// dtor
-   virtual ~BulbReleaseControlImpl() throw()
+   virtual ~BulbReleaseControlImpl()
    {
       Stop();
    }
 
-   virtual double ElapsedTime() const throw() override
+   virtual double ElapsedTime() const override
    {
       return m_bulbTimer.TotalElapsed();
    }
 
-   virtual void Stop() throw() override
+   virtual void Stop() override
    {
       // end bulb
       EdsError err = ::EdsSendCommand(m_hCamera.Get(), kEdsCameraCommand_BulbEnd, 0);

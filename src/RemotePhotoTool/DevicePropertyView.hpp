@@ -27,10 +27,10 @@ class DevicePropertyView :
 
 public:
    /// ctor
-   DevicePropertyView(IPhotoModeViewHost& host) throw()
+   DevicePropertyView(IPhotoModeViewHost& host)
       :m_host(host) {}
    /// dtor
-   virtual ~DevicePropertyView() throw() {}
+   virtual ~DevicePropertyView() {}
 
    DECLARE_WND_SUPERCLASS(NULL, CListViewCtrl::GetWndClassName())
 

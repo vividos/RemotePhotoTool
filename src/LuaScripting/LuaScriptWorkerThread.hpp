@@ -28,7 +28,7 @@ public:
    }
 
    /// dtor
-   ~LuaScriptWorkerThread() throw()
+   ~LuaScriptWorkerThread()
    {
       Stop();
    }
@@ -43,7 +43,7 @@ public:
    }
 
    /// stops worker thread
-   void Stop() throw()
+   void Stop()
    {
       try
       {

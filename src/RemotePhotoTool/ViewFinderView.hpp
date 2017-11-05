@@ -25,7 +25,7 @@ public:
    /// ctor
    ViewFinderView(IPhotoModeViewHost& host, std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl);
    /// dtor
-   ~ViewFinderView() throw() {}
+   ~ViewFinderView() {}
 
    /// dialog id
    enum { IDD = IDD_VIEWFINDER_FORM };

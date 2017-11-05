@@ -21,7 +21,7 @@ m_strand(strand)
 {
 }
 
-SystemLuaBindings::~SystemLuaBindings() throw()
+SystemLuaBindings::~SystemLuaBindings()
 {
    try
    {
@@ -46,7 +46,7 @@ void SystemLuaBindings::InitBindings()
 }
 
 /// returns Lua state object
-Lua::State& SystemLuaBindings::GetState() throw()
+Lua::State& SystemLuaBindings::GetState()
 {
    return m_scheduler.GetState();
 }

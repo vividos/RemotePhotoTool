@@ -54,7 +54,7 @@ public:
    }
 
    /// dtor
-   virtual ~SourceDeviceImpl() throw()
+   virtual ~SourceDeviceImpl()
    {
       // disconnect from camera
       prResponse err = PR_DisconnectCamera(m_hCamera);

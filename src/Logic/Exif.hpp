@@ -24,37 +24,37 @@ class Mem
 {
 public:
    /// ctor; creates default memory allocator
-   Mem() throw()
+   Mem()
       :m_spMem(exif_mem_new_default(), exif_mem_unref)
    {
    }
 
    /// ctor; creates memory allocator with given alloc, realloc and free function
-   Mem(ExifMemAllocFunc fnAlloc, ExifMemReallocFunc fnRealloc, ExifMemFreeFunc fnFree) throw()
+   Mem(ExifMemAllocFunc fnAlloc, ExifMemReallocFunc fnRealloc, ExifMemFreeFunc fnFree)
       :m_spMem(exif_mem_new(fnAlloc, fnRealloc, fnFree), exif_mem_unref)
    {
    }
 
    /// allocates memory with given size
-   void* Alloc(ExifLong size) const throw()
+   void* Alloc(ExifLong size) const
    {
       return exif_mem_alloc(m_spMem.get(), size);
    }
 
    /// reallocates memory with given size
-   void* Realloc(void* p, ExifLong size) const throw()
+   void* Realloc(void* p, ExifLong size) const
    {
       return exif_mem_realloc(m_spMem.get(), p, size);
    }
 
    /// frees memory
-   void Free(void* p) const throw()
+   void Free(void* p) const
    {
       exif_mem_free(m_spMem.get(), p);
    }
 
    /// return raw memory alloc object
-   ExifMem* Get() const throw(){ return m_spMem.get(); }
+   ExifMem* Get() const{ return m_spMem.get(); }
 
 private:
    /// memory allocator instance
@@ -81,7 +81,7 @@ public:
    }
 
    /// returns if given entry is valid
-   bool IsValid() const throw()
+   bool IsValid() const
    {
       return m_spEntry != nullptr;
    }
@@ -531,7 +531,7 @@ public:
    }
 
    /// returns if file was loaded correctly
-   bool IsValid() const throw()
+   bool IsValid() const
    {
       ExifData* pData = exif_loader_get_data(m_spLoader.get());
       exif_data_unref(pData);

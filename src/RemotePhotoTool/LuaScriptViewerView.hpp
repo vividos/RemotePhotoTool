@@ -16,7 +16,7 @@ class LuaScriptViewerView :
 
 public:
    /// ctor
-   LuaScriptViewerView() throw() {}
+   LuaScriptViewerView() {}
 
    /// window class infos
    DECLARE_WND_SUPERCLASS(NULL, CScintillaWindow::GetWndClassName())

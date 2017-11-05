@@ -43,13 +43,13 @@ class ImageProperty
 {
 public:
    /// image property id
-   unsigned int Id() const throw() { return m_uiImageProperty; }
+   unsigned int Id() const { return m_uiImageProperty; }
 
    /// property name
-   CString Name() const throw();
+   CString Name() const;
 
    /// property value as string
-   CString AsString() const throw();
+   CString AsString() const;
 
    /// value as variant; const version; returns a copy
    Variant Value() const { return m_value; }
@@ -61,16 +61,16 @@ public:
    bool IsReadOnly() const { return m_bReadOnly; }
 
    /// converts a given value (e.g. from ValidValues()) to string
-   CString ValueAsString(Variant value) const throw();
+   CString ValueAsString(Variant value) const;
 
    /// inequality operator
-   bool operator!=(const ImageProperty& rhs) const throw()
+   bool operator!=(const ImageProperty& rhs) const
    {
       return !this->operator==(rhs);
    }
 
    /// equality operator
-   bool operator==(const ImageProperty& rhs) const throw()
+   bool operator==(const ImageProperty& rhs) const
    {
       return Id() == rhs.Id() &&
          AsString() == rhs.AsString();

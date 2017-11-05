@@ -62,7 +62,7 @@ Ref::Ref()
    CheckError(_T("CDStartSDK"), err, __FILE__, __LINE__);
 }
 
-Ref::~Ref() throw()
+Ref::~Ref()
 {
    // may return cdMEM_FREE_FAILED
    cdError err = CDFinishSDK();

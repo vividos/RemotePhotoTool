@@ -34,9 +34,9 @@ public:
    RemoteReleaseControlImpl(prHandle hCamera, std::shared_ptr<SourceDeviceImpl> spSourceDevice);
 
    /// dtor
-   virtual ~RemoteReleaseControlImpl() throw();
+   virtual ~RemoteReleaseControlImpl();
 
-   virtual bool GetCapability(RemoteReleaseControl::T_enRemoteCapability enCapability) const throw() override;
+   virtual bool GetCapability(RemoteReleaseControl::T_enRemoteCapability enCapability) const override;
 
    virtual void SetReleaseSettings(const ShutterReleaseSettings& settings) override
    {
@@ -141,7 +141,7 @@ private:
    void AsyncRelease();
 
    /// translates from event code to event name
-   static LPCTSTR EventNameFromCode(prUInt16 uiEventCode) throw();
+   static LPCTSTR EventNameFromCode(prUInt16 uiEventCode);
 
    /// camera event handler
    static prResponse prSTDCALL OnCameraEvent_(prHandle hCamera, prContext Context, prVoid* pEventData);
@@ -156,7 +156,7 @@ private:
    void OnEventPropertyChanged(prUInt16 propId, bool bAlsoUpdateDescription);
 
    /// called when camera state has changed
-   void OnEventStateChanged(prUInt16 code) throw();
+   void OnEventStateChanged(prUInt16 code);
 
    /// starts download of image or thumbnail (async transfer)
    void StartImageDownload(prObjectHandle hObject, bool bFullView);

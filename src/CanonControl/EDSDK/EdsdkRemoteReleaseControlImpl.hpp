@@ -32,30 +32,30 @@ public:
    RemoteReleaseControlImpl(std::shared_ptr<SourceDevice> spSourceDevice, const Handle& hCamera);
 
    /// dtor
-   virtual ~RemoteReleaseControlImpl() throw();
+   virtual ~RemoteReleaseControlImpl();
 
    /// callback function for property changes
    static EdsError EDSCALLBACK OnPropertyChange_(
       EdsPropertyEvent inEvent,
       EdsPropertyID inPropertyID,
       EdsUInt32 inParam,
-      EdsVoid* inContext) throw();
+      EdsVoid* inContext);
 
    /// called on property changes
-   void OnPropertyChange(EdsPropertyEvent inEvent, EdsPropertyID inPropertyID, EdsUInt32 inParam) throw();
+   void OnPropertyChange(EdsPropertyEvent inEvent, EdsPropertyID inPropertyID, EdsUInt32 inParam);
 
    /// callback function for state changes
-   static EdsError EDSCALLBACK OnStateChange_(EdsStateEvent inEvent, EdsUInt32 inEventData, EdsVoid *inContext) throw();
+   static EdsError EDSCALLBACK OnStateChange_(EdsStateEvent inEvent, EdsUInt32 inEventData, EdsVoid *inContext);
 
    /// called on state changes
-   void OnStateChange(EdsStateEvent inEvent, EdsUInt32 inEventData) throw();
+   void OnStateChange(EdsStateEvent inEvent, EdsUInt32 inEventData);
 
    /// callback function for object changes
-   static EdsError EDSCALLBACK OnObjectChange_(EdsObjectEvent inEvent, EdsBaseRef inRef, EdsVoid *inContext) throw();
+   static EdsError EDSCALLBACK OnObjectChange_(EdsObjectEvent inEvent, EdsBaseRef inRef, EdsVoid *inContext);
 
    // RemoteReleaseControl methods
 
-   virtual bool GetCapability(RemoteReleaseControl::T_enRemoteCapability enCapability) const throw() override;
+   virtual bool GetCapability(RemoteReleaseControl::T_enRemoteCapability enCapability) const override;
 
    virtual void SetReleaseSettings(const ShutterReleaseSettings& settings) override
    {

@@ -16,7 +16,7 @@ ImagePropertyValueManager::ImagePropertyValueManager(RemoteReleaseControl& rrc)
 {
 }
 
-ImagePropertyValueManager::~ImagePropertyValueManager() throw()
+ImagePropertyValueManager::~ImagePropertyValueManager()
 {
    try
    {

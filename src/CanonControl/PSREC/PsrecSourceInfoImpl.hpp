@@ -27,7 +27,7 @@ public:
    }
 
    /// dtor
-   virtual ~SourceInfoImpl() throw() {}
+   virtual ~SourceInfoImpl() {}
 
    virtual CString Name() const override
    {

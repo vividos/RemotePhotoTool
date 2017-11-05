@@ -15,7 +15,7 @@
 #include "ShutterReleaseSettings.hpp"
 #include "ShootingMode.hpp"
 
-StandardPhotoModeView::StandardPhotoModeView(IPhotoModeViewHost& host) throw()
+StandardPhotoModeView::StandardPhotoModeView(IPhotoModeViewHost& host)
 :m_host(host),
  m_cbShootingMode(propShootingMode),
  m_cbAperture(propAv),

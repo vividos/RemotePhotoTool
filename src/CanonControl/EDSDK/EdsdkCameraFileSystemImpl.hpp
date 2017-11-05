@@ -27,7 +27,7 @@ namespace EDSDK
       }
 
       /// dtor
-      virtual ~CameraFileSystemImpl() throw()
+      virtual ~CameraFileSystemImpl()
       {
       }
 

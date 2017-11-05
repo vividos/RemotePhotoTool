@@ -41,7 +41,7 @@ public:
    CString DisplayTextFromIdAndValue(unsigned int propId, Variant value);
 
    /// returns name from given id
-   LPCTSTR NameFromId(unsigned int propId) throw();
+   LPCTSTR NameFromId(unsigned int propId);
 
 private:
    /// reads property value from widget and stores it as variant value

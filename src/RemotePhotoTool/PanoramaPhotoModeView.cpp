@@ -11,7 +11,7 @@
 #include "PanoramaPhotoModeView.hpp"
 #include "IPhotoModeViewHost.hpp"
 
-PanoramaPhotoModeView::PanoramaPhotoModeView(IPhotoModeViewHost& host) throw()
+PanoramaPhotoModeView::PanoramaPhotoModeView(IPhotoModeViewHost& host)
 :m_host(host),
 m_manager(host, m_hWnd)
 {

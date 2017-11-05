@@ -47,7 +47,7 @@ Ref::Ref()
    CheckError(_T("PR_StartSDK"), err, __FILE__, __LINE__);
 }
 
-Ref::~Ref() throw()
+Ref::~Ref()
 {
    // may return prINVALID_FN_CALL
    // may also return Win32 error value

@@ -22,7 +22,7 @@ class IRibbonCombobox
 {
 public:
    /// dtor
-   virtual ~IRibbonCombobox() throw() {}
+   virtual ~IRibbonCombobox() {}
 
    /// called to query category text for category number
    virtual LPCWSTR OnRibbonQueryCategoryText(UINT32 uCat) = 0;

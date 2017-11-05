@@ -36,7 +36,7 @@ static const luaL_Reg availableLuaLibs[] = {
 // Lua::Exception
 //
 
-CString Lua::Exception::MessageFromState(const CString& cszMessage, lua_State* L) throw()
+CString Lua::Exception::MessageFromState(const CString& cszMessage, lua_State* L)
 {
    CString cszStackTrace = ReadStackTrace(L);
 
@@ -145,7 +145,7 @@ Ref::Ref(State& state, int iStackIndex)
 {
 }
 
-Ref::~Ref() throw()
+Ref::~Ref()
 {
    if (m_iStackIndex != -1)
       m_state.RemoveRef(*this);
@@ -252,7 +252,7 @@ Value& Value::operator=(const Value& val)
    return *this;
 }
 
-Value::~Value() throw()
+Value::~Value()
 {
    State::CleanupRef(m_spRef);
 }
@@ -610,7 +610,7 @@ Function& Function::operator=(const Function& func)
    return *this;
 }
 
-Function::~Function() throw()
+Function::~Function()
 {
    ATLASSERT(m_spRef == nullptr ||
       m_spRef->GetStackIndex() == -1 ||
@@ -699,7 +699,7 @@ Table& Table::operator=(const Table& table)
    return *this;
 }
 
-Table::~Table() throw()
+Table::~Table()
 {
    ATLASSERT(m_spRef == nullptr ||
       m_spRef->GetStackIndex() == -1 ||
@@ -877,7 +877,7 @@ Userdata& Userdata::operator=(const Userdata& userdata)
    return *this;
 }
 
-Userdata::~Userdata() throw()
+Userdata::~Userdata()
 {
    ATLASSERT(m_spRef == nullptr ||
       m_spRef->GetStackIndex() == -1 ||
@@ -1318,7 +1318,7 @@ void State::TraceValue(lua_State* L, int iIndex, int iStackDepth, bool bIsUpvalu
    ATLTRACE(_T("%s"), cszText.GetString());
 }
 
-LPCTSTR State::GetVersion() throw()
+LPCTSTR State::GetVersion()
 {
    return _T(LUA_RELEASE);
 }
@@ -1376,7 +1376,7 @@ void State::DetachAll()
    m_vecRefsOnStack.clear();
 }
 
-void State::CleanupRef(std::shared_ptr<Ref>& spRef) throw()
+void State::CleanupRef(std::shared_ptr<Ref>& spRef)
 {
    try
    {
@@ -1415,7 +1415,7 @@ Thread::Thread(std::shared_ptr<Ref> spRef)
 {
 }
 
-Thread::~Thread() throw()
+Thread::~Thread()
 {
    ATLASSERT(m_spRef == nullptr ||
       m_spRef->GetStackIndex() == -1 ||
@@ -1450,7 +1450,7 @@ Table Thread::GetTable(const CString& cszName)
    return Table(spRef, cszName);
 }
 
-Thread::T_enThreadStatus Thread::Status() const throw()
+Thread::T_enThreadStatus Thread::Status() const
 {
    lua_State* L = const_cast<Lua::State&>(m_threadState).GetState();
 

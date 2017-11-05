@@ -11,9 +11,9 @@ class App
 {
 public:
    /// ctor
-   App(HINSTANCE hInstance) throw();
+   App(HINSTANCE hInstance);
    /// dtor
-   ~App() throw();
+   ~App();
 
    /// inits crash reporter
    static void InitCrashReporter();

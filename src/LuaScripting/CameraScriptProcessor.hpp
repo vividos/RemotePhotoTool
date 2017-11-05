@@ -16,10 +16,10 @@ public:
    /// ctor
    CameraScriptProcessor();
    /// dtor
-   virtual ~CameraScriptProcessor() throw();
+   virtual ~CameraScriptProcessor();
 
    /// returns Lua scheduler
-   LuaScheduler& GetScheduler() throw();
+   LuaScheduler& GetScheduler();
 
    /// function type to output debug strings
    typedef std::function<void(const CString&)> T_fnOutputDebugString;

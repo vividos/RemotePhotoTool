@@ -25,9 +25,9 @@ class PreviousImagesView :
 
 public:
    /// ctor
-   PreviousImagesView(IPhotoModeViewHost& host) throw();
+   PreviousImagesView(IPhotoModeViewHost& host);
    /// dtor
-   virtual ~PreviousImagesView() throw() {}
+   virtual ~PreviousImagesView() {}
 
    DECLARE_WND_SUPERCLASS(NULL, CListViewCtrl::GetWndClassName())
 

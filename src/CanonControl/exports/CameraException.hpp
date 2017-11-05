@@ -15,7 +15,7 @@ class CameraException: public Exception
 public:
    /// ctor
    CameraException(const CString& cszFunction, const CString& cszMessage,
-      unsigned int uiErrorCode, LPCSTR pszFile, UINT uiLine) throw()
+      unsigned int uiErrorCode, LPCSTR pszFile, UINT uiLine)
       :Exception(cszMessage, pszFile, uiLine),
        m_cszFunction(cszFunction),
        m_uiErrorCode(uiErrorCode)
@@ -23,10 +23,10 @@ public:
    }
 
    /// returns name of function where exception occured
-   const CString& Function() const throw() { return m_cszFunction; }
+   const CString& Function() const { return m_cszFunction; }
 
    /// returns error code
-   unsigned int ErrorCode() const throw() { return m_uiErrorCode; }
+   unsigned int ErrorCode() const { return m_uiErrorCode; }
 
 private:
    /// function

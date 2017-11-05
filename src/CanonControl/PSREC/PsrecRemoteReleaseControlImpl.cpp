@@ -50,7 +50,7 @@ RemoteReleaseControlImpl::RemoteReleaseControlImpl(prHandle hCamera, std::shared
    m_spDeviceInfo.reset(new DeviceInfo(m_hCamera));
 }
 
-RemoteReleaseControlImpl::~RemoteReleaseControlImpl() throw()
+RemoteReleaseControlImpl::~RemoteReleaseControlImpl()
 {
    try
    {
@@ -75,7 +75,7 @@ void RemoteReleaseControlImpl::Close()
    CheckError(_T("PR_TerminateReleaseControl"), err, __FILE__, __LINE__);
 }
 
-bool RemoteReleaseControlImpl::GetCapability(RemoteReleaseControl::T_enRemoteCapability enCapability) const throw()
+bool RemoteReleaseControlImpl::GetCapability(RemoteReleaseControl::T_enRemoteCapability enCapability) const
 {
    ATLASSERT(m_spDeviceInfo != nullptr);
 
@@ -350,7 +350,7 @@ void RemoteReleaseControlImpl::AsyncRelease()
    }
 }
 
-LPCTSTR RemoteReleaseControlImpl::EventNameFromCode(prUInt16 uiEventCode) throw()
+LPCTSTR RemoteReleaseControlImpl::EventNameFromCode(prUInt16 uiEventCode)
 {
    switch (uiEventCode)
    {
@@ -587,7 +587,7 @@ void RemoteReleaseControlImpl::OnEventPropertyChanged(prUInt16 propId, bool bAls
    }
 }
 
-void RemoteReleaseControlImpl::OnEventStateChanged(prUInt16 code) throw()
+void RemoteReleaseControlImpl::OnEventStateChanged(prUInt16 code)
 {
    RemoteReleaseControl::T_enStateEvent enStateEvent =
       RemoteReleaseControl::stateEventInvalid;

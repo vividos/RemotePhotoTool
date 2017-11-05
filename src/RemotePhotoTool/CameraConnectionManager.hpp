@@ -26,7 +26,7 @@ public:
    void Disconnect();
 
    /// returns if a camera is connected
-   bool IsConnected() const throw()
+   bool IsConnected() const
    {
       return
          m_spSourceDevice != nullptr &&

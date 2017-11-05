@@ -14,7 +14,7 @@ class IPhotoModeView : public boost::noncopyable
 {
 public:
    /// dtor
-   virtual ~IPhotoModeView() throw() {}
+   virtual ~IPhotoModeView() {}
 
    /// creates view
    virtual HWND CreateView(HWND hWndParent) = 0;

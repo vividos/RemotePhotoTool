@@ -15,25 +15,25 @@ class DeviceProperty
 {
 public:
    /// device property id
-   unsigned int Id() const throw() { return m_uiPropertyId; }
+   unsigned int Id() const { return m_uiPropertyId; }
 
    /// property name
-   CString Name() const throw();
+   CString Name() const;
 
    /// property value as string
-   CString AsString() const throw();
+   CString AsString() const;
 
    /// value as variant
    Variant Value() const { return m_value; }
 
    /// returns if property is read-only
-   bool IsReadOnly() const throw() { return m_bReadOnly; }
+   bool IsReadOnly() const { return m_bReadOnly; }
 
    /// returns valid values as list of variants
    const std::vector<Variant>& ValidValues() const { return m_vecValidValues; }
 
    /// converts a given value (e.g. from ValidValues()) to string
-   CString ValueAsString(Variant value) const throw();
+   CString ValueAsString(Variant value) const;
 
 private:
    friend EDSDK::SourceDeviceImpl;

@@ -30,7 +30,7 @@ namespace WIA
       /// ctor
       Ref();
       /// dtor
-      ~Ref() throw();
+      ~Ref();
 
       /// adds WIA version text
       virtual void AddVersionText(CString& versionText) const override;

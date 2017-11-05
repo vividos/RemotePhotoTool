@@ -30,7 +30,7 @@ namespace WIA
       }
 
       /// dtor
-      virtual ~SourceDeviceImpl() throw()
+      virtual ~SourceDeviceImpl()
       {
       }
 

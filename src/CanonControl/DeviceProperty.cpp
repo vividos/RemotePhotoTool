@@ -14,7 +14,7 @@
 #include "gPhoto2/GPhoto2PropertyAccess.hpp"
 #include "gPhoto2/GPhoto2SourceDeviceImpl.hpp"
 
-CString DeviceProperty::Name() const throw()
+CString DeviceProperty::Name() const
 {
    try
    {
@@ -42,12 +42,12 @@ CString DeviceProperty::Name() const throw()
    }
 }
 
-CString DeviceProperty::AsString() const throw()
+CString DeviceProperty::AsString() const
 {
    return ValueAsString(m_value);
 }
 
-CString DeviceProperty::ValueAsString(Variant value) const throw()
+CString DeviceProperty::ValueAsString(Variant value) const
 {
    try
    {

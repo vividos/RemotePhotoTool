@@ -23,7 +23,7 @@ class OutputWindow :
 
 public:
    /// ctor
-   OutputWindow() throw() {}
+   OutputWindow() {}
 
    /// window class infos
    DECLARE_WND_SUPERCLASS(NULL, ScintillaWindowAdapter::GetWndClassName())

@@ -42,12 +42,12 @@ public:
    RemoteReleaseControlImpl(std::shared_ptr<SourceDeviceImpl> spSourceDevice);
 
    /// dtor
-   virtual ~RemoteReleaseControlImpl() throw();
+   virtual ~RemoteReleaseControlImpl();
 
    /// returns source device
-   cdHSource GetSource() const throw();
+   cdHSource GetSource() const;
 
-   virtual bool GetCapability(RemoteReleaseControl::T_enRemoteCapability enCapability) const throw() override;
+   virtual bool GetCapability(RemoteReleaseControl::T_enRemoteCapability enCapability) const override;
 
    virtual void SetReleaseSettings(const ShutterReleaseSettings& settings) override
    {
@@ -122,7 +122,7 @@ public:
 
 private:
    /// returns context value used by callback functions
-   cdContext GetContext() const throw()
+   cdContext GetContext() const
    {
 #pragma warning(push)
 #pragma warning(disable: 4311) // 'reinterpret_cast' : pointer truncation from 'P' to 'T'

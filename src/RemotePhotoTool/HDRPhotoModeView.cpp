@@ -11,7 +11,7 @@
 #include "HDRPhotoModeView.hpp"
 #include "IPhotoModeViewHost.hpp"
 
-HDRPhotoModeView::HDRPhotoModeView(IPhotoModeViewHost& host) throw()
+HDRPhotoModeView::HDRPhotoModeView(IPhotoModeViewHost& host)
 :m_host(host),
  m_manager(host, m_hWnd),
  m_cbShutterSpeed(propTv),

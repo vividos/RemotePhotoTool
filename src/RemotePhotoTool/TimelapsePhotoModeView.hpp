@@ -21,9 +21,9 @@ class TimeLapsePhotoModeView :
 {
 public:
    /// ctor
-   TimeLapsePhotoModeView(IPhotoModeViewHost& host) throw();
+   TimeLapsePhotoModeView(IPhotoModeViewHost& host);
    /// dtor
-   virtual ~TimeLapsePhotoModeView() throw() {}
+   virtual ~TimeLapsePhotoModeView() {}
 
    /// dialog id
    enum { IDD = IDD_PHOTOMODE_TIMELAPSE_FORM };

@@ -27,7 +27,7 @@ class HDRPhotoModeManager
 {
 public:
    /// ctor
-   HDRPhotoModeManager(IPhotoModeViewHost& host, HWND& hWnd) throw()
+   HDRPhotoModeManager(IPhotoModeViewHost& host, HWND& hWnd)
       :m_host(host),
       m_hWnd(hWnd),
       m_bAEBInProgress(false),
@@ -40,10 +40,10 @@ public:
    bool Init(std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl);
 
    /// returns if AEB photo taking is in progress
-   bool IsStarted() const throw() { return m_bAEBInProgress; }
+   bool IsStarted() const { return m_bAEBInProgress; }
 
    /// returns shutter speed values for bracketing
-   const std::vector<ImageProperty>& ShutterSpeedValues() const throw() { return m_vecAEBShutterSpeedValues; }
+   const std::vector<ImageProperty>& ShutterSpeedValues() const { return m_vecAEBShutterSpeedValues; }
 
    /// checks if manual mode is switched on
    bool CheckManualMode();
@@ -113,7 +113,7 @@ public:
    bool Init(std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl);
 
    /// returns if panorama photo taking is in progress
-   bool IsStarted() const throw() { return m_bStarted; }
+   bool IsStarted() const { return m_bStarted; }
 
    /// starts panorama photo taking
    void StartPanorama();

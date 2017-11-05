@@ -30,10 +30,10 @@ public:
    }
 
    /// returns Lua scheduler object
-   LuaScheduler& GetScheduler() throw() { return m_scheduler; }
+   LuaScheduler& GetScheduler() { return m_scheduler; }
 
    /// returns Lua state object
-   Lua::State& GetState() throw() { return m_scheduler.GetState(); }
+   Lua::State& GetState() { return m_scheduler.GetState(); }
 
    /// sets output debug string handler
    void SetOutputDebugStringHandler(T_fnOutputDebugString fnOutputDebugString)
@@ -255,7 +255,7 @@ CameraScriptProcessor::CameraScriptProcessor()
    m_spImpl->InitBindings();
 }
 
-CameraScriptProcessor::~CameraScriptProcessor() throw()
+CameraScriptProcessor::~CameraScriptProcessor()
 {
    ATLASSERT(m_spImpl != nullptr);
 
@@ -270,7 +270,7 @@ CameraScriptProcessor::~CameraScriptProcessor() throw()
    m_spImpl.reset();
 }
 
-LuaScheduler& CameraScriptProcessor::GetScheduler() throw()
+LuaScheduler& CameraScriptProcessor::GetScheduler()
 {
    ATLASSERT(m_spImpl != nullptr);
 

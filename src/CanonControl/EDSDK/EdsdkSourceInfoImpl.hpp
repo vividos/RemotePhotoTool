@@ -24,7 +24,7 @@ public:
       ZeroMemory(&m_deviceInfo, sizeof(m_deviceInfo));
    }
    /// dtor
-   virtual ~SourceInfoImpl() throw() {}
+   virtual ~SourceInfoImpl() {}
 
    virtual CString Name() const override
    {
@@ -48,7 +48,7 @@ public:
    }
 
    /// returns device info struct
-   EdsDeviceInfo& GetDeviceInfo() throw() { return m_deviceInfo; }
+   EdsDeviceInfo& GetDeviceInfo() { return m_deviceInfo; }
 
 private:
    /// device info

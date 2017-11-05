@@ -11,7 +11,7 @@
 #include "PhotoStackingPhotoModeView.hpp"
 #include "IPhotoModeViewHost.hpp"
 
-PhotoStackingPhotoModeView::PhotoStackingPhotoModeView(IPhotoModeViewHost& host) throw()
+PhotoStackingPhotoModeView::PhotoStackingPhotoModeView(IPhotoModeViewHost& host)
 :m_host(host)
 {
 }

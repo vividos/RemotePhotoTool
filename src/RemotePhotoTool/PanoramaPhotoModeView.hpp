@@ -26,9 +26,9 @@ class PanoramaPhotoModeView :
 {
 public:
    /// ctor
-   PanoramaPhotoModeView(IPhotoModeViewHost& host) throw();
+   PanoramaPhotoModeView(IPhotoModeViewHost& host);
    /// dtor
-   virtual ~PanoramaPhotoModeView() throw() {}
+   virtual ~PanoramaPhotoModeView() {}
 
    /// dialog id
    enum { IDD = IDD_PHOTOMODE_PANORAMA_FORM };

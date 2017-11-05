@@ -11,7 +11,7 @@
 #include "TimeLapsePhotoModeView.hpp"
 #include "IPhotoModeViewHost.hpp"
 
-TimeLapsePhotoModeView::TimeLapsePhotoModeView(IPhotoModeViewHost& host) throw()
+TimeLapsePhotoModeView::TimeLapsePhotoModeView(IPhotoModeViewHost& host)
 :m_host(host)
 {
 }

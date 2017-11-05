@@ -24,9 +24,9 @@ class HDRPhotoModeView :
 {
 public:
    /// ctor
-   HDRPhotoModeView(IPhotoModeViewHost& host) throw();
+   HDRPhotoModeView(IPhotoModeViewHost& host);
    /// dtor
-   virtual ~HDRPhotoModeView() throw() {}
+   virtual ~HDRPhotoModeView() {}
 
    enum { IDD = IDD_PHOTOMODE_HDR_FORM };
 

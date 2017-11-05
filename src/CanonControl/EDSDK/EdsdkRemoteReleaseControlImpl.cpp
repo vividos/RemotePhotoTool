@@ -43,7 +43,7 @@ RemoteReleaseControlImpl::RemoteReleaseControlImpl(std::shared_ptr<SourceDevice>
    LOG_TRACE(_T("Finished registering event handler\n"));
 }
 
-RemoteReleaseControlImpl::~RemoteReleaseControlImpl() throw()
+RemoteReleaseControlImpl::~RemoteReleaseControlImpl()
 {
    m_subjectPropertyEvent.Clear();
    m_subjectStateEvent.Clear();
@@ -82,7 +82,7 @@ EdsError RemoteReleaseControlImpl::OnPropertyChange_(
    EdsPropertyEvent inEvent,
    EdsPropertyID inPropertyID,
    EdsUInt32 inParam,
-   EdsVoid* inContext) throw()
+   EdsVoid* inContext)
 {
    UNUSED(inParam);
    //LOG_TRACE(_T("OnPropertyChange(event = %04x (%s), propId = %08x, param = %u, ctx) called\n"),
@@ -103,7 +103,7 @@ EdsError RemoteReleaseControlImpl::OnPropertyChange_(
    return EDS_ERR_OK;
 }
 
-void RemoteReleaseControlImpl::OnPropertyChange(EdsPropertyEvent inEvent, EdsPropertyID inPropertyID, EdsUInt32 inParam) throw()
+void RemoteReleaseControlImpl::OnPropertyChange(EdsPropertyEvent inEvent, EdsPropertyID inPropertyID, EdsUInt32 inParam)
 {
    // support for custom functions: passing param in the property ID
    unsigned int uiCombinedPropertyId = inPropertyID;
@@ -140,7 +140,7 @@ void RemoteReleaseControlImpl::OnPropertyChange(EdsPropertyEvent inEvent, EdsPro
    }
 }
 
-EdsError RemoteReleaseControlImpl::OnStateChange_(EdsStateEvent inEvent, EdsUInt32 inEventData, EdsVoid *inContext) throw()
+EdsError RemoteReleaseControlImpl::OnStateChange_(EdsStateEvent inEvent, EdsUInt32 inEventData, EdsVoid *inContext)
 {
    LOG_TRACE(_T("OnStateChange(event = %04x (%s), eventData = %08x, ctx) called\n"),
       inEvent,
@@ -163,7 +163,7 @@ EdsError RemoteReleaseControlImpl::OnStateChange_(EdsStateEvent inEvent, EdsUInt
    return EDS_ERR_OK;
 }
 
-void RemoteReleaseControlImpl::OnStateChange(EdsStateEvent inEvent, EdsUInt32 inEventData) throw()
+void RemoteReleaseControlImpl::OnStateChange(EdsStateEvent inEvent, EdsUInt32 inEventData)
 {
    RemoteReleaseControl::T_enStateEvent enStateEvent = RemoteReleaseControl::stateEventInvalid;
 
@@ -198,7 +198,7 @@ void RemoteReleaseControlImpl::OnStateChange(EdsStateEvent inEvent, EdsUInt32 in
    }
 }
 
-EdsError RemoteReleaseControlImpl::OnObjectChange_(EdsObjectEvent inEvent, EdsBaseRef inRef, EdsVoid *inContext) throw()
+EdsError RemoteReleaseControlImpl::OnObjectChange_(EdsObjectEvent inEvent, EdsBaseRef inRef, EdsVoid *inContext)
 {
    LOG_TRACE(_T("OnObjectChange(event = %04x (%s), inRef = %08x, ctx) called\n"),
       inEvent,
@@ -239,7 +239,7 @@ EdsError RemoteReleaseControlImpl::OnObjectChange_(EdsObjectEvent inEvent, EdsBa
    return EDS_ERR_OK;
 }
 
-bool RemoteReleaseControlImpl::GetCapability(RemoteReleaseControl::T_enRemoteCapability enCapability) const throw()
+bool RemoteReleaseControlImpl::GetCapability(RemoteReleaseControl::T_enRemoteCapability enCapability) const
 {
    try
    {

@@ -23,7 +23,7 @@ SourceDeviceImpl::SourceDeviceImpl(std::shared_ptr<_GPContext> spContext, std::s
 {
 }
 
-SourceDeviceImpl::~SourceDeviceImpl() throw()
+SourceDeviceImpl::~SourceDeviceImpl()
 {
 }
 

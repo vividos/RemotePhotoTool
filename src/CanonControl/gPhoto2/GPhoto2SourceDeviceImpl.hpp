@@ -21,7 +21,7 @@ public:
    /// ctor
    SourceDeviceImpl(std::shared_ptr<_GPContext> spContext, std::shared_ptr<_Camera> spCamera);
    /// dtor
-   virtual ~SourceDeviceImpl() throw();
+   virtual ~SourceDeviceImpl();
 
    // SourceDevice virtual functions
 

@@ -493,7 +493,7 @@ void PropertyAccess::GetTypeAndSize(EdsPropertyID propId, int iParam, EdsDataTyp
       dataType = kEdsDataType_UInt32;
 }
 
-bool PropertyAccess::IsPropertyAvail(unsigned int uiPropId, int iParam) const throw()
+bool PropertyAccess::IsPropertyAvail(unsigned int uiPropId, int iParam) const
 {
    if (uiPropId >= kEdsPropID_Meta_MaxZoomPos)
       return true;
@@ -616,7 +616,7 @@ CString PropertyAccess::FormatImageFormatValue(unsigned int uiValue)
    return cszText;
 }
 
-EdsPropertyID PropertyAccess::MapToPropertyID(T_enImagePropertyType enProperty) throw()
+EdsPropertyID PropertyAccess::MapToPropertyID(T_enImagePropertyType enProperty)
 {
    switch (enProperty)
    {
@@ -946,7 +946,7 @@ void PropertyAccess::GetRawEdsdk(const Variant& v, unsigned int datatype, std::v
 }
 
 
-LPCTSTR PropertyAccess::NameFromId(EdsPropertyID propertyId) throw()
+LPCTSTR PropertyAccess::NameFromId(EdsPropertyID propertyId)
 {
    LPCTSTR pszName = _T("???");
 

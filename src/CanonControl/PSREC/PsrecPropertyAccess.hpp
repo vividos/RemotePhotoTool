@@ -60,7 +60,7 @@ public:
    void Parse();
 
    /// returns if property can be written to
-   bool IsSetAllowed() const throw()
+   bool IsSetAllowed() const
    {
       // 0x00 means read-only
       // 0x01 means read-write
@@ -89,7 +89,7 @@ class PropertyAccess
 {
 public:
    /// ctor
-   PropertyAccess(prHandle hCamera) throw()
+   PropertyAccess(prHandle hCamera)
       :m_hCamera(hCamera)
    {
    }
@@ -117,7 +117,7 @@ public:
    void EnumImageFormatPropertyValues(std::vector<ImageProperty>& vecValues);
 
    /// converts from property id to property name
-   static LPCTSTR NameFromId(prUInt16 propertyId) throw();
+   static LPCTSTR NameFromId(prUInt16 propertyId);
 
    /// formats display text from id and value
    static CString DisplayTextFromIdAndValue(prUInt16 propertyId, Variant value);

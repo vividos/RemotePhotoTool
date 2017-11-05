@@ -41,7 +41,7 @@ m_evtTimerStopped(false)
    // Start downloading of the live view image once the property change notification arrives.
 }
 
-ViewfinderImpl::~ViewfinderImpl() throw()
+ViewfinderImpl::~ViewfinderImpl()
 {
    try
    {
@@ -73,7 +73,7 @@ void ViewfinderImpl::Close()
    p.Set(kEdsPropID_Evf_OutputDevice, vDevice);
 }
 
-bool ViewfinderImpl::GetCapability(T_enViewfinderCapability enViewfinderCapability) const throw()
+bool ViewfinderImpl::GetCapability(T_enViewfinderCapability enViewfinderCapability) const
 {
    switch (enViewfinderCapability)
    {

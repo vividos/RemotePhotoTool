@@ -15,7 +15,7 @@ class Variant
 {
 public:
    /// ctor; creates invalid type
-   Variant() throw();
+   Variant();
 
    /// possible variant types
    enum VariantType
@@ -41,10 +41,10 @@ public:
    };
 
    /// returns current type
-   VariantType Type() const throw() { return m_enType; }
+   VariantType Type() const { return m_enType; }
 
    /// returns if array values are stored
-   bool IsArray() const throw() { return m_bIsArray; }
+   bool IsArray() const { return m_bIsArray; }
 
    // single value get/set
 
@@ -110,10 +110,10 @@ public:
    CString ToString() const;
 
    /// sets type of value
-   void SetType(VariantType enType) throw() { m_enType = enType; }
+   void SetType(VariantType enType) { m_enType = enType; }
 
    /// formats variant type as string
-   static LPCTSTR TypeAsString(VariantType vt) throw();
+   static LPCTSTR TypeAsString(VariantType vt);
 
    /// sets raw variant value
    void SetRaw(boost::any& variant, VariantType enType, bool bIsArray)
@@ -124,7 +124,7 @@ public:
    }
 
    /// equality operator
-   bool operator==(const Variant& rhs) const throw()
+   bool operator==(const Variant& rhs) const
    {
       if (m_enType == typeUInt32)
          return IsValueEqual<unsigned int>(rhs);
@@ -143,7 +143,7 @@ public:
 
    /// compare function
    template <typename T>
-   bool IsValueEqual(const Variant& rhs) const throw()
+   bool IsValueEqual(const Variant& rhs) const
    {
       if (m_enType != rhs.m_enType)
          return false;

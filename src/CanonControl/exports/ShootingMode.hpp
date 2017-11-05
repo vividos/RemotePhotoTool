@@ -20,7 +20,7 @@ public:
    }
 
    /// returns if changing shooting mode is supported
-   bool IsSupportedChanging() const throw()
+   bool IsSupportedChanging() const
    {
       return m_spRemoteReleaseControl->GetCapability(RemoteReleaseControl::capChangeShootingMode);
    }

@@ -14,7 +14,7 @@ class Viewfinder
 {
 public:
    /// dtor
-   virtual ~Viewfinder() throw() {}
+   virtual ~Viewfinder() {}
 
    /// capabilities in live viewfinder mode
    enum T_enViewfinderCapability
@@ -43,7 +43,7 @@ public:
    };
 
    /// returns capability in live viewfinder mode
-   virtual bool GetCapability(T_enViewfinderCapability enViewfinderCapability) const throw() = 0;
+   virtual bool GetCapability(T_enViewfinderCapability enViewfinderCapability) const = 0;
 
    /// sets viewfinder output type
    virtual void SetOutputType(T_enOutputType enOutputType) = 0;

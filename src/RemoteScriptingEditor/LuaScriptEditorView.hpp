@@ -282,7 +282,7 @@ class LuaScriptEditorView :
 
 public:
    /// ctor
-   LuaScriptEditorView() throw() {}
+   LuaScriptEditorView() {}
 
    /// pre-translates messages
    BOOL PreTranslateMessage(MSG* pMsg);

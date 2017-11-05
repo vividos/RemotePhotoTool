@@ -26,11 +26,11 @@ public:
    /// ctor
    RemoteReleaseControlImpl(std::shared_ptr<_GPContext> spContext, std::shared_ptr<_Camera> spCamera);
    /// dtor
-   virtual ~RemoteReleaseControlImpl() throw();
+   virtual ~RemoteReleaseControlImpl();
 
    // RemoteReleaseControl virtual functions
 
-   virtual bool GetCapability(T_enRemoteCapability enRemoteCapability) const throw() override;
+   virtual bool GetCapability(T_enRemoteCapability enRemoteCapability) const override;
 
    virtual void SetReleaseSettings(const ShutterReleaseSettings& settings) override;
 

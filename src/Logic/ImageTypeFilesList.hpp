@@ -24,13 +24,13 @@ public:
    }
 
    /// returns image type of the list of files
-   T_enImageType ImageType() const throw() { return m_imageType; }
+   T_enImageType ImageType() const { return m_imageType; }
 
    /// returns list of files belonging to this image type; const version
-   const std::vector<ImageFileInfo>& ImageFileInfoList() const throw() { return m_imageFileInfoList; }
+   const std::vector<ImageFileInfo>& ImageFileInfoList() const { return m_imageFileInfoList; }
 
    /// returns list of files belonging to this image type; non-const version
-   std::vector<ImageFileInfo>& ImageFileInfoList() throw() { return m_imageFileInfoList; }
+   std::vector<ImageFileInfo>& ImageFileInfoList() { return m_imageFileInfoList; }
 
 private:
    /// image type of the list of files

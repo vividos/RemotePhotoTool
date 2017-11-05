@@ -36,7 +36,7 @@ class PropertyAccess : public boost::noncopyable
 {
 public:
    /// ctor
-   PropertyAccess(const Handle& h) throw()
+   PropertyAccess(const Handle& h)
       :m_h(h)
    {
    }
@@ -57,7 +57,7 @@ public:
    void GetTypeAndSize(EdsPropertyID propId, int iParam, EdsDataType& dataType, EdsUInt32& size) const;
 
    /// returns if property is available
-   bool IsPropertyAvail(unsigned int uiPropId, int iParam) const throw();
+   bool IsPropertyAvail(unsigned int uiPropId, int iParam) const;
 
    /// enumerates device ids
    void EnumDeviceIds(std::vector<unsigned int>& vecDeviceIds);
@@ -75,10 +75,10 @@ public:
    static CString FormatImageFormatValue(unsigned int uiValue);
 
    /// maps property type to property id
-   static EdsPropertyID MapToPropertyID(T_enImagePropertyType enProperty) throw();
+   static EdsPropertyID MapToPropertyID(T_enImagePropertyType enProperty);
 
    /// returns name from property id
-   static LPCTSTR NameFromId(EdsPropertyID propertyId) throw();
+   static LPCTSTR NameFromId(EdsPropertyID propertyId);
 
    /// formats display text from id and value
    static CString DisplayTextFromIdAndValue(EdsPropertyID /*propertyId*/, Variant value);

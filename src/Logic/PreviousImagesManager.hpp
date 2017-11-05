@@ -42,10 +42,10 @@ public:
    /// ctor; takes max. size of cached images
    PreviousImagesManager(size_t uiMaxSizeCachedImagesInBytes = 10 * 1024 * 1024);
    /// dtor
-   ~PreviousImagesManager() throw();
+   ~PreviousImagesManager();
 
    /// returns if there are images available at all
-   bool ImagesAvail() const throw();
+   bool ImagesAvail() const;
 
    /// adds newly taken image to the end of the list
    void AddNewImage(const CString& cszFilename);

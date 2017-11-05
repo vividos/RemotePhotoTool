@@ -28,7 +28,7 @@ ViewFinderImageWindow::ViewFinderImageWindow()
    SetupZebraBrush();
 }
 
-ViewFinderImageWindow::~ViewFinderImageWindow() throw()
+ViewFinderImageWindow::~ViewFinderImageWindow()
 {
    m_brushZebraPattern.DeleteObject();
 }

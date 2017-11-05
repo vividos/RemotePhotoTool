@@ -18,7 +18,7 @@ class SourceDevice
 {
 public:
    /// dtor
-   virtual ~SourceDevice() throw() {}
+   virtual ~SourceDevice() {}
 
    /// device capabilities
    enum T_enDeviceCapability

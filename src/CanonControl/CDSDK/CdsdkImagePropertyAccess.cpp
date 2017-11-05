@@ -1299,7 +1299,7 @@ void ImagePropertyAccess::GetRawCdsdk(const Variant& value, unsigned int /*propI
       ATLASSERT(false);
 }
 
-CString ImagePropertyAccess::CameraModel() const throw()
+CString ImagePropertyAccess::CameraModel() const
 {
    CString cszModel;
    try
@@ -1479,13 +1479,13 @@ void ImagePropertyAccess::AddCameraModelTvValues(std::vector<Variant>& /*vecValu
    // TODO impl
 }
 
-unsigned int ImagePropertyAccess::MapToPropertyID(T_enImagePropertyType enPropertyType) throw()
+unsigned int ImagePropertyAccess::MapToPropertyID(T_enImagePropertyType enPropertyType)
 {
    // map the type values using macro, so that they don't clash with cdRelCamSettingID
    return TYPE_TO_PROP_ID(static_cast<unsigned int>(enPropertyType));
 }
 
-LPCTSTR ImagePropertyAccess::NameFromId(unsigned int propId) throw()
+LPCTSTR ImagePropertyAccess::NameFromId(unsigned int propId)
 {
    LPCTSTR pszName = _T("???");
    switch (propId)
@@ -1631,7 +1631,7 @@ CString ImagePropertyAccess::DisplayTextFromIdAndValue(unsigned int propId, Vari
    return cszText;
 }
 
-LPCTSTR ImagePropertyAccess::FormatFocusPoint(const Variant& value) throw()
+LPCTSTR ImagePropertyAccess::FormatFocusPoint(const Variant& value)
 {
    cdUInt16 focusPoint = 0xFFFF;
    try

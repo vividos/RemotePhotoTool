@@ -28,13 +28,13 @@ class ImagePropertyView :
 
 public:
    /// ctor
-   ImagePropertyView(IPhotoModeViewHost& host) throw()
+   ImagePropertyView(IPhotoModeViewHost& host)
       :m_host(host),
        m_iPropertyEventId(-1)
    {
    }
    /// dtor
-   virtual ~ImagePropertyView() throw() {}
+   virtual ~ImagePropertyView() {}
 
    DECLARE_WND_SUPERCLASS(NULL, CListViewCtrl::GetWndClassName())
 

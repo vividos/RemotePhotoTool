@@ -76,7 +76,7 @@ Ref::Ref()
       m_wiaDevMgr = nullptr;
 }
 
-Ref::~Ref() throw()
+Ref::~Ref()
 {
    AsyncWaitForCamera(false);
 

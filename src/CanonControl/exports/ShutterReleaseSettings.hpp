@@ -39,10 +39,10 @@ public:
    void Filename(const CString& cszFilename) { m_cszFilename = cszFilename; }
 
    /// sets save target
-   void SaveTarget(T_enSaveTarget enSaveTarget) throw() { m_enSaveTarget = enSaveTarget; }
+   void SaveTarget(T_enSaveTarget enSaveTarget) { m_enSaveTarget = enSaveTarget; }
 
    /// sets handler function called when image transfer has finished
-   void HandlerOnFinishedTransfer(T_fnOnFinishedTransfer fnOnFinishedTransfer) throw()
+   void HandlerOnFinishedTransfer(T_fnOnFinishedTransfer fnOnFinishedTransfer)
    {
       m_fnOnFinishedTransfer = fnOnFinishedTransfer;
    }
@@ -50,13 +50,13 @@ public:
    // get functions
 
    /// returns filename of saved file
-   CString Filename() const throw() { return m_cszFilename; }
+   CString Filename() const { return m_cszFilename; }
 
    /// returns save target
-   T_enSaveTarget SaveTarget() const throw() { return m_enSaveTarget; }
+   T_enSaveTarget SaveTarget() const { return m_enSaveTarget; }
 
    /// returns handler function called when image transfer has finished
-   T_fnOnFinishedTransfer HandlerOnFinishedTransfer() const throw() { return m_fnOnFinishedTransfer; }
+   T_fnOnFinishedTransfer HandlerOnFinishedTransfer() const { return m_fnOnFinishedTransfer; }
 
 private:
    /// save target

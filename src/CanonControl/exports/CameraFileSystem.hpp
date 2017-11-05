@@ -25,7 +25,7 @@ public:
    static LPCTSTR PathSeparator;
 
    /// dtor
-   virtual ~CameraFileSystem() throw() {}
+   virtual ~CameraFileSystem() {}
 
    /// returns list of subfolders in this folder
    virtual std::vector<CString> EnumFolders(const CString& path) const = 0;

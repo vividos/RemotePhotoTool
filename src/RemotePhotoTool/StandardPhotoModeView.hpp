@@ -24,9 +24,9 @@ class StandardPhotoModeView :
 {
 public:
    /// ctor
-   StandardPhotoModeView(IPhotoModeViewHost& host) throw();
+   StandardPhotoModeView(IPhotoModeViewHost& host);
    /// dtor
-   virtual ~StandardPhotoModeView() throw() {}
+   virtual ~StandardPhotoModeView() {}
 
    /// dialog id
    enum { IDD = IDD_PHOTOMODE_STANDARD_FORM };

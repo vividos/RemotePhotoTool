@@ -19,13 +19,13 @@ public:
    }
 
    /// returns minimum number of images to be considered as panorama
-   unsigned int MinimumNumberOfPanoramaImages() const throw() { return m_minimumNumberOfPanoramaImages; }
+   unsigned int MinimumNumberOfPanoramaImages() const { return m_minimumNumberOfPanoramaImages; }
 
    /// returns number of seconds that may lie between two panorama images
-   unsigned int SecondsBetweenPanoramaImages() const throw() { return m_secondsBetweenPanoramaImages; }
+   unsigned int SecondsBetweenPanoramaImages() const { return m_secondsBetweenPanoramaImages; }
 
    /// returns number of seconds that may lie between two HDR images
-   unsigned int SecondsBetweenHDRImages() const throw() { return m_secondsBetweenHDRImages; }
+   unsigned int SecondsBetweenHDRImages() const { return m_secondsBetweenHDRImages; }
 
 private:
    /// minimum number of images to be considered as panorama

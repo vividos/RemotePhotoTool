@@ -16,7 +16,7 @@ class SourceInfo
 {
 public:
    /// dtor
-   virtual ~SourceInfo() throw() {}
+   virtual ~SourceInfo() {}
 
    /// returns name of source camera
    virtual CString Name() const = 0;

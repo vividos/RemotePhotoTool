@@ -23,7 +23,7 @@ public:
    SystemLuaBindings(LuaScheduler& scheduler, boost::asio::io_service::strand& strand);
 
    /// dtor; cleans up bindings
-   virtual ~SystemLuaBindings() throw();
+   virtual ~SystemLuaBindings();
 
    /// inits bindings to CanonControl; since the this parameter is needed in
    /// the bindings, call this immediately after the ctor
@@ -34,7 +34,7 @@ public:
 
 private:
    /// returns Lua state object
-   Lua::State& GetState() throw();
+   Lua::State& GetState();
 
    /// cleans up all system bindings
    void CleanupBindings();

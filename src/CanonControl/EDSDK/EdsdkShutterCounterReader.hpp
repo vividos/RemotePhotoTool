@@ -20,7 +20,7 @@ public:
    /// ctor
    ShutterCounterReader();
    /// dtor
-   ~ShutterCounterReader() throw();
+   ~ShutterCounterReader();
 
    /// reads shutter counter for camera with given device id
    bool Read(LPCSTR pszDeviceId, unsigned int& uiShutterCounter) const;

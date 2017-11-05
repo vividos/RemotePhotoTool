@@ -30,7 +30,7 @@ public:
    /// ctor
    Ref();
    /// dtor
-   ~Ref() throw();
+   ~Ref();
 
    /// adds EDSDK version text
    virtual void AddVersionText(CString& cszVersionText) const override;
@@ -48,7 +48,7 @@ public:
    static void OnIdle();
 
    /// returns SDK function mutex
-   RecursiveMutex& SdkFunctionMutex() throw() { return m_mtxSdkFunctions; }
+   RecursiveMutex& SdkFunctionMutex() { return m_mtxSdkFunctions; }
 
 private:
    /// handler called when camera was added
@@ -118,7 +118,7 @@ public:
    }
 
    /// dtor
-   ~Handle() throw()
+   ~Handle()
    {
       try
       {
@@ -130,46 +130,46 @@ public:
    }
 
    /// returns pointer to base ref; non-const version
-   EdsBaseRef* operator&() throw()
+   EdsBaseRef* operator&()
    {
       return &m_objRef;
    }
 
    /// returns base ref
-   operator EdsBaseRef() throw()
+   operator EdsBaseRef()
    {
       return m_objRef;
    }
 
    /// returns base ref; const version
-   operator EdsBaseRef() const throw()
+   operator EdsBaseRef() const
    {
       return m_objRef;
    }
 
    /// returns pointer to base ref
-   operator EdsBaseRef*() throw()
+   operator EdsBaseRef*()
    {
       return &m_objRef;
    }
 
    /// returns base ref
-   EdsBaseRef Get() throw()
+   EdsBaseRef Get()
    {
       return m_objRef;
    }
 
    /// returns base ref; const version
-   EdsBaseRef Get() const throw()
+   EdsBaseRef Get() const
    {
       return m_objRef;
    }
 
    /// returns SDK reference
-   RefSp GetRef() throw() { return m_spRef; }
+   RefSp GetRef() { return m_spRef; }
 
    /// returns if handle is valid
-   bool IsValid() const throw() { return m_objRef != 0; }
+   bool IsValid() const { return m_objRef != 0; }
 
 private:
    /// increases reference count of object ref in h
@@ -211,6 +211,6 @@ private:
 };
 
 /// waits for message and does window and EDSDK processing while waiting
-void MsgWaitForEvent(ManualResetEvent& evt) throw();
+void MsgWaitForEvent(ManualResetEvent& evt);
 
 } // namespace EDSDK

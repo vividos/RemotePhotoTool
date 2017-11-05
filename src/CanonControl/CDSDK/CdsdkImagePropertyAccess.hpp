@@ -19,7 +19,7 @@ class ImagePropertyAccess
 {
 public:
    /// ctor
-   ImagePropertyAccess(cdHSource& hSource) throw()
+   ImagePropertyAccess(cdHSource& hSource)
       :m_hSource(hSource)
    {
    }
@@ -69,7 +69,7 @@ public:
    // special camera model functions
 
    /// returns camera model; for the AddCameraModel*() methods
-   CString CameraModel() const throw();
+   CString CameraModel() const;
 
    /// adds shooting mode values for specific cameras
    void AddCameraModelShootingMode(std::vector<Variant>& vecValues);
@@ -83,18 +83,18 @@ public:
    // mappings
 
    /// maps property type to property id
-   static unsigned int MapToPropertyID(T_enImagePropertyType enProperty) throw();
+   static unsigned int MapToPropertyID(T_enImagePropertyType enProperty);
 
    // formatting
 
    /// converts image property to name
-   static LPCTSTR NameFromId(unsigned int propId) throw();
+   static LPCTSTR NameFromId(unsigned int propId);
 
    /// converts property value to string
    static CString DisplayTextFromIdAndValue(unsigned int propId, Variant value);
 
    /// formats focus point value
-   static LPCTSTR FormatFocusPoint(const Variant& value) throw();
+   static LPCTSTR FormatFocusPoint(const Variant& value);
 
    /// formats parameter set value
    static CString FormatParameterSet(const Variant& value);

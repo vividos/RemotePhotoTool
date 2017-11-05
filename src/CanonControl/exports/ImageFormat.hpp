@@ -19,7 +19,7 @@ public:
    {
    }
    /// dtor
-   ~ImageFormat() throw() {}
+   ~ImageFormat() {}
 
    /// converts image format to string
    CString ToString() const;

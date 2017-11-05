@@ -20,7 +20,7 @@ public:
    typedef std::function<void()> T_fnOnCameraAdded;
 
    /// enables or disables logging; default: disabled
-   static void EnableLogging(bool bEnable, const CString& cszLogfilePath) throw();
+   static void EnableLogging(bool bEnable, const CString& cszLogfilePath);
 
    /// returns new camera instance
    static Instance Get();
@@ -29,7 +29,7 @@ public:
    Instance(const Instance& instance);
 
    /// dtor
-   ~Instance() throw();
+   ~Instance();
 
    /// assignment operator
    Instance& operator=(const Instance& instance);
@@ -53,7 +53,7 @@ private:
    Instance(std::shared_ptr<Impl> spImpl);
 
    /// handler when camera is connected
-   void OnCameraAddedHandler() throw();
+   void OnCameraAddedHandler();
 
 private:
    /// implementation

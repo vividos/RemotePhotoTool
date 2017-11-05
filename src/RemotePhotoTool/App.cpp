@@ -22,7 +22,7 @@
 /// WTL app module
 CAppModule _Module;
 
-App::App(HINSTANCE hInstance) throw()
+App::App(HINSTANCE hInstance)
 {
 #ifdef _DEBUG
    // turn on leak-checking
@@ -44,7 +44,7 @@ App::App(HINSTANCE hInstance) throw()
    ATLASSERT(SUCCEEDED(hRes));
 }
 
-App::~App() throw()
+App::~App()
 {
    _Module.Term();
    ::CoUninitialize();

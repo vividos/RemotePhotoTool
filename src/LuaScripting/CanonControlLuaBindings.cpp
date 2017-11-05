@@ -47,7 +47,7 @@ m_evtTimerStopped(false)
 {
 }
 
-CanonControlLuaBindings::~CanonControlLuaBindings() throw()
+CanonControlLuaBindings::~CanonControlLuaBindings()
 {
    // when one of these asserts fail, then the user of this class
    // forgot to call CancelHandlers(); but we cannot call it here

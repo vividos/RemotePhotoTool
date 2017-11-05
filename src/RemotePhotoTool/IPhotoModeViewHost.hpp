@@ -19,7 +19,7 @@ class IPhotoModeViewHost
 {
 public:
    /// dtor
-   virtual ~IPhotoModeViewHost() throw() { }
+   virtual ~IPhotoModeViewHost() { }
 
    /// returns source device
    virtual std::shared_ptr<SourceDevice> GetSourceDevice() = 0;
@@ -28,19 +28,19 @@ public:
    virtual std::shared_ptr<RemoteReleaseControl> GetRemoteReleaseControl() = 0;
 
    /// returns application settings
-   virtual AppSettings& GetAppSettings() throw() = 0;
+   virtual AppSettings& GetAppSettings() = 0;
 
    /// returns image file manager
-   virtual ImageFileManager& GetImageFileManager() throw() = 0;
+   virtual ImageFileManager& GetImageFileManager() = 0;
 
    /// returns previous images manager
-   virtual PreviousImagesManager& GetPreviousImagesManager() throw() = 0;
+   virtual PreviousImagesManager& GetPreviousImagesManager() = 0;
 
    /// returns viewfinder view (or nullptr if not active)
-   virtual ViewFinderView* GetViewFinderView() throw() = 0;
+   virtual ViewFinderView* GetViewFinderView() = 0;
 
    /// returns release settings
-   virtual ShutterReleaseSettings& GetReleaseSettings() throw() = 0;
+   virtual ShutterReleaseSettings& GetReleaseSettings() = 0;
 
    /// sets new status text
    virtual void SetStatusText(const CString& cszText, unsigned int uiPane = 0) = 0;

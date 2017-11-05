@@ -29,7 +29,7 @@ public:
    /// ctor
    Ref();
    /// dtor
-   ~Ref() throw();
+   ~Ref();
 
    /// adds verwion text
    virtual void AddVersionText(CString& versionText) const override;

@@ -16,7 +16,7 @@
 /// padding pixels between image and image info
 const unsigned int c_uiPaddingImageInfo = 10;
 
-PreviousImagesView::PreviousImagesView(IPhotoModeViewHost& host) throw()
+PreviousImagesView::PreviousImagesView(IPhotoModeViewHost& host)
 :m_host(host),
 m_manager(host.GetPreviousImagesManager())
 {

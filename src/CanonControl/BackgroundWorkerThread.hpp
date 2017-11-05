@@ -24,7 +24,7 @@ public:
    }
 #pragma warning(default: 4355)
    /// dtor
-   ~BackgroundWorkerThread() throw()
+   ~BackgroundWorkerThread()
    {
       try
       {

@@ -33,7 +33,7 @@ public:
    }
 
    /// dtor
-   virtual ~ViewfinderImpl() throw()
+   virtual ~ViewfinderImpl()
    {
       try
       {
@@ -46,7 +46,7 @@ public:
       }
    }
 
-   virtual bool GetCapability(T_enViewfinderCapability enViewfinderCapability) const throw() override
+   virtual bool GetCapability(T_enViewfinderCapability enViewfinderCapability) const override
    {
       switch (enViewfinderCapability)
       {

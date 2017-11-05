@@ -18,7 +18,7 @@ public:
    /// ctor
    ViewFinderImageWindow();
    /// dtor
-   ~ViewFinderImageWindow() throw();
+   ~ViewFinderImageWindow();
 
    /// lines mode types
    enum T_enLinesMode
@@ -31,16 +31,16 @@ public:
    };
 
    /// sets lines mode
-   void SetLinesMode(T_enLinesMode enLinesMode) throw() { m_enLinesMode = enLinesMode; }
+   void SetLinesMode(T_enLinesMode enLinesMode) { m_enLinesMode = enLinesMode; }
 
    /// sets new viewfinder output type
    void SetOutputType(Viewfinder::T_enOutputType enOutputType);
 
    /// shows zebra pattern for overexposed images
-   void ShowZebraPattern(bool bShowZebraPattern) throw() { m_bShowZebraPattern = bShowZebraPattern; }
+   void ShowZebraPattern(bool bShowZebraPattern) { m_bShowZebraPattern = bShowZebraPattern; }
 
    /// sets if histogram is shown
-   void ShowHistogram(bool bShowHistogram) throw() { m_bShowHistogram = bShowHistogram; }
+   void ShowHistogram(bool bShowHistogram) { m_bShowHistogram = bShowHistogram; }
 
    /// enables or disables updates to the viewfinder window
    void EnableUpdate(bool bEnable);

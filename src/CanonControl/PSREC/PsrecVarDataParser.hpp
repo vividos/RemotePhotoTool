@@ -13,13 +13,13 @@ namespace PSREC
 struct VarDataParser
 {
    /// ctor
-   VarDataParser() throw()
+   VarDataParser()
       :m_uiPos(0)
    {
    }
 
    /// returns buffer
-   std::vector<BYTE>& GetBuffer() throw() { return m_vecBuffer; }
+   std::vector<BYTE>& GetBuffer() { return m_vecBuffer; }
 
    /// reads unsigned 8-bit value
    prUInt8 ReadUint8()

@@ -16,7 +16,7 @@
 struct JpegDecoder : public boost::noncopyable
 {
    /// ctor
-   JpegDecoder(jpeg_source_mgr& sourceManager) throw()
+   JpegDecoder(jpeg_source_mgr& sourceManager)
       :m_sourceManager(sourceManager)
    {
       cinfo.err = jpeg_std_error(&m_errorManager);
@@ -31,7 +31,7 @@ struct JpegDecoder : public boost::noncopyable
    }
 
    /// dtor
-   ~JpegDecoder() throw()
+   ~JpegDecoder()
    {
       try
       {
@@ -68,7 +68,7 @@ struct JpegDecoder : public boost::noncopyable
    }
 
    /// returns if there still are scanlines available
-   bool HasScanlines() const throw()
+   bool HasScanlines() const
    {
       return cinfo.output_scanline < cinfo.output_height;
    }

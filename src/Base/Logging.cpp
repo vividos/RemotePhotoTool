@@ -50,7 +50,7 @@ static CString LogGetCurrentDateTime()
    return cszDateTime;
 }
 
-void LogConfigure(bool bEnable, const CString& cszLogfilePath) throw()
+void LogConfigure(bool bEnable, const CString& cszLogfilePath)
 {
    s_bLoggingActive = bEnable;
 
@@ -97,7 +97,7 @@ void LogWriteText(const CString& cszText, bool bPreviousIncompleteLine)
    fclose(fd);
 }
 
-void LogTrace(LPCTSTR pszFormat, ...) throw()
+void LogTrace(LPCTSTR pszFormat, ...)
 {
 #ifndef _DEBUG
    // in release, early-quit here

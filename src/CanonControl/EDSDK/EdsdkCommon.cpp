@@ -48,7 +48,7 @@ Ref::Ref()
    CheckError(_T("EdsInitializeSDK"), err, __FILE__, __LINE__);
 }
 
-Ref::~Ref() throw()
+Ref::~Ref()
 {
    EdsError err = EdsTerminateSDK();
    LOG_TRACE(_T("EdsTerminateSDK() returned %08x\n"), err);
@@ -182,7 +182,7 @@ void Ref::OnIdle()
    }
 }
 
-void EDSDK::MsgWaitForEvent(ManualResetEvent& evt) throw()
+void EDSDK::MsgWaitForEvent(ManualResetEvent& evt)
 {
    LOG_TRACE(_T("MsgWaitForEvent started\n"));
 

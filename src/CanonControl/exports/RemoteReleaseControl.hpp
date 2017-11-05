@@ -19,7 +19,7 @@ class RemoteReleaseControl
 {
 public:
    /// dtor
-   virtual ~RemoteReleaseControl() throw() {}
+   virtual ~RemoteReleaseControl() {}
 
    ////////////////////////////////////////////////
    // enumerations
@@ -106,7 +106,7 @@ public:
    ////////////////////////////////////////////////
 
    /// returns capability in remote capture mode
-   virtual bool GetCapability(T_enRemoteCapability enRemoteCapability) const throw() = 0;
+   virtual bool GetCapability(T_enRemoteCapability enRemoteCapability) const = 0;
 
    /// sets default release settings; used when calling Release(), or user presses shutter release on camera
    virtual void SetReleaseSettings(const ShutterReleaseSettings& settings) = 0;

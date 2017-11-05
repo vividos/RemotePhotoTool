@@ -10,7 +10,7 @@
 #define LOG_TRACE LogTrace
 
 /// configure logging
-void LogConfigure(bool bEnable, const CString& cszLogfilePath) throw();
+void LogConfigure(bool bEnable, const CString& cszLogfilePath);
 
 /// logs message
-void LogTrace(LPCTSTR pszFormat, ...) throw();
+void LogTrace(LPCTSTR pszFormat, ...);

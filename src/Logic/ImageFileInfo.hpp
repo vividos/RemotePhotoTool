@@ -30,78 +30,78 @@ public:
    // getter
 
    /// returns filename of image
-   const CString& Filename() const throw() { return m_filename; }
+   const CString& Filename() const { return m_filename; }
 
    /// returns if image was taken with AEB mode
-   bool AutoBracketMode() const throw() { return m_autoBracketMode; }
+   bool AutoBracketMode() const { return m_autoBracketMode; }
 
    /// indicates if image is start of an HDR image
-   bool StartHDRImage() const throw() { return m_startHDRImage; }
+   bool StartHDRImage() const { return m_startHDRImage; }
 
    /// returns exposure compensation value, when AEB image
-   double ExposureComp() const throw() { return m_exposureComp; }
+   double ExposureComp() const { return m_exposureComp; }
 
    /// returns aperture value, in f/ format
-   double Aperture() const throw() { return m_aperture; }
+   double Aperture() const { return m_aperture; }
 
    /// returns shutter speed, in seconds
-   double ShutterSpeed() const throw() { return m_shutterSpeed; }
+   double ShutterSpeed() const { return m_shutterSpeed; }
 
    /// returns ISO speed
-   unsigned int IsoSpeed() const throw() { return m_isoSpeed; }
+   unsigned int IsoSpeed() const { return m_isoSpeed; }
 
    /// returns focal length of image taken, in mm
-   double FocalLength() const throw() { return m_focalLength; }
+   double FocalLength() const { return m_focalLength; }
 
    /// returns orientation, as EXIF specific value
-   unsigned int Orientation() const throw() { return m_orientation; }
+   unsigned int Orientation() const { return m_orientation; }
 
    /// returns start date of image taken
-   const ATL::CTime& ImageDateStart() const throw() { return m_imageDateStart; }
+   const ATL::CTime& ImageDateStart() const { return m_imageDateStart; }
 
    /// returns end date of image taken; may differ from ImageDateStart() when
    /// doing long exposure images, e.g. with shutter speed > 1 seconds
-   const ATL::CTime& ImageDateEnd() const throw() { return m_imageDateEnd; }
+   const ATL::CTime& ImageDateEnd() const { return m_imageDateEnd; }
 
    // setter
 
    /// sets filename
-   void Filename(const CString& filename) throw() { m_filename = filename; }
+   void Filename(const CString& filename) { m_filename = filename; }
 
    /// sets if image was taken with AEB mode
-   void AutoBracketMode(bool autoBracketMode) throw() { m_autoBracketMode = autoBracketMode; }
+   void AutoBracketMode(bool autoBracketMode) { m_autoBracketMode = autoBracketMode; }
 
    /// sets if image is start of an HDR image
-   void StartHDRImage(bool startHDRImage) throw() { m_startHDRImage = startHDRImage; }
+   void StartHDRImage(bool startHDRImage) { m_startHDRImage = startHDRImage; }
 
    /// sets exposure compensation value, when AEB image
-   void ExposureComp(double exposureComp) throw() { m_exposureComp = exposureComp; }
+   void ExposureComp(double exposureComp) { m_exposureComp = exposureComp; }
 
    /// sets aperture value, in f/ format
-   void Aperture(double aperture) throw() { m_aperture = aperture; }
+   void Aperture(double aperture) { m_aperture = aperture; }
 
    /// sets shutter speed, in seconds
-   void ShutterSpeed(double shutterSpeed) throw() { m_shutterSpeed = shutterSpeed; }
+   void ShutterSpeed(double shutterSpeed) { m_shutterSpeed = shutterSpeed; }
 
    /// sets ISO speed
-   void IsoSpeed(unsigned int isoSpeed) throw() { m_isoSpeed = isoSpeed; }
+   void IsoSpeed(unsigned int isoSpeed) { m_isoSpeed = isoSpeed; }
 
    /// sets focal length of image taken, in mm
-   void FocalLength(double focalLength) throw() { m_focalLength = focalLength; }
+   void FocalLength(double focalLength) { m_focalLength = focalLength; }
 
    /// sets orientation, as EXIF specific value
-   void Orientation(unsigned int orientation) throw() { m_orientation = orientation; }
+   void Orientation(unsigned int orientation) { m_orientation = orientation; }
 
    /// sets start date of image taken
-   void ImageDateStart(ATL::CTime imageDateStart) throw() { m_imageDateStart = imageDateStart; }
+   void ImageDateStart(ATL::CTime imageDateStart) { m_imageDateStart = imageDateStart; }
 
    /// sets end date of image taken
-   void ImageDateEnd(ATL::CTime imageDateEnd) throw() { m_imageDateEnd = imageDateEnd; }
+   void ImageDateEnd(ATL::CTime imageDateEnd) { m_imageDateEnd = imageDateEnd; }
 
    // operators
 
    /// less operator; orders image file info by ImageDateStart()
-   bool operator<(const ImageFileInfo& rhs) const throw()
+   bool operator<(const ImageFileInfo& rhs) const
    {
       return m_imageDateStart < rhs.m_imageDateStart;
    }

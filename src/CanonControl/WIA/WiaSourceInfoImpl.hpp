@@ -25,7 +25,7 @@ namespace WIA
       {
       }
       /// dtor
-      virtual ~SourceInfoImpl() throw()
+      virtual ~SourceInfoImpl()
       {
       }
 
