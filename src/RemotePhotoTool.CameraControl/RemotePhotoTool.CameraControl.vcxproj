@@ -65,6 +65,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies />
+      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
