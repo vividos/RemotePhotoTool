@@ -23,7 +23,7 @@
 #include "Filesystem.hpp"
 #include <ulib/Path.hpp>
 #include <ulib/CrashReporter.hpp>
-#include "..\version.h"
+#include "../version.h"
 #include <thread>
 #include <shlobj.h>
 

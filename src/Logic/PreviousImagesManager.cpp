@@ -209,10 +209,12 @@ bool PreviousImagesManager::LoadFileBytes(const CString& cszFilename, std::vecto
       return false;
 
    std::shared_ptr<FILE> spFd(fd, fclose);
-   //std::unique_ptr<FILE> upFd(fd, fclose);
 
    fseek(fd, 0, SEEK_END);
    long lLen = ftell(fd);
+   if (lLen <= 0)
+      return false;
+
    fseek(fd, 0, SEEK_SET);
 
    vecJpegData.resize(static_cast<size_t>(lLen));

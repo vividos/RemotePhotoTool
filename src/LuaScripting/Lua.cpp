@@ -247,6 +247,13 @@ Value::Value(const Value& val)
 {
 }
 
+Value::Value(const Value&& val)
+   :m_value(std::move(val.m_value)),
+   m_enType(std::move(val.m_enType)),
+   m_spRef(std::move(val.m_spRef))
+{
+}
+
 Value& Value::operator=(const Value& val)
 {
    if (this == &val)
@@ -255,6 +262,18 @@ Value& Value::operator=(const Value& val)
    m_value = val.m_value;
    m_enType = val.m_enType;
    m_spRef = val.GetRef();
+
+   return *this;
+}
+
+Value& Value::operator=(const Value&& val)
+{
+   if (this == &val)
+      return *this;
+
+   m_value = std::move(val.m_value);
+   m_enType = std::move(val.m_enType);
+   m_spRef = std::move(val.GetRef());
 
    return *this;
 }

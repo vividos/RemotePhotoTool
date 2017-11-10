@@ -259,7 +259,13 @@ CameraScriptProcessor::~CameraScriptProcessor()
 {
    ATLASSERT(m_spImpl != nullptr);
 
-   Stop();
+   try
+   {
+      Stop();
+   }
+   catch (...)
+   {
+   }
 
    m_spImpl->CleanupBindings();
 

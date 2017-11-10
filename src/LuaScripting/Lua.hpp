@@ -236,8 +236,14 @@ public:
    /// copy ctor
    Value(const Value& val);
 
+   /// move ctor
+   Value(const Value&& val);
+
    /// assignment operator
    Value& operator=(const Value& val);
+
+   /// move assignment operator
+   Value& operator=(const Value&& val);
 
    /// dtor
    ~Value();
