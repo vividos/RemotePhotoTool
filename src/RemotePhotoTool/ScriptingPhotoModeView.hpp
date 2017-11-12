@@ -29,9 +29,6 @@ public:
    /// dtor
    virtual ~ScriptingPhotoModeView() {}
 
-   /// dialog id
-   enum { IDD = IDD_PHOTOMODE_STANDARD_FORM };
-
 private:
    // virtual methods from IPhotoModeView
 
