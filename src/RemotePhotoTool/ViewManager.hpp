@@ -27,6 +27,7 @@ enum T_enViewType
    viewDeviceProperties = 8,
    viewImageProperties = 9,
    viewPreviousImages = 10,
+   viewCameraFileSystem = 11,
 };
 
 /// view manager

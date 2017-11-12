@@ -25,6 +25,7 @@ BEGIN
     BUTTON      ID_PHOTO_MODE_SCRIPTING
     BUTTON      ID_PHOTO_MODE_DEVICE_PROPERTIES
     BUTTON      ID_PHOTO_MODE_IMAGE_PROPERTIES
+    BUTTON      ID_PHOTO_MODE_CAMERA_FILE_SYSTEM
     SEPARATOR
     BUTTON      ID_VIEW_RIBBON
     BUTTON      ID_VIEWFINDER_SHOW
@@ -58,6 +59,7 @@ BEGIN
         MENUITEM "S&cripting", ID_PHOTO_MODE_SCRIPTING
         MENUITEM "&Device Properties", ID_PHOTO_MODE_DEVICE_PROPERTIES
         MENUITEM "&Image Properties", ID_PHOTO_MODE_IMAGE_PROPERTIES
+        MENUITEM "&Camera Filesystem", ID_PHOTO_MODE_CAMERA_FILE_SYSTEM
     END
     POPUP "&Camera"
     BEGIN
@@ -181,6 +183,8 @@ LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
 ID_PHOTO_MODE_DEVICE_PROPERTIES BITMAP         "res\\photomode_device_properties.bmp"
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
 ID_PHOTO_MODE_IMAGE_PROPERTIES BITMAP         "res\\photomode_image_properties.bmp"
+LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
+ID_PHOTO_MODE_CAMERA_FILE_SYSTEM BITMAP       "res\\placeholder.bmp"
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
 ID_VIEW_RIBBON BITMAP        "res\\view_ribbon.bmp"
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
@@ -476,6 +480,7 @@ BEGIN
     ID_PHOTO_MODE_SCRIPTING       "Starts Scripting photo mode\nScripting mode"
     ID_PHOTO_MODE_DEVICE_PROPERTIES "Starts Device Properties view\nDevice Properties"
     ID_PHOTO_MODE_IMAGE_PROPERTIES "Starts Image Properties view\nImage Properties"
+    ID_PHOTO_MODE_CAMERA_FILE_SYSTEM "Shows Camera filesystem\nCamera Filesystem"
     ID_VIEW_RIBBON                "Toggles between menu band and menu\nToggle menu band"
     ID_PREV_IMAGES_SHOW           "Shows Previous images view\nPrevious images"
     ID_PREV_IMAGES_EXIT           "Exits Previous images view\nExit"

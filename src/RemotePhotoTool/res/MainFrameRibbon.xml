@@ -14,49 +14,50 @@
     <Command Name="phototool_PHOTO_MODE_SCRIPTING" Symbol="ID_PHOTO_MODE_SCRIPTING" Id="32776" Keytip="L" />
     <Command Name="phototool_PHOTO_MODE_DEVICE_PROPERTIES" Symbol="ID_PHOTO_MODE_DEVICE_PROPERTIES" Id="32777" Keytip="D" />
     <Command Name="phototool_PHOTO_MODE_IMAGE_PROPERTIES" Symbol="ID_PHOTO_MODE_IMAGE_PROPERTIES" Id="32778" Keytip="I" />
+    <Command Name="phototool_PHOTO_MODE_CAMERA_FILE_SYSTEM" Symbol="ID_PHOTO_MODE_CAMERA_FILE_SYSTEM" Id="32779" Keytip="F" />
 
-    <Command Name="phototool_PREV_IMAGES_SHOW" Symbol="ID_PREV_IMAGES_SHOW" Id="32779" Keytip="R" />
-    <Command Name="phototool_PREV_IMAGES_EXIT" Symbol="ID_PREV_IMAGES_EXIT" Id="32780" Keytip="X" />
-    <Command Name="phototool_PREV_IMAGES_PREV" Symbol="ID_PREV_IMAGES_PREV" Id="32781" Keytip="R" />
-    <Command Name="phototool_PREV_IMAGES_NEXT" Symbol="ID_PREV_IMAGES_NEXT" Id="32782" Keytip="N" />
-    <Command Name="phototool_PREV_IMAGES_OPEN_FOLDER" Symbol="ID_PREV_IMAGES_OPEN_FOLDER" Id="32783" Keytip="O" />
-    <Command Name="phototool_PREV_IMAGES_EDIT" Symbol="ID_PREV_IMAGES_EDIT" Id="32784" Keytip="E" />
-    <Command Name="phototool_PREV_IMAGES_OVERLAY_IMAGE" Symbol="ID_PREV_IMAGES_OVERLAY_IMAGE" Id="32785" Keytip="V" />
+    <Command Name="phototool_PREV_IMAGES_SHOW" Symbol="ID_PREV_IMAGES_SHOW" Id="32780" Keytip="R" />
+    <Command Name="phototool_PREV_IMAGES_EXIT" Symbol="ID_PREV_IMAGES_EXIT" Id="32781" Keytip="X" />
+    <Command Name="phototool_PREV_IMAGES_PREV" Symbol="ID_PREV_IMAGES_PREV" Id="32782" Keytip="R" />
+    <Command Name="phototool_PREV_IMAGES_NEXT" Symbol="ID_PREV_IMAGES_NEXT" Id="32783" Keytip="N" />
+    <Command Name="phototool_PREV_IMAGES_OPEN_FOLDER" Symbol="ID_PREV_IMAGES_OPEN_FOLDER" Id="32784" Keytip="O" />
+    <Command Name="phototool_PREV_IMAGES_EDIT" Symbol="ID_PREV_IMAGES_EDIT" Id="32785" Keytip="E" />
+    <Command Name="phototool_PREV_IMAGES_OVERLAY_IMAGE" Symbol="ID_PREV_IMAGES_OVERLAY_IMAGE" Id="32786" Keytip="V" />
 
-    <Command Name="phototool_CAMERA_RELEASE" Symbol="ID_CAMERA_RELEASE" Id="32786" Keytip="R" />
-    <Command Name="phototool_CAMERA_SHOOTING_MODE" Symbol="ID_CAMERA_SHOOTING_MODE"  Id="32787" Keytip="S" />
-    <Command Name="phototool_CAMERA_SETTINGS_AV" Symbol="ID_CAMERA_SETTINGS_AV"  Id="32788" Keytip="A" />
-    <Command Name="phototool_CAMERA_SETTINGS_TV" Symbol="ID_CAMERA_SETTINGS_TV"  Id="32789" Keytip="H" />
-    <Command Name="phototool_CAMERA_SETTINGS_EXPOSURE" Symbol="ID_CAMERA_SETTINGS_EXPOSURE"  Id="32790" Keytip="E" />
-    <Command Name="phototool_CAMERA_SETTINGS_ISO" Symbol="ID_CAMERA_SETTINGS_ISO"  Id="32791" Keytip="I" />
-    <Command Name="phototool_CAMERA_SETTINGS_SAVETO" Symbol="ID_CAMERA_SETTINGS_SAVETO"  Id="32792" Keytip="T" />
-    <Command Name="phototool_CAMERA_SETTINGS_SAVETO_CAMERA" Symbol="ID_CAMERA_SETTINGS_SAVETO_CAMERA"  Id="32793" />
-    <Command Name="phototool_CAMERA_SETTINGS_SAVETO_PC" Symbol="ID_CAMERA_SETTINGS_SAVETO_PC"  Id="32794" />
-    <Command Name="phototool_CAMERA_SETTINGS_SAVETO_BOTH" Symbol="ID_CAMERA_SETTINGS_SAVETO_BOTH"  Id="32795" />
-    <Command Name="phototool_CAMERA_SETTINGS_IMAGE_FORMAT" Symbol="ID_CAMERA_SETTINGS_IMAGE_FORMAT"  Id="32796" Keytip="F" />
+    <Command Name="phototool_CAMERA_RELEASE" Symbol="ID_CAMERA_RELEASE" Id="32787" Keytip="R" />
+    <Command Name="phototool_CAMERA_SHOOTING_MODE" Symbol="ID_CAMERA_SHOOTING_MODE"  Id="32788" Keytip="S" />
+    <Command Name="phototool_CAMERA_SETTINGS_AV" Symbol="ID_CAMERA_SETTINGS_AV"  Id="32789" Keytip="A" />
+    <Command Name="phototool_CAMERA_SETTINGS_TV" Symbol="ID_CAMERA_SETTINGS_TV"  Id="32790" Keytip="H" />
+    <Command Name="phototool_CAMERA_SETTINGS_EXPOSURE" Symbol="ID_CAMERA_SETTINGS_EXPOSURE"  Id="32791" Keytip="E" />
+    <Command Name="phototool_CAMERA_SETTINGS_ISO" Symbol="ID_CAMERA_SETTINGS_ISO"  Id="32792" Keytip="I" />
+    <Command Name="phototool_CAMERA_SETTINGS_SAVETO" Symbol="ID_CAMERA_SETTINGS_SAVETO"  Id="32793" Keytip="T" />
+    <Command Name="phototool_CAMERA_SETTINGS_SAVETO_CAMERA" Symbol="ID_CAMERA_SETTINGS_SAVETO_CAMERA"  Id="32794" />
+    <Command Name="phototool_CAMERA_SETTINGS_SAVETO_PC" Symbol="ID_CAMERA_SETTINGS_SAVETO_PC"  Id="32795" />
+    <Command Name="phototool_CAMERA_SETTINGS_SAVETO_BOTH" Symbol="ID_CAMERA_SETTINGS_SAVETO_BOTH"  Id="32796" />
+    <Command Name="phototool_CAMERA_SETTINGS_IMAGE_FORMAT" Symbol="ID_CAMERA_SETTINGS_IMAGE_FORMAT"  Id="32797" Keytip="F" />
 
-    <Command Name="phototool_VIEWFINDER_SHOW" Symbol="ID_VIEWFINDER_SHOW" Id="32797" Keytip="V" />
-    <Command Name="phototool_VIEWFINDER_AUTO_FOCUS" Symbol="ID_VIEWFINDER_AUTO_FOCUS" Id="32798" Keytip="F" />
-    <Command Name="phototool_VIEWFINDER_AUTO_WB" Symbol="ID_VIEWFINDER_AUTO_WB" Id="32799" Keytip="W" />
-    <Command Name="phototool_VIEWFINDER_ZOOM_IN" Symbol="ID_VIEWFINDER_ZOOM_IN" Id="32800" Keytip="I" />
-    <Command Name="phototool_VIEWFINDER_ZOOM_OUT" Symbol="ID_VIEWFINDER_ZOOM_OUT" Id="32801" Keytip="O" />
-    <Command Name="phototool_VIEWFINDER_LINES_MODE" Symbol="ID_VIEWFINDER_LINES_MODE" Id="32802" LabelTitle="Lines mode" Keytip="L" />
-    <Command Name="phototool_VIEWFINDER_LINES_MODE_NONE" Symbol="ID_VIEWFINDER_LINES_MODE_NONE" Id="32803" Keytip="N" />
-    <Command Name="phototool_VIEWFINDER_LINES_MODE_RULEOFTHIRDS" Symbol="ID_VIEWFINDER_LINES_MODE_RULEOFTHIRDS" Id="32804" Keytip="R" />
-    <Command Name="phototool_VIEWFINDER_LINES_MODE_GOLDENRATIO" Symbol="ID_VIEWFINDER_LINES_MODE_GOLDENRATIO" Id="32805" Keytip="G" />
-    <Command Name="phototool_VIEWFINDER_OUTPUT_TYPE" Symbol="ID_VIEWFINDER_OUTPUT_TYPE" Id="32806" LabelTitle="Viewfinder output" Keytip="T" />
-    <Command Name="phototool_VIEWFINDER_OUTPUT_TYPE_LCD" Symbol="ID_VIEWFINDER_OUTPUT_TYPE_LCD" Id="32807" Keytip="L" />
-    <Command Name="phototool_VIEWFINDER_OUTPUT_TYPE_VIDEO_OUT" Symbol="ID_VIEWFINDER_OUTPUT_TYPE_VIDEO_OUT" Id="32808" Keytip="V" />
-    <Command Name="phototool_VIEWFINDER_OUTPUT_TYPE_OFF" Symbol="ID_VIEWFINDER_OUTPUT_TYPE_OFF" Id="32809" Keytip="O" />
-    <Command Name="phototool_VIEWFINDER_SHOW_OVEREXPOSED" Symbol="ID_VIEWFINDER_SHOW_OVEREXPOSED" Id="32810" Keytip="X" />
-    <Command Name="phototool_VIEWFINDER_SHOW_OVERLAY_IMAGE" Symbol="ID_VIEWFINDER_SHOW_OVERLAY_IMAGE" Id="32811" Keytip="L" />
-    <Command Name="phototool_VIEWFINDER_HISTOGRAM" Symbol="ID_VIEWFINDER_HISTOGRAM" Id="32812" Keytip="H" />
+    <Command Name="phototool_VIEWFINDER_SHOW" Symbol="ID_VIEWFINDER_SHOW" Id="32798" Keytip="V" />
+    <Command Name="phototool_VIEWFINDER_AUTO_FOCUS" Symbol="ID_VIEWFINDER_AUTO_FOCUS" Id="32799" Keytip="F" />
+    <Command Name="phototool_VIEWFINDER_AUTO_WB" Symbol="ID_VIEWFINDER_AUTO_WB" Id="32800" Keytip="W" />
+    <Command Name="phototool_VIEWFINDER_ZOOM_IN" Symbol="ID_VIEWFINDER_ZOOM_IN" Id="32801" Keytip="I" />
+    <Command Name="phototool_VIEWFINDER_ZOOM_OUT" Symbol="ID_VIEWFINDER_ZOOM_OUT" Id="32802" Keytip="O" />
+    <Command Name="phototool_VIEWFINDER_LINES_MODE" Symbol="ID_VIEWFINDER_LINES_MODE" Id="32803" LabelTitle="Lines mode" Keytip="L" />
+    <Command Name="phototool_VIEWFINDER_LINES_MODE_NONE" Symbol="ID_VIEWFINDER_LINES_MODE_NONE" Id="32804" Keytip="N" />
+    <Command Name="phototool_VIEWFINDER_LINES_MODE_RULEOFTHIRDS" Symbol="ID_VIEWFINDER_LINES_MODE_RULEOFTHIRDS" Id="32805" Keytip="R" />
+    <Command Name="phototool_VIEWFINDER_LINES_MODE_GOLDENRATIO" Symbol="ID_VIEWFINDER_LINES_MODE_GOLDENRATIO" Id="32806" Keytip="G" />
+    <Command Name="phototool_VIEWFINDER_OUTPUT_TYPE" Symbol="ID_VIEWFINDER_OUTPUT_TYPE" Id="32807" LabelTitle="Viewfinder output" Keytip="T" />
+    <Command Name="phototool_VIEWFINDER_OUTPUT_TYPE_LCD" Symbol="ID_VIEWFINDER_OUTPUT_TYPE_LCD" Id="32808" Keytip="L" />
+    <Command Name="phototool_VIEWFINDER_OUTPUT_TYPE_VIDEO_OUT" Symbol="ID_VIEWFINDER_OUTPUT_TYPE_VIDEO_OUT" Id="32809" Keytip="V" />
+    <Command Name="phototool_VIEWFINDER_OUTPUT_TYPE_OFF" Symbol="ID_VIEWFINDER_OUTPUT_TYPE_OFF" Id="32810" Keytip="O" />
+    <Command Name="phototool_VIEWFINDER_SHOW_OVEREXPOSED" Symbol="ID_VIEWFINDER_SHOW_OVEREXPOSED" Id="32811" Keytip="X" />
+    <Command Name="phototool_VIEWFINDER_SHOW_OVERLAY_IMAGE" Symbol="ID_VIEWFINDER_SHOW_OVERLAY_IMAGE" Id="32812" Keytip="L" />
+    <Command Name="phototool_VIEWFINDER_HISTOGRAM" Symbol="ID_VIEWFINDER_HISTOGRAM" Id="32813" Keytip="H" />
 
-    <Command Name="phototool_SCRIPTING_OPEN" Symbol="ID_SCRIPTING_OPEN" Id="32813" Keytip="O" />
-    <Command Name="phototool_SCRIPTING_RELOAD" Symbol="ID_SCRIPTING_RELOAD" Id="32814" Keytip="L" />
-    <Command Name="phototool_SCRIPTING_RUN" Symbol="ID_SCRIPTING_RUN" Id="32815" Keytip="R" />
-    <Command Name="phototool_SCRIPTING_STOP" Symbol="ID_SCRIPTING_STOP" Id="32816" Keytip="T" />
-    <Command Name="phototool_SCRIPTING_EDIT" Symbol="ID_SCRIPTING_EDIT" Id="32817" Keytip="E" />
+    <Command Name="phototool_SCRIPTING_OPEN" Symbol="ID_SCRIPTING_OPEN" Id="32814" Keytip="O" />
+    <Command Name="phototool_SCRIPTING_RELOAD" Symbol="ID_SCRIPTING_RELOAD" Id="32815" Keytip="L" />
+    <Command Name="phototool_SCRIPTING_RUN" Symbol="ID_SCRIPTING_RUN" Id="32816" Keytip="R" />
+    <Command Name="phototool_SCRIPTING_STOP" Symbol="ID_SCRIPTING_STOP" Id="32817" Keytip="T" />
+    <Command Name="phototool_SCRIPTING_EDIT" Symbol="ID_SCRIPTING_EDIT" Id="32818" Keytip="E" />
 
     <Command Name="wtl_VIEW_RIBBON" Symbol="ID_VIEW_RIBBON" Id="0xE804" Keytip="B" />
     <Command Name="wtl_APP_ABOUT" Symbol="ID_APP_ABOUT" Id="0xE140" Keytip="?" />
@@ -147,7 +148,7 @@
             <Button CommandName="phototool_HOME_SETTINGS"/>
           </Group>
 
-          <Group CommandName="GroupPhotoModes" SizeDefinition="SevenButtons">
+          <Group CommandName="GroupPhotoModes" SizeDefinition="EightButtons">
             <Button CommandName="phototool_PHOTO_MODE_NORMAL"/>
             <Button CommandName="phototool_PHOTO_MODE_HDR"/>
             <Button CommandName="phototool_PHOTO_MODE_PANO" />
@@ -157,6 +158,7 @@
             <Button CommandName="phototool_PHOTO_MODE_SCRIPTING" />
             <Button CommandName="phototool_PHOTO_MODE_DEVICE_PROPERTIES" />
             <Button CommandName="phototool_PHOTO_MODE_IMAGE_PROPERTIES" />
+            <Button CommandName="phototool_PHOTO_MODE_CAMERA_FILE_SYSTEM" />
           </Group>
 
           <Group CommandName="GroupViews" SizeDefinition="ThreeButtons">
@@ -202,7 +204,7 @@
             <Group CommandName="GroupCameraActions" SizeDefinition="OneButton">
               <Button CommandName="phototool_CAMERA_RELEASE"/>
             </Group>
-            
+
             <Group CommandName="GroupCameraShootingSettings">
               <ComboBox CommandName="phototool_CAMERA_SHOOTING_MODE" />
               <ComboBox CommandName="phototool_CAMERA_SETTINGS_AV" />
