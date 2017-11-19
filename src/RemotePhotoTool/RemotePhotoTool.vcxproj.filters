@@ -124,6 +124,15 @@
     <ClCompile Include="TimeLapsePhotoModeView.cpp">
       <Filter>Photo Mode Files\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CameraFileSystemView.cpp">
+      <Filter>Photo Mode Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraFileSystemFileListView.cpp">
+      <Filter>UI Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraFileSystemTreeView.cpp">
+      <Filter>UI Files\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -242,6 +251,15 @@
     </ClInclude>
     <ClInclude Include="TimeLapsePhotoModeView.hpp">
       <Filter>Photo Mode Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraFileSystemView.hpp">
+      <Filter>Photo Mode Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraFileSystemTreeView.hpp">
+      <Filter>UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraFileSystemFileListView.hpp">
+      <Filter>UI Files\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

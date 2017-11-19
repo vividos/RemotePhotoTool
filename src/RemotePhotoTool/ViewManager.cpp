@@ -20,6 +20,7 @@
 #include "DevicePropertyView.hpp"
 #include "ImagePropertyView.hpp"
 #include "PreviousImagesView.hpp"
+#include "CameraFileSystemView.hpp"
 
 std::unique_ptr<IPhotoModeView> ViewManager::CreateView(IPhotoModeViewHost& host, T_enViewType enViewType)
 {
@@ -36,6 +37,7 @@ std::unique_ptr<IPhotoModeView> ViewManager::CreateView(IPhotoModeViewHost& host
    case viewDeviceProperties: return std::unique_ptr<IPhotoModeView>(new DevicePropertyView(host));
    case viewImageProperties:  return std::unique_ptr<IPhotoModeView>(new ImagePropertyView(host));
    case viewPreviousImages:   return std::unique_ptr<IPhotoModeView>(new PreviousImagesView(host));
+   case viewCameraFileSystem: return std::unique_ptr<IPhotoModeView>(new CameraFileSystemView(host));
 
    default:
       ATLASSERT(false);
