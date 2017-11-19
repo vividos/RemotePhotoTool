@@ -23,7 +23,7 @@ namespace PSREC
 void CheckError(const CString& cszFunction, prResponse err, LPCSTR pszFile, UINT uiLine);
 
 /// SDK reference
-class Ref: public SdkReferenceBase, std::enable_shared_from_this<Ref>
+class Ref: public SdkReferenceBase, public std::enable_shared_from_this<Ref>
 {
 public:
    /// ctor

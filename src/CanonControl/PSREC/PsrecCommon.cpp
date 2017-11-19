@@ -150,8 +150,9 @@ void Ref::EnumerateDevices(std::vector<std::shared_ptr<SourceInfo>>& vecSourceDe
          deviceInfo.PortType == 0x01 ? _T("WIA") : deviceInfo.PortType == 0x02 ? _T("STI") : _T("???")
       );
 
+      RefSp ref = const_cast<Ref*>(this)->shared_from_this();
       std::shared_ptr<SourceInfo> spSourceInfo(
-         new SourceInfoImpl(const_cast<Ref*>(this)->shared_from_this(), deviceInfo));
+         new SourceInfoImpl(ref, deviceInfo));
 
       vecSourceDevices.push_back(spSourceInfo);
    }
