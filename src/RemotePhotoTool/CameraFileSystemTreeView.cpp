@@ -10,6 +10,7 @@
 
 void CameraFileSystemTreeView::Init(std::shared_ptr<CameraFileSystem> cameraFileSystem)
 {
+   m_cameraFileSystem = cameraFileSystem;
 }
 
 void CameraFileSystemTreeView::RefreshTree()
@@ -21,6 +22,8 @@ void CameraFileSystemTreeView::RefreshTree()
    HTREEITEM rootItem = CTreeViewCtrl::InsertItem(CameraFileSystem::PathSeparator, TVI_ROOT, TVI_LAST);
 
    RecursivelyAddTreeItems(rootItem, CameraFileSystem::PathSeparator);
+
+   Expand(rootItem, TVE_EXPAND);
 
    SetRedraw(TRUE);
 }
