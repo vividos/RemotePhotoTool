@@ -917,7 +917,13 @@ void MainFrame::EnablePhotoModes(bool bEnable)
    UIEnable(ID_PHOTO_MODE_SCRIPTING, true); // scripting is always enabled
    UIEnable(ID_PHOTO_MODE_DEVICE_PROPERTIES, bEnable);
    UIEnable(ID_PHOTO_MODE_IMAGE_PROPERTIES, bEnable);
-   UIEnable(ID_PHOTO_MODE_CAMERA_FILE_SYSTEM, bEnable);
+
+   bool enableCameraFileSystem =
+      bEnable &&
+      m_connection.IsConnected() &&
+      m_connection.GetSourceDevice()->GetDeviceCapability(SourceDevice::capCameraFileSystem);
+
+   UIEnable(ID_PHOTO_MODE_CAMERA_FILE_SYSTEM, enableCameraFileSystem);
 }
 
 void MainFrame::EnableViewfinder(bool bEnable)
