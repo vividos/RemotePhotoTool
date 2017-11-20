@@ -81,6 +81,9 @@ void CameraFileSystemImpl::StartDownload(const FileInfo& fileInfo, T_fnDownloadF
 
 CComPtr<IWiaItem> CameraFileSystemImpl::FollowPath(CComPtr<IWiaItem> baseItem, const CString& path) const
 {
+   if (path == PathSeparator)
+      return baseItem;
+
    CComPtr<IWiaItem> currentItem = baseItem;
 
    int currentIndex = 0;
