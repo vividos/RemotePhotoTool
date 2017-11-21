@@ -134,6 +134,9 @@
     <ClCompile Include="WIA\WiaPropertyAccess.cpp">
       <Filter>WIA Files</Filter>
     </ClCompile>
+    <ClCompile Include="WIA\WiaRemoteReleaseControlImpl.cpp">
+      <Filter>WIA Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="exports\BulbReleaseControl.hpp">
@@ -348,6 +351,9 @@
     </ClInclude>
     <ClInclude Include="SdkReferenceBase.hpp">
       <Filter>Exported Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WIA\WiaRemoteReleaseControlImpl.hpp">
+      <Filter>WIA Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

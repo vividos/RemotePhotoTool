@@ -10,6 +10,7 @@
 #include "stdafx.h"
 #include "WiaSourceDeviceImpl.hpp"
 #include "WiaCameraFileSystemImpl.hpp"
+#include "WiaRemoteReleaseControlImpl.hpp"
 
 using namespace WIA;
 
@@ -18,8 +19,7 @@ bool SourceDeviceImpl::GetDeviceCapability(SourceDevice::T_enDeviceCapability de
    switch (deviceCapability)
    {
    case SourceDevice::capRemoteReleaseControl:
-      // TODO check if supported
-      return false;
+      return true;
 
    case SourceDevice::capRemoteViewfinder:
       // TODO check if supported
@@ -72,5 +72,5 @@ std::shared_ptr<CameraFileSystem> SourceDeviceImpl::GetFileSystem()
 
 std::shared_ptr<RemoteReleaseControl> SourceDeviceImpl::EnterReleaseControl()
 {
-   throw CameraException(_T(""), _T(""), 0, __FILE__, __LINE__);
+   return std::make_shared<WIA::RemoteReleaseControlImpl>(m_ref);
 }
