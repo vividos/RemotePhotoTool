@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2018 Michael Fink
 //
 /// \file PhotoModeManager.hpp Photo mode manager classes
 //
@@ -146,4 +146,36 @@ private:
 
    /// filenames of panorama shots
    std::vector<CString> m_vecPanoramaFilenameList;
+};
+
+/// Timelapse photo mode manager
+class TimeLapsePhotoModeManager
+{
+public:
+   /// ctor
+   TimeLapsePhotoModeManager(IPhotoModeViewHost& host, HWND& hWnd)
+      :m_host(host),
+      m_hWnd(hWnd),
+      m_isStarted(false)
+   {
+   }
+
+   /// inits photo manager
+   bool Init(std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl);
+
+   /// returns if time lapse photo taking is in progress
+   bool IsStarted() const { return m_isStarted; }
+
+private:
+   /// host
+   IPhotoModeViewHost& m_host;
+
+   /// parent window for dialogs
+   HWND& m_hWnd;
+
+   /// remote release control
+   std::shared_ptr<RemoteReleaseControl> m_spRemoteReleaseControl;
+
+   /// timelapse started?
+   bool m_isStarted;
 };

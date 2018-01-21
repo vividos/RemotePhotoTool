@@ -661,7 +661,6 @@ void MainFrame::SetupRibbonBar()
       m_CmdBar.GetMenu().DeleteMenu(ID_VIEW_RIBBON, MF_BYCOMMAND);
 
    // remove photo modes that aren't implemented yet
-   m_CmdBar.GetMenu().DeleteMenu(ID_PHOTO_MODE_TIMELAPSE, MF_BYCOMMAND);
    m_CmdBar.GetMenu().DeleteMenu(ID_PHOTO_MODE_PHOTOSTACK, MF_BYCOMMAND);
 
    // remove functions not implemented yet
@@ -711,7 +710,6 @@ void MainFrame::SetupToolbar()
       //SetToolbarButtonText(tb, ID_HOME_SETTINGS, _T("Settings"));
 
       // remove photo modes that aren't implemented yet
-      tb.HideButton(ID_PHOTO_MODE_TIMELAPSE);
       tb.HideButton(ID_PHOTO_MODE_PHOTOSTACK);
 
       // remove functions not implemented yet

@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2018 Michael Fink
 //
 /// \file PhotoModeManager.cpp Photo mode manager classes
 //
@@ -375,4 +375,35 @@ void PanoramaPhotoModeManager::OnFinishedTransfer(const ShutterReleaseSettings& 
    m_host.OnTransferredImage(cszFilename);
 
    m_host.LockActionMode(false);
+}
+
+//
+// TimeLapsePhotoModeManager
+//
+
+bool TimeLapsePhotoModeManager::Init(std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl)
+{
+   m_spRemoteReleaseControl = spRemoteReleaseControl;
+
+   // set default release settings
+   try
+   {
+      ShutterReleaseSettings& settings = m_host.GetReleaseSettings();
+
+      CString filename =
+         m_host.GetImageFileManager().NextFilename(imageTypeTimelapse);
+      settings.Filename(filename);
+
+      settings.HandlerOnFinishedTransfer(nullptr);
+
+      m_spRemoteReleaseControl->SetReleaseSettings(settings);
+   }
+   catch (CameraException& ex)
+   {
+      CameraErrorDlg dlg(_T("Error while setting default shooting settings"), ex);
+      dlg.DoModal(m_hWnd);
+      return false;
+   }
+
+   return true;
 }
