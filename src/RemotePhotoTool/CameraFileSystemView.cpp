@@ -25,7 +25,7 @@ HWND CameraFileSystemView::CreateView(HWND hWndParent)
    SetSplitterPanes(m_treeView, m_listView);
    SetSinglePaneMode(SPLIT_PANE_NONE);
 
-   SetSplitterPosPct(75);
+   SetSplitterPosPct(20);
 
    m_cameraFileSystem = m_host.GetSourceDevice()->GetFileSystem();
 

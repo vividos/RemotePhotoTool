@@ -10,7 +10,7 @@ class IPhotoModeViewHost;
 class CameraFileSystemFileListView;
 
 /// win traits for camera file system tree view
-typedef CWinTraitsOR<TVS_HASLINES | TVS_LINESATROOT | TVS_SHOWSELALWAYS, WS_EX_CLIENTEDGE | TVS_EX_DOUBLEBUFFER, CControlWinTraits>
+typedef CWinTraitsOR<TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | TVS_SHOWSELALWAYS, WS_EX_CLIENTEDGE | TVS_EX_DOUBLEBUFFER, CControlWinTraits>
 CameraFileSystemTreeViewWinTraits;
 
 class CameraFileSystemTreeView :
@@ -35,12 +35,16 @@ public:
 
 private:
    BEGIN_MSG_MAP(CameraFileSystemFileListView)
+      NOTIFY_CODE_HANDLER(TVN_SELCHANGED, OnSelChanged)
    END_MSG_MAP()
 
    // Handler prototypes (uncomment arguments if needed):
    // LRESULT MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
    // LRESULT CommandHandler(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
    // LRESULT NotifyHandler(int /*idCtrl*/, LPNMHDR /*pnmh*/, BOOL& bHandled)
+
+   /// called when tree view selection has changed
+   LRESULT OnSelChanged(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
 
    /// recursively adds folder items from a path to the parent tree item
    void RecursivelyAddTreeItems(HTREEITEM parentItem, const CString& path);
@@ -61,4 +65,7 @@ private:
 
    /// mapping from path name to tree item; path name is without ending slash
    std::map<CString, HTREEITEM> m_mapPathToTreeItem;
+
+   /// mapping from tree item to path name; path name is without ending slash
+   std::map<HTREEITEM, CString> m_mapTreeItemToPath;
 };

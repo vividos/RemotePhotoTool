@@ -32,6 +32,14 @@ public:
    }
 
 private:
+   // message map
+   BEGIN_MSG_MAP(CameraFileSystemView)
+      CHAIN_MSG_MAP_MEMBER(m_treeView)
+      CHAIN_MSG_MAP_MEMBER(m_listView)
+      CHAIN_MSG_MAP(CSplitterWindowImpl<CameraFileSystemView>)
+      REFLECT_NOTIFICATIONS() // to make sure superclassed controls get notification messages
+   END_MSG_MAP()
+
    // virtual methods from IPhotoModeView
 
    virtual HWND CreateView(HWND hWndParent) override;

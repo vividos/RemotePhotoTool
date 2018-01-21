@@ -6,6 +6,7 @@
 //
 #include "stdafx.h"
 #include "CameraFileSystemTreeView.hpp"
+#include "CameraFileSystemFileListView.hpp"
 #include "CameraFileSystem.hpp"
 
 void CameraFileSystemTreeView::Init(std::shared_ptr<CameraFileSystem> cameraFileSystem)
@@ -18,14 +19,36 @@ void CameraFileSystemTreeView::RefreshTree()
    SetRedraw(FALSE);
 
    DeleteAllItems();
+   m_mapTreeItemToPath.clear();
+   m_mapPathToTreeItem.clear();
 
    HTREEITEM rootItem = CTreeViewCtrl::InsertItem(CameraFileSystem::PathSeparator, TVI_ROOT, TVI_LAST);
+
+   m_mapTreeItemToPath.insert(std::make_pair(rootItem, CameraFileSystem::PathSeparator));
+   m_mapPathToTreeItem.insert(std::make_pair(CameraFileSystem::PathSeparator, rootItem));
 
    RecursivelyAddTreeItems(rootItem, CameraFileSystem::PathSeparator);
 
    Expand(rootItem, TVE_EXPAND);
 
    SetRedraw(TRUE);
+}
+
+LRESULT CameraFileSystemTreeView::OnSelChanged(int /*idCtrl*/, LPNMHDR pnmh, BOOL& /*bHandled*/)
+{
+   LPNMTREEVIEW pnmtreeview = (LPNMTREEVIEW)pnmh;
+
+   HTREEITEM selectedItem = pnmtreeview->itemNew.hItem;
+
+   auto iter = m_mapTreeItemToPath.find(selectedItem);
+   if (iter != m_mapTreeItemToPath.end())
+   {
+      CString path = iter->second;
+      m_listView.NavigateToPath(path);
+      NavigateToPath(path);
+   }
+
+   return 0;
 }
 
 void CameraFileSystemTreeView::RecursivelyAddTreeItems(HTREEITEM parentItem, const CString& path)
@@ -36,7 +59,13 @@ void CameraFileSystemTreeView::RecursivelyAddTreeItems(HTREEITEM parentItem, con
    {
       HTREEITEM item = CTreeViewCtrl::InsertItem(folderName, parentItem, TVI_LAST);
 
-      CString subPath = path + CameraFileSystem::PathSeparator + folderName;
+      CString subPath = path;
+      if (path != CameraFileSystem::PathSeparator)
+         subPath += CameraFileSystem::PathSeparator;
+      subPath += folderName;
+
+      m_mapTreeItemToPath.insert(std::make_pair(item, subPath));
+      m_mapPathToTreeItem.insert(std::make_pair(subPath, item));
 
       RecursivelyAddTreeItems(item, subPath);
    }
