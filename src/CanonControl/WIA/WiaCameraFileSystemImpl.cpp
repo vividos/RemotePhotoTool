@@ -98,7 +98,7 @@ CComPtr<IWiaItem> CameraFileSystemImpl::FollowPath(CComPtr<IWiaItem> baseItem, c
       {
          currentItem = OpenChildByName(currentItem, pathPart);
       }
-   } while (currentIndex < path.GetLength() && currentItem != nullptr);
+   } while (currentIndex >= 0 && currentIndex < path.GetLength() && currentItem != nullptr);
 
    return currentItem;
 }

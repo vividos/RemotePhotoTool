@@ -120,7 +120,7 @@ Handle CameraFileSystemImpl::FollowPath(Handle baseElement, const CString& path,
          current = OpenChildByName(current, pathPart, pathLevel);
          pathLevel++;
       }
-   } while (currentIndex < path.GetLength() && current.IsValid());
+   } while (currentIndex >= 0 && currentIndex < path.GetLength() && current.IsValid());
 
    return current;
 }
