@@ -1,9 +1,9 @@
 @echo off
 REM
 REM RemotePhotoTool - remote camera control software
-REM Copyright (C) 2008-2017 Michael Fink
+REM Copyright (C) 2008-2018 Michael Fink
 REM
-REM runs SonarQube analysis build
+REM runs SonarCloud analysis build
 REM
 
 call "%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Community\Common7\Tools\VsDevCmd.bat"
@@ -30,12 +30,12 @@ SonarQube.Scanner.MSBuild.exe begin ^
     /k:"RemotePhotoTool" ^
     /v:"1.6.0" ^
     /d:"sonar.cfamily.build-wrapper-output=%CD%\bw-output" ^
-    /d:"sonar.host.url=https://sonarqube.com" ^
+    /d:"sonar.host.url=https://sonarcloud.io" ^
     /d:"sonar.organization=vividos-github" ^
-    /d:"sonar.login=6a2bdc8a9052902bc257547dfc2a6d79e5089aae"
+    /d:"sonar.login=%SONARLOGIN%"
 
 build-wrapper-win-x86-64.exe --out-dir bw-output msbuild RemotePhotoTool.sln /m /property:Configuration=Release,Platform=Win32 /target:Build
 
-SonarQube.Scanner.MSBuild.exe end /d:"sonar.login=6a2bdc8a9052902bc257547dfc2a6d79e5089aae"
+SonarQube.Scanner.MSBuild.exe end /d:"sonar.login=%SONARLOGIN%"
 
 pause
