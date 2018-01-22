@@ -37,13 +37,11 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\wtl91.props" />
     <Import Project="..\..\RemotePhotoTool-Debug.props" />
     <Import Project="..\..\CppUnitTest.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\wtl91.props" />
     <Import Project="..\..\RemotePhotoTool-Release.props" />
     <Import Project="..\..\CppUnitTest.props" />
   </ImportGroup>
@@ -98,6 +96,7 @@
   <ImportGroup Label="ExtensionTargets">
     <Import Project="..\..\packages\boost.1.66.0.0\build\native\boost.targets" Condition="Exists('..\..\packages\boost.1.66.0.0\build\native\boost.targets')" />
     <Import Project="..\..\packages\Vividos.UlibCpp.Static.4.1.0\build\native\Vividos.UlibCpp.Static.targets" Condition="Exists('..\..\packages\Vividos.UlibCpp.Static.4.1.0\build\native\Vividos.UlibCpp.Static.targets')" />
+    <Import Project="..\..\packages\wtl.9.1.1\build\native\wtl.targets" Condition="Exists('..\..\packages\wtl.9.1.1\build\native\wtl.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
@@ -105,5 +104,6 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\..\packages\boost.1.66.0.0\build\native\boost.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\boost.1.66.0.0\build\native\boost.targets'))" />
     <Error Condition="!Exists('..\..\packages\Vividos.UlibCpp.Static.4.1.0\build\native\Vividos.UlibCpp.Static.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Vividos.UlibCpp.Static.4.1.0\build\native\Vividos.UlibCpp.Static.targets'))" />
+    <Error Condition="!Exists('..\..\packages\wtl.9.1.1\build\native\wtl.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\wtl.9.1.1\build\native\wtl.targets'))" />
   </Target>
 </Project>
