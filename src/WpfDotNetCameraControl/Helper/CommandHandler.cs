@@ -11,12 +11,23 @@ namespace WpfDotNetCameraControl.Helper
         /// <summary>
         /// Action to execute
         /// </summary>
-        private Action executeAction;
+        private readonly Action executeAction;
 
         /// <summary>
         /// Event that gets signaled when the "can execute" state has changed
         /// </summary>
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler CanExecuteChanged
+        {
+            add
+            {
+                // not used
+            }
+
+            remove
+            {
+                // not used
+            }
+        }
 
         /// <summary>
         /// Creates new command handler
