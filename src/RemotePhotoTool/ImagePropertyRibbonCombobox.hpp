@@ -182,7 +182,7 @@ public:
       if (uItem >= m_vecValueTexts.size())
          return L"";
 
-      if (m_vecValueTexts[uItem].IsEmpty() && uItem < m_vecValues.size())
+      if (uItem < m_vecValues.size() && m_vecValueTexts[uItem].IsEmpty())
          m_vecValueTexts[uItem] = m_vecValues[uItem].AsString();
 
       return m_vecValueTexts[uItem];
