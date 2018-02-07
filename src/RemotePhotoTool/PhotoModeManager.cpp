@@ -140,12 +140,12 @@ void HDRPhotoModeManager::RecalcAEBShutterSpeedList(size_t uiNumShots)
          else
             if ((ui & 1) == 0) // even: 2, 4, 6, ...
             {
-            ShutterSpeedValue prev = shutterDown;
-            shutterDown.Subtract2EV();
+               ShutterSpeedValue prev = shutterDown;
+               shutterDown.Subtract2EV();
 
-            // limit
-            if (prev != shutterDown)
-               m_vecAEBShutterSpeedValues.push_back(shutterDown.Value());
+               // limit
+               if (prev != shutterDown)
+                  m_vecAEBShutterSpeedValues.push_back(shutterDown.Value());
             }
             else
                if ((ui & 1) == 1) // odd: 3, 5, 7, ...
@@ -215,8 +215,8 @@ void HDRPhotoModeManager::ReleaseAEBNext()
 
    settings.HandlerOnFinishedTransfer(
       bLastShot ?
-         std::bind(&HDRPhotoModeManager::OnFinishedTransferLastAEB, this, std::placeholders::_1) :
-         std::bind(&HDRPhotoModeManager::OnFinishedTransferNextAEB, this, std::placeholders::_1));
+      std::bind(&HDRPhotoModeManager::OnFinishedTransferLastAEB, this, std::placeholders::_1) :
+      std::bind(&HDRPhotoModeManager::OnFinishedTransferNextAEB, this, std::placeholders::_1));
 
    CString cszFilename =
       m_host.GetImageFileManager().NextFilename(imageTypeHDR, m_uiCurrentAEBShutterSpeed == 0);
@@ -352,7 +352,7 @@ void PanoramaPhotoModeManager::ReleasePanorama()
       m_vecPanoramaFilenameList.size() + 1);
    m_host.SetStatusText(cszText);
 
-   // action mode is only unlocked when we receive an image
+   // action mode is only locked/unlocked when we receive an image
    if (m_host.GetReleaseSettings().SaveTarget() != ShutterReleaseSettings::saveToCamera)
       m_host.LockActionMode(true);
 
