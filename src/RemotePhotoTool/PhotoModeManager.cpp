@@ -18,6 +18,7 @@
 #include "ShootingMode.hpp"
 #include "ShutterSpeedValue.hpp"
 #include "HuginInterface.hpp"
+#include "TimeLapseScheduler.hpp"
 
 //
 // HDRPhotoModeManager
@@ -381,20 +382,94 @@ void PanoramaPhotoModeManager::OnFinishedTransfer(const ShutterReleaseSettings& 
 // TimeLapsePhotoModeManager
 //
 
-bool TimeLapsePhotoModeManager::Init(std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl)
+/// ctor
+TimeLapsePhotoModeManager::TimeLapsePhotoModeManager(IPhotoModeViewHost& host, HWND& hWnd)
+   :m_host(host),
+   m_hWnd(hWnd),
+   m_stateMachineState(notRunning),
+   m_stateEventHandlerId(-1)
+{
+}
+
+bool TimeLapsePhotoModeManager::Init(std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl, std::function<void()> fnFinished)
 {
    m_spRemoteReleaseControl = spRemoteReleaseControl;
+   m_fnFinished = fnFinished;
 
-   // set default release settings
+   return true;
+}
+
+bool TimeLapsePhotoModeManager::IsStarted() const
+{
+   return m_spScheduler != nullptr &&
+      m_stateMachineState != T_enStateMachineState::notRunning &&
+      m_stateMachineState != T_enStateMachineState::finished;
+}
+
+void TimeLapsePhotoModeManager::Start()
+{
+   ATLASSERT(m_spScheduler == nullptr); // must not have a running scheduler
+
+   if (!SetReleaseSettings())
+   {
+      return;
+   }
+
+   m_spScheduler = std::make_shared<TimeLapseScheduler>();
+
+   m_stateMachineState = T_enStateMachineState::started;
+
+   m_host.SetStatusText(_T("TimeLapse state: Started"));
+
+   auto fnSchedule = std::bind(&TimeLapsePhotoModeManager::RunStateMachine, this);
+   m_spScheduler->Schedule(fnSchedule);
+
+   auto fnOnStateEvent = std::bind(&TimeLapsePhotoModeManager::OnStateEvent, this, std::placeholders::_1, std::placeholders::_2);
+
+   m_stateEventHandlerId =
+      m_spRemoteReleaseControl->AddStateEventHandler(fnOnStateEvent);
+}
+
+void TimeLapsePhotoModeManager::Stop()
+{
+   ATLASSERT(m_spScheduler != nullptr); // must have a running scheduler
+
+   m_spRemoteReleaseControl->RemoveStateEventHandler(m_stateEventHandlerId);
+
+   m_spScheduler->CancelAll();
+   m_spScheduler.reset();
+
+   m_host.SetStatusText(_T("TimeLapse state: Finished"));
+}
+
+void TimeLapsePhotoModeManager::ManualRelease()
+{
+   ATLASSERT(m_spScheduler != nullptr); // must have a running scheduler
+   ATLASSERT(m_options.m_releaseTrigger == TimeLapseOptions::releaseManually);
+
+   if (m_stateMachineState == T_enStateMachineState::waitManualRelease)
+   {
+      m_stateMachineState = T_enStateMachineState::takePhoto;
+
+      auto fnSchedule = std::bind(&TimeLapsePhotoModeManager::RunStateMachine, this);
+      m_spScheduler->Schedule(fnSchedule);
+
+      m_host.SetStatusText(_T("TimeLapse state: Taking photo..."));
+   }
+}
+
+bool TimeLapsePhotoModeManager::SetReleaseSettings()
+{
    try
    {
       ShutterReleaseSettings& settings = m_host.GetReleaseSettings();
 
       CString filename =
-         m_host.GetImageFileManager().NextFilename(imageTypeTimelapse);
+         m_host.GetImageFileManager().NextFilename(imageTypeTimelapse, true);
       settings.Filename(filename);
 
-      settings.HandlerOnFinishedTransfer(nullptr);
+      settings.HandlerOnFinishedTransfer(
+         std::bind(&TimeLapsePhotoModeManager::OnFinishedTransfer, this, std::placeholders::_1));
 
       m_spRemoteReleaseControl->SetReleaseSettings(settings);
    }
@@ -406,4 +481,196 @@ bool TimeLapsePhotoModeManager::Init(std::shared_ptr<RemoteReleaseControl> spRem
    }
 
    return true;
+}
+
+void TimeLapsePhotoModeManager::RunStateMachine()
+{
+   if (m_spScheduler->IsFinished())
+   {
+      m_host.SetStatusText(_T("TimeLapse state: Finished"));
+
+      m_stateMachineState = T_enStateMachineState::finished;
+
+      if (m_fnFinished != nullptr)
+         m_fnFinished();
+
+      return;
+   }
+
+   bool exit = false;
+   while (!exit)
+   {
+      switch (m_stateMachineState)
+      {
+      case T_enStateMachineState::notRunning:
+         m_stateMachineState = T_enStateMachineState::started;
+         break;
+
+      case T_enStateMachineState::started:
+         OnStateStart(exit);
+         break;
+
+      case T_enStateMachineState::waitManualRelease:
+         exit = true; // next state is set by OnStateEvent()
+         break;
+
+      case T_enStateMachineState::takePhoto:
+         OnStateTakePhoto(exit);
+         break;
+
+      case T_enStateMachineState::waitTransferFinished:
+         OnStateWaitTransferFinished(exit);
+         break;
+
+      case T_enStateMachineState::finished:
+         exit = true;
+
+         if (m_fnFinished != nullptr)
+            m_fnFinished();
+
+         break;
+
+      default:
+         ATLASSERT(false); // invalid state machine state
+         break;
+      }
+   }
+}
+
+void TimeLapsePhotoModeManager::OnStateStart(bool& exit)
+{
+   if (m_options.m_releaseTrigger == TimeLapseOptions::T_enReleaseTrigger::releaseManually)
+   {
+      m_stateMachineState = T_enStateMachineState::waitManualRelease;
+
+      m_host.SetStatusText(_T("TimeLapse state: Waiting for manual release..."));
+
+      exit = true; // need an external trigger
+      return;
+   }
+
+   if (m_options.m_useStartTime)
+   {
+      auto fn = [&]() {
+         m_stateMachineState = T_enStateMachineState::takePhoto;
+         RunStateMachine();
+      };
+
+      m_spScheduler->Schedule(m_options.m_startTime, fn);
+
+      m_host.SetStatusText(_T("TimeLapse state: Waiting for start time..."));
+
+      exit = true; // need to wait for start time to occur
+   }
+   else
+   {
+      m_stateMachineState = T_enStateMachineState::takePhoto;
+   }
+}
+
+void TimeLapsePhotoModeManager::OnStateTakePhoto(bool& exit)
+{
+   m_host.SetStatusText(_T("TimeLapse state: Taking photo..."));
+
+   m_lastTriggerTime = COleDateTime::GetCurrentTime();
+
+   // action mode is only locked/unlocked when we receive an image
+   if (m_host.GetReleaseSettings().SaveTarget() != ShutterReleaseSettings::saveToCamera)
+      m_host.LockActionMode(true);
+
+   try
+   {
+      m_spRemoteReleaseControl->Release();
+   }
+   catch (const CameraException& ex)
+   {
+      UNUSED(ex);
+      m_host.SetStatusText(_T("TimeLapse - Couldn't release shutter"));
+   }
+
+   exit = true; // need finished transfer to continue state machine
+}
+
+void TimeLapsePhotoModeManager::OnStateWaitTransferFinished(bool& exit)
+{
+   if (m_options.m_releaseTrigger != TimeLapseOptions::releaseManually &&
+      m_options.m_useEndTime)
+   {
+      COleDateTime now = COleDateTime::GetCurrentTime();
+      if (now >= m_options.m_endTime)
+      {
+         m_host.SetStatusText(_T("TimeLapse state: Finished"));
+
+         m_stateMachineState = T_enStateMachineState::finished;
+
+         if (m_fnFinished != nullptr)
+            m_fnFinished();
+
+         exit = true;
+         return;
+      }
+   }
+
+   switch (m_options.m_releaseTrigger)
+   {
+   case TimeLapseOptions::releaseAfterLastImage:
+      m_stateMachineState = T_enStateMachineState::takePhoto;
+      break;
+
+   case TimeLapseOptions::releaseTriggerInterval:
+   {
+      COleDateTime nextTriggerTime = m_lastTriggerTime + m_options.m_intervalTime;
+
+      m_stateMachineState = T_enStateMachineState::takePhoto;
+
+      auto fnSchedule = std::bind(&TimeLapsePhotoModeManager::RunStateMachine, this);
+      m_spScheduler->Schedule(nextTriggerTime, fnSchedule);
+
+      m_host.SetStatusText(_T("TimeLapse state: Waiting next interval..."));
+
+      exit = true;
+   }
+   break;
+
+   case TimeLapseOptions::releaseManually:
+      m_stateMachineState = T_enStateMachineState::waitManualRelease;
+
+      m_host.SetStatusText(_T("TimeLapse state: Waiting for manual release..."));
+
+      exit = true;
+      break;
+
+   default:
+      ATLASSERT(false); // invalid release trigger value
+      break;
+   }
+}
+
+void TimeLapsePhotoModeManager::OnStateEvent(RemoteReleaseControl::T_enStateEvent stateEvent, unsigned int extraData)
+{
+   UNUSED(extraData);
+
+   if (stateEvent == RemoteReleaseControl::stateEventCameraShutdown)
+   {
+      m_stateMachineState = T_enStateMachineState::waitTransferFinished;
+   }
+}
+
+void TimeLapsePhotoModeManager::OnFinishedTransfer(const ShutterReleaseSettings& settings)
+{
+   // save timelapse filename
+   CString filename = settings.Filename();
+   m_timelapseFilenameList.push_back(filename);
+
+   m_host.OnTransferredImage(filename);
+
+   m_host.LockActionMode(false);
+
+   if (m_spScheduler == nullptr)
+      return; // stop button was pressed already
+
+   m_stateMachineState = T_enStateMachineState::waitTransferFinished;
+
+   auto fn = std::bind(&TimeLapsePhotoModeManager::RunStateMachine, this);
+   m_spScheduler->Schedule(fn);
 }

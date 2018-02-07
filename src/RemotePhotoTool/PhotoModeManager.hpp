@@ -8,12 +8,14 @@
 
 // includes
 #include "ImageProperty.hpp"
+#include <ATLComTime.h>
 
 // forward references
 class IPhotoModeViewHost;
 class RemoteReleaseControl;
 class Viewfinder;
 class ShutterReleaseSettings;
+class TimeLapseScheduler;
 
 /// message sent when next HDR image can be captured
 #define WM_HDR_AEB_NEXT (WM_USER+1)
@@ -148,25 +150,122 @@ private:
    std::vector<CString> m_vecPanoramaFilenameList;
 };
 
-/// Timelapse photo mode manager
+/// Options for time lapse photo mode
+struct TimeLapseOptions
+{
+   /// release trigger type
+   enum T_enReleaseTrigger
+   {
+      /// use an interval to trigger release
+      releaseTriggerInterval = 0,
+
+      /// release just after last image was transferred
+      releaseAfterLastImage = 1,
+
+      /// release manually; user input is used for trigger
+      releaseManually = 2,
+   };
+
+   /// release trigger type
+   T_enReleaseTrigger m_releaseTrigger;
+
+   // scheduler options
+
+   /// interval time, when releaseTriggerInterval is selected
+   ATL::COleDateTimeSpan m_intervalTime;
+
+   /// indicates if start time should be used
+   bool m_useStartTime;
+
+   /// start time to start taking timelapse photos
+   COleDateTime m_startTime;
+
+   /// indicates if end time should be used
+   bool m_useEndTime;
+
+   /// stop time to end taking timelapse photos
+   COleDateTime m_endTime;
+
+   // other options
+
+   /// HDR shooting should be used when taking photos
+   bool m_useHDR;
+
+   /// ctor
+   TimeLapseOptions()
+   {
+      m_releaseTrigger = releaseTriggerInterval;
+      m_useStartTime = false;
+      m_useEndTime = false;
+      m_useHDR = false;
+   }
+};
+
+/// \brief Timelapse photo mode manager
+/// \details The photo mode manager internally uses a state machine to keep
+/// note of the current state of time lapse photographing. The TimeLapseOptions
+/// values control how the state machine switches its states.
 class TimeLapsePhotoModeManager
 {
 public:
    /// ctor
-   TimeLapsePhotoModeManager(IPhotoModeViewHost& host, HWND& hWnd)
-      :m_host(host),
-      m_hWnd(hWnd),
-      m_isStarted(false)
-   {
-   }
+   TimeLapsePhotoModeManager(IPhotoModeViewHost& host, HWND& hWnd);
 
    /// inits photo manager
-   bool Init(std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl);
+   bool Init(std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl, std::function<void()> fnFinished = std::function<void()>());
 
    /// returns if time lapse photo taking is in progress
-   bool IsStarted() const { return m_isStarted; }
+   bool IsStarted() const;
+
+   /// returns time lapse options
+   TimeLapseOptions& Options() { return m_options; }
+
+   /// starts time lapse operations; returns immediately
+   void Start();
+
+   /// stops time lapse operations; returns immediately
+   void Stop();
+
+   /// triggers a manual release; only in "releaseManually" mode
+   void ManualRelease();
 
 private:
+   /// sets default release settings
+   bool SetReleaseSettings();
+
+   /// runs timelapse state machine
+   void RunStateMachine();
+
+   /// called when state "started" occurs
+   void OnStateStart(bool& exit);
+
+   /// called when state "takePhoto" occurs
+   void OnStateTakePhoto(bool&exit);
+
+   /// called when state "waitTransferFinished" occurs
+   void OnStateWaitTransferFinished(bool& exit);
+
+   /// camera state event handler
+   void OnStateEvent(RemoteReleaseControl::T_enStateEvent stateEvent, unsigned int extraData);
+
+   /// called when image transfer is finished
+   void OnFinishedTransfer(const ShutterReleaseSettings& settings);
+
+private:
+   /// state machine state
+   enum T_enStateMachineState
+   {
+      notRunning,             ///< state machine is not running
+      started,                ///< state machine is started
+      waitManualRelease,      ///< waiting for a manual release (release button on camera or in app)
+      takePhoto,              ///< takes photo
+      waitTransferFinished,   ///< waits for the transfer to have finished
+      finished,               ///< timelapse is finished
+   };
+
+   /// current state machine mode
+   std::atomic<T_enStateMachineState> m_stateMachineState;
+
    /// host
    IPhotoModeViewHost& m_host;
 
@@ -176,6 +275,21 @@ private:
    /// remote release control
    std::shared_ptr<RemoteReleaseControl> m_spRemoteReleaseControl;
 
-   /// timelapse started?
-   bool m_isStarted;
+   /// scheduler for time lapse operations
+   std::shared_ptr<TimeLapseScheduler> m_spScheduler;
+
+   /// options for timelapse
+   TimeLapseOptions m_options;
+
+   /// date/time of last trigger to take a photo
+   COleDateTime m_lastTriggerTime;
+
+   /// handler ID for state events
+   int m_stateEventHandlerId;
+
+   /// filenames of timelapse shots
+   std::vector<CString> m_timelapseFilenameList;
+
+   /// function that is called when the "finished" state is reached; may be empty
+   std::function<void()> m_fnFinished;
 };

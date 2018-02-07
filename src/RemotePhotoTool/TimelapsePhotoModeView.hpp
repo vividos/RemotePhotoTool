@@ -70,16 +70,16 @@ private:
       MESSAGE_HANDLER(WM_DESTROY, OnDestroy)
       COMMAND_ID_HANDLER(IDC_BUTTON_TIMELAPSE_START, OnButtonStart)
       COMMAND_ID_HANDLER(IDC_BUTTON_TIMELAPSE_STOP, OnButtonStop)
-      COMMAND_ID_HANDLER(ID_CAMERA_RELEASE, OnButtonStart)
+      COMMAND_ID_HANDLER(ID_CAMERA_RELEASE, OnButtonCameraRelease)
       COMMAND_ID_HANDLER(IDC_CHECKBOX_TIMELAPSE_SCHEDULE_STARTTIME, OnCheckboxScheduleStartTime)
       COMMAND_ID_HANDLER(IDC_CHECKBOX_TIMELAPSE_SCHEDULE_ENDTIME, OnCheckboxScheduleEndTime)
       REFLECT_NOTIFICATIONS() // to make sure superclassed controls get notification messages
    END_MSG_MAP()
 
-// Handler prototypes (uncomment arguments if needed):
-// LRESULT MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
-// LRESULT CommandHandler(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
-// LRESULT NotifyHandler(int /*idCtrl*/, LPNMHDR /*pnmh*/, BOOL& bHandled)
+   // Handler prototypes (uncomment arguments if needed):
+   // LRESULT MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+   // LRESULT CommandHandler(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+   // LRESULT NotifyHandler(int /*idCtrl*/, LPNMHDR /*pnmh*/, BOOL& bHandled)
 
    /// called when dialog is being shown
    LRESULT OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
@@ -93,6 +93,9 @@ private:
    /// called when button "Stop" is pressed
    LRESULT OnButtonStop(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
+   /// called when button "Release" is pressed; command from the ribbon, used for "manual trigger" event
+   LRESULT OnButtonCameraRelease(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+
    /// called when checkbox "start time" has been clicked
    LRESULT OnCheckboxScheduleStartTime(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
@@ -101,6 +104,9 @@ private:
 
    /// enables or disables controls
    void EnableControls(bool enable);
+
+   /// called by photo mode manager when time lapse is finished
+   void OnTimeLapseFinished();
 
 private:
    /// host access
