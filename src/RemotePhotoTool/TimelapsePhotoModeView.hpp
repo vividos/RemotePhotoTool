@@ -9,6 +9,7 @@
 // includes
 #include "IPhotoModeView.hpp"
 #include "PhotoModeManager.hpp"
+#include "ImagePropertyCombobox.hpp"
 
 // forward references
 class IPhotoModeViewHost;
@@ -62,6 +63,10 @@ private:
       DDX_CONTROL_HANDLE(IDC_DATETIMEPICKER_TIMELAPSE_SCHEDULE_START_TIME, m_timePickerScheduleStartTime)
       DDX_CONTROL_HANDLE(IDC_DATETIMEPICKER_TIMELAPSE_SCHEDULE_END_DATE, m_timePickerScheduleEndDate)
       DDX_CONTROL_HANDLE(IDC_DATETIMEPICKER_TIMELAPSE_SCHEDULE_END_TIME, m_timePickerScheduleEndTime)
+      DDX_CHECK(IDC_CHECKBOX_TIMELAPSE_OPTIONS_HDRMODE, m_optionsUseHDR)
+      DDX_CONTROL_HANDLE(IDC_COMBO_AEB_BRACKET_SHOTS, m_comboAEBBracketedShots)
+      DDX_CONTROL_HANDLE(IDC_LIST_AEB_SHUTTER_SPEED_VALUES, m_listAEBShutterSpeedValues)
+      DDX_CONTROL(IDC_COMBO_SHUTTER_SPEED, m_comboShutterSpeed)
    END_DDX_MAP()
 
    // message map
@@ -73,6 +78,9 @@ private:
       COMMAND_ID_HANDLER(ID_CAMERA_RELEASE, OnButtonCameraRelease)
       COMMAND_ID_HANDLER(IDC_CHECKBOX_TIMELAPSE_SCHEDULE_STARTTIME, OnCheckboxScheduleStartTime)
       COMMAND_ID_HANDLER(IDC_CHECKBOX_TIMELAPSE_SCHEDULE_ENDTIME, OnCheckboxScheduleEndTime)
+      COMMAND_ID_HANDLER(IDC_CHECKBOX_TIMELAPSE_OPTIONS_HDRMODE, OnCheckboxOptionsHDRMode)
+      COMMAND_HANDLER(IDC_COMBO_SHUTTER_SPEED, CBN_SELCHANGE, OnComboShutterSpeedSelChange)
+      COMMAND_HANDLER(IDC_COMBO_AEB_BRACKET_SHOTS, CBN_SELCHANGE, OnComboAEBBracketShotsSelChange)
       REFLECT_NOTIFICATIONS() // to make sure superclassed controls get notification messages
    END_MSG_MAP()
 
@@ -102,8 +110,23 @@ private:
    /// called when checkbox "end time" has been clicked
    LRESULT OnCheckboxScheduleEndTime(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
+   /// called when checkbox "HDR mode" has been clicked
+   LRESULT OnCheckboxOptionsHDRMode(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+
+   /// called when shutter speed selection in combobox changes
+   LRESULT OnComboShutterSpeedSelChange(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+
+   /// called when selected number of AEB bracket shots changes
+   LRESULT OnComboAEBBracketShotsSelChange(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+
    /// enables or disables controls
    void EnableControls(bool enable);
+
+   /// called when property has changed
+   void OnUpdatedProperty(RemoteReleaseControl::T_enPropertyEvent propertyEvent, unsigned int value);
+
+   /// updates shutter speed list
+   void UpdateAEBShutterSpeedList();
 
    /// called by photo mode manager when time lapse is finished
    void OnTimeLapseFinished();
@@ -132,6 +155,9 @@ private:
    /// schedule:indicates if end time option is checked
    bool m_scheduleIsCheckedEndTime;
 
+   /// options: indicates if HDR mode should be used
+   bool m_optionsUseHDR;
+
    // UI
 
    /// button to start time lapse shooting
@@ -154,4 +180,16 @@ private:
 
    /// schedule: picker for end time
    CDateTimePickerCtrl m_timePickerScheduleEndTime;
+
+   /// shutter speed combobox
+   ImagePropertyCombobox m_comboShutterSpeed;
+
+   /// combobox with number of bracket shots
+   CComboBox m_comboAEBBracketedShots;
+
+   /// list of AEB shutter speed values
+   CListViewCtrl m_listAEBShutterSpeedValues;
+
+   /// handler ID for property callback
+   int m_propertyHandlerId;
 };

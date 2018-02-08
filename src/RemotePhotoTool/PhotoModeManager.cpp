@@ -458,6 +458,91 @@ void TimeLapsePhotoModeManager::ManualRelease()
    }
 }
 
+bool TimeLapsePhotoModeManager::CheckManualMode()
+{
+   ShootingMode mode(m_spRemoteReleaseControl);
+
+   // shooting mode change supported?
+   if (!mode.IsSupportedChanging())
+   {
+      // no, notify user to switch to M
+      ImageProperty shootingModeM = mode.Manual();
+      ImageProperty currentShootingMode = mode.Current();
+
+      if (currentShootingMode != shootingModeM)
+      {
+         AtlMessageBox(m_hWnd, _T("Please switch to Manual mode on camera!"), IDR_MAINFRAME, MB_OK);
+         return false;
+      }
+   }
+   else
+   {
+      // yes, switch to M
+      try
+      {
+         ImageProperty shootingModeM = mode.Manual();
+         m_spRemoteReleaseControl->SetImageProperty(shootingModeM);
+      }
+      catch (CameraException& ex)
+      {
+         CameraErrorDlg dlg(_T("Couldn't switch to Manual mode"), ex);
+         dlg.DoModal(m_hWnd);
+         return false;
+      }
+   }
+
+   return true;
+}
+
+void TimeLapsePhotoModeManager::RecalcAEBShutterSpeedList(size_t numShots)
+{
+   m_shutterSpeedValues.clear();
+
+   unsigned int shutterSpeedPropertyId =
+      m_spRemoteReleaseControl->MapImagePropertyTypeToId(T_enImagePropertyType::propTv);
+
+   try
+   {
+      ImageProperty currentShutterSpeed = m_spRemoteReleaseControl->GetImageProperty(shutterSpeedPropertyId);
+
+      ShutterSpeedValue shutterSpeedBase(currentShutterSpeed, m_spRemoteReleaseControl);
+      ShutterSpeedValue shutterDown = shutterSpeedBase, shutterUp = shutterSpeedBase;
+
+      for (size_t shot = 1; shot <= numShots; shot++)
+      {
+         if (shot == 1)
+         {
+            m_shutterSpeedValues.push_back(shutterSpeedBase.Value());
+         }
+         else
+            if ((shot & 1) == 0) // even: 2, 4, 6, ...
+            {
+               ShutterSpeedValue prev = shutterDown;
+               shutterDown.Subtract2EV();
+
+               // limit
+               if (prev != shutterDown)
+                  m_shutterSpeedValues.push_back(shutterDown.Value());
+            }
+            else
+               if ((shot & 1) == 1) // odd: 3, 5, 7, ...
+               {
+                  ShutterSpeedValue prev = shutterUp;
+                  shutterUp.Add2EV();
+
+                  // limit
+                  if (prev != shutterUp)
+                     m_shutterSpeedValues.push_back(shutterUp.Value());
+               }
+      }
+   }
+   catch (CameraException& ex)
+   {
+      CameraErrorDlg dlg(_T("Couldn't get shutter speed values"), ex);
+      dlg.DoModal(m_hWnd);
+   }
+}
+
 bool TimeLapsePhotoModeManager::SetReleaseSettings()
 {
    try

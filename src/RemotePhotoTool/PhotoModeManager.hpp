@@ -229,6 +229,15 @@ public:
    /// triggers a manual release; only in "releaseManually" mode
    void ManualRelease();
 
+   /// returns shutter speed values for bracketing
+   const std::vector<ImageProperty>& ShutterSpeedValues() const { return m_shutterSpeedValues; }
+
+   /// checks if manual mode is switched on
+   bool CheckManualMode();
+
+   /// recalculates AEB shutter speed list
+   void RecalcAEBShutterSpeedList(size_t numShots);
+
 private:
    /// sets default release settings
    bool SetReleaseSettings();
@@ -286,6 +295,12 @@ private:
 
    /// handler ID for state events
    int m_stateEventHandlerId;
+
+   /// indicates index of current shutter speed, from m_vecAEBShutterSpeedValues
+   size_t m_currentAEBShutterSpeedIndex;
+
+   /// shutter speed values for AEB shots
+   std::vector<ImageProperty> m_shutterSpeedValues;
 
    /// filenames of timelapse shots
    std::vector<CString> m_timelapseFilenameList;

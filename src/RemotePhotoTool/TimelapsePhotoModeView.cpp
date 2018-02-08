@@ -16,7 +16,10 @@ TimeLapsePhotoModeView::TimeLapsePhotoModeView(IPhotoModeViewHost& host)
    m_manager(host, m_hWnd),
    m_releaseTriggerRadio(0),
    m_scheduleIsCheckedStartTime(false),
-   m_scheduleIsCheckedEndTime(false)
+   m_scheduleIsCheckedEndTime(false),
+   m_optionsUseHDR(false),
+   m_comboShutterSpeed(propTv),
+   m_propertyHandlerId(-1)
 {
 }
 
@@ -57,12 +60,44 @@ LRESULT TimeLapsePhotoModeView::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, L
    spanInterval.GetAsSystemTime(systemTimeInterval);
    m_timePickerReleaseTriggerInterval.SetSystemTime(GDT_VALID, &systemTimeInterval);
 
+   // init shutter speed combobox
+   {
+      m_comboShutterSpeed.SetRemoteReleaseControl(m_spRemoteReleaseControl);
+
+      m_comboShutterSpeed.UpdateValuesList();
+      m_comboShutterSpeed.UpdateValue();
+   }
+
+   // init combobox with number of bracketed shots
+   {
+      for (size_t index = 3; index < 13; index += 2)
+      {
+         CString text;
+         text.Format(_T("%Iu shots"), index);
+         int item = m_comboAEBBracketedShots.AddString(text);
+         m_comboAEBBracketedShots.SetItemData(item, index);
+      }
+
+      m_comboAEBBracketedShots.SetCurSel(0);
+
+      UpdateAEBShutterSpeedList();
+   }
+
+   // init list with shutter speed values
+   m_listAEBShutterSpeedValues.InsertColumn(0, _T("Shutter speed"), LVCFMT_LEFT, 80);
+
+   // add handler for changing shutter speed
+   m_propertyHandlerId = m_spRemoteReleaseControl->AddPropertyEventHandler(
+      std::bind(&TimeLapsePhotoModeView::OnUpdatedProperty, this, std::placeholders::_1, std::placeholders::_2));
+
    return TRUE;
 }
 
 LRESULT TimeLapsePhotoModeView::OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
    // note: don't reset default release settings; must be done in new view
+
+   m_spRemoteReleaseControl->RemovePropertyEventHandler(m_propertyHandlerId);
 
    return 0;
 }
@@ -93,6 +128,7 @@ LRESULT TimeLapsePhotoModeView::OnButtonStart(WORD /*wNotifyCode*/, WORD /*wID*/
 {
    DoDataExchange(DDX_SAVE);
 
+   // transfer UI values to options
    TimeLapseOptions& options = m_manager.Options();
 
    options.m_releaseTrigger = static_cast<TimeLapseOptions::T_enReleaseTrigger>(m_releaseTriggerRadio);
@@ -112,6 +148,17 @@ LRESULT TimeLapsePhotoModeView::OnButtonStart(WORD /*wNotifyCode*/, WORD /*wID*/
    if (m_scheduleIsCheckedEndTime)
    {
       options.m_endTime = OleDateTimeFromDateAndTimePicker(m_timePickerScheduleEndDate, m_timePickerScheduleEndTime);
+   }
+
+   options.m_useHDR = m_optionsUseHDR;
+
+   if (options.m_useHDR)
+   {
+      if (m_manager.ShutterSpeedValues().empty())
+         return 0;
+
+      if (!m_manager.CheckManualMode())
+         return 0;
    }
 
    m_btnStart.EnableWindow(false);
@@ -169,10 +216,34 @@ LRESULT TimeLapsePhotoModeView::OnCheckboxScheduleEndTime(WORD /*wNotifyCode*/, 
    return 0;
 }
 
+LRESULT TimeLapsePhotoModeView::OnCheckboxOptionsHDRMode(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+   DoDataExchange(DDX_SAVE, IDC_CHECKBOX_TIMELAPSE_OPTIONS_HDRMODE);
+
+   m_comboAEBBracketedShots.EnableWindow(m_optionsUseHDR);
+   m_listAEBShutterSpeedValues.EnableWindow(m_optionsUseHDR);
+   m_comboShutterSpeed.EnableWindow(m_optionsUseHDR);
+
+   return 0;
+}
+
+LRESULT TimeLapsePhotoModeView::OnComboShutterSpeedSelChange(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+   UpdateAEBShutterSpeedList();
+
+   return 0;
+}
+
+LRESULT TimeLapsePhotoModeView::OnComboAEBBracketShotsSelChange(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+   UpdateAEBShutterSpeedList();
+
+   return 0;
+}
+
 void TimeLapsePhotoModeView::EnableControls(bool enable)
 {
-   DoDataExchange(DDX_SAVE, IDC_CHECKBOX_TIMELAPSE_SCHEDULE_ENDTIME);
-   DoDataExchange(DDX_SAVE, IDC_CHECKBOX_TIMELAPSE_SCHEDULE_STARTTIME);
+   DoDataExchange(DDX_SAVE);
 
    m_timePickerReleaseTriggerInterval.EnableWindow(enable);
 
@@ -189,6 +260,57 @@ void TimeLapsePhotoModeView::EnableControls(bool enable)
    GetDlgItem(IDC_CHECKBOX_TIMELAPSE_SCHEDULE_ENDTIME).EnableWindow(automaticTrigger && enable);
    m_timePickerScheduleEndDate.EnableWindow(m_scheduleIsCheckedEndTime && automaticTrigger && enable);
    m_timePickerScheduleEndTime.EnableWindow(m_scheduleIsCheckedEndTime && automaticTrigger && enable);
+
+   m_comboAEBBracketedShots.EnableWindow(m_optionsUseHDR && enable);
+   m_listAEBShutterSpeedValues.EnableWindow(m_optionsUseHDR && enable);
+   m_comboShutterSpeed.EnableWindow(m_optionsUseHDR && enable);
+}
+
+void TimeLapsePhotoModeView::OnUpdatedProperty(RemoteReleaseControl::T_enPropertyEvent propertyEvent, unsigned int value)
+{
+   if (m_manager.IsStarted())
+      return;
+
+   unsigned int shutterSpeedPropertyId =
+      m_spRemoteReleaseControl->MapImagePropertyTypeToId(T_enImagePropertyType::propTv);
+
+   if (shutterSpeedPropertyId == value)
+   {
+      if (propertyEvent == RemoteReleaseControl::propEventPropertyDescChanged)
+         m_comboShutterSpeed.UpdateValuesList();
+      else
+         m_comboShutterSpeed.UpdateValue();
+   }
+
+   if (propertyEvent == RemoteReleaseControl::propEventPropertyChanged &&
+      shutterSpeedPropertyId == value)
+   {
+      UpdateAEBShutterSpeedList();
+   }
+}
+
+void TimeLapsePhotoModeView::UpdateAEBShutterSpeedList()
+{
+   int iItem = m_comboAEBBracketedShots.GetCurSel();
+   if (iItem == CB_ERR)
+      return;
+
+   size_t numShots = m_comboAEBBracketedShots.GetItemData(iItem);
+
+   m_manager.RecalcAEBShutterSpeedList(numShots);
+
+   m_listAEBShutterSpeedValues.SetRedraw(FALSE);
+   m_listAEBShutterSpeedValues.DeleteAllItems();
+
+   const std::vector<ImageProperty>& shutterSpeedValues = m_manager.ShutterSpeedValues();
+
+   for (size_t index = 0, maxIndex = shutterSpeedValues.size(); index < maxIndex; index++)
+   {
+      m_listAEBShutterSpeedValues.InsertItem(m_listAEBShutterSpeedValues.GetItemCount(),
+         shutterSpeedValues[index].AsString());
+   }
+
+   m_listAEBShutterSpeedValues.SetRedraw(TRUE);
 }
 
 void TimeLapsePhotoModeView::OnTimeLapseFinished()
