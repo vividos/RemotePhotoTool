@@ -296,6 +296,15 @@ private:
    /// handler ID for state events
    int m_stateEventHandlerId;
 
+   /// viewfinder; used as mirror lockup
+   std::shared_ptr<Viewfinder> m_spViewfinder;
+
+   /// indicates if AEB release is in progress
+   bool m_isAEBInProgress;
+
+   /// indicates if viewfinder was active before start
+   bool m_viewfinderActiveBeforeStart;
+
    /// indicates index of current shutter speed, from m_vecAEBShutterSpeedValues
    size_t m_currentAEBShutterSpeedIndex;
 

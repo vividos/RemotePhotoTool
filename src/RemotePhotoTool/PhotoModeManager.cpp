@@ -387,7 +387,10 @@ TimeLapsePhotoModeManager::TimeLapsePhotoModeManager(IPhotoModeViewHost& host, H
    :m_host(host),
    m_hWnd(hWnd),
    m_stateMachineState(notRunning),
-   m_stateEventHandlerId(-1)
+   m_stateEventHandlerId(-1),
+   m_isAEBInProgress(false),
+   m_viewfinderActiveBeforeStart(false),
+   m_currentAEBShutterSpeedIndex(0)
 {
 }
 
@@ -415,6 +418,17 @@ void TimeLapsePhotoModeManager::Start()
       return;
    }
 
+   // disable viewfinder while shooting, if supported by camera
+   if (m_spRemoteReleaseControl->GetCapability(RemoteReleaseControl::capViewfinder))
+   {
+      ViewFinderView* pViewfinder = m_host.GetViewFinderView();
+
+      m_viewfinderActiveBeforeStart = pViewfinder != nullptr;
+
+      if (m_viewfinderActiveBeforeStart)
+         pViewfinder->EnableUpdate(false);
+   }
+
    m_spScheduler = std::make_shared<TimeLapseScheduler>();
 
    m_stateMachineState = T_enStateMachineState::started;
@@ -440,6 +454,16 @@ void TimeLapsePhotoModeManager::Stop()
    m_spScheduler.reset();
 
    m_host.SetStatusText(_T("TimeLapse state: Finished"));
+
+   // enable viewfinder again when active
+   if (m_viewfinderActiveBeforeStart)
+   {
+      ViewFinderView* pViewfinder = m_host.GetViewFinderView();
+      if (pViewfinder != NULL)
+         pViewfinder->EnableUpdate(true);
+
+      m_viewfinderActiveBeforeStart = false;
+   }
 }
 
 void TimeLapsePhotoModeManager::ManualRelease()
@@ -582,6 +606,31 @@ void TimeLapsePhotoModeManager::RunStateMachine()
       return;
    }
 
+   if (m_options.m_useHDR &&
+      !m_isAEBInProgress)
+   {
+      m_lastTriggerTime = COleDateTime::GetCurrentTime();
+
+      m_isAEBInProgress = true;
+      //m_vecAEBFilenameList.clear();
+      m_currentAEBShutterSpeedIndex = 0;
+
+      if (m_spRemoteReleaseControl->GetCapability(RemoteReleaseControl::capViewfinder) &&
+         !m_viewfinderActiveBeforeStart)
+      {
+         try
+         {
+            // init viewfinder; this is done to speed up taking images;
+            // in future it could be done with mirror lockup
+            m_spViewfinder = m_spRemoteReleaseControl->StartViewfinder();
+         }
+         catch (CameraException& ex)
+         {
+            m_host.SetStatusText("Timelapse error: Couldn't start viewfinder");
+         }
+      }
+   }
+
    bool exit = false;
    while (!exit)
    {
@@ -655,13 +704,38 @@ void TimeLapsePhotoModeManager::OnStateStart(bool& exit)
 
 void TimeLapsePhotoModeManager::OnStateTakePhoto(bool& exit)
 {
-   m_host.SetStatusText(_T("TimeLapse state: Taking photo..."));
-
-   m_lastTriggerTime = COleDateTime::GetCurrentTime();
-
    // action mode is only locked/unlocked when we receive an image
    if (m_host.GetReleaseSettings().SaveTarget() != ShutterReleaseSettings::saveToCamera)
       m_host.LockActionMode(true);
+
+   if (m_options.m_useHDR)
+   {
+      // set status text
+      CString cszText;
+      cszText.Format(_T("TimeLapse state: Taking HDR photo %Iu of %Iu with shutter speed %s..."),
+         m_currentAEBShutterSpeedIndex + 1,
+         m_shutterSpeedValues.size(),
+         m_shutterSpeedValues[m_currentAEBShutterSpeedIndex].AsString().GetString());
+      m_host.SetStatusText(cszText);
+
+      try
+      {
+         m_spRemoteReleaseControl->SetImageProperty(m_shutterSpeedValues[m_currentAEBShutterSpeedIndex]);
+
+         m_currentAEBShutterSpeedIndex++;
+      }
+      catch (const CameraException& ex)
+      {
+         UNUSED(ex);
+         m_host.SetStatusText(_T("TimeLapse error - Couldn't set new shutter speed"));
+      }
+   }
+   else
+   {
+      m_host.SetStatusText(_T("TimeLapse state: Taking photo..."));
+
+      m_lastTriggerTime = COleDateTime::GetCurrentTime();
+   }
 
    try
    {
@@ -670,7 +744,7 @@ void TimeLapsePhotoModeManager::OnStateTakePhoto(bool& exit)
    catch (const CameraException& ex)
    {
       UNUSED(ex);
-      m_host.SetStatusText(_T("TimeLapse - Couldn't release shutter"));
+      m_host.SetStatusText(_T("TimeLapse error - Couldn't release shutter"));
    }
 
    exit = true; // need finished transfer to continue state machine
@@ -754,7 +828,26 @@ void TimeLapsePhotoModeManager::OnFinishedTransfer(const ShutterReleaseSettings&
    if (m_spScheduler == nullptr)
       return; // stop button was pressed already
 
-   m_stateMachineState = T_enStateMachineState::waitTransferFinished;
+   if (m_options.m_useHDR)
+   {
+      if (m_currentAEBShutterSpeedIndex < m_shutterSpeedValues.size())
+      {
+         m_stateMachineState = T_enStateMachineState::takePhoto;
+      }
+      else
+      {
+         // close viewfinder, if used at all
+         m_spViewfinder.reset();
+
+         m_isAEBInProgress = false;
+
+         m_stateMachineState = T_enStateMachineState::waitTransferFinished;
+      }
+   }
+   else
+   {
+      m_stateMachineState = T_enStateMachineState::waitTransferFinished;
+   }
 
    auto fn = std::bind(&TimeLapsePhotoModeManager::RunStateMachine, this);
    m_spScheduler->Schedule(fn);
