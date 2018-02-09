@@ -388,6 +388,7 @@ TimeLapsePhotoModeManager::TimeLapsePhotoModeManager(IPhotoModeViewHost& host, H
    m_hWnd(hWnd),
    m_stateMachineState(notRunning),
    m_stateEventHandlerId(-1),
+   m_usingMirrorLockup(false),
    m_isAEBInProgress(false),
    m_viewfinderActiveBeforeStart(false),
    m_currentAEBShutterSpeedIndex(0)
@@ -435,6 +436,11 @@ void TimeLapsePhotoModeManager::Start()
 
    m_host.SetStatusText(_T("TimeLapse state: Started"));
 
+   if (m_options.m_releaseTrigger == TimeLapseOptions::T_enReleaseTrigger::releaseAfterLastImage)
+   {
+      EnableMirrorLockup();
+   }
+
    auto fnSchedule = std::bind(&TimeLapsePhotoModeManager::RunStateMachine, this);
    m_spScheduler->Schedule(fnSchedule);
 
@@ -455,6 +461,11 @@ void TimeLapsePhotoModeManager::Stop()
 
    m_host.SetStatusText(_T("TimeLapse state: Finished"));
 
+   if (m_options.m_releaseTrigger == TimeLapseOptions::T_enReleaseTrigger::releaseAfterLastImage)
+   {
+      DisableMirrorLockup();
+   }
+
    // enable viewfinder again when active
    if (m_viewfinderActiveBeforeStart)
    {
@@ -464,6 +475,9 @@ void TimeLapsePhotoModeManager::Stop()
 
       m_viewfinderActiveBeforeStart = false;
    }
+
+   m_isAEBInProgress = false;
+   m_currentAEBShutterSpeedIndex = 0;
 }
 
 void TimeLapsePhotoModeManager::ManualRelease()
@@ -603,32 +617,12 @@ void TimeLapsePhotoModeManager::RunStateMachine()
       if (m_fnFinished != nullptr)
          m_fnFinished();
 
-      return;
-   }
-
-   if (m_options.m_useHDR &&
-      !m_isAEBInProgress)
-   {
-      m_lastTriggerTime = COleDateTime::GetCurrentTime();
-
-      m_isAEBInProgress = true;
-      //m_vecAEBFilenameList.clear();
-      m_currentAEBShutterSpeedIndex = 0;
-
-      if (m_spRemoteReleaseControl->GetCapability(RemoteReleaseControl::capViewfinder) &&
-         !m_viewfinderActiveBeforeStart)
+      if (m_options.m_releaseTrigger == TimeLapseOptions::T_enReleaseTrigger::releaseAfterLastImage)
       {
-         try
-         {
-            // init viewfinder; this is done to speed up taking images;
-            // in future it could be done with mirror lockup
-            m_spViewfinder = m_spRemoteReleaseControl->StartViewfinder();
-         }
-         catch (CameraException& ex)
-         {
-            m_host.SetStatusText("Timelapse error: Couldn't start viewfinder");
-         }
+         DisableMirrorLockup();
       }
+
+      return;
    }
 
    bool exit = false;
@@ -661,6 +655,11 @@ void TimeLapsePhotoModeManager::RunStateMachine()
 
          if (m_fnFinished != nullptr)
             m_fnFinished();
+
+         if (m_options.m_releaseTrigger == TimeLapseOptions::T_enReleaseTrigger::releaseAfterLastImage)
+         {
+            DisableMirrorLockup();
+         }
 
          break;
 
@@ -704,6 +703,19 @@ void TimeLapsePhotoModeManager::OnStateStart(bool& exit)
 
 void TimeLapsePhotoModeManager::OnStateTakePhoto(bool& exit)
 {
+   if (m_options.m_useHDR &&
+      !m_isAEBInProgress)
+   {
+      m_lastTriggerTime = COleDateTime::GetCurrentTime();
+
+      m_isAEBInProgress = true;
+      //m_vecAEBFilenameList.clear();
+      m_currentAEBShutterSpeedIndex = 0;
+
+      if (m_options.m_releaseTrigger != TimeLapseOptions::T_enReleaseTrigger::releaseAfterLastImage)
+         EnableMirrorLockup();
+   }
+
    // action mode is only locked/unlocked when we receive an image
    if (m_host.GetReleaseSettings().SaveTarget() != ShutterReleaseSettings::saveToCamera)
       m_host.LockActionMode(true);
@@ -836,10 +848,11 @@ void TimeLapsePhotoModeManager::OnFinishedTransfer(const ShutterReleaseSettings&
       }
       else
       {
-         // close viewfinder, if used at all
-         m_spViewfinder.reset();
+         if (m_options.m_releaseTrigger != TimeLapseOptions::T_enReleaseTrigger::releaseAfterLastImage)
+            DisableMirrorLockup();
 
          m_isAEBInProgress = false;
+         m_currentAEBShutterSpeedIndex = 0;
 
          m_stateMachineState = T_enStateMachineState::waitTransferFinished;
       }
@@ -851,4 +864,64 @@ void TimeLapsePhotoModeManager::OnFinishedTransfer(const ShutterReleaseSettings&
 
    auto fn = std::bind(&TimeLapsePhotoModeManager::RunStateMachine, this);
    m_spScheduler->Schedule(fn);
+}
+
+/// mirror lockup property ID on Canon EOS cameras
+unsigned int c_propertyIdMirrorLockup = 0x00000009 | (0x0007 << 16);
+
+void TimeLapsePhotoModeManager::EnableMirrorLockup()
+{
+   // check if camera has EOS mirror lockup custom function
+   try
+   {
+      ImageProperty mirrorLockup = m_spRemoteReleaseControl->GetImageProperty(c_propertyIdMirrorLockup);
+
+      mirrorLockup.Value().Set<unsigned int>(1);
+
+      m_usingMirrorLockup = true;
+
+      return;
+   }
+   catch (...)
+   {
+      m_usingMirrorLockup = false;
+   }
+
+   if (m_spRemoteReleaseControl->GetCapability(RemoteReleaseControl::capViewfinder) &&
+      !m_viewfinderActiveBeforeStart)
+   {
+      try
+      {
+         // init viewfinder; this is done to speed up taking images;
+         // in future it could be done with mirror lockup
+         m_spViewfinder = m_spRemoteReleaseControl->StartViewfinder();
+      }
+      catch (CameraException& ex)
+      {
+         UNUSED(ex);
+         m_host.SetStatusText("Timelapse error: Couldn't start viewfinder");
+      }
+   }
+}
+
+void TimeLapsePhotoModeManager::DisableMirrorLockup()
+{
+   if (m_usingMirrorLockup)
+   {
+      // check if camera has EOS mirror lockup custom function
+      try
+      {
+         ImageProperty mirrorLockup = m_spRemoteReleaseControl->GetImageProperty(c_propertyIdMirrorLockup);
+
+         mirrorLockup.Value().Set<unsigned int>(0);
+      }
+      catch (...)
+      {
+      }
+
+      m_usingMirrorLockup = false;
+   }
+
+   // close viewfinder, if used at all
+   m_spViewfinder.reset();
 }

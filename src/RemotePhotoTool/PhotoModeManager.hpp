@@ -245,6 +245,8 @@ private:
    /// runs timelapse state machine
    void RunStateMachine();
 
+   void EnableMirrorLockup();
+
    /// called when state "started" occurs
    void OnStateStart(bool& exit);
 
@@ -259,6 +261,8 @@ private:
 
    /// called when image transfer is finished
    void OnFinishedTransfer(const ShutterReleaseSettings& settings);
+
+   void DisableMirrorLockup();
 
 private:
    /// state machine state
@@ -298,6 +302,9 @@ private:
 
    /// viewfinder; used as mirror lockup
    std::shared_ptr<Viewfinder> m_spViewfinder;
+
+   /// indicates if mirror lockup is used for shooting (or live viewfinder as fallback)
+   bool m_usingMirrorLockup;
 
    /// indicates if AEB release is in progress
    bool m_isAEBInProgress;
