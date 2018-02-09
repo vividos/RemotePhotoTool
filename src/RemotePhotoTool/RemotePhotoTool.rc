@@ -46,6 +46,8 @@ BEGIN
         MENUITEM "&Connect...", ID_HOME_CONNECT
         MENUITEM "&Settings...", ID_HOME_SETTINGS
         MENUITEM SEPARATOR
+        MENUITEM "Create &timelapse from files...", ID_EXTRA_CREATE_TIMELAPSE_FROM_FILES
+        MENUITEM SEPARATOR
         MENUITEM "E&xit", ID_APP_EXIT
     END
     POPUP "&Photo mode"
@@ -260,6 +262,8 @@ LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
 ID_SCRIPTING_STOP  BITMAP         "res\\scripting_stop.bmp"
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
 ID_SCRIPTING_EDIT  BITMAP         "res\\scripting_edit.bmp"
+LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
+ID_EXTRA_CREATE_TIMELAPSE_FROM_FILES  BITMAP         "res\\placeholder.bmp"
 
 
 //
@@ -541,4 +545,5 @@ BEGIN
     ID_SCRIPTING_RUN              "Runs currently loaded Lua script\nRun script"
     ID_SCRIPTING_STOP             "Stops currently running Lua script\nStop script"
     ID_SCRIPTING_EDIT             "Edits currently loaded Lua script in RemoteScriptingEditor\nEdit script"
+    ID_EXTRA_CREATE_TIMELAPSE_FROM_FILES "Creates timelapse video from files\nTimelapse from files"
 END

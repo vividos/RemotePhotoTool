@@ -121,6 +121,8 @@ private:
       UPDATE_ELEMENT(ID_SCRIPTING_STOP, UPDUI_MENUPOPUP | UPDUI_RIBBON)
       UPDATE_ELEMENT(ID_SCRIPTING_EDIT, UPDUI_MENUPOPUP | UPDUI_RIBBON)
 
+      UPDATE_ELEMENT(ID_EXTRA_CREATE_TIMELAPSE_FROM_FILES, UPDUI_MENUPOPUP | UPDUI_RIBBON)
+
       UPDATE_ELEMENT(ID_VIEW_RIBBON, UPDUI_MENUPOPUP | UPDUI_RIBBON)
    END_UPDATE_UI_MAP()
 
@@ -153,6 +155,7 @@ private:
       COMMAND_RANGE_HANDLER(ID_VIEWFINDER_OUTPUT_TYPE_LCD, ID_VIEWFINDER_OUTPUT_TYPE_OFF, OnViewfinderOutputTypeRange)
       COMMAND_ID_HANDLER(ID_PREV_IMAGES_SHOW, OnPrevImagesShow)
       COMMAND_ID_HANDLER(ID_PREV_IMAGES_EXIT, OnPrevImagesExit)
+      COMMAND_ID_HANDLER(ID_EXTRA_CREATE_TIMELAPSE_FROM_FILES, OnExtraCreateTimelapseFromFiles)
       MESSAGE_HANDLER(WM_COMMAND, OnForwardCommandMessage)
       CHAIN_MSG_MAP(BaseClass)
    END_MSG_MAP()
@@ -214,6 +217,10 @@ private:
    LRESULT OnPrevImagesShow(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
    /// called when "Previous images | Exit" menu entry is being selected
    LRESULT OnPrevImagesExit(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+
+   /// called when "Create timelapse from files" menu entry is being selected
+   LRESULT OnExtraCreateTimelapseFromFiles(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+
    /// called for every WM_COMMAND message; forwards it to the photo view
    LRESULT OnForwardCommandMessage(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 

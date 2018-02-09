@@ -59,6 +59,8 @@
     <Command Name="phototool_SCRIPTING_STOP" Symbol="ID_SCRIPTING_STOP" Id="32817" Keytip="T" />
     <Command Name="phototool_SCRIPTING_EDIT" Symbol="ID_SCRIPTING_EDIT" Id="32818" Keytip="E" />
 
+    <Command Name="phototool_EXTRA_CREATE_TIMELAPSE_FROM_FILES" Symbol="ID_EXTRA_CREATE_TIMELAPSE_FROM_FILES" Id="32819" />
+
     <Command Name="wtl_VIEW_RIBBON" Symbol="ID_VIEW_RIBBON" Id="0xE804" Keytip="B" />
     <Command Name="wtl_APP_ABOUT" Symbol="ID_APP_ABOUT" Id="0xE140" Keytip="?" />
     <Command Name="wtl_APP_EXIT" Symbol="ID_APP_EXIT" Id="0xE141" Keytip="X" />
@@ -111,6 +113,9 @@
           </MenuGroup>
           <MenuGroup Class="MajorItems">
             <Button CommandName="phototool_PREV_IMAGES_SHOW"/>
+          </MenuGroup>
+          <MenuGroup Class="MajorItems">
+            <Button CommandName="phototool_EXTRA_CREATE_TIMELAPSE_FROM_FILES"/>
           </MenuGroup>
           <MenuGroup Class="MajorItems">
             <Button CommandName="wtl_APP_EXIT"/>

@@ -527,6 +527,13 @@ LRESULT MainFrame::OnPrevImagesExit(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*h
    return 0;
 }
 
+LRESULT MainFrame::OnExtraCreateTimelapseFromFiles(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+   // TODO show dialog
+
+   return 0;
+}
+
 LRESULT MainFrame::OnForwardCommandMessage(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
    ATLASSERT(uMsg == WM_COMMAND);
