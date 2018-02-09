@@ -16,6 +16,7 @@ LPCTSTR g_pszCurrentDateSubfolder = _T("CurrentDateSubfolder");   ///< "current 
 LPCTSTR g_pszImageTypeSubfolder =   _T("ImageTypeSubfolder");     ///< "image type subfolder" checked
 LPCTSTR g_pszPhotomatixPath =       _T("PhotomatixPath");   ///< Photomatix path
 LPCTSTR g_pszHuginPath =            _T("HuginPath");        ///< Hugin path
+LPCTSTR g_ffmpegPath =              _T("FfmpegPath");       ///< ffmpeg path
 LPCTSTR g_pszLogging =              _T("Logging");          ///< "Logging" checked
 LPCTSTR g_pszLogfilePath =          _T("LogfilePath");      ///< Logging path
 LPCTSTR g_pszWindowPlacementMainFrame = _T("WindowPlacementMainFrame");  ///< Window placement for main frame
@@ -83,6 +84,7 @@ void AppSettings::Store()
    regRoot.SetDWORDValue(g_pszImageTypeSubfolder, m_bImageTypeSubfolder ? 1 : 0);
    regRoot.SetStringValue(g_pszPhotomatixPath, m_cszPhotomatixPath);
    regRoot.SetStringValue(g_pszHuginPath, m_cszHuginPath);
+   regRoot.SetStringValue(g_ffmpegPath, m_ffmpegPath);
    regRoot.SetDWORDValue(g_pszLogging, m_bLogging ? 1 : 0);
    regRoot.SetStringValue(g_pszLogfilePath, m_cszLogfilePath);
 
@@ -101,6 +103,7 @@ void AppSettings::Load()
    ReadBooleanValue(regRoot, g_pszImageTypeSubfolder, m_bImageTypeSubfolder);
    ReadStringValue(regRoot, g_pszPhotomatixPath, MAX_PATH, m_cszPhotomatixPath);
    ReadStringValue(regRoot, g_pszHuginPath, MAX_PATH, m_cszHuginPath);
+   ReadStringValue(regRoot, g_ffmpegPath, MAX_PATH, m_ffmpegPath);
    ReadBooleanValue(regRoot, g_pszLogging, m_bLogging);
    ReadStringValue(regRoot, g_pszLogfilePath, MAX_PATH, m_cszLogfilePath);
 

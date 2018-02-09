@@ -31,6 +31,7 @@ private:
       DDX_TEXT(IDC_EDIT_SETTING_LOG_FOLDER, m_settings.m_cszLogfilePath)
       DDX_TEXT(IDC_EDIT_SETTINGS_PATH_PHOTOMATIX, m_settings.m_cszPhotomatixPath)
       DDX_TEXT(IDC_EDIT_SETTINGS_PATH_HUGIN, m_settings.m_cszHuginPath)
+      DDX_TEXT(IDC_EDIT_SETTINGS_PATH_FFMPEG, m_settings.m_ffmpegPath)
    END_DDX_MAP()
 
    BEGIN_MSG_MAP(SettingsDlg)
@@ -42,6 +43,7 @@ private:
       COMMAND_ID_HANDLER(IDC_BUTTON_SETTINGS_LOG_FOLDER, OnBtnLogFolder)
       COMMAND_ID_HANDLER(IDC_BUTTON_SETTINGS_DETECT_PHOTOMATIX, OnBtnDetectPhotomatix)
       COMMAND_ID_HANDLER(IDC_BUTTON_SETTINGS_DETECT_HUGIN, OnBtnDetectHugin)
+      COMMAND_ID_HANDLER(IDC_BUTTON_SETTINGS_FFMPEG_FOLDER, OnBtnFfmpegFolder)
    END_MSG_MAP()
 
    /// called when dialog is being shown
@@ -58,6 +60,8 @@ private:
    LRESULT OnBtnDetectPhotomatix(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
    /// called when button "Detect" for Hugin is pressed
    LRESULT OnBtnDetectHugin(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+   /// called when button "..." for ffmpeg is pressed
+   LRESULT OnBtnFfmpegFolder(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
    /// selects new log folder
    void SelectLogFolder();

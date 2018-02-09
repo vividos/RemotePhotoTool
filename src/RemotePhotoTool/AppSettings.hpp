@@ -34,6 +34,9 @@ public:
    /// hugin executable
    CString m_cszHuginPath;
 
+   /// path to FFmpeg bin path
+   CString m_ffmpegPath;
+
    /// indicates if logging is enabled
    bool m_bLogging;
 

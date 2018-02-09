@@ -92,6 +92,20 @@ LRESULT SettingsDlg::OnBtnDetectHugin(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /
    return 0;
 }
 
+LRESULT SettingsDlg::OnBtnFfmpegFolder(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+   CFolderDialog dlg(m_hWnd, _T("Select ffmpeg bin folder..."), BIF_RETURNONLYFSDIRS | BIF_USENEWUI);
+   dlg.SetInitialFolder(m_settings.m_ffmpegPath);
+
+   if (IDOK == dlg.DoModal(m_hWnd))
+   {
+      m_settings.m_ffmpegPath = dlg.GetFolderPath();
+      DoDataExchange(DDX_LOAD, IDC_EDIT_SETTINGS_PATH_FFMPEG);
+   }
+
+   return 0;
+}
+
 void SettingsDlg::SelectLogFolder()
 {
    if (m_settings.m_cszLogfilePath.IsEmpty())
