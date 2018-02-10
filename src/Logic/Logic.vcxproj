@@ -75,6 +75,7 @@
   <ItemGroup>
     <ClInclude Include="Exif.hpp" />
     <ClInclude Include="ExternalApplicationInterface.hpp" />
+    <ClInclude Include="FfmpegInterface.hpp" />
     <ClInclude Include="HuginInterface.hpp" />
     <ClInclude Include="ImageFileInfo.hpp" />
     <ClInclude Include="ImageType.hpp" />
@@ -92,6 +93,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ExternalApplicationInterface.cpp" />
+    <ClCompile Include="FfmpegInterface.cpp" />
     <ClCompile Include="HuginInterface.cpp" />
     <ClCompile Include="ImageTypeScanner.cpp" />
     <ClCompile Include="JpegMemoryReader.cpp" />
