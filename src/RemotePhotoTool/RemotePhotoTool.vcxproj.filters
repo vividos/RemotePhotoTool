@@ -133,6 +133,9 @@
     <ClCompile Include="CameraFileSystemTreeView.cpp">
       <Filter>UI Files\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TimelapseVideoOptionsDlg.cpp">
+      <Filter>UI Files\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -259,6 +262,9 @@
       <Filter>UI Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CameraFileSystemFileListView.hpp">
+      <Filter>UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TimelapseVideoOptionsDlg.hpp">
       <Filter>UI Files\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
