@@ -21,6 +21,9 @@
 #include "CameraException.hpp"
 #include "CameraErrorDlg.hpp"
 #include "Logging.hpp"
+#include "TimelapseVideoOptionsDlg.hpp"
+#include "FfmpegInterface.hpp"
+#include <ulib/Path.hpp>
 #include <ulib/thread/Thread.hpp>
 
 /// settings registry key (subkey "Ribbon" is used for menu band)
@@ -527,9 +530,68 @@ LRESULT MainFrame::OnPrevImagesExit(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*h
    return 0;
 }
 
+/// file open filter for timelapse images
+LPCTSTR g_timelapseImageFilter =
+_T("Image Files (*.jpg; *.tiff; *.png)\0*.jpg;*.tiff;*.png\0")
+_T("All Files (*.*)\0*.*\0")
+_T("");
+
+/// file save filter for timelapse movie
+LPCTSTR g_timelapseMovieFilter =
+_T("Image Files (*.mp4; *.wmv)\0*.mp4;*.wmv\0")
+_T("All Files (*.*)\0*.*\0")
+_T("");
+
 LRESULT MainFrame::OnExtraCreateTimelapseFromFiles(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
-   // TODO show dialog
+   CMultiFileDialog imageFilesDlg(NULL, NULL, OFN_ALLOWMULTISELECT | OFN_FILEMUSTEXIST, g_timelapseImageFilter);
+   int ret = imageFilesDlg.DoModal(m_hWnd);
+
+   if (ret != IDOK)
+      return 0;
+
+   // get list of image files
+   std::vector<CString> imageFilenamesList;
+
+   CString path;
+   if (imageFilesDlg.GetFirstPathName(path))
+   {
+      do
+      {
+         imageFilenamesList.push_back(path);
+
+      } while (imageFilesDlg.GetNextPathName(path));
+   }
+
+   TimelapseVideoOptionsDlg optionsDlg(m_settings.m_ffmpegCommandLineOptions);
+   ret = optionsDlg.DoModal(m_hWnd);
+
+   if (ret != IDOK)
+      return 0;
+
+   m_settings.m_ffmpegCommandLineOptions = optionsDlg.GetCommandLine();
+
+   CString defaultOutputFilename = Path::Combine(Path(path).FolderName(), _T("output.mp4"));
+
+   CFileDialog saveMovieDlg(FALSE, _T("mp4"), defaultOutputFilename, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, g_timelapseMovieFilter);
+   ret = saveMovieDlg.DoModal(m_hWnd);
+   if (ret != IDOK)
+      return 0;
+
+   CString outputFilename = saveMovieDlg.m_szFileName;
+
+   // start ffmpeg
+   FfmpegInterface ffmpeg(m_settings.m_ffmpegPath);
+
+   if (!ffmpeg.IsInstalled())
+   {
+      AtlMessageBox(m_hWnd, _T("ffmpeg is not configured. Please configure ffmpeg in the Settings dialog"),
+         IDR_MAINFRAME, MB_OK | MB_ICONERROR);
+
+      return 0;
+   }
+
+   ffmpeg.Run(imageFilenamesList, optionsDlg.GetCommandLine(), outputFilename);
 
    return 0;
 }
