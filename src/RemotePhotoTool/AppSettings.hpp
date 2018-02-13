@@ -37,6 +37,9 @@ public:
    /// path to FFmpeg bin path
    CString m_ffmpegPath;
 
+   /// command line options for ffmpeg
+   CString m_ffmpegCommandLineOptions;
+
    /// indicates if logging is enabled
    bool m_bLogging;
 

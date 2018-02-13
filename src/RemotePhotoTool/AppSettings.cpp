@@ -17,6 +17,7 @@ LPCTSTR g_pszImageTypeSubfolder =   _T("ImageTypeSubfolder");     ///< "image ty
 LPCTSTR g_pszPhotomatixPath =       _T("PhotomatixPath");   ///< Photomatix path
 LPCTSTR g_pszHuginPath =            _T("HuginPath");        ///< Hugin path
 LPCTSTR g_ffmpegPath =              _T("FfmpegPath");       ///< ffmpeg path
+LPCTSTR g_ffmpegOptions =           _T("FfmpegOptions");    ///< ffmpeg options
 LPCTSTR g_pszLogging =              _T("Logging");          ///< "Logging" checked
 LPCTSTR g_pszLogfilePath =          _T("LogfilePath");      ///< Logging path
 LPCTSTR g_pszWindowPlacementMainFrame = _T("WindowPlacementMainFrame");  ///< Window placement for main frame
@@ -85,6 +86,7 @@ void AppSettings::Store()
    regRoot.SetStringValue(g_pszPhotomatixPath, m_cszPhotomatixPath);
    regRoot.SetStringValue(g_pszHuginPath, m_cszHuginPath);
    regRoot.SetStringValue(g_ffmpegPath, m_ffmpegPath);
+   regRoot.SetStringValue(g_ffmpegOptions, m_ffmpegCommandLineOptions);
    regRoot.SetDWORDValue(g_pszLogging, m_bLogging ? 1 : 0);
    regRoot.SetStringValue(g_pszLogfilePath, m_cszLogfilePath);
 
@@ -104,6 +106,7 @@ void AppSettings::Load()
    ReadStringValue(regRoot, g_pszPhotomatixPath, MAX_PATH, m_cszPhotomatixPath);
    ReadStringValue(regRoot, g_pszHuginPath, MAX_PATH, m_cszHuginPath);
    ReadStringValue(regRoot, g_ffmpegPath, MAX_PATH, m_ffmpegPath);
+   ReadStringValue(regRoot, g_ffmpegOptions, 1024, m_ffmpegCommandLineOptions);
    ReadBooleanValue(regRoot, g_pszLogging, m_bLogging);
    ReadStringValue(regRoot, g_pszLogfilePath, MAX_PATH, m_cszLogfilePath);
 
