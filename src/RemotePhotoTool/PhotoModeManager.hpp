@@ -245,8 +245,6 @@ private:
    /// runs timelapse state machine
    void RunStateMachine();
 
-   void EnableMirrorLockup();
-
    /// called when state "started" occurs
    void OnStateStart(bool& exit);
 
@@ -262,6 +260,10 @@ private:
    /// called when image transfer is finished
    void OnFinishedTransfer(const ShutterReleaseSettings& settings);
 
+   /// enables mirror lockup, or as fallback live viewfinder
+   void EnableMirrorLockup();
+
+   /// disables mirror lockup, or as fallback live viewfinder
    void DisableMirrorLockup();
 
 private:

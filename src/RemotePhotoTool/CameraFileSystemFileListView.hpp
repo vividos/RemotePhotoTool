@@ -13,6 +13,7 @@ class CameraFileSystemTreeView;
 typedef CWinTraitsOR<LVS_REPORT | LVS_SHOWSELALWAYS, WS_EX_CLIENTEDGE, CControlWinTraits>
 CameraFileSystemFileListViewWinTraits;
 
+/// \brief list view showing the file list of the camera file system
 class CameraFileSystemFileListView :
    public CWindowImpl<CameraFileSystemFileListView, CListViewCtrl, CameraFileSystemFileListViewWinTraits>
 {
@@ -56,7 +57,7 @@ private:
 private:
    // UI
 
-   // file system tree view
+   /// file system tree view
    CameraFileSystemTreeView& m_treeView;
 
    // model

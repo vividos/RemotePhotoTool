@@ -13,10 +13,12 @@ class CameraFileSystemFileListView;
 typedef CWinTraitsOR<TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | TVS_SHOWSELALWAYS, WS_EX_CLIENTEDGE | TVS_EX_DOUBLEBUFFER, CControlWinTraits>
 CameraFileSystemTreeViewWinTraits;
 
+/// \brief tree view showing the folder tree of the camera file system
 class CameraFileSystemTreeView :
    public CWindowImpl<CameraFileSystemTreeView, CTreeViewCtrl, CameraFileSystemTreeViewWinTraits>
 {
 public:
+   /// ctor
    CameraFileSystemTreeView(CameraFileSystemFileListView& listView)
       :m_listView(listView)
    {
