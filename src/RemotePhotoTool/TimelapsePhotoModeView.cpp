@@ -69,6 +69,8 @@ LRESULT TimeLapsePhotoModeView::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, L
 
       m_comboShutterSpeed.UpdateValuesList();
       m_comboShutterSpeed.UpdateValue();
+
+      m_comboShutterSpeed.EnableWindow(m_optionsUseHDR);
    }
 
    // init combobox with number of bracketed shots
@@ -311,6 +313,8 @@ void TimeLapsePhotoModeView::OnUpdatedProperty(RemoteReleaseControl::T_enPropert
          m_comboShutterSpeed.UpdateValuesList();
       else
          m_comboShutterSpeed.UpdateValue();
+
+      m_comboShutterSpeed.EnableWindow(m_optionsUseHDR);
    }
 
    if (propertyEvent == RemoteReleaseControl::propEventPropertyChanged &&
