@@ -10,6 +10,8 @@
 #include "resource.h"
 #include "TimeLapsePhotoModeView.hpp"
 #include "IPhotoModeViewHost.hpp"
+#include "AppSettings.hpp"
+#include "TimeLapseVideoOptionsDlg.hpp"
 
 TimeLapsePhotoModeView::TimeLapsePhotoModeView(IPhotoModeViewHost& host)
    :m_host(host),
@@ -17,6 +19,7 @@ TimeLapsePhotoModeView::TimeLapsePhotoModeView(IPhotoModeViewHost& host)
    m_releaseTriggerRadio(0),
    m_scheduleIsCheckedStartTime(false),
    m_scheduleIsCheckedEndTime(false),
+   m_optionsCreateMovie(false),
    m_optionsUseHDR(false),
    m_comboShutterSpeed(propTv),
    m_propertyHandlerId(-1)
@@ -150,6 +153,10 @@ LRESULT TimeLapsePhotoModeView::OnButtonStart(WORD /*wNotifyCode*/, WORD /*wID*/
       options.m_endTime = OleDateTimeFromDateAndTimePicker(m_timePickerScheduleEndDate, m_timePickerScheduleEndTime);
    }
 
+   options.m_createMovie = m_optionsCreateMovie;
+   if (options.m_createMovie)
+      options.m_ffmpegCommandLineOptions = m_host.GetAppSettings().m_ffmpegCommandLineOptions;
+
    options.m_useHDR = m_optionsUseHDR;
 
    if (options.m_useHDR)
@@ -216,6 +223,28 @@ LRESULT TimeLapsePhotoModeView::OnCheckboxScheduleEndTime(WORD /*wNotifyCode*/, 
    return 0;
 }
 
+LRESULT TimeLapsePhotoModeView::OnCheckboxOptionsCreateMovie(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+   DoDataExchange(DDX_SAVE, IDC_CHECKBOX_TIMELAPSE_OPTIONS_CREATE_MOVIE);
+
+   m_buttonMovieConfigure.EnableWindow(m_optionsCreateMovie);
+
+   return 0;
+}
+
+LRESULT TimeLapsePhotoModeView::OnButtonOptionsMovieConfigure(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+   AppSettings& settings = m_host.GetAppSettings();
+
+   TimelapseVideoOptionsDlg optionsDlg(settings.m_ffmpegCommandLineOptions);
+   int ret = optionsDlg.DoModal(m_hWnd);
+
+   if (ret == IDOK)
+      settings.m_ffmpegCommandLineOptions = optionsDlg.GetCommandLine();
+
+   return 0;
+}
+
 LRESULT TimeLapsePhotoModeView::OnCheckboxOptionsHDRMode(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
    DoDataExchange(DDX_SAVE, IDC_CHECKBOX_TIMELAPSE_OPTIONS_HDRMODE);
@@ -260,6 +289,8 @@ void TimeLapsePhotoModeView::EnableControls(bool enable)
    GetDlgItem(IDC_CHECKBOX_TIMELAPSE_SCHEDULE_ENDTIME).EnableWindow(automaticTrigger && enable);
    m_timePickerScheduleEndDate.EnableWindow(m_scheduleIsCheckedEndTime && automaticTrigger && enable);
    m_timePickerScheduleEndTime.EnableWindow(m_scheduleIsCheckedEndTime && automaticTrigger && enable);
+
+   m_buttonMovieConfigure.EnableWindow(m_optionsCreateMovie && enable);
 
    m_comboAEBBracketedShots.EnableWindow(m_optionsUseHDR && enable);
    m_listAEBShutterSpeedValues.EnableWindow(m_optionsUseHDR && enable);

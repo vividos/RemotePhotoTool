@@ -188,16 +188,23 @@ struct TimeLapseOptions
 
    // other options
 
+   /// a movie file should be created from the photos
+   bool m_createMovie;
+
+   /// command line options for ffmpeg to create a movie
+   CString m_ffmpegCommandLineOptions;
+
    /// HDR shooting should be used when taking photos
    bool m_useHDR;
 
    /// ctor
    TimeLapseOptions()
+      :m_releaseTrigger(releaseTriggerInterval),
+      m_useStartTime(false),
+      m_useEndTime(false),
+      m_createMovie(false),
+      m_useHDR(false)
    {
-      m_releaseTrigger = releaseTriggerInterval;
-      m_useStartTime = false;
-      m_useEndTime = false;
-      m_useHDR = false;
    }
 };
 

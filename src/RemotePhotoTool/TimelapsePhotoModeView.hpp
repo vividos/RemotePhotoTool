@@ -63,6 +63,8 @@ private:
       DDX_CONTROL_HANDLE(IDC_DATETIMEPICKER_TIMELAPSE_SCHEDULE_START_TIME, m_timePickerScheduleStartTime)
       DDX_CONTROL_HANDLE(IDC_DATETIMEPICKER_TIMELAPSE_SCHEDULE_END_DATE, m_timePickerScheduleEndDate)
       DDX_CONTROL_HANDLE(IDC_DATETIMEPICKER_TIMELAPSE_SCHEDULE_END_TIME, m_timePickerScheduleEndTime)
+      DDX_CHECK(IDC_CHECKBOX_TIMELAPSE_OPTIONS_CREATE_MOVIE, m_optionsCreateMovie)
+      DDX_CONTROL_HANDLE(IDC_BUTTON_TIMELAPSE_OPTIONS_MOVIE_CONFIGURE, m_buttonMovieConfigure)
       DDX_CHECK(IDC_CHECKBOX_TIMELAPSE_OPTIONS_HDRMODE, m_optionsUseHDR)
       DDX_CONTROL_HANDLE(IDC_COMBO_AEB_BRACKET_SHOTS, m_comboAEBBracketedShots)
       DDX_CONTROL_HANDLE(IDC_LIST_AEB_SHUTTER_SPEED_VALUES, m_listAEBShutterSpeedValues)
@@ -78,6 +80,8 @@ private:
       COMMAND_ID_HANDLER(ID_CAMERA_RELEASE, OnButtonCameraRelease)
       COMMAND_ID_HANDLER(IDC_CHECKBOX_TIMELAPSE_SCHEDULE_STARTTIME, OnCheckboxScheduleStartTime)
       COMMAND_ID_HANDLER(IDC_CHECKBOX_TIMELAPSE_SCHEDULE_ENDTIME, OnCheckboxScheduleEndTime)
+      COMMAND_ID_HANDLER(IDC_CHECKBOX_TIMELAPSE_OPTIONS_CREATE_MOVIE, OnCheckboxOptionsCreateMovie)
+      COMMAND_ID_HANDLER(IDC_BUTTON_TIMELAPSE_OPTIONS_MOVIE_CONFIGURE, OnButtonOptionsMovieConfigure)
       COMMAND_ID_HANDLER(IDC_CHECKBOX_TIMELAPSE_OPTIONS_HDRMODE, OnCheckboxOptionsHDRMode)
       COMMAND_HANDLER(IDC_COMBO_SHUTTER_SPEED, CBN_SELCHANGE, OnComboShutterSpeedSelChange)
       COMMAND_HANDLER(IDC_COMBO_AEB_BRACKET_SHOTS, CBN_SELCHANGE, OnComboAEBBracketShotsSelChange)
@@ -109,6 +113,12 @@ private:
 
    /// called when checkbox "end time" has been clicked
    LRESULT OnCheckboxScheduleEndTime(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+
+   /// called when checkbox "Create movie" has been clicked
+   LRESULT OnCheckboxOptionsCreateMovie(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+
+   /// called when button "Configure" has been clicked
+   LRESULT OnButtonOptionsMovieConfigure(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
    /// called when checkbox "HDR mode" has been clicked
    LRESULT OnCheckboxOptionsHDRMode(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
@@ -155,6 +165,9 @@ private:
    /// schedule:indicates if end time option is checked
    bool m_scheduleIsCheckedEndTime;
 
+   /// options: indicates if a movie should be created at end of timelapse shooting
+   bool m_optionsCreateMovie;
+
    /// options: indicates if HDR mode should be used
    bool m_optionsUseHDR;
 
@@ -180,6 +193,9 @@ private:
 
    /// schedule: picker for end time
    CDateTimePickerCtrl m_timePickerScheduleEndTime;
+
+   /// button to configure movie options
+   CButton m_buttonMovieConfigure;
 
    /// shutter speed combobox
    ImagePropertyCombobox m_comboShutterSpeed;
