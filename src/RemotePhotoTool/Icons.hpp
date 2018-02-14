@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2018 Michael Fink
 //
 /// \file Icons.hpp Icon index type
 //
@@ -11,4 +11,6 @@ enum T_enSmallIconIndex
 {
    iconSmallCamera = 0,
    iconSmallEmpty = 1,
+   iconSmallFolderClosed = 2,
+   iconSmallFolderOpen = 3,
 };

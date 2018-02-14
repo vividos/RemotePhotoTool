@@ -57,6 +57,9 @@ private:
    /// access to file list view
    CameraFileSystemFileListView& m_listView;
 
+   /// icons for tree image list
+   CImageList m_iconList;
+
    // model
 
    /// camera file system

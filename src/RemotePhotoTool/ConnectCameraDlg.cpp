@@ -59,7 +59,7 @@ LRESULT ConnectCameraDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM 
       m_ilIcons.Create(16,15, ILC_MASK | ILC_COLOR32, 0, 0);
       CBitmap bmpIcons;
       bmpIcons.LoadBitmap(IDB_ICONS);
-      m_ilIcons.Add(bmpIcons, RGB(255,255,255));
+      m_ilIcons.Add(bmpIcons, RGB(255, 0, 255));
    }
 
    // set up cameras list
