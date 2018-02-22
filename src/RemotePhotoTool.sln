@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2010
+VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RemotePhotoTool", "RemotePhotoTool\RemotePhotoTool.vcxproj", "{CDEDF8B5-A808-4995-97EB-1289A84FF7ED}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -108,6 +108,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RemotePhotoTool.CameraContr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfDotNetCameraControl", "WpfDotNetCameraControl\WpfDotNetCameraControl.csproj", "{ED6E5CE5-526C-4F2E-BDAF-DCE758F32F3F}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Location", "Location\Location.vcxproj", "{431ED9A1-2DC8-4C10-9C6B-E2D9A6103EFD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -194,6 +196,10 @@ Global
 		{ED6E5CE5-526C-4F2E-BDAF-DCE758F32F3F}.Debug|Win32.Build.0 = Debug|Any CPU
 		{ED6E5CE5-526C-4F2E-BDAF-DCE758F32F3F}.Release|Win32.ActiveCfg = Release|Any CPU
 		{ED6E5CE5-526C-4F2E-BDAF-DCE758F32F3F}.Release|Win32.Build.0 = Release|Any CPU
+		{431ED9A1-2DC8-4C10-9C6B-E2D9A6103EFD}.Debug|Win32.ActiveCfg = Debug|Win32
+		{431ED9A1-2DC8-4C10-9C6B-E2D9A6103EFD}.Debug|Win32.Build.0 = Debug|Win32
+		{431ED9A1-2DC8-4C10-9C6B-E2D9A6103EFD}.Release|Win32.ActiveCfg = Release|Win32
+		{431ED9A1-2DC8-4C10-9C6B-E2D9A6103EFD}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -220,6 +226,7 @@ Global
 		{C1CB4553-07D9-4CF2-90CC-0BB23584AD00} = {82A43ECD-CEA0-4720-922D-9208C5310730}
 		{A8EAA77D-1747-4E3F-987C-EEC2308C6D26} = {0ED83E22-FDDB-4917-8B66-8082B7641FDF}
 		{ED6E5CE5-526C-4F2E-BDAF-DCE758F32F3F} = {82A43ECD-CEA0-4720-922D-9208C5310730}
+		{431ED9A1-2DC8-4C10-9C6B-E2D9A6103EFD} = {0ED83E22-FDDB-4917-8B66-8082B7641FDF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {121BFA7B-29E4-4BFB-B071-E51A5FA3D0A2}
