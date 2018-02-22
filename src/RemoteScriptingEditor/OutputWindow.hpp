@@ -18,7 +18,7 @@ class OutputWindow :
    /// base class type
    typedef CWindowImpl<OutputWindow, ScintillaWindowAdapter, CControlWinTraits> BaseClass;
 
-   // edit commands mixin type
+   /// edit commands mixin type
    typedef ScintillaEditCommands<OutputWindow> EditCommandsClass;
 
 public:

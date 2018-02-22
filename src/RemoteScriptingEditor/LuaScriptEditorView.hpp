@@ -10,7 +10,7 @@
 #include <atlfind.h>
 #include <algorithm>
 
-// adapter class to use CScintillaWindow in WTL classes
+/// adapter class to use CScintillaWindow in WTL classes
 class ScintillaWindowAdapter : public CScintillaWindow
 {
 public:
@@ -64,7 +64,7 @@ public:
 template <typename T>
 class ScintillaEditCommands : public CEditCommands<T>
 {
-   // this class type
+   /// this class type
    typedef ScintillaEditCommands<T> ThisClass;
 
    /// base class type
@@ -277,7 +277,7 @@ class LuaScriptEditorView :
    /// base class type
    typedef ScintillaWindowAdapter BaseClass;
 
-   // edit commands mixin type
+   /// edit commands mixin type
    typedef ScintillaEditCommands<LuaScriptEditorView> EditCommandsClass;
 
    /// find/replace impl type

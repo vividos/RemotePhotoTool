@@ -245,6 +245,7 @@ void ImageTypeScanner::CollectPanoramaImages(
    }
 }
 
+/// forwards index to next HDR image, if any images still left
 static void MoveToNextImage(const std::vector<ImageFileInfo>& imageFileList, size_t& index, bool onlyHDRImages)
 {
    index++;
@@ -252,7 +253,6 @@ static void MoveToNextImage(const std::vector<ImageFileInfo>& imageFileList, siz
    if (!onlyHDRImages)
       return;
 
-   // forward to next HDR image, if any images still left
    for (size_t maxIndex = imageFileList.size(); index < maxIndex; index++)
    {
       if (imageFileList[index].StartHDRImage())
