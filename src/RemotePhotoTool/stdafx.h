@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2018 Michael Fink
 //
 /// \file RemotePhotoTool\stdafx.h Precompiled header support
 //
@@ -46,9 +46,3 @@
 #include "DeviceProperty.hpp"
 
 #include "WindowMessages.hpp"
-
-// redefine ATLVERIFY when analyzing using Coverity Scan
-#if !defined(_DEBUG) && defined(__COVERITY__)
-#undef ATLVERIFY
-#define ATLVERIFY(expr) (void)(expr)
-#endif
