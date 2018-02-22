@@ -73,6 +73,7 @@
   <ItemGroup>
     <ClInclude Include="Filesystem.hpp" />
     <ClInclude Include="Logging.hpp" />
+    <ClInclude Include="RegEnumKey.hpp" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
