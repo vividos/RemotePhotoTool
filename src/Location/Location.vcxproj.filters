@@ -9,15 +9,45 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
+    <Filter Include="Header Files\Serial Header Files">
+      <UniqueIdentifier>{71f01d48-81e5-4d0b-9ec2-d7406df7164e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Serial Source Files">
+      <UniqueIdentifier>{2c399a68-cf60-4279-909e-95f52665c8c8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Serial\SerialPort.hpp">
+      <Filter>Header Files\Serial Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Serial\SerialPortConfig.hpp">
+      <Filter>Header Files\Serial Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Serial\SerialPortImpl.hpp">
+      <Filter>Header Files\Serial Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Serial\SerialPortInfo.hpp">
+      <Filter>Header Files\Serial Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Serial\SharedBuffer.hpp">
+      <Filter>Header Files\Serial Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Serial\SerialPort.cpp">
+      <Filter>Source Files\Serial Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Serial\SerialPortConfig.cpp">
+      <Filter>Source Files\Serial Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Serial\SerialPortEnum.cpp">
+      <Filter>Source Files\Serial Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
