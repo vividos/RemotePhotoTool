@@ -50,7 +50,7 @@ void WIA::CheckError(const CString& function, HRESULT hr, LPCSTR file, UINT line
       return;
 
    CString message;
-   message.Format(_T("Error in function \"%s\": %s (%08x)"),
+   message.Format(_T("Error in function \"%s\": %s (%08lx)"),
       function.GetString(),
       ErrorFromHRESULT(hr).GetString(),
       (DWORD)hr);
