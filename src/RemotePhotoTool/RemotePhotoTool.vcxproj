@@ -219,6 +219,9 @@
       <Project>{ce953b34-5513-4719-aead-a61f0585ab34}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
+    <ProjectReference Include="..\Location\Location.vcxproj">
+      <Project>{431ed9a1-2dc8-4c10-9c6b-e2d9a6103efd}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\Logic\Logic.vcxproj">
       <Project>{40627961-fc2d-4f09-8e74-073a0279a98a}</Project>
     </ProjectReference>
