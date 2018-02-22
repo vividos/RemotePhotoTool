@@ -17,7 +17,7 @@ SerialPort::SerialPort(LPCTSTR deviceName, boost::asio::io_service& service)
    m_spImpl.reset(new SerialPort::Impl(CStringA(deviceName), service));
 }
 
-SerialPort::~SerialPort() throw()
+SerialPort::~SerialPort()
 {
    try
    {
@@ -28,12 +28,12 @@ SerialPort::~SerialPort() throw()
    }
 }
 
-Serial::SerialPortConfig SerialPort::Config() throw()
+Serial::SerialPortConfig SerialPort::Config()
 {
    return Serial::SerialPortConfig(*this);
 }
 
-bool SerialPort::IsOpen() const throw()
+bool SerialPort::IsOpen() const
 try
 {
    return m_spImpl->IsOpen();

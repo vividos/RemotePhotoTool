@@ -30,16 +30,16 @@ namespace Serial
       SerialPort(LPCTSTR deviceName, boost::asio::io_service& service);
 
       /// dtor; closes serial port
-      ~SerialPort() throw();
+      ~SerialPort();
 
       /// enumerates all available serial ports
       static std::vector<SerialPortInfo> EnumPorts();
 
       /// returns config object for this port
-      SerialPortConfig Config() throw();
+      SerialPortConfig Config();
 
       /// returns if socket is open
-      bool IsOpen() const throw();
+      bool IsOpen() const;
 
       /// sends a break sequence
       void SendBreak();

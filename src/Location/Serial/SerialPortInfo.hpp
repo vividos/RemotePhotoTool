@@ -22,10 +22,10 @@ namespace Serial
       }
 
       /// returns display name
-      const CString& DisplayName() const throw() { return m_displayName; }
+      const CString& DisplayName() const { return m_displayName; }
 
       /// returns device name
-      const CString& DeviceName() const throw() { return m_deviceName; }
+      const CString& DeviceName() const { return m_deviceName; }
 
    private:
       CString m_displayName;  ///< display name
