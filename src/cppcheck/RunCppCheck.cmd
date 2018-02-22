@@ -28,4 +28,14 @@ REM --std=c++11         Language (syntax)%
 REM --enable=all        Enable warnings
 REM --template vs       Output format for warnings
 REM --check-config
-cppcheck.exe ..\Base\ ..\CanonControl\ ..\RemotePhotoTool\ ..\LuaScripting\ ..\Logic\ ..\RemotePhotoToolCmdline\ ..\RemoteScriptingEditor\ -I ..\Base\ -I ..\LuaScripting\ -I ..\Logic\ -I ..\CanonControl\exports\ -i ..\Thirdparty -i ..\LuaScripting\lua-5.3.2 -DWIN32 -D_WINDOWS -DNDEBUG -D__cplusplus --suppressions-list=cppcheck-suppress.txt -j 4 --platform=win32W --language=c++ --std=c++11 %FORMAT% --enable=all --template vs 2> %OUTFILE%
+cppcheck.exe ^
+	..\Base\ ..\CanonControl\ ..\RemotePhotoTool\ ..\LuaScripting\ ..\Location\ ..\Logic\ ..\RemotePhotoToolCmdline\ ..\RemoteScriptingEditor\ ^
+	-I ..\Base\ -I ..\LuaScripting\ -I ..\Location\ -I ..\Logic\ -I ..\CanonControl\exports\ ^
+	-i ..\Thirdparty ^
+	-i ..\LuaScripting\lua-5.3.2 ^
+	-i ..\LuaScripting\LuaScripting.UnitTest\ ^
+	-i ..\Logic\Logic.UnitTest\ ^
+	-DWIN32 -D_WINDOWS -DNDEBUG -D_UNICODE -D__cplusplus -D_MSC_VER=1900 ^
+	-D__ATLAPP_H__ -DNTDDI_WIN7=0x06010000 -DNTDDI_VERSION=0x06010000 ^
+	--suppressions-list=cppcheck-suppress.txt ^
+	-j 4 --platform=win32W --language=c++ --std=c++11 %FORMAT% --enable=all --template vs 2> %OUTFILE%
