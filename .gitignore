@@ -64,3 +64,5 @@ src/ThirdParty/SonarQube/build-wrapper-win-x86/
 src/ThirdParty/SonarQube/sonar-scanner-msbuild/
 src/.sonarqube/
 src/bw-output/
+*-coverage.xml
+src/CoverageReport/
