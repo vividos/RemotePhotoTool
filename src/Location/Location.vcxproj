@@ -80,6 +80,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="GPS\Coordinate.hpp" />
+    <ClInclude Include="GPS\PositionInfo.hpp" />
+    <ClInclude Include="GPS\SatelliteInfo.hpp" />
+    <ClInclude Include="GPS\Track.hpp" />
     <ClInclude Include="Serial\SerialPort.hpp" />
     <ClInclude Include="Serial\SerialPortConfig.hpp" />
     <ClInclude Include="Serial\SerialPortImpl.hpp" />
@@ -88,6 +92,8 @@
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="GPS\Coordinate.cpp" />
+    <ClCompile Include="GPS\Track.cpp" />
     <ClCompile Include="Serial\SerialPort.cpp" />
     <ClCompile Include="Serial\SerialPortConfig.cpp" />
     <ClCompile Include="Serial\SerialPortEnum.cpp" />

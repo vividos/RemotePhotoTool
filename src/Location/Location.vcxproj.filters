@@ -15,6 +15,12 @@
     <Filter Include="Source Files\Serial Source Files">
       <UniqueIdentifier>{2c399a68-cf60-4279-909e-95f52665c8c8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\GPS Header Files">
+      <UniqueIdentifier>{e54ba288-ccad-4394-aa59-f511791eee81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GPS Source Files">
+      <UniqueIdentifier>{280f5b97-7521-4d13-a2ee-8bec20fb5593}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -35,6 +41,18 @@
     <ClInclude Include="Serial\SharedBuffer.hpp">
       <Filter>Header Files\Serial Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GPS\SatelliteInfo.hpp">
+      <Filter>Header Files\GPS Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GPS\Coordinate.hpp">
+      <Filter>Header Files\GPS Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GPS\PositionInfo.hpp">
+      <Filter>Header Files\GPS Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GPS\Track.hpp">
+      <Filter>Header Files\GPS Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -48,6 +66,12 @@
     </ClCompile>
     <ClCompile Include="Serial\SerialPortEnum.cpp">
       <Filter>Source Files\Serial Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GPS\Coordinate.cpp">
+      <Filter>Source Files\GPS Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GPS\Track.cpp">
+      <Filter>Source Files\GPS Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
