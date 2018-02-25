@@ -24,7 +24,7 @@ namespace Serial
    {
    public:
       /// handler function type for asynchronous receive operation
-      typedef std::function<void(int, const std::vector<BYTE>&, size_t)> T_fnAsyncReceiveHandler;
+      typedef std::function<void(int errorCode, const std::vector<BYTE>& data, size_t bytesTransferred)> T_fnAsyncReceiveHandler;
 
       /// ctor opens serial port
       SerialPort(LPCTSTR deviceName, boost::asio::io_service& service);
