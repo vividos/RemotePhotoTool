@@ -84,6 +84,11 @@
     <ClInclude Include="GPS\PositionInfo.hpp" />
     <ClInclude Include="GPS\SatelliteInfo.hpp" />
     <ClInclude Include="GPS\Track.hpp" />
+    <ClInclude Include="NMEA0183\Common.hpp" />
+    <ClInclude Include="NMEA0183\Data.hpp" />
+    <ClInclude Include="NMEA0183\Parser.hpp" />
+    <ClInclude Include="NMEA0183\ParserException.hpp" />
+    <ClInclude Include="NMEA0183\SentenceInfo.hpp" />
     <ClInclude Include="Serial\SerialPort.hpp" />
     <ClInclude Include="Serial\SerialPortConfig.hpp" />
     <ClInclude Include="Serial\SerialPortImpl.hpp" />
@@ -94,6 +99,10 @@
   <ItemGroup>
     <ClCompile Include="GPS\Coordinate.cpp" />
     <ClCompile Include="GPS\Track.cpp" />
+    <ClCompile Include="NMEA0183\Common.cpp" />
+    <ClCompile Include="NMEA0183\Data.cpp" />
+    <ClCompile Include="NMEA0183\Parser.cpp" />
+    <ClCompile Include="NMEA0183\SentenceInfo.cpp" />
     <ClCompile Include="Serial\SerialPort.cpp" />
     <ClCompile Include="Serial\SerialPortConfig.cpp" />
     <ClCompile Include="Serial\SerialPortEnum.cpp" />

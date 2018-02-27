@@ -21,6 +21,12 @@
     <Filter Include="Source Files\GPS Source Files">
       <UniqueIdentifier>{280f5b97-7521-4d13-a2ee-8bec20fb5593}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\NMEA0183 Header Files">
+      <UniqueIdentifier>{6886fc47-4a13-474a-a1ec-ef1504b7b259}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\NMEA0183 Source Files">
+      <UniqueIdentifier>{072e908b-a279-443a-ba0f-9d05217c3bea}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -53,6 +59,21 @@
     <ClInclude Include="GPS\Track.hpp">
       <Filter>Header Files\GPS Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="NMEA0183\Parser.hpp">
+      <Filter>Header Files\NMEA0183 Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NMEA0183\ParserException.hpp">
+      <Filter>Header Files\NMEA0183 Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NMEA0183\Common.hpp">
+      <Filter>Header Files\NMEA0183 Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NMEA0183\Data.hpp">
+      <Filter>Header Files\NMEA0183 Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NMEA0183\SentenceInfo.hpp">
+      <Filter>Header Files\NMEA0183 Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -72,6 +93,18 @@
     </ClCompile>
     <ClCompile Include="GPS\Track.cpp">
       <Filter>Source Files\GPS Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NMEA0183\Parser.cpp">
+      <Filter>Source Files\NMEA0183 Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NMEA0183\Data.cpp">
+      <Filter>Source Files\NMEA0183 Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NMEA0183\Common.cpp">
+      <Filter>Source Files\NMEA0183 Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NMEA0183\SentenceInfo.cpp">
+      <Filter>Source Files\NMEA0183 Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
