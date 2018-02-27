@@ -86,9 +86,6 @@ std::vector<SerialPortInfo> SerialPort::EnumPorts()
       regKey.Close();
    }
 
-   // TODO also look in reg key Software\Microsoft\Bluetooth\Serial\Ports
-   // TODO also look in reg key Drivers\BuiltIn
-
 #else // WIN32
 
    static const TCHAR portsClass[] = _T("PORTS");
