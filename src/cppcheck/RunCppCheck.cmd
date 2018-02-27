@@ -33,8 +33,9 @@ cppcheck.exe ^
 	-I ..\Base\ -I ..\LuaScripting\ -I ..\Location\ -I ..\Logic\ -I ..\CanonControl\exports\ ^
 	-i ..\Thirdparty ^
 	-i ..\LuaScripting\lua-5.3.2 ^
-	-i ..\LuaScripting\LuaScripting.UnitTest\ ^
 	-i ..\Logic\Logic.UnitTest\ ^
+	-i ..\Location\Location.UnitTest\ ^
+	-i ..\LuaScripting\LuaScripting.UnitTest\ ^
 	-DWIN32 -D_WINDOWS -DNDEBUG -D_UNICODE -D__cplusplus -D_MSC_VER=1900 ^
 	-D__ATLAPP_H__ -DNTDDI_WIN7=0x06010000 -DNTDDI_VERSION=0x06010000 ^
 	--suppressions-list=cppcheck-suppress.txt ^

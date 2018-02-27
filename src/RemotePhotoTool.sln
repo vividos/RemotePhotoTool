@@ -110,6 +110,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfDotNetCameraControl", "W
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Location", "Location\Location.vcxproj", "{431ED9A1-2DC8-4C10-9C6B-E2D9A6103EFD}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Location.UnitTest", "Location\Location.UnitTest\Location.UnitTest.vcxproj", "{16BE2561-A996-4A56-AC6D-C69FCDE29075}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -200,6 +202,10 @@ Global
 		{431ED9A1-2DC8-4C10-9C6B-E2D9A6103EFD}.Debug|Win32.Build.0 = Debug|Win32
 		{431ED9A1-2DC8-4C10-9C6B-E2D9A6103EFD}.Release|Win32.ActiveCfg = Release|Win32
 		{431ED9A1-2DC8-4C10-9C6B-E2D9A6103EFD}.Release|Win32.Build.0 = Release|Win32
+		{16BE2561-A996-4A56-AC6D-C69FCDE29075}.Debug|Win32.ActiveCfg = Debug|Win32
+		{16BE2561-A996-4A56-AC6D-C69FCDE29075}.Debug|Win32.Build.0 = Debug|Win32
+		{16BE2561-A996-4A56-AC6D-C69FCDE29075}.Release|Win32.ActiveCfg = Release|Win32
+		{16BE2561-A996-4A56-AC6D-C69FCDE29075}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -227,6 +233,7 @@ Global
 		{A8EAA77D-1747-4E3F-987C-EEC2308C6D26} = {0ED83E22-FDDB-4917-8B66-8082B7641FDF}
 		{ED6E5CE5-526C-4F2E-BDAF-DCE758F32F3F} = {82A43ECD-CEA0-4720-922D-9208C5310730}
 		{431ED9A1-2DC8-4C10-9C6B-E2D9A6103EFD} = {0ED83E22-FDDB-4917-8B66-8082B7641FDF}
+		{16BE2561-A996-4A56-AC6D-C69FCDE29075} = {9E084F49-B1D4-41E3-8E10-B49AF6F71E4E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {121BFA7B-29E4-4BFB-B071-E51A5FA3D0A2}
