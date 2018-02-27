@@ -84,6 +84,7 @@
     <ClInclude Include="GPS\PositionInfo.hpp" />
     <ClInclude Include="GPS\SatelliteInfo.hpp" />
     <ClInclude Include="GPS\Track.hpp" />
+    <ClInclude Include="GPS\Receiver.hpp" />
     <ClInclude Include="NMEA0183\Common.hpp" />
     <ClInclude Include="NMEA0183\Data.hpp" />
     <ClInclude Include="NMEA0183\Parser.hpp" />
@@ -99,6 +100,7 @@
   <ItemGroup>
     <ClCompile Include="GPS\Coordinate.cpp" />
     <ClCompile Include="GPS\Track.cpp" />
+    <ClCompile Include="GPS\Receiver.cpp" />
     <ClCompile Include="NMEA0183\Common.cpp" />
     <ClCompile Include="NMEA0183\Data.cpp" />
     <ClCompile Include="NMEA0183\Parser.cpp" />
