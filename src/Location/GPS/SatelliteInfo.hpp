@@ -1,4 +1,4 @@
-//
+ï»¿//
 // RemotePhotoTool - remote camera control software
 // Copyright (C) 2008-2018 Michael Fink
 //
@@ -67,9 +67,9 @@ namespace GPS
 
    private:
       unsigned int m_satID;       ///< satellite id (or pseudorandom number)
-      bool m_usedForFix;           ///< indicates if sat is used for fix
-      unsigned int m_azimuth;     ///< azimuth angle of sat pos in the sky; [0°;360°[
-      unsigned int m_elevation;   ///< elevation angle of sat pos in the sky; [0°;90°[
+      bool m_usedForFix;          ///< indicates if sat is used for fix
+      unsigned int m_azimuth;     ///< azimuth angle of sat pos in the sky; [0Â°;360Â°[
+      unsigned int m_elevation;   ///< elevation angle of sat pos in the sky; [0Â°;90Â°[
       unsigned int m_signalNoiseRatio; ///< signal to noise ratio of sat reception, in db; the higher the better
    };
 
