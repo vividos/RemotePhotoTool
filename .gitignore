@@ -66,3 +66,6 @@ src/.sonarqube/
 src/bw-output/
 *-coverage.xml
 src/CoverageReport/
+src/GeoTagTool/res/Ribbon.bml
+src/GeoTagTool/res/Ribbon.h
+src/GeoTagTool/res/Ribbon.rc

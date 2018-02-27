@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2027
+VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RemotePhotoTool", "RemotePhotoTool\RemotePhotoTool.vcxproj", "{CDEDF8B5-A808-4995-97EB-1289A84FF7ED}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -112,6 +112,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Location", "Location\Locati
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Location.UnitTest", "Location\Location.UnitTest\Location.UnitTest.vcxproj", "{16BE2561-A996-4A56-AC6D-C69FCDE29075}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GeoTagTool", "GeoTagTool\GeoTagTool.vcxproj", "{16415658-BB35-4BED-8D18-0E1BD0958745}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -206,6 +208,10 @@ Global
 		{16BE2561-A996-4A56-AC6D-C69FCDE29075}.Debug|Win32.Build.0 = Debug|Win32
 		{16BE2561-A996-4A56-AC6D-C69FCDE29075}.Release|Win32.ActiveCfg = Release|Win32
 		{16BE2561-A996-4A56-AC6D-C69FCDE29075}.Release|Win32.Build.0 = Release|Win32
+		{16415658-BB35-4BED-8D18-0E1BD0958745}.Debug|Win32.ActiveCfg = Debug|Win32
+		{16415658-BB35-4BED-8D18-0E1BD0958745}.Debug|Win32.Build.0 = Debug|Win32
+		{16415658-BB35-4BED-8D18-0E1BD0958745}.Release|Win32.ActiveCfg = Release|Win32
+		{16415658-BB35-4BED-8D18-0E1BD0958745}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -234,6 +240,7 @@ Global
 		{ED6E5CE5-526C-4F2E-BDAF-DCE758F32F3F} = {82A43ECD-CEA0-4720-922D-9208C5310730}
 		{431ED9A1-2DC8-4C10-9C6B-E2D9A6103EFD} = {0ED83E22-FDDB-4917-8B66-8082B7641FDF}
 		{16BE2561-A996-4A56-AC6D-C69FCDE29075} = {9E084F49-B1D4-41E3-8E10-B49AF6F71E4E}
+		{16415658-BB35-4BED-8D18-0E1BD0958745} = {82A43ECD-CEA0-4720-922D-9208C5310730}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {121BFA7B-29E4-4BFB-B071-E51A5FA3D0A2}

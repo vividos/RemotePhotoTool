@@ -1,0 +1,67 @@
+<!-- Ribbon.xml -->
+<Application xmlns="http://schemas.microsoft.com/windows/2009/Ribbon">
+
+  <Application.Commands>
+
+    <!-- GeoTagTool.rc Commands -->
+    <Command Name="wtl_APP_ABOUT" Symbol="ID_APP_ABOUT" Id="0xE140"/>
+    <Command Name="wtl_APP_EXIT" Symbol="ID_APP_EXIT" Id="0xE141"/>
+
+    <!-- Tabs -->
+    <Command Name="TabHome" Symbol="ID_TAB_HOME"
+             LabelTitle="Home" />
+
+    <!-- Groups -->
+    <Command Name="GroupClipboard" Symbol="ID_GROUP_CLIPBOARD"
+             LabelTitle="Clipboard" />
+    <Command Name="GroupView" Symbol="ID_GROUP_VIEW"
+             LabelTitle="View" />
+
+    <!-- App Menu and Quick Access Toolbar -->
+    <Command Name="AppMenu" Symbol="ID_RIBBON_APP_MENU"/>
+    <Command Name="QAT" Symbol="ID_RIBBON_QAT"/>
+  </Application.Commands>
+
+  <Application.Views>
+    <Ribbon>
+      <!-- Application Menu -->
+      <Ribbon.ApplicationMenu >
+        <ApplicationMenu CommandName="AppMenu" >
+          <MenuGroup Class="StandardItems" >
+            <Button CommandName="wtl_APP_EXIT"/>
+          </MenuGroup>
+        </ApplicationMenu>
+      </Ribbon.ApplicationMenu >
+
+      <!-- Help button -->
+      <Ribbon.HelpButton>
+        <HelpButton CommandName="wtl_APP_ABOUT" />
+      </Ribbon.HelpButton>
+
+      <!-- QAT (Quick Access Toolbar) -->
+      <Ribbon.QuickAccessToolbar>
+        <QuickAccessToolbar CommandName="QAT">
+          <QuickAccessToolbar.ApplicationDefaults>
+            <Button CommandName="wtl_APP_EXIT"/>
+          </QuickAccessToolbar.ApplicationDefaults>
+        </QuickAccessToolbar>
+      </Ribbon.QuickAccessToolbar>
+
+      <Ribbon.Tabs>
+        <Tab CommandName="TabHome">
+          <Tab.ScalingPolicy>
+            <ScalingPolicy>
+              <ScalingPolicy.IdealSizes>
+                <!--<Scale Group="GroupClipboard" Size="Medium"/>
+                                <Scale Group="GroupView" Size="Large"/>-->
+              </ScalingPolicy.IdealSizes>
+            </ScalingPolicy>
+          </Tab.ScalingPolicy>
+
+          <!--<Group CommandName="GroupClipboard" SizeDefinition="TwoButtons">
+                    </Group>-->
+        </Tab>
+      </Ribbon.Tabs>
+    </Ribbon>
+  </Application.Views>
+</Application>
