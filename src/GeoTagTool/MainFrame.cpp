@@ -10,6 +10,7 @@
 #include "AboutDlg.hpp"
 #include "GeoTagToolView.hpp"
 #include "MainFrame.hpp"
+#include "SerialPortDlg.hpp"
 
 BOOL MainFrame::PreTranslateMessage(MSG* pMsg)
 {
@@ -75,6 +76,10 @@ LRESULT MainFrame::OnAppAbout(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl
 
 LRESULT MainFrame::OnDataSourceOpenGPSReceiver(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
+   SerialPortDlg dlg;
+   if (IDOK != dlg.DoModal(m_hWnd))
+      return 0;
+
 
    return 0;
 }
