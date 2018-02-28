@@ -14,13 +14,11 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// English (U.S.) resources
+// English (United States) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
-#ifdef _WIN32
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 #pragma code_page(1252)
-#endif //_WIN32
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -28,45 +26,25 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 // TEXTINCLUDE
 //
 
-1 TEXTINCLUDE
+1 TEXTINCLUDE 
 BEGIN
     "resource.h\0"
 END
 
-2 TEXTINCLUDE
+2 TEXTINCLUDE 
 BEGIN
     "#include ""atlres.h""\r\n"
-    "#include ""res\Ribbon.h""\r\n"
+    "#include ""res\\Ribbon.h""\r\n"
     "\0"
 END
 
-3 TEXTINCLUDE
+3 TEXTINCLUDE 
 BEGIN
-    "#include ""res\Ribbon.rc""\r\n"
+    "#include ""res\\Ribbon.rc""\r\n"
     "\0"
 END
 
 #endif    // APSTUDIO_INVOKED
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// Toolbar
-//
-
-IDR_MAINFRAME TOOLBAR  16, 15
-BEGIN
-    BUTTON      ID_FILE_NEW
-    BUTTON      ID_FILE_OPEN
-    BUTTON      ID_FILE_SAVE
-    SEPARATOR
-    BUTTON      ID_EDIT_CUT
-    BUTTON      ID_EDIT_COPY
-    BUTTON      ID_EDIT_PASTE
-    SEPARATOR
-    BUTTON      ID_FILE_PRINT
-    BUTTON      ID_APP_ABOUT
-END
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -76,44 +54,14 @@ END
 
 IDR_MAINFRAME           BITMAP                  "res\\Toolbar.bmp"
 
-/////////////////////////////////////////////////////////////////////////////
-//
-// Menu
-//
+ID_DATASOURCE_OPEN_GPS_RECEIVER BITMAP                  "res\\placeholder.bmp"
 
-IDR_MAINFRAME MENU
-BEGIN
-    POPUP "&File"
-    BEGIN
-        MENUITEM "&New\tCtrl+N",                ID_FILE_NEW
-        MENUITEM "&Open...\tCtrl+O",            ID_FILE_OPEN
-        MENUITEM "&Save\tCtrl+S",               ID_FILE_SAVE
-        MENUITEM "Save &As...",                 ID_FILE_SAVE_AS
-        MENUITEM SEPARATOR
-        MENUITEM "&Print...\tCtrl+P",           ID_FILE_PRINT
-        MENUITEM "Print Pre&view",              ID_FILE_PRINT_PREVIEW
-        MENUITEM "P&rint Setup...",             ID_FILE_PRINT_SETUP
-        MENUITEM SEPARATOR
-        MENUITEM "E&xit",                       ID_APP_EXIT
-    END
-    POPUP "&Edit"
-    BEGIN
-        MENUITEM "&Undo\tCtrl+Z",               ID_EDIT_UNDO
-        MENUITEM SEPARATOR
-        MENUITEM "Cu&t\tCtrl+X",                ID_EDIT_CUT
-        MENUITEM "&Copy\tCtrl+C",               ID_EDIT_COPY
-        MENUITEM "&Paste\tCtrl+V",              ID_EDIT_PASTE
-    END
-    POPUP "&View"
-    BEGIN
-        MENUITEM "&Ribbon",                     ID_VIEW_RIBBON
-        MENUITEM "&Status Bar",                 ID_VIEW_STATUS_BAR
-    END
-    POPUP "&Help"
-    BEGIN
-        MENUITEM "&About GeoTagTool",              ID_APP_ABOUT
-    END
-END
+ID_DATASOURCE_IMPORT_TRACK BITMAP                  "res\\placeholder.bmp"
+
+ID_ACTIONS_TAG_IMAGES   BITMAP                  "res\\placeholder.bmp"
+
+ID_ACTIONS_SAVE_LIVE_TRACK BITMAP                  "res\\placeholder.bmp"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -123,6 +71,7 @@ END
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
 IDR_MAINFRAME           ICON                    "res\\GeoTagTool.ico"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -150,50 +99,6 @@ BEGIN
 		136,8
 END
 
-
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// DESIGNINFO
-//
-
-#ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO
-BEGIN
-    IDD_ABOUTBOX, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 180
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 95
-    END
-
-    IDD_GEOTAGTOOL_FORM, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 178
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 86
-    END
-END
-#endif    // APSTUDIO_INVOKED
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// Accelerator
-//
-
-IDR_MAINFRAME ACCELERATORS
-BEGIN
-    "N",            ID_FILE_NEW,            VIRTKEY, CONTROL
-    "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL
-    "S",            ID_FILE_SAVE,           VIRTKEY, CONTROL
-    "P",            ID_FILE_PRINT,          VIRTKEY, CONTROL
-    VK_F6,          ID_NEXT_PANE,           VIRTKEY
-    VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT
-END
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -234,6 +139,7 @@ BEGIN
     END
 END
 
+
 /////////////////////////////////////////////////////////////////////////////
 //
 // String Table
@@ -241,63 +147,13 @@ END
 
 STRINGTABLE
 BEGIN
-    IDR_MAINFRAME	"GeoTagTool"
-END
-
-STRINGTABLE
-BEGIN
-    ID_FILE_NEW             "Create a new document\nNew"
-    ID_FILE_OPEN            "Open an existing document\nOpen"
-    ID_FILE_CLOSE           "Close the active document\nClose"
-    ID_FILE_SAVE            "Save the active document\nSave"
-    ID_FILE_SAVE_AS         "Save the active document with a new name\nSave As"
-    ID_FILE_PAGE_SETUP      "Change the printing options\nPage Setup"
-    ID_FILE_PRINT_SETUP     "Change the printer and printing options\nPrint Setup"
-    ID_FILE_PRINT           "Print the active document\nPrint"
-    ID_FILE_PRINT_PREVIEW   "Display full pages\nPrint Preview"
+    IDR_MAINFRAME           "GeoTagTool"
 END
 
 STRINGTABLE
 BEGIN
     ID_APP_ABOUT            "Display program information, version number and copyright\nAbout"
     ID_APP_EXIT             "Quit the application; prompts to save documents\nExit"
-END
-
-STRINGTABLE
-BEGIN
-    ID_NEXT_PANE            "Switch to the next window pane\nNext Pane"
-    ID_PREV_PANE            "Switch back to the previous window pane\nPrevious Pane"
-END
-
-STRINGTABLE
-BEGIN
-    ID_WINDOW_NEW           "Open another window for the active document\nNew Window"
-    ID_WINDOW_ARRANGE       "Arrange icons at the bottom of the window\nArrange Icons"
-    ID_WINDOW_CASCADE       "Arrange windows so they overlap\nCascade Windows"
-    ID_WINDOW_TILE_HORZ     "Arrange windows as non-overlapping tiles\nTile Windows"
-    ID_WINDOW_TILE_VERT     "Arrange windows as non-overlapping tiles\nTile Windows"
-    ID_WINDOW_SPLIT         "Split the active window into panes\nSplit"
-END
-
-STRINGTABLE
-BEGIN
-    ID_EDIT_CLEAR           "Erase the selection\nErase"
-    ID_EDIT_CLEAR_ALL       "Erase everything\nErase All"
-    ID_EDIT_COPY            "Copy the selection and put it on the Clipboard\nCopy"
-    ID_EDIT_CUT             "Cut the selection and put it on the Clipboard\nCut"
-    ID_EDIT_FIND            "Find the specified text\nFind"
-    ID_EDIT_PASTE           "Insert Clipboard contents\nPaste"
-    ID_EDIT_REPEAT          "Repeat the last action\nRepeat"
-    ID_EDIT_REPLACE         "Replace specific text with different text\nReplace"
-    ID_EDIT_SELECT_ALL      "Select the entire document\nSelect All"
-    ID_EDIT_UNDO            "Undo the last action\nUndo"
-    ID_EDIT_REDO            "Redo the previously undone action\nRedo"
-END
-
-STRINGTABLE
-BEGIN
-    ID_VIEW_STATUS_BAR      "Show or hide the status bar\nToggle StatusBar"
-    ID_VIEW_RIBBON          "Show or hide the ribbon\nToggle Ribbon"
 END
 
 STRINGTABLE
@@ -321,11 +177,22 @@ END
 STRINGTABLE
 BEGIN
     ATL_IDS_IDLEMESSAGE     "Ready"
-    ATL_IDS_MRU_FILE        "Open this document"
 END
 
-#endif    // English (U.S.) resources
+STRINGTABLE
+BEGIN
+    ID_DATASOURCE_OPEN_GPS_RECEIVER 
+                            "Opens a GPS receiver on a serial port to receive location infos\nOpen GPS Receiver"
+    ID_DATASOURCE_IMPORT_TRACK 
+                            "Opens a recorded track file with location infos\nOpen Track"
+    ID_ACTIONS_TAG_IMAGES   "Tags images using the imported tracks and the current live track\nTags images"
+    ID_ACTIONS_SAVE_LIVE_TRACK 
+                            "Saves current live track to a track file\nSave live track"
+END
+
+#endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
+
 
 
 #ifndef APSTUDIO_INVOKED
@@ -337,3 +204,4 @@ END
 
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED
+

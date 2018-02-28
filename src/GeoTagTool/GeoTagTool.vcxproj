@@ -124,6 +124,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\GeoTagTool.ico" />
+    <Image Include="res\placeholder.bmp" />
     <Image Include="res\toolbar.bmp" />
   </ItemGroup>
   <ItemGroup>

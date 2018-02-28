@@ -27,6 +27,10 @@ private:
       MESSAGE_HANDLER(WM_DESTROY, OnDestroy)
       COMMAND_ID_HANDLER(ID_APP_EXIT, OnFileExit)
       COMMAND_ID_HANDLER(ID_APP_ABOUT, OnAppAbout)
+      COMMAND_ID_HANDLER(ID_DATASOURCE_OPEN_GPS_RECEIVER, OnDataSourceOpenGPSReceiver)
+      COMMAND_ID_HANDLER(ID_DATASOURCE_IMPORT_TRACK, OnDataSourceImportTrack)
+      COMMAND_ID_HANDLER(ID_ACTIONS_TAG_IMAGES, OnActionsTagImages)
+      COMMAND_ID_HANDLER(ID_ACTIONS_SAVE_LIVE_TRACK, OnActionsSaveLiveTrack)
       CHAIN_MSG_MAP(CRibbonFrameWindowImpl<MainFrame>)
    END_MSG_MAP()
 
@@ -39,6 +43,18 @@ private:
    LRESULT OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& bHandled);
    LRESULT OnFileExit(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
    LRESULT OnAppAbout(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+
+   /// called when "Open GPS Receiver" button has been pressed
+   LRESULT OnDataSourceOpenGPSReceiver(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+
+   /// called when "Import Track" button has been pressed
+   LRESULT OnDataSourceImportTrack(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+
+   /// called when "Tag images" button has been pressed
+   LRESULT OnActionsTagImages(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+
+   /// called when "Save Live Track" button has been pressed
+   LRESULT OnActionsSaveLiveTrack(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 
 private:
    /// the view

@@ -72,3 +72,25 @@ LRESULT MainFrame::OnAppAbout(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl
 
    return 0;
 }
+
+LRESULT MainFrame::OnDataSourceOpenGPSReceiver(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+
+   return 0;
+}
+
+LRESULT MainFrame::OnDataSourceImportTrack(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+
+   return 0;
+}
+
+LRESULT MainFrame::OnActionsTagImages(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+   return 0;
+}
+
+LRESULT MainFrame::OnActionsSaveLiveTrack(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+   return 0;
+}

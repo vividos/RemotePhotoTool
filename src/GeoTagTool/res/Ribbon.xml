@@ -7,15 +7,17 @@
     <Command Name="wtl_APP_ABOUT" Symbol="ID_APP_ABOUT" Id="0xE140"/>
     <Command Name="wtl_APP_EXIT" Symbol="ID_APP_EXIT" Id="0xE141"/>
 
+    <Command Name="wtl_DATASOURCE_OPEN_GPS_RECEIVER" Symbol="ID_DATASOURCE_OPEN_GPS_RECEIVER" Id="2000" LabelTitle="Open GPS Receiver"/>
+    <Command Name="wtl_DATASOURCE_IMPORT_TRACK" Symbol="ID_DATASOURCE_IMPORT_TRACK" Id="2001" LabelTitle="Import Track"/>
+    <Command Name="wtl_ACTIONS_TAG_IMAGES" Symbol="ID_ACTIONS_TAG_IMAGES" Id="2002" LabelTitle="Open GPS Receiver"/>
+    <Command Name="wtl_ACTIONS_SAVE_LIVE_TRACK" Symbol="ID_ACTIONS_SAVE_LIVE_TRACK" Id="2003" LabelTitle="Import Track"/>
+
     <!-- Tabs -->
-    <Command Name="TabHome" Symbol="ID_TAB_HOME"
-             LabelTitle="Home" />
+    <Command Name="TabHome" Symbol="ID_TAB_HOME" LabelTitle="Home" />
 
     <!-- Groups -->
-    <Command Name="GroupClipboard" Symbol="ID_GROUP_CLIPBOARD"
-             LabelTitle="Clipboard" />
-    <Command Name="GroupView" Symbol="ID_GROUP_VIEW"
-             LabelTitle="View" />
+    <Command Name="GroupDataSource" Symbol="ID_GROUP_DATASOURCE" LabelTitle="Data source" />
+    <Command Name="GroupActions" Symbol="ID_GROUP_ACTIONS" LabelTitle="Actions" />
 
     <!-- App Menu and Quick Access Toolbar -->
     <Command Name="AppMenu" Symbol="ID_RIBBON_APP_MENU"/>
@@ -28,6 +30,10 @@
       <Ribbon.ApplicationMenu >
         <ApplicationMenu CommandName="AppMenu" >
           <MenuGroup Class="StandardItems" >
+            <Button CommandName="wtl_DATASOURCE_OPEN_GPS_RECEIVER"/>
+            <Button CommandName="wtl_DATASOURCE_IMPORT_TRACK"/>
+          </MenuGroup>
+          <MenuGroup >
             <Button CommandName="wtl_APP_EXIT"/>
           </MenuGroup>
         </ApplicationMenu>
@@ -42,7 +48,8 @@
       <Ribbon.QuickAccessToolbar>
         <QuickAccessToolbar CommandName="QAT">
           <QuickAccessToolbar.ApplicationDefaults>
-            <Button CommandName="wtl_APP_EXIT"/>
+            <Button CommandName="wtl_DATASOURCE_OPEN_GPS_RECEIVER"/>
+            <Button CommandName="wtl_DATASOURCE_IMPORT_TRACK"/>
           </QuickAccessToolbar.ApplicationDefaults>
         </QuickAccessToolbar>
       </Ribbon.QuickAccessToolbar>
@@ -52,14 +59,21 @@
           <Tab.ScalingPolicy>
             <ScalingPolicy>
               <ScalingPolicy.IdealSizes>
-                <!--<Scale Group="GroupClipboard" Size="Medium"/>
-                                <Scale Group="GroupView" Size="Large"/>-->
+                <Scale Group="GroupDataSource" Size="Large"/>
+                <Scale Group="GroupActions" Size="Large"/>
               </ScalingPolicy.IdealSizes>
             </ScalingPolicy>
           </Tab.ScalingPolicy>
 
-          <!--<Group CommandName="GroupClipboard" SizeDefinition="TwoButtons">
-                    </Group>-->
+          <Group CommandName="GroupDataSource" SizeDefinition="TwoButtons">
+            <Button CommandName="wtl_DATASOURCE_OPEN_GPS_RECEIVER"/>
+            <Button CommandName="wtl_DATASOURCE_IMPORT_TRACK"/>
+          </Group>
+
+          <Group CommandName="GroupActions" SizeDefinition="TwoButtons">
+            <Button CommandName="wtl_ACTIONS_TAG_IMAGES"/>
+            <Button CommandName="wtl_ACTIONS_SAVE_LIVE_TRACK"/>
+          </Group>
         </Tab>
       </Ribbon.Tabs>
     </Ribbon>
