@@ -107,6 +107,8 @@
     <ClCompile Include="AboutDlg.cpp" />
     <ClCompile Include="GeoTagTool.cpp" />
     <ClCompile Include="MainFrame.cpp" />
+    <ClCompile Include="SatelliteInfoCtrl.cpp" />
+    <ClCompile Include="SatelliteRadarCtrl.cpp" />
     <ClCompile Include="SerialPortDlg.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -118,6 +120,8 @@
     <ClInclude Include="AboutDlg.hpp" />
     <ClInclude Include="MainFrame.hpp" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="SatelliteInfoCtrl.hpp" />
+    <ClInclude Include="SatelliteRadarCtrl.hpp" />
     <ClInclude Include="SerialPortDlg.hpp" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="GeoTagToolView.hpp" />
