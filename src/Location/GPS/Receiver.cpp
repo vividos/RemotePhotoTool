@@ -61,6 +61,7 @@ public:
 };
 
 Receiver::Receiver()
+   :m_impl(new Receiver::Impl)
 {
 }
 
@@ -77,11 +78,15 @@ Receiver::~Receiver()
 
 void Receiver::Configure(const CString& serialPortDeviceName)
 {
+   ATLASSERT(m_impl != nullptr);
+
    m_impl->m_serialPortDeviceName = serialPortDeviceName;
 }
 
 void Receiver::Start(Track& track)
 {
+   ATLASSERT(m_impl != nullptr);
+
    m_impl->m_track = boost::optional<std::reference_wrapper<Track>>(std::ref(track));
    m_impl->m_parser = std::make_unique<NMEA0183::Parser>();
 
@@ -105,6 +110,8 @@ void Receiver::Start(Track& track)
 
 void Receiver::Stop()
 {
+   ATLASSERT(m_impl != nullptr);
+
    if (m_impl->m_serialPort != nullptr)
    {
       m_impl->m_serialPort->Close();
@@ -121,16 +128,22 @@ void Receiver::Stop()
 
 const GPS::PositionInfo& Receiver::GetPositionInfo() const
 {
+   ATLASSERT(m_impl != nullptr);
+
    return m_impl->m_positionInfo;
 }
 
 const std::vector<GPS::SatelliteInfo>& Receiver::GetSatelliteInfos() const
 {
+   ATLASSERT(m_impl != nullptr);
+
    return m_impl->m_satelliteInfos;
 }
 
 void Receiver::RunWorkerThread()
 {
+   ATLASSERT(m_impl != nullptr);
+
    Thread::SetName(_T("GPS::Receiver I/O thread"));
 
    m_impl->m_ioService.run();
@@ -138,6 +151,8 @@ void Receiver::RunWorkerThread()
 
 void Receiver::OnReceivedData(int errorCode, const std::vector<BYTE>& data, size_t bytesTransferred)
 {
+   ATLASSERT(m_impl != nullptr);
+
    if (errorCode != 0)
    {
       ATLTRACE(_T("OnReceivedData: error occured! error = %u\n"), errorCode);
@@ -162,6 +177,8 @@ void Receiver::OnReceivedData(int errorCode, const std::vector<BYTE>& data, size
 
 void Receiver::AnalyzeBuffer()
 {
+   ATLASSERT(m_impl != nullptr);
+
    ATLASSERT(m_impl->m_parser != nullptr);
 
    for (;;)
