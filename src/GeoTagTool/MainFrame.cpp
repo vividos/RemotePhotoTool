@@ -87,8 +87,18 @@ LRESULT MainFrame::OnDataSourceOpenGPSReceiver(WORD /*wNotifyCode*/, WORD /*wID*
    m_gpsReceiver = std::make_unique<GPS::Receiver>();
    m_gpsReceiver->Configure(dlg.GetSerialPortDeviceName());
 
-   m_gpsReceiver->Start(*m_liveTrack.get());
+   try
+   {
+      m_gpsReceiver->Start(*m_liveTrack.get());
+   }
+   catch (const std::exception& ex)
+   {
+      CString text;
+      text.Format(_T("Error while opening serial port: %hs"), ex.what());
+      AtlMessageBox(m_hWnd, text.GetString());
 
+      return 0;
+   }
 
    return 0;
 }
