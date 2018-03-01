@@ -33,7 +33,7 @@ namespace Serial
       ~SerialPort();
 
       /// enumerates all available serial ports
-      static std::vector<SerialPortInfo> EnumPorts();
+      static std::vector<SerialPortInfo> EnumSerialPorts();
 
       /// returns config object for this port
       SerialPortConfig Config();

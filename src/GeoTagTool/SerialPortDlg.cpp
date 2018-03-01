@@ -14,7 +14,7 @@ LRESULT SerialPortDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*l
 
    CenterWindow(GetParent());
 
-   m_serialPortInfoList = Serial::SerialPort::EnumPorts();
+   m_serialPortInfoList = Serial::SerialPort::EnumSerialPorts();
 
    // fill combobox
    for (size_t index = 0, maxIndex = m_serialPortInfoList.size(); index < maxIndex; index++)

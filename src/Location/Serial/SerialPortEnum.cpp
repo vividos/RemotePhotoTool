@@ -27,7 +27,7 @@ bool QueryRegKeyValue(CRegKey& key, LPCTSTR name, CString& value)
    return result == ERROR_SUCCESS;
 }
 
-std::vector<SerialPortInfo> SerialPort::EnumPorts()
+std::vector<SerialPortInfo> SerialPort::EnumSerialPorts()
 {
    std::vector<SerialPortInfo> infoList;
 
