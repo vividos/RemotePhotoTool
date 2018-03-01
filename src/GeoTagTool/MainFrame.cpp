@@ -27,7 +27,6 @@ BOOL MainFrame::OnIdle()
 
 LRESULT MainFrame::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
-   UIAddMenu(GetMenu(), true);
    m_cmdBar.Create(m_hWnd, rcDefault, NULL, WS_CHILD);
    m_cmdBar.AttachMenu(GetMenu());
    m_cmdBar.LoadImages(IDR_MAINFRAME);
