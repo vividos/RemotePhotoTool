@@ -11,6 +11,11 @@
 #include "SatelliteInfoCtrl.hpp"
 #include "SatelliteRadarCtrl.hpp"
 
+namespace GPS
+{
+   class Receiver;
+}
+
 /// form view for GeoTagTool
 class GeoTagToolView :
    public CDialogImpl<GeoTagToolView>,
@@ -22,6 +27,9 @@ public:
 
    /// called to pre-translate message
    BOOL PreTranslateMessage(MSG* pMsg);
+
+   /// called when GPS receiver is about to be started
+   void OnStartingGPSReceiver(GPS::Receiver& gpsReceiver);
 
 private:
    BEGIN_DDX_MAP(GeoTagToolView)

@@ -8,10 +8,20 @@
 #include "res/Ribbon.h"
 #include "resource.h"
 #include "GeoTagToolView.hpp"
+#include "GPS/Receiver.hpp"
 
 BOOL GeoTagToolView::PreTranslateMessage(MSG* pMsg)
 {
    return CWindow::IsDialogMessage(pMsg);
+}
+
+void GeoTagToolView::OnStartingGPSReceiver(GPS::Receiver& gpsReceiver)
+{
+   gpsReceiver.PositionUpdate().Add(
+      std::bind(&GeoTagToolView::OnUpdatePositionInfo, this, std::placeholders::_1));
+
+   gpsReceiver.SatelliteInfoUpdate().Add(
+      std::bind(&GeoTagToolView::OnUpdateSatelliteInfo, this, std::placeholders::_1));
 }
 
 LRESULT GeoTagToolView::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)

@@ -87,6 +87,8 @@ LRESULT MainFrame::OnDataSourceOpenGPSReceiver(WORD /*wNotifyCode*/, WORD /*wID*
    m_gpsReceiver = std::make_unique<GPS::Receiver>();
    m_gpsReceiver->Configure(dlg.GetSerialPortDeviceName());
 
+   m_view.OnStartingGPSReceiver(*m_gpsReceiver);
+
    try
    {
       m_gpsReceiver->Start(*m_liveTrack.get());
