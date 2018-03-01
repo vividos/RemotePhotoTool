@@ -126,6 +126,7 @@
     <ResourceCompile Include="GeoTagTool.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="res\app_exit.bmp" />
     <Image Include="res\GeoTagTool.ico" />
     <Image Include="res\placeholder.bmp" />
     <Image Include="res\toolbar.bmp" />

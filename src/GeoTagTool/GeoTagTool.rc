@@ -62,6 +62,8 @@ ID_ACTIONS_TAG_IMAGES   BITMAP                  "res\\placeholder.bmp"
 
 ID_ACTIONS_SAVE_LIVE_TRACK BITMAP                  "res\\placeholder.bmp"
 
+ID_APP_EXIT             BITMAP                  "res\\app_exit.bmp"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //

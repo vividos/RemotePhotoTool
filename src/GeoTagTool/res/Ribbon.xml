@@ -5,7 +5,7 @@
 
     <!-- GeoTagTool.rc Commands -->
     <Command Name="wtl_APP_ABOUT" Symbol="ID_APP_ABOUT" Id="0xE140"/>
-    <Command Name="wtl_APP_EXIT" Symbol="ID_APP_EXIT" Id="0xE141"/>
+    <Command Name="wtl_APP_EXIT" Symbol="ID_APP_EXIT" Id="0xE141" LabelTitle="Exit"/>
 
     <Command Name="wtl_DATASOURCE_OPEN_GPS_RECEIVER" Symbol="ID_DATASOURCE_OPEN_GPS_RECEIVER" Id="2000" LabelTitle="Open GPS Receiver"/>
     <Command Name="wtl_DATASOURCE_IMPORT_TRACK" Symbol="ID_DATASOURCE_IMPORT_TRACK" Id="2001" LabelTitle="Import Track"/>
