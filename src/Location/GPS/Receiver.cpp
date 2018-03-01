@@ -58,6 +58,15 @@ public:
 
    /// current satellite infos
    std::vector<SatelliteInfo> m_satelliteInfos;
+
+   /// subject for event when position infos were updated
+   GPS::Receiver::T_SubjectOnPositionUpdate m_subjectPositionUpdate;
+
+   /// subject for event when date/time was updated
+   GPS::Receiver::T_SubjectOnDateTimeUpdate m_subjectDateTimeUpdate;
+
+   /// subject for event when satellite infos were updated
+   GPS::Receiver::T_SubjectOnSatelliteInfoUpdate m_subjectSatelliteInfoUpdate;
 };
 
 Receiver::Receiver()
@@ -112,6 +121,10 @@ void Receiver::Stop()
 {
    ATLASSERT(m_impl != nullptr);
 
+   m_impl->m_subjectPositionUpdate.Clear();
+   m_impl->m_subjectDateTimeUpdate.Clear();
+   m_impl->m_subjectSatelliteInfoUpdate.Clear();
+
    if (m_impl->m_serialPort != nullptr)
    {
       m_impl->m_serialPort->Close();
@@ -138,6 +151,27 @@ const std::vector<GPS::SatelliteInfo>& Receiver::GetSatelliteInfos() const
    ATLASSERT(m_impl != nullptr);
 
    return m_impl->m_satelliteInfos;
+}
+
+GPS::Receiver::T_SubjectOnPositionUpdate& Receiver::PositionUpdate()
+{
+   ATLASSERT(m_impl != nullptr);
+
+   return m_impl->m_subjectPositionUpdate;
+}
+
+GPS::Receiver::T_SubjectOnDateTimeUpdate& Receiver::DateTimeUpdate()
+{
+   ATLASSERT(m_impl != nullptr);
+
+   return m_impl->m_subjectDateTimeUpdate;
+}
+
+GPS::Receiver::T_SubjectOnSatelliteInfoUpdate& Receiver::SatelliteInfoUpdate()
+{
+   ATLASSERT(m_impl != nullptr);
+
+   return m_impl->m_subjectSatelliteInfoUpdate;
 }
 
 void Receiver::RunWorkerThread()
@@ -169,6 +203,7 @@ void Receiver::OnReceivedData(int errorCode, const std::vector<BYTE>& data, size
    m_impl->m_receiveBuffer += textData;
 
    AnalyzeBuffer();
+   NotifySubjects();
 
    // continue receiving data
    m_impl->m_serialPort->AsyncReceive(
@@ -208,4 +243,26 @@ void Receiver::AnalyzeBuffer()
       m_impl->m_positionInfo = m_impl->m_parser->GetPositionInfo();
       m_impl->m_satelliteInfos = m_impl->m_parser->GetSatelliteInfos();
    }
+}
+
+void Receiver::NotifySubjects()
+{
+   ATLASSERT(m_impl != nullptr);
+
+   if (m_impl->m_parser->UpdatedDateTime())
+   {
+      m_impl->m_subjectDateTimeUpdate.Call(m_impl->m_parser->GetPositionInfo().TimeStamp());
+   }
+
+   if (m_impl->m_parser->UpdatedPositionInfo())
+   {
+      m_impl->m_subjectPositionUpdate.Call(m_impl->m_parser->GetPositionInfo());
+   }
+
+   if (m_impl->m_parser->UpdatedSatelliteInfos())
+   {
+      m_impl->m_subjectSatelliteInfoUpdate.Call(m_impl->m_parser->GetSatelliteInfos());
+   }
+
+   m_impl->m_parser->ResetUpdateFlags();
 }

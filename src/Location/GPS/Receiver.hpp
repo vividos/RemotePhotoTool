@@ -6,6 +6,10 @@
 //
 #pragma once
 
+#include <ulib/Observer.hpp>
+
+class DateTime;
+
 /// \brief GPS related classes
 namespace GPS
 {
@@ -37,6 +41,22 @@ namespace GPS
       /// current satellite infos
       const std::vector<SatelliteInfo>& GetSatelliteInfos() const;
 
+      /// subject type for observing position update
+      typedef Subject<void(const PositionInfo&)> T_SubjectOnPositionUpdate;
+      // subject type for observing date/time update
+      typedef Subject<void(const DateTime&)> T_SubjectOnDateTimeUpdate;
+      // subject type for observing satellite info update
+      typedef Subject<void(const std::vector<SatelliteInfo>&)> T_SubjectOnSatelliteInfoUpdate;
+
+      /// returns subject for observing position update
+      T_SubjectOnPositionUpdate& PositionUpdate();
+
+      /// returns subject for observing date/time update
+      T_SubjectOnDateTimeUpdate& DateTimeUpdate();
+
+      /// returns subject for observing satellite info update
+      T_SubjectOnSatelliteInfoUpdate& SatelliteInfoUpdate();
+
    private:
       /// runs I/O worker thread
       void RunWorkerThread();
@@ -46,6 +66,9 @@ namespace GPS
 
       /// analyzes receive buffer for new NMEA sentences
       void AnalyzeBuffer();
+
+      /// notify subscribed subjects of new data
+      void NotifySubjects();
 
    private:
       struct Impl;
