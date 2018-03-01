@@ -124,6 +124,7 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GeoTagTool.rc" />
+    <ResourceCompile Include="versioninfo.rc" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\app_exit.bmp" />

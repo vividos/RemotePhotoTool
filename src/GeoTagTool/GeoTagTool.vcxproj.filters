@@ -58,6 +58,9 @@
     <ResourceCompile Include="GeoTagTool.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
+    <ResourceCompile Include="versioninfo.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\toolbar.bmp">
