@@ -6,6 +6,9 @@
 //
 #pragma once
 
+#include "GPS/Receiver.hpp"
+#include "GPS/Track.hpp"
+
 /// main frame for GeoTagTool
 class MainFrame :
    public CRibbonFrameWindowImpl<MainFrame>,
@@ -62,4 +65,12 @@ private:
 
    /// command bar
    CCommandBarCtrl m_cmdBar;
+
+   // model
+
+   /// GPS receiver
+   std::unique_ptr<GPS::Receiver> m_gpsReceiver;
+
+   /// current live track
+   std::unique_ptr<GPS::Track> m_liveTrack;
 };

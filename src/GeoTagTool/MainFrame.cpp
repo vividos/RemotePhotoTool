@@ -75,9 +75,19 @@ LRESULT MainFrame::OnAppAbout(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl
 
 LRESULT MainFrame::OnDataSourceOpenGPSReceiver(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
+   if (m_liveTrack == nullptr)
+   {
+      m_liveTrack = std::make_unique<GPS::Track>();
+   }
+
    SerialPortDlg dlg;
    if (IDOK != dlg.DoModal(m_hWnd))
       return 0;
+
+   m_gpsReceiver = std::make_unique<GPS::Receiver>();
+   m_gpsReceiver->Configure(dlg.GetSerialPortDeviceName());
+
+   m_gpsReceiver->Start(*m_liveTrack.get());
 
 
    return 0;
