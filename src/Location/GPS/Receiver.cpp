@@ -67,6 +67,9 @@ public:
 
    /// subject for event when satellite infos were updated
    GPS::Receiver::T_SubjectOnSatelliteInfoUpdate m_subjectSatelliteInfoUpdate;
+
+   /// subject for event when raw NMEA 0183 data was updated
+   GPS::Receiver::T_SubjectOnRawNMEA0183Update m_subjectRawNMEA0183Update;
 };
 
 Receiver::Receiver()
@@ -124,6 +127,7 @@ void Receiver::Stop()
    m_impl->m_subjectPositionUpdate.Clear();
    m_impl->m_subjectDateTimeUpdate.Clear();
    m_impl->m_subjectSatelliteInfoUpdate.Clear();
+   m_impl->m_subjectRawNMEA0183Update.Clear();
 
    if (m_impl->m_serialPort != nullptr)
    {
@@ -174,6 +178,13 @@ GPS::Receiver::T_SubjectOnSatelliteInfoUpdate& Receiver::SatelliteInfoUpdate()
    return m_impl->m_subjectSatelliteInfoUpdate;
 }
 
+GPS::Receiver::T_SubjectOnRawNMEA0183Update& Receiver::RawNMEA0183Update()
+{
+   ATLASSERT(m_impl != nullptr);
+
+   return m_impl->m_subjectRawNMEA0183Update;
+}
+
 void Receiver::RunWorkerThread()
 {
    ATLASSERT(m_impl != nullptr);
@@ -199,6 +210,8 @@ void Receiver::OnReceivedData(int errorCode, const std::vector<BYTE>& data, size
    CString textData(reinterpret_cast<LPCSTR>(&data[0]), static_cast<int>(bytesTransferred));
 
    ATLTRACE(_T("%s"), textData.GetString());
+
+   m_impl->m_subjectRawNMEA0183Update.Call(textData);
 
    m_impl->m_receiveBuffer += textData;
 

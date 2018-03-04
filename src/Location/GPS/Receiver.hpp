@@ -47,6 +47,8 @@ namespace GPS
       typedef Subject<void(const DateTime&)> T_SubjectOnDateTimeUpdate;
       // subject type for observing satellite info update
       typedef Subject<void(const std::vector<SatelliteInfo>&)> T_SubjectOnSatelliteInfoUpdate;
+      // subject type for observing raw NMEA 0183 data update
+      typedef Subject<void(const CString&)> T_SubjectOnRawNMEA0183Update;
 
       /// returns subject for observing position update
       T_SubjectOnPositionUpdate& PositionUpdate();
@@ -56,6 +58,9 @@ namespace GPS
 
       /// returns subject for observing satellite info update
       T_SubjectOnSatelliteInfoUpdate& SatelliteInfoUpdate();
+
+      /// returns subject for observing raw NMEA 0183 data update
+      T_SubjectOnRawNMEA0183Update& RawNMEA0183Update();
 
    private:
       /// runs I/O worker thread
