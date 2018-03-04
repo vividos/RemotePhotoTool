@@ -17,7 +17,7 @@ BOOL MainFrame::PreTranslateMessage(MSG* pMsg)
    if (CRibbonFrameWindowImpl<MainFrame>::PreTranslateMessage(pMsg))
       return TRUE;
 
-   return m_view.PreTranslateMessage(pMsg);
+   return m_tabView.PreTranslateMessage(pMsg);
 }
 
 BOOL MainFrame::OnIdle()
@@ -33,8 +33,14 @@ LRESULT MainFrame::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/,
 
    CreateSimpleStatusBar();
 
-   m_hWndClient = m_view.Create(m_hWnd);
-   UISetCheck(ID_VIEW_STATUS_BAR, 1);
+   m_hWndClient = m_tabView.Create(m_hWnd, rcDefault, NULL, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN, WS_EX_CLIENTEDGE);
+
+   // create tab views
+   //m_view.Create(m_tabView);
+   //m_tabView.AddPage(m_satelliteInfoView.m_hWnd, _T("Geo Tagging"));
+
+   m_satelliteInfoView.Create(m_tabView);
+   m_tabView.AddPage(m_satelliteInfoView.m_hWnd, _T("Satellite Info"));
 
    // register object for message filtering and idle updates
    CMessageLoop* pLoop = _Module.GetMessageLoop();

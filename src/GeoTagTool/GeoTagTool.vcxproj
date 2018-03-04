@@ -105,6 +105,7 @@
     <ClCompile Include="GeoTagTool.cpp" />
     <ClCompile Include="MainFrame.cpp" />
     <ClCompile Include="SatelliteInfoCtrl.cpp" />
+    <ClCompile Include="SatelliteInfoView.cpp" />
     <ClCompile Include="SatelliteRadarCtrl.cpp" />
     <ClCompile Include="SerialPortDlg.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -118,6 +119,7 @@
     <ClInclude Include="MainFrame.hpp" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="SatelliteInfoCtrl.hpp" />
+    <ClInclude Include="SatelliteInfoView.hpp" />
     <ClInclude Include="SatelliteRadarCtrl.hpp" />
     <ClInclude Include="SerialPortDlg.hpp" />
     <ClInclude Include="stdafx.h" />

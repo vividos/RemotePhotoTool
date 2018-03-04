@@ -8,11 +8,13 @@
 
 #include "GPS/Receiver.hpp"
 #include "GPS/Track.hpp"
+#include "SatelliteInfoView.hpp"
 
 /// main frame for GeoTagTool
 class MainFrame :
    public CRibbonFrameWindowImpl<MainFrame>,
-   public CMessageFilter, public CIdleHandler
+   public CMessageFilter,
+   public CIdleHandler
 {
 public:
    DECLARE_FRAME_WND_CLASS(NULL, IDR_MAINFRAME)
@@ -60,11 +62,19 @@ private:
    LRESULT OnActionsSaveLiveTrack(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 
 private:
-   /// the view
-   GeoTagToolView m_view;
+   // UI
 
    /// command bar
    CCommandBarCtrl m_cmdBar;
+
+   /// tab view containing sub views
+   CTabView m_tabView;
+
+   /// main view
+   GeoTagToolView m_view;
+
+   /// satellite info view
+   SatelliteInfoView m_satelliteInfoView;
 
    // model
 
