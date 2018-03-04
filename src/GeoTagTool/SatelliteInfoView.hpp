@@ -40,7 +40,7 @@ private:
       DDX_CONTROL(IDC_STATIC_SATINFO_RADAR, m_satelliteRadarCtrl);
       DDX_CONTROL(IDC_STATIC_SATINFO_GRAPH, m_satelliteInfoCtrl);
       DDX_CONTROL_HANDLE(IDC_STATIC_POSITION_INFO, m_staticPositionInfo)
-      DDX_CONTROL_HANDLE(IDC_STATIC_RAW_NMEA0183_DATA, m_staticNMEA0183Data)
+      DDX_CONTROL_HANDLE(IDC_EDIT_RAW_NMEA0183_DATA, m_editNMEA0183Data)
    END_DDX_MAP()
 
    BEGIN_MSG_MAP(SatelliteInfoView)
@@ -51,7 +51,7 @@ private:
    BEGIN_DLGRESIZE_MAP(SatelliteInfoView)
       DLGRESIZE_CONTROL(IDC_STATIC_SATINFO_GRAPH, DLSZ_SIZE_X)
       DLGRESIZE_CONTROL(IDC_STATIC_POSITION_INFO, DLSZ_SIZE_Y)
-      DLGRESIZE_CONTROL(IDC_STATIC_RAW_NMEA0183_DATA, DLSZ_SIZE_X | DLSZ_SIZE_Y)
+      DLGRESIZE_CONTROL(IDC_EDIT_RAW_NMEA0183_DATA, DLSZ_SIZE_X | DLSZ_SIZE_Y)
    END_DLGRESIZE_MAP()
 
    // Handler prototypes (uncomment arguments if needed):
@@ -68,6 +68,9 @@ private:
    /// called when satellite infos are updated
    void OnUpdateSatelliteInfo(const std::vector<GPS::SatelliteInfo>& satelliteInfos);
 
+   /// called when raw NMEA 0183 data is updated
+   void OnUpdateRawNMEA0183Data(const CString& rawNMEA0183data);
+
 private:
    /// satellite radar control
    SatelliteRadarCtrl m_satelliteRadarCtrl;
@@ -79,5 +82,5 @@ private:
    CStatic m_staticPositionInfo;
 
    /// raw NMEA 0183 data
-   CStatic m_staticNMEA0183Data;
+   CEdit m_editNMEA0183Data;
 };

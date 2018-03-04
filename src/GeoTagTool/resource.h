@@ -11,7 +11,7 @@
 #define IDC_STATIC_SATINFO_RADAR        1001
 #define IDC_STATIC_SATINFO_GRAPH        1002
 #define IDC_STATIC_POSITION_INFO        1003
-#define IDC_STATIC_RAW_NMEA0183_DATA    1004
+#define IDC_EDIT_RAW_NMEA0183_DATA      1004
 
 // Next default values for new objects
 //

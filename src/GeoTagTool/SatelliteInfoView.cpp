@@ -21,6 +21,9 @@ void SatelliteInfoView::OnStartingGPSReceiver(GPS::Receiver& gpsReceiver)
 
    gpsReceiver.SatelliteInfoUpdate().Add(
       std::bind(&SatelliteInfoView::OnUpdateSatelliteInfo, this, std::placeholders::_1));
+
+   gpsReceiver.RawNMEA0183Update().Add(
+      std::bind(&SatelliteInfoView::OnUpdateRawNMEA0183Data, this, std::placeholders::_1));
 }
 
 LRESULT SatelliteInfoView::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
@@ -57,4 +60,12 @@ void SatelliteInfoView::OnUpdateSatelliteInfo(const std::vector<GPS::SatelliteIn
 
    m_satelliteRadarCtrl.UpdateSatelliteInfos(satelliteInfos);
    m_satelliteRadarCtrl.Invalidate();
+}
+
+void SatelliteInfoView::OnUpdateRawNMEA0183Data(const CString& rawNMEA0183data)
+{
+   int end = m_editNMEA0183Data.GetWindowTextLength();
+   m_editNMEA0183Data.SetSel(end, end);
+
+   m_editNMEA0183Data.ReplaceSel(rawNMEA0183data);
 }
