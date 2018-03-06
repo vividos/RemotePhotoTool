@@ -11,6 +11,7 @@
 #include "GeoTagToolView.hpp"
 #include "MainFrame.hpp"
 #include "SerialPortDlg.hpp"
+#include "Import/TrackImport.hpp"
 
 BOOL MainFrame::PreTranslateMessage(MSG* pMsg)
 {
@@ -113,6 +114,35 @@ LRESULT MainFrame::OnDataSourceOpenGPSReceiver(WORD /*wNotifyCode*/, WORD /*wID*
 
 LRESULT MainFrame::OnDataSourceImportTrack(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
+   CFileDialog dlg(TRUE,
+      NULL,
+      _T(""),
+      OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
+      _T("GPX Files (*.gpx)\0*.gpx\0")
+      _T("NMEA 0183 Log Files (*.txt; *.nmea)\0*.txt;*.nmea\0")
+      _T("All Files (*.*)\0*.*\0"),
+      m_hWnd);
+
+   int ret = dlg.DoModal(m_hWnd);
+
+   if (ret != IDOK)
+      return 0;
+
+   CString filename = dlg.m_szFileName;
+
+   try
+   {
+      GPS::Track track;
+      Import::TrackImport::ImportTrack(filename, track);
+
+      // TODO add to list
+   }
+   catch (const std::exception& ex)
+   {
+      CString text;
+      text.Format(_T("Error while opening serial port: %hs"), ex.what());
+      AtlMessageBox(m_hWnd, text.GetString());
+   }
 
    return 0;
 }
