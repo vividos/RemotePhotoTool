@@ -57,7 +57,7 @@
       <ProxyFileName>RemotePhotoTool_p.c</ProxyFileName>
     </Midl>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)Base;$(SolutionDir)CanonControl\exports;$(SolutionDir)LuaScripting;$(SolutionDir)Logic;$(SolutionDir)Thirdparty;$(SolutionDir)Thirdparty\jpeg-9b;$(SolutionDir)Thirdparty\Scintilla\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Base;$(SolutionDir)CanonControl\exports;$(SolutionDir)LuaScripting;$(SolutionDir)Logic;$(SolutionDir)Thirdparty;$(SolutionDir)Thirdparty\jpeg-9c;$(SolutionDir)Thirdparty\Scintilla\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WINDOWS;STRICT;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ResourceCompile>
@@ -83,7 +83,7 @@
       <ProxyFileName>RemotePhotoTool_p.c</ProxyFileName>
     </Midl>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)Base;$(SolutionDir)CanonControl\exports;$(SolutionDir)LuaScripting;$(SolutionDir)Logic;$(SolutionDir)Thirdparty;$(SolutionDir)Thirdparty\jpeg-9b;$(SolutionDir)Thirdparty\Scintilla\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Base;$(SolutionDir)CanonControl\exports;$(SolutionDir)LuaScripting;$(SolutionDir)Logic;$(SolutionDir)Thirdparty;$(SolutionDir)Thirdparty\jpeg-9c;$(SolutionDir)Thirdparty\Scintilla\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WINDOWS;STRICT;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <EnablePREfast>true</EnablePREfast>
     </ClCompile>
@@ -228,7 +228,7 @@
     <ProjectReference Include="..\LuaScripting\LuaScripting.vcxproj">
       <Project>{41b565f7-f668-4425-a93d-6cabc18f6d1f}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\Thirdparty\jpeg-9b\jpeg-9b.vcxproj">
+    <ProjectReference Include="..\Thirdparty\jpeg-9c\jpeg-9c.vcxproj">
       <Project>{1a81d718-3886-4cd5-8f10-4946bf4d6355}</Project>
     </ProjectReference>
     <ProjectReference Include="..\Thirdparty\libexif-0.6.21\libexif.vcxproj">
