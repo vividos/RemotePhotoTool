@@ -85,6 +85,9 @@
     <ClInclude Include="GPS\SatelliteInfo.hpp" />
     <ClInclude Include="GPS\Track.hpp" />
     <ClInclude Include="GPS\Receiver.hpp" />
+    <ClInclude Include="Import\GPXTrackImport.hpp" />
+    <ClInclude Include="Import\NMEA0183TrackImport.hpp" />
+    <ClInclude Include="Import\TrackImport.hpp" />
     <ClInclude Include="NMEA0183\Common.hpp" />
     <ClInclude Include="NMEA0183\Data.hpp" />
     <ClInclude Include="NMEA0183\Parser.hpp" />
@@ -101,6 +104,9 @@
     <ClCompile Include="GPS\Coordinate.cpp" />
     <ClCompile Include="GPS\Track.cpp" />
     <ClCompile Include="GPS\Receiver.cpp" />
+    <ClCompile Include="Import\GPXTrackImport.cpp" />
+    <ClCompile Include="Import\NMEA0183TrackImport.cpp" />
+    <ClCompile Include="Import\TrackImport.cpp" />
     <ClCompile Include="NMEA0183\Common.cpp" />
     <ClCompile Include="NMEA0183\Data.cpp" />
     <ClCompile Include="NMEA0183\Parser.cpp" />

@@ -27,6 +27,12 @@
     <Filter Include="Source Files\NMEA0183 Source Files">
       <UniqueIdentifier>{072e908b-a279-443a-ba0f-9d05217c3bea}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Import Header Files">
+      <UniqueIdentifier>{602e3a84-702e-47fa-859d-788359b82813}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Import Source Files">
+      <UniqueIdentifier>{a2dab668-4a00-4add-b816-f33816d0db5f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -77,6 +83,15 @@
     <ClInclude Include="NMEA0183\SentenceInfo.hpp">
       <Filter>Header Files\NMEA0183 Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Import\NMEA0183TrackImport.hpp">
+      <Filter>Header Files\Import Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Import\GPXTrackImport.hpp">
+      <Filter>Header Files\Import Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Import\TrackImport.hpp">
+      <Filter>Header Files\Import Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -111,6 +126,15 @@
     </ClCompile>
     <ClCompile Include="NMEA0183\SentenceInfo.cpp">
       <Filter>Source Files\NMEA0183 Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Import\NMEA0183TrackImport.cpp">
+      <Filter>Source Files\Import Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Import\GPXTrackImport.cpp">
+      <Filter>Source Files\Import Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Import\TrackImport.cpp">
+      <Filter>Source Files\Import Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
