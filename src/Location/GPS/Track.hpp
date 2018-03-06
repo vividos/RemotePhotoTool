@@ -6,8 +6,12 @@
 //
 #pragma once
 
-#include <ulib/DateTime.hpp>
 #include "GPS/Coordinate.hpp"
+#include <ulib/DateTime.hpp>
+#include <boost/multi_index_container.hpp>
+#include <boost/multi_index/ordered_index.hpp>
+#include <boost/multi_index/sequenced_index.hpp>
+#include <boost/multi_index/member.hpp>
 
 namespace GPS
 {
@@ -33,8 +37,37 @@ namespace GPS
       /// finds nearest WGS84 coordiates and time stamp, relative to given time stamp
       std::pair<WGS84::Coordinate, DateTime> FindNearest(const DateTime& timeStamp) const;
 
+      /// checks if given time stamp is contained in track range
+      bool InTrackRange(const DateTime& timeStamp) const;
+
    private:
-      //boost::multi_index_container<> m_trackPoints
+      /// value type to hold datetime and coordinate
+      struct TrackPoint
+      {
+         /// ctor
+         TrackPoint(const GPS::WGS84::Coordinate& coord, const DateTime& timeStamp)
+            :m_coord(coord),
+            m_timeStamp(timeStamp)
+         {
+         }
+
+         GPS::WGS84::Coordinate m_coord;  ///< stored coordinate
+         DateTime m_timeStamp;            ///< time stamp
+      };
+
+      // type of multi index container used for storage
+      typedef boost::multi_index::multi_index_container<
+         TrackPoint, // value type
+         boost::multi_index::indexed_by<
+            boost::multi_index::sequenced<>,    // std::list like
+            boost::multi_index::ordered_unique<
+               boost::multi_index::member<TrackPoint, DateTime, &TrackPoint::m_timeStamp> // order by member m_timeStamp
+            >
+         >
+      > T_TrackPointsContainer;
+
+      /// track points
+      T_TrackPointsContainer m_trackPoints;
    };
 
 } // namespace GPS

@@ -15,32 +15,41 @@ Track::Track()
 
 size_t Track::NumPoints() const
 {
-   return 0;
+   return m_trackPoints.size();
 }
 
-/// \todo implement
 DateTime Track::StartTime() const
 {
-   return DateTime(DateTime::invalid);
+   return m_trackPoints.empty() ? DateTime(DateTime::invalid) : m_trackPoints.front().m_timeStamp;
 }
 
-/// \todo implement
 DateTime Track::EndTime() const
 {
-   return DateTime(DateTime::invalid);
+   return m_trackPoints.empty() ? DateTime(DateTime::invalid) : m_trackPoints.back().m_timeStamp;
 }
 
-/// \todo implement
 void Track::AddPoint(const GPS::WGS84::Coordinate& coordinate, const DateTime& timeStamp)
 {
-   UNUSED(timeStamp);
-   UNUSED(coordinate);
+   m_trackPoints.push_back(TrackPoint(coordinate, timeStamp));
 }
 
-/// \todo implement
 std::pair<GPS::WGS84::Coordinate, DateTime> Track::FindNearest(const DateTime& timeStamp) const
 {
-   UNUSED(timeStamp);
+   // use ordered_unique index to find lower bound of given time stamp
+   auto iter = m_trackPoints.get<1>().lower_bound(timeStamp);
 
-   return std::make_pair(GPS::WGS84::Coordinate(), DateTime(DateTime::invalid));
+   if (iter == m_trackPoints.get<1>().end())
+   {
+      return std::make_pair(GPS::WGS84::Coordinate(), DateTime(DateTime::invalid));
+   }
+
+   return std::make_pair(iter->m_coord, iter->m_timeStamp);
+}
+
+bool Track::InTrackRange(const DateTime& timeStamp) const
+{
+   return timeStamp.Status() == DateTime::valid &&
+      !m_trackPoints.empty() &&
+      timeStamp >= StartTime() &&
+      timeStamp <= EndTime();
 }
