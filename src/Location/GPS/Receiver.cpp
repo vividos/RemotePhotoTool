@@ -131,12 +131,17 @@ void Receiver::Stop()
 
    if (m_impl->m_serialPort != nullptr)
    {
-      m_impl->m_serialPort->Close();
+      if (m_impl->m_serialPort->IsOpen())
+         m_impl->m_serialPort->Close();
+
+      m_impl->m_serialPort.reset();
    }
 
    if (m_impl->m_workerThread != nullptr)
    {
       m_impl->m_workerThread->join();
+
+      m_impl->m_workerThread.reset();
    }
 
    m_impl->m_parser.reset();
@@ -191,7 +196,28 @@ void Receiver::RunWorkerThread()
 
    Thread::SetName(_T("GPS::Receiver I/O thread"));
 
-   m_impl->m_ioService.run();
+   for (;;)
+   {
+      try
+      {
+         m_impl->m_ioService.run();
+         break;
+      }
+      catch (boost::system::system_error& e)
+      {
+         ATLTRACE(_T("GPS::Receiver: caught boost::system::system_error exception: code=%u, what=%hs\n"),
+            e.code().value(), e.what());
+      }
+      catch (Exception& e)
+      {
+         ATLTRACE(_T("GPS::Receiver: caught Exception: %s(%u): %s\n"),
+            e.SourceFile(), e.SourceLine(), e.Message());
+      }
+      catch (...)
+      {
+         ATLTRACE(_T("GPS::Receiver: caught unknown exception\n"));
+      }
+   }
 }
 
 void Receiver::OnReceivedData(int errorCode, const std::vector<BYTE>& data, size_t bytesTransferred)
