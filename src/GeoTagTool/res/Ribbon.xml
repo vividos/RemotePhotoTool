@@ -9,8 +9,8 @@
 
     <Command Name="wtl_DATASOURCE_OPEN_GPS_RECEIVER" Symbol="ID_DATASOURCE_OPEN_GPS_RECEIVER" Id="2000" LabelTitle="Open GPS Receiver"/>
     <Command Name="wtl_DATASOURCE_IMPORT_TRACK" Symbol="ID_DATASOURCE_IMPORT_TRACK" Id="2001" LabelTitle="Import Track"/>
-    <Command Name="wtl_ACTIONS_TAG_IMAGES" Symbol="ID_ACTIONS_TAG_IMAGES" Id="2002" LabelTitle="Open GPS Receiver"/>
-    <Command Name="wtl_ACTIONS_SAVE_LIVE_TRACK" Symbol="ID_ACTIONS_SAVE_LIVE_TRACK" Id="2003" LabelTitle="Import Track"/>
+    <Command Name="wtl_ACTIONS_TAG_IMAGES" Symbol="ID_ACTIONS_TAG_IMAGES" Id="2002" LabelTitle="Tag Images"/>
+    <Command Name="wtl_ACTIONS_SAVE_LIVE_TRACK" Symbol="ID_ACTIONS_SAVE_LIVE_TRACK" Id="2003" LabelTitle="Save Live Track"/>
 
     <!-- Tabs -->
     <Command Name="TabHome" Symbol="ID_TAB_HOME" LabelTitle="Home" />
