@@ -26,6 +26,8 @@ void NMEA0183TrackImport::ImportTrack(GPS::Track& track)
       Stream::ITextStream::textEncodingAnsi,
       Stream::ITextStream::lineEndingReadAny);
 
+   ATLASSERT(true == stream.CanRead());
+
    if (!stream.IsOpen())
       return;
 

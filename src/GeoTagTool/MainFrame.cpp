@@ -149,10 +149,12 @@ LRESULT MainFrame::OnDataSourceImportTrack(WORD /*wNotifyCode*/, WORD /*wID*/, H
 
 LRESULT MainFrame::OnActionsTagImages(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
+   // TODO
    return 0;
 }
 
 LRESULT MainFrame::OnActionsSaveLiveTrack(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
+   // TODO
    return 0;
 }

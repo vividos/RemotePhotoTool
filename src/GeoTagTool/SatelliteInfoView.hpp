@@ -23,9 +23,6 @@ class SatelliteInfoView :
    public CWinDataExchange<SatelliteInfoView>
 {
 public:
-   /// ctor
-   SatelliteInfoView();
-
    /// form ID
    enum { IDD = IDD_SATELLITE_INFO_FORM };
 
