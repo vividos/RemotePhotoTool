@@ -42,18 +42,18 @@ namespace GPS
          /// returns latitude full minutes
          unsigned int GetMinuteLatitude() const;
          /// returns latitude full seconds
-         unsigned int GetSeconlatitude() const;
+         unsigned int GetSecondLatitude() const;
          /// returns latitude full milliseconds
-         unsigned int GetMilliSeconlatitude() const;
+         unsigned int GetMilliSecondLatitude() const;
 
          /// returns longitude full degrees
          signed int GetDegreeLongitude() const;
          /// returns longitude full minutes
          unsigned int GetMinuteLongitude() const;
          /// returns longitude full seconds
-         unsigned int GetSeconlongitude() const;
+         unsigned int GetSecondLongitude() const;
          /// returns longitude full milliseconds
-         unsigned int GetMilliSeconlongitude() const;
+         unsigned int GetMilliSecondLongitude() const;
 
          /// returns if stored coordinate is valid
          bool IsValid() const { return m_valid; }

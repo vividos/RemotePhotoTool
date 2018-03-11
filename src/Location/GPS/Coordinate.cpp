@@ -86,13 +86,13 @@ unsigned int Coordinate::GetMinuteLatitude() const
    return latitudeMin % 60;
 }
 
-unsigned int Coordinate::GetSeconlatitude() const
+unsigned int Coordinate::GetSecondLatitude() const
 {
    unsigned int latitudeSec = static_cast<unsigned int>(abs(m_latitude)) / 1000;
    return latitudeSec % 60;
 }
 
-unsigned int Coordinate::GetMilliSeconlatitude() const
+unsigned int Coordinate::GetMilliSecondLatitude() const
 {
    return static_cast<unsigned int>(abs(m_latitude)) % 1000;
 }
@@ -108,13 +108,13 @@ unsigned int Coordinate::GetMinuteLongitude() const
    return longitudeMin % 60;
 }
 
-unsigned int Coordinate::GetSeconlongitude() const
+unsigned int Coordinate::GetSecondLongitude() const
 {
    unsigned int longitudeSec = static_cast<unsigned int>(abs(m_longitude)) / 1000;
    return longitudeSec % 60;
 }
 
-unsigned int Coordinate::GetMilliSeconlongitude() const
+unsigned int Coordinate::GetMilliSecondLongitude() const
 {
    return static_cast<unsigned int>(abs(m_longitude)) % 1000;
 }
@@ -165,14 +165,14 @@ void Coordinate::ToString(EFormat eFormat, CString& strLatitude, CString& strLon
    {
    case fmtDDD_MM_dot_mmmm: // ddd°mm.mmmm
    {
-      unsigned int latitudeSec = GetSeconlatitude() * 1000 + GetMilliSeconlatitude();
+      unsigned int latitudeSec = GetSecondLatitude() * 1000 + GetMilliSecondLatitude();
       strLatitude.Format(_T("%c %u°%02u.%03u"),
          cLatHemisphere,
          abs(GetDegreeLatitude()),
          GetMinuteLatitude(),
          latitudeSec / 60);
 
-      unsigned int longitudeSec = GetSeconlongitude() * 1000 + GetMilliSeconlongitude();
+      unsigned int longitudeSec = GetSecondLongitude() * 1000 + GetMilliSecondLongitude();
       strLongitude.Format(_T("%c %u°%02u.%03u"),
          cLongHemisphere,
          abs(GetDegreeLongitude()),
@@ -186,14 +186,14 @@ void Coordinate::ToString(EFormat eFormat, CString& strLatitude, CString& strLon
          cLatHemisphere,
          abs(GetDegreeLatitude()),
          GetMinuteLatitude(),
-         GetSeconlatitude(),
-         GetMilliSeconlatitude());
+         GetSecondLatitude(),
+         GetMilliSecondLatitude());
       strLongitude.Format(_T("%c %u°%02u'%02u.%03u"),
          cLongHemisphere,
          abs(GetDegreeLongitude()),
          GetMinuteLongitude(),
-         GetSeconlongitude(),
-         GetMilliSeconlongitude());
+         GetSecondLongitude(),
+         GetMilliSecondLongitude());
       break;
 
    case fmtSign_DDD_dot_dddd: // [-]ddd.dddddddd
