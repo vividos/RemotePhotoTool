@@ -19,7 +19,12 @@ Display proper device property names
 Implement reading, enumerating and setting ImageProperty values
 Implement RemoteReleaseControl functions
 Implement Viewfinder functions
-Improve speed of EnumerateDevices()
+Improve speed of EnumerateDevices(), worker thread
+
+CanonControl
+------------
+Rename library to CameraControl
+Filter out cameras both appearing as WIA and other SDKs
 
 Lua scripting
 -------------
@@ -49,11 +54,26 @@ Add geotagging for PCs that have a GPS receiver built in
 Add photo mode with motion detection using viewfinder to take photos (e.g. for wildlife photography)
 Fix refreshing comboboxes when switching to M mode on camera
 Fix bug where images are only transferred to host, on EOS 400D
+Implement task manager to run Hugin, PhotomatixCL, ffmpeg
+Implement running PhotomatixCL on HDR images
+Implement gPhoto2 USB driver switching dialog, using Zadig
+Implement drag-n-drop from Camera Filesystem view
+Timelapse: Add button to show Windows energy savings optipns
+Timelapse: Show estimated number of pictures
+Filesystem: Implement image sorter view to sort images into folders
 
 RemoteScriptingEditor
 ---------------------
 Implement debugging scripts
-Implement breakpoints
+Implement breakpoints, find lines with lbci
+Implement watch window
+
+GeoTagTool
+----------
+implement GPX importing
+implement list of tracks view
+implement geotagging
+implement saving live track
 
 Setup
 -----
