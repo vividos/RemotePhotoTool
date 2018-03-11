@@ -52,7 +52,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)Base;$(SolutionDir)Thirdparty\jpeg-9c;$(SolutionDir)Thirdparty\libexif-0.6.21;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Base;$(SolutionDir)Location;$(SolutionDir)Thirdparty\jpeg-9c;$(SolutionDir)Thirdparty\libexif-0.6.21;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -62,7 +62,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)Base;$(SolutionDir)Thirdparty\jpeg-9c;$(SolutionDir)Thirdparty\libexif-0.6.21;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Base;$(SolutionDir)Location;$(SolutionDir)Thirdparty\jpeg-9c;$(SolutionDir)Thirdparty\libexif-0.6.21;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <EnablePREfast>true</EnablePREfast>
     </ClCompile>
     <Link>
@@ -83,7 +83,9 @@
     <ClInclude Include="ImageTypeFilesList.hpp" />
     <ClInclude Include="ImageTypeScanner.hpp" />
     <ClInclude Include="ImageTypeScannerOptions.hpp" />
+    <ClInclude Include="JFIFRewriter.hpp" />
     <ClInclude Include="JpegDecoder.hpp" />
+    <ClInclude Include="JpegGeoTagger.hpp" />
     <ClInclude Include="JpegMemoryReader.hpp" />
     <ClInclude Include="JpegMemorySourceManager.hpp" />
     <ClInclude Include="PhotomatixInterface.hpp" />
@@ -98,6 +100,8 @@
     <ClCompile Include="FfmpegOptionsParser.cpp" />
     <ClCompile Include="HuginInterface.cpp" />
     <ClCompile Include="ImageTypeScanner.cpp" />
+    <ClCompile Include="JFIFRewriter.cpp" />
+    <ClCompile Include="JpegGeoTagger.cpp" />
     <ClCompile Include="JpegMemoryReader.cpp" />
     <ClCompile Include="PhotomatixInterface.cpp" />
     <ClCompile Include="PreviousImagesManager.cpp" />
@@ -110,6 +114,9 @@
   <ItemGroup>
     <ProjectReference Include="..\Base\Base.vcxproj">
       <Project>{3ab1bb98-d491-47db-8d93-1dab3ce88c87}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Location\Location.vcxproj">
+      <Project>{431ed9a1-2dc8-4c10-9c6b-e2d9a6103efd}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

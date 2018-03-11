@@ -65,6 +65,12 @@
     <ClInclude Include="FfmpegOptionsParser.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="JpegGeoTagger.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="JFIFRewriter.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -95,6 +101,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="FfmpegOptionsParser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="JpegGeoTagger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="JFIFRewriter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
