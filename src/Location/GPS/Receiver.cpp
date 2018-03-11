@@ -203,15 +203,20 @@ void Receiver::RunWorkerThread()
          m_impl->m_ioService.run();
          break;
       }
-      catch (boost::system::system_error& e)
+      catch (const boost::system::system_error& ex)
       {
-         ATLTRACE(_T("GPS::Receiver: caught boost::system::system_error exception: code=%u, what=%hs\n"),
-            e.code().value(), e.what());
+         ATLTRACE(
+            _T("GPS::Receiver: caught boost::system::system_error exception: code=%u, what=%hs\n"),
+            ex.code().value(),
+            ex.what());
       }
-      catch (Exception& e)
+      catch (const Exception& ex)
       {
-         ATLTRACE(_T("GPS::Receiver: caught Exception: %s(%u): %s\n"),
-            e.SourceFile(), e.SourceLine(), e.Message());
+         ATLTRACE(
+            _T("GPS::Receiver: caught Exception: %s(%u): %s\n"),
+            ex.SourceFile().GetString(),
+            ex.SourceLine(),
+            ex.Message().GetString());
       }
       catch (...)
       {
