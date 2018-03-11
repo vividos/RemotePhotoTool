@@ -257,7 +257,7 @@ void ViewfinderImpl::GetImage(std::vector<BYTE>& vecImage)
       return;
 
    // transfer the image data
-   EdsUInt32 uiLength = 0;
+   EdsUInt64 uiLength = 0;
    err = EdsGetLength(hStream, &uiLength);
    if (err != EDS_ERR_OK)
       return;

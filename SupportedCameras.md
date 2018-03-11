@@ -9,12 +9,13 @@ and send me a message with the test results and camera infos (output from the Ca
 
 ### Canon EOS camera models ###
 
-Cameras supported by "ED-SDK 3.2.1".
+Cameras supported by "ED-SDK 3.6.1".
 All cameras support remote capture, some of them support live view and Bulb shooting.
 
 - EOS 1000D  (aka. Rebel XS, Kiss F)
 - EOS 1100D (aka. Rebel T3, Kiss X50)
 - EOS 1200D (aka. Rebel T5, Kiss X70)
+- EOS 1300D (aka. Rebel T6, Kiss X80)
 - EOS 450D (aka. Rebel Xsi, Kiss X2)
 - EOS 400D (aka. Rebel XTi, Kiss Digital X) (`tested and works`)
 - EOS 500D (aka. Rebel T1i, Kiss X3)
@@ -24,16 +25,23 @@ All cameras support remote capture, some of them support live view and Bulb shoo
 - EOS 700D (aka. Rebel T5i, Kiss X7i)
 - EOS 750D (aka. Rebel T6i, Kiss X8i)
 - EOS 760D (aka. Rebel T6s, EOS 8000D)
+- EOS 800D (aka. Rebel T7i, Kiss X9i)
 - EOS 100D (aka. Rebel SL1, Kiss X7)
+- EOS 200D (aka. Rebel SL2, Kiss X9)
 - EOS 40D (`tested and works`)
 - EOS 50D
 - EOS 60D
 - EOS 60Da
+- EOS 70D
+- EOS 77D (aka. EOS 9000D)
+- EOS 80D
 - EOS 5D Mark II
 - EOS 5D Mark III
+- EOS 5D Mark IV
 - EOS 5DS
 - EOS 5DS R
 - EOS 6D
+- EOS 6D Mark II
 - EOS 7D
 - EOS 7D Mark II
 - EOS-1D C
@@ -41,6 +49,7 @@ All cameras support remote capture, some of them support live view and Bulb shoo
 - EOS-1Ds Mark III
 - EOS-1D Mark IV
 - EOS 1D X
+- EOS-1D X Mark II
 
 #### Canon PowerShot cameras ####
 

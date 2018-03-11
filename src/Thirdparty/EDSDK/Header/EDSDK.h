@@ -8,7 +8,7 @@
 *******************************************************************************
 *                                                                             *
 *   Written and developed by Canon Inc.										  *
-*   Copyright Canon Inc. 2006-2014 All Rights Reserved                        *
+*   Copyright Canon Inc. 2006-2017 All Rights Reserved                        *
 *                                                                             *
 ******************************************************************************/
 
@@ -571,7 +571,7 @@ EdsError EDSAPI EdsDeleteDirectoryItem( EdsDirectoryItemRef  inDirItemRef );
 //  Returns:    Any of the sdk errors.
 -----------------------------------------------------------------------------*/
 EdsError EDSAPI EdsDownload(             EdsDirectoryItemRef    inDirItemRef,
-                                         EdsUInt32              inReadSize,
+                                         EdsUInt64              inReadSize,
                                          EdsStreamRef           outStream );
 
 
@@ -729,7 +729,7 @@ EdsError EDSAPI EdsCreateFileStream(
 //  Returns:    Any of the sdk errors.
 -----------------------------------------------------------------------------*/
 EdsError EDSAPI EdsCreateMemoryStream(
-                            EdsUInt32               inBufferSize,
+                            EdsUInt64               inBufferSize,
                             EdsStreamRef*           outStream );
 
 
@@ -784,7 +784,7 @@ EdsError EDSAPI EdsCreateFileStreamEx(
 -----------------------------------------------------------------------------*/
 EdsError EDSAPI EdsCreateMemoryStreamFromPointer(
                 EdsVoid*                inUserBuffer,
-                EdsUInt32               inBufferSize,
+                EdsUInt64               inBufferSize,
                 EdsStreamRef*           outStream );
 
 
@@ -834,9 +834,9 @@ EdsError EDSAPI EdsGetPointer(
 -----------------------------------------------------------------------------*/
 EdsError EDSAPI EdsRead(
                 EdsStreamRef            inStreamRef,
-                EdsUInt32               inReadSize,
+                EdsUInt64               inReadSize,
                 EdsVoid*                outBuffer, 
-                EdsUInt32*              outReadSize );
+                EdsUInt64*              outReadSize );
 
 
 /*-----------------------------------------------------------------------------
@@ -858,9 +858,9 @@ EdsError EDSAPI EdsRead(
 -----------------------------------------------------------------------------*/
 EdsError EDSAPI EdsWrite(
                 EdsStreamRef            inStreamRef,
-                EdsUInt32               inWriteSize,
+                EdsUInt64               inWriteSize,
                 const EdsVoid*          inBuffer,
-                EdsUInt32*              outWrittenSize );
+                EdsUInt64*              outWrittenSize );
 
 
 /*-----------------------------------------------------------------------------
@@ -887,7 +887,7 @@ EdsError EDSAPI EdsWrite(
 -----------------------------------------------------------------------------*/
 EdsError EDSAPI EdsSeek(
                 EdsStreamRef            inStreamRef,
-                EdsInt32                inSeekOffset,
+                EdsInt64                inSeekOffset,
                 EdsSeekOrigin           inSeekOrigin );
 
 
@@ -907,7 +907,7 @@ EdsError EDSAPI EdsSeek(
 -----------------------------------------------------------------------------*/
 EdsError EDSAPI EdsGetPosition(
                 EdsStreamRef            inStreamRef,
-                EdsUInt32*              outPosition );
+                EdsUInt64*              outPosition );
 
 
 /*-----------------------------------------------------------------------------
@@ -925,7 +925,7 @@ EdsError EDSAPI EdsGetPosition(
 -----------------------------------------------------------------------------*/
 EdsError EDSAPI EdsGetLength(
                 EdsStreamRef            inStreamRef,
-                EdsUInt32*              outLength );
+                EdsUInt64*              outLength );
 
 
 /*-----------------------------------------------------------------------------
@@ -949,7 +949,7 @@ EdsError EDSAPI EdsGetLength(
 -----------------------------------------------------------------------------*/
 EdsError EDSAPI EdsCopyData(
                 EdsStreamRef            inStreamRef,
-                EdsUInt32               inWriteSize,
+                EdsUInt64               inWriteSize,
                 EdsStreamRef            outStreamRef );
 
 
