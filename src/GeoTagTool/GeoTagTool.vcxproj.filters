@@ -95,11 +95,11 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <CustomBuild Include="res/Ribbon.xml">
       <Filter>Resource Files</Filter>
     </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>
