@@ -49,13 +49,13 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)Base;$(SolutionDir)CanonControl\exports;lua-5.3.4\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Base;$(SolutionDir)CanonControl\exports;lua-5.3.5\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)Base;$(SolutionDir)CanonControl\exports;lua-5.3.4\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Base;$(SolutionDir)CanonControl\exports;lua-5.3.5\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <EnablePREfast>true</EnablePREfast>
     </ClCompile>
@@ -81,7 +81,7 @@
     <ClInclude Include="SystemLuaBindings.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="lua-5.3.4\Lua.vcxproj">
+    <ProjectReference Include="lua-5.3.5\Lua.vcxproj">
       <Project>{24ea638c-0f97-48fa-82d1-7dba2832c1dc}</Project>
     </ProjectReference>
   </ItemGroup>

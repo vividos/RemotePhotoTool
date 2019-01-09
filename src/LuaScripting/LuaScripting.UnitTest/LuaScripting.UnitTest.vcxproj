@@ -51,14 +51,14 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)Base;$(SolutionDir)LuaScripting;$(SolutionDir)LuaScripting\lua-5.3.4\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Base;$(SolutionDir)LuaScripting;$(SolutionDir)LuaScripting\lua-5.3.5\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link />
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)Base;$(SolutionDir)LuaScripting;$(SolutionDir)LuaScripting\lua-5.3.4\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Base;$(SolutionDir)LuaScripting;$(SolutionDir)LuaScripting\lua-5.3.5\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <EnablePREfast>true</EnablePREfast>
     </ClCompile>
@@ -82,7 +82,7 @@
     <ProjectReference Include="..\..\CanonControl\CanonControl.vcxproj">
       <Project>{ce953b34-5513-4719-aead-a61f0585ab34}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\lua-5.3.4\Lua.vcxproj">
+    <ProjectReference Include="..\lua-5.3.5\Lua.vcxproj">
       <Project>{24ea638c-0f97-48fa-82d1-7dba2832c1dc}</Project>
     </ProjectReference>
     <ProjectReference Include="..\LuaScripting.vcxproj">
