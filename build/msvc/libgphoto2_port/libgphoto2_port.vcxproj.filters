@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="libgphoto2_port">
+      <UniqueIdentifier>{14f2fcec-9666-4795-b911-83e9e95bb257}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gphoto2">
+      <UniqueIdentifier>{c1f9e3a5-2458-4982-915c-3ef5b98fc48b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="msvc">
+      <UniqueIdentifier>{36fe2e19-ea74-4e35-ba0a-75f2b266708b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="libgphoto2_port\gphoto2-port-portability.c">
+      <Filter>libgphoto2_port</Filter>
+    </ClCompile>
+    <ClCompile Include="libgphoto2_port\gphoto2-port-result.c">
+      <Filter>libgphoto2_port</Filter>
+    </ClCompile>
+    <ClCompile Include="libgphoto2_port\gphoto2-port-version.c">
+      <Filter>libgphoto2_port</Filter>
+    </ClCompile>
+    <ClCompile Include="libgphoto2_port\gphoto2-port.c">
+      <Filter>libgphoto2_port</Filter>
+    </ClCompile>
+    <ClCompile Include="libgphoto2_port\gphoto2-port-info-list.c">
+      <Filter>libgphoto2_port</Filter>
+    </ClCompile>
+    <ClCompile Include="libgphoto2_port\gphoto2-port-log.c">
+      <Filter>libgphoto2_port</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="libgphoto2_port\gphoto2-port-info.h">
+      <Filter>libgphoto2_port</Filter>
+    </ClInclude>
+    <ClInclude Include="gphoto2\gphoto2-port-result.h">
+      <Filter>gphoto2</Filter>
+    </ClInclude>
+    <ClInclude Include="gphoto2\gphoto2-port-version.h">
+      <Filter>gphoto2</Filter>
+    </ClInclude>
+    <ClInclude Include="gphoto2\gphoto2-port.h">
+      <Filter>gphoto2</Filter>
+    </ClInclude>
+    <ClInclude Include="gphoto2\gphoto2-port-info-list.h">
+      <Filter>gphoto2</Filter>
+    </ClInclude>
+    <ClInclude Include="gphoto2\gphoto2-port-library.h">
+      <Filter>gphoto2</Filter>
+    </ClInclude>
+    <ClInclude Include="gphoto2\gphoto2-port-log.h">
+      <Filter>gphoto2</Filter>
+    </ClInclude>
+    <ClInclude Include="gphoto2\gphoto2-port-portability.h">
+      <Filter>gphoto2</Filter>
+    </ClInclude>
+    <ClInclude Include="msvc\config.h">
+      <Filter>msvc</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="msvc\libgphoto2_port.def">
+      <Filter>msvc</Filter>
+    </None>
+  </ItemGroup>
+</Project>

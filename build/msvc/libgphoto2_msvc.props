@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)intermediate\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <SDLCheck>false</SDLCheck>
+      <WarningLevel>Level2</WarningLevel>
+      <PreprocessorDefinitions>_GPHOTO2_INTERNAL_CODE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)libgphoto2_port;$(SolutionDir)msvc;$(SolutionDir)msvc\compat</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link />
+  </ItemDefinitionGroup>
+  <ItemGroup />
+</Project>

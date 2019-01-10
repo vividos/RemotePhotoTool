@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="libusb1.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\iolib.def" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\libgphoto2.vcxproj">
+      <Project>{0cfc01f3-a895-419e-a8b0-9acbca162a8a}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\libgphoto2_port\libgphoto2_port.vcxproj">
+      <Project>{84a8b532-a100-48d1-891c-97428b84e0ad}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\msvc\compat\compat.vcxproj">
+      <Project>{8a1dee03-82b6-4fb7-960b-4bb37984c328}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>libusb1</RootNamespace>
+    <ProjectGuid>{7B03BBE4-BBF3-496E-90E2-F420A93BD0C8}</ProjectGuid>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\libgphoto2_msvc.props" />
+    <Import Project="..\iolibs.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\libgphoto2_msvc.props" />
+    <Import Project="..\iolibs.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)packages\libusb.1.0.21\src\include\libusb-1.0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
+      <ModuleDefinitionFile>..\iolib.def</ModuleDefinitionFile>
+      <AdditionalLibraryDirectories>$(SolutionDir)packages\libusb.1.0.21\lib\native\x86</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libusb-1.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent />
+    <PostBuildEvent />
+    <CustomBuildStep>
+      <Command>copy "$(SolutionDir)packages\libusb.1.0.21\lib\native\x86\libusb-1.0.dll" "$(OutputPath)"</Command>
+      <Message>copying libusb-1.0.dll...</Message>
+      <Outputs>$(OutputPath)libusb-1.0.dll</Outputs>
+      <TreatOutputAsContent>true</TreatOutputAsContent>
+    </CustomBuildStep>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)packages\libusb.1.0.21\src\include\libusb-1.0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
+      <ModuleDefinitionFile>..\iolib.def</ModuleDefinitionFile>
+      <AdditionalLibraryDirectories>$(SolutionDir)packages\libusb.1.0.21\lib\native\x86</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libusb-1.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent />
+    <CustomBuildStep>
+      <Command>copy "$(SolutionDir)packages\libusb.1.0.21\lib\native\x86\libusb-1.0.dll" "$(OutputPath)"</Command>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Message>copying libusb-1.0.dll...</Message>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Outputs>$(OutputPath)libusb-1.0.dll</Outputs>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <TreatOutputAsContent>true</TreatOutputAsContent>
+    </CustomBuildStep>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="libgphoto2\ahd_bayer.c" />
+    <ClCompile Include="libgphoto2\bayer.c" />
+    <ClCompile Include="libgphoto2\exif.c" />
+    <ClCompile Include="libgphoto2\gamma.c" />
+    <ClCompile Include="libgphoto2\gphoto2-abilities-list.c" />
+    <ClCompile Include="libgphoto2\gphoto2-camera.c" />
+    <ClCompile Include="libgphoto2\gphoto2-context.c" />
+    <ClCompile Include="libgphoto2\gphoto2-file.c" />
+    <ClCompile Include="libgphoto2\gphoto2-filesys.c" />
+    <ClCompile Include="libgphoto2\gphoto2-library.c" />
+    <ClCompile Include="libgphoto2\gphoto2-list.c" />
+    <ClCompile Include="libgphoto2\gphoto2-result.c" />
+    <ClCompile Include="libgphoto2\gphoto2-setting.c" />
+    <ClCompile Include="libgphoto2\gphoto2-version.c" />
+    <ClCompile Include="libgphoto2\gphoto2-widget.c" />
+    <ClCompile Include="libgphoto2\jpeg.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="gphoto2\gphoto2-abilities-list.h" />
+    <ClInclude Include="gphoto2\gphoto2-camera.h" />
+    <ClInclude Include="gphoto2\gphoto2-context.h" />
+    <ClInclude Include="gphoto2\gphoto2-file.h" />
+    <ClInclude Include="gphoto2\gphoto2-filesys.h" />
+    <ClInclude Include="gphoto2\gphoto2-library.h" />
+    <ClInclude Include="gphoto2\gphoto2-list.h" />
+    <ClInclude Include="gphoto2\gphoto2-result.h" />
+    <ClInclude Include="gphoto2\gphoto2-setting.h" />
+    <ClInclude Include="gphoto2\gphoto2-version.h" />
+    <ClInclude Include="gphoto2\gphoto2-widget.h" />
+    <ClInclude Include="gphoto2\gphoto2.h" />
+    <ClInclude Include="libgphoto2\bayer.h" />
+    <ClInclude Include="libgphoto2\exif.h" />
+    <ClInclude Include="libgphoto2\gamma.h" />
+    <ClInclude Include="libgphoto2\jpeg.h" />
+    <ClInclude Include="msvc\config.h" />
+    <ClInclude Include="msvc\gphoto2-endian.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="msvc\libgphoto2.def" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="libgphoto2_port\libgphoto2_port.vcxproj">
+      <Project>{84a8b532-a100-48d1-891c-97428b84e0ad}</Project>
+    </ProjectReference>
+    <ProjectReference Include="msvc\compat\compat.vcxproj">
+      <Project>{8a1dee03-82b6-4fb7-960b-4bb37984c328}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{0CFC01F3-A895-419E-A8B0-9ACBCA162A8A}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>libgphoto2</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="libgphoto2_msvc.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="libgphoto2_msvc.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <ModuleDefinitionFile>msvc\libgphoto2.def</ModuleDefinitionFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <ModuleDefinitionFile>msvc\libgphoto2.def</ModuleDefinitionFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="libgphoto2">
+      <UniqueIdentifier>{66e1fe51-d631-46ab-8f6b-34fbdfa40fe1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libgphoto2\Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="libgphoto2\Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="msvc">
+      <UniqueIdentifier>{04f79d0d-e672-4c78-a13d-6e38fec7b64c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gphoto2">
+      <UniqueIdentifier>{a07a1191-7448-453c-a9b5-e0384516ba15}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="libgphoto2\ahd_bayer.c">
+      <Filter>libgphoto2\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="libgphoto2\bayer.c">
+      <Filter>libgphoto2\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="libgphoto2\exif.c">
+      <Filter>libgphoto2\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="libgphoto2\gamma.c">
+      <Filter>libgphoto2\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="libgphoto2\gphoto2-abilities-list.c">
+      <Filter>libgphoto2\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="libgphoto2\gphoto2-camera.c">
+      <Filter>libgphoto2\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="libgphoto2\gphoto2-context.c">
+      <Filter>libgphoto2\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="libgphoto2\gphoto2-file.c">
+      <Filter>libgphoto2\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="libgphoto2\gphoto2-filesys.c">
+      <Filter>libgphoto2\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="libgphoto2\gphoto2-library.c">
+      <Filter>libgphoto2\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="libgphoto2\gphoto2-list.c">
+      <Filter>libgphoto2\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="libgphoto2\gphoto2-result.c">
+      <Filter>libgphoto2\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="libgphoto2\gphoto2-setting.c">
+      <Filter>libgphoto2\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="libgphoto2\gphoto2-version.c">
+      <Filter>libgphoto2\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="libgphoto2\gphoto2-widget.c">
+      <Filter>libgphoto2\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="libgphoto2\jpeg.c">
+      <Filter>libgphoto2\Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="libgphoto2\bayer.h">
+      <Filter>libgphoto2\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="libgphoto2\exif.h">
+      <Filter>libgphoto2\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="libgphoto2\gamma.h">
+      <Filter>libgphoto2\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="libgphoto2\jpeg.h">
+      <Filter>libgphoto2\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="msvc\config.h">
+      <Filter>msvc</Filter>
+    </ClInclude>
+    <ClInclude Include="gphoto2\gphoto2.h">
+      <Filter>gphoto2</Filter>
+    </ClInclude>
+    <ClInclude Include="gphoto2\gphoto2-abilities-list.h">
+      <Filter>gphoto2</Filter>
+    </ClInclude>
+    <ClInclude Include="gphoto2\gphoto2-camera.h">
+      <Filter>gphoto2</Filter>
+    </ClInclude>
+    <ClInclude Include="gphoto2\gphoto2-context.h">
+      <Filter>gphoto2</Filter>
+    </ClInclude>
+    <ClInclude Include="gphoto2\gphoto2-file.h">
+      <Filter>gphoto2</Filter>
+    </ClInclude>
+    <ClInclude Include="gphoto2\gphoto2-filesys.h">
+      <Filter>gphoto2</Filter>
+    </ClInclude>
+    <ClInclude Include="gphoto2\gphoto2-library.h">
+      <Filter>gphoto2</Filter>
+    </ClInclude>
+    <ClInclude Include="gphoto2\gphoto2-list.h">
+      <Filter>gphoto2</Filter>
+    </ClInclude>
+    <ClInclude Include="gphoto2\gphoto2-result.h">
+      <Filter>gphoto2</Filter>
+    </ClInclude>
+    <ClInclude Include="gphoto2\gphoto2-setting.h">
+      <Filter>gphoto2</Filter>
+    </ClInclude>
+    <ClInclude Include="gphoto2\gphoto2-version.h">
+      <Filter>gphoto2</Filter>
+    </ClInclude>
+    <ClInclude Include="gphoto2\gphoto2-widget.h">
+      <Filter>gphoto2</Filter>
+    </ClInclude>
+    <ClInclude Include="msvc\gphoto2-endian.h">
+      <Filter>msvc</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="msvc\libgphoto2.def">
+      <Filter>msvc</Filter>
+    </None>
+  </ItemGroup>
+</Project>
