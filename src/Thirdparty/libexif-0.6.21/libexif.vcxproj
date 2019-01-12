@@ -14,7 +14,7 @@
     <ProjectGuid>{A088917A-79EC-4CAE-AF42-6F358A4B6C59}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>libexif</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.10240.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

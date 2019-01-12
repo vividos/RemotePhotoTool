@@ -14,7 +14,7 @@
     <ProjectGuid>{41B565F7-F668-4425-A93D-6CABC18F6D1F}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>LuaScripting</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.10240.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">

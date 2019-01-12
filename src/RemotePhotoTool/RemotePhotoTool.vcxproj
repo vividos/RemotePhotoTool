@@ -14,7 +14,7 @@
     <ProjectGuid>{CDEDF8B5-A808-4995-97EB-1289A84FF7ED}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>RemotePhotoTool</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.10240.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
