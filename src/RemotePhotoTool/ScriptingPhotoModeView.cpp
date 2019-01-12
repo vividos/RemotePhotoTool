@@ -12,7 +12,6 @@
 #include "IPhotoModeViewHost.hpp"
 #include "Lua.hpp"
 #include <ulib/Path.hpp>
-#include "Filesystem.hpp"
 #include <ulib/win32/Process.hpp>
 
 /// file open filter for Lua scripting
@@ -113,7 +112,7 @@ void ScriptingPhotoModeView::EditScript(const CString& cszFilename)
       return;
 
    CString cszEditorFilename =
-      Path::Combine(Path(App_GetFilename()).FolderName(), _T("RemoteScriptingEditor.exe"));
+      Path::Combine(Path(Path::ModuleFilename()).FolderName(), _T("RemoteScriptingEditor.exe"));
 
    CString cszCommandLine;
    cszCommandLine.Format(_T("\"%s\" \"%s\""),

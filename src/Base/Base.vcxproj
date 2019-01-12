@@ -71,13 +71,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Filesystem.hpp" />
     <ClInclude Include="Logging.hpp" />
     <ClInclude Include="RegEnumKey.hpp" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Filesystem.cpp" />
     <ClCompile Include="Logging.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2019 Michael Fink
 //
 /// \file RemotePhotoTool/App.cpp Application
 //
@@ -9,7 +9,6 @@
 #include "stdafx.h"
 #include "App.hpp"
 #include <ulib/ProgramOptions.hpp>
-#include "Filesystem.hpp"
 #include "resource.h"
 #include "MainFrame.hpp"
 #include <ulib/Path.hpp>
@@ -140,10 +139,10 @@ void App::RegisterWIAHandler(bool bRegister)
    if (FAILED(hr))
       return;
 
-   CComBSTR bstrCommandline(_T("\"") + App_GetFilename() + _T("\" --open-wia \"%1\" \"%2\""));
+   CComBSTR bstrCommandline(_T("\"") + Path::ModuleFilename() + _T("\" --open-wia \"%1\" \"%2\""));
    CComBSTR bstrName(CString(MAKEINTRESOURCE(IDR_MAINFRAME)));
    CComBSTR bstrDescription(CString(MAKEINTRESOURCE(IDR_WIA_DESC)));
-   CComBSTR bstrIcon(App_GetFilename() + _T(",0"));
+   CComBSTR bstrIcon(Path::ModuleFilename() + _T(",0"));
 
    hr = spWiaDevMgr->RegisterEventCallbackProgram(
       bRegister ? WIA_REGISTER_EVENT_CALLBACK : WIA_UNREGISTER_EVENT_CALLBACK,

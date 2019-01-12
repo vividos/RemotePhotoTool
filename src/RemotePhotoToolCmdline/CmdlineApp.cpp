@@ -20,7 +20,6 @@
 #include "CameraFileSystem.hpp"
 #include "RemoteReleaseControl.hpp"
 #include "ShutterReleaseSettings.hpp"
-#include "Filesystem.hpp"
 #include <ulib/Path.hpp>
 #include <ulib/CrashReporter.hpp>
 #include "../version.h"

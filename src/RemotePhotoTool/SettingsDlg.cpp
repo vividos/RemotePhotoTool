@@ -11,7 +11,6 @@
 #include "SettingsDlg.hpp"
 #include "HuginInterface.hpp"
 #include "PhotomatixInterface.hpp"
-#include "Filesystem.hpp"
 #include <ulib/Path.hpp>
 
 SettingsDlg::SettingsDlg(AppSettings& settings)

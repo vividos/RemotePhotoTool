@@ -12,7 +12,6 @@
 #include "res/Ribbon.h"
 #include "resource.h"
 #include "MainFrame.hpp"
-#include "Filesystem.hpp"
 #include <ulib/Path.hpp>
 #include <ulib/CrashReporter.hpp>
 #include <crtdbg.h>
