@@ -32,7 +32,7 @@ OpenCppCoverage.exe ^
    --sources Logic --sources Logic\Logic.UnitTest ^
    --sources Location --sources Location\Location.UnitTest --sources Location\GPS --sources Location\NMEA0183 ^
    --sources LuaScripting --sources LuaScripting\LuaScripting.UnitTest ^
-   --excluded_sources packages\boost --excluded_sources LuaScripting\lua-5.3.4 ^
+   --excluded_sources packages\boost --excluded_sources LuaScripting\lua-5.3.5 ^
    --export_type cobertura:RemotePhotoTool-coverage.xml ^
    --export_type html:CoverageReport ^
    --modules Logic.UnitTest.dll --modules Location.UnitTest.dll --modules LuaScripting.UnitTest.dll ^

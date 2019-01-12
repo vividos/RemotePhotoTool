@@ -32,7 +32,7 @@ cppcheck.exe ^
 	..\Base\ ..\CanonControl\ ..\RemotePhotoTool\ ..\LuaScripting\ ..\Location\ ..\Logic\ ..\RemotePhotoToolCmdline\ ..\RemoteScriptingEditor\ ^
 	-I ..\Base\ -I ..\LuaScripting\ -I ..\Location\ -I ..\Logic\ -I ..\CanonControl\exports\ ^
 	-i ..\Thirdparty ^
-	-i ..\LuaScripting\lua-5.3.4 ^
+	-i ..\LuaScripting\lua-5.3.5 ^
 	-i ..\Logic\Logic.UnitTest\ ^
 	-i ..\Location\Location.UnitTest\ ^
 	-i ..\LuaScripting\LuaScripting.UnitTest\ ^
