@@ -18,6 +18,7 @@
       <FunctionLevelLinking>false</FunctionLevelLinking>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PreprocessorDefinitions>BOOST_CONFIG_SUPPRESS_OUTDATED_MESSAGE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Lib>
       <OutputFile>$(SolutionDir)..\lib\$(Configuration)\$(TargetName)$(TargetExt)</OutputFile>

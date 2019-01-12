@@ -113,13 +113,13 @@ public:
          GetState().CollectGarbage();
 
          // SystemLuaBindings must not be used in handlers anymore
-         ATLASSERT(m_spSystemLuaBindings.unique() == true);
+         ATLASSERT(m_spSystemLuaBindings.use_count() == 1);
 
          // this calls SystemLuaBindings::CleanupBindings()
          m_spSystemLuaBindings.reset();
 
          // CanonControlLuaBindings must not be used in handlers anymore
-         ATLASSERT(m_spCanonControlLuaBindings.unique() == true);
+         ATLASSERT(m_spCanonControlLuaBindings.use_count() == 1);
 
          // this calls CanonControlLuaBindings::CleanupBindings()
          m_spCanonControlLuaBindings.reset();
@@ -272,7 +272,7 @@ CameraScriptProcessor::~CameraScriptProcessor()
    m_spImpl->StopThread();
 
    // Impl must not be used in handlers anymore
-   ATLASSERT(m_spImpl.unique() == true);
+   ATLASSERT(m_spImpl.use_count() == 1);
    m_spImpl.reset();
 }
 
