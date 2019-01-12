@@ -30,6 +30,8 @@ Gilad Novik (Web: http://gilad.gsetup.com, Email: gilad@gsetup.com)
 */
 
 #pragma once
+#include <vector>
+#include <string_view>
 #include <Platform.h>
 #include <Scintilla.h>
 #include <atlfile.h>
@@ -95,7 +97,7 @@ public:
 		::SendMessage( m_hWnd, SCI_SETREADONLY, readOnly, 0L );
 	}
 
-	int GetTextRange( TextRange & tr ) const
+	int GetTextRange( Sci_TextRange & tr ) const
 	{
 		ATLASSERT(::IsWindow(m_hWnd));
 		return ::SendMessage( m_hWnd, SCI_GETTEXTRANGE, 0, ( LPARAM )&tr );
@@ -155,7 +157,7 @@ public:
 		return ::SendMessage( m_hWnd, SCI_GETSTYLEAT, pos, 0L );
 	}
 
-	int GetStyledText( TextRange & tr ) const
+	int GetStyledText( Sci_TextRange & tr ) const
 	{
 		ATLASSERT(::IsWindow(m_hWnd));
 		return ::SendMessage( m_hWnd, SCI_GETSTYLEDTEXT, 0, ( LPARAM )&tr );
@@ -213,7 +215,7 @@ public:
 	/** @name Searching */
 	//@{
 
-	unsigned int FindText( int flags, TextToFind & ttf ) const
+	unsigned int FindText( int flags, Sci_TextToFind & ttf ) const
 	{
 		ATLASSERT(::IsWindow(m_hWnd));
 		return ::SendMessage( m_hWnd, SCI_FINDTEXT, flags, ( LPARAM )&ttf );
@@ -2484,7 +2486,7 @@ public:
 	/** @name Printing */
 	//@{
 
-	unsigned int FormatRange( bool draw, RangeToFormat & fr )
+	unsigned int FormatRange( bool draw, Sci_RangeToFormat & fr )
 	{
 		ATLASSERT(::IsWindow(m_hWnd));
 		return ::SendMessage( m_hWnd, SCI_FORMATRANGE, draw, ( LPARAM )&fr );
@@ -3033,7 +3035,7 @@ public:
 		if (FAILED(File.Create(szFilename,GENERIC_WRITE,FILE_SHARE_READ,CREATE_ALWAYS,0)))
 			return FALSE;
 		char szBuffer[8192+1];
-		TextRange Tr;
+		Sci_TextRange Tr;
 		Tr.lpstrText=szBuffer;
 		DWORD dwWritten;
 		if (GetCodePage()==SC_CP_UTF8)

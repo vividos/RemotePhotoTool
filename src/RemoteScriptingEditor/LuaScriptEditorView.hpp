@@ -133,7 +133,7 @@ public:
    {
       T* pT = static_cast<T*>(this);
 
-      TextToFind tf = { 0 };
+      Sci_TextToFind tf = { 0 };
 
       CStringA cszaTextToFind = lpszFind;
       tf.lpstrText = cszaTextToFind;
@@ -205,7 +205,7 @@ public:
    }
 
    /// finds and selects next text
-   bool FindAndSelect(int flags, TextToFind & tf)
+   bool FindAndSelect(int flags, Sci_TextToFind & tf)
    {
       T* pT = static_cast<T*>(this);
 
