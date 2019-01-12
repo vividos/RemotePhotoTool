@@ -1,7 +1,7 @@
 /** \file
 * \brief configuration for msvc compiler, project libgphoto2_port
 *
-* \author Copyright 2016 Michael Fink <vividos@users.sf.net>
+* \author Copyright 2016-2019 Michael Fink <vividos@users.sf.net>
 *
 * \note
 * This library is free software; you can redistribute it and/or
@@ -243,7 +243,7 @@
 #undef NO_MINUS_C_MINUS_O
 
 /* Name of package */
-#define PACKAGE "libgphoto2_port-2.5.10"
+#define PACKAGE "libgphoto2_port-2.5.22"
 
 /* Define to the address where bug reports for this package should be sent. */
 #undef PACKAGE_BUGREPORT
@@ -252,7 +252,7 @@
 #define PACKAGE_NAME "libgphoto2_port"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "libgphoto2_port-2.5.10"
+#define PACKAGE_STRING "libgphoto2_port-2.5.22"
 
 /* Define to the one symbol short name of this package. */
 #undef PACKAGE_TARNAME
@@ -261,7 +261,7 @@
 #undef PACKAGE_URL
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "2.5.10"
+#define PACKAGE_VERSION "2.5.22"
 
 /* Define to 1 if you have the ANSI C header files. */
 #undef STDC_HEADERS
@@ -282,7 +282,7 @@
 #define URL_USB_MASSSTORAGE "http://www.linux-usb.org/USB-guide/x498.html"
 
 /* Version number of package */
-#define VERSION "2.5.10"
+#define VERSION "2.5.22"
 
 /* Define to empty if `const' does not conform to ANSI C. */
 #undef const

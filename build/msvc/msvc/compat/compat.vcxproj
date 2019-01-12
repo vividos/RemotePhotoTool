@@ -12,7 +12,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="config-msvc.h" />
-    <ClInclude Include="dirent.h" />
     <ClInclude Include="ltdl.h" />
     <ClInclude Include="sys\time.h" />
     <ClInclude Include="unistd.h" />

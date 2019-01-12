@@ -29,9 +29,6 @@
     <ClInclude Include="sys\time.h">
       <Filter>Header Files\sys</Filter>
     </ClInclude>
-    <ClInclude Include="dirent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="config-msvc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
