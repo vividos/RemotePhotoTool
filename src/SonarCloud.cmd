@@ -1,32 +1,40 @@
 @echo off
 REM
 REM RemotePhotoTool - remote camera control software
-REM Copyright (C) 2008-2018 Michael Fink
+REM Copyright (C) 2008-2019 Michael Fink
 REM
-REM runs SonarCloud analysis build
+REM Runs SonarCloud analysis build
 REM
 
-call "%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Community\Common7\Tools\VsDevCmd.bat"
+REM set this to your Visual Studio installation folder
+set VSINSTALL=%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Community
+
+REM
+REM Preparations
+REM
+call "%VSINSTALL%\Common7\Tools\VsDevCmd.bat"
+
+if "%SONARLOGIN%" == "" echo "Environment variable SONARLOGIN is not set! Obtain a new token and set the environment variable!"
+if "%SONARLOGIN%" == "" exit 1
 
 REM
 REM Extract SonarQube build tools
 REM
-cd Thirdparty\SonarQube
+pushd Thirdparty\SonarQube
 
 "%ProgramFiles%\7-Zip\7z.exe" x -y build-wrapper-win-x86.zip
-"%ProgramFiles%\7-Zip\7z.exe" x -y -osonar-scanner-msbuild sonar-scanner-msbuild-3.0.2.656.zip
-cd ..\..
-
-PATH=%PATH%;%CD%\Thirdparty\SonarQube\build-wrapper-win-x86;%CD%\Thirdparty\SonarQube\sonar-scanner-msbuild
+"%ProgramFiles%\7-Zip\7z.exe" x -y -osonar-scanner-msbuild sonar-scanner-msbuild-4.4.2.1543-net46.zip
+PATH=%PATH%;%CD%\build-wrapper-win-x86;%CD%\sonar-scanner-msbuild
+popd
 
 REM
 REM Build using SonarQube scanner for MSBuild
 REM
 rmdir .\bw-output /s /q 2> nul
 
-msbuild RemotePhotoTool.sln /m /property:Configuration=Release,Platform=Win32 /target:Clean
+msbuild RemotePhotoTool.sln /m /property:Configuration=SonarCloud,Platform=Win32 /target:Clean
 
-SonarQube.Scanner.MSBuild.exe begin ^
+SonarScanner.MSBuild.exe begin ^
     /k:"RemotePhotoTool" ^
     /v:"1.6.0" ^
     /d:"sonar.cfamily.build-wrapper-output=%CD%\bw-output" ^
@@ -34,8 +42,11 @@ SonarQube.Scanner.MSBuild.exe begin ^
     /d:"sonar.organization=vividos-github" ^
     /d:"sonar.login=%SONARLOGIN%"
 
-build-wrapper-win-x86-64.exe --out-dir bw-output msbuild RemotePhotoTool.sln /m /property:Configuration=Release,Platform=Win32 /target:Build
+REM
+REM Rebuild Release|Win32
+REM
+build-wrapper-win-x86-64.exe --out-dir bw-output msbuild RemotePhotoTool.sln /m /property:Configuration=SonarCloud,Platform=Win32 /target:Rebuild
 
-SonarQube.Scanner.MSBuild.exe end /d:"sonar.login=%SONARLOGIN%"
+SonarScanner.MSBuild.exe end /d:"sonar.login=%SONARLOGIN%"
 
 pause
