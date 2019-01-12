@@ -98,15 +98,15 @@ typedef enum {
  *
  * Used by gp_camera_wait_for_event() to specify what
  * event happened on the camera.
- * This functionality is still in development and might change.
  *
  */
 typedef enum {
-	GP_EVENT_UNKNOWN,	/**< unknown and unhandled event */
+	GP_EVENT_UNKNOWN,	/**< unknown and unhandled event. argument is a char* or NULL */
 	GP_EVENT_TIMEOUT,	/**< timeout, no arguments */
 	GP_EVENT_FILE_ADDED,	/**< CameraFilePath* = file path on camfs */
 	GP_EVENT_FOLDER_ADDED,	/**< CameraFilePath* = folder on camfs */
-	GP_EVENT_CAPTURE_COMPLETE	/**< last capture is complete */
+	GP_EVENT_CAPTURE_COMPLETE,	/**< last capture is complete */
+	GP_EVENT_FILE_CHANGED	/**< CameraFilePath* = file path on camfs */
 } CameraEventType;
 
 /**
