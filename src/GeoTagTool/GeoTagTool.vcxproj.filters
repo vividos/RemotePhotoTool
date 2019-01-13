@@ -13,6 +13,9 @@
       <UniqueIdentifier>{ae678866-2a27-4417-be7f-ecff812d66e3}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;jpg;jpeg;jpe;manifest</Extensions>
     </Filter>
+    <Filter Include="Resource Files\Generated Files">
+      <UniqueIdentifier>{c08c5820-ffbf-4dbe-bf4e-c8ecd7ee07bf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -71,6 +74,9 @@
     <ClInclude Include="SatelliteInfoView.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="res\Ribbon.h">
+      <Filter>Resource Files\Generated Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GeoTagTool.rc">
@@ -78,6 +84,9 @@
     </ResourceCompile>
     <ResourceCompile Include="versioninfo.rc">
       <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="res\Ribbon.rc">
+      <Filter>Resource Files\Generated Files</Filter>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
@@ -101,5 +110,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="res\Ribbon.bml">
+      <Filter>Resource Files\Generated Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

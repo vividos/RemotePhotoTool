@@ -118,6 +118,7 @@
     <ClInclude Include="AboutDlg.hpp" />
     <ClInclude Include="MainFrame.hpp" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="res\Ribbon.h" />
     <ClInclude Include="SatelliteInfoCtrl.hpp" />
     <ClInclude Include="SatelliteInfoView.hpp" />
     <ClInclude Include="SatelliteRadarCtrl.hpp" />
@@ -127,6 +128,7 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GeoTagTool.rc" />
+    <ResourceCompile Include="res\Ribbon.rc" />
     <ResourceCompile Include="versioninfo.rc" />
   </ItemGroup>
   <ItemGroup>
@@ -158,6 +160,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="res\Ribbon.bml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
