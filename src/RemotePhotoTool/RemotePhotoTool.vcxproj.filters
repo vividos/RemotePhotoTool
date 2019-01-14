@@ -344,6 +344,21 @@
     <Image Include="res\viewfinder_show.bmp">
       <Filter>Resource Files\Bitmap Files</Filter>
     </Image>
+    <Image Include="res\camera_release.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\viewfinder_auto_focus.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\viewfinder_auto_wb.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\viewfinder_zoom_in.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\viewfinder_zoom_out.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="RemotePhotoTool.rc">

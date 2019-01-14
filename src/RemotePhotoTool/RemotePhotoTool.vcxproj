@@ -182,6 +182,7 @@
   <ItemGroup>
     <Image Include="res\app_exit.bmp" />
     <Image Include="res\bigicons.bmp" />
+    <Image Include="res\camera_release.bmp" />
     <Image Include="res\home_connect.bmp" />
     <Image Include="res\home_settings.bmp" />
     <Image Include="res\icons.bmp" />
@@ -203,7 +204,11 @@
     <Image Include="res\scripting_stop.bmp" />
     <Image Include="res\toolbar.bmp" />
     <Image Include="res\toolbar_big.bmp" />
+    <Image Include="res\viewfinder_auto_focus.bmp" />
+    <Image Include="res\viewfinder_auto_wb.bmp" />
     <Image Include="res\viewfinder_show.bmp" />
+    <Image Include="res\viewfinder_zoom_in.bmp" />
+    <Image Include="res\viewfinder_zoom_out.bmp" />
     <Image Include="res\view_ribbon.bmp" />
   </ItemGroup>
   <ItemGroup>
