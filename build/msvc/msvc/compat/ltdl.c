@@ -34,6 +34,7 @@ char userDefinedSearchDir[1024];
 int lt_dlinit()
 {
    userDefinedSearchDir[0] = 0;
+   lt_dladdsearchdir(".");
    return 0;
 }
 
