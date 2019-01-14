@@ -305,3 +305,6 @@
 
 // list of iolib dlls in the project
 #define IOLIB_LIST "usb1 disk ptpip"
+
+// the folder where libgphoto2 searches for iolibs .dlls to load
+#define IOLIBS "iolibs"
