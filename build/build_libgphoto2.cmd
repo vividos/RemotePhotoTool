@@ -50,4 +50,6 @@ xcopy /y %PREFIX%\bin\Release\camlibs\*.pdb ..\src\Thirdparty\gphoto2\bin\camlib
 xcopy /y %PREFIX%\bin\Release\iolibs\*.dll ..\src\Thirdparty\gphoto2\bin\iolibs\
 xcopy /y %PREFIX%\bin\Release\iolibs\*.pdb ..\src\Thirdparty\gphoto2\bin\iolibs\
 
+move ..\src\Thirdparty\gphoto2\bin\iolibs\libusb-1.0.dll ..\src\Thirdparty\gphoto2\bin\libusb-1.0.dll
+
 pause

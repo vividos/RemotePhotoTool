@@ -121,8 +121,8 @@
           <File Id="IolibsDiskDll" Name="disk.dll" DiskId="1" KeyPath="yes" Source="$(var.BinaryFolder)\iolibs\disk.dll" />
         </Component>
 
-        <Component Id="IolibsLibusb10Dll" Guid="4D28648D-CDB2-4EAB-9A28-885290503610" Directory="Iolibs">
-          <File Id="IolibsLibusb10Dll" Name="libusb-1.0.dll" DiskId="1" KeyPath="yes" Source="$(var.BinaryFolder)\iolibs\libusb-1.0.dll" />
+        <Component Id="IolibsLibusb10Dll" Guid="4D28648D-CDB2-4EAB-9A28-885290503610" Directory="INSTALLDIR">
+          <File Id="IolibsLibusb10Dll" Name="libusb-1.0.dll" DiskId="1" KeyPath="yes" Source="$(var.BinaryFolder)\libusb-1.0.dll" />
         </Component>
 
         <Component Id="IolibsLibusb1Dll" Guid="0A0EA321-38D2-440B-89AA-856E2A4A94F9" Directory="Iolibs">
