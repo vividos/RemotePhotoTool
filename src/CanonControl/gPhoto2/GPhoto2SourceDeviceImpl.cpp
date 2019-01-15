@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2016 Michael Fink
+// Copyright (C) 2008-2019 Michael Fink
 //
 /// \file GPhoto2SourceDeviceImpl.cpp gPhoto2 - SourceDevice impl
 //
@@ -8,11 +8,12 @@
 
 // includes
 #include "stdafx.h"
+#include "GPhoto2Include.hpp"
 #include "GPhoto2SourceDeviceImpl.hpp"
 #include "Gphoto2RemoteReleaseControlImpl.hpp"
 #include "GPhoto2PropertyAccess.hpp"
+#include "Gphoto2CameraFileSystemImpl.hpp"
 #include "CameraException.hpp"
-#include "GPhoto2Include.hpp"
 
 using GPhoto2::SourceDeviceImpl;
 
@@ -38,7 +39,7 @@ bool SourceDeviceImpl::GetDeviceCapability(T_enDeviceCapability enDeviceCapabili
       return m_spProperties->GetCameraOperationAbility(CameraOperation::GP_OPERATION_CAPTURE_PREVIEW);
 
    case capCameraFileSystem:
-      return false; // not implemented yet
+      return true;
 
    default:
       ATLASSERT(false);
@@ -70,7 +71,7 @@ DeviceProperty SourceDeviceImpl::GetDeviceProperty(unsigned int uiPropertyId) co
 
 std::shared_ptr<CameraFileSystem> SourceDeviceImpl::GetFileSystem()
 {
-   return std::shared_ptr<CameraFileSystem>();
+   return std::make_shared<CameraFileSystemImpl>(m_spContext, m_spCamera);
 }
 
 std::shared_ptr<RemoteReleaseControl> SourceDeviceImpl::EnterReleaseControl()

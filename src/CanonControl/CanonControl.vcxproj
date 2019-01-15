@@ -85,6 +85,7 @@
     <ClCompile Include="EDSDK\EdsdkCameraFileSystemImpl.cpp" />
     <ClCompile Include="EDSDK\EdsdkShutterCounterReader.cpp" />
     <ClCompile Include="ErrorText.cpp" />
+    <ClCompile Include="gPhoto2\Gphoto2CameraFileSystemImpl.cpp" />
     <ClCompile Include="gPhoto2\GPhoto2Common.cpp" />
     <ClCompile Include="gPhoto2\GPhoto2PropertyAccess.cpp" />
     <ClCompile Include="gPhoto2\GPhoto2RemoteReleaseControlImpl.cpp" />
@@ -151,6 +152,7 @@
     <ClInclude Include="exports\SourceInfo.hpp" />
     <ClInclude Include="exports\Variant.hpp" />
     <ClInclude Include="exports\Viewfinder.hpp" />
+    <ClInclude Include="gPhoto2\Gphoto2CameraFileSystemImpl.hpp" />
     <ClInclude Include="gPhoto2\GPhoto2Common.hpp" />
     <ClInclude Include="gPhoto2\GPhoto2Include.hpp" />
     <ClInclude Include="gPhoto2\GPhoto2PropertyAccess.hpp" />
