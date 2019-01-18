@@ -2,7 +2,7 @@
 <!--
 
   RemotePhotoTool - remote camera control software
-  Copyright (C) 2008-2016 Michael Fink
+  Copyright (C) 2008-2019 Michael Fink
 
   MainAppFiles.wxs - Main application file components (fragment)
 
@@ -14,15 +14,15 @@
   <Fragment>
     <ComponentGroup Id="MainAppFiles">
 
-      <Component Id="RemotePhotoToolExe" Guid="9BCE338C-3509-449A-BDFF-871DB7E83CB5" Directory="INSTALLDIR">
+      <Component Id="RemotePhotoToolExe" Guid="*" Directory="INSTALLDIR">
         <File Id="RemotePhotoToolExe" Name="RemotePhotoTool.exe" DiskId="1" KeyPath="yes" Source="$(var.BinaryFolder)\RemotePhotoTool.exe" />
       </Component>
 
-      <Component Id="RemoteScriptingEditorExe" Guid="77E764F1-4C03-4F32-9645-CA326579C6B9" Directory="INSTALLDIR">
+      <Component Id="RemoteScriptingEditorExe" Guid="*" Directory="INSTALLDIR">
         <File Id="RemoteScriptingEditorExe" Name="RemoteScriptingEditor.exe" DiskId="1" KeyPath="yes" Source="$(var.BinaryFolder)\RemoteScriptingEditor.exe" />
       </Component>
 
-      <Component Id="MainAppShortcut" Guid="5A8B18B1-9CCB-4A2B-87AC-AC8B62DCFD2D" Directory="MainAppShortcutFolder">
+      <Component Id="MainAppShortcut" Guid="*" Directory="MainAppShortcutFolder">
         <Shortcut Id="RemotePhotoToolShortcut"
            Name="$(var.ProductName)"
            Description="Starts $(var.ProductName)"
@@ -32,25 +32,25 @@
         <RegistryValue Root="HKCU" Key="Software\Microsoft\$(var.ProductName)" Name="Installed" Type="integer" Value="1" KeyPath="yes"/>
       </Component>
 
-      <Component Id="LibExifDll" Guid="49D38FCA-EB5D-4C6B-A321-1B11D5D491BE" Directory="INSTALLDIR">
+      <Component Id="LibExifDll" Guid="*" Directory="INSTALLDIR">
         <File Id="LibExifDll" Name="libexif.dll" DiskId="1" KeyPath="yes" Source="$(var.BinaryFolder)\libexif.dll" />
       </Component>
     </ComponentGroup>
 
     <ComponentGroup Id="CmdLineAppFiles">
-      <Component Id="CanonEosShutterCount" Guid="5592D8F0-11E5-430B-AFD6-D907603622E6" Directory="INSTALLDIR">
+      <Component Id="CanonEosShutterCount" Guid="*" Directory="INSTALLDIR">
         <File Id="CanonEosShutterCount" Name="CanonEOSShutterCount.exe" DiskId="1" KeyPath="yes" Source="$(var.BinaryFolder)CanonEOSShutterCount.exe" />
       </Component>
-      <Component Id="RemotePhotoToolCmdline" Guid="E4D56D92-2DB9-4FBB-88AE-09CC11BEB681" Directory="INSTALLDIR">
+      <Component Id="RemotePhotoToolCmdline" Guid="*" Directory="INSTALLDIR">
         <File Id="RemotePhotoToolCmdline" Name="RemotePhotoToolCmdline.exe" DiskId="1" KeyPath="yes" Source="$(var.BinaryFolder)RemotePhotoToolCmdline.exe" />
       </Component>
     </ComponentGroup>
 
     <ComponentGroup Id="ScintillaFiles">
-       <Component Id="SciLexerDll" Guid="F024868C-B467-4A54-BA44-35D2B1039991" Directory="INSTALLDIR">
-         <File Id="SciLexerDll" Name="SciLexer.dll" DiskId="1" KeyPath="yes" Source="$(var.BinaryFolder)\SciLexer.dll" />
-         <File Id="LuaProperties" Name="lua.properties" DiskId="1" KeyPath="no" Source="$(var.BinaryFolder)\lua.properties" />
-       </Component>
+      <Component Id="SciLexerDll" Guid="*" Directory="INSTALLDIR">
+        <File Id="SciLexerDll" Name="SciLexer.dll" DiskId="1" KeyPath="yes" Source="$(var.BinaryFolder)\SciLexer.dll" />
+        <File Id="LuaProperties" Name="lua.properties" DiskId="1" KeyPath="no" Source="$(var.BinaryFolder)\lua.properties" />
+      </Component>
     </ComponentGroup>
 
   </Fragment>
