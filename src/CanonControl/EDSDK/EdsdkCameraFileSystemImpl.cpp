@@ -226,7 +226,7 @@ std::vector<CString> CameraFileSystemImpl::EnumFolders(const Handle& parent, uns
 
          EDSDK::CheckError(_T("EdsGetDirectoryItemInfo"), err, __FILE__, __LINE__);
 
-         LOG_TRACE(_T("directory %u, Size=%u kb, IsFolder=%s, GroupID=%u kb, Option=%u, Format=%u, DateTime=%08x, Filename=%hs\n"),
+         LOG_TRACE(_T("directory %u, Size=%I64u kb, IsFolder=%s, GroupID=%u kb, Option=%u, Format=%u, DateTime=%08x, Filename=%hs\n"),
             index,
             dirItemInfo.size / 1024,
             dirItemInfo.isFolder ? _T("yes") : _T("no"),
@@ -272,7 +272,7 @@ std::vector<FileInfo> CameraFileSystemImpl::EnumFiles(const Handle& parent, unsi
 
       EDSDK::CheckError(_T("EdsGetDirectoryItemInfo"), err, __FILE__, __LINE__);
 
-      LOG_TRACE(_T("directory %u, Size=%u kb, IsFolder=%s, GroupID=%u kb, Option=%u, Format=%u, DateTime=%08x, Filename=%hs\n"),
+      LOG_TRACE(_T("directory %u, Size=%I64u kb, IsFolder=%s, GroupID=%u kb, Option=%u, Format=%u, DateTime=%08x, Filename=%hs\n"),
          index,
          dirItemInfo.size / 1024,
          dirItemInfo.isFolder ? _T("yes") : _T("no"),

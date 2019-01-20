@@ -500,7 +500,7 @@ void RemoteReleaseControlImpl::DownloadImage(Handle hDirectoryItem, ShutterRelea
 
       // download image
       err = EdsDownload(hDirectoryItem, dirItemInfo.size, hStream);
-      LOG_TRACE(_T("EdsDownload(dirItem = %08x, size=%u, stream = %08x) returned %08x\n"),
+      LOG_TRACE(_T("EdsDownload(dirItem = %08x, size=%I64u, stream = %08x) returned %08x\n"),
          hDirectoryItem.Get(), dirItemInfo.size, hStream.Get(), err);
       EDSDK::CheckError(_T("EdsDownload"), err, __FILE__, __LINE__);
    }
