@@ -12,18 +12,6 @@
   <Fragment>
     <!-- ***************************************** -->
     <ComponentGroup Id="EdsdkFiles">
-      <Component Id="DppdllDll" Guid="*" Directory="INSTALLDIR">
-        <File Id="DppdllDll" Name="DPPDLL.dll" DiskId="1" KeyPath="yes" Source="$(var.BinaryFolder)\DPPDLL.dll" />
-      </Component>
-
-      <Component Id="DpplibcomDll" Guid="*" Directory="INSTALLDIR">
-        <File Id="DpplibcomDll" Name="DPPLibCom.dll" DiskId="1" KeyPath="yes" Source="$(var.BinaryFolder)\DPPLibCom.dll" />
-      </Component>
-
-      <Component Id="DpprscDll" Guid="*" Directory="INSTALLDIR">
-        <File Id="DpprscDll" Name="DPPRSC.dll" DiskId="1" KeyPath="yes" Source="$(var.BinaryFolder)\DPPRSC.dll" />
-      </Component>
-
       <Component Id="EdsdkDll" Guid="*" Directory="INSTALLDIR">
         <File Id="EdsdkDll" Name="EDSDK.dll" DiskId="1" KeyPath="yes" Source="$(var.BinaryFolder)\EDSDK.dll" />
       </Component>
@@ -34,14 +22,6 @@
 
       <Component Id="EdsimageDll" Guid="*" Directory="INSTALLDIR">
         <File Id="EdsimageDll" Name="EdsImage.dll" DiskId="1" KeyPath="yes" Source="$(var.BinaryFolder)\EdsImage.dll" />
-      </Component>
-
-      <Component Id="MlibDll" Guid="*" Directory="INSTALLDIR">
-        <File Id="MlibDll" Name="Mlib.dll" DiskId="1" KeyPath="yes" Source="$(var.BinaryFolder)\Mlib.dll" />
-      </Component>
-
-      <Component Id="Ucs32pDll" Guid="*" Directory="INSTALLDIR">
-        <File Id="Ucs32pDll" Name="Ucs32P.dll" DiskId="1" KeyPath="yes" Source="$(var.BinaryFolder)\Ucs32P.dll" />
       </Component>
     </ComponentGroup>
     <!-- ***************************************** -->

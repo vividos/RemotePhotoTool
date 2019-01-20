@@ -1,14 +1,14 @@
-﻿/******************************************************************************
+/******************************************************************************
 *                                                                             *
 *   PROJECT : EOS Digital Software Development Kit EDSDK                      *
 *      NAME : EDSDK.h                                                         *
 *                                                                             *
-*   Description: PROTO TYPE DEFINITION OF EDSDK API                           *
+*   Description: DEFINITION OF EDSDK API                                      *
 *                                                                             *
 *******************************************************************************
 *                                                                             *
 *   Written and developed by Canon Inc.										  *
-*   Copyright Canon Inc. 2006-2017 All Rights Reserved                        *
+*   Copyright Canon Inc. 2006-2018 All Rights Reserved                        *
 *                                                                             *
 ******************************************************************************/
 
@@ -1045,10 +1045,6 @@ EdsError EDSAPI EdsCreateImageRef(  EdsStreamRef        inStreamRef,
 //                                  A thumbnail image 
 //                      kEdsImageSrc_Preview
 //                                  A preview image
-//                      kEdsImageSrc_RAWThumbnail
-//                                  A RAW thumbnail image 
-//                      kEdsImageSrc_RAWFullView
-//                                  A RAW full-sized image 
 //       Out:    outImageInfo - Stores the image data information designated 
 //                      in inImageSource. 
 //
@@ -1106,77 +1102,6 @@ EdsError EDSAPI EdsGetImage(
         EdsRect                 inSrcRect,
         EdsSize                 inDstSize,
         EdsStreamRef            outStreamRef );
-
-
-/*-----------------------------------------------------------------------------
-//
-//  Function:   EdsSaveImage            
-//
-//  Description:
-//      Saves as a designated image type after RAW processing. 
-//      When saving with JPEG compression, 
-//          the JPEG quality setting applies with respect to EdsOptionRef.
-//
-//  Parameters:
-//      In:    
-//          inImageRef - Designate the image object for which to produce the file. 
-//          inImageType - Designate the image type to produce. Designate the 
-//                  following image types.
-//
-//                  kEdsTargetImageType - Jpeg  JPEG
-//                  kEdsTargetImageType - TIFF  8-bit TIFF
-//                  kEdsTargetImageType - TIFF16    16-bit TIFF
-//          inSaveSetting - Designate saving options, such as JPEG image quality.
-//      Out:    
-//          outStreamRef - Specifies the output file stream. The memory stream 
-//                  cannot be specified here.
-//  Returns:    Any of the sdk errors.
------------------------------------------------------------------------------*/
-EdsError EDSAPI EdsSaveImage(
-        EdsImageRef             inImageRef,
-        EdsTargetImageType      inImageType,
-        EdsSaveImageSetting     inSaveSetting,
-        EdsStreamRef            outStreamRef );
-
-
-/*-----------------------------------------------------------------------------
-//
-//  Function:   EdsCacheImage                       
-//
-//  Description:
-//      Switches a setting on and off for creation of an image cache in the SDK 
-//          for a designated image object during extraction (processing) of
-//          the image data. 
-//          Creating the cache increases the processing speed, starting from
-//          the second time.
-//
-//  Parameters:
-//      In:     inImageRef - The reference of the image.
-//              inUseCache - If cache image data or not
-//                          If set to FALSE, the cached image data will released.
-//      Out:    None
-//
-//  Returns:    Any of the sdk errors.
------------------------------------------------------------------------------*/
-EdsError EDSAPI EdsCacheImage(      EdsImageRef     inImageRef,
-                                    EdsBool         inUseCache );
-
-
-/*-----------------------------------------------------------------------------
-//
-//  Function:   EdsReflectImageProperty         
-//  Description:
-//      Incorporates image object property changes 
-//          (effected by means of EdsSetPropertyData) in the stream. 
-//
-//  Parameters:
-//      In:     inImageRef - The reference of the image.
-//      Out:    None
-//
-//  Returns:    Any of the sdk errors.
------------------------------------------------------------------------------*/
-EdsError EDSAPI EdsReflectImageProperty(    EdsImageRef      inImageRef );
-
 
 
 /*-----------------------------------------------------------------------------

@@ -23,14 +23,9 @@ del %OUTDIR%IWrap.dll 2> nul
 del %OUTDIR%psCamDat.dll 2> nul
 
 REM EDSDK
-del %OUTDIR%DPPDLL.dll 2> nul
-del %OUTDIR%DPPLibCom.dll 2> nul
-del %OUTDIR%DPPRSC.dll 2> nul
 del %OUTDIR%EDSDK.dll 2> nul
 del %OUTDIR%EDSDK_25.dll 2> nul
 del %OUTDIR%EdsImage.dll 2> nul
-del %OUTDIR%MLib.dll 2> nul
-del %OUTDIR%Ucs32P.dll 2> nul
 
 REM PSREC
 del %OUTDIR%PRLIB.dll 2> nul
