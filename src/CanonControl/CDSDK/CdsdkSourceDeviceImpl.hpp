@@ -26,7 +26,8 @@ public:
    SourceDeviceImpl(RefSp spRef, cdHSource hSource, const CString& cszModelName)
       :m_spRef(spRef),
        m_hSource(hSource),
-       m_cszModelName(cszModelName)
+       m_cszModelName(cszModelName),
+       m_faculty(0)
    {
       // It seems that for some cameras (e.g. my PowerShot G2) it is necessary to enumerate device
       // properties once before reading release control faculty value.

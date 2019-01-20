@@ -17,13 +17,14 @@ namespace PSREC
    public:
       /// ctor; parses event data
       CameraEventData(prVoid* pEventData)
+         :m_uiEventCode(0)
       {
          BYTE* pbData = reinterpret_cast<BYTE*>(pEventData);
 
          std::vector<BYTE>& vecBuffer = GetBuffer();
          vecBuffer.assign(pbData, pbData + 12);// at least 12 bytes
 
-                                               // read length of event data
+         // read length of event data
          prUInt32 uiLength = ReadUint32();
 
          vecBuffer.assign(pbData, pbData + uiLength);
