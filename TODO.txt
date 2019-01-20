@@ -1,5 +1,5 @@
-CanonControl
-------------
+TODO list for RemotePhotoTool
+-----------------------------
 
 PSREC
 -----
@@ -8,6 +8,7 @@ support taking/transferring CRW raw images
 EDSDK
 -----
 on protocol 0 cameras, lock UI when getting/setting property
+Implement dowloading files
 
 CDSDK
 -----
@@ -21,6 +22,11 @@ Implement RemoteReleaseControl functions
 Implement Viewfinder functions
 Improve speed of EnumerateDevices(), worker thread
 
+WIA
+---
+Add checking for capabilities
+Add downloading files
+
 CanonControl
 ------------
 Rename library to CameraControl
@@ -28,10 +34,10 @@ Filter out cameras both appearing as WIA and other SDKs
 
 Lua scripting
 -------------
+Implement CameraFileSystem access
 Implement ShutterSpeedValue table
 Implement writing absolute filenames before calling onFinishedTransfer
 Bindings for Exif library
-Bindings for ImageMagick library or GD lib
 
 RemotePhotoTool
 ---------------
@@ -49,7 +55,6 @@ Add multi-language support
 Real tablet mode: big combobox fonts, scaling dialogs according to system settings, etc.
 Implement photo booth mode, including printing
 Add option to change energy saving options (to prevent shutting down during operation)
-Store IPTC data in every image taken
 Add geotagging for PCs that have a GPS receiver built in
 Add photo mode with motion detection using viewfinder to take photos (e.g. for wildlife photography)
 Fix refreshing comboboxes when switching to M mode on camera
@@ -74,7 +79,3 @@ implement GPX importing
 implement list of tracks view
 implement geotagging
 implement saving live track
-
-Setup
------
-Replace stock background and banner bitmaps
