@@ -12,7 +12,6 @@
 #include <ulib/thread/LightweightMutex.hpp>
 #include <atomic>
 #include <ctime>
-//#include <boost/log/trivial.hpp>
 
 /// indicates if logging is active
 static std::atomic<bool> s_bLoggingActive = false;

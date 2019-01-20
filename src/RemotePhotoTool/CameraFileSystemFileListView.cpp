@@ -29,7 +29,6 @@ void CameraFileSystemFileListView::RefreshList()
    int itemCount = 0;
    for (const FileInfo& fileInfo : fileInfoList)
    {
-      // TODO int imageIndex = 0;
       InsertItem(itemCount++, fileInfo.m_filename);
    }
 

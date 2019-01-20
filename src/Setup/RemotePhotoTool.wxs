@@ -102,13 +102,7 @@
     <Property Id="WIXUI_INSTALLDIR" Value="MainAppFolder" />
 
     <WixVariable Id="WixUILicenseRtf" Value="License.rtf" />
-    <!--
-      <WixVariable Id="WixUIBannerBmp" Value="" />
-      <WixVariable Id="WixUIDialogBmp" Value="" />
 
-      WixUIBannerBmp  Top banner 493 × 58
-      WixUIDialogBmp  Background bitmap used on the welcome and completion dialogs 493 × 312
-      -->
     <UI>
       <ProgressText Action="ExecuteAction">System is being prepared for setup...</ProgressText>
       <ProgressText Action="InstallInitialize">Setup is being initialized...</ProgressText>
