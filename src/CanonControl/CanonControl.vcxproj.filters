@@ -363,21 +363,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Thirdparty\CDSDK\Doc\CDSDK73UserGuide.doc">
-      <Filter>CDSDK Files\SDK Files</Filter>
-    </None>
-    <None Include="..\Thirdparty\CDSDK\Doc\CDSDK73UserGuide.pdf">
-      <Filter>CDSDK Files\SDK Files</Filter>
-    </None>
-    <None Include="..\Thirdparty\EDSDK\Document\EDSDK_API.pdf">
-      <Filter>EDSDK Files\SDK Files</Filter>
-    </None>
-    <None Include="..\Thirdparty\PSREC\Doc\PSReCSDK110eUserGuide.doc">
-      <Filter>PSREC Files\SDK Files</Filter>
-    </None>
-    <None Include="..\Thirdparty\PSREC\Doc\PSReCSDK110eUserGuide.pdf">
-      <Filter>PSREC Files\SDK Files</Filter>
-    </None>
     <None Include="packages.config" />
   </ItemGroup>
 </Project>

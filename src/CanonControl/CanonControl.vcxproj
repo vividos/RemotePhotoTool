@@ -191,11 +191,6 @@
     <ClInclude Include="WIA\WiaSourceInfoImpl.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Thirdparty\CDSDK\Doc\CDSDK73UserGuide.doc" />
-    <None Include="..\Thirdparty\CDSDK\Doc\CDSDK73UserGuide.pdf" />
-    <None Include="..\Thirdparty\EDSDK\Document\EDSDK_API.pdf" />
-    <None Include="..\Thirdparty\PSREC\Doc\PSReCSDK110eUserGuide.doc" />
-    <None Include="..\Thirdparty\PSREC\Doc\PSReCSDK110eUserGuide.pdf" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
