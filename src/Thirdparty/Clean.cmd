@@ -41,7 +41,7 @@ del %OUTDIR%libgphoto2_port.dll 2> nul
 del %OUTDIR%camlibs\canon.dll 2> nul
 del %OUTDIR%camlibs\ptp2.dll 2> nul
 del %OUTDIR%iolibs\disk.dll 2> nul
-del %OUTDIR%iolibs\libusb-1.0.dll 2> nul
+del %OUTDIR%libusb-1.0.dll 2> nul
 del %OUTDIR%iolibs\libusb1.dll 2> nul
 del %OUTDIR%iolibs\ptpip.dll 2> nul
 rmdir %OUTDIR%camlibs 2> nul
