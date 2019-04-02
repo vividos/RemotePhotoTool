@@ -7,8 +7,8 @@ support taking/transferring CRW raw images
 
 EDSDK
 -----
-on protocol 0 cameras, lock UI when getting/setting property
-Implement dowloading files
+implement file system download
+update EDSDK to latest version
 
 CDSDK
 -----
@@ -16,11 +16,14 @@ remove when removing support for Windows XP
 
 gPhoto2
 -------
-Display proper device property names
-Implement reading, enumerating and setting ImageProperty values
-Implement RemoteReleaseControl functions
-Implement Viewfinder functions
-Improve speed of EnumerateDevices(), worker thread
+display proper device property names
+implement reading, enumerating and setting ImageProperty values
+implement RemoteReleaseControl functions
+implement Viewfinder functions
+improve speed of EnumerateDevices(), worker thread
+implement file system download
+implement starting zadig or inf wizard
+update libgphoto2 to next version
 
 WIA
 ---
@@ -41,7 +44,7 @@ Bindings for Exif library
 
 RemotePhotoTool
 ---------------
-Make application DPI-aware
+Fix bug switching off camera, tabs still available
 Previous Images browser: scan folder for images, on startup
 Nice toolbar icons
 implement timelapse shooting, video output
@@ -71,11 +74,13 @@ RemoteScriptingEditor
 ---------------------
 Implement debugging scripts
 Implement breakpoints, find lines with lbci
-Implement watch window
+Implement watch window, locals window
 
 GeoTagTool
 ----------
+add track list view
 implement GPX importing
 implement list of tracks view
 implement geotagging
 implement saving live track
+add saving track using XmlWriter
