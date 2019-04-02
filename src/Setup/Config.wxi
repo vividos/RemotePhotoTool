@@ -2,7 +2,7 @@
 <!--
 
   RemotePhotoTool - remote camera control software
-  Copyright (C) 2008-2016 Michael Fink
+  Copyright (C) 2008-2019 Michael Fink
 
   Config.wxi - Configuration include file
 
@@ -10,12 +10,12 @@
 <Include xmlns="http://schemas.microsoft.com/wix/2006/wi">
 
   <!-- Note: when creating a new version, update the version block -->
-  
+
   <?include BuildNumber.wxi ?>
 
   <!-- version -->
   <?define MajorVersion = "1" ?>
-  <?define MinorVersion = "5" ?>
+  <?define MinorVersion = "6" ?>
   <?define SubVersion = "0" ?>
   <?define Version = "$(var.MajorVersion).$(var.MinorVersion).$(var.SubVersion).$(var.BuildNumber)" ?>
 
