@@ -29,7 +29,7 @@
            Target="[INSTALLDIR]RemotePhotoTool.exe"
            WorkingDirectory="INSTALLDIR"/>
         <RemoveFolder Id="MainAppShortcutFolder" On="uninstall"/>
-        <RegistryValue Root="HKCU" Key="Software\Microsoft\$(var.ProductName)" Name="Installed" Type="integer" Value="1" KeyPath="yes"/>
+        <RegistryValue Root="HKCU" Key="Software\$(var.ProductName)" Name="Installed" Type="integer" Value="1" KeyPath="yes"/>
       </Component>
 
       <Component Id="LibExifDll" Guid="*" Directory="INSTALLDIR">
