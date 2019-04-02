@@ -33,7 +33,6 @@
   - Thorough logging for error analysis and bug hunting
   - Creating crash dump files when application has crashed
 - Supported operating systems:
-  - Windows XP
   - Windows Vista
   - Windows 7 32-bit/64-bit
   - Windows 8
