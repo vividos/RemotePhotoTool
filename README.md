@@ -27,3 +27,7 @@ Read the big TODO list for the application, in this file: [TODO.txt](TODO.txt)
 Read the credits acknowledgement in this file: [Credits.md](Credits.md)
 
 Read the Changelog file: [Changelog.md](Changelog.md)
+
+The project is occasionally checked with SonarCloud:
+
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=RemotePhotoTool&metric=alert_status)](https://sonarcloud.io/dashboard?id=RemotePhotoTool)
