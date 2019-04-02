@@ -76,10 +76,10 @@ programs "Hugin" (for panorama stitching) and "Photomatix Pro" (for HDR generati
 
 # Installation of components #
 
-## Visual Studio Community 2015 ##
+## Visual Studio Community 2017 ##
 
-Install Visual Studio 2015. Any version will do, including Visual Studio Community 2015, which
-I use. Be sure to install the "Microsoft Foundation Classes for C++" feature, that can be found
+Install Visual Studio 2017. Any version will do, including Visual Studio Community, which
+I'm using. Be sure to install the "Microsoft Foundation Classes for C++" feature, that can be found
 under "Programming Languages > Visual C++" node when installing Visual Studio.
 When installed into the default folders, the example batch files can be used to build the
 application.
@@ -87,50 +87,29 @@ application.
 ## ATL ##
 
 With previous versions, the ATL library was needed (and could be extracted from the "Windows
-Driver Kit 7.1.0"). With the Visual Studio Community 2015 version, this is no longer needed.
+Driver Kit 7.1.0"). With the Visual Studio Community 2017 version, this is no longer needed.
 
-## WTL 9.1 ##
+## WTL 10 ##
 
-The application uses WTL, on top of ATL, for the user interface. Download WTL 9.1.5321 (or any
-later version) from this website:
-- http://sourceforge.net/projects/wtl/
-
-You need to click on "Browse all files" and select WTL 9.1 to get to the proper folder. Here's
-a link to the version I use:
-[http://sourceforge.net/projects/wtl/files/WTL%209.1/WTL%209.1.5321%20Final/WTL91_5321_Final.zip/download]()
-
-Extract the contents of the zip archive in to a new folder. Navigate into the "AppWiz" folder and
-double-click the file `"Setup.js"`.
-
-You need to adjust the file `src\wix91.props` with the path of the folder where the include files
-are found. There are two folders to adjust, both in the `<AdditionalIncludeDirectories>` tags.
+The application uses WTL, on top of ATL, for the user interface. WTL is automatically downloaded
+when restoring NuGet packages.
 
 ## Boost ##
 
-Download and extract Boost 1.59 (or any later version) into a folder. For the application to compile
-you need to adjust the file `src\boost.props` with the path of the folder you just used. There are two
-folders to adjust, one is the main folder, beneath the `<ClCompile>` tag, and one is the `"stage\lib"`
-subfolder beneath the `<Link>` tag.
+The application uses the Boost libraries. Boost is automatically downloaded when restoring NuGet
+packages. Thhis happens the first time you're building the solution, which may take a while, since
+Boost consists of many files.
 
-You also need to build (parts of) Boost to get to link the application correctly. You can use the
-following command line commands (e.g. in a .cmd file) to compile Boost:
+## WiX 3.11.1 ##
 
-    call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\Tools\vsvars32.bat"
-    call .\bootstrap.bat vc14
-
-    b2 toolset=msvc-14.0 -j4 --with-system runtime-link=shared link=static threading=multi stage
-
-This should generate the appropriate lib files in the `"stage\lib"` folder, for the library
-Boost.System.
-
-## WiX 3.10.2 ##
-
-To build the setup, you need to install the "Windows Installer for XML 3.10.2" package. Go to this
+To build the setup, you need to install the "Windows Installer for XML 3.11.1" package. Go to this
 website:
-[http://wix.codeplex.com/](http://wix.codeplex.com/)
+[http://wixtoolset.org/](http://wixtoolset.org/)
 
-Go to "Downloads" and download the "Wix310.exe" under the "WiX Toolset v3.10.2" release. Later releases
-of WiX may or may not work. Install the package on your system.
+Go to "Downloads" and download the "Wix311.exe". Install the package on your system.
+
+To get Visual Studio integration, also install the "Wix Toolset Visual Studio 2017 Extension":
+[https://marketplace.visualstudio.com/items?itemName=RobMensching.WixToolsetVisualStudio2017Extension](https://marketplace.visualstudio.com/items?itemName=RobMensching.WixToolsetVisualStudio2017Extension)
 
 ## RemotePhotoTool ##
 
@@ -151,7 +130,7 @@ Here's a checklist of what to do before each release:
 - Fix cppcheck errors and doxygen warnings
 - Compile all project with /analyze and fix all warnings
 - Run all unit tests and fix all errors
-- Use Coverity to find even more warnings and fix them
+- Use SonarCloud build to find and fix even more bugs
 - Test built .msi setup if it installs properly
 - Do a short smoke test with available cameras
 - Fix all errors, check them in and push all changes
