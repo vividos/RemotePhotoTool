@@ -10,7 +10,7 @@ REM set this to the filename of the file to download
 set PREFIX=libgphoto2-2_5_22
 
 REM set this to your Visual Studio installation folder
-set VSINSTALL=%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Community
+set VSINSTALL=%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Community
 
 REM download package
 set URL=https://github.com/gphoto/libgphoto2/archive/%PREFIX%-release.zip
