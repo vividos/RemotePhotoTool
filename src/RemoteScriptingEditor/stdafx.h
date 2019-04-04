@@ -16,6 +16,7 @@
 // Scintilla include
 #pragma warning(push)
 #pragma warning(disable: 4100) // unreferenced formal parameter
+#include <memory>
 #include <AtlScintilla.h>
 #include <SciLexer.h>
 #pragma warning(pop)
