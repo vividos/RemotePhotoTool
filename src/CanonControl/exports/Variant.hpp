@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2019 Michael Fink
 //
 /// \file Variant.hpp Canon control - Variant data
 //
@@ -8,7 +8,7 @@
 
 // includes
 #include <vector>
-#include <boost/any.hpp>
+#include <any>
 
 /// variant class to hold values with dynamic type
 class Variant
@@ -70,7 +70,7 @@ public:
    T Get() const
    {
       ATLASSERT(m_bIsArray == false);
-      return boost::any_cast<T>(m_variant);
+      return std::any_cast<T>(m_variant);
    }
 
    /// returns string value
@@ -78,7 +78,7 @@ public:
    CString Get() const
    {
       ATLASSERT(m_bIsArray == false);
-      return boost::any_cast<CString>(m_variant);
+      return std::any_cast<CString>(m_variant);
    }
 
    /// returns unsigned long value
@@ -103,7 +103,7 @@ public:
    std::vector<T> GetArray() const
    {
       ATLASSERT(m_bIsArray == true);
-      return boost::any_cast<std::vector<T>>(m_variant);
+      return std::any_cast<std::vector<T>>(m_variant);
    }
 
    /// converts variant to string representation
@@ -116,7 +116,7 @@ public:
    static LPCTSTR TypeAsString(VariantType vt);
 
    /// sets raw variant value
-   void SetRaw(boost::any& variant, VariantType enType, bool bIsArray)
+   void SetRaw(std::any& variant, VariantType enType, bool bIsArray)
    {
       m_variant = variant;
       m_enType = enType;
@@ -148,21 +148,21 @@ public:
       if (m_enType != rhs.m_enType)
          return false;
 
-      if (m_variant.empty() && rhs.m_variant.empty())
+      if (!m_variant.has_value() && !rhs.m_variant.has_value())
          return true; // empty variants are equal
 
-      if ((m_variant.empty() && !rhs.m_variant.empty()) ||
-          (!m_variant.empty() && rhs.m_variant.empty()))
+      if ((!m_variant.has_value() && rhs.m_variant.has_value()) ||
+          (m_variant.has_value() && !rhs.m_variant.has_value()))
          return false; // one of them is non-empty
 
       try
       {
-         T left = boost::any_cast<T>(m_variant);
-         T right = boost::any_cast<T>(rhs.m_variant);
+         T left = std::any_cast<T>(m_variant);
+         T right = std::any_cast<T>(rhs.m_variant);
 
          return left == right;
       }
-      catch (const boost::bad_any_cast&)
+      catch (const std::bad_any_cast&)
       {
       }
 
@@ -171,7 +171,7 @@ public:
 
 private:
    /// variant value
-   boost::any m_variant;
+   std::any m_variant;
 
    /// variant type
    VariantType m_enType;

@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2016 Michael Fink
+// Copyright (C) 2008-2019 Michael Fink
 //
 /// \file Lua.hpp Lua C++ bindings classes
 //
@@ -8,11 +8,9 @@
 
 // includes
 #include <functional>
-#include <type_traits>
 #include <memory>
 #include <vector>
-#include <boost/any.hpp>
-#include <boost/optional.hpp>
+#include <any>
 #include <ulib/Exception.hpp>
 
 // forward references
@@ -268,21 +266,21 @@ public:
          std::is_same<T, Thread>::value,
          "not an allowed type for Get<T>()");
 
-      return boost::any_cast<T>(m_value);
+      return std::any_cast<T>(m_value);
    }
 
    /// returns value; specialisation for int
    template <>
    int Get() const
    {
-      return static_cast<int>(boost::any_cast<double>(m_value));
+      return static_cast<int>(std::any_cast<double>(m_value));
    }
 
    /// returns string value
    template <>
    CString Get() const
    {
-      return CString(boost::any_cast<CStringA>(m_value));
+      return CString(std::any_cast<CStringA>(m_value));
    }
 
    /// returns ref object
@@ -309,7 +307,7 @@ private:
 
 private:
    /// value
-   boost::any m_value;
+   std::any m_value;
 
    /// type
    T_enType m_enType;

@@ -808,7 +808,7 @@ void PropertyAccess::EnumImageIds(std::vector<unsigned int>& vecImageIds)
 
 void PropertyAccess::SetRawEdsdk(Variant& v, unsigned int datatype, std::vector<unsigned char> vecData)
 {
-   boost::any variant;
+   std::any variant;
    Variant::VariantType enType = Variant::typeInvalid;
    bool bIsArray = false;
 

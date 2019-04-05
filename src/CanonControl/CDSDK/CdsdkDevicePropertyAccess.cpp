@@ -101,7 +101,7 @@ cdUInt32 DevicePropertyAccess::GetSize(cdDevicePropertyID propId) const
 /// \note vecData is passed by value, since it is modified in this function anyway
 void DevicePropertyAccess::SetRawCdsdk(Variant& v, unsigned int propId, std::vector<unsigned char> vecData)
 {
-   boost::any variant;
+   std::any variant;
    Variant::VariantType enType = Variant::typeInvalid;
    bool bIsArray = false;
 

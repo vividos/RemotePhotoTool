@@ -25,6 +25,7 @@
 #include "../version.h"
 #include <thread>
 #include <shlobj.h>
+#include <algorithm>
 
 CmdlineApp::CmdlineApp()
 {

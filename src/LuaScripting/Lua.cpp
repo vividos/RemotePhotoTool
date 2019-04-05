@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2017 Michael Fink
+// Copyright (C) 2008-2019 Michael Fink
 //
 /// \file Lua.cpp Lua wrapper classes
 //
@@ -12,6 +12,7 @@
 #include <lua.h>
 #include <lauxlib.h>
 #include <lualib.h>
+#include <algorithm>
 
 struct lua_longjmp;
 
@@ -300,22 +301,22 @@ void Value::Push(State& state) const
       break;
 
    case typeBoolean:
-      lua_pushboolean(L, boost::any_cast<bool>(m_value) ? 1 : 0);
+      lua_pushboolean(L, std::any_cast<bool>(m_value) ? 1 : 0);
       Attach(std::make_shared<Ref>(state, -1));
       break;
 
    case typeNumber:
-      lua_pushnumber(L, boost::any_cast<double>(m_value));
+      lua_pushnumber(L, std::any_cast<double>(m_value));
       Attach(std::make_shared<Ref>(state, -1));
       break;
 
    case typeInteger:
-      lua_pushinteger(L, boost::any_cast<int>(m_value));
+      lua_pushinteger(L, std::any_cast<int>(m_value));
       Attach(std::make_shared<Ref>(state, -1));
       break;
 
    case typeString:
-      lua_pushstring(L, boost::any_cast<CStringA>(m_value));
+      lua_pushstring(L, std::any_cast<CStringA>(m_value));
       Attach(std::make_shared<Ref>(state, -1));
       break;
 

@@ -69,7 +69,7 @@ CString DeviceProperty::ValueAsString(Variant value) const
       LOG_TRACE(_T("camera exception in DeviceProperty::ValueAsString(): %s\n"), ex.Message().GetString());
       return CString();
    }
-   catch (const boost::bad_any_cast&)
+   catch (const std::bad_any_cast&)
    {
       LOG_TRACE(_T("bad_any_cast exception in DeviceProperty::ValueAsString()\n"));
       return CString();

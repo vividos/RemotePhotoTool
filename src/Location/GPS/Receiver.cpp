@@ -15,7 +15,7 @@
 #include "NMEA0183/Parser.hpp"
 #include <ulib/thread/Event.hpp>
 #include <ulib/thread/Thread.hpp>
-#include <boost/optional.hpp>
+#include <optional>
 
 using GPS::Receiver;
 using GPS::Track;
@@ -51,7 +51,7 @@ public:
    std::unique_ptr<NMEA0183::Parser> m_parser;
 
    /// track to fill with track points
-   boost::optional<std::reference_wrapper<Track>> m_track;
+   std::optional<std::reference_wrapper<Track>> m_track;
 
    /// current position info
    PositionInfo m_positionInfo;
@@ -99,7 +99,7 @@ void Receiver::Start(Track& track)
 {
    ATLASSERT(m_impl != nullptr);
 
-   m_impl->m_track = boost::optional<std::reference_wrapper<Track>>(std::ref(track));
+   m_impl->m_track = std::optional<std::reference_wrapper<Track>>(std::ref(track));
    m_impl->m_parser = std::make_unique<NMEA0183::Parser>();
 
    m_impl->m_serialPort = std::make_unique<Serial::SerialPort>(m_impl->m_serialPortDeviceName, m_impl->m_ioService);
