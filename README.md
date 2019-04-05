@@ -13,8 +13,6 @@ For a complete list of supported cameras, see [SupportedCameras.md](SupportedCam
 
 See the full Features document here: [Features.md](Features.md)
 
-See screenshots here: [Screenshots.md](Screenshots.md)
-
 RemotePhotoTool is licensed and distributed under the BSD license. See [License.md](License.md) for
 the whole text.
 
