@@ -91,9 +91,9 @@
 
     <!-- common properties -->
 
-    <Property Id="ARPURLINFOABOUT"><![CDATA[http://vividos.github.io/RemotePhotoTool/]]></Property>
-    <Property Id="ARPCOMMENTS"><![CDATA[For more information, please visit hhttp://vividos.github.io/RemotePhotoTool/]]></Property>
-    <Property Id="ARPHELPLINK" Value="http://vividos.github.io/RemotePhotoTool/" />
+    <Property Id="ARPURLINFOABOUT"><![CDATA[https://vividos.github.io/RemotePhotoTool/]]></Property>
+    <Property Id="ARPCOMMENTS"><![CDATA[For more information, please visit https://vividos.github.io/RemotePhotoTool/]]></Property>
+    <Property Id="ARPHELPLINK" Value="https://vividos.github.io/RemotePhotoTool/" />
 
     <Icon Id="RemotePhotoToolIcon" SourceFile="$(var.SourceFolder)\RemotePhotoTool\res\RemotePhotoTool.ico"/>
     <Property Id="ARPPRODUCTICON" Value="RemotePhotoToolIcon" />

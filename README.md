@@ -5,7 +5,7 @@
 RemotePhotoTool is a remote image capture application for Canon based cameras. It supports taking HDR and Panorama photos.
 
 This is the open source project page. For non-developer related informations, head over to:
-[http://vividos.github.io/RemotePhotoTool/](http://vividos.github.io/RemotePhotoTool/)
+[https://vividos.github.io/RemotePhotoTool/](https://vividos.github.io/RemotePhotoTool/)
 
 ---
 
