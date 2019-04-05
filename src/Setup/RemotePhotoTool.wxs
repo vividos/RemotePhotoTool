@@ -38,7 +38,7 @@
     <MediaTemplate EmbedCab="yes" />
 
     <Directory Id="TARGETDIR" Name="SourceDir">
-      <Merge Id="VCRedist" SourceFile="$(env.ProgramFiles(x86))\Microsoft Visual Studio\2017\Community\VC\Redist\MSVC\14.16.27012\MergeModules\Microsoft_VC141_CRT_x86.msm" DiskId="1" Language="0" />
+      <Merge Id="VCRedist" SourceFile="$(env.ProgramFiles(x86))\Microsoft Visual Studio\2019\Community\VC\Redist\MSVC\14.20.27508\MergeModules\Microsoft_VC141_CRT_x86.msm" DiskId="1" Language="0" />
       <Directory Id="ProgramFilesFolder">
         <Directory Id="MainAppFolder" Name="$(var.ProductName)">
           <Directory Id="INSTALLDIR" Name=".">
@@ -64,7 +64,7 @@
       <ComponentGroupRef Id="ScintillaFiles" />
     </Feature>
 
-    <Feature Id="VCRedist" Title="Visual C++ 2017 Runtime" AllowAdvertise="no" Display="hidden" Level="1">
+    <Feature Id="VCRedist" Title="Visual C++ 2019 Runtime" AllowAdvertise="no" Display="hidden" Level="1">
       <MergeRef Id="VCRedist"/>
     </Feature>
 
