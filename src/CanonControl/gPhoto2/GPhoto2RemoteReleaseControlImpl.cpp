@@ -17,6 +17,8 @@ RemoteReleaseControlImpl::RemoteReleaseControlImpl(std::shared_ptr<_GPContext> s
    :m_spContext(spContext),
    m_spCamera(spCamera)
 {
+   //result = gp_camera_wait_for_event(gp_params.camera, waittime, type, &data, gp_params.context);
+   //case GP_EVENT_CAPTURE_COMPLETE:
 }
 
 RemoteReleaseControlImpl::~RemoteReleaseControlImpl()
@@ -32,6 +34,8 @@ RemoteReleaseControlImpl::~RemoteReleaseControlImpl()
 
 bool RemoteReleaseControlImpl::GetCapability(T_enRemoteCapability enRemoteCapability) const
 {
+   //result = gp_camera_get_abilities (gp_params.camera, &a);
+
    // TODO implement
    switch (enRemoteCapability)
    {
@@ -87,6 +91,8 @@ std::vector<unsigned int> RemoteReleaseControlImpl::EnumImageProperties() const
 
 ImageProperty RemoteReleaseControlImpl::GetImageProperty(unsigned int uiImagePropertyId) const
 {
+   //return m_spProperties->GetImageProperty(uiPropertyId);
+
    // TODO implement
    Variant value;
    value.Set<unsigned char>(42);
@@ -134,10 +140,13 @@ void RemoteReleaseControlImpl::Release()
 void RemoteReleaseControlImpl::AsyncRelease()
 {
    // TODO implement
+   //gp_camera_trigger_capture (gp_params.camera, gp_params.context);
 }
 
 std::shared_ptr<BulbReleaseControl> RemoteReleaseControlImpl::StartBulb()
 {
+   // result = set_config_action (&gp_params, "bulb", "1");
+
    // bulb not supported by gPhoto2
    throw CameraException(_T("gPhoto2::RemoteReleaseControl::StartBulb"),
       _T("Not supported"), 0, __FILE__, __LINE__);
