@@ -3,6 +3,25 @@
 Note: For the complete changelog, including internal changes, you can always go to
 the git sourcecode repository at [https://github.com/vividos/RemotePhotoTool](https://github.com/vividos/RemotePhotoTool).
 
+## 2019-xx-xx: Version 1.6.0 Build 125 ##
+
+This is a major feature release.
+
+### tl;dr ###
+
+- Added Time Lapse photo mode
+- Added File System photo mode
+- RemotePhotoToolCmdline --dir
+- Dropped Windows XP support
+
+### New features ###
+
+#### UI ####
+
+#### Tools ####
+
+### Bug fixes ###
+
 ## 2016-05-13: Version 1.5.0 Build 121 ##
 
 This is a minor feature and major bugfix release.
