@@ -833,8 +833,10 @@ void MainFrame::LockActionMode(bool bLock)
       return;
    }
 
-   EnablePhotoModes(!bLock);
-   EnableViewfinder(!bLock);
+   bool enable = !bLock && m_connection.IsConnected();
+
+   EnablePhotoModes(enable);
+   EnableViewfinder(enable);
 }
 
 void MainFrame::EnableUI(int nID, bool bEnable)
@@ -885,7 +887,8 @@ void MainFrame::SetNewView(T_enViewType enViewType)
 
    bool bEnable =
       enViewType != viewBlank &&
-      enViewType != viewPreviousImages;
+      enViewType != viewPreviousImages &&
+      m_connection.IsConnected();
 
    EnablePhotoModes(bEnable);
    EnableViewfinder(bEnable);
