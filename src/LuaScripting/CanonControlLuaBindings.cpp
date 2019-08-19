@@ -41,7 +41,7 @@ const unsigned int c_uiEventTimerCycleInMilliseconds = 100;
 CanonControlLuaBindings::CanonControlLuaBindings(Lua::State& state, boost::asio::io_service::strand& strand)
 :m_state(state),
 m_strand(strand),
-m_timerEventHandling(m_strand.get_io_service()),
+m_timerEventHandling(m_strand.context()),
 m_evtStopTimer(false),
 m_evtTimerStopped(false)
 {

@@ -96,7 +96,7 @@ std::vector<Lua::Value> SystemLuaBindings::SysCreateEvent(Lua::State& state)
 
 SystemLuaBindings::ManualResetEvent::ManualResetEvent(LuaScheduler& scheduler, boost::asio::io_service::strand& strand)
 :m_event(false),
-m_timerWait(strand.get_io_service()),
+m_timerWait(strand.context()),
 m_scheduler(scheduler),
 m_strand(strand)
 {
