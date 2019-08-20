@@ -27,8 +27,9 @@ AppOptions::AppOptions(std::vector<AppCommand>& vecCommandList)
    RegisterOption(_T("c"), _T("close"), _T("closes opened device"),
       0, std::bind(&AppOptions::OnAddSimpleCommand, this, AppCommand::closeDevice));
 
-   RegisterOption(_T("f"), _T("dir"), _T("lists all folders and files for the given relative path on the open device"),
-      1, std::bind(&AppOptions::OnAddCommandWithParam, this, AppCommand::showFilesystem, std::placeholders::_1));
+   // TODO reactivate when camera file system is fully implemented
+   //RegisterOption(_T("f"), _T("dir"), _T("lists all folders and files for the given relative path on the open device"),
+   //   1, std::bind(&AppOptions::OnAddCommandWithParam, this, AppCommand::showFilesystem, std::placeholders::_1));
 
    RegisterOption(_T("d"), _T("device-info"), _T("shows device info of opened device"),
       0, std::bind(&AppOptions::OnAddSimpleCommand, this, AppCommand::deviceInfo));

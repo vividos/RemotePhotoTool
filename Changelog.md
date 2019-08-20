@@ -10,7 +10,6 @@ This is a major feature release.
 ### tl;dr ###
 
 - Added Time Lapse photo mode
-- RemotePhotoToolCmdline --dir
 - Dropped Windows XP support
 
 ### New features ###
