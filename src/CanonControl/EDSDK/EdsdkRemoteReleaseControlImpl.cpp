@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file EdsdkRemoteReleaseControlImpl.cpp EDSDK - RemoteReleaseControl impl
 //
@@ -476,7 +476,7 @@ void RemoteReleaseControlImpl::DownloadImage(Handle hDirectoryItem, ShutterRelea
 
       // camera tells us name of file; add to output folder here
       CString cszFilename = Path::Combine(
-         Path(settings.Filename()).FolderName(),
+         Path::FolderName(settings.Filename()),
          dirItemInfo.szFileName);
 
       settings.Filename(cszFilename);

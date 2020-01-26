@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file SettingsDlg.cpp Settings dialog
 //
@@ -116,7 +116,7 @@ void SettingsDlg::SelectLogFolder()
 
       cszFolder += _T("\\RemotePhotoTool\\");
 
-      if (!Path(cszFolder).FolderExists())
+      if (!Path::FolderExists(cszFolder))
          CreateDirectory(cszFolder, NULL);
 
       m_settings.m_cszLogfilePath = cszFolder;

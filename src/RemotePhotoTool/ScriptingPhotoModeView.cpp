@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file ScriptingPhotoModeView.cpp Scripting photo mode view
 //
@@ -112,7 +112,7 @@ void ScriptingPhotoModeView::EditScript(const CString& cszFilename)
       return;
 
    CString cszEditorFilename =
-      Path::Combine(Path(Path::ModuleFilename()).FolderName(), _T("RemoteScriptingEditor.exe"));
+      Path::Combine(Path::FolderName(Path::ModuleFilename()), _T("RemoteScriptingEditor.exe"));
 
    CString cszCommandLine;
    cszCommandLine.Format(_T("\"%s\" \"%s\""),
@@ -120,7 +120,7 @@ void ScriptingPhotoModeView::EditScript(const CString& cszFilename)
       cszFilename.GetString());
 
    Win32::Process process;
-   process.WorkingDirectory(Path(cszFilename).FolderName());
+   process.WorkingDirectory(Path::FolderName(cszFilename));
    bool bRet = process.Create(cszCommandLine);
 
    if (bRet)

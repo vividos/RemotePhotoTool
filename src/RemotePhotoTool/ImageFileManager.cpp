@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file ImageFileManager.cpp Image file manager
 //
@@ -24,19 +24,19 @@ CString ImageFileManager::NextFilename(T_enImageType enImageType, bool bStartNew
 {
    CString cszPath = m_settings.m_cszProjectsFolder;
 
-   if (!Path(cszPath).FolderExists())
+   if (!Path::FolderExists(cszPath))
       CreateDirectory(cszPath, nullptr);
 
    if (m_settings.m_bCurrentDateSubfolder)
       AddCurrentDate(cszPath);
 
-   if (!Path(cszPath).FolderExists())
+   if (!Path::FolderExists(cszPath))
       CreateDirectory(cszPath, nullptr);
 
    if (m_settings.m_bImageTypeSubfolder)
       AddImageTypePath(cszPath, enImageType, bStartNewSeries);
 
-   if (!Path(cszPath).FolderExists())
+   if (!Path::FolderExists(cszPath))
       CreateDirectory(cszPath, nullptr);
 
    CString cszImageFilename;
@@ -46,7 +46,7 @@ CString ImageFileManager::NextFilename(T_enImageType enImageType, bool bStartNew
       cszImageFilename.Format(_T("IMG_%04u.jpg"), uiImageNr);
       uiImageNr++;
 
-   } while (Path(Path::Combine(cszPath, cszImageFilename)).FileExists());
+   } while (Path::FileExists(Path::Combine(cszPath, cszImageFilename)));
 
    m_uiNextImageIndex = uiImageNr-1;
 
@@ -64,7 +64,7 @@ void ImageFileManager::AddCurrentDate(CString& cszPath)
    _tcsftime(cszDate.GetBuffer(256), 256, _T("%Y-%m-%d"), &nowtm);
    cszDate.ReleaseBuffer();
 
-   cszPath = Path::Combine(cszPath, cszDate).ToString();
+   cszPath = Path::Combine(cszPath, cszDate);
 }
 
 void ImageFileManager::AddImageTypePath(CString& cszPath, T_enImageType enImageType, bool bStartNewSeries)
@@ -87,7 +87,7 @@ void ImageFileManager::AddImageTypePath(CString& cszPath, T_enImageType enImageT
    if (cszSubfolder.Find(_T("%u")) != -1)
       FormatNumberedImagePath(cszPath, cszSubfolder, bStartNewSeries);
 
-   cszPath = Path::Combine(cszPath, cszSubfolder).ToString();
+   cszPath = Path::Combine(cszPath, cszSubfolder);
 }
 
 void ImageFileManager::FormatNumberedImagePath(const CString& cszPath, CString& cszSubfolder, bool bStartNewSeries)

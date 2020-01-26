@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2016 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file RemotePhotoTool/MainFrame.cpp Main application frame
 //
@@ -571,7 +571,7 @@ LRESULT MainFrame::OnExtraCreateTimelapseFromFiles(WORD /*wNotifyCode*/, WORD /*
 
    m_settings.m_ffmpegCommandLineOptions = optionsDlg.GetCommandLine();
 
-   CString defaultOutputFilename = Path::Combine(Path(path).FolderName(), _T("output.mp4"));
+   CString defaultOutputFilename = Path::Combine(Path::FolderName(path), _T("output.mp4"));
 
    CFileDialog saveMovieDlg(FALSE, _T("mp4"), defaultOutputFilename, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, g_timelapseMovieFilter);
    ret = saveMovieDlg.DoModal(m_hWnd);

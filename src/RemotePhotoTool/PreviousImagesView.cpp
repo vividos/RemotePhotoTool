@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2015 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file PreviousImagesView.cpp Previous images view
 //
@@ -283,7 +283,7 @@ void PreviousImagesView::OpenFolder(const CString& cszImageFilename)
 
    // workaround for systems where ILCreateFromPath() fails; opens a new explorer
    // window each time it is called.
-   CString cszFolderName = Path(cszImageFilename).FolderName();
+   CString cszFolderName = Path::FolderName(cszImageFilename);
 
    CString cszArgs;
    cszArgs.Format(_T("/select, \"%s\""), cszImageFilename.GetString());
@@ -292,7 +292,7 @@ void PreviousImagesView::OpenFolder(const CString& cszImageFilename)
 
 void PreviousImagesView::EditImage(const CString& cszImageFilename)
 {
-   CString cszFolderName = Path(cszImageFilename).FolderName();
+   CString cszFolderName = Path::FolderName(cszImageFilename);
 
    ::ShellExecute(m_hWnd, _T("edit"), cszImageFilename, NULL, cszFolderName, SW_SHOWNORMAL);
 }

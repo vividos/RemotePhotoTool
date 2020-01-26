@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2017 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file HuginInterface.cpp Interface to Hugin panorama stitching software
 //
@@ -84,7 +84,7 @@ void HuginInterface::Detect()
          cszInstallPathLower.MakeLower();
 
          if (cszInstallPathLower.Find(_T(".exe")) != -1)
-            cszInstallPath = Path(cszInstallPath).FolderName();
+            cszInstallPath = Path::FolderName(cszInstallPath);
 
          Path::AddEndingBackslash(cszInstallPath);
 

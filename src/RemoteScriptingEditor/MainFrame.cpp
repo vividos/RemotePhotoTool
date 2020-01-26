@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2017 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file RemoteScriptingEditor\MainFrame.cpp Main application frame
 //
@@ -79,7 +79,7 @@ LRESULT MainFrame::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/,
       DoFileNew();
    else
    {
-      CString cszTitle = Path(m_cszFilenameOpenAtStart).FilenameAndExt();
+      CString cszTitle = Path::FilenameAndExt(m_cszFilenameOpenAtStart);
       if (DoFileOpen(m_cszFilenameOpenAtStart, cszTitle))
       {
          m_mru.AddToList(m_cszFilenameOpenAtStart);
@@ -228,7 +228,7 @@ LRESULT MainFrame::OnFileRecent(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/
    CString cszFile;
    if (m_mru.GetFromList(wID, cszFile))
    {
-      CString cszFileName = Path(cszFile).FilenameAndExt();
+      CString cszFileName = Path::FilenameAndExt(cszFile);
 
       // open file
       if (DoFileOpen(cszFile, cszFileName))

@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2006-2018 Michael Fink
+// Copyright (C) 2006-2020 Michael Fink
 //
 /// \file Import/TrackImport.cpp track import
 //
@@ -15,7 +15,7 @@ using Import::TrackImport;
 
 void TrackImport::ImportTrack(LPCTSTR filename, GPS::Track& track)
 {
-   CString extension = Path(filename).ExtensionOnly();
+   CString extension = Path::ExtensionOnly(filename);
    extension.MakeLower();
 
    if (extension == _T(".gpx"))

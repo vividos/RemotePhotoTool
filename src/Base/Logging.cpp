@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file Logging.cpp Simple logging for SDK functions
 //
@@ -57,7 +57,7 @@ void LogConfigure(bool bEnable, const CString& cszLogfilePath)
    try
    {
       CString cszDate = LogFormatCurrentDate();
-      s_cszLogFilename = Path::Combine(cszLogfilePath, _T("Log-") + cszDate + _T(".txt")).ToString();
+      s_cszLogFilename = Path::Combine(cszLogfilePath, _T("Log-") + cszDate + _T(".txt"));
    }
    catch (...)
    {

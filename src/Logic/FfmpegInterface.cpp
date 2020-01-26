@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2018 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file FfmpegInterface.cpp Interface to ffmpeg movie creation software
 //
@@ -18,7 +18,7 @@ bool FfmpegInterface::IsInstalled() const
 {
    CString exeFilename = Path::Combine(m_binPath, _T("ffmpeg.exe"));
 
-   return Path(exeFilename).FileExists();
+   return Path::FileExists(exeFilename);
 }
 
 void FfmpegInterface::Run(const std::vector<CString>& imageFilenamesList, const CString& extraCommandLine, const CString& outputFilename)

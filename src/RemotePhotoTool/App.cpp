@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2019 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file RemotePhotoTool/App.cpp Application
 //
@@ -53,12 +53,12 @@ void App::InitCrashReporter()
 {
    CString cszFolder = Path::SpecialFolder(CSIDL_LOCAL_APPDATA) + _T("\\RemotePhotoTool\\");
 
-   if (!Path(cszFolder).FolderExists())
+   if (!Path::FolderExists(cszFolder))
       CreateDirectory(cszFolder, NULL);
 
    cszFolder += _T("crashdumps\\");
 
-   if (!Path(cszFolder).FolderExists())
+   if (!Path::FolderExists(cszFolder))
       CreateDirectory(cszFolder, NULL);
 
    CrashReporter::Init(cszFolder, _T("RemotePhotoTool"));

@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2016 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file MoveScriptGenerator.cpp Generates move cmd script based on image types
 //
@@ -50,10 +50,10 @@ private:
 
       while (parser.GetNext(filename))
       {
-         if (Path(filename).FileExists())
+         if (Path::FileExists(filename))
             AddImageFile(allImages, filename);
          else
-            if (Path(filename).FolderExists())
+            if (Path::FolderExists(filename))
             {
                FileFinder finder(filename, _T("*.*"));
 
@@ -173,7 +173,7 @@ private:
             if (filesList.ImageFileInfoList().empty())
                return;
 
-            CString baseFolder = Path(filesList.ImageFileInfoList()[0].Filename()).FolderName();
+            CString baseFolder = Path::FolderName(filesList.ImageFileInfoList()[0].Filename());
 
             // image type must be in map
             ATLASSERT(mapImageTypeToCurrentCount.find(filesList.ImageType()) != mapImageTypeToCurrentCount.end());
@@ -214,7 +214,7 @@ private:
          CString destFilename =
             Path::Combine(
                baseFolder,
-               Path(info.Filename()).FilenameAndExt());
+               Path::FilenameAndExt(info.Filename()));
 
          _ftprintf(stdout, _T("move \"%s\" \"%s\"\n"),
             info.Filename().GetString(),
