@@ -38,7 +38,7 @@
     <MediaTemplate EmbedCab="yes" />
 
     <Directory Id="TARGETDIR" Name="SourceDir">
-      <Merge Id="VCRedist" SourceFile="$(env.ProgramFiles(x86))\Microsoft Visual Studio\2019\Community\VC\Redist\MSVC\14.22.27821\MergeModules\Microsoft_VC142_CRT_x86.msm" DiskId="1" Language="0" />
+      <Merge Id="VCRedist" SourceFile="$(env.ProgramFiles(x86))\Microsoft Visual Studio\2019\Community\VC\Redist\MSVC\14.24.28127\MergeModules\Microsoft_VC142_CRT_x86.msm" DiskId="1" Language="0" />
       <Directory Id="ProgramFilesFolder">
         <Directory Id="MainAppFolder" Name="$(var.ProductName)">
           <Directory Id="INSTALLDIR" Name=".">
