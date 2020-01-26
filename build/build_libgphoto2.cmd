@@ -1,13 +1,13 @@
 @echo off
 REM
 REM RemotePhotoTool - remote camera control software
-REM Copyright (c) 2008-2019 Michael Fink
+REM Copyright (c) 2008-2020 Michael Fink
 REM
 REM Downloads libgphoto2 and compiles it
 REM
 
 REM set this to the filename of the file to download
-set PREFIX=libgphoto2-2_5_22
+set PREFIX=libgphoto2-2_5_23
 
 REM set this to your Visual Studio installation folder
 set VSINSTALL=%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Community
@@ -18,8 +18,8 @@ set URL=https://github.com/gphoto/libgphoto2/archive/%PREFIX%-release.zip
 if not exist %PREFIX%.zip powershell -Command "& {Invoke-WebRequest -Uri %URL% -Out %PREFIX%.zip}"
 
 REM unzip
-rmdir /s /q %PREFIX%\
-rmdir /s /q libgphoto2-%PREFIX%-release\
+rmdir /s /q %PREFIX%\ 2> nul
+rmdir /s /q libgphoto2-%PREFIX%-release\  2> nul
 "c:\Program Files\7-Zip\7z.exe" x %PREFIX%.zip
 move libgphoto2-%PREFIX%-release %PREFIX%
 
