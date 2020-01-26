@@ -29,7 +29,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Thirdparty", "Thirdparty\Th
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Base", "Base\Base.vcxproj", "{3AB1BB98-D491-47DB-8D93-1DAB3CE88C87}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "jpeg-9c", "Thirdparty\jpeg-9c\jpeg-9c.vcxproj", "{1A81D718-3886-4CD5-8F10-4946BF4D6355}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "jpeg-9d", "Thirdparty\jpeg-9d\jpeg-9d.vcxproj", "{1A81D718-3886-4CD5-8F10-4946BF4D6355}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cppcheck", "cppcheck\cppcheck.vcxproj", "{36163BCB-F4DA-472D-A77B-73D2BC5F42AD}"
 EndProject
