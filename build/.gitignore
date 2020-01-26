@@ -1,2 +1,6 @@
 libgphoto2-*.zip
 libgphoto2-*/
+libwdi-*.tar.gz
+libwdi-*/
+libusb-win32-*.zip
+libusb-win32-*/
