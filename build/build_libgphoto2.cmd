@@ -7,7 +7,7 @@ REM Downloads libgphoto2 and compiles it
 REM
 
 REM set this to the filename of the file to download
-set PREFIX=libgphoto2-2_5_23
+set PREFIX=libgphoto2-2_5_24
 
 REM set this to your Visual Studio installation folder
 set VSINSTALL=%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Community
