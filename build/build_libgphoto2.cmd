@@ -24,7 +24,7 @@ rmdir /s /q libgphoto2-%PREFIX%-release\  2> nul
 move libgphoto2-%PREFIX%-release %PREFIX%
 
 REM copy additional files
-xcopy /s /y msvc\*.* %PREFIX%\
+xcopy /s /y libgphoto2-msvc\*.* %PREFIX%\
 
 REM set up Visual Studio
 call "%VSINSTALL%\Common7\Tools\VsDevCmd.bat"
