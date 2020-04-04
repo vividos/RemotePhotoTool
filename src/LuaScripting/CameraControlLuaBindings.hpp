@@ -1,8 +1,8 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2016 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
-/// \file CanonControlLuaBindings.hpp Lua bindings for the CanonControl library
+/// \file CameraControlLuaBindings.hpp Lua bindings for the CameraControl library
 //
 #pragma once
 
@@ -23,21 +23,21 @@ class ImageProperty;
 class Viewfinder;
 class BulbReleaseControl;
 
-/// \brief Lua bindings for CanonControl library
-/// \details Provides bindings for all classes and functions in the CanonControl
+/// \brief Lua bindings for CameraControl library
+/// \details Provides bindings for all classes and functions in the CameraControl
 /// library. As soon as the object is destroyed, the bindings are deregistered. All
 /// callback handlers registered are reset and won't be called anymore.
-class CanonControlLuaBindings : public std::enable_shared_from_this<CanonControlLuaBindings>
+class CameraControlLuaBindings : public std::enable_shared_from_this<CameraControlLuaBindings>
 {
 public:
    /// function type to output debug strings
    typedef std::function<void(const CString&)> T_fnOutputDebugString;
 
    /// ctor; inits bindings
-   CanonControlLuaBindings(Lua::State& state, boost::asio::io_service::strand& strand);
+   CameraControlLuaBindings(Lua::State& state, boost::asio::io_service::strand& strand);
 
    /// dtor; cleans up bindings
-   virtual ~CanonControlLuaBindings();
+   virtual ~CameraControlLuaBindings();
 
    /// sets output debug string handler
    void SetOutputDebugStringHandler(T_fnOutputDebugString fnOutputDebugString)
@@ -45,7 +45,7 @@ public:
       m_fnOutputDebugString = fnOutputDebugString;
    }
 
-   /// inits bindings to CanonControl; since the this parameter is needed in
+   /// inits bindings to CameraControl; since the this parameter is needed in
    /// the bindings, call this immediately after the ctor
    void InitBindings();
 
@@ -351,7 +351,7 @@ private:
    /// Lua state
    Lua::State& m_state;
 
-   /// CanonControl instance
+   /// CameraControl instance
    std::unique_ptr<Instance> m_upInstance;
 
    /// release settings stored for the script

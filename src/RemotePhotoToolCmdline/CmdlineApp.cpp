@@ -113,7 +113,7 @@ void CmdlineApp::Exec(const AppCommand& cmd)
 
 void CmdlineApp::PrintVersionInfo()
 {
-   _tprintf(_T("CanonControl version info\n\n"));
+   _tprintf(_T("CameraControl version info\n\n"));
 
    Instance inst = Instance::Get();
 

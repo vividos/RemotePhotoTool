@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2015 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file CameraScriptProcessor.cpp Camera Lua script processor
 //
@@ -10,7 +10,7 @@
 #include "CameraScriptProcessor.hpp"
 #include "Lua.hpp"
 #include "SystemLuaBindings.hpp"
-#include "CanonControlLuaBindings.hpp"
+#include "CameraControlLuaBindings.hpp"
 #include "LuaScriptWorkerThread.hpp"
 #include "LuaScheduler.hpp"
 #include <lua.h>
@@ -40,13 +40,13 @@ public:
    {
       m_fnOutputDebugString = fnOutputDebugString;
 
-      if (m_spCanonControlLuaBindings != nullptr)
-         m_spCanonControlLuaBindings->SetOutputDebugStringHandler(fnOutputDebugString);
+      if (m_spCameraControlLuaBindings != nullptr)
+         m_spCameraControlLuaBindings->SetOutputDebugStringHandler(fnOutputDebugString);
 
       m_scriptWorkerThread.SetOutputDebugStringHandler(fnOutputDebugString);
    }
 
-   /// inits bindings to system functions and CanonControl
+   /// inits bindings to system functions and CameraControl
    void InitBindings()
    {
       InitBuiltinLibs();
@@ -91,12 +91,12 @@ public:
    /// cancels all handlers currently registered
    void CancelHandlers()
    {
-      m_spCanonControlLuaBindings->StopTimer();
+      m_spCameraControlLuaBindings->StopTimer();
 
       m_scriptWorkerThread.GetStrand().post([&]()
       {
          m_spSystemLuaBindings->CancelHandlers();
-         m_spCanonControlLuaBindings->CancelHandlers();
+         m_spCameraControlLuaBindings->CancelHandlers();
       });
    }
 
@@ -118,11 +118,11 @@ public:
          // this calls SystemLuaBindings::CleanupBindings()
          m_spSystemLuaBindings.reset();
 
-         // CanonControlLuaBindings must not be used in handlers anymore
-         ATLASSERT(m_spCanonControlLuaBindings.use_count() == 1);
+         // CameraControlLuaBindings must not be used in handlers anymore
+         ATLASSERT(m_spCameraControlLuaBindings.use_count() == 1);
 
-         // this calls CanonControlLuaBindings::CleanupBindings()
-         m_spCanonControlLuaBindings.reset();
+         // this calls CameraControlLuaBindings::CleanupBindings()
+         m_spCameraControlLuaBindings.reset();
       });
    }
 
@@ -208,10 +208,10 @@ private:
       m_spSystemLuaBindings->InitBindings();
 
 
-      m_spCanonControlLuaBindings.reset(
-         new CanonControlLuaBindings(state, m_scriptWorkerThread.GetStrand()));
+      m_spCameraControlLuaBindings.reset(
+         new CameraControlLuaBindings(state, m_scriptWorkerThread.GetStrand()));
 
-      m_spCanonControlLuaBindings->InitBindings();
+      m_spCameraControlLuaBindings->InitBindings();
    }
 
    // global functions
@@ -242,8 +242,8 @@ private:
    /// bindings for System library
    std::shared_ptr<SystemLuaBindings> m_spSystemLuaBindings;
 
-   /// bindings for CanonControl library
-   std::shared_ptr<CanonControlLuaBindings> m_spCanonControlLuaBindings;
+   /// bindings for CameraControl library
+   std::shared_ptr<CameraControlLuaBindings> m_spCameraControlLuaBindings;
 
    /// worker thread that runs all Lua scripts
    LuaScriptWorkerThread m_scriptWorkerThread;

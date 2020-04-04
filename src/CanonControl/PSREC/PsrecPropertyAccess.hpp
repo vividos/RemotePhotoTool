@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file PsrecPropertyAccess.hpp PS-ReC - device/image property access
 //
@@ -15,7 +15,7 @@
 namespace PSREC
 {
 
-// dummy property values used by CanonControl to treat some special properties
+// dummy property values used by CameraControl to treat some special properties
 // as normal properties
 
 /// dummy property value for getting propImageFormat value

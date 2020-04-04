@@ -49,7 +49,7 @@ About dialogs are now resizable.
 
 #### Lua scripting ####
 
-Completed implementation of Lua bindings to the internal CanonControl library;
+Completed implementation of Lua bindings to the internal CameraControl library;
 now all functions can be carried out that can be done in the UI. Among these
 are:
 - Setting Video Out for viewfinder

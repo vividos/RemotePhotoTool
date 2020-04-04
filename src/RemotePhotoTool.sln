@@ -9,7 +9,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RemotePhotoTool", "RemotePh
 		{3AB1BB98-D491-47DB-8D93-1DAB3CE88C87} = {3AB1BB98-D491-47DB-8D93-1DAB3CE88C87}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CanonControl", "CanonControl\CanonControl.vcxproj", "{CE953B34-5513-4719-AEAD-A61F0585AB34}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CameraControl", "CanonControl\CameraControl.vcxproj", "{CE953B34-5513-4719-AEAD-A61F0585AB34}"
 	ProjectSection(ProjectDependencies) = postProject
 		{3AB1BB98-D491-47DB-8D93-1DAB3CE88C87} = {3AB1BB98-D491-47DB-8D93-1DAB3CE88C87}
 	EndProjectSection

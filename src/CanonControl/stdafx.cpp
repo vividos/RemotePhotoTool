@@ -1,8 +1,8 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
-/// \file CanonControl\stdafx.cpp Precompiled header support
+/// \file CameraControl\stdafx.cpp Precompiled header support
 //
 
 // includes

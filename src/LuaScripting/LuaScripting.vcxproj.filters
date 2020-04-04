@@ -20,13 +20,13 @@
     <ClCompile Include="Lua.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CanonControlLuaBindings.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SystemLuaBindings.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="LuaScheduler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraControlLuaBindings.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -40,9 +40,6 @@
     <ClInclude Include="CameraScriptProcessor.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CanonControlLuaBindings.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="LuaScriptWorkerThread.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -50,6 +47,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="LuaScheduler.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraControlLuaBindings.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

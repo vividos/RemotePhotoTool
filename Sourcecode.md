@@ -35,8 +35,8 @@ The `"src"` folder has the following projects:
 
 - Base: Contains a base static library with classes common to several other of my projects
 - Base\Base.UnitTest: Unit tests for Base library.
-- CanonControl: Contains a static library to control the various cameras. See below for details.
-- CanonControl\exports: Contains header files with public classes of CanonControl library.
+- CameraControl: Contains a static library to control the various cameras. See below for details.
+- CameraControl\exports: Contains header files with public classes of CameraControl library.
 - CanonEOSShutterCount: Contains a command line tool to read out shutter count of EOS cameras.
 - cppcheck: Tool project to run installed cppcheck tool on all source code to check for coding errors.
 - doxygen: Tool project to run doxygen tool on all source code to generate source documentation.
@@ -46,15 +46,15 @@ The `"src"` folder has the following projects:
 - LuaScripting\LuaScripting.UnitTest: Unit tests for LuaScripting library.
 - RemotePhotoTool: The main application.
 - RemotePhotoTool.CameraControl: A C# bindings project (using C++/CLI) to provide functions of the
-  CanonControl library to .NET users.
+  CameraControl library to .NET users.
 - RemotePhotoToolCmdline: Command line application to remote control a camera.
 - RemoteScriptingEditor: Lua scripting editor to debug scripts to remote control a camera.
 - Setup: Contains the setup project.
 - Thirdparty: Contains all third party code, including the SDKs and the JPEG library.
 
-### CanonControl ###
+### CameraControl ###
 
-The CanonControl library is an encapsulation for the SDKs used in the main application. You
+The CameraControl library is an encapsulation for the SDKs used in the main application. You
 can find all public header files in the `"exports"` folder. All other files are only used inside
 the library. The library contains several files with the Edsdk, Cdsdk and Psrec prefix that
 implement the interfaces from the `"exports"` folder. The main starting point is the static
@@ -67,7 +67,7 @@ should be obvious from the public functions and classes.
 
 ### Main application ###
 
-The main application uses the public interface of the `CanonControl` library to remote control
+The main application uses the public interface of the `CameraControl` library to remote control
 cameras and is unaware of different SDKs and camera models. The application uses the ribbon menu
 band interface for UI. It supports several "photo modes" that can be switched between, as long
 as the camera is connected. The photo modes have different scope and don't present all properties

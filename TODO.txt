@@ -30,9 +30,8 @@ WIA
 Add checking for capabilities
 Add downloading files
 
-CanonControl
+CameraControl
 ------------
-Rename library to CameraControl
 Filter out cameras both appearing as WIA and other SDKs
 
 Lua scripting

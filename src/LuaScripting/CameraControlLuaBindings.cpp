@@ -1,13 +1,13 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2016 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
-/// \file CanonControlLuaBindings.cpp Lua bindings for the CanonControl library
+/// \file CameraControlLuaBindings.cpp Lua bindings for the CameraControl library
 //
 
 // includes
 #include "stdafx.h"
-#include "CanonControlLuaBindings.hpp"
+#include "CameraControlLuaBindings.hpp"
 #include "SourceInfo.hpp"
 #include "SourceDevice.hpp"
 #include "ShutterReleaseSettings.hpp"
@@ -38,7 +38,7 @@ LPCTSTR c_pszDownloadHandlerTable = _T("__DownloadHandler");
 /// cycle time for event timer
 const unsigned int c_uiEventTimerCycleInMilliseconds = 100;
 
-CanonControlLuaBindings::CanonControlLuaBindings(Lua::State& state, boost::asio::io_service::strand& strand)
+CameraControlLuaBindings::CameraControlLuaBindings(Lua::State& state, boost::asio::io_service::strand& strand)
 :m_state(state),
 m_strand(strand),
 m_timerEventHandling(m_strand.context()),
@@ -47,7 +47,7 @@ m_evtTimerStopped(false)
 {
 }
 
-CanonControlLuaBindings::~CanonControlLuaBindings()
+CameraControlLuaBindings::~CameraControlLuaBindings()
 {
    // when one of these asserts fail, then the user of this class
    // forgot to call CancelHandlers(); but we cannot call it here
@@ -65,7 +65,7 @@ CanonControlLuaBindings::~CanonControlLuaBindings()
    }
 }
 
-void CanonControlLuaBindings::InitBindings()
+void CameraControlLuaBindings::InitBindings()
 {
    // init of instance must be done in the same thread that actually uses camera
    m_strand.post([&]{
@@ -77,7 +77,7 @@ void CanonControlLuaBindings::InitBindings()
 
    /// local instance = Sys:getInstance()
    sys.AddFunction("getInstance",
-      std::bind(&CanonControlLuaBindings::SysGetInstance, shared_from_this(),
+      std::bind(&CameraControlLuaBindings::SysGetInstance, shared_from_this(),
          std::placeholders::_1));
 
    InitConstants();
@@ -85,7 +85,7 @@ void CanonControlLuaBindings::InitBindings()
    RestartEventTimer();
 }
 
-void CanonControlLuaBindings::InitConstants()
+void CameraControlLuaBindings::InitConstants()
 {
    Lua::Table constants = GetState().AddTable(_T("Constants"));
 
@@ -97,7 +97,7 @@ void CanonControlLuaBindings::InitConstants()
    InitViewfinderConstants(constants);
 }
 
-void CanonControlLuaBindings::InitSourceDeviceConstants(Lua::Table& constants)
+void CameraControlLuaBindings::InitSourceDeviceConstants(Lua::Table& constants)
 {
    Lua::Table sourceDevice = GetState().AddTable(_T(""));
 
@@ -107,7 +107,7 @@ void CanonControlLuaBindings::InitSourceDeviceConstants(Lua::Table& constants)
    constants.AddValue(_T("SourceDevice"), Lua::Value(sourceDevice));
 }
 
-void CanonControlLuaBindings::InitImagePropertyConstants(Lua::Table& constants)
+void CameraControlLuaBindings::InitImagePropertyConstants(Lua::Table& constants)
 {
    Lua::Table imageProperty = GetState().AddTable(_T(""));
 
@@ -134,7 +134,7 @@ void CanonControlLuaBindings::InitImagePropertyConstants(Lua::Table& constants)
    constants.AddValue(_T("ImageProperty"), Lua::Value(imageProperty));
 }
 
-void CanonControlLuaBindings::InitShootingModeConstants(Lua::Table& constants)
+void CameraControlLuaBindings::InitShootingModeConstants(Lua::Table& constants)
 {
    Lua::Table shootingMode = GetState().AddTable(_T(""));
 
@@ -146,7 +146,7 @@ void CanonControlLuaBindings::InitShootingModeConstants(Lua::Table& constants)
    constants.AddValue(_T("ShootingMode"), Lua::Value(shootingMode));
 }
 
-void CanonControlLuaBindings::InitShutterReleaseSettingsConstants(Lua::Table& constants)
+void CameraControlLuaBindings::InitShutterReleaseSettingsConstants(Lua::Table& constants)
 {
    Lua::Table shutterReleaseSettings = GetState().AddTable(_T(""));
 
@@ -157,7 +157,7 @@ void CanonControlLuaBindings::InitShutterReleaseSettingsConstants(Lua::Table& co
    constants.AddValue(_T("ShutterReleaseSettings"), Lua::Value(shutterReleaseSettings));
 }
 
-void CanonControlLuaBindings::InitRemoteReleaseControlConstants(Lua::Table& constants)
+void CameraControlLuaBindings::InitRemoteReleaseControlConstants(Lua::Table& constants)
 {
    Lua::Table remoteReleaseControl = GetState().AddTable(_T(""));
 
@@ -200,7 +200,7 @@ void CanonControlLuaBindings::InitRemoteReleaseControlConstants(Lua::Table& cons
    constants.AddValue(_T("RemoteReleaseControl"), Lua::Value(remoteReleaseControl));
 }
 
-void CanonControlLuaBindings::InitViewfinderConstants(Lua::Table& constants)
+void CameraControlLuaBindings::InitViewfinderConstants(Lua::Table& constants)
 {
    Lua::Table viewfinder = GetState().AddTable(_T(""));
 
@@ -219,7 +219,7 @@ void CanonControlLuaBindings::InitViewfinderConstants(Lua::Table& constants)
    constants.AddValue(_T("Viewfinder"), Lua::Value(viewfinder));
 }
 
-void CanonControlLuaBindings::LuaValueFromVariant(const Variant& value, Lua::Value& luaValue)
+void CameraControlLuaBindings::LuaValueFromVariant(const Variant& value, Lua::Value& luaValue)
 {
    switch (value.Type())
    {
@@ -281,7 +281,7 @@ void CanonControlLuaBindings::LuaValueFromVariant(const Variant& value, Lua::Val
    }
 }
 
-bool CanonControlLuaBindings::ModifyVariantFromLuaValue(const Lua::Value& luaValue, Variant& value)
+bool CameraControlLuaBindings::ModifyVariantFromLuaValue(const Lua::Value& luaValue, Variant& value)
 {
    bool boolValue = false;
    int intValue = 0;
@@ -345,17 +345,17 @@ bool CanonControlLuaBindings::ModifyVariantFromLuaValue(const Lua::Value& luaVal
    return true;
 }
 
-void CanonControlLuaBindings::RestartEventTimer()
+void CameraControlLuaBindings::RestartEventTimer()
 {
    m_evtTimerStopped.Reset();
 
    m_timerEventHandling.expires_from_now(boost::posix_time::milliseconds(c_uiEventTimerCycleInMilliseconds));
    m_timerEventHandling.async_wait(
       m_strand.wrap(
-         std::bind(&CanonControlLuaBindings::OnTimerEventHandling, shared_from_this(), std::placeholders::_1)));
+         std::bind(&CameraControlLuaBindings::OnTimerEventHandling, shared_from_this(), std::placeholders::_1)));
 }
 
-void CanonControlLuaBindings::OnTimerEventHandling(const boost::system::error_code& error)
+void CameraControlLuaBindings::OnTimerEventHandling(const boost::system::error_code& error)
 {
    if (error || m_evtStopTimer.Wait(0))
    {
@@ -369,7 +369,7 @@ void CanonControlLuaBindings::OnTimerEventHandling(const boost::system::error_co
    RestartEventTimer();
 }
 
-void CanonControlLuaBindings::CancelHandlers()
+void CameraControlLuaBindings::CancelHandlers()
 {
    // cancel all callbacks that may be active
    if (m_spViewfinder != nullptr)
@@ -433,7 +433,7 @@ void CanonControlLuaBindings::CancelHandlers()
    GetState().CollectGarbage();
 }
 
-void CanonControlLuaBindings::StopTimer()
+void CameraControlLuaBindings::StopTimer()
 {
    m_timerEventHandling.cancel();
    m_evtStopTimer.Set();
@@ -449,7 +449,7 @@ void CanonControlLuaBindings::StopTimer()
    } while (!finished);
 }
 
-void CanonControlLuaBindings::CleanupBindings()
+void CameraControlLuaBindings::CleanupBindings()
 {
    m_upInstance.reset();
 
@@ -458,19 +458,19 @@ void CanonControlLuaBindings::CleanupBindings()
    GetState().CollectGarbage();
 }
 
-std::vector<Lua::Value> CanonControlLuaBindings::SysGetInstance(Lua::State& state)
+std::vector<Lua::Value> CameraControlLuaBindings::SysGetInstance(Lua::State& state)
 {
    Lua::Table instance = state.AddTable(_T(""));
 
    instance.AddFunction("getVersion",
-      std::bind(&CanonControlLuaBindings::InstanceGetVersion, shared_from_this()));
+      std::bind(&CameraControlLuaBindings::InstanceGetVersion, shared_from_this()));
 
    instance.AddFunction("enumerateDevices",
-      std::bind(&CanonControlLuaBindings::InstanceEnumerateDevices, shared_from_this(),
+      std::bind(&CameraControlLuaBindings::InstanceEnumerateDevices, shared_from_this(),
          std::placeholders::_1));
 
    instance.AddFunction("asyncWaitForCamera",
-      std::bind(&CanonControlLuaBindings::InstanceAsyncWaitForCamera, shared_from_this(),
+      std::bind(&CameraControlLuaBindings::InstanceAsyncWaitForCamera, shared_from_this(),
          std::placeholders::_1, std::placeholders::_2));
 
    std::vector<Lua::Value> vecRetValues;
@@ -480,7 +480,7 @@ std::vector<Lua::Value> CanonControlLuaBindings::SysGetInstance(Lua::State& stat
    return vecRetValues;
 }
 
-std::vector<Lua::Value> CanonControlLuaBindings::InstanceGetVersion()
+std::vector<Lua::Value> CameraControlLuaBindings::InstanceGetVersion()
 {
    std::vector<Lua::Value> vecRetValues;
    vecRetValues.push_back(Lua::Value(m_upInstance->Version()));
@@ -488,7 +488,7 @@ std::vector<Lua::Value> CanonControlLuaBindings::InstanceGetVersion()
    return vecRetValues;
 }
 
-std::vector<Lua::Value> CanonControlLuaBindings::InstanceEnumerateDevices(Lua::State& state)
+std::vector<Lua::Value> CameraControlLuaBindings::InstanceEnumerateDevices(Lua::State& state)
 {
    std::vector<std::shared_ptr<SourceInfo>> vecSourceInfo;
    m_upInstance->EnumerateDevices(vecSourceInfo);
@@ -510,7 +510,7 @@ std::vector<Lua::Value> CanonControlLuaBindings::InstanceEnumerateDevices(Lua::S
    return vecRetValues;
 }
 
-std::vector<Lua::Value> CanonControlLuaBindings::InstanceAsyncWaitForCamera(
+std::vector<Lua::Value> CameraControlLuaBindings::InstanceAsyncWaitForCamera(
    Lua::State& state,
    const std::vector<Lua::Value>& vecParams)
 {
@@ -532,7 +532,7 @@ std::vector<Lua::Value> CanonControlLuaBindings::InstanceAsyncWaitForCamera(
    {
       app.AddValue(c_pszAsyncWaitForCamera_OnConnectedHandler, vecParams[1]);
 
-      auto fnAsyncWaitForCamera = std::bind(&CanonControlLuaBindings::AsyncWaitForCamera_OnCameraConnected, shared_from_this());
+      auto fnAsyncWaitForCamera = std::bind(&CameraControlLuaBindings::AsyncWaitForCamera_OnCameraConnected, shared_from_this());
 
       m_upInstance->AsyncWaitForCamera(m_strand.wrap(fnAsyncWaitForCamera));
    }
@@ -540,7 +540,7 @@ std::vector<Lua::Value> CanonControlLuaBindings::InstanceAsyncWaitForCamera(
    return std::vector<Lua::Value>();
 }
 
-void CanonControlLuaBindings::AsyncWaitForCamera_OnCameraConnected()
+void CameraControlLuaBindings::AsyncWaitForCamera_OnCameraConnected()
 {
    // this assertion fails when a handler is still attached to a
    // bindings object that was destroyed earlier.
@@ -575,7 +575,7 @@ void CanonControlLuaBindings::AsyncWaitForCamera_OnCameraConnected()
    }
 }
 
-void CanonControlLuaBindings::AddSourceInfo(Lua::State& state, Lua::Table& table, size_t uiIndex, std::shared_ptr<SourceInfo> spSourceInfo)
+void CameraControlLuaBindings::AddSourceInfo(Lua::State& state, Lua::Table& table, size_t uiIndex, std::shared_ptr<SourceInfo> spSourceInfo)
 {
    Lua::Table sourceInfo = state.AddTable(_T(""));
 
@@ -583,14 +583,14 @@ void CanonControlLuaBindings::AddSourceInfo(Lua::State& state, Lua::Table& table
    sourceInfo.AddValue(_T("deviceId"), Lua::Value(spSourceInfo->DeviceId()));
 
    sourceInfo.AddFunction("open",
-      std::bind(&CanonControlLuaBindings::SourceInfoOpen, shared_from_this(),
+      std::bind(&CameraControlLuaBindings::SourceInfoOpen, shared_from_this(),
          spSourceInfo, std::placeholders::_1, std::placeholders::_2));
 
    // add our table as index 1..N of parent table; Lua uses 1-based indices
    table.AddValue(uiIndex + 1, Lua::Value(sourceInfo));
 }
 
-std::vector<Lua::Value> CanonControlLuaBindings::SourceInfoOpen(
+std::vector<Lua::Value> CameraControlLuaBindings::SourceInfoOpen(
    std::shared_ptr<SourceInfo> spSourceInfo,
    Lua::State& state,
    const std::vector<Lua::Value>& vecParams)
@@ -610,29 +610,29 @@ std::vector<Lua::Value> CanonControlLuaBindings::SourceInfoOpen(
    return vecRetValues;
 }
 
-void CanonControlLuaBindings::InitSourceDeviceTable(std::shared_ptr<SourceDevice> spSourceDevice, Lua::Table& sourceDevice)
+void CameraControlLuaBindings::InitSourceDeviceTable(std::shared_ptr<SourceDevice> spSourceDevice, Lua::Table& sourceDevice)
 {
    sourceDevice.AddValue(_T("modelName"), Lua::Value(spSourceDevice->ModelName()));
    sourceDevice.AddValue(_T("serialNumber"), Lua::Value(spSourceDevice->SerialNumber()));
 
    sourceDevice.AddFunction("getDeviceCapability",
-      std::bind(&CanonControlLuaBindings::SourceDeviceGetDeviceCapability, shared_from_this(),
+      std::bind(&CameraControlLuaBindings::SourceDeviceGetDeviceCapability, shared_from_this(),
          spSourceDevice, std::placeholders::_1, std::placeholders::_2));
 
    sourceDevice.AddFunction("enumDeviceProperties",
-      std::bind(&CanonControlLuaBindings::SourceDeviceEnumDeviceProperties, shared_from_this(),
+      std::bind(&CameraControlLuaBindings::SourceDeviceEnumDeviceProperties, shared_from_this(),
          spSourceDevice, std::placeholders::_1));
 
    sourceDevice.AddFunction("getDeviceProperty",
-      std::bind(&CanonControlLuaBindings::SourceDeviceGetDeviceProperty, shared_from_this(),
+      std::bind(&CameraControlLuaBindings::SourceDeviceGetDeviceProperty, shared_from_this(),
          spSourceDevice, std::placeholders::_1, std::placeholders::_2));
 
    sourceDevice.AddFunction("enterReleaseControl",
-      std::bind(&CanonControlLuaBindings::SourceDeviceEnterReleaseControl, shared_from_this(),
+      std::bind(&CameraControlLuaBindings::SourceDeviceEnterReleaseControl, shared_from_this(),
          spSourceDevice, std::placeholders::_1));
 }
 
-std::vector<Lua::Value> CanonControlLuaBindings::SourceDeviceGetDeviceCapability(
+std::vector<Lua::Value> CameraControlLuaBindings::SourceDeviceGetDeviceCapability(
    std::shared_ptr<SourceDevice> spSourceDevice,
    Lua::State& state,
    const std::vector<Lua::Value>& vecParams)
@@ -652,7 +652,7 @@ std::vector<Lua::Value> CanonControlLuaBindings::SourceDeviceGetDeviceCapability
    return vecRetValues;
 }
 
-std::vector<Lua::Value> CanonControlLuaBindings::SourceDeviceEnumDeviceProperties(
+std::vector<Lua::Value> CameraControlLuaBindings::SourceDeviceEnumDeviceProperties(
    std::shared_ptr<SourceDevice> spSourceDevice,
    Lua::State& state)
 {
@@ -677,7 +677,7 @@ std::vector<Lua::Value> CanonControlLuaBindings::SourceDeviceEnumDevicePropertie
    return vecRetValues;
 }
 
-std::vector<Lua::Value> CanonControlLuaBindings::SourceDeviceGetDeviceProperty(
+std::vector<Lua::Value> CameraControlLuaBindings::SourceDeviceGetDeviceProperty(
    std::shared_ptr<SourceDevice> spSourceDevice,
    Lua::State& state,
    const std::vector<Lua::Value>& vecParams)
@@ -700,7 +700,7 @@ std::vector<Lua::Value> CanonControlLuaBindings::SourceDeviceGetDeviceProperty(
    return vecRetValues;
 }
 
-void CanonControlLuaBindings::AddDeviceProperty(
+void CameraControlLuaBindings::AddDeviceProperty(
    Lua::State& state,
    Lua::Table& table,
    const DeviceProperty& deviceProperty)
@@ -721,7 +721,7 @@ void CanonControlLuaBindings::AddDeviceProperty(
    AddDevicePropertyValidValues(state, table, deviceProperty);
 }
 
-void CanonControlLuaBindings::AddDevicePropertyValidValues(
+void CameraControlLuaBindings::AddDevicePropertyValidValues(
    Lua::State& state,
    Lua::Table& table,
    const DeviceProperty& deviceProperty)
@@ -756,7 +756,7 @@ void CanonControlLuaBindings::AddDevicePropertyValidValues(
    table.AddValue(_T("validValues"), Lua::Value(validValuesTable));
 }
 
-std::vector<Lua::Value> CanonControlLuaBindings::SourceDeviceEnterReleaseControl(
+std::vector<Lua::Value> CameraControlLuaBindings::SourceDeviceEnterReleaseControl(
    std::shared_ptr<SourceDevice> spSourceDevice,
    Lua::State& state)
 {
@@ -777,88 +777,88 @@ std::vector<Lua::Value> CanonControlLuaBindings::SourceDeviceEnterReleaseControl
    return vecRetValues;
 }
 
-void CanonControlLuaBindings::InitRemoteReleaseControlTable(std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl, Lua::Table& remoteReleaseControl)
+void CameraControlLuaBindings::InitRemoteReleaseControlTable(std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl, Lua::Table& remoteReleaseControl)
 {
    remoteReleaseControl.AddFunction("getCapability",
-      std::bind(&CanonControlLuaBindings::RemoteReleaseControlGetCapability, shared_from_this(), spRemoteReleaseControl,
+      std::bind(&CameraControlLuaBindings::RemoteReleaseControlGetCapability, shared_from_this(), spRemoteReleaseControl,
          std::placeholders::_1, std::placeholders::_2));
 
    remoteReleaseControl.AddFunction("getReleaseSettings",
-      std::bind(&CanonControlLuaBindings::RemoteReleaseControlGetReleaseSettings, shared_from_this(), spRemoteReleaseControl,
+      std::bind(&CameraControlLuaBindings::RemoteReleaseControlGetReleaseSettings, shared_from_this(), spRemoteReleaseControl,
          std::placeholders::_1, std::placeholders::_2));
 
    remoteReleaseControl.AddFunction("setReleaseSettings",
-      std::bind(&CanonControlLuaBindings::RemoteReleaseControlSetReleaseSettings, shared_from_this(), spRemoteReleaseControl,
+      std::bind(&CameraControlLuaBindings::RemoteReleaseControlSetReleaseSettings, shared_from_this(), spRemoteReleaseControl,
          std::placeholders::_1, std::placeholders::_2));
 
    remoteReleaseControl.AddFunction("addPropertyEventHandler",
-      std::bind(&CanonControlLuaBindings::RemoteReleaseControlAddPropertyEventHandler, shared_from_this(), spRemoteReleaseControl,
+      std::bind(&CameraControlLuaBindings::RemoteReleaseControlAddPropertyEventHandler, shared_from_this(), spRemoteReleaseControl,
          std::placeholders::_1, std::placeholders::_2));
 
    remoteReleaseControl.AddFunction("removePropertyEventHandler",
-      std::bind(&CanonControlLuaBindings::RemoteReleaseControlRemovePropertyEventHandler, shared_from_this(), spRemoteReleaseControl,
+      std::bind(&CameraControlLuaBindings::RemoteReleaseControlRemovePropertyEventHandler, shared_from_this(), spRemoteReleaseControl,
          std::placeholders::_1, std::placeholders::_2));
 
    remoteReleaseControl.AddFunction("addStateEventHandler",
-      std::bind(&CanonControlLuaBindings::RemoteReleaseControlAddStateEventHandler, shared_from_this(), spRemoteReleaseControl,
+      std::bind(&CameraControlLuaBindings::RemoteReleaseControlAddStateEventHandler, shared_from_this(), spRemoteReleaseControl,
          std::placeholders::_1, std::placeholders::_2));
 
    remoteReleaseControl.AddFunction("removeStateEventHandler",
-      std::bind(&CanonControlLuaBindings::RemoteReleaseControlRemoveStateEventHandler, shared_from_this(), spRemoteReleaseControl,
+      std::bind(&CameraControlLuaBindings::RemoteReleaseControlRemoveStateEventHandler, shared_from_this(), spRemoteReleaseControl,
          std::placeholders::_1, std::placeholders::_2));
 
    remoteReleaseControl.AddFunction("addDownloadEventHandler",
-      std::bind(&CanonControlLuaBindings::RemoteReleaseControlAddDownloadEventHandler, shared_from_this(), spRemoteReleaseControl,
+      std::bind(&CameraControlLuaBindings::RemoteReleaseControlAddDownloadEventHandler, shared_from_this(), spRemoteReleaseControl,
          std::placeholders::_1, std::placeholders::_2));
 
    remoteReleaseControl.AddFunction("removeDownloadEventHandler",
-      std::bind(&CanonControlLuaBindings::RemoteReleaseControlRemoveDownloadEventHandler, shared_from_this(), spRemoteReleaseControl,
+      std::bind(&CameraControlLuaBindings::RemoteReleaseControlRemoveDownloadEventHandler, shared_from_this(), spRemoteReleaseControl,
          std::placeholders::_1, std::placeholders::_2));
 
    remoteReleaseControl.AddFunction("getImagePropertyByType",
-      std::bind(&CanonControlLuaBindings::RemoteReleaseControlGetImagePropertyByType, shared_from_this(), spRemoteReleaseControl,
+      std::bind(&CameraControlLuaBindings::RemoteReleaseControlGetImagePropertyByType, shared_from_this(), spRemoteReleaseControl,
          std::placeholders::_1, std::placeholders::_2));
 
    remoteReleaseControl.AddFunction("getShootingModeImageProperty",
-      std::bind(&CanonControlLuaBindings::RemoteReleaseControlGetShootingModeImageProperty, shared_from_this(), spRemoteReleaseControl,
+      std::bind(&CameraControlLuaBindings::RemoteReleaseControlGetShootingModeImageProperty, shared_from_this(), spRemoteReleaseControl,
          std::placeholders::_1, std::placeholders::_2));
 
    remoteReleaseControl.AddFunction("enumImageProperties",
-      std::bind(&CanonControlLuaBindings::RemoteReleaseControlEnumImageProperties, shared_from_this(),
+      std::bind(&CameraControlLuaBindings::RemoteReleaseControlEnumImageProperties, shared_from_this(),
          spRemoteReleaseControl, std::placeholders::_1));
 
    remoteReleaseControl.AddFunction("getImageProperty",
-      std::bind(&CanonControlLuaBindings::RemoteReleaseControlGetImageProperty, shared_from_this(), spRemoteReleaseControl,
+      std::bind(&CameraControlLuaBindings::RemoteReleaseControlGetImageProperty, shared_from_this(), spRemoteReleaseControl,
          std::placeholders::_1, std::placeholders::_2));
 
    remoteReleaseControl.AddFunction("setImageProperty",
-      std::bind(&CanonControlLuaBindings::RemoteReleaseControlSetImageProperty, shared_from_this(), spRemoteReleaseControl,
+      std::bind(&CameraControlLuaBindings::RemoteReleaseControlSetImageProperty, shared_from_this(), spRemoteReleaseControl,
          std::placeholders::_1, std::placeholders::_2));
 
    remoteReleaseControl.AddFunction("startViewfinder",
-      std::bind(&CanonControlLuaBindings::RemoteReleaseControlStartViewfinder, shared_from_this(),
+      std::bind(&CameraControlLuaBindings::RemoteReleaseControlStartViewfinder, shared_from_this(),
          spRemoteReleaseControl, std::placeholders::_1));
 
    remoteReleaseControl.AddFunction("numAvailableShots",
-      std::bind(&CanonControlLuaBindings::RemoteReleaseControlNumAvailableShots, shared_from_this(), spRemoteReleaseControl));
+      std::bind(&CameraControlLuaBindings::RemoteReleaseControlNumAvailableShots, shared_from_this(), spRemoteReleaseControl));
    remoteReleaseControl.AddFunction("sendCommand",
-      std::bind(&CanonControlLuaBindings::RemoteReleaseControlSendCommand, shared_from_this(), spRemoteReleaseControl,
+      std::bind(&CameraControlLuaBindings::RemoteReleaseControlSendCommand, shared_from_this(), spRemoteReleaseControl,
          std::placeholders::_1, std::placeholders::_2));
 
    remoteReleaseControl.AddFunction("release",
-      std::bind(&CanonControlLuaBindings::RemoteReleaseControlRelease, shared_from_this(), spRemoteReleaseControl));
+      std::bind(&CameraControlLuaBindings::RemoteReleaseControlRelease, shared_from_this(), spRemoteReleaseControl));
    remoteReleaseControl.AddFunction("startBulb",
-      std::bind(&CanonControlLuaBindings::RemoteReleaseControlStartBulb, shared_from_this(),
+      std::bind(&CameraControlLuaBindings::RemoteReleaseControlStartBulb, shared_from_this(),
          spRemoteReleaseControl, std::placeholders::_1));
    remoteReleaseControl.AddFunction("close",
-      std::bind(&CanonControlLuaBindings::RemoteReleaseControlClose, shared_from_this(), spRemoteReleaseControl));
+      std::bind(&CameraControlLuaBindings::RemoteReleaseControlClose, shared_from_this(), spRemoteReleaseControl));
 
    // internal values
    Lua::Table app = GetState().GetTable(_T("App"));
    app.AddValue(c_pszReleaseSettingsOnFinishedTransfer, Lua::Value());
 }
 
-std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlGetCapability(
+std::vector<Lua::Value> CameraControlLuaBindings::RemoteReleaseControlGetCapability(
    std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
    Lua::State& state,
    const std::vector<Lua::Value>& vecParams)
@@ -877,7 +877,7 @@ std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlGetCapabili
    return vecRetValues;
 }
 
-std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlGetReleaseSettings(
+std::vector<Lua::Value> CameraControlLuaBindings::RemoteReleaseControlGetReleaseSettings(
    std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
    Lua::State& state,
    const std::vector<Lua::Value>& vecParams)
@@ -897,7 +897,7 @@ std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlGetReleaseS
    return vecRetValues;
 }
 
-void CanonControlLuaBindings::InitReleaseSettingsTable(
+void CameraControlLuaBindings::InitReleaseSettingsTable(
    Lua::State& state,
    const ShutterReleaseSettings& releaseSettings,
    Lua::Table& tableReleaseSettings)
@@ -910,7 +910,7 @@ void CanonControlLuaBindings::InitReleaseSettingsTable(
    tableReleaseSettings.AddValue(_T("onFinishedTransfer"), onFinishedTransfer);
 }
 
-std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlSetReleaseSettings(
+std::vector<Lua::Value> CameraControlLuaBindings::RemoteReleaseControlSetReleaseSettings(
    std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
    Lua::State& state,
    const std::vector<Lua::Value>& vecParams)
@@ -942,7 +942,7 @@ std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlSetReleaseS
    if (onFinishedTransfer.GetType() != Lua::Value::typeNil)
    {
       auto fnOnFinishedTransfer = std::bind(
-         &CanonControlLuaBindings::SetReleaseSettings_OnFinishedTransfer,
+         &CameraControlLuaBindings::SetReleaseSettings_OnFinishedTransfer,
          shared_from_this(),
          spRemoteReleaseControl,
          std::placeholders::_1);
@@ -957,7 +957,7 @@ std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlSetReleaseS
    return std::vector<Lua::Value>();
 }
 
-void CanonControlLuaBindings::SetReleaseSettings_OnFinishedTransfer(
+void CameraControlLuaBindings::SetReleaseSettings_OnFinishedTransfer(
    std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
    const ShutterReleaseSettings& releaseSettings)
 {
@@ -992,7 +992,7 @@ void CanonControlLuaBindings::SetReleaseSettings_OnFinishedTransfer(
    }
 }
 
-void CanonControlLuaBindings::RemoteReleaseControl_PropertyEventHandler(
+void CameraControlLuaBindings::RemoteReleaseControl_PropertyEventHandler(
    std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
    std::shared_ptr<int> spHandlerId,
    RemoteReleaseControl::T_enPropertyEvent enPropertyEvent,
@@ -1025,7 +1025,7 @@ void CanonControlLuaBindings::RemoteReleaseControl_PropertyEventHandler(
    }
 }
 
-std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlAddPropertyEventHandler(
+std::vector<Lua::Value> CameraControlLuaBindings::RemoteReleaseControlAddPropertyEventHandler(
    std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
    Lua::State& state,
    const std::vector<Lua::Value>& vecParams)
@@ -1043,7 +1043,7 @@ std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlAddProperty
    std::shared_ptr<int> spHandlerId(new int);
 
    auto fn = std::bind(
-      &CanonControlLuaBindings::RemoteReleaseControl_PropertyEventHandler,
+      &CameraControlLuaBindings::RemoteReleaseControl_PropertyEventHandler,
       shared_from_this(),
       spRemoteReleaseControl,
       spHandlerId,
@@ -1078,7 +1078,7 @@ std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlAddProperty
    return vecRetValues;
 }
 
-std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlRemovePropertyEventHandler(
+std::vector<Lua::Value> CameraControlLuaBindings::RemoteReleaseControlRemovePropertyEventHandler(
    std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
    Lua::State& state,
    const std::vector<Lua::Value>& vecParams)
@@ -1108,7 +1108,7 @@ std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlRemovePrope
    return std::vector<Lua::Value>();
 }
 
-void CanonControlLuaBindings::RemoteReleaseControl_StateEventHandler(
+void CameraControlLuaBindings::RemoteReleaseControl_StateEventHandler(
    std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
    std::shared_ptr<int> spHandlerId,
    RemoteReleaseControl::T_enStateEvent enStateEvent,
@@ -1141,7 +1141,7 @@ void CanonControlLuaBindings::RemoteReleaseControl_StateEventHandler(
    }
 }
 
-std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlAddStateEventHandler(
+std::vector<Lua::Value> CameraControlLuaBindings::RemoteReleaseControlAddStateEventHandler(
    std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
    Lua::State& state,
    const std::vector<Lua::Value>& vecParams)
@@ -1159,7 +1159,7 @@ std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlAddStateEve
    std::shared_ptr<int> spHandlerId(new int);
 
    auto fn = std::bind(
-      &CanonControlLuaBindings::RemoteReleaseControl_StateEventHandler,
+      &CameraControlLuaBindings::RemoteReleaseControl_StateEventHandler,
       shared_from_this(),
       spRemoteReleaseControl,
       spHandlerId,
@@ -1194,7 +1194,7 @@ std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlAddStateEve
    return vecRetValues;
 }
 
-std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlRemoveStateEventHandler(
+std::vector<Lua::Value> CameraControlLuaBindings::RemoteReleaseControlRemoveStateEventHandler(
    std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
    Lua::State& state,
    const std::vector<Lua::Value>& vecParams)
@@ -1224,7 +1224,7 @@ std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlRemoveState
    return std::vector<Lua::Value>();
 }
 
-void CanonControlLuaBindings::RemoteReleaseControl_DownloadEventHandler(
+void CameraControlLuaBindings::RemoteReleaseControl_DownloadEventHandler(
    std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
    std::shared_ptr<int> spHandlerId,
    RemoteReleaseControl::T_enDownloadEvent enDownloadEvent,
@@ -1257,7 +1257,7 @@ void CanonControlLuaBindings::RemoteReleaseControl_DownloadEventHandler(
    }
 }
 
-std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlAddDownloadEventHandler(
+std::vector<Lua::Value> CameraControlLuaBindings::RemoteReleaseControlAddDownloadEventHandler(
    std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
    Lua::State& state,
    const std::vector<Lua::Value>& vecParams)
@@ -1275,7 +1275,7 @@ std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlAddDownload
    std::shared_ptr<int> spHandlerId(new int);
 
    auto fn = std::bind(
-      &CanonControlLuaBindings::RemoteReleaseControl_DownloadEventHandler,
+      &CameraControlLuaBindings::RemoteReleaseControl_DownloadEventHandler,
       shared_from_this(),
       spRemoteReleaseControl,
       spHandlerId,
@@ -1310,7 +1310,7 @@ std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlAddDownload
    return vecRetValues;
 }
 
-std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlRemoveDownloadEventHandler(
+std::vector<Lua::Value> CameraControlLuaBindings::RemoteReleaseControlRemoveDownloadEventHandler(
    std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
    Lua::State& state,
    const std::vector<Lua::Value>& vecParams)
@@ -1340,7 +1340,7 @@ std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlRemoveDownl
    return std::vector<Lua::Value>();
 }
 
-std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlEnumImageProperties(
+std::vector<Lua::Value> CameraControlLuaBindings::RemoteReleaseControlEnumImageProperties(
    std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
    Lua::State& state)
 {
@@ -1365,7 +1365,7 @@ std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlEnumImagePr
    return vecRetValues;
 }
 
-std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlGetImageProperty(
+std::vector<Lua::Value> CameraControlLuaBindings::RemoteReleaseControlGetImageProperty(
    std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
    Lua::State& state,
    const std::vector<Lua::Value>& vecParams)
@@ -1388,7 +1388,7 @@ std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlGetImagePro
    return vecRetValues;
 }
 
-std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlGetImagePropertyByType(
+std::vector<Lua::Value> CameraControlLuaBindings::RemoteReleaseControlGetImagePropertyByType(
    std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
    Lua::State& state,
    const std::vector<Lua::Value>& vecParams)
@@ -1413,7 +1413,7 @@ std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlGetImagePro
    return vecRetValues;
 }
 
-std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlGetShootingModeImageProperty(
+std::vector<Lua::Value> CameraControlLuaBindings::RemoteReleaseControlGetShootingModeImageProperty(
    std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
    Lua::State& state,
    const std::vector<Lua::Value>& vecParams)
@@ -1436,7 +1436,7 @@ std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlGetShooting
    return vecRetValues;
 }
 
-std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlSetImageProperty(
+std::vector<Lua::Value> CameraControlLuaBindings::RemoteReleaseControlSetImageProperty(
    std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
    Lua::State& state,
    const std::vector<Lua::Value>& vecParams)
@@ -1476,7 +1476,7 @@ std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlSetImagePro
    return std::vector<Lua::Value>();
 }
 
-void CanonControlLuaBindings::AddImageProperty(
+void CameraControlLuaBindings::AddImageProperty(
    Lua::State& state,
    Lua::Table& table,
    const ImageProperty& imageProperty,
@@ -1498,7 +1498,7 @@ void CanonControlLuaBindings::AddImageProperty(
    AddImagePropertyValidValues(state, table, imageProperty, spRemoteReleaseControl);
 }
 
-void CanonControlLuaBindings::AddImagePropertyValidValues(
+void CameraControlLuaBindings::AddImagePropertyValidValues(
    Lua::State& state,
    Lua::Table& table,
    const ImageProperty& imageProperty,
@@ -1537,7 +1537,7 @@ void CanonControlLuaBindings::AddImagePropertyValidValues(
    table.AddValue(_T("validValues"), Lua::Value(validValuesTable));
 }
 
-std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlStartViewfinder(
+std::vector<Lua::Value> CameraControlLuaBindings::RemoteReleaseControlStartViewfinder(
    std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
    Lua::State& state)
 {
@@ -1553,7 +1553,7 @@ std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlStartViewfi
    return vecRetValues;
 }
 
-std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlNumAvailableShots(
+std::vector<Lua::Value> CameraControlLuaBindings::RemoteReleaseControlNumAvailableShots(
    std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl)
 {
    unsigned int uiNumShots = spRemoteReleaseControl->NumAvailableShots();
@@ -1564,7 +1564,7 @@ std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlNumAvailabl
    return vecRetValues;
 }
 
-std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlSendCommand(
+std::vector<Lua::Value> CameraControlLuaBindings::RemoteReleaseControlSendCommand(
    std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
    Lua::State& state,
    const std::vector<Lua::Value>& vecParams)
@@ -1586,14 +1586,14 @@ std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlSendCommand
    return std::vector<Lua::Value>();
 }
 
-std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlRelease(std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl)
+std::vector<Lua::Value> CameraControlLuaBindings::RemoteReleaseControlRelease(std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl)
 {
    spRemoteReleaseControl->Release();
 
    return std::vector<Lua::Value>();
 }
 
-std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlStartBulb(
+std::vector<Lua::Value> CameraControlLuaBindings::RemoteReleaseControlStartBulb(
    std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl,
    Lua::State& state)
 {
@@ -1609,7 +1609,7 @@ std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlStartBulb(
    return vecRetValues;
 }
 
-std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlClose(
+std::vector<Lua::Value> CameraControlLuaBindings::RemoteReleaseControlClose(
    std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl)
 {
    spRemoteReleaseControl->Close();
@@ -1619,30 +1619,30 @@ std::vector<Lua::Value> CanonControlLuaBindings::RemoteReleaseControlClose(
    return std::vector<Lua::Value>();
 }
 
-void CanonControlLuaBindings::InitViewfinderTable(std::shared_ptr<Viewfinder> spViewfinder, Lua::Table& viewfinder)
+void CameraControlLuaBindings::InitViewfinderTable(std::shared_ptr<Viewfinder> spViewfinder, Lua::Table& viewfinder)
 {
    viewfinder.AddFunction("getCapability",
-      std::bind(&CanonControlLuaBindings::ViewfinderGetCapability, shared_from_this(), spViewfinder,
+      std::bind(&CameraControlLuaBindings::ViewfinderGetCapability, shared_from_this(), spViewfinder,
          std::placeholders::_1, std::placeholders::_2));
 
    viewfinder.AddFunction("setOutputType",
-      std::bind(&CanonControlLuaBindings::ViewfinderSetOutputType, shared_from_this(), spViewfinder,
+      std::bind(&CameraControlLuaBindings::ViewfinderSetOutputType, shared_from_this(), spViewfinder,
          std::placeholders::_1, std::placeholders::_2));
 
    viewfinder.AddFunction("setAvailImageHandler",
-      std::bind(&CanonControlLuaBindings::ViewfinderSetAvailImageHandler, shared_from_this(), spViewfinder,
+      std::bind(&CameraControlLuaBindings::ViewfinderSetAvailImageHandler, shared_from_this(), spViewfinder,
          std::placeholders::_1, std::placeholders::_2));
 
    viewfinder.AddFunction("getHistogram",
-      std::bind(&CanonControlLuaBindings::ViewfinderGetHistogram, shared_from_this(), spViewfinder,
+      std::bind(&CameraControlLuaBindings::ViewfinderGetHistogram, shared_from_this(), spViewfinder,
          std::placeholders::_1, std::placeholders::_2));
 
    viewfinder.AddFunction("close",
-      std::bind(&CanonControlLuaBindings::ViewfinderClose, shared_from_this(), spViewfinder,
+      std::bind(&CameraControlLuaBindings::ViewfinderClose, shared_from_this(), spViewfinder,
          std::placeholders::_1, std::placeholders::_2));
 }
 
-std::vector<Lua::Value> CanonControlLuaBindings::ViewfinderGetCapability(std::shared_ptr<Viewfinder> spViewfinder,
+std::vector<Lua::Value> CameraControlLuaBindings::ViewfinderGetCapability(std::shared_ptr<Viewfinder> spViewfinder,
    Lua::State& state, const std::vector<Lua::Value>& vecParams)
 {
    if (vecParams.size() != 1 && vecParams.size() != 2)
@@ -1662,7 +1662,7 @@ std::vector<Lua::Value> CanonControlLuaBindings::ViewfinderGetCapability(std::sh
    return vecRetValues;
 }
 
-std::vector<Lua::Value> CanonControlLuaBindings::ViewfinderSetOutputType(
+std::vector<Lua::Value> CameraControlLuaBindings::ViewfinderSetOutputType(
    std::shared_ptr<Viewfinder> spViewfinder,
    Lua::State& state,
    const std::vector<Lua::Value>& vecParams)
@@ -1680,7 +1680,7 @@ std::vector<Lua::Value> CanonControlLuaBindings::ViewfinderSetOutputType(
    return std::vector<Lua::Value>();
 }
 
-std::vector<Lua::Value> CanonControlLuaBindings::ViewfinderSetAvailImageHandler(
+std::vector<Lua::Value> CameraControlLuaBindings::ViewfinderSetAvailImageHandler(
    std::shared_ptr<Viewfinder> spViewfinder,
    Lua::State& state,
    const std::vector<Lua::Value>& vecParams)
@@ -1704,7 +1704,7 @@ std::vector<Lua::Value> CanonControlLuaBindings::ViewfinderSetAvailImageHandler(
       app.AddValue(c_pszSetAvailImageHandler_OnAvailImageHandler, vecParams[1]);
 
       auto fnOnAvailImage = std::bind(
-         &CanonControlLuaBindings::SetAvailImageHandler_OnAvailImageHandler,
+         &CameraControlLuaBindings::SetAvailImageHandler_OnAvailImageHandler,
          shared_from_this(),
          spViewfinder,
          std::placeholders::_1);
@@ -1715,7 +1715,7 @@ std::vector<Lua::Value> CanonControlLuaBindings::ViewfinderSetAvailImageHandler(
    return std::vector<Lua::Value>();
 }
 
-void CanonControlLuaBindings::SetAvailImageHandler_OnAvailImageHandler(
+void CameraControlLuaBindings::SetAvailImageHandler_OnAvailImageHandler(
    std::shared_ptr<Viewfinder> spViewfinder,
    const std::vector<BYTE>& vecImage)
 {
@@ -1764,7 +1764,7 @@ void CanonControlLuaBindings::SetAvailImageHandler_OnAvailImageHandler(
    }
 }
 
-std::vector<Lua::Value> CanonControlLuaBindings::ViewfinderGetHistogram(std::shared_ptr<Viewfinder> spViewfinder,
+std::vector<Lua::Value> CameraControlLuaBindings::ViewfinderGetHistogram(std::shared_ptr<Viewfinder> spViewfinder,
    Lua::State& state, const std::vector<Lua::Value>& vecParams)
 {
    if (vecParams.size() != 1 && vecParams.size() != 2)
@@ -1797,7 +1797,7 @@ std::vector<Lua::Value> CanonControlLuaBindings::ViewfinderGetHistogram(std::sha
    return vecRetValues;
 }
 
-std::vector<Lua::Value> CanonControlLuaBindings::ViewfinderClose(std::shared_ptr<Viewfinder> spViewfinder,
+std::vector<Lua::Value> CameraControlLuaBindings::ViewfinderClose(std::shared_ptr<Viewfinder> spViewfinder,
    Lua::State& state, const std::vector<Lua::Value>& vecParams)
 {
    if (vecParams[0].GetType() != Lua::Value::typeTable)
@@ -1808,16 +1808,16 @@ std::vector<Lua::Value> CanonControlLuaBindings::ViewfinderClose(std::shared_ptr
    return std::vector<Lua::Value>();
 }
 
-void CanonControlLuaBindings::InitBulbReleaseControlTable(std::shared_ptr<BulbReleaseControl> spBulbReleaseControl, Lua::Table& bulbReleaseControl)
+void CameraControlLuaBindings::InitBulbReleaseControlTable(std::shared_ptr<BulbReleaseControl> spBulbReleaseControl, Lua::Table& bulbReleaseControl)
 {
    bulbReleaseControl.AddFunction("elapsedTime",
-      std::bind(&CanonControlLuaBindings::BulbReleaseControlElapsedTime, shared_from_this(), spBulbReleaseControl));
+      std::bind(&CameraControlLuaBindings::BulbReleaseControlElapsedTime, shared_from_this(), spBulbReleaseControl));
 
    bulbReleaseControl.AddFunction("stop",
-      std::bind(&CanonControlLuaBindings::BulbReleaseControlStop, shared_from_this(), spBulbReleaseControl));
+      std::bind(&CameraControlLuaBindings::BulbReleaseControlStop, shared_from_this(), spBulbReleaseControl));
 }
 
-std::vector<Lua::Value> CanonControlLuaBindings::BulbReleaseControlElapsedTime(std::shared_ptr<BulbReleaseControl> spBulbReleaseControl)
+std::vector<Lua::Value> CameraControlLuaBindings::BulbReleaseControlElapsedTime(std::shared_ptr<BulbReleaseControl> spBulbReleaseControl)
 {
    double dElapsed = spBulbReleaseControl->ElapsedTime();
 
@@ -1827,7 +1827,7 @@ std::vector<Lua::Value> CanonControlLuaBindings::BulbReleaseControlElapsedTime(s
    return vecRetValues;
 }
 
-std::vector<Lua::Value> CanonControlLuaBindings::BulbReleaseControlStop(std::shared_ptr<BulbReleaseControl> spBulbReleaseControl)
+std::vector<Lua::Value> CameraControlLuaBindings::BulbReleaseControlStop(std::shared_ptr<BulbReleaseControl> spBulbReleaseControl)
 {
    spBulbReleaseControl->Stop();
 

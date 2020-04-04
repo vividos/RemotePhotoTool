@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2015 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file SystemLuaBindings.hpp Lua bindings for system functionality
 //
@@ -25,7 +25,7 @@ public:
    /// dtor; cleans up bindings
    virtual ~SystemLuaBindings();
 
-   /// inits bindings to CanonControl; since the this parameter is needed in
+   /// inits bindings to CameraControl; since the this parameter is needed in
    /// the bindings, call this immediately after the ctor
    void InitBindings();
 

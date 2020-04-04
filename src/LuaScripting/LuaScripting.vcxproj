@@ -62,7 +62,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CameraScriptProcessor.cpp" />
-    <ClCompile Include="CanonControlLuaBindings.cpp" />
+    <ClCompile Include="CameraControlLuaBindings.cpp" />
     <ClCompile Include="Lua.cpp" />
     <ClCompile Include="LuaScheduler.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -73,7 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CameraScriptProcessor.hpp" />
-    <ClInclude Include="CanonControlLuaBindings.hpp" />
+    <ClInclude Include="CameraControlLuaBindings.hpp" />
     <ClInclude Include="Lua.hpp" />
     <ClInclude Include="LuaScheduler.hpp" />
     <ClInclude Include="LuaScriptWorkerThread.hpp" />

@@ -167,7 +167,7 @@ void RemoteReleaseControlImpl::OnStateChange(EdsStateEvent inEvent, EdsUInt32 in
 {
    RemoteReleaseControl::T_enStateEvent enStateEvent = RemoteReleaseControl::stateEventInvalid;
 
-   // map from EDSDK states to CanonControl states
+   // map from EDSDK states to CameraControl states
    switch(inEvent)
    {
    case kEdsStateEvent_Shutdown:       enStateEvent = RemoteReleaseControl::stateEventCameraShutdown; break;

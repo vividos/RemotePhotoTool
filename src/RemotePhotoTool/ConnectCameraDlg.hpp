@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2016 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file ConnectCameraDlg.hpp Camera connect dialog
 //
@@ -73,7 +73,7 @@ private:
    void RefreshCameraList();
 
 private:
-   /// CanonControl instance
+   /// CameraControl instance
    Instance m_instance;
 
    /// camera list
