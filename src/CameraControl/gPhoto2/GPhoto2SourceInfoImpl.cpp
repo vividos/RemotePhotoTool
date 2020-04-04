@@ -23,7 +23,7 @@ std::shared_ptr<SourceDevice> GPhoto2::SourceInfoImpl::Open()
 
    InitCamera(camera);
 
-   return std::make_shared<SourceDeviceImpl>(m_ref->GetContext(), camera);
+   return std::make_shared<SourceDeviceImpl>(m_ref, camera);
 }
 
 void GPhoto2::SourceInfoImpl::InitCamera(std::shared_ptr<_Camera> camera)

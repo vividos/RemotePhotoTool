@@ -21,7 +21,9 @@ namespace GPhoto2
    {
    public:
       /// ctor
-      RemoteReleaseControlImpl(std::shared_ptr<_GPContext> context, std::shared_ptr<_Camera> camera);
+      RemoteReleaseControlImpl(RefSp ref,
+         std::shared_ptr<_Camera> camera,
+         std::shared_ptr<PropertyAccess> properties);
       /// dtor
       virtual ~RemoteReleaseControlImpl();
 
@@ -90,8 +92,8 @@ namespace GPhoto2
       void AsyncRelease();
 
    private:
-      /// gPhoto2 context
-      std::shared_ptr<_GPContext> m_context;
+      /// gPhoto2 reference
+      RefSp m_ref;
 
       /// camera instance
       std::shared_ptr<_Camera> m_camera;

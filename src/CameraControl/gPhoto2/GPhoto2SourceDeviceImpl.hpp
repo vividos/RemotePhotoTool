@@ -17,7 +17,7 @@ namespace GPhoto2
    {
    public:
       /// ctor
-      SourceDeviceImpl(std::shared_ptr<_GPContext> context, std::shared_ptr<_Camera> camera);
+      SourceDeviceImpl(RefSp ref, std::shared_ptr<_Camera> camera);
       /// dtor
       virtual ~SourceDeviceImpl();
 
@@ -38,8 +38,8 @@ namespace GPhoto2
       virtual std::shared_ptr<RemoteReleaseControl> EnterReleaseControl() override;
 
    private:
-      /// gPhoto2 context
-      std::shared_ptr<_GPContext> m_context;
+      /// gPhoto2 reference
+      RefSp m_ref;
 
       /// camera instance
       std::shared_ptr<_Camera> m_camera;

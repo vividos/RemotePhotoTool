@@ -13,8 +13,9 @@
 
 using GPhoto2::RemoteReleaseControlImpl;
 
-RemoteReleaseControlImpl::RemoteReleaseControlImpl(std::shared_ptr<_GPContext> context, std::shared_ptr<_Camera> camera)
-   :m_context(context),
+RemoteReleaseControlImpl::RemoteReleaseControlImpl(RefSp ref,
+   std::shared_ptr<_Camera> camera)
+   :m_ref(ref),
    m_camera(camera)
 {
    //result = gp_camera_wait_for_event(gp_params.camera, waittime, type, &data, gp_params.context);

@@ -16,10 +16,10 @@
 
 using GPhoto2::SourceDeviceImpl;
 
-SourceDeviceImpl::SourceDeviceImpl(std::shared_ptr<_GPContext> context, std::shared_ptr<_Camera> camera)
-   :m_context(context),
+SourceDeviceImpl::SourceDeviceImpl(RefSp ref, std::shared_ptr<_Camera> camera)
+   :m_ref(ref),
    m_camera(camera),
-   m_properties(new PropertyAccess(context, camera))
+   m_properties(new PropertyAccess(ref->GetContext(), camera))
 {
 }
 
@@ -70,10 +70,10 @@ DeviceProperty SourceDeviceImpl::GetDeviceProperty(unsigned int propertyId) cons
 
 std::shared_ptr<CameraFileSystem> SourceDeviceImpl::GetFileSystem()
 {
-   return std::make_shared<CameraFileSystemImpl>(m_context, m_camera);
+   return std::make_shared<CameraFileSystemImpl>(m_ref->GetContext(), m_camera);
 }
 
 std::shared_ptr<RemoteReleaseControl> SourceDeviceImpl::EnterReleaseControl()
 {
-   return std::make_shared<RemoteReleaseControlImpl>(m_context, m_camera);
+   return std::make_shared<RemoteReleaseControlImpl>(m_ref, m_camera, m_properties);
 }
