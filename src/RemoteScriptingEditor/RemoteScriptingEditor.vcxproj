@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -51,7 +51,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;STRICT;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)Base;$(SolutionDir)CanonControl\exports;$(SolutionDir)Thirdparty;$(SolutionDir)Thirdparty\Scintilla\include;$(SolutionDir)LuaScripting;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Base;$(SolutionDir)CameraControl\exports;$(SolutionDir)Thirdparty;$(SolutionDir)Thirdparty\Scintilla\include;$(SolutionDir)LuaScripting;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <DelayLoadDLLs>propsys.dll;dwmapi.dll</DelayLoadDLLs>
@@ -66,7 +66,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;STRICT;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)Base;$(SolutionDir)CanonControl\exports;$(SolutionDir)Thirdparty;$(SolutionDir)Thirdparty\Scintilla\include;$(SolutionDir)LuaScripting;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Base;$(SolutionDir)CameraControl\exports;$(SolutionDir)Thirdparty;$(SolutionDir)Thirdparty\Scintilla\include;$(SolutionDir)LuaScripting;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <EnablePREfast>true</EnablePREfast>
     </ClCompile>
     <Link>
@@ -143,7 +143,7 @@
     <ProjectReference Include="..\Base\Base.vcxproj">
       <Project>{3ab1bb98-d491-47db-8d93-1dab3ce88c87}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\CanonControl\CameraControl.vcxproj">
+    <ProjectReference Include="..\CameraControl\CameraControl.vcxproj">
       <Project>{ce953b34-5513-4719-aead-a61f0585ab34}</Project>
     </ProjectReference>
     <ProjectReference Include="..\Logic\Logic.vcxproj">

@@ -51,7 +51,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)Base;$(SolutionDir)CanonControl;$(SolutionDir)Thirdparty\EDSDK\Header;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Base;$(SolutionDir)CameraControl;$(SolutionDir)Thirdparty\EDSDK\Header;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -60,7 +60,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)Base;$(SolutionDir)CanonControl;$(SolutionDir)Thirdparty\EDSDK\Header;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Base;$(SolutionDir)CameraControl;$(SolutionDir)Thirdparty\EDSDK\Header;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <EnablePREfast>true</EnablePREfast>
     </ClCompile>
     <Link>
@@ -81,7 +81,7 @@
     <ProjectReference Include="..\Base\Base.vcxproj">
       <Project>{3ab1bb98-d491-47db-8d93-1dab3ce88c87}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\CanonControl\CameraControl.vcxproj">
+    <ProjectReference Include="..\CameraControl\CameraControl.vcxproj">
       <Project>{ce953b34-5513-4719-aead-a61f0585ab34}</Project>
     </ProjectReference>
   </ItemGroup>

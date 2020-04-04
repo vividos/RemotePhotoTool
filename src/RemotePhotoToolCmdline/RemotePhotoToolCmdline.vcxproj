@@ -46,7 +46,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)Base;$(SolutionDir)CanonControl\exports;$(SolutionDir)LuaScripting;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Base;$(SolutionDir)CameraControl\exports;$(SolutionDir)LuaScripting;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -55,7 +55,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)Base;$(SolutionDir)CanonControl\exports;$(SolutionDir)LuaScripting;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Base;$(SolutionDir)CameraControl\exports;$(SolutionDir)LuaScripting;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <EnablePREfast>true</EnablePREfast>
     </ClCompile>
@@ -82,7 +82,7 @@
     <ProjectReference Include="..\Base\Base.vcxproj">
       <Project>{3ab1bb98-d491-47db-8d93-1dab3ce88c87}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\CanonControl\CameraControl.vcxproj">
+    <ProjectReference Include="..\CameraControl\CameraControl.vcxproj">
       <Project>{ce953b34-5513-4719-aead-a61f0585ab34}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>

@@ -79,7 +79,7 @@
     <ClCompile Include="TestSystemBindings.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\CanonControl\CameraControl.vcxproj">
+    <ProjectReference Include="..\..\CameraControl\CameraControl.vcxproj">
       <Project>{ce953b34-5513-4719-aead-a61f0585ab34}</Project>
     </ProjectReference>
     <ProjectReference Include="..\lua-5.3.5\Lua.vcxproj">

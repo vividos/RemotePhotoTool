@@ -57,7 +57,7 @@
       <ProxyFileName>RemotePhotoTool_p.c</ProxyFileName>
     </Midl>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)Base;$(SolutionDir)CanonControl\exports;$(SolutionDir)LuaScripting;$(SolutionDir)Logic;$(SolutionDir)Thirdparty;$(SolutionDir)Thirdparty\jpeg-9d;$(SolutionDir)Thirdparty\Scintilla\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Base;$(SolutionDir)CameraControl\exports;$(SolutionDir)LuaScripting;$(SolutionDir)Logic;$(SolutionDir)Thirdparty;$(SolutionDir)Thirdparty\jpeg-9d;$(SolutionDir)Thirdparty\Scintilla\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WINDOWS;STRICT;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ResourceCompile>
@@ -83,7 +83,7 @@
       <ProxyFileName>RemotePhotoTool_p.c</ProxyFileName>
     </Midl>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)Base;$(SolutionDir)CanonControl\exports;$(SolutionDir)LuaScripting;$(SolutionDir)Logic;$(SolutionDir)Thirdparty;$(SolutionDir)Thirdparty\jpeg-9d;$(SolutionDir)Thirdparty\Scintilla\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Base;$(SolutionDir)CameraControl\exports;$(SolutionDir)LuaScripting;$(SolutionDir)Logic;$(SolutionDir)Thirdparty;$(SolutionDir)Thirdparty\jpeg-9d;$(SolutionDir)Thirdparty\Scintilla\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WINDOWS;STRICT;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <EnablePREfast>true</EnablePREfast>
     </ClCompile>
@@ -220,7 +220,7 @@
     <ProjectReference Include="..\Base\Base.vcxproj">
       <Project>{3ab1bb98-d491-47db-8d93-1dab3ce88c87}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\CanonControl\CameraControl.vcxproj">
+    <ProjectReference Include="..\CameraControl\CameraControl.vcxproj">
       <Project>{ce953b34-5513-4719-aead-a61f0585ab34}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
