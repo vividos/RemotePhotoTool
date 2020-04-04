@@ -9,6 +9,8 @@
 #include "GPhoto2Common.hpp"
 #include "SourceInfo.hpp"
 
+struct _Camera;
+
 namespace GPhoto2
 {
    /// implementation of SourceInfo for gPhoto2 access
@@ -17,10 +19,10 @@ namespace GPhoto2
    public:
       /// ctor
       SourceInfoImpl(
-         std::shared_ptr<_GPContext> context,
+         RefSp ref,
          const CString& name,
          const CString& port)
-         :m_context(context),
+         :m_ref(ref),
          m_name(name),
          m_port(port)
       {
@@ -35,8 +37,12 @@ namespace GPhoto2
       virtual std::shared_ptr<SourceDevice> Open() override;
 
    private:
-      /// gPhoto2 context
-      std::shared_ptr<_GPContext> m_context;
+      /// initializes camera from this source info object
+      void InitCamera(std::shared_ptr<_Camera> camera);
+
+   private:
+      /// gPhoto2 reference
+      RefSp m_ref;
 
       /// camera name
       CString m_name;

@@ -47,6 +47,48 @@ GPhoto2::Ref::Ref()
    gp_context_set_error_func(rawContext, ctx_error_func, nullptr);
    gp_context_set_status_func(rawContext, ctx_status_func, nullptr);
    gp_context_set_message_func(rawContext, ctx_message_func, nullptr);
+
+   InitCameraAbilitiesList();
+   InitPortInfoList();
+}
+
+bool GPhoto2::Ref::InitCameraAbilitiesList()
+{
+   // Load all the camera drivers we have...
+   _CameraAbilitiesList* rawAbilities = nullptr;
+   int ret = gp_abilities_list_new(&rawAbilities);
+   if (ret < GP_OK || rawAbilities == nullptr)
+      return false;
+
+   m_abilitiesList.reset(rawAbilities, gp_abilities_list_free);
+
+   ret = gp_abilities_list_load(m_abilitiesList.get(), m_context.get());
+   if (ret < GP_OK)
+      return false;
+
+   return true;
+}
+
+bool GPhoto2::Ref::InitPortInfoList()
+{
+   // Load all the port drivers we have...
+   _GPPortInfoList* rawPortInfoList = nullptr;
+
+   int ret = gp_port_info_list_new(&rawPortInfoList);
+   if (ret < GP_OK || rawPortInfoList == nullptr)
+      return false;
+
+   m_portInfoList.reset(rawPortInfoList, gp_port_info_list_free);
+
+   ret = gp_port_info_list_load(m_portInfoList.get());
+   if (ret < 0)
+      return false;
+
+   int count = gp_port_info_list_count(m_portInfoList.get());
+   if (count < 0)
+      return false;
+
+   return true;
 }
 
 GPhoto2::Ref::~Ref()
@@ -89,6 +131,7 @@ void GPhoto2::Ref::EnumerateDevices(std::vector<std::shared_ptr<SourceInfo>>& so
 
       LOG_TRACE(_T("gPhoto2 camera #%i: %hs (%hs)\n"), index, name, port);
 
-      sourceDevicesList.push_back(std::make_shared<GPhoto2::SourceInfoImpl>(m_context, name, port));
+      RefSp ref = const_cast<Ref*>(this)->shared_from_this();
+      sourceDevicesList.push_back(std::make_shared<GPhoto2::SourceInfoImpl>(ref, name, port));
    }
 }
