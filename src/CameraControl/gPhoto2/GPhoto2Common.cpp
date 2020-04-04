@@ -1,68 +1,66 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2016 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file GPhoto2Common.cpp gPhoto2 - Common functions
 //
-
-// includes
 #include "stdafx.h"
 #include "GPhoto2Common.hpp"
 #include "GPhoto2SourceInfoImpl.hpp"
 #include "GPhoto2Include.hpp"
 
-void GPhoto2::CheckError(const CString& cszFunction, int err, LPCSTR pszFile, UINT uiLine)
+void GPhoto2::CheckError(const CString& function, int errorCode, LPCSTR filename, UINT lineNumber)
 {
-   if (err >= GP_OK)
+   if (errorCode >= GP_OK)
       return;
 
-   const char* errorText = gp_result_as_string(err);
+   const char* errorText = gp_result_as_string(errorCode);
 
-   LOG_TRACE(_T("gPhoto2: error in function %s: %hs, return code %i\n"), cszFunction.GetString(), errorText, err);
+   LOG_TRACE(_T("gPhoto2: error in function %s: %hs, return code %i\n"), function.GetString(), errorText, errorCode);
 
-   throw CameraException(cszFunction, CString(errorText), static_cast<unsigned int>(err), pszFile, uiLine);
+   throw CameraException(function, CString(errorText), static_cast<unsigned int>(errorCode), filename, lineNumber);
 }
 
 /// context error handler function
-static void ctx_error_func(GPContext* context, const char* str, void* /*data*/)
+static void ctx_error_func(GPContext* context, const char* str, void* data)
 {
-   LOG_TRACE(_T("gPhoto2 error: ctx=%p, text=%hs\n"), context, str);
+   LOG_TRACE(_T("gPhoto2 error: ctx=%p, text=%hs, data=%p\n"), context, str, data);
 }
 
 /// context status handler function
-static void ctx_status_func(GPContext* context, const char* str, void* /*data*/)
+static void ctx_status_func(GPContext* context, const char* str, void* data)
 {
-   LOG_TRACE(_T("gPhoto2 status: ctx=%p, text=%hs\n"), context, str);
+   LOG_TRACE(_T("gPhoto2 status: ctx=%p, text=%hs, data=%p\n"), context, str, data);
 }
 
 /// context message handler function
-static void ctx_message_func(GPContext* context, const char* str, void* /*data*/)
+static void ctx_message_func(GPContext* context, const char* str, void* data)
 {
-   LOG_TRACE(_T("gPhoto2 message: ctx=%p, text=%hs\n"), context, str);
+   LOG_TRACE(_T("gPhoto2 message: ctx=%p, text=%hs, data=%p\n"), context, str, data);
 }
 
 GPhoto2::Ref::Ref()
 {
-   GPContext* context = gp_context_new();
-   m_spContext.reset(context, gp_context_unref);
+   GPContext* rawContext = gp_context_new();
+   m_context.reset(rawContext, gp_context_unref);
 
-   gp_context_set_error_func(context, ctx_error_func, nullptr);
-   gp_context_set_status_func(context, ctx_status_func, nullptr);
-   gp_context_set_message_func(context, ctx_message_func, nullptr);
+   gp_context_set_error_func(rawContext, ctx_error_func, nullptr);
+   gp_context_set_status_func(rawContext, ctx_status_func, nullptr);
+   gp_context_set_message_func(rawContext, ctx_message_func, nullptr);
 }
 
 GPhoto2::Ref::~Ref()
 {
 }
 
-void GPhoto2::Ref::AddVersionText(CString& cszVersionText) const
+void GPhoto2::Ref::AddVersionText(CString& versionText) const
 {
-   const char** ppVersion = gp_library_version(GP_VERSION_SHORT);
+   const char** version = gp_library_version(GP_VERSION_SHORT);
 
-   cszVersionText.AppendFormat(_T("gPhoto2 %hs\n\n"), ppVersion[0]);
+   versionText.AppendFormat(_T("gPhoto2 %hs\n\n"), version[0]);
 }
 
-void GPhoto2::Ref::EnumerateDevices(std::vector<std::shared_ptr<SourceInfo>>& vecSourceDevices) const
+void GPhoto2::Ref::EnumerateDevices(std::vector<std::shared_ptr<SourceInfo>>& sourceDevicesList) const
 {
    CameraList* cameraList = nullptr;
 
@@ -72,7 +70,7 @@ void GPhoto2::Ref::EnumerateDevices(std::vector<std::shared_ptr<SourceInfo>>& ve
 
    std::shared_ptr<CameraList> spAutoFreeCameraList(cameraList, gp_list_free);
 
-   ret = gp_camera_autodetect(cameraList, m_spContext.get());
+   ret = gp_camera_autodetect(cameraList, m_context.get());
    if (ret < GP_OK)
    {
       const char* errorText = gp_result_as_string(ret);
@@ -91,6 +89,6 @@ void GPhoto2::Ref::EnumerateDevices(std::vector<std::shared_ptr<SourceInfo>>& ve
 
       LOG_TRACE(_T("gPhoto2 camera #%i: %hs (%hs)\n"), index, name, port);
 
-      vecSourceDevices.push_back(std::make_shared<GPhoto2::SourceInfoImpl>(m_spContext, name, port));
+      sourceDevicesList.push_back(std::make_shared<GPhoto2::SourceInfoImpl>(m_context, name, port));
    }
 }

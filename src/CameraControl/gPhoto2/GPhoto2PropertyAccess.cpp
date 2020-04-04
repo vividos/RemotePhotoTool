@@ -1,11 +1,10 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2016 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file GPhoto2PropertyAccess.cpp gPhoto2 - Property access
 //
 
-// includes
 #include "stdafx.h"
 #include "GPhoto2PropertyAccess.hpp"
 #include "GPhoto2Include.hpp"
@@ -13,22 +12,22 @@
 
 using GPhoto2::PropertyAccess;
 
-PropertyAccess::PropertyAccess(std::shared_ptr<_GPContext> spContext, std::shared_ptr<_Camera> spCamera)
-   :m_spContext(spContext),
-   m_spCamera(spCamera)
+PropertyAccess::PropertyAccess(std::shared_ptr<_GPContext> context, std::shared_ptr<_Camera> camera)
+   :m_context(context),
+   m_camera(camera)
 {
    // since the list of property ids in the widget list changes with every
    // call to gp_camera_get_config(), we get the list once only, and work with
    // it.
    CameraWidget* widget = nullptr;
-   int ret = gp_camera_get_config(spCamera.get(), &widget, spContext.get());
+   int ret = gp_camera_get_config(camera.get(), &widget, context.get());
    CheckError(_T("gp_camera_get_config"), ret, __FILE__, __LINE__);
 
-   m_spWidget.reset(widget, gp_widget_free);
+   m_widget.reset(widget, gp_widget_free);
 
    // note: we only enumerate device properties once, or else the ids would change
-   DumpWidgetTree(m_spWidget.get(), 0);
-   RecursiveAddProperties(m_spWidget.get(), m_mapDeviceProperties);
+   DumpWidgetTree(m_widget.get(), 0);
+   RecursiveAddProperties(m_widget.get(), m_mapDeviceProperties);
 }
 
 /// looks up child widget by widget name or label
@@ -97,7 +96,7 @@ CString PropertyAccess::GetText(LPCSTR configValueName) const
 {
    CString text;
 
-   int ret = get_config_value_string(m_spWidget.get(), configValueName, text);
+   int ret = get_config_value_string(m_widget.get(), configValueName, text);
    CheckError(_T("get_config_value_string"), ret, __FILE__, __LINE__);
 
    return text;
@@ -107,7 +106,7 @@ bool PropertyAccess::GetCameraOperationAbility(unsigned int operation) const
 {
    CameraAbilities abilities = { 0 };
 
-   int ret = gp_camera_get_abilities(m_spCamera.get(), &abilities);
+   int ret = gp_camera_get_abilities(m_camera.get(), &abilities);
    if (ret < GP_OK)
       return false;
 
@@ -120,17 +119,17 @@ std::vector<unsigned int> PropertyAccess::EnumDeviceProperties() const
 
    std::for_each(m_mapDeviceProperties.begin(), m_mapDeviceProperties.end(),
       [&vecDeviceProperties](std::pair<unsigned int, CameraWidget*> value)
-   {
-      vecDeviceProperties.push_back(value.first);
-   });
+      {
+         vecDeviceProperties.push_back(value.first);
+      });
 
    return vecDeviceProperties;
 }
 
-DeviceProperty PropertyAccess::GetDeviceProperty(unsigned int propId) const
+DeviceProperty PropertyAccess::GetDeviceProperty(unsigned int propertyId) const
 {
    CameraWidget* child = nullptr;
-   int ret = gp_widget_get_child_by_id(m_spWidget.get(), static_cast<int>(propId), &child);
+   int ret = gp_widget_get_child_by_id(m_widget.get(), static_cast<int>(propertyId), &child);
    CheckError(_T("gp_widget_get_child_by_id"), ret, __FILE__, __LINE__);
 
    CameraWidgetType type = GP_WIDGET_WINDOW;
@@ -144,7 +143,7 @@ DeviceProperty PropertyAccess::GetDeviceProperty(unsigned int propId) const
    Variant value;
    ReadPropertyValue(child, value, type);
 
-   DeviceProperty dp(T_enSDKVariant::variantGphoto2, propId, value, readonly != 0,
+   DeviceProperty dp(T_enSDKVariant::variantGphoto2, propertyId, value, readonly != 0,
       std::static_pointer_cast<void>(std::const_pointer_cast<PropertyAccess>(shared_from_this())));
 
    ReadValidValues(dp, child, type);
@@ -242,23 +241,23 @@ void PropertyAccess::ReadValidValues(DeviceProperty& dp, CameraWidget* widget, i
    }
 }
 
-CString PropertyAccess::DisplayTextFromIdAndValue(unsigned int propId, Variant value)
+CString PropertyAccess::DisplayTextFromIdAndValue(unsigned int propertyId, Variant value)
 {
    // TODO implement
-   UNUSED(propId);
+   UNUSED(propertyId);
 
    return value.ToString();
 }
 
-LPCTSTR PropertyAccess::NameFromId(unsigned int propId)
+LPCTSTR PropertyAccess::NameFromId(unsigned int propertyId)
 {
-   if (m_mapDeviceProperties.find(propId) == m_mapDeviceProperties.end())
+   if (m_mapDeviceProperties.find(propertyId) == m_mapDeviceProperties.end())
    {
       return _T("???");
    }
 
    const char* label = nullptr;
-   gp_widget_get_label(m_mapDeviceProperties[propId], &label);
+   gp_widget_get_label(m_mapDeviceProperties[propertyId], &label);
 
    static CString s_propName(label);
 

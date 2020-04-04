@@ -1,12 +1,11 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2016 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file GPhoto2Include.hpp gPhoto2 - central include file
 //
 #pragma once
 
-// includes
 extern "C"
 {
 #undef interface

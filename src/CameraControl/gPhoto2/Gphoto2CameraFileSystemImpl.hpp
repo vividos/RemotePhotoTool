@@ -1,12 +1,11 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2019 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file Gphoto2CameraFileSystemImpl.hpp gPhoto2 - CameraFileSystem impl
 //
 #pragma once
 
-// includes
 #include "CameraFileSystem.hpp"
 #include "Gphoto2Common.hpp"
 

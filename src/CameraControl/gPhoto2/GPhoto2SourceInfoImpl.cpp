@@ -1,12 +1,11 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2016 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file GPhoto2SourceInfoImpl.cpp gPhoto2 - SourceInfo impl
 //
 #pragma once
 
-// includes
 #include "stdafx.h"
 #include "GPhoto2SourceInfoImpl.hpp"
 #include "GPhoto2SourceDeviceImpl.hpp"
@@ -83,17 +82,17 @@ static int set_camera_port(Camera* camera, const char* model, const char* port, 
 
 std::shared_ptr<SourceDevice> GPhoto2::SourceInfoImpl::Open()
 {
-   Camera* camera = nullptr;
-   gp_camera_new(&camera);
+   Camera* rawCamera = nullptr;
+   gp_camera_new(&rawCamera);
 
-   std::shared_ptr<_Camera> spCamera;
-   spCamera.reset(camera, gp_camera_free);
+   std::shared_ptr<_Camera> camera;
+   camera.reset(rawCamera, gp_camera_free);
 
-   int ret = set_camera_port(spCamera.get(), CStringA(m_name), CStringA(m_port), m_spContext.get());
+   int ret = set_camera_port(camera.get(), CStringA(m_name), CStringA(m_port), m_context.get());
    CheckError(_T("set_camera_port"), ret, __FILE__, __LINE__);
 
-   ret = gp_camera_init(spCamera.get(), m_spContext.get());
+   ret = gp_camera_init(camera.get(), m_context.get());
    CheckError(_T("gp_camera_init"), ret, __FILE__, __LINE__);
 
-   return std::make_shared<SourceDeviceImpl>(m_spContext, spCamera);
+   return std::make_shared<SourceDeviceImpl>(m_context, camera);
 }

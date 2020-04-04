@@ -13,9 +13,9 @@
 
 using GPhoto2::RemoteReleaseControlImpl;
 
-RemoteReleaseControlImpl::RemoteReleaseControlImpl(std::shared_ptr<_GPContext> spContext, std::shared_ptr<_Camera> spCamera)
-   :m_spContext(spContext),
-   m_spCamera(spCamera)
+RemoteReleaseControlImpl::RemoteReleaseControlImpl(std::shared_ptr<_GPContext> context, std::shared_ptr<_Camera> camera)
+   :m_context(context),
+   m_camera(camera)
 {
    //result = gp_camera_wait_for_event(gp_params.camera, waittime, type, &data, gp_params.context);
    //case GP_EVENT_CAPTURE_COMPLETE:
@@ -32,12 +32,12 @@ RemoteReleaseControlImpl::~RemoteReleaseControlImpl()
    }
 }
 
-bool RemoteReleaseControlImpl::GetCapability(T_enRemoteCapability enRemoteCapability) const
+bool RemoteReleaseControlImpl::GetCapability(T_enRemoteCapability remoteCapability) const
 {
    //result = gp_camera_get_abilities (gp_params.camera, &a);
 
    // TODO implement
-   switch (enRemoteCapability)
+   switch (remoteCapability)
    {
    case RemoteReleaseControl::capChangeShootingParameter:
    case RemoteReleaseControl::capChangeShootingMode:
@@ -59,22 +59,22 @@ bool RemoteReleaseControlImpl::GetCapability(T_enRemoteCapability enRemoteCapabi
 
 void RemoteReleaseControlImpl::SetReleaseSettings(const ShutterReleaseSettings& settings)
 {
-   LightweightMutex::LockType lock(m_mtxShutterReleaseSettings);
+   LightweightMutex::LockType lock(m_mutexShutterReleaseSettings);
 
    m_shutterReleaseSettings = settings;
 }
 
-unsigned int RemoteReleaseControlImpl::MapImagePropertyTypeToId(T_enImagePropertyType enImagePropertyType) const
+unsigned int RemoteReleaseControlImpl::MapImagePropertyTypeToId(T_enImagePropertyType imagePropertyType) const
 {
    // TODO implement
-   UNUSED(enImagePropertyType);
+   UNUSED(imagePropertyType);
    return 0;
 }
 
-ImageProperty RemoteReleaseControlImpl::MapShootingModeToImagePropertyValue(T_enShootingMode enShootingMode) const
+ImageProperty RemoteReleaseControlImpl::MapShootingModeToImagePropertyValue(T_enShootingMode shootingMode) const
 {
    // TODO implement
-   UNUSED(enShootingMode);
+   UNUSED(shootingMode);
 
    Variant value;
    value.Set<unsigned char>(42);
@@ -89,7 +89,7 @@ std::vector<unsigned int> RemoteReleaseControlImpl::EnumImageProperties() const
    return std::vector<unsigned int>();
 }
 
-ImageProperty RemoteReleaseControlImpl::GetImageProperty(unsigned int uiImagePropertyId) const
+ImageProperty RemoteReleaseControlImpl::GetImageProperty(unsigned int imagePropertyId) const
 {
    //return m_spProperties->GetImageProperty(uiPropertyId);
 
@@ -98,7 +98,7 @@ ImageProperty RemoteReleaseControlImpl::GetImageProperty(unsigned int uiImagePro
    value.Set<unsigned char>(42);
    value.SetType(Variant::typeUInt8);
 
-   return ImageProperty(T_enSDKVariant::variantGphoto2, uiImagePropertyId, value, true);
+   return ImageProperty(T_enSDKVariant::variantGphoto2, imagePropertyId, value, true);
 }
 
 void RemoteReleaseControlImpl::SetImageProperty(const ImageProperty& imageProperty)
@@ -107,11 +107,11 @@ void RemoteReleaseControlImpl::SetImageProperty(const ImageProperty& imageProper
    UNUSED(imageProperty);
 }
 
-void RemoteReleaseControlImpl::EnumImagePropertyValues(unsigned int uiImagePropertyId, std::vector<ImageProperty>& vecValues) const
+void RemoteReleaseControlImpl::EnumImagePropertyValues(unsigned int imagePropertyId, std::vector<ImageProperty>& valuesList) const
 {
    // TODO implement
-   UNUSED(uiImagePropertyId);
-   vecValues.clear();
+   UNUSED(imagePropertyId);
+   valuesList.clear();
 }
 
 std::shared_ptr<Viewfinder> RemoteReleaseControlImpl::StartViewfinder() const
@@ -126,15 +126,15 @@ unsigned int RemoteReleaseControlImpl::NumAvailableShots() const
    return 0;
 }
 
-void RemoteReleaseControlImpl::SendCommand(T_enCameraCommand enCameraCommand)
+void RemoteReleaseControlImpl::SendCommand(T_enCameraCommand cameraCommand)
 {
    // TODO implement
-   UNUSED(enCameraCommand);
+   UNUSED(cameraCommand);
 }
 
 void RemoteReleaseControlImpl::Release()
 {
-   m_upReleaseThread->Post(std::bind(&RemoteReleaseControlImpl::AsyncRelease, this));
+   m_releaseThread->Post(std::bind(&RemoteReleaseControlImpl::AsyncRelease, this));
 }
 
 void RemoteReleaseControlImpl::AsyncRelease()
