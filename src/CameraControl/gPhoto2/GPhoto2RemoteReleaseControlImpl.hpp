@@ -98,6 +98,9 @@ namespace GPhoto2
       /// camera instance
       std::shared_ptr<_Camera> m_camera;
 
+      /// property manager for gPhoto connected camera
+      std::shared_ptr<PropertyAccess> m_properties;
+
       /// background thread for release control
       std::unique_ptr<AsyncReleaseControlThread> m_releaseThread;
 

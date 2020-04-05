@@ -1,23 +1,32 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2016 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file GPhoto2RemoteReleaseControlImpl.cpp gPhoto2 - Remote release control impl
 //
-
-// includes
 #include "stdafx.h"
 #include "GPhoto2RemoteReleaseControlImpl.hpp"
+#include "GPhoto2PropertyAccess.hpp"
 #include "CameraException.hpp"
 #include "AsyncReleaseControlThread.hpp"
+#include "GPhoto2Include.hpp"
 
 using GPhoto2::RemoteReleaseControlImpl;
 
 RemoteReleaseControlImpl::RemoteReleaseControlImpl(RefSp ref,
-   std::shared_ptr<_Camera> camera)
+   std::shared_ptr<_Camera> camera,
+   std::shared_ptr<PropertyAccess> properties)
    :m_ref(ref),
-   m_camera(camera)
+   m_camera(camera),
+   m_properties(properties)
 {
+   Variant value;
+   value.Set(true);
+   value.SetType(Variant::typeBool);
+
+   properties->SetPropertyByName(_T("capture"), value);
+
+   // TODO start event listener
    //result = gp_camera_wait_for_event(gp_params.camera, waittime, type, &data, gp_params.context);
    //case GP_EVENT_CAPTURE_COMPLETE:
 }
@@ -35,18 +44,19 @@ RemoteReleaseControlImpl::~RemoteReleaseControlImpl()
 
 bool RemoteReleaseControlImpl::GetCapability(T_enRemoteCapability remoteCapability) const
 {
-   //result = gp_camera_get_abilities (gp_params.camera, &a);
-
-   // TODO implement
    switch (remoteCapability)
    {
    case RemoteReleaseControl::capChangeShootingParameter:
    case RemoteReleaseControl::capChangeShootingMode:
    case RemoteReleaseControl::capZoomControl:
+      return m_properties->GetCameraOperationAbility(GP_OPERATION_CONFIG);
+
    case RemoteReleaseControl::capViewfinder:
    case RemoteReleaseControl::capReleaseWhileViewfinder:
+      return m_properties->GetCameraOperationAbility(GP_OPERATION_CAPTURE_PREVIEW);
+
    case RemoteReleaseControl::capAFLock:
-   case RemoteReleaseControl::capBulbMode:
+   case RemoteReleaseControl::capBulbMode: // TODO check for bulb shooting mode property?
    case RemoteReleaseControl::capUILock:
       return false;
 
@@ -67,52 +77,32 @@ void RemoteReleaseControlImpl::SetReleaseSettings(const ShutterReleaseSettings& 
 
 unsigned int RemoteReleaseControlImpl::MapImagePropertyTypeToId(T_enImagePropertyType imagePropertyType) const
 {
-   // TODO implement
-   UNUSED(imagePropertyType);
-   return 0;
+   return m_properties->MapImagePropertyTypeToId(imagePropertyType);
 }
 
 ImageProperty RemoteReleaseControlImpl::MapShootingModeToImagePropertyValue(T_enShootingMode shootingMode) const
 {
-   // TODO implement
-   UNUSED(shootingMode);
-
-   Variant value;
-   value.Set<unsigned char>(42);
-   value.SetType(Variant::typeUInt8);
-
-   return ImageProperty(T_enSDKVariant::variantGphoto2, 0, value, true);
+   return m_properties->MapShootingModeToImagePropertyValue(shootingMode);
 }
 
 std::vector<unsigned int> RemoteReleaseControlImpl::EnumImageProperties() const
 {
-   // TODO implement
-   return std::vector<unsigned int>();
+   return m_properties->EnumImageProperties();
 }
 
 ImageProperty RemoteReleaseControlImpl::GetImageProperty(unsigned int imagePropertyId) const
 {
-   //return m_spProperties->GetImageProperty(uiPropertyId);
-
-   // TODO implement
-   Variant value;
-   value.Set<unsigned char>(42);
-   value.SetType(Variant::typeUInt8);
-
-   return ImageProperty(T_enSDKVariant::variantGphoto2, imagePropertyId, value, true);
+   return m_properties->GetImageProperty(imagePropertyId);
 }
 
 void RemoteReleaseControlImpl::SetImageProperty(const ImageProperty& imageProperty)
 {
-   // TODO implement
-   UNUSED(imageProperty);
+   m_properties->SetPropertyById(imageProperty.Id(), imageProperty.Value());
 }
 
 void RemoteReleaseControlImpl::EnumImagePropertyValues(unsigned int imagePropertyId, std::vector<ImageProperty>& valuesList) const
 {
-   // TODO implement
-   UNUSED(imagePropertyId);
-   valuesList.clear();
+   valuesList = m_properties->EnumImagePropertyValues(imagePropertyId);
 }
 
 std::shared_ptr<Viewfinder> RemoteReleaseControlImpl::StartViewfinder() const
@@ -155,5 +145,9 @@ std::shared_ptr<BulbReleaseControl> RemoteReleaseControlImpl::StartBulb()
 
 void RemoteReleaseControlImpl::Close()
 {
-   // TODO implement
+   Variant value;
+   value.Set(false);
+   value.SetType(Variant::typeBool);
+
+   m_properties->SetPropertyByName(_T("capture"), value);
 }

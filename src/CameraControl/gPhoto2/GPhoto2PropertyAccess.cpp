@@ -4,7 +4,6 @@
 //
 /// \file GPhoto2PropertyAccess.cpp gPhoto2 - Property access
 //
-
 #include "stdafx.h"
 #include "GPhoto2PropertyAccess.hpp"
 #include "GPhoto2Include.hpp"
@@ -113,17 +112,64 @@ bool PropertyAccess::GetCameraOperationAbility(unsigned int operation) const
    return (abilities.operations & operation) != 0;
 }
 
+unsigned int PropertyAccess::MapImagePropertyTypeToId(T_enImagePropertyType imagePropertyType) const
+{
+   LPCSTR propertyName = nullptr;
+   switch (imagePropertyType)
+   {
+   case propShootingMode: propertyName = "shootingmode"; break;
+   case propDriveMode:
+   default:
+      break;
+   }
+
+   if (propertyName != nullptr)
+   {
+      CameraWidget* child = nullptr;
+      int ret = lookup_widget(m_widget.get(), CStringA(propertyName), &child);
+      CheckError(_T("lookup_widget"), ret, __FILE__, __LINE__);
+
+      int propertyId = -1;
+      ret = gp_widget_get_id(child, &propertyId);
+      CheckError(_T("gp_widget_get_id"), ret, __FILE__, __LINE__);
+
+      return static_cast<unsigned int>(propertyId);
+   }
+
+   return static_cast<unsigned int>(-1);
+}
+
+ImageProperty PropertyAccess::MapShootingModeToImagePropertyValue(RemoteReleaseControl::T_enShootingMode shootingMode) const
+{
+   unsigned int propertyId = MapImagePropertyTypeToId(T_enImagePropertyType::propShootingMode);
+
+   std::vector<ImageProperty> shootingModeList = EnumImagePropertyValues(propertyId);
+
+   switch (shootingMode)
+   {
+   default:
+      ATLASSERT(false); // invalid shooting mode
+      break;
+   }
+
+   // TODO implement
+   Variant value;
+   value.Set<unsigned char>(42);
+   value.SetType(Variant::typeUInt8);
+
+   return ImageProperty(T_enSDKVariant::variantGphoto2, 0, value, true);
+}
+
 std::vector<unsigned int> PropertyAccess::EnumDeviceProperties() const
 {
-   std::vector<unsigned int> vecDeviceProperties;
+   std::vector<unsigned int> devicePropertiesList;
 
-   std::for_each(m_mapDeviceProperties.begin(), m_mapDeviceProperties.end(),
-      [&vecDeviceProperties](std::pair<unsigned int, CameraWidget*> value)
-      {
-         vecDeviceProperties.push_back(value.first);
-      });
+   for (const std::pair<unsigned int, CameraWidget*>& value : m_mapDeviceProperties)
+   {
+      devicePropertiesList.push_back(value.first);
+   }
 
-   return vecDeviceProperties;
+   return devicePropertiesList;
 }
 
 DeviceProperty PropertyAccess::GetDeviceProperty(unsigned int propertyId) const
@@ -143,12 +189,144 @@ DeviceProperty PropertyAccess::GetDeviceProperty(unsigned int propertyId) const
    Variant value;
    ReadPropertyValue(child, value, type);
 
-   DeviceProperty dp(T_enSDKVariant::variantGphoto2, propertyId, value, readonly != 0,
+   DeviceProperty deviceProperty(T_enSDKVariant::variantGphoto2, propertyId, value, readonly != 0,
       std::static_pointer_cast<void>(std::const_pointer_cast<PropertyAccess>(shared_from_this())));
 
-   ReadValidValues(dp, child, type);
+   ReadValidValues(deviceProperty.ValidValues(), child, type);
 
-   return dp;
+   return deviceProperty;
+}
+
+std::vector<unsigned int> PropertyAccess::EnumImageProperties() const
+{
+   std::vector<unsigned int> imagePropertiesList;
+
+   for (const std::pair<unsigned int, CameraWidget*>& value : m_mapImageProperties)
+   {
+      imagePropertiesList.push_back(value.first);
+   }
+
+   return imagePropertiesList;
+}
+
+ImageProperty PropertyAccess::GetImageProperty(unsigned int imagePropertyId) const
+{
+   CameraWidget* child = nullptr;
+   int ret = gp_widget_get_child_by_id(m_widget.get(), static_cast<int>(imagePropertyId), &child);
+   CheckError(_T("gp_widget_get_child_by_id"), ret, __FILE__, __LINE__);
+
+   CameraWidgetType type = GP_WIDGET_WINDOW;
+   ret = gp_widget_get_type(child, &type);
+   CheckError(_T("gp_widget_get_type"), ret, __FILE__, __LINE__);
+
+   int readonly = 1;
+   ret = gp_widget_get_readonly(child, &readonly);
+   CheckError(_T("gp_widget_get_readonly"), ret, __FILE__, __LINE__);
+
+   Variant value;
+   ReadPropertyValue(child, value, type);
+
+   ImageProperty imageProperty(T_enSDKVariant::variantGphoto2, imagePropertyId, value, readonly != 0,
+      std::static_pointer_cast<void>(std::const_pointer_cast<PropertyAccess>(shared_from_this())));
+
+   return imageProperty;
+}
+
+std::vector<ImageProperty> PropertyAccess::EnumImagePropertyValues(unsigned int imagePropertyId) const
+{
+   CameraWidget* child = nullptr;
+   int ret = gp_widget_get_child_by_id(m_widget.get(), static_cast<int>(imagePropertyId), &child);
+   CheckError(_T("gp_widget_get_child_by_id"), ret, __FILE__, __LINE__);
+
+   CameraWidgetType type = GP_WIDGET_WINDOW;
+   ret = gp_widget_get_type(child, &type);
+   CheckError(_T("gp_widget_get_type"), ret, __FILE__, __LINE__);
+
+   int readonly = 1;
+   ret = gp_widget_get_readonly(child, &readonly);
+   CheckError(_T("gp_widget_get_readonly"), ret, __FILE__, __LINE__);
+
+   std::vector<Variant> validValues;
+   ReadValidValues(validValues, child, type);
+
+   std::vector<ImageProperty> imagePropertyList;
+
+   for (const Variant& value : validValues)
+   {
+      ImageProperty imageProperty(T_enSDKVariant::variantGphoto2, imagePropertyId, value, readonly != 0,
+         std::static_pointer_cast<void>(std::const_pointer_cast<PropertyAccess>(shared_from_this())));
+
+      imagePropertyList.push_back(imageProperty);
+   }
+
+   return imagePropertyList;
+}
+
+void PropertyAccess::SetPropertyByName(LPCTSTR propertyName, const Variant& value)
+{
+   CameraWidget* child = nullptr;
+   int ret = lookup_widget(m_widget.get(), CStringA(propertyName), &child);
+   CheckError(_T("lookup_widget"), ret, __FILE__, __LINE__);
+
+   SetPropertyByWidget(child, value);
+}
+
+void PropertyAccess::SetPropertyById(unsigned int propertyId, const Variant& value)
+{
+   CameraWidget* child = nullptr;
+   int ret = gp_widget_get_child_by_id(m_widget.get(), static_cast<int>(propertyId), &child);
+   CheckError(_T("gp_widget_get_child_by_id"), ret, __FILE__, __LINE__);
+
+   SetPropertyByWidget(child, value);
+}
+
+void PropertyAccess::SetPropertyByWidget(CameraWidget* widget, const Variant& value)
+{
+   CameraWidgetType type = GP_WIDGET_WINDOW;
+   int ret = gp_widget_get_type(widget, &type);
+   CheckError(_T("gp_widget_get_type"), ret, __FILE__, __LINE__);
+
+   switch (type)
+   {
+   case GP_WIDGET_MENU:
+   case GP_WIDGET_TEXT:
+   case GP_WIDGET_RADIO:
+      ret = gp_widget_set_value(widget, CStringA(value.Get<CString>()).GetString());
+      break;
+
+   case GP_WIDGET_RANGE:
+   {
+      float rangeValue = 0.0f;
+      // TODO
+      ret = gp_widget_set_value(widget, &rangeValue);
+   }
+   break;
+
+   //case GP_WIDGET_DATE:
+   // pass an int
+   //   break;
+   case GP_WIDGET_TOGGLE:
+   {
+      int toggleValue =
+         value.Type() == Variant::typeString ? (value.Get<CString>() == _T("on") ? 1 : 0) :
+         value.Type() == Variant::typeBool ? value.Get<bool>() ? 1 : 0 :
+         value.Type() == Variant::typeInt32 ? value.Get<int>() :
+         false; // maybe add more types?
+
+      ret = gp_widget_set_value(widget, &toggleValue);
+   }
+   break;
+
+   default:
+      ATLASSERT(false);
+      ret = GP_ERROR;
+      break;
+   }
+
+   CheckError(_T("gp_widget_set_value"), ret, __FILE__, __LINE__);
+
+   ret = gp_camera_set_config(m_camera.get(), m_widget.get(), m_context.get());
+   CheckError(_T("gp_camera_set_config"), ret, __FILE__, __LINE__);
 }
 
 void PropertyAccess::ReadPropertyValue(CameraWidget* widget, Variant& value, int _type)
@@ -201,7 +379,7 @@ void PropertyAccess::ReadPropertyValue(CameraWidget* widget, Variant& value, int
    }
 }
 
-void PropertyAccess::ReadValidValues(DeviceProperty& dp, CameraWidget* widget, int _type)
+void PropertyAccess::ReadValidValues(std::vector<Variant>& validValuesList, CameraWidget* widget, int _type)
 {
    CameraWidgetType type = (CameraWidgetType)_type;
 
@@ -217,7 +395,7 @@ void PropertyAccess::ReadValidValues(DeviceProperty& dp, CameraWidget* widget, i
          value.Set<float>(floatValue);
          value.SetType(Variant::typeFloat);
 
-         dp.ValidValues().push_back(value);
+         validValuesList.push_back(value);
       }
    }
 
@@ -236,7 +414,7 @@ void PropertyAccess::ReadValidValues(DeviceProperty& dp, CameraWidget* widget, i
          value.Set<CString>(CString(choiceText));
          value.SetType(Variant::typeString);
 
-         dp.ValidValues().push_back(value);
+         validValuesList.push_back(value);
       }
    }
 }

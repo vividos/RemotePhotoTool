@@ -82,6 +82,7 @@ private:
    friend PSREC::RemoteReleaseControlImpl;
    friend PSREC::PropertyAccess;
    friend GPhoto2::RemoteReleaseControlImpl;
+   friend GPhoto2::PropertyAccess;
    friend WIA::RemoteReleaseControlImpl;
    friend class RemoteReleaseControl;
    friend class ShutterSpeedValue;
