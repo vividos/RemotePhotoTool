@@ -8,7 +8,7 @@
 *******************************************************************************
 *                                                                             *
 *   Written and developed by Canon Inc.                                       *
-*   Copyright Canon Inc. 2006-2018 All Rights Reserved                        *
+*   Copyright Canon Inc. 2006-2019 All Rights Reserved                        *
 *                                                                             *
 ******************************************************************************/
 
@@ -185,7 +185,6 @@ typedef  EdsUInt32  EdsPropertyID;
 #define kEdsPropID_SaveTo                 0x0000000b
 #define kEdsPropID_CurrentStorage         0x0000000c
 #define kEdsPropID_CurrentFolder          0x0000000d
-#define kEdsPropID_MyMenu		          0x0000000e
 
 #define kEdsPropID_BatteryQuality         0x00000010	
 
@@ -197,35 +196,16 @@ typedef  EdsUInt32  EdsPropertyID;
  Image Properties
 ----------------------------------*/
 #define kEdsPropID_ImageQuality           0x00000100
-#define kEdsPropID_JpegQuality            0x00000101
 #define kEdsPropID_Orientation            0x00000102
 #define kEdsPropID_ICCProfile             0x00000103
 #define kEdsPropID_FocusInfo              0x00000104
-#define kEdsPropID_DigitalExposure        0x00000105
 #define kEdsPropID_WhiteBalance           0x00000106
 #define kEdsPropID_ColorTemperature       0x00000107
 #define kEdsPropID_WhiteBalanceShift      0x00000108
-#define kEdsPropID_Contrast               0x00000109
-#define kEdsPropID_ColorSaturation        0x0000010a
-#define kEdsPropID_ColorTone              0x0000010b
-#define kEdsPropID_Sharpness              0x0000010c
 #define kEdsPropID_ColorSpace             0x0000010d
-#define kEdsPropID_ToneCurve              0x0000010e
-#define kEdsPropID_PhotoEffect            0x0000010f
-#define kEdsPropID_FilterEffect           0x00000110
-#define kEdsPropID_ToningEffect           0x00000111
-#define kEdsPropID_ParameterSet           0x00000112
-#define kEdsPropID_ColorMatrix            0x00000113
 #define kEdsPropID_PictureStyle           0x00000114
 #define kEdsPropID_PictureStyleDesc       0x00000115
 #define kEdsPropID_PictureStyleCaption    0x00000200
-
-/*----------------------------------
- Image Processing Properties
-----------------------------------*/
-#define kEdsPropID_Linear                 0x00000300
-#define kEdsPropID_ClickWBPoint           0x00000301
-#define kEdsPropID_WBCoeffs               0x00000302
 
 
 /*----------------------------------
@@ -245,10 +225,6 @@ typedef  EdsUInt32  EdsPropertyID;
 #define	kEdsPropID_GPSDateStamp			  0x0000081D 		
 
 
-/*----------------------------------
- Property Mask
-----------------------------------*/
-#define kEdsPropID_AtCapture_Flag         0x80000000
 
 
 /*----------------------------------
@@ -262,7 +238,6 @@ typedef  EdsUInt32  EdsPropertyID;
 #define kEdsPropID_Av                     0x00000405
 #define kEdsPropID_Tv                     0x00000406
 #define kEdsPropID_ExposureCompensation   0x00000407
-#define kEdsPropID_FlashCompensation      0x00000408
 #define kEdsPropID_FocalLength            0x00000409
 #define kEdsPropID_AvailableShots         0x0000040a
 #define kEdsPropID_Bracket                0x0000040b
@@ -278,10 +253,8 @@ typedef  EdsUInt32  EdsPropertyID;
 #define kEdsPropID_LensStatus             0x00000416
 #define kEdsPropID_Artist	              0x00000418
 #define kEdsPropID_Copyright	          0x00000419
-#define kEdsPropID_DepthOfField	          0x0000041b
-#define kEdsPropID_EFCompensation         0x0000041e
 #define kEdsPropID_AEModeSelect           0x00000436
-
+#define kEdsPropID_PowerZoom_Speed		  0x00000444
 /*----------------------------------
  EVF Properties
 ----------------------------------*/
@@ -294,7 +267,6 @@ typedef  EdsUInt32  EdsPropertyID;
 // EVF IMAGE DATA Properties
 #define kEdsPropID_Evf_Zoom                0x00000507
 #define kEdsPropID_Evf_ZoomPosition        0x00000508
-#define kEdsPropID_Evf_FocusAid            0x00000509
 #define kEdsPropID_Evf_Histogram           0x0000050A
 #define kEdsPropID_Evf_ImagePosition       0x0000050B
 #define kEdsPropID_Evf_HistogramStatus     0x0000050C
@@ -310,6 +282,10 @@ typedef  EdsUInt32  EdsPropertyID;
 #define kEdsPropID_Evf_CoordinateSystem    0x00000540
 #define kEdsPropID_Evf_ZoomRect            0x00000541
 #define kEdsPropID_Evf_ImageClipRect       0x00000545
+
+#define kEdsPropID_Evf_PowerZoom_CurPosition   0x00000550
+#define kEdsPropID_Evf_PowerZoom_MaxPosition   0x00000551
+#define kEdsPropID_Evf_PowerZoom_MinPosition   0x00000552
 
 /*----------------------------------
  DC Properties
@@ -333,6 +309,7 @@ typedef  EdsUInt32  EdsCameraCommand;
 #define kEdsCameraCommand_DoClickWBEvf                    0x00000104
 
 #define kEdsCameraCommand_PressShutterButton			  0x00000004
+#define kEdsCameraCommand_DrivePowerZoom                  0x0000010d
 #define kEdsCameraCommand_SetRemoteShootingMode           0x0000010f
 typedef enum
 {
@@ -540,6 +517,9 @@ typedef  EdsUInt32  EdsStateEvent;
 
 #define kEdsStateEvent_BulbExposureTime             0x00000310	
 
+
+#define kEdsStateEvent_PowerZoomInfoChanged			0x00000311	
+
 /*-----------------------------------------------------------------------------
  Drive Lens
 -----------------------------------------------------------------------------*/
@@ -553,7 +533,18 @@ typedef enum
 	kEdsEvfDriveLens_Far3	= 0x00008003,
 } EdsEvfDriveLens ;
 
+/*-----------------------------------------------------------------------------
+Drive PowerZoom
+-----------------------------------------------------------------------------*/
+typedef enum
+{
+	kEdsDrivePowerZoom_Stop = 0x00000000,
+	kEdsDrivePowerZoom_LimitOff_Wide = 0x00000001,
+	kEdsDrivePowerZoom_LimitOff_Tele = 0x00000002,
+	kEdsDrivePowerZoom_LimitOn_Wide = 0x00000011,
+	kEdsDrivePowerZoom_LimitOn_Tele = 0x00000012,
 
+} EdsDrivePowerZoom;
 
 /*-----------------------------------------------------------------------------
  Depth of Field Preview
@@ -742,6 +733,11 @@ typedef enum
 	EdsImageQuality_CRM1J	=	0x00630510,	/* CRAW + Jpeg Middle1 */
 	EdsImageQuality_CRM2J	=	0x00630610,	/* CRAW + Jpeg Middle2 */
 	EdsImageQuality_CRSJ	=	0x00630210,	/* CRAW + Jpeg Small */
+	
+	/* HEIF */
+	EdsImageQuality_HEIFL   =   0x0080ff0f,	/* HEIF Large */
+	EdsImageQuality_RHEIFL  =   0x00640080, /* RAW  + HEIF Large */
+	EdsImageQuality_CRHEIFL =   0x00630080, /* CRAW + HEIF Large */
 
 	EdsImageQuality_Unknown = 0xffffffff,
 }EdsImageQuality;
@@ -873,58 +869,6 @@ typedef enum
 } EdsWhiteBalance;
 
 /*-----------------------------------------------------------------------------
- Photo Effects
------------------------------------------------------------------------------*/
-typedef enum 
-{
-    kEdsPhotoEffect_Off         = 0,
-    kEdsPhotoEffect_Monochrome  = 5,
-
-} EdsPhotoEffect;
-
-/*-----------------------------------------------------------------------------
- Color Matrix
------------------------------------------------------------------------------*/
-typedef enum 
-{
-    kEdsColorMatrix_Custom          = 0,
-    kEdsColorMatrix_1               = 1,
-    kEdsColorMatrix_2               = 2,
-    kEdsColorMatrix_3               = 3,
-    kEdsColorMatrix_4               = 4,
-    kEdsColorMatrix_5               = 5,
-    kEdsColorMatrix_6               = 6,
-    kEdsColorMatrix_7               = 7,
-
-} EdsColorMatrix;
-
-/*-----------------------------------------------------------------------------
- Filter Effects
------------------------------------------------------------------------------*/
-typedef enum 
-{
-    kEdsFilterEffect_None           = 0,
-    kEdsFilterEffect_Yellow         = 1,
-    kEdsFilterEffect_Orange         = 2,
-    kEdsFilterEffect_Red            = 3,
-    kEdsFilterEffect_Green          = 4,
-
-} EdsFilterEffect;
-
-/*-----------------------------------------------------------------------------
- Toning Effects
------------------------------------------------------------------------------*/
-typedef enum 
-{
-    kEdsTonigEffect_None            = 0,
-    kEdsTonigEffect_Sepia           = 1,
-    kEdsTonigEffect_Blue            = 2,
-    kEdsTonigEffect_Purple          = 3,
-    kEdsTonigEffect_Green           = 4,
-
-} EdsTonigEffect;
-
-/*-----------------------------------------------------------------------------
  Color Space
 -----------------------------------------------------------------------------*/
 typedef enum 
@@ -1025,7 +969,12 @@ typedef enum
     kEdsAEMode_Flexible         = 55,
 	kEdsAEMode_OilPainting		= 56,
 	kEdsAEMode_Fireworks		= 57,
-	kEdsAEMode_Unknown = 0xffffffff,
+	kEdsAEMode_StarPortrait		= 58,
+    kEdsAEMode_StarNightscape	= 59,
+	kEdsAEMode_StarTrails		= 60,
+	kEdsAEMode_StarTimelapseMovie = 61,
+	kEdsAEMode_BackgroundBlur	= 62,
+	kEdsAEMode_Unknown			= 0xffffffff,
 
 } EdsAEMode;
 
@@ -1073,6 +1022,10 @@ typedef enum
 	Evf_AFMode_LiveFace = 2,
 	Evf_AFMode_LiveMulti = 3,
 	Evf_AFMode_LiveZone = 4,
+	Evf_AFMode_LiveSingleExpandCross = 5,
+	Evf_AFMode_LiveSingleExpandSurround = 6,
+	Evf_AFMode_LiveZoneLargeH = 7,
+	Evf_AFMode_LiveZoneLargeV = 8,
 	Evf_AFMode_LiveCatchAF = 9,
 	Evf_AFMode_LiveSpotAF = 10,
 } EdsEvfAFMode;

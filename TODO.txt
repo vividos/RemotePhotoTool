@@ -8,7 +8,6 @@ support taking/transferring CRW raw images
 EDSDK
 -----
 implement file system download
-update EDSDK to latest version
 
 CDSDK
 -----

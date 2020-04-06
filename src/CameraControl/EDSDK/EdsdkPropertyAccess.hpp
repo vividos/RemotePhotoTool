@@ -21,6 +21,29 @@ namespace EDSDK
 /// shutter counter property; can't be read out with newest SDK anymore
 #define kEdsPropID_ShutterCounter 0x00000022
 
+// some more property IDs removed with EDSDK 3.x
+#define kEdsPropID_MyMenu		          0x0000000e
+#define kEdsPropID_JpegQuality            0x00000101
+#define kEdsPropID_DigitalExposure        0x00000105
+#define kEdsPropID_Contrast               0x00000109
+#define kEdsPropID_ColorSaturation        0x0000010a
+#define kEdsPropID_ColorTone              0x0000010b
+#define kEdsPropID_Sharpness              0x0000010c
+#define kEdsPropID_ToneCurve              0x0000010e
+#define kEdsPropID_PhotoEffect            0x0000010f
+#define kEdsPropID_FilterEffect           0x00000110
+#define kEdsPropID_ToningEffect           0x00000111
+#define kEdsPropID_ParameterSet           0x00000112
+#define kEdsPropID_ColorMatrix            0x00000113
+#define kEdsPropID_Linear                 0x00000300
+#define kEdsPropID_ClickWBPoint           0x00000301
+#define kEdsPropID_WBCoeffs               0x00000302
+#define kEdsPropID_AtCapture_Flag         0x80000000
+#define kEdsPropID_FlashCompensation      0x00000408
+#define kEdsPropID_DepthOfField	         0x0000041b
+#define kEdsPropID_EFCompensation         0x0000041e
+#define kEdsPropID_Evf_FocusAid           0x00000509
+
 // since there are no equivalent properties for retrieving some values, but MapToPropertyID()
 // should return a property id, so that PropertyAccess::Get() can return a value, define "fake"
 // property ids here.
