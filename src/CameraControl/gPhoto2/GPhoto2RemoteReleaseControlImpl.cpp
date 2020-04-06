@@ -9,6 +9,7 @@
 #include "GPhoto2PropertyAccess.hpp"
 #include "CameraException.hpp"
 #include "AsyncReleaseControlThread.hpp"
+#include "GPhoto2BulbReleaseControlImpl.hpp"
 #include "GPhoto2Include.hpp"
 
 using GPhoto2::RemoteReleaseControlImpl;
@@ -136,11 +137,11 @@ void RemoteReleaseControlImpl::AsyncRelease()
 
 std::shared_ptr<BulbReleaseControl> RemoteReleaseControlImpl::StartBulb()
 {
-   // result = set_config_action (&gp_params, "bulb", "1");
+   if (!GetCapability(T_enRemoteCapability::capBulbMode))
+      throw CameraException(_T("gPhoto2::RemoteReleaseControl::StartBulb"),
+         _T("Not supported"), 0, __FILE__, __LINE__);
 
-   // bulb not supported by gPhoto2
-   throw CameraException(_T("gPhoto2::RemoteReleaseControl::StartBulb"),
-      _T("Not supported"), 0, __FILE__, __LINE__);
+   return std::make_shared<BulbReleaseControlImpl>(m_ref, m_properties);
 }
 
 void RemoteReleaseControlImpl::Close()
