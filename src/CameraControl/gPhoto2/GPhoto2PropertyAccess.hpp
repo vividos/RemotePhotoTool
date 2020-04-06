@@ -24,6 +24,9 @@ namespace GPhoto2
       /// ctor
       PropertyAccess(std::shared_ptr<_GPContext> context, std::shared_ptr<_Camera> camera);
 
+      /// refreshes all properties from the camera
+      void Refresh();
+
       /// returns config value of camera, as text
       CString GetText(LPCSTR configValueName) const;
 
@@ -67,6 +70,12 @@ namespace GPhoto2
       /// sets property value for given widget
       void SetPropertyByWidget(CameraWidget* widget, const Variant& value);
 
+      /// gets a property ID from given widget
+      static unsigned int GetPropertyIdFromWidget(CameraWidget* widget);
+
+      /// gets a camera widget from a property ID
+      CameraWidget* GetWidgetFromPropertyId(unsigned int propertyId) const;
+
       /// reads property value from widget and stores it as variant value
       static void ReadPropertyValue(CameraWidget* widget, Variant& value, int type);
 
@@ -74,7 +83,7 @@ namespace GPhoto2
       static void ReadValidValues(std::vector<Variant>& validValuesList, CameraWidget* widget, int type);
 
       /// recursively adds all properties found in sub-widgets
-      void RecursiveAddProperties(CameraWidget* widget, std::map<unsigned int, CameraWidget*>& mapDeviceProperties) const;
+      void RecursiveAddProperties(CameraWidget* widget);
 
       /// dumps widget tree to logging
       static void DumpWidgetTree(CameraWidget* widget, int indendationLevel);
@@ -94,6 +103,9 @@ namespace GPhoto2
 
       /// image properties, by property ID
       std::map<unsigned int, CameraWidget*> m_mapImageProperties;
+
+      /// property names
+      std::map<unsigned int, CString> m_mapPropertyNames;
    };
 
 } // namespace GPhoto2

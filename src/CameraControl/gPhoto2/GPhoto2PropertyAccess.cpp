@@ -15,18 +15,23 @@ PropertyAccess::PropertyAccess(std::shared_ptr<_GPContext> context, std::shared_
    :m_context(context),
    m_camera(camera)
 {
-   // since the list of property ids in the widget list changes with every
-   // call to gp_camera_get_config(), we get the list once only, and work with
-   // it.
+   Refresh();
+}
+
+void PropertyAccess::Refresh()
+{
+   m_mapDeviceProperties.clear();
+   m_mapImageProperties.clear();
+   m_mapPropertyNames.clear();
+
    CameraWidget* widget = nullptr;
-   int ret = gp_camera_get_config(camera.get(), &widget, context.get());
+   int ret = gp_camera_get_config(m_camera.get(), &widget, m_context.get());
    CheckError(_T("gp_camera_get_config"), ret, __FILE__, __LINE__);
 
    m_widget.reset(widget, gp_widget_free);
 
-   // note: we only enumerate device properties once, or else the ids would change
    DumpWidgetTree(m_widget.get(), 0);
-   RecursiveAddProperties(m_widget.get(), m_mapDeviceProperties);
+   RecursiveAddProperties(m_widget.get()/*, m_mapDeviceProperties, m_mapImageProperties, m_mapPropertyNames*/);
 }
 
 /// looks up child widget by widget name or label
@@ -129,11 +134,7 @@ unsigned int PropertyAccess::MapImagePropertyTypeToId(T_enImagePropertyType imag
       int ret = lookup_widget(m_widget.get(), CStringA(propertyName), &child);
       CheckError(_T("lookup_widget"), ret, __FILE__, __LINE__);
 
-      int propertyId = -1;
-      ret = gp_widget_get_id(child, &propertyId);
-      CheckError(_T("gp_widget_get_id"), ret, __FILE__, __LINE__);
-
-      return static_cast<unsigned int>(propertyId);
+      return GetPropertyIdFromWidget(child);
    }
 
    return static_cast<unsigned int>(-1);
@@ -174,12 +175,10 @@ std::vector<unsigned int> PropertyAccess::EnumDeviceProperties() const
 
 DeviceProperty PropertyAccess::GetDeviceProperty(unsigned int propertyId) const
 {
-   CameraWidget* child = nullptr;
-   int ret = gp_widget_get_child_by_id(m_widget.get(), static_cast<int>(propertyId), &child);
-   CheckError(_T("gp_widget_get_child_by_id"), ret, __FILE__, __LINE__);
+   CameraWidget* child = GetWidgetFromPropertyId(propertyId);
 
    CameraWidgetType type = GP_WIDGET_WINDOW;
-   ret = gp_widget_get_type(child, &type);
+   int ret = gp_widget_get_type(child, &type);
    CheckError(_T("gp_widget_get_type"), ret, __FILE__, __LINE__);
 
    int readonly = 1;
@@ -211,12 +210,13 @@ std::vector<unsigned int> PropertyAccess::EnumImageProperties() const
 
 ImageProperty PropertyAccess::GetImageProperty(unsigned int imagePropertyId) const
 {
-   CameraWidget* child = nullptr;
-   int ret = gp_widget_get_child_by_id(m_widget.get(), static_cast<int>(imagePropertyId), &child);
-   CheckError(_T("gp_widget_get_child_by_id"), ret, __FILE__, __LINE__);
+   if (m_mapImageProperties.find(imagePropertyId) == m_mapImageProperties.end())
+      CheckError(_T("m_mapImageProperties"), GP_ERROR, __FILE__, __LINE__);
+
+   CameraWidget* child = GetWidgetFromPropertyId(imagePropertyId);
 
    CameraWidgetType type = GP_WIDGET_WINDOW;
-   ret = gp_widget_get_type(child, &type);
+   int ret = gp_widget_get_type(child, &type);
    CheckError(_T("gp_widget_get_type"), ret, __FILE__, __LINE__);
 
    int readonly = 1;
@@ -234,12 +234,13 @@ ImageProperty PropertyAccess::GetImageProperty(unsigned int imagePropertyId) con
 
 std::vector<ImageProperty> PropertyAccess::EnumImagePropertyValues(unsigned int imagePropertyId) const
 {
-   CameraWidget* child = nullptr;
-   int ret = gp_widget_get_child_by_id(m_widget.get(), static_cast<int>(imagePropertyId), &child);
-   CheckError(_T("gp_widget_get_child_by_id"), ret, __FILE__, __LINE__);
+   if (m_mapImageProperties.find(imagePropertyId) == m_mapImageProperties.end())
+      CheckError(_T("m_mapImageProperties"), GP_ERROR, __FILE__, __LINE__);
+
+   CameraWidget* child = GetWidgetFromPropertyId(imagePropertyId);
 
    CameraWidgetType type = GP_WIDGET_WINDOW;
-   ret = gp_widget_get_type(child, &type);
+   int ret = gp_widget_get_type(child, &type);
    CheckError(_T("gp_widget_get_type"), ret, __FILE__, __LINE__);
 
    int readonly = 1;
@@ -273,11 +274,9 @@ void PropertyAccess::SetPropertyByName(LPCTSTR propertyName, const Variant& valu
 
 void PropertyAccess::SetPropertyById(unsigned int propertyId, const Variant& value)
 {
-   CameraWidget* child = nullptr;
-   int ret = gp_widget_get_child_by_id(m_widget.get(), static_cast<int>(propertyId), &child);
-   CheckError(_T("gp_widget_get_child_by_id"), ret, __FILE__, __LINE__);
+   CameraWidget* widget = GetWidgetFromPropertyId(propertyId);
 
-   SetPropertyByWidget(child, value);
+   SetPropertyByWidget(widget, value);
 }
 
 void PropertyAccess::SetPropertyByWidget(CameraWidget* widget, const Variant& value)
@@ -327,6 +326,30 @@ void PropertyAccess::SetPropertyByWidget(CameraWidget* widget, const Variant& va
 
    ret = gp_camera_set_config(m_camera.get(), m_widget.get(), m_context.get());
    CheckError(_T("gp_camera_set_config"), ret, __FILE__, __LINE__);
+}
+
+unsigned int PropertyAccess::GetPropertyIdFromWidget(CameraWidget* widget)
+{
+   const char* name = nullptr;
+   int ret = gp_widget_get_name(widget, &name);
+   CheckError(_T("gp_widget_get_name"), ret, __FILE__, __LINE__);
+
+   unsigned int propertyId = std::hash<std::string>()(std::string(name));
+
+   return propertyId;
+}
+
+CameraWidget* PropertyAccess::GetWidgetFromPropertyId(unsigned int propertyId) const
+{
+   auto iterDevice = m_mapDeviceProperties.find(propertyId);
+   if (iterDevice != m_mapDeviceProperties.end())
+      return iterDevice->second;
+
+   auto iterImage = m_mapImageProperties.find(propertyId);
+   if (iterImage != m_mapImageProperties.end())
+      return iterImage->second;
+
+   CheckError(_T("GetPropertyIdFromWidget"), GP_ERROR, __FILE__, __LINE__);
 }
 
 void PropertyAccess::ReadPropertyValue(CameraWidget* widget, Variant& value, int _type)
@@ -421,7 +444,6 @@ void PropertyAccess::ReadValidValues(std::vector<Variant>& validValuesList, Came
 
 CString PropertyAccess::DisplayTextFromIdAndValue(unsigned int propertyId, Variant value)
 {
-   // TODO implement
    UNUSED(propertyId);
 
    return value.ToString();
@@ -429,20 +451,13 @@ CString PropertyAccess::DisplayTextFromIdAndValue(unsigned int propertyId, Varia
 
 LPCTSTR PropertyAccess::NameFromId(unsigned int propertyId)
 {
-   if (m_mapDeviceProperties.find(propertyId) == m_mapDeviceProperties.end())
-   {
+   if (m_mapPropertyNames.find(propertyId) == m_mapPropertyNames.end())
       return _T("???");
-   }
 
-   const char* label = nullptr;
-   gp_widget_get_label(m_mapDeviceProperties[propertyId], &label);
-
-   static CString s_propName(label);
-
-   return s_propName.GetString();
+   return m_mapPropertyNames.find(propertyId)->second.GetString();
 }
 
-void PropertyAccess::RecursiveAddProperties(CameraWidget* widget, std::map<unsigned int, CameraWidget*>& mapDeviceProperties) const
+void PropertyAccess::RecursiveAddProperties(CameraWidget* widget)
 {
    int count = gp_widget_count_children(widget);
 
@@ -457,22 +472,43 @@ void PropertyAccess::RecursiveAddProperties(CameraWidget* widget, std::map<unsig
          CameraWidget* child = nullptr;
          gp_widget_get_child(widget, i, &child);
 
-         RecursiveAddProperties(child, mapDeviceProperties);
+         RecursiveAddProperties(child);
       }
    }
-   else
-      if (type == GP_WIDGET_TEXT ||
-         type == GP_WIDGET_MENU ||
-         type == GP_WIDGET_RADIO ||
-         type == GP_WIDGET_DATE ||
-         type == GP_WIDGET_TOGGLE)
-      {
-         int id = 0;
-         ret = gp_widget_get_id(widget, &id);
-         CheckError(_T("gp_widget_get_id"), ret, __FILE__, __LINE__);
+   else if (type == GP_WIDGET_TEXT ||
+      type == GP_WIDGET_MENU ||
+      type == GP_WIDGET_RADIO ||
+      type == GP_WIDGET_DATE ||
+      type == GP_WIDGET_TOGGLE)
+   {
+      unsigned int propertyId = GetPropertyIdFromWidget(widget);
 
-         mapDeviceProperties.insert(std::make_pair(static_cast<unsigned int>(id), widget));
-      }
+      const char* name = nullptr;
+      gp_widget_get_name(widget, &name);
+
+      const char* label = nullptr;
+      gp_widget_get_label(widget, &label);
+
+      CString propertyName;
+      propertyName.Format(_T("%hs \"%hs\""), label, name);
+      m_mapPropertyNames[propertyId] = propertyName;
+
+      CameraWidget* parent = nullptr;
+      gp_widget_get_parent(widget, &parent);
+
+      const char* parentName = nullptr;
+      gp_widget_get_name(parent, &parentName);
+
+      CString parentNameText{ parentName };
+      bool isImageProperty =
+         parentNameText == "imgsettings" ||
+         parentNameText == "capturesettings";
+
+      if (isImageProperty)
+         m_mapImageProperties.insert(std::make_pair(propertyId, widget));
+      else
+         m_mapDeviceProperties.insert(std::make_pair(propertyId, widget));
+   }
 }
 
 void PropertyAccess::DumpWidgetTree(CameraWidget* widget, int indendationLevel)
@@ -482,8 +518,7 @@ void PropertyAccess::DumpWidgetTree(CameraWidget* widget, int indendationLevel)
 
    int count = gp_widget_count_children(widget);
 
-   int id = 0;
-   gp_widget_get_id(widget, &id);
+   unsigned int propertyId = GetPropertyIdFromWidget(widget);
 
    const char* label = nullptr;
    gp_widget_get_label(widget, &label);
@@ -507,7 +542,7 @@ void PropertyAccess::DumpWidgetTree(CameraWidget* widget, int indendationLevel)
    LOG_TRACE(_T("%swidget name=\"%hs\", id=%04x, label=%hs, type=%s, %i children\n"),
       indendationSpaces.GetString(),
       name,
-      id,
+      propertyId,
       label,
       typeText,
       count);

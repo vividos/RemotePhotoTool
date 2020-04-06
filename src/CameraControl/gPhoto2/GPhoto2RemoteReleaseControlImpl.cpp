@@ -27,6 +27,8 @@ RemoteReleaseControlImpl::RemoteReleaseControlImpl(RefSp ref,
 
    properties->SetPropertyByName(_T("capture"), value);
 
+   properties->Refresh();
+
    // TODO start event listener
    //result = gp_camera_wait_for_event(gp_params.camera, waittime, type, &data, gp_params.context);
    //case GP_EVENT_CAPTURE_COMPLETE:
