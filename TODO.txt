@@ -16,13 +16,11 @@ remove when removing support for Windows XP
 gPhoto2
 -------
 display proper device property names
-implement reading, enumerating and setting ImageProperty values
 implement RemoteReleaseControl functions
 implement Viewfinder functions
 improve speed of EnumerateDevices(), worker thread
 implement file system download
 implement starting zadig or inf wizard
-update libgphoto2 to next version
 
 WIA
 ---
@@ -49,15 +47,8 @@ implement timelapse shooting, video output
 implement photo stacking, focus stacking, CombineZP
 implement view finder stage 2: battery, number of remaining shots, auto rotate, image format
 implement view finder stage 3: half transparent background image, histogram
-Multi-camera photo view
 Image Property view: change values using editbox or combobox
 Add Bulb mode shooting when supported
-Add multi-language support
-Real tablet mode: big combobox fonts, scaling dialogs according to system settings, etc.
-Implement photo booth mode, including printing
-Add option to change energy saving options (to prevent shutting down during operation)
-Add geotagging for PCs that have a GPS receiver built in
-Add photo mode with motion detection using viewfinder to take photos (e.g. for wildlife photography)
 Fix refreshing comboboxes when switching to M mode on camera
 Fix bug where images are only transferred to host, on EOS 400D
 Implement task manager to run Hugin, PhotomatixCL, ffmpeg
