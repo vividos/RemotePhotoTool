@@ -33,6 +33,9 @@ namespace GPhoto2
       /// returns camera operation ability; use CameraOption enum for operation
       bool GetCameraOperationAbility(unsigned int operation) const;
 
+      /// returns if a property with given name is availble
+      bool IsAvailPropertyName(LPCSTR configValueName) const;
+
       /// maps image property type to a property ID
       unsigned int MapImagePropertyTypeToId(T_enImagePropertyType imagePropertyType) const;
 
@@ -67,6 +70,9 @@ namespace GPhoto2
       LPCTSTR NameFromId(unsigned int propertyId);
 
    private:
+      /// looks up child widget by widget name or label
+      static int LookupWidget(CameraWidget* widget, const char* key, CameraWidget** child);
+
       /// sets property value for given widget
       void SetPropertyByWidget(CameraWidget* widget, const Variant& value);
 

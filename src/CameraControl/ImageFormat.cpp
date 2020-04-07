@@ -25,6 +25,9 @@ CString ImageFormat::ToString() const
    case T_enSDKVariant::variantPsrec:
       return PSREC::PropertyAccess::FormatImageFormatValue(m_value.Value());
 
+   case T_enSDKVariant::variantGphoto2:
+      return m_value.Value().ToString();
+
    default:
       ATLASSERT(false);
       break;
