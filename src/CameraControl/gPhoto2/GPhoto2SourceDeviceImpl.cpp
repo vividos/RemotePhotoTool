@@ -50,11 +50,17 @@ bool SourceDeviceImpl::GetDeviceCapability(T_enDeviceCapability deviceCapability
 
 CString SourceDeviceImpl::ModelName() const
 {
+   if (m_properties->IsAvailPropertyName("cameramodel"))
+      return m_properties->GetText("cameramodel");
+
    return m_properties->GetText("model");
 }
 
 CString SourceDeviceImpl::SerialNumber() const
 {
+   if (m_properties->IsAvailPropertyName("eosserialnumber"))
+      return m_properties->GetText("eosserialnumber");
+
    return m_properties->GetText("serialnumber");
 }
 
