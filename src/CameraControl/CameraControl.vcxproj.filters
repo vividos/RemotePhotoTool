@@ -143,6 +143,9 @@
     <ClCompile Include="gPhoto2\GPhoto2BulbReleaseControlImpl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="gPhoto2\GPhoto2ViewfinderImpl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="exports\BulbReleaseControl.hpp">
@@ -365,6 +368,9 @@
       <Filter>GPhoto2 Files</Filter>
     </ClInclude>
     <ClInclude Include="gPhoto2\GPhoto2BulbReleaseControlImpl.hpp">
+      <Filter>Exported Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gPhoto2\GPhoto2ViewfinderImpl.hpp">
       <Filter>Exported Header Files</Filter>
     </ClInclude>
   </ItemGroup>

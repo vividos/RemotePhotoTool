@@ -92,6 +92,7 @@
     <ClCompile Include="gPhoto2\GPhoto2RemoteReleaseControlImpl.cpp" />
     <ClCompile Include="gPhoto2\GPhoto2SourceDeviceImpl.cpp" />
     <ClCompile Include="gPhoto2\GPhoto2SourceInfoImpl.cpp" />
+    <ClCompile Include="gPhoto2\GPhoto2ViewfinderImpl.cpp" />
     <ClCompile Include="ImageFormat.cpp" />
     <ClCompile Include="Instance.cpp" />
     <ClCompile Include="DeviceProperty.cpp" />
@@ -161,6 +162,7 @@
     <ClInclude Include="gPhoto2\GPhoto2RemoteReleaseControlImpl.hpp" />
     <ClInclude Include="gPhoto2\GPhoto2SourceDeviceImpl.hpp" />
     <ClInclude Include="gPhoto2\GPhoto2SourceInfoImpl.hpp" />
+    <ClInclude Include="gPhoto2\GPhoto2ViewfinderImpl.hpp" />
     <ClInclude Include="PsrecCameraEventData.hpp" />
     <ClInclude Include="PSREC\PsrecViewfinderImpl.hpp" />
     <ClInclude Include="SdkReferenceBase.hpp" />
