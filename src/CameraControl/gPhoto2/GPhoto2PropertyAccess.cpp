@@ -136,7 +136,7 @@ ImageProperty PropertyAccess::MapShootingModeToImagePropertyValue(RemoteReleaseC
 
    for (const ImageProperty& shootingModeValue : shootingModeList)
    {
-      CString value = shootingModeValue.ValueAsString();
+      CString value = shootingModeValue.AsString();
       value.MakeUpper();
 
       if (value == "AV" && shootingMode == RemoteReleaseControl::shootingModeAv)
