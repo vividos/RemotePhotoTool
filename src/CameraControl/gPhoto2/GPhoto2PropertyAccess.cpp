@@ -93,7 +93,10 @@ unsigned int PropertyAccess::MapImagePropertyTypeToId(T_enImagePropertyType imag
    switch (imagePropertyType)
    {
    case propShootingMode: propertyName = "shootingmode"; break;
-   case propDriveMode: if (IsAvailPropertyName("Drive Mode")) propertyName = "Drive Mode"; break;
+   case propDriveMode:
+      if (IsAvailPropertyName("drivemode")) propertyName = "drivemode";
+      if (IsAvailPropertyName("Drive Mode")) propertyName = "Drive Mode";
+      break;
    case propISOSpeed: propertyName = "iso"; break;
    case propMeteringMode: propertyName = "meteringmode"; break;
    case propAFMode: if (IsAvailPropertyName("Metering Mode")) propertyName = "Metering Mode"; break;
@@ -107,9 +110,14 @@ unsigned int PropertyAccess::MapImagePropertyTypeToId(T_enImagePropertyType imag
    case propAFDistance: propertyName = "afdistance"; break;
    case propCurrentZoomPos: propertyName = "zoom"; break;
       //case propMaxZoomPos: propertyName = ""; break;
-      //case propAvailableShots: propertyName = ""; break;
+   case propAvailableShots:
+      if (IsAvailPropertyName("batterylevel"))
+         propertyName = "batterylevel";
+      break;
    case propSaveTo: propertyName = "capturetarget"; break;
-   case propBatteryLevel: if (IsAvailPropertyName("Battery Mode")) propertyName = "Battery Mode";
+   case propBatteryLevel:
+      if (IsAvailPropertyName("batterylevel")) propertyName = "batterylevel";
+      if (IsAvailPropertyName("Battery Mode")) propertyName = "Battery Mode";
    case propImageFormat: propertyName = "imageformat"; break;
    case propUnknown:
    default:
