@@ -137,8 +137,14 @@ unsigned int PropertyAccess::MapImagePropertyTypeToId(T_enImagePropertyType imag
    case propFlashMode: propertyName = "flashmode"; break;
    case propWhiteBalance: propertyName = "whitebalance"; break;
    case propAFDistance: propertyName = "afdistance"; break;
-   case propCurrentZoomPos: propertyName = "zoom"; break;
-      //case propMaxZoomPos: propertyName = ""; break;
+   case propCurrentZoomPos:
+      if (IsAvailPropertyName("Zoom")) propertyName = "Zoom";
+      if (IsAvailPropertyName("zoom")) propertyName = "zoom";
+      break;
+   case propMaxZoomPos:
+      // there is no zoom_max in gPhoto2, we handle it by ourselves
+      propertyName = "zoom_max";
+      break;
    case propAvailableShots:
       if (IsAvailPropertyName("batterylevel"))
          propertyName = "batterylevel";
