@@ -358,8 +358,21 @@ void PropertyAccess::SetPropertyByWidget(CameraWidget* widget, const Variant& va
 
    CheckError(_T("gp_widget_set_value"), ret, __FILE__, __LINE__);
 
-   ret = gp_camera_set_config(m_camera.get(), m_widget.get(), m_context.get());
-   CheckError(_T("gp_camera_set_config"), ret, __FILE__, __LINE__);
+   bool retry;
+   do
+   {
+      retry = false;
+
+      ret = gp_camera_set_config(m_camera.get(), m_widget.get(), m_context.get());
+      if (ret == GP_ERROR_CAMERA_BUSY)
+      {
+         ATLTRACE(_T("retrying setting value: ") + value.ToString());
+         retry = true;
+         Sleep(100);
+      }
+      else
+         CheckError(_T("gp_camera_set_config"), ret, __FILE__, __LINE__);
+   } while (retry);
 }
 
 unsigned int PropertyAccess::GetPropertyIdFromWidget(CameraWidget* widget)
