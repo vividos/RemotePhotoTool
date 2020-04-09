@@ -20,7 +20,6 @@ PropertyAccess::PropertyAccess(std::shared_ptr<_GPContext> context, std::shared_
 
 void PropertyAccess::Refresh()
 {
-   m_mapDeviceProperties.clear();
    m_mapImageProperties.clear();
    m_mapPropertyNames.clear();
 
@@ -503,14 +502,21 @@ void PropertyAccess::RecursiveAddProperties(CameraWidget* widget)
 
          RecursiveAddProperties(child);
       }
+
+      return;
    }
-   else if (type == GP_WIDGET_TEXT ||
+
+   if (type == GP_WIDGET_TEXT ||
       type == GP_WIDGET_MENU ||
+      type == GP_WIDGET_RANGE ||
       type == GP_WIDGET_RADIO ||
       type == GP_WIDGET_DATE ||
       type == GP_WIDGET_TOGGLE)
    {
       unsigned int propertyId = GetPropertyIdFromWidget(widget);
+
+      if (m_mapDeviceProperties.find(propertyId) != m_mapDeviceProperties.end())
+         return; // already a device property
 
       const char* name = nullptr;
       gp_widget_get_name(widget, &name);
@@ -531,7 +537,8 @@ void PropertyAccess::RecursiveAddProperties(CameraWidget* widget)
       CString parentNameText{ parentName };
       bool isImageProperty =
          parentNameText == "imgsettings" ||
-         parentNameText == "capturesettings";
+         parentNameText == "capturesettings" ||
+         parentNameText == "other";
 
       if (isImageProperty)
          m_mapImageProperties.insert(std::make_pair(propertyId, widget));
