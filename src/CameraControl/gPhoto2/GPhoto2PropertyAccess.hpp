@@ -30,6 +30,9 @@ namespace GPhoto2
       /// returns config value of camera, as text
       CString GetText(LPCSTR configValueName) const;
 
+      /// returns list of all valid values
+      std::vector<CString> GetValidValues(LPCSTR configValueName) const;
+
       /// returns camera operation ability; use CameraOption enum for operation
       bool GetCameraOperationAbility(unsigned int operation) const;
 

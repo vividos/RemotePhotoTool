@@ -68,6 +68,36 @@ CString PropertyAccess::GetText(LPCSTR configValueName) const
    return CString(text);
 }
 
+std::vector<CString> PropertyAccess::GetValidValues(LPCSTR configValueName) const
+{
+   CameraWidget* child = nullptr;
+   int ret = LookupWidget(m_widget.get(), configValueName, &child);
+   CheckError(_T("LookupWidget"), ret, __FILE__, __LINE__);
+
+   CameraWidgetType type;
+   ret = gp_widget_get_type(child, &type);
+   CheckError(_T("gp_widget_get_type"), ret, __FILE__, __LINE__);
+
+   std::vector<CString> validValuesList;
+
+   if (type == GP_WIDGET_RADIO ||
+      type == GP_WIDGET_MENU)
+   {
+      int choiceCount = gp_widget_count_choices(child);
+
+      for (int index = 0; index < choiceCount; index++)
+      {
+         const char* choiceText = nullptr;
+         int ret = gp_widget_get_choice(child, index, &choiceText);
+         CheckError(_T("gp_widget_get_choice"), ret, __FILE__, __LINE__);
+
+         validValuesList.push_back(CString(choiceText));
+      }
+   }
+
+   return validValuesList;
+}
+
 bool PropertyAccess::GetCameraOperationAbility(unsigned int operation) const
 {
    CameraAbilities abilities = { 0 };

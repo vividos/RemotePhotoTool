@@ -55,7 +55,39 @@ bool ViewfinderImpl::GetCapability(T_enViewfinderCapability viewfinderCapability
 
 void ViewfinderImpl::SetOutputType(T_enOutputType outputType)
 {
-   // TODO implement
+   int outputValue = 0;
+   switch (outputType)
+   {
+   case Viewfinder::outputTypeUndefined:
+      return; // do nothing
+
+   case Viewfinder::outputTypeLCD:
+      outputValue = 0;
+      break;
+
+   case Viewfinder::outputTypeVideoOut:
+      outputValue = 1;
+      break;
+
+   case Viewfinder::outputTypeOff:
+      outputValue = 2;
+      break;
+
+   default:
+      ATLASSERT(false);
+      return;
+   }
+
+   std::vector<CString> validValuesList = m_properties->GetValidValues("output");
+
+   if (outputValue >= validValuesList.size())
+      return; // index not available
+
+   Variant value;
+   value.Set(validValuesList[outputValue]);
+   value.SetType(Variant::typeInt32);
+
+   m_properties->SetPropertyByName(_T("output"), value);
 }
 
 void ViewfinderImpl::SetAvailImageHandler(T_fnOnAvailViewfinderImage onAvailViewfinderImage)
