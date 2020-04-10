@@ -10,7 +10,7 @@ class IPhotoModeViewHost;
 class CameraFileSystemTreeView;
 
 /// win traits for camera file system file list view
-typedef CWinTraitsOR<LVS_REPORT | LVS_SHOWSELALWAYS, WS_EX_CLIENTEDGE, CControlWinTraits>
+typedef CWinTraitsOR<LVS_REPORT | LVS_SHOWSELALWAYS | LVS_SHAREIMAGELISTS, WS_EX_CLIENTEDGE, CControlWinTraits>
 CameraFileSystemFileListViewWinTraits;
 
 /// \brief list view showing the file list of the camera file system

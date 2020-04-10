@@ -6,6 +6,7 @@
 //
 #include "stdafx.h"
 #include "CameraFileSystemFileListView.hpp"
+#include "SystemImageList.hpp"
 #include <CameraFileSystem.hpp>
 
 void CameraFileSystemFileListView::Init(std::shared_ptr<CameraFileSystem> cameraFileSystem)
@@ -16,6 +17,9 @@ void CameraFileSystemFileListView::Init(std::shared_ptr<CameraFileSystem> camera
 
    DWORD dwExStyle = LVS_EX_GRIDLINES | LVS_EX_FULLROWSELECT;
    SetExtendedListViewStyle(dwExStyle, dwExStyle);
+
+   ATLASSERT((GetStyle() & LVS_SHAREIMAGELISTS) != 0);
+   SetImageList(SystemImageList::Get(true), LVSIL_SMALL);
 }
 
 void CameraFileSystemFileListView::RefreshList()
@@ -29,7 +33,7 @@ void CameraFileSystemFileListView::RefreshList()
    int itemCount = 0;
    for (const FileInfo& fileInfo : fileInfoList)
    {
-      InsertItem(itemCount++, fileInfo.m_filename);
+      InsertItem(itemCount++, fileInfo.m_filename, SystemImageList::IndexFromFilename(fileInfo.m_filename));
    }
 
    SetRedraw(TRUE);
