@@ -92,7 +92,7 @@ void CameraInfoDlg::CollectDeviceProperties(CString& cszText)
          unsigned int uiPropertyId = vecProperties[iProp];
          const DeviceProperty p = m_sourceDevice.GetDeviceProperty(uiPropertyId);
 
-         cszText.AppendFormat(_T("Property %s (%08x): [%s]\n"),
+         cszText.AppendFormat(_T("Property \"%s\" (%08x): [%s]\n"),
             p.Name().GetString(), uiPropertyId, p.AsString().GetString());
 
          try
@@ -235,7 +235,7 @@ void CameraInfoDlg::CollectShootingModeInfos(std::shared_ptr<RemoteReleaseContro
       }
       else
       {
-      // switch through all shooting modes and dump
+         // switch through all shooting modes and dump
          std::vector<ImageProperty> vecShootingModes;
          unsigned int uiPropertyId = spRemoteReleaseControl->MapImagePropertyTypeToId(T_enImagePropertyType::propShootingMode);
          spRemoteReleaseControl->EnumImagePropertyValues(uiPropertyId, vecShootingModes);
@@ -243,12 +243,12 @@ void CameraInfoDlg::CollectShootingModeInfos(std::shared_ptr<RemoteReleaseContro
          if (vecShootingModes.empty())
             cszText += _T("(No shooting modes found)\n");
 
-         std::for_each(vecShootingModes.begin(), vecShootingModes.end(), [&](const ImageProperty& ip)
+         for (const ImageProperty& ip : vecShootingModes)
          {
             spRemoteReleaseControl->SetImageProperty(ip);
 
             CollectShootingModeDetails(spRemoteReleaseControl, ip, cszText);
-         });
+         }
       }
    }
    catch (CameraException& ex)

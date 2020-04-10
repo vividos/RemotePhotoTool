@@ -1,11 +1,9 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file ImagePropertyView.cpp View for image properties
 //
-
-// includes
 #include "stdafx.h"
 #include "resource.h"
 #include "ImagePropertyView.hpp"
@@ -16,9 +14,9 @@
 
 bool ImagePropertyView::Init()
 {
-   m_spRemoteReleaseControl = m_host.GetRemoteReleaseControl();
+   m_remoteReleaseControl = m_host.GetRemoteReleaseControl();
 
-   m_iPropertyEventId = m_spRemoteReleaseControl->AddPropertyEventHandler(
+   m_propertyEventId = m_remoteReleaseControl->AddPropertyEventHandler(
       std::bind(&ImagePropertyView::OnPropertyChanged, this, std::placeholders::_1, std::placeholders::_2));
 
    InsertColumn(columnName, _T("Name"), LVCFMT_LEFT, 300);
@@ -28,8 +26,8 @@ bool ImagePropertyView::Init()
    InsertColumn(columnId, _T("Id"), LVCFMT_LEFT, 80);
    InsertColumn(columnRaw, _T("Raw"), LVCFMT_LEFT, 80);
 
-   DWORD dwExStyle = LVS_EX_GRIDLINES | LVS_EX_FULLROWSELECT;
-   SetExtendedListViewStyle(dwExStyle, dwExStyle);
+   DWORD exStyle = LVS_EX_GRIDLINES | LVS_EX_FULLROWSELECT;
+   SetExtendedListViewStyle(exStyle, exStyle);
 
    RefreshList();
 
@@ -38,45 +36,45 @@ bool ImagePropertyView::Init()
 
 void ImagePropertyView::DestroyView()
 {
-   if (m_iPropertyEventId != -1 && m_spRemoteReleaseControl != nullptr)
-      m_spRemoteReleaseControl->RemovePropertyEventHandler(m_iPropertyEventId);
+   if (m_propertyEventId != -1 && m_remoteReleaseControl != nullptr)
+      m_remoteReleaseControl->RemovePropertyEventHandler(m_propertyEventId);
 
    ATLVERIFY(TRUE == DestroyWindow());
 }
 
-void ImagePropertyView::OnPropertyChanged(RemoteReleaseControl::T_enPropertyEvent /*enPropertyEvent*/, unsigned int uiPropertyId)
+void ImagePropertyView::OnPropertyChanged(RemoteReleaseControl::T_enPropertyEvent /*propertyEvent*/, unsigned int propertyId)
 {
-   if (uiPropertyId == 0)
+   if (propertyId == 0)
       PostMessage(WM_RELEASECONTROL_ALL_PROPERTIES_CHANGED);
    else
-      PostMessage(WM_RELEASECONTROL_PROPERTY_CHANGED, uiPropertyId);
+      PostMessage(WM_RELEASECONTROL_PROPERTY_CHANGED, propertyId);
 }
 
-void ImagePropertyView::UpdateProperty(unsigned int uiImagePropertyId)
+void ImagePropertyView::UpdateProperty(unsigned int imagePropertyId)
 {
-   ATLASSERT(m_spRemoteReleaseControl != nullptr);
-   RemoteReleaseControl& rrc = *m_spRemoteReleaseControl;
+   ATLASSERT(m_remoteReleaseControl != nullptr);
+   RemoteReleaseControl& rrc = *m_remoteReleaseControl;
 
    SetRedraw(FALSE);
 
    // find property by item data
-   for (int iIndex=0, iMax = GetItemCount(); iIndex<iMax; iIndex++)
+   for (int index = 0, maxIndex = GetItemCount(); index < maxIndex; index++)
    {
-      unsigned int uiPropertyId = GetItemData(iIndex);
-      if (uiPropertyId != uiImagePropertyId)
+      unsigned int propertyId = GetItemData(index);
+      if (propertyId != imagePropertyId)
          continue;
 
       try
       {
-         ImageProperty ip = rrc.GetImageProperty(uiPropertyId);
+         ImageProperty ip = rrc.GetImageProperty(propertyId);
 
-         SetItemText(iIndex, columnValue, ip.AsString());
-         SetItemText(iIndex, columnReadOnly, ip.IsReadOnly() ? _T("yes") : _T("no"));
-         SetItemText(iIndex, columnRaw, ip.Value().ToString());
+         SetItemText(index, columnValue, ip.AsString());
+         SetItemText(index, columnReadOnly, ip.IsReadOnly() ? _T("yes") : _T("no"));
+         SetItemText(index, columnRaw, ip.Value().ToString());
       }
       catch (const CameraException& ex)
       {
-         SetItemText(iIndex, columnValue, ex.Message());
+         SetItemText(index, columnValue, ex.Message());
       }
    }
 
@@ -85,53 +83,53 @@ void ImagePropertyView::UpdateProperty(unsigned int uiImagePropertyId)
 
 void ImagePropertyView::RefreshList()
 {
-   ATLASSERT(m_spRemoteReleaseControl != nullptr);
-   RemoteReleaseControl& rrc = *m_spRemoteReleaseControl;
+   ATLASSERT(m_remoteReleaseControl != nullptr);
+   RemoteReleaseControl& rrc = *m_remoteReleaseControl;
 
    SetRedraw(FALSE);
 
    DeleteAllItems();
 
    // disable viewfinder while refreshing list
-   ViewFinderView* pViewfinder = m_host.GetViewFinderView();
+   ViewFinderView* viewfinder = m_host.GetViewFinderView();
 
-   if (pViewfinder != NULL)
-      pViewfinder->EnableUpdate(false);
+   if (viewfinder != nullptr)
+      viewfinder->EnableUpdate(false);
 
-   std::vector<unsigned int> vecImagePropertyIds;
-   vecImagePropertyIds = rrc.EnumImageProperties();
+   std::vector<unsigned int> imagePropertyIdList;
+   imagePropertyIdList = rrc.EnumImageProperties();
 
-   for (size_t i=0, iMax = vecImagePropertyIds.size(); i<iMax; i++)
+   for (size_t index = 0, maxIndex = imagePropertyIdList.size(); index < maxIndex; index++)
    {
-      unsigned int uiPropertyId = vecImagePropertyIds[i];
+      unsigned int propertyId = imagePropertyIdList[index];
 
       try
       {
-         ImageProperty ip = rrc.GetImageProperty(uiPropertyId);
+         ImageProperty ip = rrc.GetImageProperty(propertyId);
 
-         int iIndex = InsertItem(GetItemCount(), ip.Name());
-         SetItemData(iIndex, uiPropertyId);
+         int itemIndex = InsertItem(GetItemCount(), ip.Name());
+         SetItemData(index, propertyId);
 
-         SetItemText(iIndex, columnValue, ip.AsString());
-         SetItemText(iIndex, columnType, Variant::TypeAsString(ip.Value().Type()));
-         SetItemText(iIndex, columnReadOnly, ip.IsReadOnly() ? _T("yes") : _T("no"));
+         SetItemText(itemIndex, columnValue, ip.AsString());
+         SetItemText(itemIndex, columnType, Variant::TypeAsString(ip.Value().Type()));
+         SetItemText(itemIndex, columnReadOnly, ip.IsReadOnly() ? _T("yes") : _T("no"));
 
-         CString cszId;
-         cszId.Format(_T("0x%08x"), uiPropertyId);
-         SetItemText(iIndex, columnId, cszId);
+         CString textId;
+         textId.Format(_T("0x%08x"), propertyId);
+         SetItemText(itemIndex, columnId, textId);
 
-         SetItemText(iIndex, columnRaw, ip.Value().ToString());
+         SetItemText(itemIndex, columnRaw, ip.Value().ToString());
       }
       catch (const CameraException& ex)
       {
-         int iIndex = InsertItem(GetItemCount(), _T("???"));
+         int itemIndex = InsertItem(GetItemCount(), _T("???"));
 
-         SetItemText(iIndex, columnValue, ex.Message());
+         SetItemText(itemIndex, columnValue, ex.Message());
       }
    }
 
-   if (pViewfinder != NULL)
-      pViewfinder->EnableUpdate(true);
+   if (viewfinder != nullptr)
+      viewfinder->EnableUpdate(true);
 
    SetRedraw(TRUE);
 }

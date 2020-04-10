@@ -1,24 +1,22 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2016 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file ImagePropertyView.hpp View for image properties
 //
 #pragma once
 
-// includes
 #include "IPhotoModeView.hpp"
 #include "RemoteReleaseControl.hpp"
 
-// forward references
 class IPhotoModeViewHost;
 class SourceDevice;
 
 /// win traits for device property view
 typedef CWinTraitsOR<LVS_REPORT | LVS_SHOWSELALWAYS, WS_EX_CLIENTEDGE, CControlWinTraits>
-   ImagePropertyViewWinTraits;
+ImagePropertyViewWinTraits;
 
-/// devie property view
+/// image property view
 class ImagePropertyView :
    public CWindowImpl<ImagePropertyView, CListViewCtrl, ImagePropertyViewWinTraits>,
    public IPhotoModeView
@@ -30,7 +28,7 @@ public:
    /// ctor
    ImagePropertyView(IPhotoModeViewHost& host)
       :m_host(host),
-       m_iPropertyEventId(-1)
+      m_propertyEventId(-1)
    {
    }
    /// dtor
@@ -55,19 +53,19 @@ private:
    bool Init();
 
    /// called when property changed
-   void OnPropertyChanged(RemoteReleaseControl::T_enPropertyEvent enPropertyEvent, unsigned int uiPropertyId);
+   void OnPropertyChanged(RemoteReleaseControl::T_enPropertyEvent propertyEvent, unsigned int propertyId);
 
    /// updates single property
-   void UpdateProperty(unsigned int uiImagePropertyId);
+   void UpdateProperty(unsigned int imagePropertyId);
 
    /// refreshes property list
    void RefreshList();
 
    // virtual methods from IPhotoModeView
 
-   virtual HWND CreateView(HWND hWndParent) override
+   virtual HWND CreateView(HWND hwndParent) override
    {
-      HWND hwnd = BaseClass::Create(hWndParent, rcDefault/*, NULL, WS_VISIBLE | LVS_REPORT*/);
+      HWND hwnd = BaseClass::Create(hwndParent, rcDefault);
 
       if (!Init())
          return nullptr;
@@ -88,10 +86,10 @@ private:
       MESSAGE_HANDLER(WM_RELEASECONTROL_ALL_PROPERTIES_CHANGED, OnReleaseControlAllPropertiesChanged)
    END_MSG_MAP()
 
-// Handler prototypes (uncomment arguments if needed):
-// LRESULT MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
-// LRESULT CommandHandler(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
-// LRESULT NotifyHandler(int /*idCtrl*/, LPNMHDR /*pnmh*/, BOOL& bHandled)
+   // Handler prototypes (uncomment arguments if needed):
+   // LRESULT MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+   // LRESULT CommandHandler(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+   // LRESULT NotifyHandler(int /*idCtrl*/, LPNMHDR /*pnmh*/, BOOL& bHandled)
 
    /// called when release property has changed
    LRESULT OnReleaseControlPropertyChanged(UINT /*uMsg*/, WPARAM wParam, LPARAM /*lParam*/, BOOL& /*bHandled*/)
@@ -112,8 +110,8 @@ private:
    IPhotoModeViewHost& m_host;
 
    /// handler id for property changes
-   int m_iPropertyEventId;
+   int m_propertyEventId;
 
    /// remote release control
-   std::shared_ptr<RemoteReleaseControl> m_spRemoteReleaseControl;
+   std::shared_ptr<RemoteReleaseControl> m_remoteReleaseControl;
 };

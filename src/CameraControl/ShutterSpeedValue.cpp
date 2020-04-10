@@ -28,16 +28,15 @@ void ShutterSpeedValue::Add2EV()
 
 unsigned int ShutterSpeedValue::RawValue() const
 {
-   unsigned int uiRawValue = 0;
+   unsigned int rawValue = 0;
    if (m_value.Value().Type() == Variant::typeUInt16)
-      uiRawValue = m_value.Value().Get<unsigned short>();
-   else
-   if (m_value.Value().Type() == Variant::typeUInt32)
-      uiRawValue = m_value.Value().Get<unsigned int>();
+      rawValue = m_value.Value().Get<unsigned short>();
+   else if (m_value.Value().Type() == Variant::typeUInt32)
+      rawValue = m_value.Value().Get<unsigned int>();
    else
       ATLASSERT(false);
 
-   return uiRawValue;
+   return rawValue;
 }
 
 void ShutterSpeedValue::SetAndCheckNewRaw(unsigned int uiValue)

@@ -31,14 +31,14 @@ LPCTSTR c_pszSettingsRegkey = _T("Software\\RemotePhotoTool");
 
 /// ctor
 MainFrame::MainFrame()
-:m_hWndView(nullptr),
- m_settings(c_pszSettingsRegkey),
- m_dwUIThreadId(Thread::CurrentId()),
- m_enCurrentViewType(viewBlank),
- m_enPrevImagesSavedView(viewBlank),
- m_iStateEventHandlerId(-1),
- m_iDownloadEventHandlerId(-1),
- m_iImagePropertyHandlerId(-1)
+   :m_hWndView(nullptr),
+   m_settings(c_pszSettingsRegkey),
+   m_dwUIThreadId(Thread::CurrentId()),
+   m_enCurrentViewType(viewBlank),
+   m_enPrevImagesSavedView(viewBlank),
+   m_iStateEventHandlerId(-1),
+   m_iDownloadEventHandlerId(-1),
+   m_iImagePropertyHandlerId(-1)
 {
    m_settings.Load();
 
@@ -769,7 +769,7 @@ void MainFrame::SetupToolbar()
    {
       HWND hWndToolBar =
          CreateSimpleToolBarCtrl(m_hWnd, IDR_MAINFRAME, FALSE,
-         ATL_SIMPLE_TOOLBAR_PANE_STYLE | BTNS_SHOWTEXT | TBSTYLE_LIST);
+            ATL_SIMPLE_TOOLBAR_PANE_STYLE | BTNS_SHOWTEXT | TBSTYLE_LIST);
 
       AddSimpleReBarBand(hWndToolBar, NULL, TRUE);
       UIAddToolBar(hWndToolBar);
@@ -1258,22 +1258,22 @@ void MainFrame::OnDownloadEvent(RemoteReleaseControl::T_enDownloadEvent enDownlo
    // multi status bar/progress bar handling, see here:
    // http://msdn.microsoft.com/en-us/magazine/cc188794.aspx
 
-   switch(enDownloadEvent)
+   switch (enDownloadEvent)
    {
    case RemoteReleaseControl::downloadEventStarted:
-      {
-         if (m_downloadProgressBar.m_hWnd != NULL)
-            m_downloadProgressBar.DestroyWindow();
+   {
+      if (m_downloadProgressBar.m_hWnd != NULL)
+         m_downloadProgressBar.DestroyWindow();
 
-         CRect rcPane;
-         m_statusBar.GetPaneRect(IDR_PANE_PROGRESS, &rcPane);
+      CRect rcPane;
+      m_statusBar.GetPaneRect(IDR_PANE_PROGRESS, &rcPane);
 
-         m_downloadProgressBar.Create(m_statusBar, rcPane, NULL, WS_CHILD | WS_VISIBLE);
-         m_downloadProgressBar.ShowWindow(SW_SHOW);
+      m_downloadProgressBar.Create(m_statusBar, rcPane, NULL, WS_CHILD | WS_VISIBLE);
+      m_downloadProgressBar.ShowWindow(SW_SHOW);
 
-         m_downloadProgressBar.SetRange(0, 100);
-      }
-      break;
+      m_downloadProgressBar.SetRange(0, 100);
+   }
+   break;
 
    case RemoteReleaseControl::downloadEventInProgress:
       if (m_downloadProgressBar.IsWindow())
