@@ -128,6 +128,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="SystemImageList.cpp" />
     <ClCompile Include="TimeLapsePhotoModeView.cpp" />
     <ClCompile Include="TimelapseVideoOptionsDlg.cpp" />
     <ClCompile Include="ViewFinderImageWindow.cpp" />
@@ -170,6 +171,7 @@
     <ClInclude Include="SettingsDlg.hpp" />
     <ClInclude Include="StandardPhotoModeView.hpp" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="SystemImageList.hpp" />
     <ClInclude Include="TimeLapsePhotoModeView.hpp" />
     <ClInclude Include="TimelapseVideoOptionsDlg.hpp" />
     <ClInclude Include="ViewFinderImageWindow.hpp" />
