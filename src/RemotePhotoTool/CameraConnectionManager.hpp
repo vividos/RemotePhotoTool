@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2016 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file CameraConnectionManager.hpp Camera connection manager
 //
@@ -27,6 +27,12 @@ public:
 
    /// returns if a camera is connected
    bool IsConnected() const
+   {
+      return m_spSourceDevice != nullptr;
+   }
+
+   /// returns if a camera is connected and has remote release control
+   bool HasReleaseControl() const
    {
       return
          m_spSourceDevice != nullptr &&

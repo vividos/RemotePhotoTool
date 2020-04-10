@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2016 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file RemotePhotoTool\MainFrame.hpp Main application frame
 //
@@ -291,7 +291,7 @@ private:
    void ShowViewfinder(bool bShow);
 
    /// enables or disables photo modes (and live view)
-   void EnablePhotoModes(bool bEnable);
+   void EnablePhotoModes(bool isConnected, bool hasReleaseControl);
 
    /// enables or disables viewfinder UI element, depending on if it's available
    void EnableViewfinder(bool bEnable);

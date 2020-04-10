@@ -70,16 +70,16 @@ BOOL MainFrame::OnIdle()
    UIUpdateToolBar();
 
    // enable contextual tabs
-   bool bConnected =
+   bool hasReleaseControl =
       m_enCurrentViewType != viewBlank &&
       m_enCurrentViewType != viewPreviousImages &&
-      m_connection.IsConnected();
+      m_connection.HasReleaseControl();
 
-   SetRibbonContextAvail(ID_TAB_GROUP_CONTEXT_CAMERA, bConnected ?
+   SetRibbonContextAvail(ID_TAB_GROUP_CONTEXT_CAMERA, hasReleaseControl ?
       UI_CONTEXTAVAILABILITY_AVAILABLE : UI_CONTEXTAVAILABILITY_NOTAVAILABLE);
 
-   bool bViewfinderActive = m_upViewFinderView != nullptr;
-   SetRibbonContextAvail(ID_TAB_GROUP_CONTEXT_VIEWFINDER, bViewfinderActive ?
+   bool isViewfinderActive = m_upViewFinderView != nullptr;
+   SetRibbonContextAvail(ID_TAB_GROUP_CONTEXT_VIEWFINDER, isViewfinderActive ?
       UI_CONTEXTAVAILABILITY_AVAILABLE : UI_CONTEXTAVAILABILITY_NOTAVAILABLE);
 
    return FALSE;
@@ -274,15 +274,18 @@ LRESULT MainFrame::OnHomeConnect(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWnd
 
       if (m_connection.Connect(m_hWnd, spSourceDevice))
       {
-         EnableCameraUI(true);
-         EnableViewfinder(true);
+         if (m_connection.HasReleaseControl())
+         {
+            EnableCameraUI(true);
+            EnableViewfinder(true);
 
-         // add event handler
-         m_iStateEventHandlerId = m_connection.GetRemoteReleaseControl()->AddStateEventHandler(
-            std::bind(&MainFrame::OnStateEvent, this, std::placeholders::_1, std::placeholders::_2));
+            // add event handler
+            m_iStateEventHandlerId = m_connection.GetRemoteReleaseControl()->AddStateEventHandler(
+               std::bind(&MainFrame::OnStateEvent, this, std::placeholders::_1, std::placeholders::_2));
 
-         m_iDownloadEventHandlerId = m_connection.GetRemoteReleaseControl()->AddDownloadEventHandler(
-            std::bind(&MainFrame::OnDownloadEvent, this, std::placeholders::_1, std::placeholders::_2));
+            m_iDownloadEventHandlerId = m_connection.GetRemoteReleaseControl()->AddDownloadEventHandler(
+               std::bind(&MainFrame::OnDownloadEvent, this, std::placeholders::_1, std::placeholders::_2));
+         }
       }
    }
    catch (...)
@@ -290,8 +293,8 @@ LRESULT MainFrame::OnHomeConnect(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWnd
       return 0;
    }
 
-   // start with standard view
-   SetNewView(T_enViewType::viewStandard);
+   // start with standard view or file system, depending on release control
+   SetNewView(m_connection.HasReleaseControl() ? T_enViewType::viewStandard : T_enViewType::viewCameraFileSystem);
 
    UpdateTitle();
 
@@ -356,7 +359,7 @@ LRESULT MainFrame::OnCameraSettingsSaveToSelChanged(UI_EXECUTIONVERB verb, WORD 
 {
    if (verb == UI_EXECUTIONVERB_EXECUTE &&
       uSel != UI_COLLECTION_INVALIDINDEX &&
-      m_connection.IsConnected())
+      m_connection.HasReleaseControl())
    {
       ShutterReleaseSettings::T_enSaveTarget enSaveTarget =
          static_cast<ShutterReleaseSettings::T_enSaveTarget>(uSel + 1);
@@ -393,7 +396,7 @@ void MainFrame::SetCameraSettingsSaveTo(ShutterReleaseSettings::T_enSaveTarget e
 {
    m_releaseSettings.SaveTarget(enSaveTarget);
 
-   if (!m_connection.IsConnected())
+   if (!m_connection.HasReleaseControl())
       return;
 
    try
@@ -422,7 +425,7 @@ LRESULT MainFrame::OnCameraSettingsImageFormatSelChanged(UI_EXECUTIONVERB verb, 
    if (verb == UI_EXECUTIONVERB_EXECUTE &&
       uSel != UI_COLLECTION_INVALIDINDEX &&
       !m_vecAllImageFormats.empty() &&
-      m_connection.IsConnected())
+      m_connection.HasReleaseControl())
    {
       size_t indexImageFormat = uSel;
 
@@ -839,10 +842,11 @@ void MainFrame::LockActionMode(bool bLock)
       return;
    }
 
-   bool enable = !bLock && m_connection.IsConnected();
+   bool isConnected = !bLock && m_connection.IsConnected();
+   bool hasReleaseControl = !bLock && m_connection.HasReleaseControl();
 
-   EnablePhotoModes(enable);
-   EnableViewfinder(enable);
+   EnablePhotoModes(isConnected, hasReleaseControl);
+   EnableViewfinder(hasReleaseControl);
 }
 
 void MainFrame::EnableUI(int nID, bool bEnable)
@@ -891,13 +895,18 @@ void MainFrame::SetNewView(T_enViewType enViewType)
    else
       m_splitter.SetSinglePaneMode(SPLIT_PANE_LEFT);
 
-   bool bEnable =
+   bool isConnected =
       enViewType != viewBlank &&
       enViewType != viewPreviousImages &&
       m_connection.IsConnected();
 
-   EnablePhotoModes(bEnable);
-   EnableViewfinder(bEnable);
+   bool hasReleaseControl =
+      enViewType != viewBlank &&
+      enViewType != viewPreviousImages &&
+      m_connection.HasReleaseControl();
+
+   EnablePhotoModes(isConnected, hasReleaseControl);
+   EnableViewfinder(hasReleaseControl);
 
    bool bScripting = enViewType == viewScripting;
    EnableScriptingUI(bScripting);
@@ -958,7 +967,7 @@ void MainFrame::DisconnectCamera()
 {
    ShowViewfinder(false);
 
-   if (m_connection.IsConnected())
+   if (m_connection.HasReleaseControl())
    {
       std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl =
          m_connection.GetRemoteReleaseControl();
@@ -974,7 +983,7 @@ void MainFrame::DisconnectCamera()
       m_connection.Disconnect();
    }
 
-   EnablePhotoModes(false);
+   EnablePhotoModes(false, false);
    EnableViewfinder(false);
    EnableScriptingUI(false);
    EnableCameraUI(false);
@@ -982,21 +991,20 @@ void MainFrame::DisconnectCamera()
    UpdateTitle();
 }
 
-void MainFrame::EnablePhotoModes(bool bEnable)
+void MainFrame::EnablePhotoModes(bool isConnected, bool hasReleaseControl)
 {
-   UIEnable(ID_PHOTO_MODE_NORMAL, bEnable);
-   UIEnable(ID_PHOTO_MODE_HDR, bEnable);
-   UIEnable(ID_PHOTO_MODE_PANO, bEnable);
-   UIEnable(ID_PHOTO_MODE_HDR_PANO, bEnable);
-   UIEnable(ID_PHOTO_MODE_TIMELAPSE, bEnable);
-   UIEnable(ID_PHOTO_MODE_PHOTOSTACK, bEnable);
+   UIEnable(ID_PHOTO_MODE_NORMAL, hasReleaseControl);
+   UIEnable(ID_PHOTO_MODE_HDR, hasReleaseControl);
+   UIEnable(ID_PHOTO_MODE_PANO, hasReleaseControl);
+   UIEnable(ID_PHOTO_MODE_HDR_PANO, hasReleaseControl);
+   UIEnable(ID_PHOTO_MODE_TIMELAPSE, hasReleaseControl);
+   UIEnable(ID_PHOTO_MODE_PHOTOSTACK, hasReleaseControl);
    UIEnable(ID_PHOTO_MODE_SCRIPTING, true); // scripting is always enabled
-   UIEnable(ID_PHOTO_MODE_DEVICE_PROPERTIES, bEnable);
-   UIEnable(ID_PHOTO_MODE_IMAGE_PROPERTIES, bEnable);
+   UIEnable(ID_PHOTO_MODE_DEVICE_PROPERTIES, isConnected);
+   UIEnable(ID_PHOTO_MODE_IMAGE_PROPERTIES, hasReleaseControl);
 
    bool enableCameraFileSystem =
-      bEnable &&
-      m_connection.IsConnected() &&
+      isConnected &&
       m_connection.GetSourceDevice()->GetDeviceCapability(SourceDevice::capCameraFileSystem);
 
    UIEnable(ID_PHOTO_MODE_CAMERA_FILE_SYSTEM, enableCameraFileSystem);
@@ -1007,7 +1015,7 @@ void MainFrame::EnableViewfinder(bool bEnable)
    if (bEnable)
    {
       bool bViewFinderAvail =
-         m_connection.IsConnected() &&
+         m_connection.HasReleaseControl() &&
          m_connection.GetRemoteReleaseControl()->GetCapability(RemoteReleaseControl::capViewfinder);
 
       UIEnable(ID_VIEWFINDER_SHOW, bViewFinderAvail);
@@ -1061,7 +1069,7 @@ void MainFrame::EnableCameraUI(bool bEnable)
    UIEnable(ID_CAMERA_SETTINGS_SAVETO_BOTH, bEnable);
    UIEnable(ID_CAMERA_SETTINGS_IMAGE_FORMAT, bEnable);
 
-   if (bEnable && m_connection.IsConnected())
+   if (bEnable && m_connection.HasReleaseControl())
    {
       SetupImagePropertyManager();
 
@@ -1094,7 +1102,7 @@ void MainFrame::EnableCameraUI(bool bEnable)
    if (!bEnable)
    {
       if (m_iImagePropertyHandlerId != -1 &&
-         m_connection.IsConnected())
+         m_connection.HasReleaseControl())
          m_connection.GetRemoteReleaseControl()->RemovePropertyEventHandler(m_iImagePropertyHandlerId);
 
       m_vecAllImageFormats.clear();
@@ -1127,7 +1135,7 @@ void MainFrame::RestoreWindowPosition()
 void MainFrame::OnUpdatedImageProperty(RemoteReleaseControl::T_enPropertyEvent enPropertyEvent, unsigned int uiValue)
 {
    if (enPropertyEvent == RemoteReleaseControl::propEventPropertyChanged &&
-      m_connection.IsConnected() &&
+      m_connection.HasReleaseControl() &&
       uiValue == m_connection.GetRemoteReleaseControl()->MapImagePropertyTypeToId(propShootingMode))
    {
       // shooting mode has changed; update some fields
@@ -1223,7 +1231,7 @@ void MainFrame::OnStateEvent(RemoteReleaseControl::T_enStateEvent enStateEvent, 
    {
       // don't disconnect, only disable all buttons, since we're in the
       // state event handler
-      EnablePhotoModes(false);
+      EnablePhotoModes(false, false);
       EnableViewfinder(false);
       EnableScriptingUI(false);
       EnableCameraUI(false);

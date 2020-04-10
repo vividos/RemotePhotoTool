@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2016 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file CameraConnectionManager.cpp Camera connection manager
 //
@@ -21,16 +21,19 @@ bool CameraConnectionManager::Connect(HWND hWnd, std::shared_ptr<SourceDevice> s
 
    m_spSourceDevice = spSourceDevice;
 
-   try
+   if (m_spSourceDevice->GetDeviceCapability(SourceDevice::capRemoteReleaseControl))
    {
-      m_spRemoteReleaseControl = m_spSourceDevice->EnterReleaseControl();
-   }
-   catch (const CameraException& ex)
-   {
-      CameraErrorDlg dlg(_T("Couldn't start remote release connection"), ex);
-      dlg.DoModal(hWnd);
+      try
+      {
+         m_spRemoteReleaseControl = m_spSourceDevice->EnterReleaseControl();
+      }
+      catch (const CameraException& ex)
+      {
+         CameraErrorDlg dlg(_T("Couldn't start remote release connection"), ex);
+         dlg.DoModal(hWnd);
 
-      m_spRemoteReleaseControl.reset();
+         m_spRemoteReleaseControl.reset();
+      }
    }
 
    return IsConnected();
@@ -45,7 +48,7 @@ void CameraConnectionManager::Disconnect()
 std::shared_ptr<Viewfinder> CameraConnectionManager::StartViewfinder(HWND hWnd)
 {
    bool bViewFinderAvail =
-      IsConnected() &&
+      HasReleaseControl() &&
       GetRemoteReleaseControl()->GetCapability(RemoteReleaseControl::capViewfinder);
 
    if (!bViewFinderAvail)
