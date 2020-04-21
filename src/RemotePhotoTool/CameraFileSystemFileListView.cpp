@@ -1,12 +1,13 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2017 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file CameraFileSystemFileListView.cpp File list view for camera file system
 //
 #include "stdafx.h"
 #include "CameraFileSystemFileListView.hpp"
 #include "SystemImageList.hpp"
+#include "IPhotoModeViewHost.hpp"
 #include <CameraFileSystem.hpp>
 
 void CameraFileSystemFileListView::Init(std::shared_ptr<CameraFileSystem> cameraFileSystem)

@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2017 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file CameraFileSystemFileListView.hpp File list view for camera file system
 //
@@ -22,8 +22,9 @@ class CameraFileSystemFileListView :
 
 public:
    /// ctor
-   CameraFileSystemFileListView(CameraFileSystemTreeView& treeView)
-      :m_treeView(treeView)
+   CameraFileSystemFileListView(IPhotoModeViewHost& host, CameraFileSystemTreeView& treeView)
+      :m_host(host),
+      m_treeView(treeView)
    {
    }
 
@@ -61,6 +62,9 @@ private:
    CameraFileSystemTreeView& m_treeView;
 
    // model
+
+   /// host access
+   IPhotoModeViewHost& m_host;
 
    /// camera file system
    std::shared_ptr<CameraFileSystem> m_cameraFileSystem;
