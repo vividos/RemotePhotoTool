@@ -131,6 +131,10 @@ BEGIN
         MENUITEM "Show overlay i&mage",         ID_VIEWFINDER_SHOW_OVERLAY_IMAGE
         MENUITEM "Show &histogram",             ID_VIEWFINDER_HISTOGRAM
     END
+    POPUP "&File system"
+    BEGIN
+        MENUITEM "&Download",                   ID_FILESYSTEM_DOWNLOAD
+    END
     POPUP "&View"
     BEGIN
         MENUITEM "&Viewfinder",                 ID_VIEWFINDER_SHOW
@@ -283,6 +287,7 @@ ID_SCRIPTING_EDIT       BITMAP                  "res\\scripting_edit.bmp"
 
 ID_EXTRA_CREATE_TIMELAPSE_FROM_FILES BITMAP                  "res\\placeholder.bmp"
 
+ID_FILESYSTEM_DOWNLOAD  BITMAP                  "res\\placeholder.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -649,6 +654,7 @@ BEGIN
     ID_SCRIPTING_EDIT       "Edits currently loaded Lua script in RemoteScriptingEditor\nEdit script"
     ID_EXTRA_CREATE_TIMELAPSE_FROM_FILES 
                             "Creates timelapse video from files\nTimelapse from files"
+    ID_FILESYSTEM_DOWNLOAD  "Dowloads the selected files from the camera\nDownload files"
 END
 
 #endif    // English (United States) resources

@@ -53,6 +53,8 @@
     <Command Name="phototool_VIEWFINDER_SHOW_OVERLAY_IMAGE" Symbol="ID_VIEWFINDER_SHOW_OVERLAY_IMAGE" Id="32812" Keytip="L" />
     <Command Name="phototool_VIEWFINDER_HISTOGRAM" Symbol="ID_VIEWFINDER_HISTOGRAM" Id="32813" Keytip="H" />
 
+    <Command Name="phototool_FILESYSTEM_DOWNLOAD" Symbol="ID_FILESYSTEM_DOWNLOAD" Id="32820" Keytip="H" />
+
     <Command Name="phototool_SCRIPTING_OPEN" Symbol="ID_SCRIPTING_OPEN" Id="32814" Keytip="O" />
     <Command Name="phototool_SCRIPTING_RELOAD" Symbol="ID_SCRIPTING_RELOAD" Id="32815" Keytip="L" />
     <Command Name="phototool_SCRIPTING_RUN" Symbol="ID_SCRIPTING_RUN" Id="32816" Keytip="R" />
@@ -72,11 +74,13 @@
     <Command Name="TabPreviousImages" Symbol="ID_TAB_PREVIOUS_IMAGES" LabelTitle="Previous Images" Keytip="P" />
     <Command Name="TabContextCamera" Symbol="ID_TAB_CONTEXT_CAMERA" LabelTitle="Camera" Keytip="C" />
     <Command Name="TabContextViewfinder" Symbol="ID_TAB_CONTEXT_VIEWFINDER" LabelTitle="Viewfinder" Keytip="V" />
+    <Command Name="TabContextFiles" Symbol="ID_TAB_CONTEXT_FILES" LabelTitle="Files" Keytip="F" />
     <Command Name="TabContextScripting" Symbol="ID_TAB_CONTEXT_SCRIPTING" LabelTitle="Scripting" Keytip="S" />
 
     <!-- Tab groups -->
     <Command Name="TabGroupContextCamera" Symbol="ID_TAB_GROUP_CONTEXT_CAMERA" LabelTitle="Camera" />
     <Command Name="TabGroupContextViewfinder" Symbol="ID_TAB_GROUP_CONTEXT_VIEWFINDER" LabelTitle="Viewfinder" />
+    <Command Name="TabGroupContextFileSystem" Symbol="ID_TAB_GROUP_CONTEXT_FILESYSTEM" LabelTitle="File System" />
     <Command Name="TabGroupContextScripting" Symbol="ID_TAB_GROUP_CONTEXT_SCRIPTING" LabelTitle="Scripting" />
 
     <!-- Groups -->
@@ -93,6 +97,7 @@
     <Command Name="GroupViewfinderAdjust" Symbol="ID_GROUP_VIEWFINDER_ADJUST" LabelTitle="Adjust" />
     <Command Name="GroupViewfinderZoom" Symbol="ID_GROUP_VIEWFINDER_ZOOM" LabelTitle="Zoom" />
     <Command Name="GroupViewfinderShow" Symbol="ID_GROUP_VIEWFINDER_SHOW" LabelTitle="Show" />
+    <Command Name="GroupFileSystemFiles" Symbol="ID_GROUP_FILESYSTEM_FILES" LabelTitle="Files" />
     <Command Name="GroupScriptingScript" Symbol="ID_GROUP_SCRIPTING_SCRIPT" LabelTitle="Script" />
     <Command Name="GroupScriptingDebug" Symbol="ID_GROUP_SCRIPTING_DEBUG" LabelTitle="Debug" />
     <Command Name="GroupScriptingEdit" Symbol="ID_GROUP_SCRIPTING_EDIT" LabelTitle="Edit" />
@@ -287,6 +292,23 @@
               <Button CommandName="phototool_VIEWFINDER_SHOW_OVEREXPOSED"/>
               <!-- Button CommandName="phototool_VIEWFINDER_SHOW_OVERLAY_IMAGE"/ -->
               <!-- Button CommandName="phototool_VIEWFINDER_HISTOGRAM"/ -->
+            </Group>
+          </Tab>
+        </TabGroup>
+
+        <!-- Contextual tab "File system" -->
+        <TabGroup CommandName="TabGroupContextFileSystem">
+          <Tab CommandName="TabContextFiles">
+            <Tab.ScalingPolicy>
+              <ScalingPolicy>
+                <ScalingPolicy.IdealSizes>
+                  <Scale Group="GroupFileSystemFiles" Size="Large"/>
+                </ScalingPolicy.IdealSizes>
+              </ScalingPolicy>
+            </Tab.ScalingPolicy>
+
+            <Group CommandName="GroupFileSystemFiles" SizeDefinition="OneButton">
+              <Button CommandName="phototool_FILESYSTEM_DOWNLOAD"/>
             </Group>
           </Tab>
         </TabGroup>

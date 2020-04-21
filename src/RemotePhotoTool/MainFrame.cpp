@@ -865,6 +865,7 @@ void MainFrame::SetNewView(T_enViewType enViewType)
       return; // already in view
 
    SetRibbonContextAvail(ID_TAB_GROUP_CONTEXT_SCRIPTING, UI_CONTEXTAVAILABILITY_NOTAVAILABLE);
+   SetRibbonContextAvail(ID_TAB_GROUP_CONTEXT_FILESYSTEM, UI_CONTEXTAVAILABILITY_NOTAVAILABLE);
 
    if (m_upView != nullptr)
    {
@@ -908,8 +909,13 @@ void MainFrame::SetNewView(T_enViewType enViewType)
    EnablePhotoModes(isConnected, hasReleaseControl);
    EnableViewfinder(hasReleaseControl);
 
-   bool bScripting = enViewType == viewScripting;
-   EnableScriptingUI(bScripting);
+   bool isScriptingView = enViewType == viewScripting;
+   EnableScriptingUI(isScriptingView);
+
+   bool isFileSystemView = enViewType == viewCameraFileSystem;
+   SetRibbonContextAvail(ID_TAB_GROUP_CONTEXT_FILESYSTEM,
+      isFileSystemView ? UI_CONTEXTAVAILABILITY_ACTIVE : UI_CONTEXTAVAILABILITY_NOTAVAILABLE);
+   EnableUI(ID_FILESYSTEM_DOWNLOAD, false);
 
    // force layout update so that new view gets resized properly
    UpdateLayout();

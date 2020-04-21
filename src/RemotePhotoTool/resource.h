@@ -134,6 +134,7 @@
 #define ID_SCRIPTING_STOP               32817
 #define ID_SCRIPTING_EDIT               32818
 #define ID_EXTRA_CREATE_TIMELAPSE_FROM_FILES 32819
+#define ID_FILESYSTEM_DOWNLOAD          32820
 #define ID_VIEW_RIBBON                  0xE804
 
 // Next default values for new objects
