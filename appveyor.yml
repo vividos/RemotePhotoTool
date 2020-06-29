@@ -22,7 +22,7 @@ build:
   verbosity: minimal
 
 after_build:
-- cmd: cd bin\Release && "c:\Program Files\7-Zip\7z.exe" a -r -x!*.pdb ..\..\RemotePhotoTool-%appveyor_build_version%.zip *.*
+- cmd: cd bin\Release && "c:\Program Files\7-Zip\7z.exe" a -r -x!*.pdb -x!*.exp -x!*.lib -x!*.lastcodeanalysissucceeded ..\..\RemotePhotoTool-%appveyor_build_version%.zip *.*
 
 artifacts:
 - path: RemotePhotoTool-*.zip
