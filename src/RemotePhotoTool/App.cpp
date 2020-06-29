@@ -30,7 +30,7 @@ App::App(HINSTANCE hInstance)
 #endif
 
    // note: Apartment Threading needed for Canon ED-SDK
-   HRESULT hRes = ::CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
+   HRESULT hRes = ::CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE);
    ATLASSERT(SUCCEEDED(hRes));
 
    // this resolves ATL window thunking problem when Microsoft Layer for Unicode (MSLU) is used
