@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2019 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 //! \file version.h project version defines
 //
@@ -10,6 +10,7 @@
 #define MINOR_VERSION 6
 #define SUB_VERSION   0
 #define BUILD_NUMBER  125
+#define BUILD_YEAR 2020
 
 #define VERSIONINFO_FILEVERSION_NUMERIC    MAIN_VERSION##, ##MINOR_VERSION##, ##SUB_VERSION##, ##BUILD_NUMBER
 #define VERSIONINFO_PRODUCTVERSION_NUMERIC MAIN_VERSION##, ##MINOR_VERSION##, ##SUB_VERSION
@@ -21,6 +22,6 @@
 #define VERSIONINFO_FILEVERSION_DISPLAYSTRING    STR(MAIN_VERSION) "." STR(MINOR_VERSION) "." STR(SUB_VERSION) " Build " STR(BUILD_NUMBER)
 #define VERSIONINFO_PRODUCTVERSION_STRING STR(MAIN_VERSION) "." STR(MINOR_VERSION) "." STR(SUB_VERSION)
 
-#define VERSIONINFO_COPYRIGHT    "Copyright 2008-2019 Michael Fink"
+#define VERSIONINFO_COPYRIGHT    "Copyright 2008-" STR(BUILD_YEAR) " Michael Fink"
 #define VERSIONINFO_COMPANY_NAME "Michael Fink"
 #define VERSIONINFO_PRODUCTNAME  "RemotePhotoTool"
