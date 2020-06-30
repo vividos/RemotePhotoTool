@@ -25,18 +25,18 @@ $buildYear = Get-Date -format yyyy
 # modify version.h
 $versionHeader = Get-Content "$scriptPath\version.h"
 
-$versionHeader = $versionHeader -replace "MAIN_VERSION [0-9]+","MAIN_VERSION $majorVersion"
+$versionHeader = $versionHeader -replace "MAIN_VERSION  [0-9]+","MAIN_VERSION $majorVersion"
 $versionHeader = $versionHeader -replace "MINOR_VERSION [0-9]+","MINOR_VERSION $minorVersion"
-$versionHeader = $versionHeader -replace "SUB_VERSION [0-9]+","SUB_VERSION $releaseNumber"
-$versionHeader = $versionHeader -replace "BUILD_NUMBER [0-9]+","BUILD_NUMBER $buildNumber"
-$versionHeader = $versionHeader -replace "BUILD_YEAR [0-9]+","BUILD_YEAR $buildYear"
+$versionHeader = $versionHeader -replace "SUB_VERSION   [0-9]+","SUB_VERSION $releaseNumber"
+$versionHeader = $versionHeader -replace "BUILD_NUMBER  [0-9]+","BUILD_NUMBER $buildNumber"
+$versionHeader = $versionHeader -replace "BUILD_YEAR    [0-9]+","BUILD_YEAR $buildYear"
 
 Out-File -FilePath "$scriptPath\version.h" -InputObject $versionHeader -Encoding ASCII
 
 # modify BuildNumber.wxi
 $setupBuildNumberFile = Get-Content "$scriptPath\Setup\BuildNumber.wxi"
 
-$setupBuildNumberFile = $setupBuildNumberFile -replace "BuildNumber = ""[0-9]+"","BuildNumber = ""$buildNumber"""
+$setupBuildNumberFile = $setupBuildNumberFile -replace "BuildNumber = ""[0-9]+""","BuildNumber = ""$buildNumber"""
 
 Out-File -FilePath "$scriptPath\Setup\BuildNumber.wxi" -InputObject $setupBuildNumberFile -Encoding UTF8
 
