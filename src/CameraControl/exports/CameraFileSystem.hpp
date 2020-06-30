@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2017 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file CameraFileSystem.hpp Canon control - Camera file system class
 //
@@ -13,8 +13,21 @@
 /// camera file info
 struct FileInfo
 {
+   /// default ctor
+   FileInfo()
+      :m_fileSize(0UL),
+      m_modifiedTime(-1)
+   {
+   }
+
    /// filename
    CString m_filename;
+
+   /// file size in bytes
+   unsigned long m_fileSize;
+
+   /// time of last file modification
+   time_t m_modifiedTime;
 };
 
 /// \brief camera file system
