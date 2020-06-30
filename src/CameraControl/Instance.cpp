@@ -87,7 +87,7 @@ Instance::Impl::Impl()
 {
    m_allSdkReferences.push_back(std::make_shared<EDSDK::Ref>());
    m_allSdkReferences.push_back(std::make_shared<PSREC::Ref>());
-   //m_allSdkReferences.push_back(std::make_shared<GPhoto2::Ref>());
+   m_allSdkReferences.push_back(std::make_shared<GPhoto2::Ref>());
    m_allSdkReferences.push_back(std::make_shared<CDSDK::Ref>());
    m_allSdkReferences.push_back(std::make_shared<WIA::Ref>());
 }
