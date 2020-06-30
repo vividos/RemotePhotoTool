@@ -4,8 +4,7 @@ This document describes how the source code of RemotePhotoTool is organized.
 
 ## Source code ##
 
-The application is developed using C++. Features from C++11 are used where possible. This means
-that at least Visual Studio 2013 is needed to compile the application.
+The application is developed using C++. Features from C++17 are used where possible.
 
 The app uses classes from the Boost library where no appropriate class from the Standard
 C++ Library could be used. The application also uses other libraries. See the
@@ -76,18 +75,13 @@ programs "Hugin" (for panorama stitching) and "Photomatix Pro" (for HDR generati
 
 # Installation of components #
 
-## Visual Studio Community 2017 ##
+## Visual Studio Community 2019 ##
 
-Install Visual Studio 2017. Any version will do, including Visual Studio Community, which
+Install Visual Studio 2019. Any version will do, including Visual Studio Community, which
 I'm using. Be sure to install the "Microsoft Foundation Classes for C++" feature, that can be found
 under "Programming Languages > Visual C++" node when installing Visual Studio.
 When installed into the default folders, the example batch files can be used to build the
 application.
-
-## ATL ##
-
-With previous versions, the ATL library was needed (and could be extracted from the "Windows
-Driver Kit 7.1.0"). With the Visual Studio Community 2017 version, this is no longer needed.
 
 ## WTL 10 ##
 
@@ -108,8 +102,8 @@ website:
 
 Go to "Downloads" and download the "Wix311.exe". Install the package on your system.
 
-To get Visual Studio integration, also install the "Wix Toolset Visual Studio 2017 Extension":
-[https://marketplace.visualstudio.com/items?itemName=RobMensching.WixToolsetVisualStudio2017Extension](https://marketplace.visualstudio.com/items?itemName=RobMensching.WixToolsetVisualStudio2017Extension)
+To get Visual Studio integration, also install the "Wix Toolset Visual Studio 2019 Extension":
+[https://marketplace.visualstudio.com/items?itemName=WixToolset.WixToolsetVisualStudio2019Extension](https://marketplace.visualstudio.com/items?itemName=WixToolset.WixToolsetVisualStudio2019Extension)
 
 ## RemotePhotoTool ##
 
@@ -118,10 +112,8 @@ Rebuild the application and run it.
 
 ## Release check list ##
 
-Here's a checklist of what to do before each release:
+Here's a checklist of what to do before each release.:
 
-- Update version number in version.h
-- Update version number in Config.wxi, and BuildNumber in BuildNumber.wxi
 - Update Changelog.md file with all changes since last release
 - Update all external libraries and external tools if needed
 - Check all Documentation files for needed updates, especially Features.md
@@ -138,3 +130,6 @@ Here's a checklist of what to do before each release:
 - Add a release and upload result .msi file, to releases on github.com
 - Adjust index.html and download.html with link to new release and push it
 - Done
+
+Note that some changes to the code, e.g. build number, are now done
+automatically by the AppVeyor build.
