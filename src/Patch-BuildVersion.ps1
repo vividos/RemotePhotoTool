@@ -36,7 +36,7 @@ Out-File -FilePath "$scriptPath\version.h" -InputObject $versionHeader -Encoding
 # modify BuildNumber.wxi
 $setupBuildNumberFile = Get-Content "$scriptPath\Setup\BuildNumber.wxi"
 
-$setupBuildNumberFile = $setupBuildNumberFile -replace "BuildNumber = \"[0-9]+\"","BuildNumber = \"$buildNumber\""
+$setupBuildNumberFile = $setupBuildNumberFile -replace "BuildNumber = ""[0-9]+"","BuildNumber = ""$buildNumber"""
 
 Out-File -FilePath "$scriptPath\Setup\BuildNumber.wxi" -InputObject $setupBuildNumberFile -Encoding UTF8
 
