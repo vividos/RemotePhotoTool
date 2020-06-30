@@ -3,7 +3,7 @@
 Note: For the complete changelog, including internal changes, you can always go to
 the git sourcecode repository at [https://github.com/vividos/RemotePhotoTool](https://github.com/vividos/RemotePhotoTool).
 
-## 2019-xx-xx: Version 1.6.0 Build 125 ##
+## 2020-06-30: Version 1.6.0 Build 126 ##
 
 This is a major feature release.
 
@@ -16,9 +16,32 @@ This is a major feature release.
 
 #### UI ####
 
-#### Tools ####
+Implemented the new photo mode "Time lapse" that allows to take many photos
+and combine them to a time lapse video. The release trigger can be set to take
+images in a fixed interval, immediately after transferring the previous image
+or manually. There is also a scheduling option to set a start and end time.
+The feature even allows to take HDR images.
+
+Additionally there's a menu entry in the RemotePhotoTool's main menu to
+combine already existing time lapse photos together.
+
+The tool "ffmpeg" is needed to combine all time lapse photos together. The
+tool can be downloaded separately, from here: https://ffmpeg.org/
+The path to the tool can be configured in the Settings dialog.
+
+#### Other ####
+
+The following libraries were updated:
+- Lua 5.3.5
+- jpeg-9d
+- Canon ED-SDK version 13.12.10, released on 2020-01-29.
 
 ### Bug fixes ###
+
+- On cameras supporting mirror lockup, this is now used between taking HDR
+  photos instead of using live viewfinder.
+- Fixed crash when no camera is connected, switching to the "scripting photo
+  mode" and then clicked on any photo mode ribbon button.
 
 ## 2016-05-13: Version 1.5.0 Build 121 ##
 
