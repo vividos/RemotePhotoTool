@@ -84,7 +84,7 @@ std::shared_ptr<RemoteReleaseControl> SourceDeviceImpl::EnterReleaseControl()
    if (!GetDeviceCapability(SourceDevice::capRemoteReleaseControl))
    {
       throw CameraException(_T("gPhoto2::SourceDevice::EnterReleaseControl"), _T("Not supported"),
-         GP_ERROR_NOT_SUPPORTED, __FILE__, __LINE__);
+         static_cast<unsigned int>(GP_ERROR_NOT_SUPPORTED), __FILE__, __LINE__);
    }
 
    return std::make_shared<RemoteReleaseControlImpl>(m_ref, m_camera, m_properties);
