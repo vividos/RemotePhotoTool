@@ -114,7 +114,6 @@
     <ClCompile Include="WIA\WiaCameraFileSystemImpl.cpp" />
     <ClCompile Include="WIA\WiaCommon.cpp" />
     <ClCompile Include="WIA\WiaPropertyAccess.cpp" />
-    <ClCompile Include="WIA\WiaRemoteReleaseControlImpl.cpp" />
     <ClCompile Include="WIA\WiaSourceDeviceImpl.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -190,7 +189,6 @@
     <ClInclude Include="WIA\WiaCameraFileSystemImpl.hpp" />
     <ClInclude Include="WIA\WiaCommon.hpp" />
     <ClInclude Include="WIA\WiaPropertyAccess.hpp" />
-    <ClInclude Include="WIA\WiaRemoteReleaseControlImpl.hpp" />
     <ClInclude Include="WIA\WiaSourceDeviceImpl.hpp" />
     <ClInclude Include="WIA\WiaSourceInfoImpl.hpp" />
   </ItemGroup>

@@ -134,9 +134,6 @@
     <ClCompile Include="WIA\WiaPropertyAccess.cpp">
       <Filter>WIA Files</Filter>
     </ClCompile>
-    <ClCompile Include="WIA\WiaRemoteReleaseControlImpl.cpp">
-      <Filter>WIA Files</Filter>
-    </ClCompile>
     <ClCompile Include="gPhoto2\Gphoto2CameraFileSystemImpl.cpp">
       <Filter>GPhoto2 Files</Filter>
     </ClCompile>
@@ -360,9 +357,6 @@
     </ClInclude>
     <ClInclude Include="SdkReferenceBase.hpp">
       <Filter>Exported Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WIA\WiaRemoteReleaseControlImpl.hpp">
-      <Filter>WIA Files</Filter>
     </ClInclude>
     <ClInclude Include="gPhoto2\Gphoto2CameraFileSystemImpl.hpp">
       <Filter>GPhoto2 Files</Filter>
