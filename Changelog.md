@@ -3,7 +3,7 @@
 Note: For the complete changelog, including internal changes, you can always go to
 the git sourcecode repository at [https://github.com/vividos/RemotePhotoTool](https://github.com/vividos/RemotePhotoTool).
 
-## 2020-06-30: Version 1.6.0 Build 126 ##
+## 2020-06-30: Version 1.6.0 Build 129 ##
 
 This is a major feature release.
 
