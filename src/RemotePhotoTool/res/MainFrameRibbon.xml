@@ -158,7 +158,7 @@
             <Button CommandName="phototool_HOME_SETTINGS"/>
           </Group>
 
-          <Group CommandName="GroupPhotoModes" SizeDefinition="EightButtons">
+          <Group CommandName="GroupPhotoModes" SizeDefinition="NineButtons">
             <Button CommandName="phototool_PHOTO_MODE_NORMAL"/>
             <Button CommandName="phototool_PHOTO_MODE_HDR"/>
             <Button CommandName="phototool_PHOTO_MODE_PANO" />
@@ -168,7 +168,7 @@
             <Button CommandName="phototool_PHOTO_MODE_SCRIPTING" />
             <Button CommandName="phototool_PHOTO_MODE_DEVICE_PROPERTIES" />
             <Button CommandName="phototool_PHOTO_MODE_IMAGE_PROPERTIES" />
-            <!-- Button CommandName="phototool_PHOTO_MODE_CAMERA_FILE_SYSTEM" / -->
+            <Button CommandName="phototool_PHOTO_MODE_CAMERA_FILE_SYSTEM" />
           </Group>
 
           <Group CommandName="GroupViews" SizeDefinition="ThreeButtons">
