@@ -1,12 +1,11 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2019 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file Gphoto2CameraFileSystemImpl.cpp gPhoto2 - CameraFileSystem impl
 //
 #pragma once
 
-// includes
 #include "stdafx.h"
 #include "Gphoto2CameraFileSystemImpl.hpp"
 #include "Gphoto2Include.hpp"
@@ -84,10 +83,16 @@ std::vector<FileInfo> CameraFileSystemImpl::EnumFiles(const CString& path) const
       FileInfo info;
       info.m_filename = CString(name);
 
-      //CameraFileInfo cameraFileInfo;
-      //ret = gp_camera_file_get_info(m_spCamera.get(), folder, name, &cameraFileInfo, m_spContext.get());
-      //if (ret < GP_OK)
-      //   break;
+      CameraFileInfo cameraFileInfo = {};
+      cameraFileInfo.file.fields = CameraFileInfoFields(GP_FILE_INFO_SIZE | GP_FILE_INFO_MTIME);
+      cameraFileInfo.preview.fields = GP_FILE_INFO_NONE;
+      cameraFileInfo.audio.fields = GP_FILE_INFO_NONE;
+      ret = gp_camera_file_get_info(m_spCamera.get(), folder, name, &cameraFileInfo, m_spContext.get());
+      if (ret < GP_OK)
+         continue;
+
+      info.m_fileSize = static_cast<unsigned long>(cameraFileInfo.file.size);
+      info.m_modifiedTime = cameraFileInfo.file.mtime;
 
       fileList.push_back(info);
    }
