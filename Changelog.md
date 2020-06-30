@@ -8,6 +8,7 @@ the git sourcecode repository at [https://github.com/vividos/RemotePhotoTool](ht
 ### tl;dr ###
 
 - Added Camera File System photo mode to access the camera's file system.
+- Added RemotePhotoToolCmdline option `--dir`
 
 ## 2020-06-30: Version 1.6.0 Build 129 ##
 
