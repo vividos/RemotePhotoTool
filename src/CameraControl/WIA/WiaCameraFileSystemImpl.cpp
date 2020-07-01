@@ -168,10 +168,12 @@ std::vector<FileInfo> CameraFileSystemImpl::EnumFiles(CComPtr<IWiaItem> item) co
       if ((itemType & WiaItemTypeFile) != 0)
       {
          PropertyAccess access(childItem);
-         CString filename = access.Get(WIA_IPA_ITEM_NAME);
 
          FileInfo fileInfo;
-         fileInfo.m_filename = filename;
+         fileInfo.m_filename = access.Get(WIA_IPA_ITEM_NAME) + _T(".") + access.Get(WIA_IPA_FILENAME_EXTENSION);
+         fileInfo.m_fileSize = access.GetUint(WIA_IPA_ITEM_SIZE);
+         fileInfo.m_modifiedTime = access.GetSystemTime(WIA_IPA_ITEM_TIME);
+
          allFileInfoList.push_back(fileInfo);
       }
    }
