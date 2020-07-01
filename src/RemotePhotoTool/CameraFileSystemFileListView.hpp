@@ -6,6 +6,9 @@
 //
 #pragma once
 
+#include "resource.h"
+#include <CameraFileSystem.hpp>
+
 class IPhotoModeViewHost;
 class CameraFileSystemTreeView;
 
@@ -48,12 +51,20 @@ private:
 
 private:
    BEGIN_MSG_MAP(CameraFileSystemFileListView)
+      NOTIFY_CODE_HANDLER(LVN_ITEMCHANGED, OnItemChanged)
+      COMMAND_ID_HANDLER(ID_FILESYSTEM_DOWNLOAD, OnFileSystemDownload)
    END_MSG_MAP()
 
    // Handler prototypes (uncomment arguments if needed):
    // LRESULT MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
    // LRESULT CommandHandler(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
    // LRESULT NotifyHandler(int /*idCtrl*/, LPNMHDR /*pnmh*/, BOOL& bHandled)
+
+   /// called when the item (selection) in the list view has changed
+   LRESULT OnItemChanged(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
+
+   /// called when the "download" button on the file system ribbon is being selected
+   LRESULT OnFileSystemDownload(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
 private:
    // UI

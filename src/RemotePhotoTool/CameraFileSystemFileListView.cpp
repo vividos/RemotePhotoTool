@@ -8,7 +8,6 @@
 #include "CameraFileSystemFileListView.hpp"
 #include "SystemImageList.hpp"
 #include "IPhotoModeViewHost.hpp"
-#include <CameraFileSystem.hpp>
 
 void CameraFileSystemFileListView::Init(std::shared_ptr<CameraFileSystem> cameraFileSystem)
 {
@@ -23,6 +22,8 @@ void CameraFileSystemFileListView::Init(std::shared_ptr<CameraFileSystem> camera
 
    ATLASSERT((GetStyle() & LVS_SHAREIMAGELISTS) != 0);
    SetImageList(SystemImageList::Get(true), LVSIL_SMALL);
+
+   m_host.EnableUI(ID_FILESYSTEM_DOWNLOAD, false);
 }
 
 void CameraFileSystemFileListView::RefreshList()
@@ -69,4 +70,17 @@ void CameraFileSystemFileListView::NavigateToPath(const CString& path)
    m_currentPath = path;
 
    RefreshList();
+}
+
+LRESULT CameraFileSystemFileListView::OnItemChanged(int /*idCtrl*/, LPNMHDR /*pnmh*/, BOOL& /*bHandled*/)
+{
+   bool isAnyItemSelected = GetSelectedCount();
+   m_host.EnableUI(ID_FILESYSTEM_DOWNLOAD, isAnyItemSelected);
+
+   return 0;
+}
+
+LRESULT CameraFileSystemFileListView::OnFileSystemDownload(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+   // TODO start download
 }
