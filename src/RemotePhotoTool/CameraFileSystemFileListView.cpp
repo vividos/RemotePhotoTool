@@ -15,6 +15,8 @@ void CameraFileSystemFileListView::Init(std::shared_ptr<CameraFileSystem> camera
    m_cameraFileSystem = cameraFileSystem;
 
    InsertColumn(T_enFileListViewColumns::columnFilename, _T("Name"), LVCFMT_LEFT, 300);
+   InsertColumn(T_enFileListViewColumns::columnFilename, _T("Size"), LVCFMT_LEFT, 100);
+   InsertColumn(T_enFileListViewColumns::columnFilename, _T("Modified"), LVCFMT_LEFT, 150);
 
    DWORD dwExStyle = LVS_EX_GRIDLINES | LVS_EX_FULLROWSELECT;
    SetExtendedListViewStyle(dwExStyle, dwExStyle);
@@ -34,7 +36,29 @@ void CameraFileSystemFileListView::RefreshList()
    int itemCount = 0;
    for (const FileInfo& fileInfo : fileInfoList)
    {
-      InsertItem(itemCount++, fileInfo.m_filename, SystemImageList::IndexFromFilename(fileInfo.m_filename));
+      int itemIndex = InsertItem(itemCount++, fileInfo.m_filename, SystemImageList::IndexFromFilename(fileInfo.m_filename));
+
+      CString sizeText;
+      sizeText.Format(_T("%u"), fileInfo.m_fileSize);
+      for (int charIndex = sizeText.GetLength() - 3; charIndex >= 0; charIndex -= 3)
+         sizeText.Insert(charIndex, _T("."));
+
+      SetItemText(itemIndex, 1, sizeText);
+
+      CString timeText{ _T("???") };
+      if (fileInfo.m_modifiedTime != -1)
+      {
+         struct tm modifiedTime = {};
+         if (0 == localtime_s(&modifiedTime, &fileInfo.m_modifiedTime))
+         {
+            _tcsftime(timeText.GetBuffer(32), 32, _T("%Y-%m-%d %H:%M:%S"), &modifiedTime);
+            timeText.ReleaseBuffer();
+         }
+      }
+
+      SetItemText(itemIndex, 2, timeText);
+
+      SetItemData(itemIndex, itemIndex);
    }
 
    SetRedraw(TRUE);
