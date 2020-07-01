@@ -9,6 +9,7 @@
 // includes
 #include "stdafx.h"
 #include "WiaSourceDeviceImpl.hpp"
+#include "WiaPropertyAccess.hpp"
 #include "WiaCameraFileSystemImpl.hpp"
 
 using namespace WIA;
@@ -36,14 +37,17 @@ bool SourceDeviceImpl::GetDeviceCapability(SourceDevice::T_enDeviceCapability de
 
 CString SourceDeviceImpl::ModelName() const
 {
-   // TODO implement
-   return CString();
+   WIA::PropertyAccess access{ m_wiaDeviceRootItem };
+
+   return access.Get(WIA_DIP_DEV_NAME);
 }
 
 CString SourceDeviceImpl::SerialNumber() const
 {
-   // TODO implement
-   return CString();
+   WIA::PropertyAccess access{ m_wiaDeviceRootItem };
+
+   // it's not the actual serial number, but the closest match we have in WIA
+   return access.Get(WIA_DIP_DEV_ID);
 }
 
 std::vector<unsigned int> SourceDeviceImpl::EnumDeviceProperties() const
