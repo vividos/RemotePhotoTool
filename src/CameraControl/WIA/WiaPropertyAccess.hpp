@@ -1,12 +1,11 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2017 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file WiaPropertyAccess.hpp WIA - Property access
 //
 #pragma once
 
-// includes
 #include "WiaCommon.hpp"
 #include <boost/noncopyable.hpp>
 
@@ -22,8 +21,14 @@ namespace WIA
       {
       }
 
-      /// gets property value
+      /// gets string property value
       CString Get(PROPID wiaPropertyId) const;
+
+      /// gets UINT property value
+      UINT GetUint(PROPID wiaPropertyId) const;
+
+      /// gets time property value
+      time_t GetSystemTime(PROPID wiaPropertyId) const;
 
       /// returns a string from PROPVARIANT value
       static CString StringFromPropVariant(const PROPVARIANT& propVariant, ULONG elementIndex = 0);
