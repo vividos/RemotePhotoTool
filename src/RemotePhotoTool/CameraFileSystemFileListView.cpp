@@ -83,4 +83,5 @@ LRESULT CameraFileSystemFileListView::OnItemChanged(int /*idCtrl*/, LPNMHDR /*pn
 LRESULT CameraFileSystemFileListView::OnFileSystemDownload(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
    // TODO start download
+   return 0;
 }
