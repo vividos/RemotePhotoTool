@@ -12,6 +12,13 @@
 
 using namespace WIA;
 
+/// mapping of WIA property IDs to property names
+static std::map<PROPID, LPCTSTR> g_propertyNameById =
+{
+   { WIA_DIP_DEV_NAME, _T("WIA_DIP_DEV_NAME") },
+   { WIA_DIP_DEV_ID, _T("WIA_DIP_DEV_ID") },
+};
+
 CString PropertyAccess::Get(PROPID wiaPropertyId) const
 {
    CComQIPtr<IWiaPropertyStorage> wiaPropertyStorage{ m_item };
@@ -104,6 +111,31 @@ time_t PropertyAccess::GetSystemTime(PROPID wiaPropertyId) const
    return std::mktime(&tm);
 }
 
+DeviceProperty PropertyAccess::GetDeviceProperty(PROPID wiaPropertyId) const
+{
+   CComQIPtr<IWiaPropertyStorage> wiaPropertyStorage{ m_item };
+
+   if (wiaPropertyStorage == nullptr)
+      throw CameraException(_T("WIA::GetDeviceProperty"), _T("No IWiaPropertyStorage available"), 1, __FILE__, __LINE__);
+
+   PROPSPEC propSpec = { 0 };
+   PROPVARIANT propVariant = { 0 };
+
+   propSpec.ulKind = PRSPEC_PROPID;
+   propSpec.propid = wiaPropertyId;
+
+   HRESULT hr = wiaPropertyStorage->ReadMultiple(1, &propSpec, &propVariant);
+   if (FAILED(hr))
+      throw CameraException(_T("WIA::GetDeviceProperty"), _T("Reading property failed"), 1, __FILE__, __LINE__);
+
+   bool isReadOnly = true;
+   DeviceProperty dp{ variantWia, wiaPropertyId, VariantFromWiaPropVariant(propVariant), isReadOnly };
+
+   FreePropVariantArray(1, &propVariant);
+
+   return dp;
+}
+
 CString PropertyAccess::StringFromPropVariant(const PROPVARIANT& propVariant, ULONG elementIndex)
 {
    CString text;
@@ -118,4 +150,33 @@ CString PropertyAccess::StringFromPropVariant(const PROPVARIANT& propVariant, UL
    }
 
    return text;
+}
+
+LPCTSTR PropertyAccess::NameFromId(PROPID wiaPropertyId)
+{
+   auto iter = g_propertyNameById.find(wiaPropertyId);
+
+   return iter != g_propertyNameById.end() ? iter->second : _T("???");
+}
+
+Variant PropertyAccess::VariantFromWiaPropVariant(const PROPVARIANT& propVariant)
+{
+   Variant v;
+   switch (propVariant.vt)
+   {
+   case VT_I4:
+      v.SetType(Variant::typeUInt32);
+      v.Set(propVariant.uintVal);
+      break;
+
+   case VT_BSTR:
+      v.SetType(Variant::typeString);
+      v.Set(StringFromPropVariant(propVariant));
+      break;
+
+   default:
+      break;
+   }
+
+   return v;
 }

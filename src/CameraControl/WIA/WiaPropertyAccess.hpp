@@ -8,6 +8,7 @@
 
 #include "WiaCommon.hpp"
 #include <boost/noncopyable.hpp>
+#include <DeviceProperty.hpp>
 
 namespace WIA
 {
@@ -30,8 +31,18 @@ namespace WIA
       /// gets time property value
       time_t GetSystemTime(PROPID wiaPropertyId) const;
 
+      /// returns a device property from given WIA property
+      DeviceProperty GetDeviceProperty(PROPID wiaPropertyId) const;
+
       /// returns a string from PROPVARIANT value
       static CString StringFromPropVariant(const PROPVARIANT& propVariant, ULONG elementIndex = 0);
+
+      /// returns property name from ID
+      static LPCTSTR NameFromId(PROPID wiaPropertyId);
+
+   private:
+      /// creates a Variant objecg from given PROPVARIANT
+      static Variant VariantFromWiaPropVariant(const PROPVARIANT& propVariant);
 
    private:
       /// item access properties

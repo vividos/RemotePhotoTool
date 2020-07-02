@@ -13,6 +13,7 @@
 #include "PSREC/PsrecPropertyAccess.hpp"
 #include "gPhoto2/GPhoto2PropertyAccess.hpp"
 #include "gPhoto2/GPhoto2SourceDeviceImpl.hpp"
+#include "WIA/WiaPropertyAccess.hpp"
 
 CString DeviceProperty::Name() const
 {
@@ -27,6 +28,7 @@ CString DeviceProperty::Name() const
       case variantPsrec: cszName = PSREC::PropertyAccess::NameFromId(static_cast<prUInt16>(m_uiPropertyId & 0xFFFF)); break;
       case variantGphoto2:
          return std::static_pointer_cast<GPhoto2::PropertyAccess>(m_spImpl)->NameFromId(m_uiPropertyId);
+      case variantWia: cszName = WIA::PropertyAccess::NameFromId(m_uiPropertyId); break;
       default:
          ATLASSERT(false);
          LOG_TRACE(_T("invalid SDK variant in DeviceProperty::Name()\n"));
@@ -58,6 +60,7 @@ CString DeviceProperty::ValueAsString(Variant value) const
       case variantPsrec: return PSREC::PropertyAccess::DisplayTextFromIdAndValue(static_cast<prUInt16>(m_uiPropertyId & 0xFFFF), value);
       case variantGphoto2:
          return std::static_pointer_cast<GPhoto2::PropertyAccess>(m_spImpl)->DisplayTextFromIdAndValue(m_uiPropertyId, value);
+      case variantWia: return value.ToString();
       default:
          ATLASSERT(false);
          LOG_TRACE(_T("invalid SDK variant in DeviceProperty::ValueAsString()\n"));

@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2017 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file WiaSourceDeviceImpl.cpp WIA - SourceDevice impl
 //
@@ -52,13 +52,17 @@ CString SourceDeviceImpl::SerialNumber() const
 
 std::vector<unsigned int> SourceDeviceImpl::EnumDeviceProperties() const
 {
-   throw CameraException(_T(""), _T(""), 0, __FILE__, __LINE__);
+   return std::vector<unsigned int>
+   {
+      WIA_DIP_DEV_NAME,
+      WIA_DIP_DEV_ID,
+   };
 }
 
 DeviceProperty SourceDeviceImpl::GetDeviceProperty(unsigned int propertyId) const
 {
-   propertyId;
-   throw CameraException(_T(""), _T(""), 0, __FILE__, __LINE__);
+   WIA::PropertyAccess access{ m_wiaDeviceRootItem };
+   return access.GetDeviceProperty(propertyId);
 }
 
 std::shared_ptr<CameraFileSystem> SourceDeviceImpl::GetFileSystem()

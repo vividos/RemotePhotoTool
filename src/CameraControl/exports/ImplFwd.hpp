@@ -50,6 +50,7 @@ namespace GPhoto2
 namespace WIA
 {
    class SourceDeviceImpl;
+   class PropertyAccess;
    class RemoteReleaseControlImpl;
 }
 

@@ -40,6 +40,7 @@ private:
    friend CDSDK::SourceDeviceImpl;
    friend PSREC::SourceDeviceImpl;
    friend GPhoto2::PropertyAccess;
+   friend WIA::PropertyAccess;
    friend RemotePhotoTool::CameraControl::DeviceProperty;
 
    /// ctor
