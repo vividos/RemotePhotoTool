@@ -74,9 +74,17 @@ std::vector<FileInfo> CameraFileSystemImpl::EnumFiles(const CString& path) const
 
 void CameraFileSystemImpl::StartDownload(const FileInfo& fileInfo, T_fnDownloadFinished fnDownloadFinished)
 {
-   // TODO implement
-   fileInfo;
-   fnDownloadFinished;
+   CComPtr<IWiaItem> item = FollowPath(m_wiaDeviceRootItem, fileInfo.m_filename);
+   if (item == nullptr)
+      return; // file not available anymore
+
+   CComQIPtr<IWiaItem2> item2{ item };
+   if (item2 == nullptr)
+      return; // no WIA2 item
+
+   CComQIPtr<IWiaTransfer> transfer{ item2 };
+   if (transfer == nullptr)
+      return; // transfer not possible
 }
 
 CComPtr<IWiaItem> CameraFileSystemImpl::FollowPath(CComPtr<IWiaItem> baseItem, const CString& path) const
@@ -118,6 +126,15 @@ CComPtr<IWiaItem> CameraFileSystemImpl::OpenChildByName(CComPtr<IWiaItem> parent
       {
          PropertyAccess access(childItem);
          CString filename = access.Get(WIA_IPA_ITEM_NAME);
+
+         if (pathPart == filename)
+            return childItem;
+      }
+
+      if ((itemType & WiaItemTypeFile) != 0)
+      {
+         PropertyAccess access(childItem);
+         CString filename = access.Get(WIA_IPA_ITEM_NAME) + _T(".") + access.Get(WIA_IPA_FILENAME_EXTENSION);
 
          if (pathPart == filename)
             return childItem;
