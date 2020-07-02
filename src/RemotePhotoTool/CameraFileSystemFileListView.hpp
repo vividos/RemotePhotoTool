@@ -66,6 +66,12 @@ private:
    /// called when the "download" button on the file system ribbon is being selected
    LRESULT OnFileSystemDownload(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
+   /// downloads all files in the background
+   void DownloadFiles(const std::vector<FileInfo>& fileInfoList);
+
+   /// called when download has finished
+   void OnDownloadFinished(const FileInfo& fileInfo, const std::vector<unsigned char>& data);
+
 private:
    // UI
 
@@ -82,4 +88,7 @@ private:
 
    /// current path
    CString m_currentPath;
+
+   /// mapping from list view item index to file info object
+   std::map<int, FileInfo> m_mapItemIndexToFileInfo;
 };

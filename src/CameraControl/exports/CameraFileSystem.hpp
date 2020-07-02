@@ -47,7 +47,7 @@ public:
    virtual std::vector<FileInfo> EnumFiles(const CString& path) const = 0;
 
    /// function that is called when download of a file has finished
-   typedef std::function<void(const FileInfo&, std::vector<unsigned char>)> T_fnDownloadFinished;
+   typedef std::function<void(const FileInfo&, const std::vector<unsigned char>&)> T_fnDownloadFinished;
 
    /// starts download of given file in a worker thread
    virtual void StartDownload(const FileInfo& fileInfo, T_fnDownloadFinished fnDownloadFinished) = 0;

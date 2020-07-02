@@ -32,6 +32,8 @@ void CameraFileSystemFileListView::RefreshList()
 
    DeleteAllItems();
 
+   m_mapItemIndexToFileInfo.clear();
+
    std::vector<FileInfo> fileInfoList = m_cameraFileSystem->EnumFiles(m_currentPath);
 
    int itemCount = 0;
@@ -60,6 +62,8 @@ void CameraFileSystemFileListView::RefreshList()
       SetItemText(itemIndex, 2, timeText);
 
       SetItemData(itemIndex, itemIndex);
+
+      m_mapItemIndexToFileInfo[itemIndex] = fileInfo;
    }
 
    SetRedraw(TRUE);
@@ -82,6 +86,31 @@ LRESULT CameraFileSystemFileListView::OnItemChanged(int /*idCtrl*/, LPNMHDR /*pn
 
 LRESULT CameraFileSystemFileListView::OnFileSystemDownload(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
-   // TODO start download
+   std::vector<FileInfo> fileInfoList;
+
+   // get all selected files
+   for (int itemIndex = GetNextItem(-1, LVNI_SELECTED); itemIndex >= 0; itemIndex = GetNextItem(itemIndex, LVNI_SELECTED))
+   {
+      size_t fileInfoIndex = GetItemData(itemIndex);
+
+      fileInfoList.push_back(m_mapItemIndexToFileInfo[fileInfoIndex]);
+   }
+
+   DownloadFiles(fileInfoList);
+
    return 0;
+}
+
+void CameraFileSystemFileListView::DownloadFiles(const std::vector<FileInfo>& fileInfoList)
+{
+   for (auto fileInfo : fileInfoList)
+   {
+      m_cameraFileSystem->StartDownload(fileInfo,
+         std::bind(&CameraFileSystemFileListView::OnDownloadFinished, this, std::placeholders::_1, std::placeholders::_2));
+   }
+}
+
+void CameraFileSystemFileListView::OnDownloadFinished(const FileInfo& fileInfo, const std::vector<unsigned char>& data)
+{
+   // TODO implement
 }
