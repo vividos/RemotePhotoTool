@@ -87,7 +87,7 @@ std::vector<CString> PropertyAccess::GetValidValues(LPCSTR configValueName) cons
       for (int index = 0; index < choiceCount; index++)
       {
          const char* choiceText = nullptr;
-         int ret = gp_widget_get_choice(child, index, &choiceText);
+         ret = gp_widget_get_choice(child, index, &choiceText);
          CheckError(_T("gp_widget_get_choice"), ret, __FILE__, __LINE__);
 
          validValuesList.push_back(CString(choiceText));
