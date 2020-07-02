@@ -69,7 +69,7 @@ std::vector<FileInfo> CameraFileSystemImpl::EnumFiles(const CString& path) const
    if (item == nullptr)
       return std::vector<FileInfo>();
 
-   return EnumFiles(item);
+   return EnumFiles(path, item);
 }
 
 void CameraFileSystemImpl::StartDownload(const FileInfo& fileInfo, T_fnDownloadFinished fnDownloadFinished)
@@ -152,7 +152,7 @@ std::vector<CString> CameraFileSystemImpl::EnumFolders(CComPtr<IWiaItem> item) c
    return allFoldersList;
 }
 
-std::vector<FileInfo> CameraFileSystemImpl::EnumFiles(CComPtr<IWiaItem> item) const
+std::vector<FileInfo> CameraFileSystemImpl::EnumFiles(const CString& path, CComPtr<IWiaItem> item) const
 {
    std::vector<FileInfo> allFileInfoList;
 
@@ -170,7 +170,7 @@ std::vector<FileInfo> CameraFileSystemImpl::EnumFiles(CComPtr<IWiaItem> item) co
          PropertyAccess access(childItem);
 
          FileInfo fileInfo;
-         fileInfo.m_filename = access.Get(WIA_IPA_ITEM_NAME) + _T(".") + access.Get(WIA_IPA_FILENAME_EXTENSION);
+         fileInfo.m_filename = path + access.Get(WIA_IPA_ITEM_NAME) + _T(".") + access.Get(WIA_IPA_FILENAME_EXTENSION);
          fileInfo.m_fileSize = access.GetUint(WIA_IPA_ITEM_SIZE);
          fileInfo.m_modifiedTime = access.GetSystemTime(WIA_IPA_ITEM_TIME);
 

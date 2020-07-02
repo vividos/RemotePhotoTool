@@ -48,7 +48,7 @@ namespace WIA
       std::vector<CString> EnumFolders(CComPtr<IWiaItem> item) const;
 
       /// enumerates files in given folder
-      std::vector<FileInfo> EnumFiles(CComPtr<IWiaItem> item) const;
+      std::vector<FileInfo> EnumFiles(const CString& path, CComPtr<IWiaItem> item) const;
 
    private:
       /// WIA reference

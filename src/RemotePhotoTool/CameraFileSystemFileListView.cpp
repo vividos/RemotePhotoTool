@@ -39,7 +39,12 @@ void CameraFileSystemFileListView::RefreshList()
    int itemCount = 0;
    for (const FileInfo& fileInfo : fileInfoList)
    {
-      int itemIndex = InsertItem(itemCount++, fileInfo.m_filename, SystemImageList::IndexFromFilename(fileInfo.m_filename));
+      CString filename = fileInfo.m_filename;
+      int pos = filename.ReverseFind(CameraFileSystem::PathSeparator[0]);
+      if (pos != -1)
+         filename = filename.Mid(pos + 1);
+
+      int itemIndex = InsertItem(itemCount++, filename, SystemImageList::IndexFromFilename(fileInfo.m_filename));
 
       CString sizeText;
       sizeText.Format(_T("%u"), fileInfo.m_fileSize);
