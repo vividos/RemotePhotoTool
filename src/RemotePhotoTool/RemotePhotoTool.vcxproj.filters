@@ -136,6 +136,9 @@
     <ClCompile Include="TimelapseVideoOptionsDlg.cpp">
       <Filter>UI Files\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CameraFileSystemDropSource.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="SystemImageList.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -269,6 +272,9 @@
     </ClInclude>
     <ClInclude Include="TimelapseVideoOptionsDlg.hpp">
       <Filter>UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraFileSystemDropSource.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SystemImageList.hpp">
       <Filter>Header Files</Filter>

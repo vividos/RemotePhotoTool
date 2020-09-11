@@ -53,6 +53,7 @@ private:
    BEGIN_MSG_MAP(CameraFileSystemFileListView)
       NOTIFY_CODE_HANDLER(LVN_ITEMCHANGED, OnItemChanged)
       COMMAND_ID_HANDLER(ID_FILESYSTEM_DOWNLOAD, OnFileSystemDownload)
+      NOTIFY_CODE_HANDLER(LVN_BEGINDRAG, OnBeginDrag)
    END_MSG_MAP()
 
    // Handler prototypes (uncomment arguments if needed):
@@ -65,6 +66,9 @@ private:
 
    /// called when the "download" button on the file system ribbon is being selected
    LRESULT OnFileSystemDownload(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+
+   /// called when a file is started to be dragged, e.g. out of this app
+   LRESULT OnBeginDrag(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
 
    /// downloads all files in the background
    void DownloadFiles(const std::vector<FileInfo>& fileInfoList);

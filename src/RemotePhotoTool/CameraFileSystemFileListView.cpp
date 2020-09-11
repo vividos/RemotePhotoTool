@@ -6,6 +6,7 @@
 //
 #include "stdafx.h"
 #include "CameraFileSystemFileListView.hpp"
+#include "CameraFileSystemDropSource.hpp"
 #include "SystemImageList.hpp"
 #include "IPhotoModeViewHost.hpp"
 
@@ -100,6 +101,35 @@ LRESULT CameraFileSystemFileListView::OnFileSystemDownload(WORD /*wNotifyCode*/,
 
       fileInfoList.push_back(m_mapItemIndexToFileInfo[fileInfoIndex]);
    }
+
+   DownloadFiles(fileInfoList);
+
+   return 0;
+}
+
+LRESULT CameraFileSystemFileListView::OnBeginDrag(int /*idCtrl*/, LPNMHDR /*pnmh*/, BOOL& /*bHandled*/)
+{
+   CComObjectStack<CameraFileSystemDropSource> dropSource;
+
+   CameraFileSystemDraggedFilesInfo draggedFilesInfo;
+   draggedFilesInfo.m_cameraFileSystem = m_cameraFileSystem;
+
+   // get all selected files
+   std::vector<FileInfo> fileInfoList;
+   for (int itemIndex = GetNextItem(-1, LVNI_SELECTED); itemIndex >= 0; itemIndex = GetNextItem(itemIndex, LVNI_SELECTED))
+   {
+      size_t fileInfoIndex = GetItemData(itemIndex);
+
+      const FileInfo& fileInfo = m_mapItemIndexToFileInfo[fileInfoIndex];
+      fileInfoList.push_back(fileInfo);
+
+      draggedFilesInfo.m_cameraFileInfos.push_back(fileInfo);
+   }
+
+   dropSource.Init(draggedFilesInfo);
+
+   DWORD effect = DROPEFFECT_NONE;
+   HRESULT hr = dropSource.DoDragDrop(DROPEFFECT_COPY | DROPEFFECT_LINK, &effect);
 
    DownloadFiles(fileInfoList);
 
