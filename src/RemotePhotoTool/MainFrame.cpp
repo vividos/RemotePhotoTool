@@ -51,6 +51,8 @@ MainFrame::MainFrame()
 
 MainFrame::~MainFrame()
 {
+   CleanupImagePropertyManager();
+
    LOG_TRACE(_T("RemotePhotoTool finished.\n"));
    LOG_TRACE(_T("************************************************************\n"));
 }
@@ -967,6 +969,8 @@ void MainFrame::DisconnectCamera()
 {
    ShowViewfinder(false);
 
+   CleanupImagePropertyManager();
+
    if (m_connection.HasReleaseControl())
    {
       std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl =
@@ -977,8 +981,6 @@ void MainFrame::DisconnectCamera()
 
       spRemoteReleaseControl->RemoveDownloadEventHandler(m_iDownloadEventHandlerId);
       m_iDownloadEventHandlerId = -1;
-
-      CleanupImagePropertyManager();
 
       m_connection.Disconnect();
    }
