@@ -37,6 +37,9 @@
     <ClCompile Include="chdk.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="fujiptpip.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="chdk_live_view.h">

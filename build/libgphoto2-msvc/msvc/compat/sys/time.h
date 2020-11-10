@@ -1,7 +1,7 @@
 /** \file
 * \brief time functions
 *
-* \author Copyright 2016 Michael Fink <vividos@users.sf.net>
+* \author Copyright 2016, 2020 Michael Fink <vividos@users.sf.net>
 *
 * \note
 * This library is free software; you can redistribute it and/or
@@ -22,5 +22,7 @@
 * Boston, MA  02110-1301  USA
 */
 #pragma once
+
+#include <winsock.h> // for timeval
 
 int gettimeofday(struct timeval* tp, void* tzp);

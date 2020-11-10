@@ -27,6 +27,7 @@
   <ItemGroup>
     <ClCompile Include="chdk.c" />
     <ClCompile Include="config.c" />
+    <ClCompile Include="fujiptpip.c" />
     <ClCompile Include="library.c" />
     <ClCompile Include="olympus-wrap.c" />
     <ClCompile Include="ptp.c" />

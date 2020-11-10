@@ -243,7 +243,7 @@
 #undef NO_MINUS_C_MINUS_O
 
 /* Name of package */
-#define PACKAGE "libgphoto2-2.5.24"
+#define PACKAGE "libgphoto2-2.5.26"
 
 /* Define to the address where bug reports for this package should be sent. */
 #undef PACKAGE_BUGREPORT
@@ -252,7 +252,7 @@
 #define PACKAGE_NAME "libgphoto2"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "libgphoto2-2.5.24"
+#define PACKAGE_STRING "libgphoto2-2.5.26"
 
 /* Define to the one symbol short name of this package. */
 #undef PACKAGE_TARNAME
@@ -261,7 +261,7 @@
 #undef PACKAGE_URL
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "2.5.24"
+#define PACKAGE_VERSION "2.5.26"
 
 /* Define to 1 if you have the ANSI C header files. */
 #undef STDC_HEADERS
@@ -285,7 +285,7 @@
 #define URL_USB_MASSSTORAGE "http://www.linux-usb.org/USB-guide/x498.html"
 
 /* Version number of package */
-#define VERSION "2.5.24"
+#define VERSION "2.5.26"
 
 /* Define WORDS_BIGENDIAN to 1 if your processor stores words with the most
    significant byte first (like Motorola and SPARC, unlike Intel). */
