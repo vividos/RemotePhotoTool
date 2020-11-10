@@ -288,7 +288,7 @@ std::vector<FileInfo> CameraFileSystemImpl::EnumFiles(const Handle& parent, unsi
       {
          FileInfo fileInfo;
          fileInfo.m_filename = dirItemInfo.szFileName;
-         fileInfo.m_fileSize = dirItemInfo.size;
+         fileInfo.m_fileSize = static_cast<unsigned long>(dirItemInfo.size);
          fileInfo.m_modifiedTime = dirItemInfo.dateTime;
 
          allFilesList.push_back(fileInfo);
