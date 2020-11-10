@@ -15,16 +15,11 @@ remove when removing support for Windows XP
 
 gPhoto2
 -------
-display proper device property names
 implement RemoteReleaseControl functions
-implement Viewfinder functions
-improve speed of EnumerateDevices(), worker thread
 implement file system download
-implement starting zadig or inf wizard
 
 WIA
 ---
-Add checking for capabilities
 Add downloading files
 
 CameraControl
