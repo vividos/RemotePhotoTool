@@ -56,48 +56,66 @@ public:
 
    STDMETHODIMP SetData(FORMATETC* pformatetc, STGMEDIUM* pmedium, BOOL fRelease) override
    {
+      UNUSED(pformatetc);
+      UNUSED(pmedium);
+      UNUSED(fRelease);
       return E_NOTIMPL;
    }
 
    STDMETHODIMP GetData(FORMATETC* pformatetcIn, STGMEDIUM* pmedium) override
    {
+      UNUSED(pformatetcIn);
+      UNUSED(pmedium);
       return E_NOTIMPL;
    }
 
    STDMETHODIMP EnumFormatEtc(DWORD dwDirection, IEnumFORMATETC** ppenumFormatEtc) override
    {
+      UNUSED(dwDirection);
+      UNUSED(ppenumFormatEtc);
       return E_NOTIMPL;
    }
 
    STDMETHODIMP QueryGetData(FORMATETC* pformatetc) override
    {
+      UNUSED(pformatetc);
       return E_NOTIMPL;
    }
 
    STDMETHODIMP GetDataHere(FORMATETC* pformatetc, STGMEDIUM* pmedium) override
    {
+      UNUSED(pformatetc);
+      UNUSED(pmedium);
       return E_NOTIMPL;
    }
 
    STDMETHODIMP GetCanonicalFormatEtc(FORMATETC* pformatectIn,
       FORMATETC* pformatetcOut)
    {
+      UNUSED(pformatectIn);
+      UNUSED(pformatetcOut);
       return E_NOTIMPL;
    }
 
    STDMETHODIMP DAdvise(FORMATETC* pformatetc, DWORD advf,
       IAdviseSink* pAdvSink, DWORD* pdwConnection) override
    {
+      UNUSED(pformatetc);
+      UNUSED(advf);
+      UNUSED(pAdvSink);
+      UNUSED(pdwConnection);
       return E_NOTIMPL;
    }
 
    STDMETHODIMP DUnadvise(DWORD dwConnection) override
    {
+      UNUSED(dwConnection);
       return E_NOTIMPL;
    }
 
    STDMETHODIMP EnumDAdvise(IEnumSTATDATA** ppenumAdvise) override
    {
+      UNUSED(ppenumAdvise);
       return E_NOTIMPL;
    }
 
@@ -126,5 +144,3 @@ private:
    /// last drop effect that was reported to us
    DWORD m_lastEffect;
 };
-
-#pragma warning(default: 4100)

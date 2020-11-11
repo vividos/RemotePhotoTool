@@ -131,7 +131,8 @@ LRESULT CameraFileSystemFileListView::OnBeginDrag(int /*idCtrl*/, LPNMHDR /*pnmh
    DWORD effect = DROPEFFECT_NONE;
    HRESULT hr = dropSource.DoDragDrop(DROPEFFECT_COPY | DROPEFFECT_LINK, &effect);
 
-   DownloadFiles(fileInfoList);
+   if (SUCCEEDED(hr))
+      DownloadFiles(fileInfoList);
 
    return 0;
 }
@@ -148,4 +149,6 @@ void CameraFileSystemFileListView::DownloadFiles(const std::vector<FileInfo>& fi
 void CameraFileSystemFileListView::OnDownloadFinished(const FileInfo& fileInfo, const std::vector<unsigned char>& data)
 {
    // TODO implement
+   UNUSED(fileInfo);
+   UNUSED(data);
 }
