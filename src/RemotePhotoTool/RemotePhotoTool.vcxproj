@@ -57,7 +57,7 @@
       <ProxyFileName>RemotePhotoTool_p.c</ProxyFileName>
     </Midl>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)Base;$(SolutionDir)CameraControl\exports;$(SolutionDir)LuaScripting;$(SolutionDir)Logic;$(SolutionDir)Thirdparty;$(SolutionDir)Thirdparty\jpeg-9d;$(SolutionDir)Thirdparty\Scintilla\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Base;$(SolutionDir)CameraControl\exports;$(SolutionDir)LuaScripting;$(SolutionDir)Logic;$(SolutionDir)Thirdparty;$(SolutionDir)Thirdparty\jpeg-9d;$(SolutionDir)Thirdparty\Scintilla\include;$(SolutionDir)Thirdparty\libwdi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WINDOWS;STRICT;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ResourceCompile>
@@ -68,6 +68,8 @@
     <Link />
     <Link>
       <DelayLoadDLLs>propsys.dll;dwmapi.dll</DelayLoadDLLs>
+      <AdditionalDependencies>libwdi.lib;Setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Thirdparty\libwdi;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -83,7 +85,7 @@
       <ProxyFileName>RemotePhotoTool_p.c</ProxyFileName>
     </Midl>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)Base;$(SolutionDir)CameraControl\exports;$(SolutionDir)LuaScripting;$(SolutionDir)Logic;$(SolutionDir)Thirdparty;$(SolutionDir)Thirdparty\jpeg-9d;$(SolutionDir)Thirdparty\Scintilla\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Base;$(SolutionDir)CameraControl\exports;$(SolutionDir)LuaScripting;$(SolutionDir)Logic;$(SolutionDir)Thirdparty;$(SolutionDir)Thirdparty\jpeg-9d;$(SolutionDir)Thirdparty\Scintilla\include;$(SolutionDir)Thirdparty\libwdi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WINDOWS;STRICT;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <EnablePREfast>true</EnablePREfast>
     </ClCompile>
@@ -95,6 +97,8 @@
     <Link />
     <Link>
       <DelayLoadDLLs>propsys.dll;dwmapi.dll</DelayLoadDLLs>
+      <AdditionalDependencies>libwdi.lib;Setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Thirdparty\libwdi;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -132,6 +136,7 @@
     <ClCompile Include="SystemImageList.cpp" />
     <ClCompile Include="TimeLapsePhotoModeView.cpp" />
     <ClCompile Include="TimelapseVideoOptionsDlg.cpp" />
+    <ClCompile Include="UsbDriverSwitcherDlg.cpp" />
     <ClCompile Include="ViewFinderImageWindow.cpp" />
     <ClCompile Include="ViewFinderView.cpp" />
     <ClCompile Include="ViewManager.cpp" />
@@ -176,6 +181,7 @@
     <ClInclude Include="SystemImageList.hpp" />
     <ClInclude Include="TimeLapsePhotoModeView.hpp" />
     <ClInclude Include="TimelapseVideoOptionsDlg.hpp" />
+    <ClInclude Include="UsbDriverSwitcherDlg.hpp" />
     <ClInclude Include="ViewFinderImageWindow.hpp" />
     <ClInclude Include="ViewFinderView.hpp" />
     <ClInclude Include="ViewManager.hpp" />

@@ -289,6 +289,7 @@ ID_EXTRA_CREATE_TIMELAPSE_FROM_FILES BITMAP                  "res\\placeholder.b
 
 ID_FILESYSTEM_DOWNLOAD  BITMAP                  "res\\placeholder.bmp"
 
+
 /////////////////////////////////////////////////////////////////////////////
 //
 // Dialog
@@ -513,6 +514,18 @@ BEGIN
     EDITTEXT        IDC_EDIT_TIMELAPSE_VIDEO_OPTIONS_COMPLETE_FFMPEG_CMDLINE,5,108,269,14,ES_AUTOHSCROLL | ES_READONLY
 END
 
+IDD_USB_DRIVER_SWITCHER DIALOGEX 0, 0, 366, 133
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_MINIMIZEBOX | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+CAPTION "Switch USB driver for gPhoto2"
+FONT 8, "MS Shell Dlg", 400, 0, 0x0
+BEGIN
+    DEFPUSHBUTTON   "&Close",IDOK,309,7,50,14
+    LTEXT           "This dialog helps you to switch USB drivers for camera in order to use them with gPhoto2. Note that in this mode, you can't access the camera using other means. You have to switch back the driver using the device manager.",IDC_STATIC_USB_DRIVER_NOTE,7,7,298,26,SS_SUNKEN
+    CONTROL         "",IDC_LIST_USB_DEVICES,"SysListView32",LVS_REPORT | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,7,35,298,91
+    PUSHBUTTON      "&Refresh",IDC_BUTTON_USB_DEVICES_REFRESH,309,35,50,14
+    PUSHBUTTON      "&Switch",IDC_BUTTON_USB_SWITCH_DRIVER,309,52,50,14
+END
+
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -538,6 +551,39 @@ BEGIN
 END
 
 #endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_USB_DRIVER_SWITCHER, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 359
+        VERTGUIDE, 305
+        VERTGUIDE, 309
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 126
+        HORZGUIDE, 35
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AFX_DIALOG_LAYOUT
+//
+
+IDD_USB_DRIVER_SWITCHER AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
 
 
 /////////////////////////////////////////////////////////////////////////////

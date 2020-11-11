@@ -142,6 +142,9 @@
     <ClCompile Include="SystemImageList.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UsbDriverSwitcherDlg.cpp">
+      <Filter>UI Files\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -278,6 +281,9 @@
     </ClInclude>
     <ClInclude Include="SystemImageList.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UsbDriverSwitcherDlg.hpp">
+      <Filter>UI Files\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
