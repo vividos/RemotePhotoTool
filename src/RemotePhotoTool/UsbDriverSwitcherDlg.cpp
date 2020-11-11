@@ -77,6 +77,19 @@ void UsbDriverSwitcherDlg::SetupList()
 
 void UsbDriverSwitcherDlg::RefreshList()
 {
+   CString selectedDeviceId;
+   int selectedIndex = m_listUSBDevices.GetSelectedIndex();
+   if (selectedIndex != -1)
+   {
+      struct wdi_device_info* selectedDeviceInfo =
+         (struct wdi_device_info*)m_listUSBDevices.GetItemData(selectedIndex);
+
+      if (selectedDeviceInfo != nullptr)
+      {
+         selectedDeviceId = selectedDeviceInfo->device_id;
+      }
+   }
+
    m_listUSBDevices.SetRedraw(FALSE);
 
    m_listUSBDevices.DeleteAllItems();
@@ -86,6 +99,7 @@ void UsbDriverSwitcherDlg::RefreshList()
    cl_options.list_hubs = FALSE;
    cl_options.trim_whitespaces = TRUE;
 
+   int newSelectedIndex = -1;
    struct wdi_device_info* rawDeviceInfo = nullptr;
    int ret = wdi_create_list(&rawDeviceInfo, &cl_options);
    if (ret == WDI_SUCCESS && rawDeviceInfo != nullptr)
@@ -107,8 +121,17 @@ void UsbDriverSwitcherDlg::RefreshList()
          m_listUSBDevices.SetItemText(itemIndex, 1, isWinusbDriver ? _T("gPhoto2 compatible") : _T("other driver"));
 
          m_listUSBDevices.SetItemData(itemIndex, (DWORD_PTR)deviceInfo);
+
+         if (!selectedDeviceId.IsEmpty() &&
+            selectedDeviceId == deviceInfo->device_id)
+         {
+            newSelectedIndex = itemIndex;
+         }
       }
    }
+
+   if (newSelectedIndex != -1)
+      m_listUSBDevices.SelectItem(newSelectedIndex);
 
    m_listUSBDevices.SetColumnWidth(1, LVSCW_AUTOSIZE_USEHEADER);
 

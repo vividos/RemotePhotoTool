@@ -522,7 +522,7 @@ FONT 8, "MS Shell Dlg", 400, 0, 0x0
 BEGIN
     DEFPUSHBUTTON   "&Close",IDOK,309,7,50,14
     LTEXT           "This dialog helps you to switch USB drivers for camera in order to use them with gPhoto2. Note that in this mode, you can't access the camera using other means. You have to switch back the driver using the device manager.",IDC_STATIC_USB_DRIVER_NOTE,7,7,298,26,SS_SUNKEN
-    CONTROL         "",IDC_LIST_USB_DEVICES,"SysListView32",LVS_REPORT | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,7,35,298,91
+    CONTROL         "",IDC_LIST_USB_DEVICES,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,7,35,298,91
     PUSHBUTTON      "&Refresh",IDC_BUTTON_USB_DEVICES_REFRESH,309,35,50,14
     PUSHBUTTON      "&Switch",IDC_BUTTON_USB_SWITCH_DRIVER,309,52,50,14
     PUSHBUTTON      "Open &Device Manager",IDC_BUTTON_USB_OPEN_DEVICE_MANAGER,309,102,50,24,BS_MULTILINE
