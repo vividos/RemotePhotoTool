@@ -397,6 +397,7 @@ CameraWidget* PropertyAccess::GetWidgetFromPropertyId(unsigned int propertyId) c
       return iterImage->second;
 
    CheckError(_T("GetPropertyIdFromWidget"), GP_ERROR, __FILE__, __LINE__);
+   return nullptr;
 }
 
 void PropertyAccess::ReadPropertyValue(CameraWidget* widget, Variant& value, int _type)
