@@ -1,12 +1,9 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2017 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file WiaCameraFileSystemImpl.cpp WIA - CameraFileSystem impl
 //
-#pragma once
-
-// includes
 #include "stdafx.h"
 #include "WiaCameraFileSystemImpl.hpp"
 #include "WiaPropertyAccess.hpp"
@@ -21,8 +18,7 @@ namespace
    public:
       /// ctor; takes parent handle
       ChildItemEnumerator(CComPtr<IWiaItem> parent)
-         :m_parent(parent)//,
-         //m_count(std::numeric_limits<size_t>::max())
+         :m_parent(parent)
       {
          HRESULT hr = parent->EnumChildItems(&m_enumWiaItem);
          CheckError(_T("IWiaItem::EnumChildItems"), hr, __FILE__, __LINE__);
@@ -113,7 +109,7 @@ CComPtr<IWiaItem> CameraFileSystemImpl::FollowPath(CComPtr<IWiaItem> baseItem, c
 
 CComPtr<IWiaItem> CameraFileSystemImpl::OpenChildByName(CComPtr<IWiaItem> parentItem, const CString& pathPart) const
 {
-   ChildItemEnumerator itemEnumerator(parentItem);
+   ChildItemEnumerator itemEnumerator{ parentItem };
 
    CComPtr<IWiaItem> childItem;
    while ((childItem = itemEnumerator.Next()) != nullptr)
@@ -124,7 +120,7 @@ CComPtr<IWiaItem> CameraFileSystemImpl::OpenChildByName(CComPtr<IWiaItem> parent
 
       if ((itemType & WiaItemTypeFolder) != 0)
       {
-         PropertyAccess access(childItem);
+         PropertyAccess access{ childItem };
          CString filename = access.Get(WIA_IPA_ITEM_NAME);
 
          if (pathPart == filename)
@@ -133,7 +129,7 @@ CComPtr<IWiaItem> CameraFileSystemImpl::OpenChildByName(CComPtr<IWiaItem> parent
 
       if ((itemType & WiaItemTypeFile) != 0)
       {
-         PropertyAccess access(childItem);
+         PropertyAccess access{ childItem };
          CString filename = access.Get(WIA_IPA_ITEM_NAME) + _T(".") + access.Get(WIA_IPA_FILENAME_EXTENSION);
 
          if (pathPart == filename)
@@ -173,7 +169,7 @@ std::vector<FileInfo> CameraFileSystemImpl::EnumFiles(const CString& path, CComP
 {
    std::vector<FileInfo> allFileInfoList;
 
-   ChildItemEnumerator itemEnumerator(item);
+   ChildItemEnumerator itemEnumerator{ item };
 
    CComPtr<IWiaItem> childItem;
    while ((childItem = itemEnumerator.Next()) != nullptr)

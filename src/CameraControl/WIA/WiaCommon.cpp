@@ -65,10 +65,6 @@ void WIA::CheckError(const CString& function, HRESULT hr, LPCSTR file, UINT line
 
 Ref::Ref()
 {
-   // note: can't change threading mode, application uses Apartment threading
-   //HRESULT hr = ::CoInitializeEx(nullptr, COINIT_MULTITHREADED);
-   //ATLASSERT(SUCCEEDED(hr));
-
    // use WIA 1.0; in 2.0, supported from Vista onwards, cameras can't be accessed anymore
    HRESULT hr = CoCreateInstance(CLSID_WiaDevMgr, nullptr, CLSCTX_LOCAL_SERVER, IID_IWiaDevMgr, (void**)&m_wiaDevMgr);
 
@@ -79,8 +75,6 @@ Ref::Ref()
 Ref::~Ref()
 {
    AsyncWaitForCamera(false);
-
-   //::CoUninitialize();
 }
 
 void Ref::AddVersionText(CString& versionText) const

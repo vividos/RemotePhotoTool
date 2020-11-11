@@ -75,7 +75,7 @@ namespace WIA
          ULONG ulReserved) override;
 
    private:
-      /// WIA 1.0 device manager
+      /// WIA 1.0 device manager (WIA 2.0 doesn't support cameras)
       CComPtr<IWiaDevMgr> m_wiaDevMgr;
 
       /// mutex to protect m_fnOnCameraConnected

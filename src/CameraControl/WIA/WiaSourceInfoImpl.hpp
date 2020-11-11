@@ -43,7 +43,7 @@ namespace WIA
       {
          CComPtr<IWiaDevMgr> wiaDevMgr = m_ref->GetWiaDeviceManager();
 
-         CComBSTR bstrDeviceId(m_deviceId);
+         CComBSTR bstrDeviceId{ m_deviceId };
 
          CComPtr<IWiaItem> wiaDeviceRootItem;
          HRESULT hr = wiaDevMgr->CreateDevice(

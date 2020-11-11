@@ -1,12 +1,11 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2017 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file WiaCameraFileSystemImpl.hpp WIA - CameraFileSystem impl
 //
 #pragma once
 
-// includes
 #include "CameraFileSystem.hpp"
 #include "WiaCommon.hpp"
 
@@ -58,4 +57,4 @@ namespace WIA
       CComPtr<IWiaItem> m_wiaDeviceRootItem;
    };
 
-} // namespace EDSDK
+} // namespace WIA
