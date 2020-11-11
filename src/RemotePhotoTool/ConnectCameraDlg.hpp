@@ -34,6 +34,7 @@ private:
       COMMAND_ID_HANDLER(IDCANCEL, OnCloseCmd)
       COMMAND_ID_HANDLER(IDC_BUTTON_REFRESH, OnBtnRefresh)
       COMMAND_ID_HANDLER(IDC_BUTTON_INFO, OnBtnInfo)
+      COMMAND_ID_HANDLER(IDC_BUTTON_CONFIG_USB, OnButtonConfigUsb)
       NOTIFY_HANDLER(IDC_LIST_CAMERA, LVN_ITEMCHANGED, OnListCameraItemChanged)
       CHAIN_MSG_MAP(CDialogResize<ConnectCameraDlg>)
    END_MSG_MAP()
@@ -42,6 +43,7 @@ private:
       DLGRESIZE_CONTROL(IDC_LIST_CAMERA, DLSZ_SIZE_X | DLSZ_SIZE_Y)
       DLGRESIZE_CONTROL(IDC_BUTTON_REFRESH, DLSZ_MOVE_X)
       DLGRESIZE_CONTROL(IDC_BUTTON_INFO, DLSZ_MOVE_X)
+      DLGRESIZE_CONTROL(IDC_BUTTON_CONFIG_USB, DLSZ_MOVE_Y)
       DLGRESIZE_CONTROL(IDCANCEL, DLSZ_MOVE_X | DLSZ_MOVE_Y)
       DLGRESIZE_CONTROL(IDOK, DLSZ_MOVE_X | DLSZ_MOVE_Y)
    END_DLGRESIZE_MAP()
@@ -63,6 +65,8 @@ private:
    LRESULT OnBtnRefresh(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
    /// called when info button is pressed
    LRESULT OnBtnInfo(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+   /// called when "config USB" button is pressed
+   LRESULT OnButtonConfigUsb(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
    /// called when selected camera in list has changed
    LRESULT OnListCameraItemChanged(int /*idCtrl*/, LPNMHDR /*pnmh*/, BOOL& bHandled);
 

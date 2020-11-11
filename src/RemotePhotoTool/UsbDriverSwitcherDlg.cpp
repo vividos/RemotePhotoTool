@@ -56,6 +56,12 @@ LRESULT UsbDriverSwitcherDlg::OnButtonUsbSwitchDriver(WORD /*wNotifyCode*/, WORD
    return 0;
 }
 
+LRESULT UsbDriverSwitcherDlg::OnButtonUsbOpenDeviceManager(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+   ShellExecute(m_hWnd, _T("open"), _T("devmgmt.msc"), nullptr, nullptr, SW_SHOWNORMAL);
+   return 0;
+}
+
 void UsbDriverSwitcherDlg::SetupList()
 {
    m_listUSBDevices.AddColumn(_T("USB Device"), 0);

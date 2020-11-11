@@ -34,6 +34,7 @@ private:
       DLGRESIZE_CONTROL(IDC_LIST_USB_DEVICES, DLSZ_SIZE_X | DLSZ_SIZE_Y)
       DLGRESIZE_CONTROL(IDC_BUTTON_USB_DEVICES_REFRESH, DLSZ_MOVE_X)
       DLGRESIZE_CONTROL(IDC_BUTTON_USB_SWITCH_DRIVER, DLSZ_MOVE_X)
+      DLGRESIZE_CONTROL(IDC_BUTTON_USB_OPEN_DEVICE_MANAGER, DLSZ_MOVE_X)
    END_DLGRESIZE_MAP()
 
    BEGIN_MSG_MAP(UsbDriverSwitcherDlg)
@@ -44,6 +45,7 @@ private:
       COMMAND_ID_HANDLER(IDCANCEL, OnOKOrCancel)
       COMMAND_ID_HANDLER(IDC_BUTTON_USB_DEVICES_REFRESH, OnButtonUsbDevicesRefresh)
       COMMAND_ID_HANDLER(IDC_BUTTON_USB_SWITCH_DRIVER, OnButtonUsbSwitchDriver)
+      COMMAND_ID_HANDLER(IDC_BUTTON_USB_OPEN_DEVICE_MANAGER, OnButtonUsbOpenDeviceManager)
       CHAIN_MSG_MAP(CDialogResize<UsbDriverSwitcherDlg>)
    END_MSG_MAP()
 
@@ -72,6 +74,9 @@ private:
 
    /// called when the user clicked on the "switch driver" button
    LRESULT OnButtonUsbSwitchDriver(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+
+   /// called when the user clicked on the "open device manager" button
+   LRESULT OnButtonUsbOpenDeviceManager(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
    /// sets up list of USB devices
    void SetupList();

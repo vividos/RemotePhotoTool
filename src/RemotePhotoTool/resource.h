@@ -87,6 +87,8 @@
 #define IDC_LIST_USB_DEVICES            1090
 #define IDC_BUTTON_USB_DEVICES_REFRESH  1091
 #define IDC_BUTTON_USB_SWITCH_DRIVER    1092
+#define IDC_BUTTON_CONFIG_USB           1093
+#define IDC_BUTTON_USB_OPEN_DEVICE_MANAGER 1094
 #define ID_HOME_CONNECT                 32768
 #define ID_HOME_SETTINGS                32769
 #define ID_PHOTO_MODE_NORMAL            32770
@@ -146,9 +148,9 @@
 //
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        101
-#define _APS_NEXT_COMMAND_VALUE         40001
-#define _APS_NEXT_CONTROL_VALUE         1000
+#define _APS_NEXT_RESOURCE_VALUE        135
+#define _APS_NEXT_COMMAND_VALUE         32820
+#define _APS_NEXT_CONTROL_VALUE         1095
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

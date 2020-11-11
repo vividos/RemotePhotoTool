@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file ConnectCameraDlg.cpp Camera connect dialog
 //
@@ -15,6 +15,7 @@
 #include "Instance.hpp"
 #include "CameraException.hpp"
 #include "SourceInfo.hpp"
+#include "UsbDriverSwitcherDlg.hpp"
 
 ConnectCameraDlg::ConnectCameraDlg()
 :m_iSelectedSourceDeviceIndex(-1),
@@ -146,6 +147,14 @@ LRESULT ConnectCameraDlg::OnBtnInfo(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*h
 
    // re-register handler
    m_instance.AsyncWaitForCamera(std::bind(&ConnectCameraDlg::OnCameraAdded, this));
+
+   return 0;
+}
+
+LRESULT ConnectCameraDlg::OnButtonConfigUsb(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+   UsbDriverSwitcherDlg dlg;
+   dlg.DoModal();
 
    return 0;
 }
