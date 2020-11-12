@@ -68,7 +68,7 @@
     <Link />
     <Link>
       <DelayLoadDLLs>propsys.dll;dwmapi.dll</DelayLoadDLLs>
-      <AdditionalDependencies>libwdi.lib;Setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libwdi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)Thirdparty\libwdi;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -97,7 +97,7 @@
     <Link />
     <Link>
       <DelayLoadDLLs>propsys.dll;dwmapi.dll</DelayLoadDLLs>
-      <AdditionalDependencies>libwdi.lib;Setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libwdi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)Thirdparty\libwdi;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>

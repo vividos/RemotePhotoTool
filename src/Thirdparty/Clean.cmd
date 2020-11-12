@@ -1,6 +1,6 @@
 REM
 REM RemotePhotoTool - remote camera control software
-REM Copyright (C) 2008-2016 Michael Fink
+REM Copyright (C) 2008-2020 Michael Fink
 REM
 REM Clean script for Thirdparty libraries
 REM
@@ -46,5 +46,8 @@ del %OUTDIR%iolibs\libusb1.dll 2> nul
 del %OUTDIR%iolibs\ptpip.dll 2> nul
 rmdir %OUTDIR%camlibs 2> nul
 rmdir %OUTDIR%iolibs 2> nul
+
+REM libwdi files
+del %OUTDIR%libwdi.dll 2> nul
 
 exit 0
