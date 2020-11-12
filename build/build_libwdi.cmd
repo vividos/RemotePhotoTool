@@ -37,7 +37,7 @@ rmdir /s /q %LIBUSB_WIN32_PREFIX%\ 2> nul
 "c:\Program Files\7-Zip\7z.exe" x %LIBUSB_WIN32_PREFIX%.zip
 
 REM copy additional files
-xcopy /s /y libwdi-msvc\*.* %PREFIX%\msvc\
+xcopy /s /y libwdi-msvc\*.* %PREFIX%\
 
 REM set path to libusb-win32 folder
 set LIBUSB_WIN32_PATH=%CD%\%LIBUSB_WIN32_PREFIX%\
@@ -53,9 +53,8 @@ msbuild %PREFIX%\libwdi.sln /m /property:Configuration=Release,Platform=Win32
 
 REM copy artifacts
 copy "%PREFIX%\libwdi\libwdi.h" ..\src\Thirdparty\libwdi\
-copy "%PREFIX%\Win32\Release\lib\libwdi.lib" ..\src\Thirdparty\libwdi\
-REM copy "%PREFIX%\Win32\Release\dll\libwdi.dll" ..\src\Thirdparty\libwdi\
-REM copy "%PREFIX%\Win32\Release\dll\libwdi.pdb" ..\src\Thirdparty\libwdi\
-REM copy "%PREFIX%\Win32\Release\dll\libwdi.lib" ..\src\Thirdparty\libwdi\
+copy "%PREFIX%\Win32\Release\dll\libwdi.dll" ..\src\Thirdparty\libwdi\
+copy "%PREFIX%\Win32\Release\dll\libwdi.pdb" ..\src\Thirdparty\libwdi\
+copy "%PREFIX%\Win32\Release\dll\libwdi.lib" ..\src\Thirdparty\libwdi\
 
 pause
