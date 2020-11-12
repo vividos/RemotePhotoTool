@@ -248,7 +248,7 @@ Value::Value(const Value& val)
 {
 }
 
-Value::Value(const Value&& val)
+Value::Value(const Value&& val) noexcept
    :m_value(std::move(val.m_value)),
    m_enType(std::move(val.m_enType)),
    m_spRef(std::move(val.m_spRef))
@@ -267,7 +267,7 @@ Value& Value::operator=(const Value& val)
    return *this;
 }
 
-Value& Value::operator=(const Value&& val)
+Value& Value::operator=(const Value&& val) noexcept
 {
    if (this == &val)
       return *this;

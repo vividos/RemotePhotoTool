@@ -235,13 +235,13 @@ public:
    Value(const Value& val);
 
    /// move ctor
-   Value(const Value&& val);
+   Value(const Value&& val) noexcept;
 
    /// assignment operator
    Value& operator=(const Value& val);
 
    /// move assignment operator
-   Value& operator=(const Value&& val);
+   Value& operator=(const Value&& val) noexcept;
 
    /// dtor
    ~Value();

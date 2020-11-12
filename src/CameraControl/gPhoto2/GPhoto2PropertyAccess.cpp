@@ -153,6 +153,7 @@ unsigned int PropertyAccess::MapImagePropertyTypeToId(T_enImagePropertyType imag
    case propBatteryLevel:
       if (IsAvailPropertyName("batterylevel")) propertyName = "batterylevel";
       if (IsAvailPropertyName("Battery Mode")) propertyName = "Battery Mode";
+      break;
    case propImageFormat: propertyName = "imageformat"; break;
    case propUnknown:
    default:
