@@ -1,0 +1,146 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>RemotePhotoTool - Zadig + libgphoto2</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/bootstrap-theme.min.css" rel="stylesheet" />
+    <link href="css/styles.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+    <!-- navbar -->
+    <div class="navbar navbar-inverse navbar-static-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">RemotePhotoTool</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="index.html">Home</a>
+                    </li>
+                    <li class="active">
+                        <a href="download.html">Download</a>
+                    </li>
+                    <li>
+                        <a href="features.html">Features</a>
+                    </li>
+                    <li>
+                        <a href="screenshots.html">Screenshots</a>
+                    </li>
+                    <li>
+                        <a href="cameras.html">Supported cameras</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <a id="forkme_banner" href="https://github.com/vividos/RemotePhotoTool">View on GitHub</a>
+
+    <div class="container theme-showcase" role="main">
+
+        <div class="page-header">
+            <a name="zadig"></a>
+            <h1>Zadig + libgphoto2</h1>
+        </div>
+
+        <p>
+            RemotePhotoTool can use the libgphoto2 libraries to access even more camera models.
+            libgphoto2 uses direct USB communication to talk to the cameras. For this, a special
+            USB driver needs to be installed for the camera. Here's how to install and unstall
+            the driver.
+        </p>
+
+        <h2>Using Zadig</h2>
+
+        <p>
+            The USB driver that is used by libgphoto2 is "WinUSB". The tool "Zadig" can configure
+            which devices use the Windows-provided USB driver or the "WinUSB" driver. Note that
+            while the driver is active, you can't use the device normally. The Zadig tool can be
+            downloaded here: <a href="https://zadig.akeo.ie/">Zadig</a>
+        </p>
+
+        <p>
+            <img src="images/zadig-install.png" />
+        </p>
+
+        <p>
+            The tool shows all connected USB devices and their installed drivers. You may have to
+            set the flag "List All Devices" in the options menu to show all devices. The combobox
+            at the top currently shows a "Canon Digital Camera". The current driver is named
+            "WUDFWpdMtp", which is a Windows driver. To select the proper driver for libgphoto2,
+            select "WinUSB" using the up and down arrows, as shown in the screenshot. When
+            ready, press the "Replace Driver" button. The action may take a several seconds.
+        </p>
+
+        <h2>Using RemotePhotoTool</h2>
+
+        <p>
+            RemotePhotoTool also offers a simplified dialog that also lists the connected devices.
+            Open this dialog by clicking on the "Switch USB driver" on the camera connect dialog.
+            The list refreshes every second. Select a device and click on the "Switch" button.
+            After several seconds, the driver status of the device should switch to "gPhoto2
+            compatible" and can be used in RemotePhotoTool.
+        </p>
+
+        <p>
+            <img src="images/driver-remotephototool.png" />
+        </p>
+
+        <h2>Uninstalling the USB driver</h2>
+
+        <p>
+            Unfortunately the Zadig tool doesn't provide a way to go back to the original Windows
+            driver. Only with the original driver enables to show the camera's file system in
+            Windows Explorer, or use other remote tools. Start the Device Manager by pressing the
+            Windows key and start typing "device manager":
+        </p>
+
+        <p>
+            <img src="images/startmenu-device-manager.png" />
+        </p>
+
+        <p>
+            The Device Manager lists all connected USB devices. There you can right-click on the
+            device and select "Uninstall".
+        </p>
+
+        <p>
+            <img src="images/device-manager-uninstall.png" />
+        </p>
+
+        <p>
+            In the next dialog, select "Delete the driver software for this device".
+        </p>
+
+        <p>
+            <img src="images/driver-delete.png" />
+        </p>
+
+        <p>
+            After this, re-connect the device so that Windows installs the original driver. For
+            more infos, follow this link:
+            <a href="https://github.com/pbatard/libwdi/wiki/FAQ#Help_Zadig_replaced_the_driver_for_the_wrong_device_How_do_I_restore_it">
+                Help, Zadig replaced the driver for the wrong device! How do I restore it?
+            </a>
+        </p>
+
+    </div>
+    <!-- /container -->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+</body>
+</html>
