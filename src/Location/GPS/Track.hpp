@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2006-2018 Michael Fink
+// Copyright (C) 2006-2020 Michael Fink
 //
 /// \file Coordinate.hpp WGS84 coordinate
 //
@@ -8,10 +8,13 @@
 
 #include "GPS/Coordinate.hpp"
 #include <ulib/DateTime.hpp>
+#pragma warning(push)
+#pragma warning(disable: 26495)
 #include <boost/multi_index_container.hpp>
 #include <boost/multi_index/ordered_index.hpp>
 #include <boost/multi_index/sequenced_index.hpp>
 #include <boost/multi_index/member.hpp>
+#pragma warning(pop)
 
 namespace GPS
 {
