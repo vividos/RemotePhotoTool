@@ -52,7 +52,18 @@ LRESULT UsbDriverSwitcherDlg::OnTimer(UINT /*uMsg*/, WPARAM wParam, LPARAM /*lPa
 
 LRESULT UsbDriverSwitcherDlg::OnButtonUsbSwitchDriver(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
-   // TODO implement
+   int selectedIndex = m_listUSBDevices.GetSelectedIndex();
+   if (selectedIndex != -1)
+   {
+      struct wdi_device_info* selectedDeviceInfo =
+         (struct wdi_device_info*)m_listUSBDevices.GetItemData(selectedIndex);
+
+      if (selectedDeviceInfo != nullptr)
+      {
+         SwitchDriver(selectedDeviceInfo);
+      }
+   }
+
    return 0;
 }
 
@@ -116,7 +127,7 @@ void UsbDriverSwitcherDlg::RefreshList()
             CString(deviceInfo->desc),
             0);
 
-         bool isWinusbDriver = deviceInfo->driver == CStringA("WinUSB");
+         bool isWinusbDriver = CStringA(deviceInfo->driver) == "WinUSB";
 
          m_listUSBDevices.SetItemText(itemIndex, 1, isWinusbDriver ? _T("gPhoto2 compatible") : _T("other driver"));
 
@@ -136,4 +147,9 @@ void UsbDriverSwitcherDlg::RefreshList()
    m_listUSBDevices.SetColumnWidth(1, LVSCW_AUTOSIZE_USEHEADER);
 
    m_listUSBDevices.SetRedraw(TRUE);
+}
+
+void UsbDriverSwitcherDlg::SwitchDriver(struct wdi_device_info* deviceInfo)
+{
+   // TODO implement
 }

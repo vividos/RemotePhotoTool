@@ -34,7 +34,7 @@ private:
       DLGRESIZE_CONTROL(IDC_LIST_USB_DEVICES, DLSZ_SIZE_X | DLSZ_SIZE_Y)
       DLGRESIZE_CONTROL(IDC_BUTTON_USB_DEVICES_REFRESH, DLSZ_MOVE_X)
       DLGRESIZE_CONTROL(IDC_BUTTON_USB_SWITCH_DRIVER, DLSZ_MOVE_X)
-      DLGRESIZE_CONTROL(IDC_BUTTON_USB_OPEN_DEVICE_MANAGER, DLSZ_MOVE_X)
+      DLGRESIZE_CONTROL(IDC_BUTTON_USB_OPEN_DEVICE_MANAGER, DLSZ_MOVE_X | DLSZ_MOVE_Y)
    END_DLGRESIZE_MAP()
 
    BEGIN_MSG_MAP(UsbDriverSwitcherDlg)
@@ -83,6 +83,9 @@ private:
 
    /// refreshes list of USB devices
    void RefreshList();
+
+   /// switches driver to libusb for given device
+   void SwitchDriver(struct wdi_device_info* deviceInfo);
 
 private:
    // UI
