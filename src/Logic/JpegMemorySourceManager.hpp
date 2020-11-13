@@ -1,20 +1,18 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2016 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file JpegMemorySourceManager.hpp JPEG memory source manager
 //
 #pragma once
 
 // includes
-#include <boost/noncopyable.hpp>
 #include <jpeglib.h>
 #include <vector>
 
 /// source manager to read JPEG file from memory
 class JpegMemorySourceManager:
-   public jpeg_source_mgr,
-   public boost::noncopyable
+   public jpeg_source_mgr
 {
 public:
    /// ctor

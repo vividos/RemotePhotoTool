@@ -31,9 +31,6 @@
 #include <thread>
 #include <atomic>
 
-// Boost includes
-#include <boost/noncopyable.hpp>
-
 // CameraControl includes
 #include "Instance.hpp"
 #include "Variant.hpp"

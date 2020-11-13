@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2018 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file GeoTagTool\stdafx.h Precompiled header support
 //
@@ -21,6 +21,3 @@
 #include <algorithm>
 #include <thread>
 #include <atomic>
-
-// Boost includes
-#include <boost/noncopyable.hpp>

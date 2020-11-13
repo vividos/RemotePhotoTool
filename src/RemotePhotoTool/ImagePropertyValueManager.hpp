@@ -13,7 +13,7 @@
 class IImagePropertyControl;
 
 /// image property value manager
-class ImagePropertyValueManager : public boost::noncopyable
+class ImagePropertyValueManager
 {
 public:
    /// ctor

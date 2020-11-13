@@ -1,15 +1,13 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2018 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file RegEnumKey.hpp Registry key enumeration class
 //
 #pragma once
 
-#include <boost/noncopyable.hpp>
-
 /// class to enumerate reg keys
-class CRegEnumKey : public boost::noncopyable
+class CRegEnumKey
 {
 public:
    /// ctor; takes reg key object

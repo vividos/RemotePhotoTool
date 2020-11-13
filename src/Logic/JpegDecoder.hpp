@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2016 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file JpegDecoder.hpp JPEG decoder
 //
@@ -13,7 +13,7 @@
 /// \brief JPEG file format decoder/decompressor
 /// \details uses Independent JPEG Group's jpeg library
 /// \see http://www.ijg.org/
-struct JpegDecoder : public boost::noncopyable
+struct JpegDecoder
 {
    /// ctor
    JpegDecoder(jpeg_source_mgr& sourceManager)

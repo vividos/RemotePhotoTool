@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2016 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file JpegMemoryReader.hpp JPEG memory reader
 //
@@ -35,7 +35,7 @@ private:
 };
 
 /// JPEG memory reader
-class JpegMemoryReader : public boost::noncopyable
+class JpegMemoryReader
 {
 public:
    /// ctor

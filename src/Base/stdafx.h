@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2018 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file Base\stdafx.h Precompiled header support
 //
@@ -8,6 +8,5 @@
 
 // includes
 #include <SDKDDKVer.h>
-#include <ulib/config/BoostAsio.hpp>
 #include <ulib/config/Common.hpp>
 #include <ulib/config/Atl.hpp>
