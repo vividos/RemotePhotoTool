@@ -7,6 +7,7 @@
 #include "stdafx.h"
 #include "resource.h"
 #include "UsbDriverSwitcherDlg.hpp"
+#include <ulib/Path.hpp>
 
 /// timer ID for refreshing USB devices list
 const UINT_PTR c_timerRefreshList = 1;
@@ -60,7 +61,12 @@ LRESULT UsbDriverSwitcherDlg::OnButtonUsbSwitchDriver(WORD /*wNotifyCode*/, WORD
 
       if (selectedDeviceInfo != nullptr)
       {
+         // stop timer or else it will mess up the wdi_device_info struct
+         KillTimer(c_timerRefreshList);
+
          SwitchDriver(selectedDeviceInfo);
+
+         SetTimer(c_timerRefreshList, c_refreshCycleTime);
       }
    }
 
@@ -151,5 +157,47 @@ void UsbDriverSwitcherDlg::RefreshList()
 
 void UsbDriverSwitcherDlg::SwitchDriver(struct wdi_device_info* deviceInfo)
 {
-   // TODO implement
+   CString folderPath = Path::Combine(Path::TempFolder(), _T("usb_driver"));
+   CString infName{ _T("default.inf") };
+
+   Path::CreateDirectoryRecursive(folderPath);
+
+   wdi_options_prepare_driver prepareDriverOptions = { };
+   prepareDriverOptions.driver_type = WDI_WINUSB;
+
+   int ret = wdi_prepare_driver(deviceInfo, CStringA(folderPath), CStringA(infName), &prepareDriverOptions);
+
+   if (ret != WDI_SUCCESS)
+   {
+      CString text;
+      text.Format(_T("Error while preparing USB driver: %hs"), wdi_strerror(ret));
+
+      AtlMessageBox(m_hWnd,
+         text.GetString(),
+         IDR_MAINFRAME,
+         MB_OK | MB_ICONERROR);
+
+      return;
+   }
+
+   wdi_options_install_driver installDriverOptions = { };
+   installDriverOptions.hWnd = m_hWnd;
+   installDriverOptions.install_filter_driver = false;
+
+   ret = wdi_install_driver(deviceInfo, CStringA(folderPath), CStringA(infName), &installDriverOptions);
+
+   if (ret != WDI_SUCCESS)
+   {
+      CString text;
+      text.Format(_T("Error while installing USB driver: %hs"), wdi_strerror(ret));
+
+      AtlMessageBox(m_hWnd,
+         text.GetString(),
+         IDR_MAINFRAME,
+         MB_OK | MB_ICONERROR);
+
+      return;
+   }
+
+   RefreshList();
 }
