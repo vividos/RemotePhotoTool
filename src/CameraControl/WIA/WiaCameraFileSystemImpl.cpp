@@ -7,6 +7,8 @@
 #include "stdafx.h"
 #include "WiaCameraFileSystemImpl.hpp"
 #include "WiaPropertyAccess.hpp"
+#include "WiaDataCallback.hpp"
+#include <ulib/win32/ErrorMessage.hpp>
 
 using namespace WIA;
 
@@ -74,13 +76,29 @@ void CameraFileSystemImpl::StartDownload(const FileInfo& fileInfo, T_fnDownloadF
    if (item == nullptr)
       return; // file not available anymore
 
-   CComQIPtr<IWiaItem2> item2{ item };
-   if (item2 == nullptr)
-      return; // no WIA2 item
-
-   CComQIPtr<IWiaTransfer> transfer{ item2 };
+   CComQIPtr<IWiaDataTransfer> transfer{ item };
    if (transfer == nullptr)
       return; // transfer not possible
+
+   // the object frees itself when the refcount goes to zero
+   WiaDataCallback* callback = new WiaDataCallback{ fileInfo, fnDownloadFinished };
+
+   WIA_DATA_TRANSFER_INFO transferInfo = {};
+   transferInfo.ulSize = sizeof(WIA_DATA_TRANSFER_INFO);
+   transferInfo.ulSection = 0;
+   transferInfo.bDoubleBuffer = true;
+
+   HRESULT hr = transfer->idtGetBandedData(&transferInfo, callback);
+
+   if (FAILED(hr))
+   {
+      throw CameraException(
+         _T("WIA::CameraFileSystemImpl::StartDownload"),
+         Win32::ErrorMessage(hr).ToString(),
+         hr,
+         __FILE__,
+         __LINE__);
+   }
 }
 
 CComPtr<IWiaItem> CameraFileSystemImpl::FollowPath(CComPtr<IWiaItem> baseItem, const CString& path) const

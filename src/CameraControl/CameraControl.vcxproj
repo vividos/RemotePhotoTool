@@ -115,6 +115,7 @@
     <ClCompile Include="WIA\WiaCommon.cpp" />
     <ClCompile Include="WIA\WiaPropertyAccess.cpp" />
     <ClCompile Include="WIA\WiaSourceDeviceImpl.cpp" />
+    <ClCompile Include="WIA\WiaDataCallback.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Thirdparty\CDSDK\inc\cdAPI.h" />
@@ -191,6 +192,7 @@
     <ClInclude Include="WIA\WiaPropertyAccess.hpp" />
     <ClInclude Include="WIA\WiaSourceDeviceImpl.hpp" />
     <ClInclude Include="WIA\WiaSourceInfoImpl.hpp" />
+    <ClInclude Include="WIA\WiaDataCallback.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

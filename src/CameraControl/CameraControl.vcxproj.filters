@@ -143,6 +143,9 @@
     <ClCompile Include="gPhoto2\GPhoto2ViewfinderImpl.cpp">
       <Filter>GPhoto2 Files</Filter>
     </ClCompile>
+    <ClCompile Include="WIA\WiaDataCallback.cpp">
+      <Filter>WIA Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="exports\BulbReleaseControl.hpp">
@@ -366,6 +369,9 @@
     </ClInclude>
     <ClInclude Include="gPhoto2\GPhoto2ViewfinderImpl.hpp">
       <Filter>GPhoto2 Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WIA\WiaDataCallback.hpp">
+      <Filter>WIA Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
