@@ -20,7 +20,13 @@ ImageFileManager::ImageFileManager(AppSettings& settings)
    FindLastUsedFilename();
 }
 
-CString ImageFileManager::NextFilename(T_enImageType enImageType, bool bStartNewSeries)
+CString ImageFileManager::NextFilename(T_enImageType enImageType, bool startNewSeries)
+{
+   time_t nowtime = time(&nowtime);
+   return NextFilename(enImageType, nowtime, startNewSeries);
+}
+
+CString ImageFileManager::NextFilename(T_enImageType enImageType, time_t time, bool bStartNewSeries)
 {
    CString cszPath = m_settings.m_cszProjectsFolder;
 
@@ -28,7 +34,7 @@ CString ImageFileManager::NextFilename(T_enImageType enImageType, bool bStartNew
       CreateDirectory(cszPath, nullptr);
 
    if (m_settings.m_bCurrentDateSubfolder)
-      AddCurrentDate(cszPath);
+      AddDate(cszPath, time);
 
    if (!Path::FolderExists(cszPath))
       CreateDirectory(cszPath, nullptr);
@@ -53,15 +59,13 @@ CString ImageFileManager::NextFilename(T_enImageType enImageType, bool bStartNew
    return Path::Combine(cszPath, cszImageFilename);
 }
 
-void ImageFileManager::AddCurrentDate(CString& cszPath)
+void ImageFileManager::AddDate(CString& cszPath, time_t time)
 {
-   time_t nowtime = time(&nowtime);
-
-   struct tm nowtm = {0};
-   ATLVERIFY(0 == localtime_s(&nowtm, &nowtime));
+   struct tm tm = {0};
+   ATLVERIFY(0 == localtime_s(&tm, &time));
 
    CString cszDate;
-   _tcsftime(cszDate.GetBuffer(256), 256, _T("%Y-%m-%d"), &nowtm);
+   _tcsftime(cszDate.GetBuffer(256), 256, _T("%Y-%m-%d"), &tm);
    cszDate.ReleaseBuffer();
 
    cszPath = Path::Combine(cszPath, cszDate);

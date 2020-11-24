@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2016 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file ImageFileManager.hpp Image file manager
 //
@@ -20,9 +20,12 @@ public:
    /// returns next filename for given image type
    CString NextFilename(T_enImageType enImageType, bool bStartNewSeries = false);
 
+   /// returns next filename for image type and given date
+   CString NextFilename(T_enImageType enImageType, time_t time, bool bStartNewSeries = false);
+
 private:
-   /// adds current date to path
-   void AddCurrentDate(CString& cszPath);
+   /// adds date to path
+   void AddDate(CString& cszPath, time_t time);
 
    /// adds image type path
    void AddImageTypePath(CString& cszPath, T_enImageType enImageType, bool bStartNewSeries);
