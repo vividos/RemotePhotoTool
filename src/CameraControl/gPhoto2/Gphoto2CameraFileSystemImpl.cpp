@@ -81,7 +81,7 @@ std::vector<FileInfo> CameraFileSystemImpl::EnumFiles(const CString& path) const
          break;
 
       FileInfo info;
-      info.m_filename = CString(name);
+      info.m_filename = CString(folder) + "/" + CString(name);
 
       CameraFileInfo cameraFileInfo = {};
       cameraFileInfo.file.fields = CameraFileInfoFields(GP_FILE_INFO_SIZE | GP_FILE_INFO_MTIME);
@@ -102,7 +102,27 @@ std::vector<FileInfo> CameraFileSystemImpl::EnumFiles(const CString& path) const
 
 void CameraFileSystemImpl::StartDownload(const FileInfo& fileInfo, T_fnDownloadFinished fnDownloadFinished)
 {
-   // TODO implement
-   fileInfo;
-   fnDownloadFinished;
+   int pos = fileInfo.m_filename.ReverseFind(_T('/'));
+   CStringA folder;
+   if (pos != -1)
+      folder = fileInfo.m_filename.Left(pos);
+
+   CStringA name = fileInfo.m_filename.Mid(pos + 1);
+
+   std::vector<unsigned char> buffer;
+   buffer.resize(fileInfo.m_fileSize);
+
+   uint64_t fileSize = fileInfo.m_fileSize;
+
+   int ret = gp_camera_file_read(
+      m_spCamera.get(), folder, name, GP_FILE_TYPE_NORMAL,
+      0,
+      reinterpret_cast<char*>(buffer.data()),
+      &fileSize,
+      m_spContext.get());
+
+   CheckError(_T("CameraFileSystemImpl::StartDownload"), ret, __FILE__, __LINE__);
+
+   if (fnDownloadFinished != nullptr)
+      fnDownloadFinished(fileInfo, buffer);
 }
