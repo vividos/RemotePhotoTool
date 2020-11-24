@@ -46,7 +46,9 @@ private:
    /// column indices
    enum T_enFileListViewColumns
    {
-      columnFilename = 0,  ///< filename column
+      columnFilename = 0,     ///< filename column
+      columnSize = 1,         ///< size column
+      columnModifiedDate = 2, ///< modified date column
    };
 
 private:

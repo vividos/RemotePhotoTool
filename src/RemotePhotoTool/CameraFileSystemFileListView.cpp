@@ -15,8 +15,8 @@ void CameraFileSystemFileListView::Init(std::shared_ptr<CameraFileSystem> camera
    m_cameraFileSystem = cameraFileSystem;
 
    InsertColumn(T_enFileListViewColumns::columnFilename, _T("Name"), LVCFMT_LEFT, 300);
-   InsertColumn(T_enFileListViewColumns::columnFilename, _T("Size"), LVCFMT_LEFT, 100);
-   InsertColumn(T_enFileListViewColumns::columnFilename, _T("Modified"), LVCFMT_LEFT, 150);
+   InsertColumn(T_enFileListViewColumns::columnSize, _T("Size"), LVCFMT_LEFT, 100);
+   InsertColumn(T_enFileListViewColumns::columnModifiedDate, _T("Modified"), LVCFMT_LEFT, 150);
 
    DWORD dwExStyle = LVS_EX_GRIDLINES | LVS_EX_FULLROWSELECT;
    SetExtendedListViewStyle(dwExStyle, dwExStyle);
