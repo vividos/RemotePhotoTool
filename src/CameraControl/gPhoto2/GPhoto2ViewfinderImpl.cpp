@@ -80,7 +80,7 @@ void ViewfinderImpl::SetOutputType(T_enOutputType outputType)
 
    std::vector<CString> validValuesList = m_properties->GetValidValues("output");
 
-   if (outputValue >= validValuesList.size())
+   if (static_cast<size_t>(outputValue) >= validValuesList.size())
       return; // index not available
 
    Variant value;
@@ -106,7 +106,9 @@ void ViewfinderImpl::SetAvailImageHandler(T_fnOnAvailViewfinderImage onAvailView
 
 void ViewfinderImpl::GetHistogram(T_enHistogramType histogramType, std::vector<unsigned int>& histogramData)
 {
-   // TODO
+   // TODO implement
+   UNUSED(histogramType);
+   UNUSED(histogramData);
 }
 
 void ViewfinderImpl::Close()
@@ -187,5 +189,5 @@ void ViewfinderImpl::GetImage(std::vector<BYTE>& imageData)
    CheckError(_T("gp_file_get_data_and_size"), ret, __FILE__, __LINE__);
 
    const BYTE* dataBytes = reinterpret_cast<const BYTE*>(data);
-   imageData.assign(data, data + size);
+   imageData.assign(dataBytes, dataBytes + size);
 }

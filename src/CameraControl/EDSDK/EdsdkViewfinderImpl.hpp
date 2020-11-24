@@ -87,10 +87,10 @@ private:
    /// mutex to protect histogram arrays
    LightweightMutex m_mtxHistogram;
 
-   EdsUInt32 m_histogramY[256]; ///< histogram for luminance
-   EdsUInt32 m_histogramR[256]; ///< histogram for red channel
-   EdsUInt32 m_histogramG[256]; ///< histogram for green channel
-   EdsUInt32 m_histogramB[256]; ///< histogram for blue channel
+   std::array<EdsUInt32, 256> m_histogramY; ///< histogram for luminance
+   std::array<EdsUInt32, 256> m_histogramR; ///< histogram for red channel
+   std::array<EdsUInt32, 256> m_histogramG; ///< histogram for green channel
+   std::array<EdsUInt32, 256> m_histogramB; ///< histogram for blue channel
 };
 
 } // namespace EDSDK

@@ -45,10 +45,12 @@ RemotePhotoTool::CameraControl::ImageProperty::ValidValues::get()
 
    auto imagePropertyCollection = gcnew System::Collections::Generic::List<RemotePhotoTool::CameraControl::ImageProperty^>();
 
+   if (m_remoteReleaseControl == nullptr)
+      return imagePropertyCollection;
+
    for (size_t index = 0, max = validValuesList.size(); index < max; index++)
    {
       ::ImageProperty imageProperty = validValuesList[index];
-
       imagePropertyCollection->Add(
          gcnew RemotePhotoTool::CameraControl::ImageProperty(imageProperty,
          *m_remoteReleaseControl));

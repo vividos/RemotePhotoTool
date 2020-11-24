@@ -1,11 +1,9 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file EdsdkViewfinderImpl.cpp EDSDK - Viewfinder impl
 //
-
-// includes
 #include "stdafx.h"
 #include "EdsdkViewfinderImpl.hpp"
 #include "EdsdkPropertyAccess.hpp"
@@ -19,6 +17,11 @@ m_ioService(ioService),
 m_spMtxLock(spMtxLock),
 m_evtTimerStopped(false)
 {
+   std::uninitialized_fill(m_histogramY.begin(), m_histogramY.end(), 0);
+   std::uninitialized_fill(m_histogramR.begin(), m_histogramR.end(), 0);
+   std::uninitialized_fill(m_histogramG.begin(), m_histogramG.end(), 0);
+   std::uninitialized_fill(m_histogramB.begin(), m_histogramB.end(), 0);
+
    // Get the output device for the live view image
    PropertyAccess p(hSourceDevice);
 
@@ -195,7 +198,7 @@ void ViewfinderImpl::GetHistogram(T_enHistogramType enHistogramType, std::vector
 
    LightweightMutex::LockType lock(m_mtxHistogram);
 
-   std::reference_wrapper<const EdsUInt32[256]> histogram(m_histogramY);
+   std::reference_wrapper<const std::array<EdsUInt32, 256>> histogram{ m_histogramY };
 
    switch (enHistogramType)
    {
@@ -283,10 +286,10 @@ void ViewfinderImpl::ReadHistogram(Handle& hEvfImage)
 {
    LightweightMutex::LockType lock(m_mtxHistogram);
 
-   EdsGetPropertyData(hEvfImage, kEdsPropID_Evf_HistogramY, 0, sizeof(m_histogramY), m_histogramY);
-   EdsGetPropertyData(hEvfImage, kEdsPropID_Evf_HistogramR, 0, sizeof(m_histogramR), m_histogramR);
-   EdsGetPropertyData(hEvfImage, kEdsPropID_Evf_HistogramG, 0, sizeof(m_histogramG), m_histogramG);
-   EdsGetPropertyData(hEvfImage, kEdsPropID_Evf_HistogramB, 0, sizeof(m_histogramB), m_histogramB);
+   EdsGetPropertyData(hEvfImage, kEdsPropID_Evf_HistogramY, 0, m_histogramY.size(), m_histogramY.data());
+   EdsGetPropertyData(hEvfImage, kEdsPropID_Evf_HistogramR, 0, m_histogramR.size(), m_histogramR.data());
+   EdsGetPropertyData(hEvfImage, kEdsPropID_Evf_HistogramG, 0, m_histogramG.size(), m_histogramG.data());
+   EdsGetPropertyData(hEvfImage, kEdsPropID_Evf_HistogramB, 0, m_histogramB.size(), m_histogramB.data());
 }
 
 void ViewfinderImpl::OnGetViewfinderImage()

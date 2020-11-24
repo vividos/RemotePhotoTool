@@ -187,7 +187,7 @@ void CameraFileSystemFileListView::OnDownloadFinished(const FileInfo& fileInfo, 
       filenameVariation.Format(_T("%s-%i%s"),
          Path::FilenameOnly(baseFilename).GetString(),
          index++,
-         Path::ExtensionOnly(baseFilename));
+         Path::ExtensionOnly(baseFilename).GetString());
 
       filename = Path::Combine(baseFolder, filenameVariation);
    }

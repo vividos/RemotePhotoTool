@@ -229,14 +229,14 @@ std::vector<unsigned int> RemoteReleaseControlImpl::EnumImageProperties() const
    ATLASSERT(m_spDeviceInfo != nullptr);
    DeviceInfo& info = *m_spDeviceInfo.get();
 
-   DeviceInfo& parentInfo = *m_spSourceDevice->GetDeviceInfo();
+   std::shared_ptr<DeviceInfo> parentInfo = m_spSourceDevice->GetDeviceInfo();
 
    // put the device property id's into the vector
    std::vector<unsigned int> vecProperties;
    std::for_each(info.m_setDevicePropertiesSupported.begin(), info.m_setDevicePropertiesSupported.end(), [&](prUInt16 uiPropId)
    {
       // filter out ids already in device properties
-      if (parentInfo.m_setDevicePropertiesSupported.find(uiPropId) == parentInfo.m_setDevicePropertiesSupported.end())
+      if (parentInfo->m_setDevicePropertiesSupported.find(uiPropId) == parentInfo->m_setDevicePropertiesSupported.end())
          vecProperties.push_back(uiPropId);
    });
 
