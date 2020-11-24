@@ -10,6 +10,8 @@
 #include "SystemImageList.hpp"
 #include "IPhotoModeViewHost.hpp"
 #include "CameraErrorDlg.hpp"
+#include "ImageFileManager.hpp"
+#include <ulib/Path.hpp>
 
 void CameraFileSystemFileListView::Init(std::shared_ptr<CameraFileSystem> cameraFileSystem)
 {
@@ -166,7 +168,37 @@ void CameraFileSystemFileListView::DownloadFiles(const std::vector<FileInfo>& fi
 
 void CameraFileSystemFileListView::OnDownloadFinished(const FileInfo& fileInfo, const std::vector<unsigned char>& data)
 {
-   // TODO implement
-   UNUSED(fileInfo);
-   UNUSED(data);
+   ImageFileManager& mgr = m_host.GetImageFileManager();
+
+   CString nextFilename = mgr.NextFilename(T_enImageType::imageTypeNormal, fileInfo.m_modifiedTime, false);
+
+   CString baseFolder = Path::FolderName(nextFilename);
+   CString baseFilename = fileInfo.m_filename;
+   int pos = baseFilename.ReverseFind(_T('/'));
+   if (pos != -1)
+      baseFilename = baseFilename.Mid(pos + 1);
+
+   CString filename = Path::Combine(baseFolder, baseFilename);
+
+   unsigned int index = 1;
+   CString filenameVariation;
+   while (Path::FileExists(filename))
+   {
+      filenameVariation.Format(_T("%s-%i%s"),
+         Path::FilenameOnly(baseFilename).GetString(),
+         index++,
+         Path::ExtensionOnly(baseFilename));
+
+      filename = Path::Combine(baseFolder, filenameVariation);
+   }
+
+   // store file
+   FILE* fd = nullptr;
+   errno_t err = _tfopen_s(&fd, filename, _T("wb"));
+   if (err != 0 || fd == nullptr)
+      return; // couldn't open file
+
+   fwrite(data.data(), 1, data.size(), fd);
+
+   fclose(fd);
 }
