@@ -9,6 +9,7 @@
 #include "CameraFileSystemDropSource.hpp"
 #include "SystemImageList.hpp"
 #include "IPhotoModeViewHost.hpp"
+#include "CameraErrorDlg.hpp"
 
 void CameraFileSystemFileListView::Init(std::shared_ptr<CameraFileSystem> cameraFileSystem)
 {
@@ -139,11 +140,28 @@ LRESULT CameraFileSystemFileListView::OnBeginDrag(int /*idCtrl*/, LPNMHDR /*pnmh
 
 void CameraFileSystemFileListView::DownloadFiles(const std::vector<FileInfo>& fileInfoList)
 {
+   CWaitCursor waitCursor;
+   waitCursor.Set();
+
    for (auto fileInfo : fileInfoList)
    {
-      m_cameraFileSystem->StartDownload(fileInfo,
-         std::bind(&CameraFileSystemFileListView::OnDownloadFinished, this, std::placeholders::_1, std::placeholders::_2));
+      try
+      {
+         m_cameraFileSystem->StartDownload(fileInfo,
+            std::bind(&CameraFileSystemFileListView::OnDownloadFinished, this, std::placeholders::_1, std::placeholders::_2));
+      }
+      catch (const CameraException& ex)
+      {
+         waitCursor.Restore();
+
+         CameraErrorDlg dlg(_T("Couldn't download file"), ex);
+         dlg.DoModal(m_hWnd);
+
+         break;
+      }
    }
+
+   waitCursor.Restore();
 }
 
 void CameraFileSystemFileListView::OnDownloadFinished(const FileInfo& fileInfo, const std::vector<unsigned char>& data)
