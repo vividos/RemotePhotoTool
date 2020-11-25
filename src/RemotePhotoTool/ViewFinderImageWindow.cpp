@@ -1,11 +1,9 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file ViewFinderImageWindow.cpp Viewfinder image window
 //
-
-// includes
 #include "stdafx.h"
 #include "ViewFinderImageWindow.hpp"
 #include "Viewfinder.hpp"
@@ -21,10 +19,12 @@ const unsigned int c_uiZebraPatternMovementInMs = 300;
 ViewFinderImageWindow::ViewFinderImageWindow()
 :m_uiResX(0),
  m_uiResY(0),
+ m_viewfinderImageCount(0),
  m_enLinesMode(linesModeNoLines),
  m_bShowZebraPattern(false),
  m_bShowHistogram(false)
 {
+   m_zebraPatternTimer.Start();
    SetupZebraBrush();
 }
 
@@ -42,12 +42,18 @@ void ViewFinderImageWindow::EnableUpdate(bool bEnable)
 {
    if (bEnable)
    {
+      m_viewfinderImageCount = 0;
+      m_frameCountTimer.Reset();
+      m_frameCountTimer.Start();
+
       if (m_spViewfinder != nullptr)
          m_spViewfinder->SetAvailImageHandler(
             std::bind(&ViewFinderImageWindow::OnAvailViewfinderImage, this, std::placeholders::_1));
    }
    else
    {
+      m_frameCountTimer.Stop();
+
       m_spViewfinder->SetAvailImageHandler();
    }
 }
@@ -204,22 +210,17 @@ void ViewFinderImageWindow::SetBitmap(CBitmapHandle bmpViewfinder)
 
 void ViewFinderImageWindow::TraceViewfinderFps()
 {
-   static unsigned int s_uiViewfinderImageCount = 0;
-   static DWORD s_dwLastFpsTime = GetTickCount();
+   m_viewfinderImageCount++;
 
-   s_uiViewfinderImageCount++;
-
-   DWORD dwNow = GetTickCount();
-
-   DWORD dwElapsed = dwNow - s_dwLastFpsTime;
-   if (dwElapsed > 500)
+   if (m_frameCountTimer.Elapsed() > 0.5)
    {
       CString cszText;
-      cszText.Format(_T("Viewfinder: %lu fps"), s_uiViewfinderImageCount * 1000 / dwElapsed);
+      cszText.Format(_T("Viewfinder: %3.1f fps"), m_viewfinderImageCount / m_frameCountTimer.Elapsed());
       ATLTRACE(_T("%s\n"), cszText.GetString());
 
-      s_uiViewfinderImageCount = 0;
-      s_dwLastFpsTime = dwNow;
+      m_viewfinderImageCount = 0;
+
+      m_frameCountTimer.Restart();
    }
 }
 
@@ -280,8 +281,8 @@ void ViewFinderImageWindow::DrawZebraPattern(CDC& dc, int iWidth, int iHeight)
    dc.SetBkColor(RGB(255, 255, 255));
 
    // in order to move zebra pattern, set pattern brush origin
-   DWORD dwNow = GetTickCount();
-   int iOffset = (dwNow / c_uiZebraPatternMovementInMs) % 8;
+   double elapsedMs = m_zebraPatternTimer.Elapsed() * 1000.0;
+   int iOffset = (unsigned int)(elapsedMs / c_uiZebraPatternMovementInMs) % 8;
    dc.SetBrushOrg(iOffset, 0);
 
    CRect rcImage(CPoint(0, 0), CSize(iWidth, iHeight));

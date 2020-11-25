@@ -1,13 +1,13 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2016 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file ViewFinderImageWindow.hpp Viewfinder image window
 //
 #pragma once
 
-// includes
 #include <ulib/thread/LightweightMutex.hpp>
+#include <ulib/Timer.hpp>
 #include "Viewfinder.hpp"
 #include "resource.h"
 
@@ -125,6 +125,12 @@ private:
    /// bitmap for viewfinder
    CBitmap m_bmpViewfinder;
 
+   /// count of images displayed in the viewfinder so far
+   unsigned int m_viewfinderImageCount;
+
+   /// Timer for frames/s count
+   Timer m_frameCountTimer;
+
    /// lines mode
    T_enLinesMode m_enLinesMode;
 
@@ -133,6 +139,9 @@ private:
 
    /// brush for drawing zebra pattern
    CBrush m_brushZebraPattern;
+
+   /// timer for zebra pattern
+   Timer m_zebraPatternTimer;
 
    /// indicates if histogram is shown
    bool m_bShowHistogram;
