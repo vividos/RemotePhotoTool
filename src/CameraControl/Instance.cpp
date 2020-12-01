@@ -1,11 +1,9 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2017 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file Instance.cpp Canon control - Instance class
 //
-
-// includes
 #include "stdafx.h"
 #include "Instance.hpp"
 #include "EDSDK/EdsdkCommon.hpp"
@@ -15,8 +13,8 @@
 #include "gPhoto2/GPhoto2Common.hpp"
 #include "WIA/WiaCommon.hpp"
 #include <ulib/thread/LightweightMutex.hpp>
-#include "BackgroundWorkerThread.hpp"
-#include "BackgroundTimer.hpp"
+#include "SingleThreadExecutor.hpp"
+#include "PeriodicExecuteTimer.hpp"
 #include "SdkReferenceBase.hpp"
 
 
@@ -61,11 +59,11 @@ private:
    /// current number of devices used in polling
    size_t m_uiPollNumDevices;
 
-   /// worker thread for timer
-   std::shared_ptr<BackgroundWorkerThread> m_spWorkerThread;
+   /// background thread executor for timer
+   std::shared_ptr<SingleThreadExecutor> m_executor;
 
-   /// thread that polls camera enumeration
-   std::shared_ptr<BackgroundTimer> m_spCameraPollTimer;
+   /// timer to poll camera enumeration
+   std::shared_ptr<PeriodicExecuteTimer> m_spCameraPollTimer;
 };
 
 
@@ -108,25 +106,20 @@ void Instance::Impl::StartPollCamera()
    }
 
    // start thread that polls for new cameras on CDSDK, PSREC
-   m_spWorkerThread.reset(new BackgroundWorkerThread);
+   m_executor.reset(new SingleThreadExecutor);
 
    m_spCameraPollTimer.reset(
-      new BackgroundTimer(
-         m_spWorkerThread->GetIoService(),
+      new PeriodicExecuteTimer(
+         *m_executor,
          1000,
          std::bind(&Instance::Impl::PollCamera, this)
          ));
-
-   m_spCameraPollTimer->Start();
 }
 
 void Instance::Impl::StopPollCamera()
 {
-   if (m_spCameraPollTimer != nullptr)
-      m_spCameraPollTimer->Stop();
-
    m_spCameraPollTimer.reset();
-   m_spWorkerThread.reset();
+   m_executor.reset();
 }
 
 void Instance::Impl::PollCamera()

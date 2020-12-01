@@ -1,12 +1,11 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file EdsdkRemoteReleaseControlImpl.hpp EDSDK - RemoteReleaseControl impl
 //
 #pragma once
 
-// includes
 #include "RemoteReleaseControl.hpp"
 #include "ShutterReleaseSettings.hpp"
 #include "EdsdkPropertyAccess.hpp"
@@ -19,7 +18,7 @@
 
 // forward references
 class SourceDevice;
-class AsyncReleaseControlThread;
+class SingleThreadExecutor;
 
 namespace EDSDK
 {
@@ -279,8 +278,8 @@ private:
    /// handle to camera object
    Handle m_hCamera;
 
-   /// background thread for release control
-   std::unique_ptr<AsyncReleaseControlThread> m_upReleaseThread;
+   /// background thread executor for release control
+   std::unique_ptr<SingleThreadExecutor> m_executor;
 
    /// mutex to synchronize access to ED-SDK when using viewfinder
    std::shared_ptr<LightweightMutex> m_spMtxLock;

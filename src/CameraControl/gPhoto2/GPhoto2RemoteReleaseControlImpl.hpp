@@ -12,7 +12,7 @@
 #include <ulib/Observer.hpp>
 #include <ulib/thread/LightweightMutex.hpp>
 
-class AsyncReleaseControlThread;
+class SingleThreadExecutor;
 
 namespace GPhoto2
 {
@@ -101,8 +101,8 @@ namespace GPhoto2
       /// property manager for gPhoto connected camera
       std::shared_ptr<PropertyAccess> m_properties;
 
-      /// background thread for release control
-      std::unique_ptr<AsyncReleaseControlThread> m_releaseThread;
+      /// background thread executor for release control
+      std::unique_ptr<SingleThreadExecutor> m_releaseThread;
 
       /// mutex to protect m_shutterReleaseSettings
       LightweightMutex m_mutexShutterReleaseSettings;

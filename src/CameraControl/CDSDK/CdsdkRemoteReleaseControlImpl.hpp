@@ -1,12 +1,11 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file CdsdkRemoteReleaseControlImpl.hpp CDSDK - RemoteReleaseControl impl
 //
 #pragma once
 
-// includes
 #include "RemoteReleaseControl.hpp"
 #include "CdsdkCommon.hpp"
 #include "CdsdkImagePropertyAccess.hpp"
@@ -14,8 +13,7 @@
 #include <ulib/Observer.hpp>
 #include <ulib/thread/LightweightMutex.hpp>
 
-// forward references
-class AsyncReleaseControlThread;
+class SingleThreadExecutor;
 
 namespace CDSDK
 {
@@ -165,8 +163,8 @@ private:
    /// source device
    std::shared_ptr<SourceDeviceImpl> m_spSourceDevice;
 
-   /// background thread for release control
-   std::unique_ptr<AsyncReleaseControlThread> m_upReleaseThread;
+   /// background thread executor for release control
+   std::unique_ptr<SingleThreadExecutor> m_executor;
 
    /// mutex to protect m_shutterReleaseSettings
    LightweightMutex m_mtxShutterReleaseSettings;

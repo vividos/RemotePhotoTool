@@ -1,18 +1,16 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file PsrecRemoteReleaseControlImpl.cpp PS-ReC - RemoteReleaseControl impl
 //
-
-// includes
 #include "stdafx.h"
 #include "ShutterReleaseSettings.hpp"
 #include "PsrecRemoteReleaseControlImpl.hpp"
 #include "PsrecSourceDeviceImpl.hpp"
 #include "PsrecVarDataParser.hpp"
 #include "PsrecCameraEventData.hpp"
-#include "AsyncReleaseControlThread.hpp"
+#include "SingleThreadExecutor.hpp"
 #include <ulib/Timer.hpp>
 
 using namespace PSREC;
@@ -28,7 +26,7 @@ const prUInt16 PSREC_EVENT_STORAGE_INFO_CHANGED = 0x400c;
 RemoteReleaseControlImpl::RemoteReleaseControlImpl(prHandle hCamera, std::shared_ptr<SourceDeviceImpl> spSourceDevice)
 :m_spSourceDevice(spSourceDevice),
  m_hCamera(hCamera),
- m_upReleaseThread(new AsyncReleaseControlThread),
+ m_releaseThread(new SingleThreadExecutor),
  m_evtReleaseImageReady(false),
  m_evtReleaseImageTransferInProgress(false),
  m_evtReleaseImageTransferDone(false),
@@ -292,7 +290,7 @@ void RemoteReleaseControlImpl::SendCommand(RemoteReleaseControl::T_enCameraComma
 
 void RemoteReleaseControlImpl::Release()
 {
-   m_upReleaseThread->Post(std::bind(&RemoteReleaseControlImpl::AsyncRelease, this));
+   m_releaseThread->Schedule(std::bind(&RemoteReleaseControlImpl::AsyncRelease, this));
 }
 
 void RemoteReleaseControlImpl::AsyncRelease()

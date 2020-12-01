@@ -8,18 +8,19 @@
 #include "GPhoto2ViewfinderImpl.hpp"
 #include "GPhoto2PropertyAccess.hpp"
 #include "GPhoto2Include.hpp"
-#include "BackgroundTimer.hpp"
+#include "SingleThreadExecutor.hpp"
+#include "PeriodicExecuteTimer.hpp"
 
 using GPhoto2::ViewfinderImpl;
 
 ViewfinderImpl::ViewfinderImpl(RefSp ref,
    std::shared_ptr<_Camera> camera,
    std::shared_ptr<PropertyAccess> properties,
-   boost::asio::io_service& ioService)
+   SingleThreadExecutor& executor)
    :m_ref(ref),
    m_camera(camera),
    m_properties(properties),
-   m_ioService(ioService),
+   m_executor(executor),
    m_eventTimerStopped(false)
 {
 }
@@ -121,13 +122,11 @@ void ViewfinderImpl::StartBackgroundThread()
    m_viewfinderImageTimer.reset(); // clear old timers
 
    m_viewfinderImageTimer.reset(
-      new BackgroundTimer(
-         m_ioService,
+      new PeriodicExecuteTimer(
+         m_executor,
          50, // 50 ms results in 20 fps
          std::bind(&ViewfinderImpl::OnGetViewfinderImage, this)
       ));
-
-   m_viewfinderImageTimer->Start();
 }
 
 void ViewfinderImpl::StopBackgroundThread()
@@ -137,7 +136,7 @@ void ViewfinderImpl::StopBackgroundThread()
 
    m_eventTimerStopped.Reset();
 
-   m_ioService.post(
+   m_executor.Schedule(
       std::bind(&ViewfinderImpl::AsyncStopBackgroundThread, shared_from_this()));
 
    m_eventTimerStopped.Wait();
@@ -145,10 +144,6 @@ void ViewfinderImpl::StopBackgroundThread()
 
 void ViewfinderImpl::AsyncStopBackgroundThread()
 {
-   // stop timer
-   if (m_viewfinderImageTimer != nullptr)
-      m_viewfinderImageTimer->Stop();
-
    m_viewfinderImageTimer.reset();
 
    m_eventTimerStopped.Set();

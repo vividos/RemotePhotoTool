@@ -7,13 +7,15 @@
 #include "stdafx.h"
 #include "EdsdkViewfinderImpl.hpp"
 #include "EdsdkPropertyAccess.hpp"
-#include "BackgroundTimer.hpp"
+#include "SingleThreadExecutor.hpp"
+#include "PeriodicExecuteTimer.hpp"
+#include <memory>
 
 using namespace EDSDK;
 
-ViewfinderImpl::ViewfinderImpl(Handle hSourceDevice, boost::asio::io_service& ioService, std::shared_ptr<LightweightMutex> spMtxLock)
+ViewfinderImpl::ViewfinderImpl(Handle hSourceDevice, SingleThreadExecutor& executor, std::shared_ptr<LightweightMutex> spMtxLock)
 :m_hSourceDevice(hSourceDevice),
-m_ioService(ioService),
+m_executor(executor),
 m_spMtxLock(spMtxLock),
 m_evtTimerStopped(false)
 {
@@ -148,13 +150,11 @@ void ViewfinderImpl::StartBackgroundThread()
    m_spViewfinderImageTimer.reset(); // clear old timers
 
    m_spViewfinderImageTimer.reset(
-      new BackgroundTimer(
-         m_ioService,
+      new PeriodicExecuteTimer(
+         m_executor,
          50, // 50 ms results in 20 fps
          std::bind(&ViewfinderImpl::OnGetViewfinderImage, this)
          ));
-
-   m_spViewfinderImageTimer->Start();
 }
 
 void ViewfinderImpl::StopBackgroundThread()
@@ -167,7 +167,7 @@ void ViewfinderImpl::StopBackgroundThread()
    // Run in worker thread, since we must not block the window message processing, needed in
    // EDSDK functions called in GetImage(). Since caller might destroy the Viewfinder class right
    // away, use shared_from_this() to manage lifetime of this class.
-   m_ioService.post(
+   m_executor.Schedule(
       std::bind(&ViewfinderImpl::AsyncStopBackgroundThread, shared_from_this()));
 
    if (!m_hSourceDevice.IsValid())
@@ -183,10 +183,6 @@ void ViewfinderImpl::StopBackgroundThread()
 
 void ViewfinderImpl::AsyncStopBackgroundThread()
 {
-   // stop timer
-   if (m_spViewfinderImageTimer != nullptr)
-      m_spViewfinderImageTimer->Stop();
-
    m_spViewfinderImageTimer.reset();
 
    m_evtTimerStopped.Set();

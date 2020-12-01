@@ -1,12 +1,11 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file PsrecRemoteReleaseControlImpl.hpp PS-ReC - RemoteReleaseControl impl
 //
 #pragma once
 
-// includes
 #include "RemoteReleaseControl.hpp"
 #include "ShutterReleaseSettings.hpp"
 #include "PsrecCommon.hpp"
@@ -18,7 +17,7 @@
 #include <ulib/thread/Event.hpp>
 
 // forward references
-class AsyncReleaseControlThread;
+class SingleThreadExecutor;
 
 namespace PSREC
 {
@@ -184,8 +183,8 @@ private:
    /// camera handle
    prHandle m_hCamera;
 
-   /// background thread for release control
-   std::unique_ptr<AsyncReleaseControlThread> m_upReleaseThread;
+   /// background thread executor for release control
+   std::unique_ptr<SingleThreadExecutor> m_releaseThread;
 
    /// device info; from source device
    std::shared_ptr<DeviceInfo> m_spDeviceInfo;

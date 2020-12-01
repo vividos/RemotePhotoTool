@@ -11,7 +11,8 @@
 #include <ulib/thread/Mutex.hpp>
 #include <ulib/thread/Event.hpp>
 
-class BackgroundTimer;
+class SingleThreadExecutor;
+class PeriodicExecuteTimer;
 
 namespace GPhoto2
 {
@@ -25,7 +26,7 @@ namespace GPhoto2
    public:
       /// ctor
       ViewfinderImpl(RefSp ref, std::shared_ptr<_Camera> camera, std::shared_ptr<PropertyAccess> properties,
-         boost::asio::io_service& ioService);
+         SingleThreadExecutor& executor);
 
       /// dtor
       virtual ~ViewfinderImpl();
@@ -82,14 +83,14 @@ namespace GPhoto2
       /// viewfinder image handler
       Viewfinder::T_fnOnAvailViewfinderImage m_onAvailViewfinderImage;
 
-      /// thread that polls camera for viewfinder image
-      std::shared_ptr<BackgroundTimer> m_viewfinderImageTimer;
+      /// timer for polling camera for viewfinder image
+      std::shared_ptr<PeriodicExecuteTimer> m_viewfinderImageTimer;
 
       /// event to signal that timer has stopped
       ManualResetEvent m_eventTimerStopped;
 
-      /// background thread io service
-      boost::asio::io_service& m_ioService;
+      /// background thread executor
+      SingleThreadExecutor& m_executor;
    };
 
 } // namespace GPhoto2

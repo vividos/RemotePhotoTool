@@ -1,20 +1,19 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file EdsdkViewfinderImpl.hpp EDSDK - Viewfinder impl
 //
 #pragma once
 
-// includes
 #include "Viewfinder.hpp"
 #include "EdsdkCommon.hpp"
-#include <ulib/config/BoostAsio.hpp>
 #include <ulib/thread/Event.hpp>
+#include <array>
 #include <atomic>
 
-// forward references
-class BackgroundTimer;
+class SingleThreadExecutor;
+class PeriodicExecuteTimer;
 
 namespace EDSDK
 {
@@ -26,7 +25,7 @@ class ViewfinderImpl:
 {
 public:
    /// ctor
-   ViewfinderImpl(Handle hSourceDevice, boost::asio::io_service& ioService, std::shared_ptr<LightweightMutex> spMtxLock);
+   ViewfinderImpl(Handle hSourceDevice, SingleThreadExecutor& executor, std::shared_ptr<LightweightMutex> spMtxLock);
    /// dtor
    virtual ~ViewfinderImpl();
 
@@ -63,8 +62,8 @@ private:
    /// source device
    Handle m_hSourceDevice;
 
-   /// background thread io service
-   boost::asio::io_service& m_ioService;
+   /// background thread executor
+   SingleThreadExecutor& m_executor;
 
    /// lock to synchronize access to ED-SDK during viewfinder
    std::shared_ptr<LightweightMutex> m_spMtxLock;
@@ -75,8 +74,8 @@ private:
    /// indicates if worker thread is in GetImage()
    std::atomic<bool> m_bInGetImage;
 
-   /// thread that polls camera for viewfinder image
-   std::shared_ptr<BackgroundTimer> m_spViewfinderImageTimer;
+   /// timer for polling camera for viewfinder image
+   std::shared_ptr<PeriodicExecuteTimer> m_spViewfinderImageTimer;
 
    /// mutex to protect m_fnOnAvailViewfinderImage
    LightweightMutex m_mtxFnOnAvailViewfinderImage;

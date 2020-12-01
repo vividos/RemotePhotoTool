@@ -98,9 +98,6 @@
     <ClCompile Include="ErrorText.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AsyncReleaseControlThread.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="EDSDK\EdsdkShutterCounterReader.cpp">
       <Filter>EDSDK Files</Filter>
     </ClCompile>
@@ -244,9 +241,6 @@
     <ClInclude Include="PSREC\PsrecDeviceInfo.hpp">
       <Filter>PSREC Files</Filter>
     </ClInclude>
-    <ClInclude Include="BackgroundWorkerThread.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="exports\ShutterSpeedValue.hpp">
       <Filter>Exported Header Files</Filter>
     </ClInclude>
@@ -295,9 +289,6 @@
     <ClInclude Include="..\Thirdparty\CDSDK\inc\cdType.h">
       <Filter>CDSDK Files\SDK Files</Filter>
     </ClInclude>
-    <ClInclude Include="BackgroundTimer.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="CDSDK\CdsdkDevicePropertyAccess.hpp">
       <Filter>CDSDK Files</Filter>
     </ClInclude>
@@ -306,9 +297,6 @@
     </ClInclude>
     <ClInclude Include="ErrorText.hpp">
       <Filter>Exported Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AsyncReleaseControlThread.hpp">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="EDSDK\EdsdkShutterCounterReader.hpp">
       <Filter>EDSDK Files</Filter>

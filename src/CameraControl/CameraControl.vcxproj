@@ -77,7 +77,6 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AsyncReleaseControlThread.cpp" />
     <ClCompile Include="CDSDK\CdsdkDevicePropertyAccess.cpp" />
     <ClCompile Include="CDSDK\CdsdkImagePropertyAccess.cpp" />
     <ClCompile Include="CDSDK\CdsdkRemoteReleaseControlImpl.cpp" />
@@ -130,9 +129,6 @@
     <ClInclude Include="..\Thirdparty\PSREC\PSReCSDK\inc\prError.h" />
     <ClInclude Include="..\Thirdparty\PSREC\PSReCSDK\inc\prFuncType.h" />
     <ClInclude Include="..\Thirdparty\PSREC\PSReCSDK\inc\prType.h" />
-    <ClInclude Include="AsyncReleaseControlThread.hpp" />
-    <ClInclude Include="BackgroundTimer.hpp" />
-    <ClInclude Include="BackgroundWorkerThread.hpp" />
     <ClInclude Include="CDSDK\CdsdkDevicePropertyAccess.hpp" />
     <ClInclude Include="CommonPropertyAccess.hpp" />
     <ClInclude Include="EDSDK\EdsdkCameraFileSystemImpl.hpp" />

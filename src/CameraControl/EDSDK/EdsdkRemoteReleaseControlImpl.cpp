@@ -4,20 +4,18 @@
 //
 /// \file EdsdkRemoteReleaseControlImpl.cpp EDSDK - RemoteReleaseControl impl
 //
-
-// includes
 #include "stdafx.h"
 #include "EdsdkRemoteReleaseControlImpl.hpp"
 #include "ShutterReleaseSettings.hpp"
 #include <ulib/Path.hpp>
-#include "AsyncReleaseControlThread.hpp"
+#include "SingleThreadExecutor.hpp"
 
 using namespace EDSDK;
 
 RemoteReleaseControlImpl::RemoteReleaseControlImpl(std::shared_ptr<SourceDevice> spSourceDevice, const Handle& hCamera)
 :m_spSourceDevice(spSourceDevice),
  m_hCamera(hCamera),
- m_upReleaseThread(new AsyncReleaseControlThread),
+ m_executor(new SingleThreadExecutor),
  m_spMtxLock(new LightweightMutex),
  m_shutterReleaseSettings(ShutterReleaseSettings::saveToCamera), // default is to just save to camera
  m_evtShutterReleaseOccured(false),
@@ -323,7 +321,7 @@ void RemoteReleaseControlImpl::SetImageProperty(const ImageProperty& imageProper
       m_uiCurrentZoomPos = imageProperty.Value().Get<unsigned int>();
    }
 
-   m_upReleaseThread->GetIoService().post(
+   m_executor->Schedule(
       std::bind(&RemoteReleaseControlImpl::SyncSetImageProperty, this, imageProperty));
 }
 
@@ -362,12 +360,12 @@ void RemoteReleaseControlImpl::SyncSetImageProperty(const ImageProperty& imagePr
 std::shared_ptr<Viewfinder> RemoteReleaseControlImpl::StartViewfinder() const
 {
    return std::shared_ptr<Viewfinder>(
-      new ViewfinderImpl(m_hCamera, m_upReleaseThread->GetIoService(), m_spMtxLock));
+      new ViewfinderImpl(m_hCamera, *m_executor, m_spMtxLock));
 }
 
 void RemoteReleaseControlImpl::Release()
 {
-   m_upReleaseThread->Post(std::bind(&RemoteReleaseControlImpl::AsyncRelease, this));
+   m_executor->Schedule(std::bind(&RemoteReleaseControlImpl::AsyncRelease, this));
 }
 
 void RemoteReleaseControlImpl::SetSaveToFlag(ShutterReleaseSettings::T_enSaveTarget enSaveTarget, bool bAsynchronous)
@@ -448,7 +446,7 @@ void RemoteReleaseControlImpl::OnReceivedObjectEventRequestTransfer(Handle hDire
    }
 
    // download image
-   m_upReleaseThread->Post(std::bind(&RemoteReleaseControlImpl::AsyncDownloadImage, this, hDirectoryItem, settings));
+   m_executor->Schedule(std::bind(&RemoteReleaseControlImpl::AsyncDownloadImage, this, hDirectoryItem, settings));
 }
 
 void RemoteReleaseControlImpl::AsyncDownloadImage(Handle hDirectoryItem, ShutterReleaseSettings& settings)

@@ -8,7 +8,7 @@
 #include "GPhoto2RemoteReleaseControlImpl.hpp"
 #include "GPhoto2PropertyAccess.hpp"
 #include "CameraException.hpp"
-#include "AsyncReleaseControlThread.hpp"
+#include "SingleThreadExecutor.hpp"
 #include "GPhoto2ViewfinderImpl.hpp"
 #include "GPhoto2BulbReleaseControlImpl.hpp"
 #include "GPhoto2Include.hpp"
@@ -21,7 +21,7 @@ RemoteReleaseControlImpl::RemoteReleaseControlImpl(RefSp ref,
    :m_ref(ref),
    m_camera(camera),
    m_properties(properties),
-   m_releaseThread(std::make_unique<AsyncReleaseControlThread>())
+   m_releaseThread(std::make_unique<SingleThreadExecutor>())
 {
    Variant value;
    value.Set(true);
@@ -116,7 +116,7 @@ std::shared_ptr<Viewfinder> RemoteReleaseControlImpl::StartViewfinder() const
       throw CameraException(_T("gPhoto2::RemoteReleaseControl::StartViewfinder"),
          _T("Not supported"), 0, __FILE__, __LINE__);
 
-   return std::make_shared<ViewfinderImpl>(m_ref, m_camera, m_properties, m_releaseThread->GetIoService());
+   return std::make_shared<ViewfinderImpl>(m_ref, m_camera, m_properties, *m_releaseThread);
 }
 
 unsigned int RemoteReleaseControlImpl::NumAvailableShots() const
@@ -133,7 +133,7 @@ void RemoteReleaseControlImpl::SendCommand(T_enCameraCommand cameraCommand)
 
 void RemoteReleaseControlImpl::Release()
 {
-   m_releaseThread->Post(std::bind(&RemoteReleaseControlImpl::AsyncRelease, this));
+   m_releaseThread->Schedule(std::bind(&RemoteReleaseControlImpl::AsyncRelease, this));
 }
 
 void RemoteReleaseControlImpl::AsyncRelease()
