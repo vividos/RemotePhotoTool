@@ -1,11 +1,9 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2016 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file PreviousImagesManager.cpp Previous images manager
 //
-
-// includes
 #include "stdafx.h"
 #include "PreviousImagesManager.hpp"
 #include "JpegMemoryReader.hpp"
@@ -28,22 +26,12 @@ static_assert(sizeof(c_aReadTags) / sizeof(*c_aReadTags) == PreviousImageInfo::t
    "entries in T_enImageInfoType must match size of c_aReadTags array");
 
 PreviousImagesManager::PreviousImagesManager(size_t /*uiMaxSizeCachedImagesInBytes*/)
-:m_ioService(1), // single thread
-m_upDefaultWork(new boost::asio::io_service::work(m_ioService))
+   :m_executor(_T("PreviousImagesManager worker thread"))
 {
-   m_upThread.reset(new std::thread(std::bind(&PreviousImagesManager::RunWorkerThread, this)));
 }
 
 PreviousImagesManager::~PreviousImagesManager()
 {
-   try
-   {
-      m_upDefaultWork.reset();
-      m_upThread->join();
-   }
-   catch (...)
-   {
-   }
 }
 
 bool PreviousImagesManager::ImagesAvail() const
@@ -65,7 +53,7 @@ void PreviousImagesManager::AddNewImage(const CString& cszFilename)
 
       m_vecPreviousImages.push_back(spPreviousImageInfo);
 
-      m_ioService.post(
+      m_executor.Schedule(
          std::bind(&PreviousImagesManager::LoadImageData, this, spPreviousImageInfo));
    }
 }
@@ -100,7 +88,7 @@ void PreviousImagesManager::AsyncGetImage(T_enRequestImageType enImageType,
    if (m_setCurrentlyLoadingImages.find(spImageInfo) != m_setCurrentlyLoadingImages.end())
       return; // already loading
 
-   m_ioService.post(
+   m_executor.Schedule(
       std::bind(&PreviousImagesManager::LoadImageData, this, spImageInfo));
 }
 
@@ -255,22 +243,5 @@ void PreviousImagesManager::AnalyzeImage(std::shared_ptr<PreviousImageInfo> spPr
          static_cast<PreviousImageInfo::T_enImageInfoType>(i);
 
       spPreviousImageInfo->InfoText(enImageInfoType, cszText);
-   }
-}
-
-void PreviousImagesManager::RunWorkerThread()
-{
-   Thread::SetName(_T("PreviousImagesManager worker thread"));
-
-   for (;;)
-   {
-      try
-      {
-         m_ioService.run();
-         return;
-      }
-      catch (...)
-      {
-      }
    }
 }

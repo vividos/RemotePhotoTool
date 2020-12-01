@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2018 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file TimeLapseScheduler.hpp TimeLapse scheduler
 //
@@ -8,7 +8,7 @@
 
 #include <set>
 #include <thread>
-#include <ulib/config/BoostAsio.hpp>
+#include "SingleThreadExecutor.hpp"
 #include <ATLComTime.h>
 
 /// scheduler for time lapse photo mode
@@ -30,25 +30,12 @@ public:
    void CancelAll();
 
    /// returns if scheduler was already finished
-   bool IsFinished() const { return m_isFinished; }
+   bool IsFinished() const { return m_executor == nullptr; }
 
 private:
-   /// thread function
-   void Run();
-
-private:
-   /// background thread
-   std::unique_ptr<std::thread> m_upThread;
-
-   /// io service
-   boost::asio::io_service m_ioService;
-
-   /// default work
-   std::unique_ptr<boost::asio::io_service::work> m_upDefaultWork;
-
-   /// indicates that thread should stop
-   std::atomic<bool> m_isFinished;
+   /// background thread executor
+   std::unique_ptr<SingleThreadExecutor> m_executor;
 
    /// all currently running timers
-   std::set<std::shared_ptr<boost::asio::system_timer>> m_setAllTimer;
+   std::set<std::shared_ptr<OneShotExecuteTimer>> m_setAllTimer;
 };

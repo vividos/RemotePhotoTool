@@ -1,15 +1,14 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2016 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file PreviousImagesManager.hpp Previous images manager
 //
 #pragma once
 
-// includes
 #include "PreviousImageInfo.hpp"
 #include <ulib/thread/LightweightMutex.hpp>
-#include <ulib/config/BoostAsio.hpp>
+#include "SingleThreadExecutor.hpp"
 #include <map>
 #include <set>
 #include <memory>
@@ -96,12 +95,6 @@ private:
    /// set of  image infos currently being loaded
    std::set<std::shared_ptr<PreviousImageInfo>> m_setCurrentlyLoadingImages;
 
-   /// background thread
-   std::unique_ptr<std::thread> m_upThread;
-
-   /// io service
-   boost::asio::io_service m_ioService;
-
-   /// default work
-   std::unique_ptr<boost::asio::io_service::work> m_upDefaultWork;
+   /// background thread executor
+   SingleThreadExecutor m_executor;
 };
