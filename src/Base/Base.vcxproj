@@ -72,11 +72,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Logging.hpp" />
+    <ClInclude Include="OneShotExecuteTimer.hpp" />
+    <ClInclude Include="PeriodicExecuteTimer.hpp" />
     <ClInclude Include="RegEnumKey.hpp" />
+    <ClInclude Include="SingleThreadExecutor.hpp" />
+    <ClInclude Include="SingleThreadExecutorImpl.hpp" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Logging.cpp" />
+    <ClCompile Include="OneShotExecuteTimer.cpp" />
+    <ClCompile Include="PeriodicExecuteTimer.cpp" />
+    <ClCompile Include="SingleThreadExecutor.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -89,6 +96,7 @@
   <ImportGroup Label="ExtensionTargets">
     <Import Project="..\packages\wtl.10.0.10320\build\native\wtl.targets" Condition="Exists('..\packages\wtl.10.0.10320\build\native\wtl.targets')" />
     <Import Project="..\packages\Vividos.UlibCpp.Static.4.2.3\build\native\Vividos.UlibCpp.Static.targets" Condition="Exists('..\packages\Vividos.UlibCpp.Static.4.2.3\build\native\Vividos.UlibCpp.Static.targets')" />
+    <Import Project="..\packages\boost.1.72.0.0\build\boost.targets" Condition="Exists('..\packages\boost.1.72.0.0\build\boost.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
@@ -96,5 +104,6 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\wtl.10.0.10320\build\native\wtl.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\wtl.10.0.10320\build\native\wtl.targets'))" />
     <Error Condition="!Exists('..\packages\Vividos.UlibCpp.Static.4.2.3\build\native\Vividos.UlibCpp.Static.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Vividos.UlibCpp.Static.4.2.3\build\native\Vividos.UlibCpp.Static.targets'))" />
+    <Error Condition="!Exists('..\packages\boost.1.72.0.0\build\boost.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\boost.1.72.0.0\build\boost.targets'))" />
   </Target>
 </Project>
