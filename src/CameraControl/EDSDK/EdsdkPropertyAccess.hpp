@@ -1,16 +1,14 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file EdsdkPropertyAccess.hpp EDSDK - Property access
 //
 #pragma once
 
-// includes
 #include "EdsdkCommon.hpp"
 #include "Variant.hpp"
 #include "ImageProperty.hpp"
-#include <boost/noncopyable.hpp>
 
 namespace EDSDK
 {
@@ -55,7 +53,7 @@ const EdsUInt32 kEdsPropID_Meta_Base = 0x10000000;
 const EdsUInt32 kEdsPropID_Meta_MaxZoomPos = kEdsPropID_Meta_Base + 0;
 
 /// combined image or device property access
-class PropertyAccess : public boost::noncopyable
+class PropertyAccess
 {
 public:
    /// ctor
@@ -107,6 +105,12 @@ public:
    static CString DisplayTextFromIdAndValue(EdsPropertyID /*propertyId*/, Variant value);
 
 private:
+   /// deleted copy ctor
+   PropertyAccess(const PropertyAccess&) = delete;
+
+   /// deleted assignment operator
+   PropertyAccess& operator=(const PropertyAccess&) = delete;
+
    /// handle to object
    const Handle& m_h;
 };

@@ -9,6 +9,7 @@
 #include "JFIFRewriter.hpp"
 #include <ulib/DateTime.hpp>
 #include "GPS/Coordinate.hpp"
+#include <functional>
 
 /// JPEG Geo-tagger helper class
 class JpegGeoTagger : private JFIFRewriter

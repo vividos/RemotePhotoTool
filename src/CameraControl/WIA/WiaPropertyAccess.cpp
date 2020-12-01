@@ -7,6 +7,7 @@
 #include "stdafx.h"
 #include "WiaPropertyAccess.hpp"
 #include <propvarutil.h>
+#include <ctime>
 
 #pragma comment(lib, "propsys.lib")
 

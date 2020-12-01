@@ -7,13 +7,12 @@
 #pragma once
 
 #include "WiaCommon.hpp"
-#include <boost/noncopyable.hpp>
 #include <DeviceProperty.hpp>
 
 namespace WIA
 {
    /// property access for WIA items
-   class PropertyAccess : public boost::noncopyable
+   class PropertyAccess
    {
    public:
       /// ctor

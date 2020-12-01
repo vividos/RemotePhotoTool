@@ -6,17 +6,16 @@
 //
 #pragma once
 
-// includes
 #include <SDKDDKVer.h>
-#include <ulib/config/BoostAsio.hpp>
 
 // WTL includes
 #include <ulib/config/Common.hpp>
 #include <ulib/config/Wtl.hpp>
 
-// Scintilla include
+// Scintilla includes
 #pragma warning(push)
 #pragma warning(disable: 4100) // unreferenced formal parameter
+#include <memory> // for unique_ptr
 #include <atlscintilla.h>
 #include <SciLexer.h>
 #pragma warning(pop)
