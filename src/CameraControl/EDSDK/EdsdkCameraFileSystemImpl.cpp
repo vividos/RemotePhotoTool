@@ -1,12 +1,11 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2017 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file EdsdkCameraFileSystemImpl.cpp EDSDK - CameraFileSystem impl
 //
 #pragma once
 
-// includes
 #include "stdafx.h"
 #include "EdsdkCameraFileSystemImpl.hpp"
 
@@ -14,7 +13,6 @@ using namespace EDSDK;
 
 namespace
 {
-
    /// enumerator for child items of an EDSDK handle
    class ChildItemEnumerator
    {
@@ -93,14 +91,79 @@ std::vector<FileInfo> CameraFileSystemImpl::EnumFiles(const CString& path) const
    if (!current.IsValid())
       return std::vector<FileInfo>();
 
-   return EnumFiles(current, pathLevel);
+   return EnumFiles(path, current, pathLevel);
 }
 
 void CameraFileSystemImpl::StartDownload(const FileInfo& fileInfo, T_fnDownloadFinished fnDownloadFinished)
 {
-   // TODO implement
-   fileInfo;
-   fnDownloadFinished;
+   unsigned int pathLevel = 0;
+   Handle fileHandle = FollowPath(m_hCamera, fileInfo.m_filename, pathLevel);
+
+   if (!fileHandle.IsValid())
+      return; // not a file or folder
+
+   CString filename;
+
+   EdsDirectoryItemInfo dirItemInfo = { 0 };
+   EdsError err = EdsGetDirectoryItemInfo(fileHandle, &dirItemInfo);
+   if (err != EDS_ERR_OK)
+   {
+      LOG_TRACE(_T("EdsGetDirectoryItemInfo(ref = %08x, &filename = \"%hs\") returned %08x\n"),
+         fileHandle.Get(), dirItemInfo.szFileName, err);
+   }
+
+   EDSDK::CheckError(_T("EdsGetDirectoryItemInfo"), err, __FILE__, __LINE__);
+
+   Handle streamRef{ m_hCamera.GetRef() };
+
+   try
+   {
+      err = EdsCreateMemoryStream(dirItemInfo.size, streamRef);
+
+      LOG_TRACE(_T("EdsCreateMemoryStream(\"%ul\", &stream = %08x) returned %08x\n"),
+         dirItemInfo.size, streamRef.Get(), err);
+      EDSDK::CheckError(_T("EdsCreateMemoryStream"), err, __FILE__, __LINE__);
+
+      // download image
+      err = EdsDownload(fileHandle, dirItemInfo.size, streamRef);
+      LOG_TRACE(_T("EdsDownload(dirItem = %08x, size=%I64u, stream = %08x) returned %08x\n"),
+         fileHandle.Get(), dirItemInfo.size, streamRef.Get(), err);
+      EDSDK::CheckError(_T("EdsDownload"), err, __FILE__, __LINE__);
+
+   }
+   catch (const CameraException& ex)
+   {
+      LOG_TRACE(_T("Exception while downloading image: %s"), ex.Message().GetString());
+
+      // issue notification that download has been canceled
+      err = EdsDownloadCancel(fileHandle);
+      LOG_TRACE(_T("EdsDownloadCancel(dirItem = %08x) returned %08x\n"), fileHandle.Get(), err);
+
+      throw;
+   }
+
+   // issue notification that download is complete
+   err = EdsDownloadComplete(fileHandle);
+   LOG_TRACE(_T("EdsDownloadComplete(dirItem = %08x) returned %08x\n"), fileHandle.Get(), err);
+   EDSDK::CheckError(_T("EdsDownloadComplete"), err, __FILE__, __LINE__);
+
+   // transfer the image data
+   EdsUInt64 length = 0;
+   err = EdsGetLength(streamRef, &length);
+   EDSDK::CheckError(_T("EdsGetLength"), err, __FILE__, __LINE__);
+
+   EdsVoid* pData = nullptr;
+   err = EdsGetPointer(streamRef, &pData);
+   EDSDK::CheckError(_T("EdsGetPointer"), err, __FILE__, __LINE__);
+
+   if (pData != 0 && length > 0)
+   {
+      std::vector<BYTE> imageData;
+      const BYTE* pbData = reinterpret_cast<BYTE*>(pData);
+      imageData.assign(pbData, pbData + length);
+
+      fnDownloadFinished(fileInfo, imageData);
+   }
 }
 
 Handle CameraFileSystemImpl::FollowPath(Handle baseElement, const CString& path, unsigned int& pathLevel) const
@@ -165,8 +228,7 @@ Handle CameraFileSystemImpl::OpenChildByName(const Handle& parentHandle, const C
 
          EDSDK::CheckError(_T("EdsGetDirectoryItemInfo"), err, __FILE__, __LINE__);
 
-         if (dirItemInfo.isFolder == TRUE &&
-            pathPart == dirItemInfo.szFileName)
+         if (pathPart == dirItemInfo.szFileName)
          {
             return child;
          }
@@ -248,7 +310,7 @@ std::vector<CString> CameraFileSystemImpl::EnumFolders(const Handle& parent, uns
    return allFoldersList;
 }
 
-std::vector<FileInfo> CameraFileSystemImpl::EnumFiles(const Handle& parent, unsigned int pathLevel) const
+std::vector<FileInfo> CameraFileSystemImpl::EnumFiles(const CString& path, const Handle& parent, unsigned int pathLevel) const
 {
    std::vector<FileInfo> allFilesList;
 
@@ -287,7 +349,7 @@ std::vector<FileInfo> CameraFileSystemImpl::EnumFiles(const Handle& parent, unsi
          dirItemInfo.isFolder != TRUE)
       {
          FileInfo fileInfo;
-         fileInfo.m_filename = dirItemInfo.szFileName;
+         fileInfo.m_filename = path + _T("/") + dirItemInfo.szFileName;
          fileInfo.m_fileSize = static_cast<unsigned long>(dirItemInfo.size);
          fileInfo.m_modifiedTime = dirItemInfo.dateTime;
 

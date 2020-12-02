@@ -1,12 +1,11 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2017 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file EdsdkCameraFileSystemImpl.hpp EDSDK - CameraFileSystem impl
 //
 #pragma once
 
-// includes
 #include "CameraFileSystem.hpp"
 #include "EdsdkCommon.hpp"
 
@@ -48,7 +47,7 @@ namespace EDSDK
       std::vector<CString> EnumFolders(const Handle& parent, unsigned int pathLevel) const;
 
       /// enumerates files in given folder
-      std::vector<FileInfo> EnumFiles(const Handle& parent, unsigned int pathLevel) const;
+      std::vector<FileInfo> EnumFiles(const CString& path, const Handle& parent, unsigned int pathLevel) const;
 
    private:
       /// source device

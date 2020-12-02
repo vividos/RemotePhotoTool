@@ -7,7 +7,6 @@ support taking/transferring CRW raw images
 
 EDSDK
 -----
-implement file system download
 
 CDSDK
 -----
