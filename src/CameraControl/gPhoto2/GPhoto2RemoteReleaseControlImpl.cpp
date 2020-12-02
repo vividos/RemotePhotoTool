@@ -138,8 +138,8 @@ void RemoteReleaseControlImpl::Release()
 
 void RemoteReleaseControlImpl::AsyncRelease()
 {
-   // TODO implement
-   //gp_camera_trigger_capture (gp_params.camera, gp_params.context);
+   int ret = gp_camera_trigger_capture(m_camera.get(), m_ref->GetContext().get());
+   CheckError(_T("gp_camera_trigger_capture"), ret, __FILE__, __LINE__);
 }
 
 std::shared_ptr<BulbReleaseControl> RemoteReleaseControlImpl::StartBulb()
