@@ -28,7 +28,7 @@ public:
 
    virtual CString Name() const override
    {
-      return m_deviceInfo.szDeviceDescription;
+      return CString(m_deviceInfo.szDeviceDescription) + _T(" [Canon EOS SDK]");
    }
 
    virtual CString DeviceId() const override

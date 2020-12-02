@@ -31,7 +31,7 @@ public:
 
    virtual CString Name() const override
    {
-      return m_sourceInfo.Name;
+      return CString(m_sourceInfo.Name) + _T(" [CD-SDK]");
    }
 
    virtual CString DeviceId() const override

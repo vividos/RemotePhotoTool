@@ -31,7 +31,7 @@ namespace WIA
 
       virtual CString Name() const override
       {
-         return m_deviceName + _T(" [WIA]");
+         return m_deviceName + _T(" [Windows Image Acquisition]");
       }
 
       virtual CString DeviceId() const override

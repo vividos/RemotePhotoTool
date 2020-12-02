@@ -31,8 +31,7 @@ public:
 
    virtual CString Name() const override
    {
-      CString cszName(reinterpret_cast<LPCWSTR>(m_deviceInfo.ModelName));
-      return cszName;
+      return CString{ reinterpret_cast<LPCWSTR>(m_deviceInfo.ModelName) } + _T(" [Powershot SDK]");
    }
 
    virtual CString DeviceId() const override
