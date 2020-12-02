@@ -5,25 +5,9 @@ PSREC
 -----
 support taking/transferring CRW raw images
 
-EDSDK
------
-
-CDSDK
------
-remove when removing support for Windows XP
-
 gPhoto2
 -------
 implement RemoteReleaseControl functions
-implement file system download
-
-WIA
----
-Add downloading files
-
-CameraControl
-------------
-Filter out cameras both appearing as WIA and other SDKs
 
 Lua scripting
 -------------
