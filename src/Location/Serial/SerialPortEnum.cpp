@@ -11,7 +11,7 @@
 using Serial::SerialPortInfo;
 using Serial::SerialPort;
 
-/// registry helper function \todo move elsewhere
+/// registry helper function
 bool QueryRegKeyValue(CRegKey& key, LPCTSTR name, CString& value)
 {
    // find out length
