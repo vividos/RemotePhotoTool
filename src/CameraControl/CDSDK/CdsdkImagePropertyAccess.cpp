@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2014 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file CdsdkImagePropertyAccess.cpp CDSDK - Image property access
 //
@@ -1217,8 +1217,52 @@ bool ImagePropertyAccess::IsReadOnlyReleaseSetting(cdRelCamSettingID propId) con
       return true;
    }
 
-   // TODO enumerate all properties and check if Access value permits write access
-   return false;
+   // enumerate all properties and check if Access value permits write access
+   bool isReadOnly = true;
+   cdHEnum hEnum = 0;
+
+   // may return cdINVALID_HANDLE, cdINVALID_PARAMETER
+   cdError err = CDEnumImageItemPropertyReset(m_hSource, &hEnum);
+   if (err != cdOK)
+      LOG_TRACE(_T("CDEnumImageItemPropertyReset(source = %08x, &hEnum = %08x) returned %08x\n"), m_hSource, hEnum, err);
+   CheckError(_T("CDEnumImageItemPropertyReset"), err, __FILE__, __LINE__);
+
+   for (unsigned int uiCount = 0; uiCount < 200; uiCount++)
+   {
+      cdImagePropertyStruct imagePropertyStruct = { 0 };
+
+      // may return cdINVALID_HANDLE, cdINVALID_PARAMETER, cdENUM_NA
+      err = CDEnumImageItemPropertyNext(hEnum, &imagePropertyStruct);
+      if ((err & cdERROR_ERRORID_MASK) == cdENUM_NA)
+         break; // end of list
+
+      if (err != cdOK)
+         LOG_TRACE(_T("CDEnumImageItemPropertyNext(hEnum = %08x, &imagePropertyStruct = { PicPropID = %08x \"%s\", readOnly = %s}) returned %08x\n"),
+            hEnum,
+            imagePropertyStruct.PicPropID,
+            NameFromId(imagePropertyStruct.PicPropID),
+            (imagePropertyStruct.Access & cdATTRIB_WRITE) != 0 ? _T("false") : _T("true"),
+            err);
+
+      LOG_TRACE(_T("Available image property: \"%s\" (%08x)\n"),
+         NameFromId(imagePropertyStruct.PicPropID),
+         imagePropertyStruct.PicPropID);
+
+      CheckError(_T("CDEnumImageItemPropertyNext"), err, __FILE__, __LINE__);
+
+      if (imagePropertyStruct.PicPropID == propId)
+      {
+         isReadOnly = (imagePropertyStruct.Access & cdATTRIB_WRITE) == 0;
+         break;
+      }
+   }
+
+   // may return cdINVALID_HANDLE, cdINVALID_FN_CALL
+   err = CDEnumImageItemPropertyRelease(hEnum);
+   if (err != cdOK) LOG_TRACE(_T("CDEnumImageItemPropertyRelease(hEnum = %08x) returned %08x\n"), hEnum, err);
+   CheckError(_T("CDEnumImageItemPropertyRelease"), err, __FILE__, __LINE__);
+
+   return isReadOnly;
 }
 
 void ImagePropertyAccess::SetRawCdsdk(Variant& value, unsigned int /*propId*/, const std::vector<unsigned char>& vecData) const
@@ -1474,9 +1518,73 @@ void ImagePropertyAccess::AddCameraModelAvValues(std::vector<Variant>& vecValues
    }
 }
 
-void ImagePropertyAccess::AddCameraModelTvValues(std::vector<Variant>& /*vecValues*/)
+void ImagePropertyAccess::AddCameraModelTvValues(std::vector<Variant>& vecValues)
 {
-   // TODO impl
+   CString cszModel = CameraModel();
+
+   cdRemoteSetTv minValue = 0;
+   cdRemoteSetTv maxValue = 0;
+   cdRemoteSetTv additionalValue = 0;
+
+   // this corresponds to the table in Appendix A,
+   // "Values that can be set in CDSetAvValue() and CDSetTvValue()".
+   // Since not all model names are known, every camera model must be
+   // tested before this is considered to be working.
+   if (cszModel == _T("PowerShot G1") || cszModel.Find(_T("Pro90")) != -1)
+   {
+      minValue = cdREMOTE_SET_TV3_8sec;
+      maxValue = cdREMOTE_SET_TV3_1000;
+   }
+   else if (cszModel == _T("PowerShot G2"))
+   {
+      minValue = cdREMOTE_SET_TV3_15sec;
+      maxValue = cdREMOTE_SET_TV3_1000;
+   }
+   else if (cszModel == _T("PowerShot S30") ||
+      cszModel == _T("PowerShot S40") ||
+      cszModel.Find(_T("S200")) != -1 ||
+      cszModel.Find(_T("S300a")) != -1 ||
+      cszModel.Find(_T("IXUS v2")) != -1 ||
+      cszModel.Find(_T("330")) != -1 ||
+      cszModel.Find(_T("200a")) != -1 ||
+      cszModel.Find(_T("300a")) != -1)
+   {
+      minValue = cdREMOTE_SET_TV3_15sec;
+      maxValue = cdREMOTE_SET_TV3_1000;
+      additionalValue = cdREMOTE_SET_TV2_1500;
+   }
+   else if (cszModel.Find(_T("A30")) != -1 ||
+      cszModel.Find(_T("A40")) != -1)
+   {
+      minValue = cdREMOTE_SET_TV2_15sec;
+      maxValue = cdREMOTE_SET_TV3_1000;
+      additionalValue = cdREMOTE_SET_TV2_1500;
+   }
+
+   if (minValue == 0 || maxValue == 0)
+      return; // cannot be set
+
+   for (cdRemoteSetTv tv = minValue; tv <= maxValue;)
+   {
+      Variant val;
+      val.Set(tv);
+      val.SetType(Variant::typeUInt16);
+      vecValues.push_back(val);
+
+      unsigned int remainder = tv & 7;
+      if (remainder == 0 || remainder == 5)
+         tv += 3;
+      else
+         tv += 2;
+   }
+
+   if (additionalValue != 0)
+   {
+      Variant val;
+      val.Set<cdRemoteSetTv>(additionalValue);
+      val.SetType(Variant::typeUInt16);
+      vecValues.push_back(val);
+   }
 }
 
 unsigned int ImagePropertyAccess::MapToPropertyID(T_enImagePropertyType enPropertyType)
@@ -1579,11 +1687,10 @@ CString ImagePropertyAccess::DisplayTextFromIdAndValue(unsigned int propId, Vari
    case TYPE_TO_PROP_ID(propAv):
    case cdREL_SET_AV_OPEN:
    case cdREL_SET_AV_MAX:
+   case cdREL_SET_AV_OPEN_APEX:
+   case cdREL_SET_AV_MAX_APEX:
       cszText = FormatApexValue(value);
       break;
-
-      // TODO cdREL_SET_AV_OPEN_APEX
-      // TODO cdREL_SET_AV_MAX_APEX
 
    case cdREL_SET_KELVIN_VALUE:
       cszText.Format(_T("%u K"), value.Get<cdUInt16>());
@@ -1704,8 +1811,8 @@ CString ImagePropertyAccess::FormatImageFormatValue(const Variant& value)
    case cdCOMP_QUALITY_ECONOMY: cszText = _T("Economy"); break;
    case cdCOMP_QUALITY_NORMAL: cszText = _T("Normal"); break;
    case cdCOMP_QUALITY_FINE: cszText = _T("Fine"); break;
-   //case cdCOMP_QUALITY_LOSSLESS: same as cdCOMP_QUALITY_RAW
-   case cdCOMP_QUALITY_RAW: cszText = _T("Raw"); break;
+   case cdCOMP_QUALITY_RAW: // same as cdCOMP_QUALITY_LOSSLESS
+      cszText = _T("Raw"); break;
    case cdCOMP_QUALITY_SUPERFINE: cszText = _T("Superfine"); break;
    default:
       ATLASSERT(false);

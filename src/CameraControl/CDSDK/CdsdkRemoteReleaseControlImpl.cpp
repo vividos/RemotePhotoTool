@@ -241,7 +241,8 @@ void RemoteReleaseControlImpl::Release()
 
 void RemoteReleaseControlImpl::AsyncRelease()
 {
-   // TODO check cdRELEASE_CONTROL_CAP_ABORT_VIEWFINDER if viewfinder has to be terminated to take a picture
+   // the caller has to check cdRELEASE_CONTROL_CAP_ABORT_VIEWFINDER (using
+   // capReleaseWhileViewfinder) if viewfinder has to be terminated to take a picture.
 
    cdUInt32 numData = 0;
    ReleaseShutter(true, numData);
