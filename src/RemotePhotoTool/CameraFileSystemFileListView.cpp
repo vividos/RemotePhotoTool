@@ -12,6 +12,7 @@
 #include "CameraErrorDlg.hpp"
 #include "ImageFileManager.hpp"
 #include <ulib/Path.hpp>
+#include "File.hpp"
 
 void CameraFileSystemFileListView::Init(std::shared_ptr<CameraFileSystem> cameraFileSystem)
 {
@@ -193,12 +194,8 @@ void CameraFileSystemFileListView::OnDownloadFinished(const FileInfo& fileInfo, 
    }
 
    // store file
-   FILE* fd = nullptr;
-   errno_t err = _tfopen_s(&fd, filename, _T("wb"));
-   if (err != 0 || fd == nullptr)
-      return; // couldn't open file
+   File::WriteAllBytes(filename, data);
 
-   fwrite(data.data(), 1, data.size(), fd);
-
-   fclose(fd);
+   // also set file date from camera
+   File::SetModifiedTime(filename, fileInfo.m_modifiedTime);
 }

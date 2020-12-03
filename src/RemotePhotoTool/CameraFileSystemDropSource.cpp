@@ -9,6 +9,7 @@
 #include "CameraFileSystem.hpp"
 #include <ulib/thread/Event.hpp>
 #include <ulib/Path.hpp>
+#include "File.hpp"
 
 STDMETHODIMP CameraFileSystemDropSource::QueryContinueDrag(BOOL escapePressed, DWORD keyState)
 {
@@ -60,17 +61,8 @@ void CameraFileSystemDropSource::SaveFile(const FileInfo& fileInfo, const CStrin
    CString targetFilename =
       Path::Combine(targetFolder, Path::FilenameAndExt(fileInfo.m_filename));
 
-   FILE* fd = nullptr;
-   errno_t ret = _tfopen_s(&fd, targetFilename, _T("wb"));
-   if (ret != 0 || fd == nullptr)
-      return; // TODO error reporting?
+   File::WriteAllBytes(targetFilename, imageData);
 
-   std::shared_ptr<FILE> file{ fd, &fclose };
-
-   fwrite(imageData.data(), 1, imageData.size(), file.get());
-
-   file.reset();
-
-   // TODO also set file date from camera
-   //SetFileTime()
+   // also set file date from camera
+   File::SetModifiedTime(targetFilename, fileInfo.m_modifiedTime);
 }
