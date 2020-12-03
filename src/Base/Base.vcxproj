@@ -71,6 +71,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="File.hpp" />
     <ClInclude Include="Logging.hpp" />
     <ClInclude Include="OneShotExecuteTimer.hpp" />
     <ClInclude Include="PeriodicExecuteTimer.hpp" />
@@ -80,6 +81,7 @@
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="File.cpp" />
     <ClCompile Include="Logging.cpp" />
     <ClCompile Include="OneShotExecuteTimer.cpp" />
     <ClCompile Include="PeriodicExecuteTimer.cpp" />
