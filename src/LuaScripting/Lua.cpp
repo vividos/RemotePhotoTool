@@ -1577,12 +1577,12 @@ std::pair<Thread::T_enThreadStatus, std::vector<Lua::Value>> Thread::InternalRes
    for (int iIndex = iIndexLastValue; iIndex >= 1; iIndex--)
       lua_remove(m_threadState.GetState(), iIndex);
 
-   int iRet = lua_resume(L, m_state.GetState(), vecParam.size());
+   int valuesOnStack = 0;
+   int iRet = lua_resume(L, m_state.GetState(), vecParam.size(), &valuesOnStack);
 
    if (iRet == LUA_ERRRUN || // a runtime error.
       iRet == LUA_ERRMEM || // memory allocation error. For such errors, Lua does not call the message handler.
-      iRet == LUA_ERRERR || // error while running the message handler.
-      iRet == LUA_ERRGCMM) // error while running a __gc metamethod
+      iRet == LUA_ERRERR) // error while running the message handler.
    {
       State::OnLuaPanic(L);
    }

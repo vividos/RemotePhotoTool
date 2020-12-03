@@ -451,7 +451,7 @@ public:
    ~Userdata();
 
    /// returns size of userdata memory block
-   size_t Size() const { return m_uiSize; }
+   unsigned long long Size() const { return m_uiSize; }
 
    /// returns userdata memory block
    void* Data() const { return m_pUserdata;  }
@@ -486,7 +486,7 @@ private:
    void* m_pUserdata;
 
    /// size of raw memory block
-   size_t m_uiSize;
+   unsigned long long m_uiSize;
 
    /// state stack reference
    mutable std::shared_ptr<Ref> m_spRef;
