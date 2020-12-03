@@ -61,10 +61,10 @@ public:
    // raw data
 
    /// stores raw data to variant value
-   void SetRawCdsdk(Variant& value, unsigned int propId, const std::vector<unsigned char>& vecData) const;
+   static void SetRawCdsdk(Variant& value, unsigned int propId, const std::vector<unsigned char>& vecData);
 
    /// retrieves raw data from variant value
-   void GetRawCdsdk(const Variant& value, unsigned int propId, std::vector<unsigned char>& vecData) const;
+   static void GetRawCdsdk(const Variant& value, unsigned int propId, std::vector<unsigned char>& vecData);
 
    // special camera model functions
 

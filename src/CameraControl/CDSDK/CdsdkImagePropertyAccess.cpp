@@ -1263,7 +1263,7 @@ bool ImagePropertyAccess::IsReadOnlyReleaseSetting(cdRelCamSettingID propId) con
    return isReadOnly;
 }
 
-void ImagePropertyAccess::SetRawCdsdk(Variant& value, unsigned int /*propId*/, const std::vector<unsigned char>& vecData) const
+void ImagePropertyAccess::SetRawCdsdk(Variant& value, unsigned int /*propId*/, const std::vector<unsigned char>& vecData)
 {
    // 4-byte unsigned int
    if (vecData.size() == 4)
@@ -1305,7 +1305,7 @@ void ImagePropertyAccess::SetRawCdsdk(Variant& value, unsigned int /*propId*/, c
    }
 }
 
-void ImagePropertyAccess::GetRawCdsdk(const Variant& value, unsigned int /*propId*/, std::vector<unsigned char>& vecData) const
+void ImagePropertyAccess::GetRawCdsdk(const Variant& value, unsigned int /*propId*/, std::vector<unsigned char>& vecData)
 {
    if (value.IsArray())
    {
