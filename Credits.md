@@ -30,10 +30,9 @@ licensed under the GNU Lesser General Public License Version 2.1 (LGPL).
 - [http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html](http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
  "GNU Lesser General Public License Version 2.1 (LGPL)")
 
-The application uses a Microsoft Visual Studio 2015 port of gPhoto2, which is
-available using github, and is also licensed under the LGPL license:
-
-- [https://github.com/vividos/libgphoto2](https://github.com/vividos/libgphoto2)
+The application uses a Microsoft Visual Studio 2019 port of gPhoto2; the build
+script files are available in this repository:
+https://github.com/vividos/RemotePhotoTool/tree/main/build
 
 ## Components and Libraries ##
 
