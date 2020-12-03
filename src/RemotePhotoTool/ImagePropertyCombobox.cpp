@@ -13,11 +13,15 @@
 
 void ImagePropertyCombobox::SetRemoteReleaseControl(std::shared_ptr<RemoteReleaseControl> spRemoteReleaseControl)
 {
-   ATLASSERT(spRemoteReleaseControl != nullptr);
-
    m_spRemoteReleaseControl = spRemoteReleaseControl;
 
-   m_uiPropertyId = m_spRemoteReleaseControl->MapImagePropertyTypeToId(m_enImagePropertyType);
+   if (spRemoteReleaseControl != nullptr)
+      m_uiPropertyId = m_spRemoteReleaseControl->MapImagePropertyTypeToId(m_enImagePropertyType);
+   else
+   {
+      m_mapValueIndex.clear();
+      m_vecValues.clear();
+   }
 }
 
 void ImagePropertyCombobox::UpdateValuesList()

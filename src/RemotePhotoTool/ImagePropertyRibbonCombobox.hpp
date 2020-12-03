@@ -70,6 +70,13 @@ public:
 
       if (m_spRemoteReleaseControl != nullptr)
          m_uiPropertyId = m_spRemoteReleaseControl->MapImagePropertyTypeToId(m_enImagePropertyType);
+      else
+      {
+         LightweightMutex::LockType lock{ m_mtxValues };
+
+         m_vecValues.clear();
+         m_vecValueTexts.clear();
+      }
    }
 
    // virtual methods from IImagePropertyControl
