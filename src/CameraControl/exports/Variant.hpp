@@ -162,8 +162,9 @@ public:
 
          return left == right;
       }
-      catch (const std::bad_any_cast&)
+      catch (const std::bad_any_cast& ex)
       {
+         ATLTRACE(_T("caught std::bad_any_cast: %hs\n"), ex.what());
       }
 
       return false;
