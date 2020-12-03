@@ -1,10 +1,6 @@
 TODO list for RemotePhotoTool
 -----------------------------
 
-PSREC
------
-support taking/transferring CRW raw images
-
 gPhoto2
 -------
 implement RemoteReleaseControl functions
@@ -18,7 +14,6 @@ Bindings for Exif library
 
 RemotePhotoTool
 ---------------
-Fix bug switching off camera, tabs still available
 Previous Images browser: scan folder for images, on startup
 Nice toolbar icons
 implement timelapse shooting, video output
@@ -31,7 +26,6 @@ Fix refreshing comboboxes when switching to M mode on camera
 Fix bug where images are only transferred to host, on EOS 400D
 Implement task manager to run Hugin, PhotomatixCL, ffmpeg
 Implement running PhotomatixCL on HDR images
-Implement gPhoto2 USB driver switching dialog, using Zadig
 Implement drag-n-drop from Camera Filesystem view
 Timelapse: Add button to show Windows energy savings optipns
 Timelapse: Show estimated number of pictures
