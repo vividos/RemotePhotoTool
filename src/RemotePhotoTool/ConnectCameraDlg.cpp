@@ -27,14 +27,17 @@ std::shared_ptr<SourceDevice> ConnectCameraDlg::GetSourceDevice() const
 {
    ATLASSERT(m_iSelectedSourceDeviceIndex != -1);
 
+   size_t sourceDeviceIndex = static_cast<size_t>(m_iSelectedSourceDeviceIndex);
+
    try
    {
       std::vector<std::shared_ptr<SourceInfo>> vecSourceDevices;
       m_instance.EnumerateDevices(vecSourceDevices);
 
-      if (!vecSourceDevices.empty())
+      if (!vecSourceDevices.empty() &&
+         sourceDeviceIndex < vecSourceDevices.size())
       {
-         std::shared_ptr<SourceInfo> spSourceInfo = vecSourceDevices[static_cast<size_t>(m_iSelectedSourceDeviceIndex)];
+         std::shared_ptr<SourceInfo> spSourceInfo = vecSourceDevices[sourceDeviceIndex];
          return spSourceInfo->Open();
       }
    }
