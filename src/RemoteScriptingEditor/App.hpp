@@ -22,6 +22,11 @@ public:
    int Run(LPCTSTR lpstrCmdLine = NULL, int nCmdShow = SW_SHOWDEFAULT);
 
 private:
+   /// deleted copy ctor
+   App(const App&) = delete;
+   /// deleted assignment operator
+   App& operator=(const App&) = delete;
+
    /// parses command line; returns true when app should be started
    bool ParseCommandLine();
 
