@@ -1,7 +1,7 @@
 @echo off
 REM
 REM RemotePhotoTool - remote camera control software
-REM Copyright (C) 2008-2019 Michael Fink
+REM Copyright (C) 2008-2020 Michael Fink
 REM
 REM Runs SonarCloud analysis build
 REM
@@ -22,7 +22,7 @@ REM Extract SonarQube build tools
 REM
 pushd Thirdparty\SonarQube
 "%ProgramFiles%\7-Zip\7z.exe" x -y build-wrapper-win-x86.zip
-"%ProgramFiles%\7-Zip\7z.exe" x -y -osonar-scanner-msbuild sonar-scanner-msbuild-4.7.1.2311-net46.zip
+"%ProgramFiles%\7-Zip\7z.exe" x -y -osonar-scanner-msbuild sonar-scanner-msbuild-5.0.3.23901-net46.zip
 PATH=%PATH%;%CD%\build-wrapper-win-x86;%CD%\sonar-scanner-msbuild
 popd
 
