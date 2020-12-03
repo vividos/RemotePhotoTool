@@ -4,8 +4,6 @@
 //
 /// \file CdsdkImagePropertyAccess.cpp CDSDK - Image property access
 //
-
-// includes
 #include "stdafx.h"
 #include "CdsdkImagePropertyAccess.hpp"
 #include "CdsdkDevicePropertyAccess.hpp"
@@ -441,7 +439,7 @@ private:
 /// \tparam T type for property value
 /// \tparam defaultVal default value for property
 template <T_enImagePropertyType propId, typename T, T defaultVal>
-class PropertyAccessReadWrite: public PropertyAccessRead<propId, T, defaultVal>
+class PropertyAccessReadWrite : public PropertyAccessRead<propId, T, defaultVal>
 {
    /// base class typedef
    typedef PropertyAccessRead<propId, T, defaultVal> BaseClass;
@@ -455,7 +453,7 @@ public:
    /// ctor
    PropertyAccessReadWrite(T_fnGet fnGet, T_fnSet fnSet)
       :BaseClass(fnGet),
-       m_fnSet(fnSet)
+      m_fnSet(fnSet)
    {
    }
 
@@ -480,7 +478,7 @@ private:
 /// \tparam T type for property value
 /// \tparam defaultVal default value for property
 template <T_enImagePropertyType propId, typename T, T defaultVal>
-class PropertyAccessReadWriteEnum: public PropertyAccessReadWrite<propId, T, defaultVal>
+class PropertyAccessReadWriteEnum : public PropertyAccessReadWrite<propId, T, defaultVal>
 {
    /// base class typedef
    typedef PropertyAccessReadWrite<propId, T, defaultVal> BaseClass;
@@ -495,7 +493,7 @@ public:
    PropertyAccessReadWriteEnum(T_fnGet fnGet, T_fnSet fnSet,
       T_fnEnumReset fnEnumReset, T_fnEnumCount fnEnumCount, T_fnEnumNext fnEnumNext, T_fnEnumRelease fnEnumRelease)
       :BaseClass(fnGet, fnSet),
-       m_fnEnumReset(fnEnumReset), m_fnEnumCount(fnEnumCount), m_fnEnumNext(fnEnumNext), m_fnEnumRelease(fnEnumRelease)
+      m_fnEnumReset(fnEnumReset), m_fnEnumCount(fnEnumCount), m_fnEnumNext(fnEnumNext), m_fnEnumRelease(fnEnumRelease)
    {
    }
 
@@ -518,7 +516,7 @@ public:
       CheckError(_T("PropertyAccess::Enum::Count"), err, __FILE__, __LINE__);
 
       // get all values
-      for(cdUInt32 ui=0; ui<uiCount; ui++)
+      for (cdUInt32 ui = 0; ui < uiCount; ui++)
       {
          T val = defaultVal;
          err = m_fnEnumNext(hEnum, &val);
@@ -617,7 +615,7 @@ public:
       CheckError(_T("CDGetFlashSettingCount"), err, __FILE__, __LINE__);
 
       // get all values
-      for(cdUInt32 ui=0; ui<uiCount; ui++)
+      for (cdUInt32 ui = 0; ui < uiCount; ui++)
       {
          cdFlashMode flashMode = 0;
 
@@ -852,29 +850,29 @@ Variant ImagePropertyAccess::Get(unsigned int uiPropId) const
       break;
 
    case TYPE_TO_PROP_ID(propAvailableShots):
-      {
-         cdUInt32 numShots = 0;
+   {
+      cdUInt32 numShots = 0;
 
-         // may return cdINVALID_HANDLE, cdINVALID_PARAMETER
-         cdError err = CDGetNumAvailableShot(m_hSource, &numShots);
-         LOG_TRACE(_T("CDGetNumAvailableShot(source = %08x, &numShots = %08x) returned %08x\n"),
-            m_hSource, numShots, err);
-         CheckError(_T("CDGetNumAvailableShot"), err, __FILE__, __LINE__);
+      // may return cdINVALID_HANDLE, cdINVALID_PARAMETER
+      cdError err = CDGetNumAvailableShot(m_hSource, &numShots);
+      LOG_TRACE(_T("CDGetNumAvailableShot(source = %08x, &numShots = %08x) returned %08x\n"),
+         m_hSource, numShots, err);
+      CheckError(_T("CDGetNumAvailableShot"), err, __FILE__, __LINE__);
 
-         v.Set<cdUInt32>(numShots);
-         v.SetType(Variant::typeUInt32);
-      }
-      break;
+      v.Set<cdUInt32>(numShots);
+      v.SetType(Variant::typeUInt32);
+   }
+   break;
 
    // note: propSaveTo is a special case, since the value can't be retrieved.
    // Getting the value is handled in RemoteReleaseControlImpl
 
    case TYPE_TO_PROP_ID(propBatteryLevel):
-      {
-         DevicePropertyAccess access(m_hSource);
-         v = access.Get(cdDEVICE_PROP_BATTERY_STATUS);
-      }
-      break;
+   {
+      DevicePropertyAccess access(m_hSource);
+      v = access.Get(cdDEVICE_PROP_BATTERY_STATUS);
+   }
+   break;
 
    CASE_PROP_GET(propImageFormat)
 
@@ -1009,7 +1007,7 @@ void ImagePropertyAccess::Enum(unsigned int uiPropId, std::vector<Variant>& vecV
 
    CASE_PROP_ENUM(propImageFormat)
 
-      // there's no enum function for zoom positions; add the values by ourselves
+         // there's no enum function for zoom positions; add the values by ourselves
    case TYPE_TO_PROP_ID(propCurrentZoomPos):
       {
          Variant v;
@@ -1279,8 +1277,7 @@ void ImagePropertyAccess::SetRawCdsdk(Variant& value, unsigned int /*propId*/, c
       value.Set(uiValue);
       value.SetType(Variant::typeUInt32);
    }
-   else
-   if (vecData.size() == 2)
+   else if (vecData.size() == 2)
    {
       // 2-byte unsigned int
       ATLASSERT(vecData.size() == 2);
@@ -1291,8 +1288,7 @@ void ImagePropertyAccess::SetRawCdsdk(Variant& value, unsigned int /*propId*/, c
       value.Set(usValue);
       value.SetType(Variant::typeUInt16);
    }
-   else
-   if (vecData.size() == 1)
+   else if (vecData.size() == 1)
    {
       // byte
       ATLASSERT(vecData.size() == 1);
@@ -1323,15 +1319,13 @@ void ImagePropertyAccess::GetRawCdsdk(const Variant& value, unsigned int /*propI
    {
       vecData.push_back(value.Get<unsigned char>());
    }
-   else
-   if (value.Type() == Variant::typeUInt16)
+   else if (value.Type() == Variant::typeUInt16)
    {
       unsigned short usValue = value.Get<unsigned short>();
       vecData.push_back(static_cast<unsigned char>(usValue & 0xff));
       vecData.push_back(static_cast<unsigned char>((usValue >> 8) & 0xff));
    }
-   else
-   if (value.Type() == Variant::typeUInt32)
+   else if (value.Type() == Variant::typeUInt32)
    {
       unsigned int uiValue = value.Get<unsigned int>();
       vecData.push_back(static_cast<unsigned char>(uiValue & 0xff));
@@ -1381,8 +1375,7 @@ void ImagePropertyAccess::AddCameraModelShootingMode(std::vector<Variant>& vecVa
       vecShootingModes.push_back(cdSHOOTING_MODE_BW);
       vecShootingModes.push_back(cdSHOOTING_MODE_PANFOCUS);
    }
-   else
-   if (cszModel == _T("PowerShot G2"))
+   else if (cszModel == _T("PowerShot G2"))
    {
       vecShootingModes.push_back(cdSHOOTING_MODE_AUTO);
       vecShootingModes.push_back(cdSHOOTING_MODE_PROGRAM);
@@ -1398,8 +1391,7 @@ void ImagePropertyAccess::AddCameraModelShootingMode(std::vector<Variant>& vecVa
       vecShootingModes.push_back(cdSHOOTING_MODE_VIVID);
       vecShootingModes.push_back(cdSHOOTING_MODE_NEUTRAL);
    }
-   else
-   if (cszModel == _T("PowerShot S30") || cszModel == _T("PowerShot S40"))
+   else if (cszModel == _T("PowerShot S30") || cszModel == _T("PowerShot S40"))
    {
       vecShootingModes.push_back(cdSHOOTING_MODE_AUTO);
       vecShootingModes.push_back(cdSHOOTING_MODE_PROGRAM);
@@ -1416,8 +1408,7 @@ void ImagePropertyAccess::AddCameraModelShootingMode(std::vector<Variant>& vecVa
       vecShootingModes.push_back(cdSHOOTING_MODE_PORTRAIT);
       vecShootingModes.push_back(cdSHOOTING_MODE_NEUTRAL);
    }
-   else
-   if (cszModel.Find(_T("A30")) != -1 ||
+   else if (cszModel.Find(_T("A30")) != -1 ||
       cszModel.Find(_T("A40")) != -1 ||
       cszModel.Find(_T("S200")) != -1 ||
       cszModel.Find(_T("S300a")) != -1 ||
@@ -1430,20 +1421,19 @@ void ImagePropertyAccess::AddCameraModelShootingMode(std::vector<Variant>& vecVa
       vecShootingModes.push_back(cdSHOOTING_MODE_PROGRAM);
       vecShootingModes.push_back(cdSHOOTING_MODE_MANUAL);
    }
-   else
-   if (cszModel.Find(_T("A100")) != -1)
+   else if (cszModel.Find(_T("A100")) != -1)
    {
       vecShootingModes.push_back(cdSHOOTING_MODE_AUTO);
       vecShootingModes.push_back(cdSHOOTING_MODE_PROGRAM);
    }
 
    std::for_each(vecShootingModes.begin(), vecShootingModes.end(), [&](cdShootingMode shootingMode)
-   {
-      Variant val;
-      val.Set(shootingMode);
-      val.SetType(Variant::typeUInt16);
-      vecValues.push_back(val);
-   });
+      {
+         Variant val;
+         val.Set(shootingMode);
+         val.SetType(Variant::typeUInt16);
+         vecValues.push_back(val);
+      });
 }
 
 void ImagePropertyAccess::AddCameraModelAvValues(std::vector<Variant>& vecValues)
@@ -1463,23 +1453,20 @@ void ImagePropertyAccess::AddCameraModelAvValues(std::vector<Variant>& vecValues
       minValue = cdREMOTE_SET_AV3_20;
       maxValue = cdREMOTE_SET_AV3_80;
    }
-   else
-   if (cszModel.Find(_T("Pro90")) != -1)
+   else if (cszModel.Find(_T("Pro90")) != -1)
    {
       minValue = cdREMOTE_SET_AV3_28;
       maxValue = cdREMOTE_SET_AV3_80;
    }
-   else
-   if (cszModel == _T("PowerShot G2") ||
-       cszModel == _T("PowerShot S30") ||
-       cszModel == _T("PowerShot S40"))
+   else if (cszModel == _T("PowerShot G2") ||
+      cszModel == _T("PowerShot S30") ||
+      cszModel == _T("PowerShot S40"))
    {
       minValue = cdREMOTE_SET_AV3_20;
       maxValue = cdREMOTE_SET_AV3_80;
       bAddOpen = true;
    }
-   else
-   if (cszModel.Find(_T("A30")) != -1 ||
+   else if (cszModel.Find(_T("A30")) != -1 ||
       cszModel.Find(_T("A40")) != -1 ||
       cszModel.Find(_T("S200")) != -1 ||
       cszModel.Find(_T("S300a")) != -1 ||
@@ -1730,7 +1717,7 @@ CString ImagePropertyAccess::DisplayTextFromIdAndValue(unsigned int propId, Vari
 
    default:
       if (!FormatValueById(g_aPropIdDisplayInfo, sizeof(g_aPropIdDisplayInfo) / sizeof(*g_aPropIdDisplayInfo),
-          propId, value, cszText))
+         propId, value, cszText))
          cszText = value.ToString();
       break;
    }
@@ -1752,17 +1739,15 @@ LPCTSTR ImagePropertyAccess::FormatFocusPoint(const Variant& value)
 
    if ((focusPoint & 0xF000) == cdREL_VAL_FOCUS_POINT_NA)
       return _T("Invalid");
-   else
-      if ((focusPoint & 0xF000) == cdREL_VAL_FOCUS_POINT_CENTER_ONLY)
-         return _T("Center only");
-      else
-         if ((focusPoint & 0xF000) == cdREL_VAL_FOCUS_POINT_3_POINTS)
-            return
-               (focusPoint & 0x0FFF) == cdREL_VAL_FOCUS_POINT_MF ? _T("Manual") :
-               (focusPoint & 0x0FFF) == cdREL_VAL_FOCUS_POINT_AUTO ? _T("Auto") :
-               (focusPoint & 0x0FFF) == cdREL_VAL_FOCUS_POINT_RIGHT ? _T("Right") :
-               (focusPoint & 0x0FFF) == cdREL_VAL_FOCUS_POINT_CENTER ? _T("Center") :
-               (focusPoint & 0x0FFF) == cdREL_VAL_FOCUS_POINT_LEFT ? _T("Left") : _T("???");
+   else if ((focusPoint & 0xF000) == cdREL_VAL_FOCUS_POINT_CENTER_ONLY)
+      return _T("Center only");
+   else if ((focusPoint & 0xF000) == cdREL_VAL_FOCUS_POINT_3_POINTS)
+      return
+         (focusPoint & 0x0FFF) == cdREL_VAL_FOCUS_POINT_MF ? _T("Manual") :
+         (focusPoint & 0x0FFF) == cdREL_VAL_FOCUS_POINT_AUTO ? _T("Auto") :
+         (focusPoint & 0x0FFF) == cdREL_VAL_FOCUS_POINT_RIGHT ? _T("Right") :
+         (focusPoint & 0x0FFF) == cdREL_VAL_FOCUS_POINT_CENTER ? _T("Center") :
+         (focusPoint & 0x0FFF) == cdREL_VAL_FOCUS_POINT_LEFT ? _T("Left") : _T("???");
 
    return _T("???");
 }
@@ -1778,8 +1763,7 @@ CString ImagePropertyAccess::FormatParameterSet(const Variant& value)
    cdUInt16 setNum = paramSet & 15;
    if (setNum == 0)
       cszText = _T("Standard set");
-   else
-   if (setNum < 4)
+   else if (setNum < 4)
       cszText.Format(_T("Set %u"), setNum);
    else
       cszText = _T("Invalid set number");

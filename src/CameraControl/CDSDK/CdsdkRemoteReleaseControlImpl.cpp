@@ -14,11 +14,11 @@
 using namespace CDSDK;
 
 RemoteReleaseControlImpl::RemoteReleaseControlImpl(std::shared_ptr<SourceDeviceImpl> spSourceDevice)
-:m_spSourceDevice(spSourceDevice),
-m_executor(new SingleThreadExecutor),
-m_hEventCallback(0),
-m_uiRelDataKind(cdREL_KIND_PICT_TO_PC),
-m_releaseControlFaculty(0)
+   :m_spSourceDevice(spSourceDevice),
+   m_executor(new SingleThreadExecutor),
+   m_hEventCallback(0),
+   m_uiRelDataKind(cdREL_KIND_PICT_TO_PC),
+   m_releaseControlFaculty(0)
 {
    // check: pointers (e.g. this) must fit into cdContext; may not work on 64-bit
    static_assert(sizeof(cdContext) == sizeof(void*), "this pointer must fit into cdContext");
@@ -183,7 +183,7 @@ void RemoteReleaseControlImpl::EnumImagePropertyValues(unsigned int uiImagePrope
 
    bool bReadOnly = p.IsReadOnly(uiImageProperty);
 
-   for (size_t i = 0, iMax = vecRawValues.size(); i<iMax; i++)
+   for (size_t i = 0, iMax = vecRawValues.size(); i < iMax; i++)
       vecValues.push_back(ImageProperty(variantCdsdk, uiImageProperty, vecRawValues[i], bReadOnly));
 }
 
