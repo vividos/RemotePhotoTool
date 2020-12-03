@@ -30,7 +30,7 @@ namespace GPhoto2
 
       // SourceInfo virtual functions
 
-      virtual CString Name() const override { return m_name + _T(" [gPhoto2]"); }
+      virtual CString Name() const override { return m_name + _T(" [libgphoto2]"); }
 
       virtual CString DeviceId() const override { return m_port; }
 
