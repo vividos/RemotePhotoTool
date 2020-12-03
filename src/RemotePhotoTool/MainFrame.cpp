@@ -84,6 +84,10 @@ BOOL MainFrame::OnIdle()
    SetRibbonContextAvail(ID_TAB_GROUP_CONTEXT_VIEWFINDER, isViewfinderActive ?
       UI_CONTEXTAVAILABILITY_AVAILABLE : UI_CONTEXTAVAILABILITY_NOTAVAILABLE);
 
+   bool isFileSystemView = m_enCurrentViewType == viewCameraFileSystem;
+   SetRibbonContextAvail(ID_TAB_GROUP_CONTEXT_FILESYSTEM,
+      isFileSystemView ? UI_CONTEXTAVAILABILITY_ACTIVE : UI_CONTEXTAVAILABILITY_NOTAVAILABLE);
+
    return FALSE;
 }
 
