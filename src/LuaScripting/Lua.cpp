@@ -1,11 +1,9 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2019 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file Lua.cpp Lua wrapper classes
 //
-
-// includes
 #include "stdafx.h"
 #include "Lua.hpp"
 
@@ -248,7 +246,7 @@ Value::Value(const Value& val)
 {
 }
 
-Value::Value(const Value&& val) noexcept
+Value::Value(Value&& val) noexcept
    :m_value(std::move(val.m_value)),
    m_enType(std::move(val.m_enType)),
    m_spRef(std::move(val.m_spRef))
@@ -267,7 +265,7 @@ Value& Value::operator=(const Value& val)
    return *this;
 }
 
-Value& Value::operator=(const Value&& val) noexcept
+Value& Value::operator=(Value&& val) noexcept
 {
    if (this == &val)
       return *this;

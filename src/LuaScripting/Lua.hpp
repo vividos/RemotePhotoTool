@@ -1,12 +1,11 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2019 Michael Fink
+// Copyright (C) 2008-2020 Michael Fink
 //
 /// \file Lua.hpp Lua C++ bindings classes
 //
 #pragma once
 
-// includes
 #include <functional>
 #include <memory>
 #include <vector>
@@ -235,13 +234,13 @@ public:
    Value(const Value& val);
 
    /// move ctor
-   Value(const Value&& val) noexcept;
+   Value(Value&& val) noexcept;
 
    /// assignment operator
    Value& operator=(const Value& val);
 
    /// move assignment operator
-   Value& operator=(const Value&& val) noexcept;
+   Value& operator=(Value&& val) noexcept;
 
    /// dtor
    ~Value();
