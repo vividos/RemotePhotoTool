@@ -147,8 +147,8 @@ unsigned int PropertyAccess::MapImagePropertyTypeToId(T_enImagePropertyType imag
       propertyName = "zoom_max";
       break;
    case propAvailableShots:
-      if (IsAvailPropertyName("batterylevel"))
-         propertyName = "batterylevel";
+      if (IsAvailPropertyName("availableshots")) propertyName = "availableshots";
+      if (IsAvailPropertyName("Available Shots")) propertyName = "Available Shots";
       break;
    case propSaveTo: propertyName = "capturetarget"; break;
    case propBatteryLevel:
