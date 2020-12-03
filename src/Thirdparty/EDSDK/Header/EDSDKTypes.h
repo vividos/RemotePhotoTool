@@ -191,6 +191,7 @@ typedef  EdsUInt32  EdsPropertyID;
 #define kEdsPropID_BodyIDEx				  0x00000015
 #define kEdsPropID_HDDirectoryStructure   0x00000020	
 
+#define kEdsPropID_TempStatus             0x01000415
 
 /*----------------------------------
  Image Properties
@@ -288,6 +289,21 @@ typedef  EdsUInt32  EdsPropertyID;
 #define kEdsPropID_Evf_PowerZoom_MinPosition   0x00000552
 
 /*----------------------------------
+Limited Properties
+----------------------------------*/
+#define kEdsPropID_EVF_RollingPitching     0x01000544
+#define kEdsPropID_FixedMovie              0x01000422
+#define kEdsPropID_MovieParam              0x01000423
+#define kEdsPropID_Evf_ClickWBCoeffs       0x01000506
+#define kEdsPropID_ManualWhiteBalanceData  0x01000204
+#define kEdsPropID_MirrorUpSetting         0x01000438
+#define kEdsPropID_MirrorLockUpState       0x01000421
+#define kEdsPropID_UTCTime                 0x01000016
+#define kEdsPropID_TimeZone                0x01000017
+#define kEdsPropID_SummerTimeSetting       0x01000018
+#define kEdsPropID_AutoPowerOffSetting     0x0100045e
+
+/*----------------------------------
  DC Properties
 ----------------------------------*/
 #define kEdsPropID_DC_Zoom                		0x00000600
@@ -307,8 +323,11 @@ typedef  EdsUInt32  EdsCameraCommand;
 #define kEdsCameraCommand_DoEvfAf                         0x00000102
 #define kEdsCameraCommand_DriveLensEvf                    0x00000103
 #define kEdsCameraCommand_DoClickWBEvf                    0x00000104
+#define kEdsCameraCommand_MovieSelectSwON                 0x00000107
+#define kEdsCameraCommand_MovieSelectSwOFF                0x00000108
 
 #define kEdsCameraCommand_PressShutterButton			  0x00000004
+#define kEdsCameraCommand_RequestRollPitchLevel           0x00000109
 #define kEdsCameraCommand_DrivePowerZoom                  0x0000010d
 #define kEdsCameraCommand_SetRemoteShootingMode           0x0000010f
 typedef enum
@@ -733,11 +752,33 @@ typedef enum
 	EdsImageQuality_CRM1J	=	0x00630510,	/* CRAW + Jpeg Middle1 */
 	EdsImageQuality_CRM2J	=	0x00630610,	/* CRAW + Jpeg Middle2 */
 	EdsImageQuality_CRSJ	=	0x00630210,	/* CRAW + Jpeg Small */
-	
-	/* HEIF */
-	EdsImageQuality_HEIFL   =   0x0080ff0f,	/* HEIF Large */
-	EdsImageQuality_RHEIFL  =   0x00640080, /* RAW  + HEIF Large */
-	EdsImageQuality_CRHEIFL =   0x00630080, /* CRAW + HEIF Large */
+
+    /* HEIF */
+    EdsImageQuality_HEIFL   =   0x0080ff0f,  /* HEIF Large */
+    EdsImageQuality_RHEIFL  =   0x00640080,  /* RAW  + HEIF Large */
+    EdsImageQuality_CRHEIFL =   0x00630080,  /* CRAW + HEIF Large */
+    
+    EdsImageQuality_HEIFLF    =  0x0083ff0f, /* HEIF Large Fine */
+    EdsImageQuality_HEIFLN    =  0x0082ff0f, /* HEIF Large Normal */
+    EdsImageQuality_HEIFMF    =  0x0183ff0f, /* HEIF Middle Fine */
+    EdsImageQuality_HEIFMN    =  0x0182ff0f, /* HEIF Middle Normal */
+    EdsImageQuality_HEIFS1F   =  0x0e83ff0f, /* HEIF Small1 Fine */
+    EdsImageQuality_HEIFS1N   =  0x0e82ff0f, /* HEIF Small1 Normal */
+    EdsImageQuality_HEIFS2F   =  0x0f83ff0f, /* HEIF Small2 Fine */
+    EdsImageQuality_RHEIFLF   =  0x00640083, /* RAW + HEIF Large Fine */
+    EdsImageQuality_RHEIFLN   =  0x00640082, /* RAW + HEIF Large Normal */
+    EdsImageQuality_RHEIFMF   =  0x00640183, /* RAW + HEIF Middle Fine */
+    EdsImageQuality_RHEIFMN   =  0x00640182, /* RAW + HEIF Middle Normal */
+    EdsImageQuality_RHEIFS1F  =  0x00640e83, /* RAW + HEIF Small1 Fine */
+    EdsImageQuality_RHEIFS1N  =  0x00640e82, /* RAW + HEIF Small1 Normal */
+    EdsImageQuality_RHEIFS2F  =  0x00640f83, /* RAW + HEIF Small2 Fine */
+    EdsImageQuality_CRHEIFLF  =  0x00630083, /* CRAW + HEIF Large Fine */
+    EdsImageQuality_CRHEIFLN  =  0x00630082, /* CRAW + HEIF Large Normal */
+    EdsImageQuality_CRHEIFMF  =  0x00630183, /* CRAW + HEIF Middle Fine */
+    EdsImageQuality_CRHEIFMN  =  0x00630182, /* CRAW + HEIF Middle Normal */
+    EdsImageQuality_CRHEIFS1F =  0x00630e83, /* CRAW + HEIF Small1 Fine */
+    EdsImageQuality_CRHEIFS1N =  0x00630e82, /* CRAW + HEIF Small1 Normal */
+    EdsImageQuality_CRHEIFS2F =  0x00630f83, /* CRAW + HEIF Small2 Fine */
 
 	EdsImageQuality_Unknown = 0xffffffff,
 }EdsImageQuality;
@@ -1082,6 +1123,25 @@ typedef enum
 	kDcRemoteShootingModeStart	= 1,
 }EdsDcRemoteShootingMode;
 
+/*-----------------------------------------------------------------------------
+ Mirror Lockup State
+-----------------------------------------------------------------------------*/
+typedef enum
+{
+    kEdsMirrorLockupStateDisable        = 0,
+    kEdsMirrorLockupStateEnable         = 1,
+    kEdsMirrorLockupStateDuringShooting = 2,
+}EdsMirrorLockupState;
+
+/*-----------------------------------------------------------------------------
+ Mirror Up Setting
+-----------------------------------------------------------------------------*/
+typedef enum
+{
+    kEdsMirrorUpSettingOff = 0,
+    kEdsMirrorUpSettingOn  = 1,
+}EdsMirrorUpSetting;
+
 /******************************************************************************
  Definition of base Structures
 ******************************************************************************/
@@ -1249,7 +1309,7 @@ typedef struct tagEdsFocusInfo
 {
     EdsRect         imageRect;
     EdsUInt32       pointNumber;
-    EdsFocusPoint   focusPoint[600];
+    EdsFocusPoint   focusPoint[1053];
 	EdsUInt32       executeMode;
 
 } EdsFocusInfo;
@@ -1287,6 +1347,30 @@ typedef struct tagEdsFramePoint
 	EdsInt32       y;
 	
 } EdsFramePoint;
+
+/*-----------------------------------------------------------------------------
+ Point
+-----------------------------------------------------------------------------*/
+typedef struct tagEdsCameraPos
+{
+    EdsInt32        status;
+    EdsInt32        position;
+    EdsInt32        rolling;
+    EdsInt32        pitching;
+
+} EdsCameraPos;
+
+/*-----------------------------------------------------------------------------
+ Manual WhiteBalance Data
+-----------------------------------------------------------------------------*/
+typedef struct tagEdsManualWBData
+{
+    EdsInt32        valid;
+    EdsInt32        dataSize;
+    EdsChar         szCaption[32];
+    EdsInt8         data[8];
+
+} EdsManualWBData;
 
 /******************************************************************************
  Callback Functions
