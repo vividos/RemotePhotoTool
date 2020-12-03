@@ -247,13 +247,18 @@ void RemoteReleaseControlImpl::AsyncRelease()
    cdUInt32 numData = 0;
    ReleaseShutter(true, numData);
 
-   // only save to camera? then return now
+   DownloadReleasedImage(numData);
+}
+
+void RemoteReleaseControlImpl::DownloadReleasedImage(cdUInt32 numData)
+{
    ShutterReleaseSettings settings;
    {
       LightweightMutex::LockType lock(m_mtxShutterReleaseSettings);
       settings = m_shutterReleaseSettings;
    }
 
+   // only save to camera? then return now
    if (settings.SaveTarget() == ShutterReleaseSettings::saveToCamera)
       return;
 
@@ -328,8 +333,7 @@ cdUInt32 cdSTDCALL RemoteReleaseControlImpl::OnReleaseEventCallback_(
       const BYTE* pByteData = reinterpret_cast<const BYTE*>(pData);
       std::vector<BYTE> vecData(pByteData, pByteData + DataSize);
 
-      value.SetArray<unsigned char>(vecData);
-      value.SetType(Variant::typeUInt8);
+      ImagePropertyAccess::SetRawCdsdk(value, 0, vecData);
    }
 
    LOG_TRACE(_T("OnReleaseEventCallback(eventId = %u (%s), &data = %s, size = %u, context) called\n"),
@@ -350,23 +354,27 @@ cdUInt32 cdSTDCALL RemoteReleaseControlImpl::OnReleaseEventCallback_(
    ATLASSERT(pThis != nullptr);
 #pragma warning(pop)
 
-   pThis->OnReleaseEventCallback(EventID);
+   pThis->OnReleaseEventCallback(EventID, value);
 
    return cdOK;
 }
 
-void RemoteReleaseControlImpl::OnReleaseEventCallback(cdReleaseEventID EventID)
+void RemoteReleaseControlImpl::OnReleaseEventCallback(cdReleaseEventID EventID, const Variant& value)
 {
    switch (EventID)
    {
    case cdRESEASE_EVENT_RELEASE_COMPLETE:
-      // TODO start downloading image
+      DownloadReleasedImage(0);
       break;
 
    case cdRELEASE_EVENT_RESET_HW_ERROR:
-      // TODO pass error code
-      m_subjectStateEvent.Call(RemoteReleaseControl::stateEventReleaseError, 0);
+   {
+      unsigned int errorCode = 0;
+      if (value.Type() == Variant::typeUInt32)
+         errorCode = value.Get<unsigned int>();
+      m_subjectStateEvent.Call(RemoteReleaseControl::stateEventReleaseError, errorCode);
       break;
+   }
 
    case cdRELEASE_EVENT_CAM_RELEASE_ON: // Release pushed
       Release();

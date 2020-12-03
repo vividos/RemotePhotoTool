@@ -132,6 +132,9 @@ private:
    /// releases shutter; called in worker thread
    void AsyncRelease();
 
+   /// downloads image from shutter release
+   void DownloadReleasedImage(cdUInt32 numData);
+
    /// executes shutter release
    void ReleaseShutter(bool bSync, cdUInt32& numData);
 
@@ -143,7 +146,7 @@ private:
       cdReleaseEventID EventID, const void* pData, cdUInt32 DataSize, cdContext Context);
 
    /// release event callback handler
-   void OnReleaseEventCallback(cdReleaseEventID EventID);
+   void OnReleaseEventCallback(cdReleaseEventID EventID, const Variant& value);
 
    /// event callback
    static cdUInt32 cdSTDCALL OnEventCallback_(
