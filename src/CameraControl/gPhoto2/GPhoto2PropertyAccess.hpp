@@ -22,7 +22,7 @@ namespace GPhoto2
    {
    public:
       /// ctor
-      PropertyAccess(std::shared_ptr<_GPContext> context, std::shared_ptr<_Camera> camera);
+      PropertyAccess(RefSp ref, std::shared_ptr<_GPContext> context, std::shared_ptr<_Camera> camera);
 
       /// refreshes all properties from the camera
       void Refresh();
@@ -98,6 +98,9 @@ namespace GPhoto2
       static void DumpWidgetTree(CameraWidget* widget, int indendationLevel);
 
    private:
+      /// gPhoto2 reference
+      RefSp m_ref;
+
       /// gPhoto2 context
       std::shared_ptr<_GPContext> m_context;
 

@@ -19,7 +19,7 @@ using GPhoto2::SourceDeviceImpl;
 SourceDeviceImpl::SourceDeviceImpl(RefSp ref, std::shared_ptr<_Camera> camera)
    :m_ref(ref),
    m_camera(camera),
-   m_properties(new PropertyAccess(ref->GetContext(), camera))
+   m_properties(new PropertyAccess(ref, ref->GetContext(), camera))
 {
 }
 

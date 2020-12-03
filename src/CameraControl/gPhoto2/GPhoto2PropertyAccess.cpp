@@ -11,8 +11,9 @@
 
 using GPhoto2::PropertyAccess;
 
-PropertyAccess::PropertyAccess(std::shared_ptr<_GPContext> context, std::shared_ptr<_Camera> camera)
-   :m_context(context),
+PropertyAccess::PropertyAccess(RefSp ref, std::shared_ptr<_GPContext> context, std::shared_ptr<_Camera> camera)
+   :m_ref(ref),
+   m_context(context),
    m_camera(camera)
 {
    Refresh();
