@@ -194,8 +194,12 @@ ImageProperty PropertyAccess::MapShootingModeToImagePropertyValue(RemoteReleaseC
          return shootingModeValue;
    }
 
-   ATLASSERT(false); // invalid shooting mode
-   CheckError(_T("MapShootingModeToImagePropertyValue"), GP_ERROR, __FILE__, __LINE__);
+   // invalid shooting mode
+   ATLASSERT(false);
+   throw CameraException(
+      _T("MapShootingModeToImagePropertyValue"),
+      _T("invalid shooting mode"),
+      static_cast<unsigned int>(GP_ERROR), __FILE__, __LINE__);
 }
 
 std::vector<unsigned int> PropertyAccess::EnumDeviceProperties() const
