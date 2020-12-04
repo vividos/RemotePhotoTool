@@ -4,6 +4,7 @@ TODO list for RemotePhotoTool
 gPhoto2
 -------
 implement RemoteReleaseControl functions
+fix libusb1 crash at disconnect/program close
 
 Lua scripting
 -------------
@@ -29,6 +30,7 @@ Implement running PhotomatixCL on HDR images
 Implement drag-n-drop from Camera Filesystem view
 Timelapse: Add button to show Windows energy savings optipns
 Timelapse: Show estimated number of pictures
+Timelapse: fix calling ffmpeg with non-contiguous file names
 Filesystem: Implement image sorter view to sort images into folders
 
 RemoteScriptingEditor
