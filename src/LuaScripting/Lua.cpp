@@ -1310,7 +1310,7 @@ void State::TraceValue(lua_State* L, int iIndex, int iStackDepth, bool bIsUpvalu
 
    case LUA_TUSERDATA:
    {
-      cszContent.Format(_T("0x%p, size=%u"),
+      cszContent.Format(_T("0x%p, size=%I64u"),
          lua_touserdata(L, iIndex),
          lua_rawlen(L, iIndex));
       break;
