@@ -165,6 +165,9 @@ unsigned int PropertyAccess::MapImagePropertyTypeToId(T_enImagePropertyType imag
    {
       CameraWidget* child = nullptr;
       int ret = LookupWidget(m_widget.get(), CStringA(propertyName), &child);
+      if (ret == GP_ERROR_BAD_PARAMETERS)
+         return static_cast<unsigned int>(-1);
+
       CheckError(_T("LookupWidget"), ret, __FILE__, __LINE__);
 
       return GetPropertyIdFromWidget(child);
@@ -275,6 +278,9 @@ ImageProperty PropertyAccess::GetImageProperty(unsigned int imagePropertyId) con
 
 std::vector<ImageProperty> PropertyAccess::EnumImagePropertyValues(unsigned int imagePropertyId) const
 {
+   if (imagePropertyId == static_cast<unsigned int>(-1))
+      return std::vector<ImageProperty>();
+
    if (m_mapImageProperties.find(imagePropertyId) == m_mapImageProperties.end())
       CheckError(_T("m_mapImageProperties"), GP_ERROR, __FILE__, __LINE__);
 
