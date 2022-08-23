@@ -121,8 +121,13 @@ std::shared_ptr<Viewfinder> RemoteReleaseControlImpl::StartViewfinder() const
 
 unsigned int RemoteReleaseControlImpl::NumAvailableShots() const
 {
-   // TODO implement
-   return 0;
+   unsigned int propertyId = MapImagePropertyTypeToId(T_enImagePropertyType::propAvailableShots);
+
+   if (propertyId == static_cast<unsigned int>(-1))
+      return 0;
+
+   ImageProperty prop = m_properties->GetImageProperty(propertyId);
+   return prop.Value().Get<int>();
 }
 
 void RemoteReleaseControlImpl::SendCommand(T_enCameraCommand cameraCommand)
