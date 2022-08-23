@@ -2,7 +2,7 @@
 // RemotePhotoTool - remote camera control software
 // Copyright (C) 2008-2020 Michael Fink
 //
-/// \file CameraControl\stdafx.h Precompiled header support
+/// \file src/CameraControl/stdafx.h Precompiled header support
 //
 #pragma once
 
