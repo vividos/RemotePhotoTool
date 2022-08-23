@@ -1,13 +1,13 @@
 @echo off
 REM
 REM RemotePhotoTool - remote camera control software
-REM Copyright (C) 2008-2020 Michael Fink
+REM Copyright (C) 2008-2022 Michael Fink
 REM
 REM Runs SonarCloud analysis build
 REM
 
 REM set this to your Visual Studio installation folder
-set VSINSTALL=%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Community
+set VSINSTALL=%ProgramFiles%\Microsoft Visual Studio\2022\Community
 
 REM
 REM Preparations

@@ -75,9 +75,9 @@ programs "Hugin" (for panorama stitching) and "Photomatix Pro" (for HDR generati
 
 # Installation of components #
 
-## Visual Studio Community 2019 ##
+## Visual Studio Community 2022 ##
 
-Install Visual Studio 2019. Any version will do, including Visual Studio Community, which
+Install Visual Studio 2022. Any version will do, including Visual Studio Community, which
 I'm using. Be sure to install the "Microsoft Foundation Classes for C++" feature, that can be found
 under "Programming Languages > Visual C++" node when installing Visual Studio.
 When installed into the default folders, the example batch files can be used to build the
@@ -94,7 +94,7 @@ The application uses the Boost libraries. Boost is automatically downloaded when
 packages. Thhis happens the first time you're building the solution, which may take a while, since
 Boost consists of many files.
 
-## WiX 3.11.1 ##
+## WiX 3.11.2 ##
 
 To build the setup, you need to install the "Windows Installer for XML 3.11.1" package. Go to this
 website:
@@ -102,8 +102,8 @@ website:
 
 Go to "Downloads" and download the "Wix311.exe". Install the package on your system.
 
-To get Visual Studio integration, also install the "Wix Toolset Visual Studio 2019 Extension":
-[https://marketplace.visualstudio.com/items?itemName=WixToolset.WixToolsetVisualStudio2019Extension](https://marketplace.visualstudio.com/items?itemName=WixToolset.WixToolsetVisualStudio2019Extension)
+To get Visual Studio integration, also install the "Wix Toolset Visual Studio 2022 Extension":
+[https://marketplace.visualstudio.com/items?itemName=WixToolset.WixToolsetVisualStudio2022Extension](https://marketplace.visualstudio.com/items?itemName=WixToolset.WixToolsetVisualStudio2022Extension)
 
 ## RemotePhotoTool ##
 

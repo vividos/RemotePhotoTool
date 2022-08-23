@@ -1,12 +1,12 @@
 #
 # RemotePhotoTool - remote camera control software
-# Copyright (c) 2008-2020 Michael Fink
+# Copyright (c) 2008-2022 Michael Fink
 #
 # AppVeyor build configuration file
 #
 version: 1.7.0.{build}
 
-image: Visual Studio 2019
+image: Visual Studio 2022
 
 platform: Win32
 
