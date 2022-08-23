@@ -118,6 +118,7 @@ gp_filesystem_set_file_noop
 gp_filesystem_set_info
 gp_filesystem_set_info_noop
 gp_filesystem_set_funcs
+gp_filesystem_set_info_dirty
 gp_file_unref
 gp_gamma_correct_single
 gp_gamma_fill_table
@@ -186,3 +187,4 @@ gp_widget_unref
 ;gpi_folder_operation_map
 ;gpi_gphoto_device_type_map
 ;gpi_camera_driver_status_map
+gp_init_localedir

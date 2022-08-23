@@ -329,6 +329,7 @@
 
 // empty-define parameter to bindtextdomain() call
 #define GETTEXT_PACKAGE ""
+#define GETTEXT_PACKAGE_LIBGPHOTO2 ""
 
 // the folder where libgphoto2 searches for camlibs .dlls to load
 #define CAMLIBS "camlibs"
@@ -338,3 +339,6 @@
 
 // list of camlibs for this build
 #define GP_CAMLIB_SET "ptp2 canon"
+
+// default locale directory
+#define LOCALEDIR "."

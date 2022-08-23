@@ -299,6 +299,7 @@
 #include "config-msvc.h"
 
 #define GETTEXT_PACKAGE ""
+#define GETTEXT_PACKAGE_LIBGPHOTO2_PORT ""
 
 // define this to omit "dllexport" defines for libpcre
 #define PCRE_DEFINITION
@@ -308,3 +309,6 @@
 
 // the folder where libgphoto2 searches for iolibs .dlls to load
 #define IOLIBS "iolibs"
+
+// default locale directory
+#define LOCALEDIR "."

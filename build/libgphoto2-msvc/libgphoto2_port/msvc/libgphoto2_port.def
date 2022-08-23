@@ -83,3 +83,5 @@ gp_system_is_dir
 gp_port_result_as_string
 
 gp_port_library_version
+
+gp_port_init_localedir

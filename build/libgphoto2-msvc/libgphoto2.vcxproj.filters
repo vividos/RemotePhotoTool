@@ -121,8 +121,8 @@
     <ClInclude Include="gphoto2\gphoto2-widget.h">
       <Filter>gphoto2</Filter>
     </ClInclude>
-    <ClInclude Include="msvc\gphoto2-endian.h">
-      <Filter>msvc</Filter>
+    <ClInclude Include="libgphoto2\gphoto2-endian.h">
+      <Filter>libgphoto2\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
