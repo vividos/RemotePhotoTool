@@ -36,7 +36,7 @@ msbuild RemotePhotoTool.sln /m /property:Configuration=SonarCloud,Platform=Win32
 
 SonarScanner.MSBuild.exe begin ^
     /k:"RemotePhotoTool" ^
-    /v:"1.6.0" ^
+    /v:"1.7.0" ^
     /d:"sonar.cfamily.build-wrapper-output=%CD%\bw-output" ^
     /d:"sonar.host.url=https://sonarcloud.io" ^
     /o:"vividos-github" ^

@@ -15,7 +15,7 @@
 
   <!-- version -->
   <?define MajorVersion = "1" ?>
-  <?define MinorVersion = "6" ?>
+  <?define MinorVersion = "7" ?>
   <?define SubVersion = "0" ?>
   <?define Version = "$(var.MajorVersion).$(var.MinorVersion).$(var.SubVersion).$(var.BuildNumber)" ?>
 
