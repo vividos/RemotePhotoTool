@@ -10,7 +10,7 @@
     </defines>
     <paths>
         <dir name="Base"/>
-        <dir name="CanonControl"/>
+        <dir name="CameraControl"/>
         <dir name="RemotePhotoTool"/>
         <dir name="RemotePhotoToolCmdline"/>
         <dir name="RemoteScriptingEditor"/>

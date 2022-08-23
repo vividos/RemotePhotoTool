@@ -29,14 +29,15 @@ REM --enable=all        Enable warnings
 REM --template vs       Output format for warnings
 REM --check-config
 cppcheck.exe ^
-	..\Base\ ..\CanonControl\ ..\RemotePhotoTool\ ..\LuaScripting\ ..\Location\ ..\Logic\ ..\RemotePhotoToolCmdline\ ..\RemoteScriptingEditor\ ^
-	-I ..\Base\ -I ..\LuaScripting\ -I ..\Location\ -I ..\Logic\ -I ..\CanonControl\exports\ ^
+	..\Base\ ..\CameraControl\ ..\RemotePhotoTool\ ..\LuaScripting\ ..\Location\ ..\Logic\ ..\RemotePhotoToolCmdline\ ..\RemoteScriptingEditor\ ^
+	-I ..\Base\ -I ..\LuaScripting\ -I ..\Location\ -I ..\Logic\ -I ..\CameraControl\exports\ ^
+	-I ..\packages\wtl.10.0.10320\lib\native\include ^
 	-i ..\Thirdparty ^
-	-i ..\LuaScripting\lua-5.3.5 ^
+	-i ..\LuaScripting\lua-5.4.1 ^
 	-i ..\Logic\Logic.UnitTest\ ^
 	-i ..\Location\Location.UnitTest\ ^
 	-i ..\LuaScripting\LuaScripting.UnitTest\ ^
 	-DWIN32 -D_WINDOWS -DNDEBUG -D_UNICODE -D__cplusplus -D_MSC_VER=1900 ^
 	-D__ATLAPP_H__ -DNTDDI_WIN7=0x06010000 -DNTDDI_VERSION=0x06010000 ^
 	--suppressions-list=cppcheck-suppress.txt ^
-	-j 4 --platform=win32W --language=c++ --std=c++11 %FORMAT% --enable=all --template vs 2> %OUTFILE%
+	-j 4 --platform=win32W --language=c++ --std=c++17 %FORMAT% --enable=all --template vs 2> %OUTFILE%
