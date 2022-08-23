@@ -21,8 +21,8 @@
  * Boston, MA  02110-1301  USA
  */
 
-#ifndef __GPHOTO2_PORT_INFO_LIST_H__
-#define __GPHOTO2_PORT_INFO_LIST_H__
+#ifndef LIBGPHOTO2_GPHOTO2_PORT_INFO_LIST_H
+#define LIBGPHOTO2_GPHOTO2_PORT_INFO_LIST_H
 
 /**
  * \brief The gphoto port type.
@@ -94,6 +94,9 @@ int gp_port_info_list_get_info (GPPortInfoList *list, int n, GPPortInfo *info);
 
 const char *gp_port_message_codeset (const char*);
 
+int gp_port_init_localedir (const char *localedir);
+
+
 /**
  * Name of the environment variable which may contain the path where
  * to look for the IO libs. If this environment variable is not defined,
@@ -110,4 +113,4 @@ const char *gp_port_message_codeset (const char*);
 }
 #endif /* __cplusplus */
 
-#endif /* __GPHOTO2_PORT_INFO_LIST_H__ */
+#endif /* !defined(LIBGPHOTO2_GPHOTO2_PORT_INFO_LIST_H) */

@@ -27,8 +27,8 @@
  * Boston, MA  02110-1301  USA
  */
 
-#ifndef __GPHOTO2_FILESYS_H__
-#define __GPHOTO2_FILESYS_H__
+#ifndef LIBGPHOTO2_GPHOTO2_FILESYS_H
+#define LIBGPHOTO2_GPHOTO2_FILESYS_H
 
 #include <time.h>
 #include <stdint.h>
@@ -242,6 +242,9 @@ int gp_filesystem_append           (CameraFilesystem *fs, const char *folder,
 int gp_filesystem_set_info_noop    (CameraFilesystem *fs,
 				    const char *folder, const char *filename,
 				    CameraFileInfo info, GPContext *context);
+int gp_filesystem_set_info_dirty   (CameraFilesystem *fs,
+				    const char *folder, const char *filename,
+				    GPContext *context);
 int gp_filesystem_set_file_noop    (CameraFilesystem *fs,
 				    const char *folder, const char *filename,
 				    CameraFileType type,
@@ -381,4 +384,4 @@ int gp_filesystem_dump         (CameraFilesystem *fs);
 }
 #endif /* __cplusplus */
 
-#endif /* __GPHOTO2_FILESYS_H__ */
+#endif /* !defined(LIBGPHOTO2_GPHOTO2_FILESYS_H) */
