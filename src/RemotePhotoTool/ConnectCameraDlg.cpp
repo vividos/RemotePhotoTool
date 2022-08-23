@@ -84,6 +84,9 @@ LRESULT ConnectCameraDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM 
 
    m_instance.AsyncWaitForCamera(std::bind(&ConnectCameraDlg::OnCameraAdded, this));
 
+   // hide the "config usb" button, as switching doesn't work
+   ::ShowWindow(GetDlgItem(IDC_BUTTON_CONFIG_USB), SW_HIDE);
+
    return TRUE;
 }
 
