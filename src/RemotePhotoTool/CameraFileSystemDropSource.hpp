@@ -14,7 +14,7 @@ struct FileInfo;
 /// infos about dragged files
 struct CameraFileSystemDraggedFilesInfo
 {
-   // full file infos from the camera
+   /// full file infos from the camera
    std::vector<FileInfo> m_cameraFileInfos;
 
    /// camera file system to access

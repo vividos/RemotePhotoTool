@@ -49,7 +49,7 @@ namespace RemotePhotoTool
             System::Collections::Generic::List<ImageProperty^>^ get();
          }
 
-         //#region IEquatable implementation
+         /// IEquatable implementation
          virtual bool Equals(ImageProperty^ other);
 
          /// finalizer

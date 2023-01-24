@@ -39,7 +39,8 @@ namespace RemotePhotoTool
          BulbReleaseControl(std::shared_ptr<::BulbReleaseControl> bulbReleaseControl);
 
       private:
-         std::shared_ptr<::BulbReleaseControl>* m_bulbReleaseControl;
+          /// implementation
+          std::shared_ptr<::BulbReleaseControl>* m_bulbReleaseControl;
       };
    }
 }
