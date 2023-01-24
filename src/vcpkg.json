@@ -5,6 +5,7 @@
   "dependencies": [
     "wtl",
     "boost-multi-index",
-    "boost-asio"
+    "boost-asio",
+    "ijg-libjpeg"
   ]
 }
