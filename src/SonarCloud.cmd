@@ -22,7 +22,7 @@ REM Extract SonarQube build tools
 REM
 pushd Thirdparty\SonarQube
 "%ProgramFiles%\7-Zip\7z.exe" x -y build-wrapper-win-x86.zip
-"%ProgramFiles%\7-Zip\7z.exe" x -y -osonar-scanner-msbuild sonar-scanner-msbuild-5.0.3.23901-net46.zip
+"%ProgramFiles%\7-Zip\7z.exe" x -y -osonar-scanner-msbuild sonar-scanner-msbuild-5.10.0.59947-net46.zip
 PATH=%PATH%;%CD%\build-wrapper-win-x86;%CD%\sonar-scanner-msbuild
 popd
 
@@ -39,6 +39,9 @@ SonarScanner.MSBuild.exe begin ^
     /v:"1.7.0" ^
     /d:"sonar.cfamily.build-wrapper-output=%CD%\bw-output" ^
     /d:"sonar.host.url=https://sonarcloud.io" ^
+    /d:"sonar.cfamily.threads=4" ^
+    /d:"sonar.cfamily.cache.enabled=true" ^
+    /d:"sonar.cfamily.cache.path=%CD%\.sonar-cache" ^
     /o:"vividos-github" ^
     /d:"sonar.login=%SONARLOGIN%"
 if errorlevel 1 goto end
@@ -46,7 +49,9 @@ if errorlevel 1 goto end
 REM
 REM Rebuild Release|Win32
 REM
-build-wrapper-win-x86-64.exe --out-dir bw-output msbuild RemotePhotoTool.sln /m /property:Configuration=SonarCloud,Platform=Win32 /target:Rebuild
+build-wrapper-win-x86-64.exe ^
+   --out-dir bw-output ^
+   msbuild RemotePhotoTool.sln /m /property:Configuration=SonarCloud,Platform=Win32 /target:Rebuild
 
 SonarScanner.MSBuild.exe end /d:"sonar.login=%SONARLOGIN%"
 

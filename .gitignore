@@ -64,6 +64,7 @@ src/ThirdParty/SonarQube/build-wrapper-win-x86/
 src/ThirdParty/SonarQube/sonar-scanner-msbuild/
 src/.sonarqube/
 src/bw-output/
+src/.sonar-cache/
 *-coverage.xml
 src/CoverageReport/
 src/GeoTagTool/res/Ribbon.bml
