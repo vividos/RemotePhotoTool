@@ -12,9 +12,17 @@ platform: Win32
 
 configuration: AppVeyor
 
+cache:
+  - C:\Users\appveyor\AppData\Local\vcpkg\archives -> appveyor.yml
+  - C:\projects\remotephototool\src\vcpkg_installed -> appveyor.yml
+
 before_build:
   - ps: src\Patch-BuildVersion.ps1 -version $env:appveyor_build_version
   - cmd: nuget restore src\RemotePhotoTool.sln
+  - cmd: |
+      cd "C:\Tools\vcpkg"
+      git pull > nul
+      call .\bootstrap-vcpkg.bat -disableMetrics
 
 build:
   project: src\RemotePhotoTool.sln
@@ -22,7 +30,9 @@ build:
   verbosity: minimal
 
 after_build:
-- cmd: cd bin\Release && "c:\Program Files\7-Zip\7z.exe" a -r -x!*.pdb -x!*.exp -x!*.lib -x!*.lastcodeanalysissucceeded ..\..\RemotePhotoTool-%appveyor_build_version%.zip *.*
+  - cmd: |
+      cd %APPVEYOR_BUILD_FOLDER%\bin\Release
+      "c:\Program Files\7-Zip\7z.exe" a -r -x!*.pdb -x!*.exp -x!*.lib -x!*.lastcodeanalysissucceeded ..\..\RemotePhotoTool-%appveyor_build_version%.zip *.*
 
 artifacts:
 - path: RemotePhotoTool-*.zip
