@@ -69,3 +69,4 @@ src/CoverageReport/
 src/GeoTagTool/res/Ribbon.bml
 src/GeoTagTool/res/Ribbon.h
 src/GeoTagTool/res/Ribbon.rc
+vcpkg_installed/
