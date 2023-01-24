@@ -1,12 +1,11 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2018 Michael Fink
+// Copyright (C) 2008-2023 Michael Fink
 //
 /// \file SerialPort.hpp serial port classes
 //
 #pragma once
 
-#include <boost/noncopyable.hpp>
 #include <memory>
 #include <functional>
 #include <ulib/config/BoostAsio.hpp>
@@ -20,7 +19,7 @@ namespace Serial
    /// \brief Serial port class
    /// Implements access to serial port, including synchronous reading and writing, as well as
    /// asynchronous reading. Serial port enumeration is supported via EnumPorts().
-   class SerialPort : public boost::noncopyable
+   class SerialPort
    {
    public:
       /// handler function type for asynchronous receive operation
@@ -31,6 +30,12 @@ namespace Serial
 
       /// dtor; closes serial port
       ~SerialPort();
+
+      /// deleted copy ctor
+      SerialPort(const SerialPort&) = delete;
+
+      /// deleted copy assignment operator
+      SerialPort& operator=(const SerialPort&) = delete;
 
       /// enumerates all available serial ports
       static std::vector<SerialPortInfo> EnumSerialPorts();

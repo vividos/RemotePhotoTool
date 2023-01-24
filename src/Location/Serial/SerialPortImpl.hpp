@@ -15,7 +15,7 @@
 using Serial::SerialPort;
 
 /// serial port implementation class using boost::asio::serial_port
-class SerialPort::Impl : public boost::noncopyable
+class SerialPort::Impl
 {
 public:
    /// ctor
@@ -23,6 +23,12 @@ public:
       :m_serialPort(service, deviceName)
    {
    }
+
+   /// deleted copy ctor
+   Impl(const Impl&) = delete;
+
+   /// deleted copy assignment operator
+   Impl& operator=(const Impl&) = delete;
 
    /// returns if serial port is open
    bool IsOpen() { return m_serialPort.is_open(); }
