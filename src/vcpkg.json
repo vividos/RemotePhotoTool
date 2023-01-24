@@ -6,6 +6,7 @@
     "wtl",
     "boost-multi-index",
     "boost-asio",
-    "ijg-libjpeg"
+    "ijg-libjpeg",
+    "libexif"
   ]
 }

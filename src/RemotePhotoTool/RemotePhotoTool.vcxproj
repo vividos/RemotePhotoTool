@@ -243,9 +243,6 @@
     <ProjectReference Include="..\LuaScripting\LuaScripting.vcxproj">
       <Project>{41b565f7-f668-4425-a93d-6cabc18f6d1f}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\Thirdparty\libexif-0.6.21\libexif.vcxproj">
-      <Project>{a088917a-79ec-4cae-af42-6f358a4b6c59}</Project>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="res\MainFrameRibbon.xml">
