@@ -30,14 +30,15 @@ REM
 REM Build using SonarQube scanner for MSBuild
 REM
 rmdir .\.sonarqube /s /q 2> nul
-rmdir .\bw-output /s /q 2> nul
+rmdir .\.bw-output /s /q 2> nul
+mkdir .\.sonar-cache 2> nul
 
 msbuild RemotePhotoTool.sln /m /property:Configuration=SonarCloud,Platform=Win32 /target:Clean
 
 SonarScanner.MSBuild.exe begin ^
     /k:"RemotePhotoTool" ^
     /v:"1.7.0" ^
-    /d:"sonar.cfamily.build-wrapper-output=%CD%\bw-output" ^
+    /d:"sonar.cfamily.build-wrapper-output=%CD%\.bw-output" ^
     /d:"sonar.host.url=https://sonarcloud.io" ^
     /d:"sonar.cfamily.threads=4" ^
     /d:"sonar.cfamily.cache.enabled=true" ^
@@ -50,7 +51,7 @@ REM
 REM Rebuild Release|Win32
 REM
 build-wrapper-win-x86-64.exe ^
-   --out-dir bw-output ^
+   --out-dir .bw-output ^
    msbuild RemotePhotoTool.sln /m /property:Configuration=SonarCloud,Platform=Win32 /target:Rebuild
 
 SonarScanner.MSBuild.exe end /d:"sonar.login=%SONARLOGIN%"
