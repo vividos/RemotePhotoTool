@@ -109,9 +109,9 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
     <None Include="res\Ribbon.bml">
       <Filter>Resource Files\Generated Files</Filter>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>
