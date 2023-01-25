@@ -9,6 +9,7 @@
   </PropertyGroup>
   <PropertyGroup Label="Vcpkg">
     <VcpkgEnableManifest>true</VcpkgEnableManifest>
+    <VcpkgInstalledDir>$(SolutionDir)..\intermediate\vcpkg_installed</VcpkgInstalledDir>
   </PropertyGroup>
   <PropertyGroup Label="Vcpkg" Condition="'$(Platform)'=='Win32'">
     <VcpkgTriplet>x86-windows</VcpkgTriplet>
