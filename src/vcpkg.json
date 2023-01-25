@@ -7,6 +7,10 @@
     "boost-multi-index",
     "boost-asio",
     "ijg-libjpeg",
-    "libexif"
+    "libexif",
+    {
+      "name": "lua",
+      "features": [ "cpp" ]
+    }
   ]
 }

@@ -80,9 +80,6 @@
     <ProjectReference Include="..\..\CameraControl\CameraControl.vcxproj">
       <Project>{ce953b34-5513-4719-aead-a61f0585ab34}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\lua-5.4.1\Lua.vcxproj">
-      <Project>{24ea638c-0f97-48fa-82d1-7dba2832c1dc}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\LuaScripting.vcxproj">
       <Project>{41b565f7-f668-4425-a93d-6cabc18f6d1f}</Project>
     </ProjectReference>
