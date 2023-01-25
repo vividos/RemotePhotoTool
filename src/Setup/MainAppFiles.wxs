@@ -32,6 +32,10 @@
         <RegistryValue Root="HKCU" Key="Software\$(var.ProductName)" Name="Installed" Type="integer" Value="1" KeyPath="yes"/>
       </Component>
 
+      <Component Id="LuaDll" Guid="*" Directory="INSTALLDIR">
+        <File Id="LuaDll" Name="lua.dll" DiskId="1" KeyPath="yes" Source="$(var.BinaryFolder)\lua.dll" />
+      </Component>
+
       <Component Id="LibExifDll" Guid="*" Directory="INSTALLDIR">
         <File Id="LibExifDll" Name="libexif.dll" DiskId="1" KeyPath="yes" Source="$(var.BinaryFolder)\libexif.dll" />
       </Component>
