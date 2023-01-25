@@ -12,6 +12,13 @@ the git sourcecode repository at [https://github.com/vividos/RemotePhotoTool](ht
 - Added support for all PTP2 cameras that can be accessed using libgphoto2.
 - Added standalone GeoTagTool to read in GPX tracks and geo-tag JPEG images.
 
+#### Other ####
+
+The following libraries were updated:
+- Lua 5.4.4
+- IJG jpeg-9e
+- Canon ED-SDK version 13.16.0, released on 2022-12-07.
+
 ## 2020-06-30: Version 1.6.0 Build 129 ##
 
 This is a major feature release.
