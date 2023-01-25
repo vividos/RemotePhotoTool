@@ -9,7 +9,7 @@ and send me a message with the test results and camera infos (output from the Ca
 
 ### Canon EOS camera models ###
 
-Cameras supported by "ED-SDK 3.6.1".
+Cameras supported by "ED-SDK 13.6.0".
 All cameras support remote capture, some of them support live view and Bulb shooting.
 
 - EOS 1000D  (aka. Rebel XS, Kiss F)
@@ -50,6 +50,9 @@ All cameras support remote capture, some of them support live view and Bulb shoo
 - EOS-1D Mark IV
 - EOS 1D X
 - EOS-1D X Mark II
+
+For a complete list, see:
+https://developers.canon-europe.com/s/article/Latest-EOS-SDK-Version-13-x
 
 #### Canon PowerShot cameras ####
 
