@@ -8,9 +8,6 @@
     "boost-asio",
     "ijg-libjpeg",
     "libexif",
-    {
-      "name": "lua",
-      "features": [ "cpp" ]
-    }
+    "lua"
   ]
 }

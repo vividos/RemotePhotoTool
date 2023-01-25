@@ -1,16 +1,19 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2020 Michael Fink
+// Copyright (C) 2008-2023 Michael Fink
 //
 /// \file Lua.cpp Lua wrapper classes
 //
 #include "stdafx.h"
 #include "Lua.hpp"
+#include <algorithm>
 
+extern "C"
+{
 #include <lua.h>
 #include <lauxlib.h>
 #include <lualib.h>
-#include <algorithm>
+}
 
 struct lua_longjmp;
 

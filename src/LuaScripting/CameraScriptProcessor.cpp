@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2020 Michael Fink
+// Copyright (C) 2008-2023 Michael Fink
 //
 /// \file CameraScriptProcessor.cpp Camera Lua script processor
 //
@@ -13,8 +13,12 @@
 #include "CameraControlLuaBindings.hpp"
 #include "LuaScriptWorkerThread.hpp"
 #include "LuaScheduler.hpp"
+
+extern "C"
+{
 #include <lua.h>
 #include <lualib.h>
+}
 
 /// implementation class, mostly for bindings
 class CameraScriptProcessor::Impl : public std::enable_shared_from_this<CameraScriptProcessor::Impl>
