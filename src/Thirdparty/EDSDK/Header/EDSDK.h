@@ -1280,6 +1280,25 @@ EdsError EDSAPI EdsCreateStream(EdsIStream* inStream, EdsStreamRef* outStreamRef
 -----------------------------------------------------------------------------*/
 EdsError EDSAPI EdsGetEvent();
 
+/*-----------------------------------------------------------------------------
+//
+//  Function:   EdsSetFramePoint
+//
+//  Description:
+//      Specifies the camera's focus and zoom frame position in the LiveView state.
+//
+//  Parameters:
+//       In:    inCameraRef - Designate the camera object.
+//              inFramePoint - Specifies the position coordinates of the zoom and AF
+//                  frames of a LiveView image.
+//              inLockAfFrame - Whether to lock the movement of the frame until the
+//                  AF-related camera operation is executed.
+//      Out:    None
+//
+//  Returns:    Any of the sdk errors.
+-----------------------------------------------------------------------------*/
+EdsError EDSAPI EdsSetFramePoint(EdsCameraRef inCameraRef, EdsPoint inFramepoint, bool inLockAfFrame);
+
 
 #ifdef __cplusplus
 }

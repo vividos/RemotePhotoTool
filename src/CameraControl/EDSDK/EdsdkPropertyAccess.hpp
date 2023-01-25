@@ -42,6 +42,9 @@ namespace EDSDK
 #define kEdsPropID_EFCompensation         0x0000041e
 #define kEdsPropID_Evf_FocusAid           0x00000509
 
+// Custom functions; property was removed somewhere between EDSDK 13.12.10 and 13.16.0
+#define kEdsPropID_CFn 0x00000009
+
 // since there are no equivalent properties for retrieving some values, but MapToPropertyID()
 // should return a property id, so that PropertyAccess::Get() can return a value, define "fake"
 // property ids here.

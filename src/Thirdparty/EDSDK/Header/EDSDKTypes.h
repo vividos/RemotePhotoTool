@@ -181,7 +181,6 @@ typedef  EdsUInt32  EdsPropertyID;
 #define kEdsPropID_DateTime               0x00000006
 #define kEdsPropID_FirmwareVersion        0x00000007
 #define kEdsPropID_BatteryLevel           0x00000008
-#define kEdsPropID_CFn                    0x00000009
 #define kEdsPropID_SaveTo                 0x0000000b
 #define kEdsPropID_CurrentStorage         0x0000000c
 #define kEdsPropID_CurrentFolder          0x0000000d
@@ -291,17 +290,30 @@ typedef  EdsUInt32  EdsPropertyID;
 /*----------------------------------
 Limited Properties
 ----------------------------------*/
-#define kEdsPropID_EVF_RollingPitching     0x01000544
-#define kEdsPropID_FixedMovie              0x01000422
-#define kEdsPropID_MovieParam              0x01000423
-#define kEdsPropID_Evf_ClickWBCoeffs       0x01000506
-#define kEdsPropID_ManualWhiteBalanceData  0x01000204
-#define kEdsPropID_MirrorUpSetting         0x01000438
-#define kEdsPropID_MirrorLockUpState       0x01000421
 #define kEdsPropID_UTCTime                 0x01000016
 #define kEdsPropID_TimeZone                0x01000017
 #define kEdsPropID_SummerTimeSetting       0x01000018
+#define kEdsPropID_ManualWhiteBalanceData  0x01000204
+#define kEdsPropID_MirrorLockUpState       0x01000421
+#define kEdsPropID_FixedMovie              0x01000422
+#define kEdsPropID_MovieParam              0x01000423
+#define kEdsPropID_Aspect                  0x01000431
+#define kEdsPropID_MirrorUpSetting         0x01000438
+#define kEdsPropID_MovieServoAf            0x0100043e
 #define kEdsPropID_AutoPowerOffSetting     0x0100045e
+#define kEdsPropID_AFEyeDetect             0x01000455
+#define kEdsPropID_Evf_ClickWBCoeffs       0x01000506
+#define kEdsPropID_EVF_RollingPitching     0x01000544
+#define kEdsPropID_Evf_VisibleRect         0x01000546
+#define kEdsPropID_StillMovieDivideSetting 0x01000470
+#define kEdsPropID_CardExtension           0x01000471
+#define kEdsPropID_MovieCardExtension      0x01000472
+#define kEdsPropID_StillCurrentMedia       0x01000473
+#define kEdsPropID_MovieCurrentMedia       0x01000474
+#define kEdsPropID_FocusShiftSetting       0x01000457
+#define kEdsPropID_MovieHFRSetting         0x0100045d
+
+
 
 /*----------------------------------
  DC Properties
@@ -330,6 +342,9 @@ typedef  EdsUInt32  EdsCameraCommand;
 #define kEdsCameraCommand_RequestRollPitchLevel           0x00000109
 #define kEdsCameraCommand_DrivePowerZoom                  0x0000010d
 #define kEdsCameraCommand_SetRemoteShootingMode           0x0000010f
+#define kEdsCameraCommand_RequestSensorCleaning           0x00000112
+#define kEdsCameraCommand_SetModeDialDisable              0x00000113
+
 typedef enum
 {
 	kEdsCameraCommand_EvfAf_OFF		= 0,
@@ -370,8 +385,6 @@ typedef  EdsUInt32  EdsPropertyEvent;
 /* Notifies that a camera property value has been changed. 
  The changed property can be retrieved from event data. 
  The changed value can be retrieved by means of EdsGetPropertyData. 
- In the case of type 1 protocol standard cameras, 
- notification of changed properties can only be issued for custom functions (CFn). 
  If the property type is 0x0000FFFF, the changed property cannot be identified. 
  Thus, retrieve all required properties repeatedly. */
 #define kEdsPropertyEvent_PropertyChanged           0x00000101
@@ -622,6 +635,7 @@ typedef enum
     kEdsImageType_CRW           = 0x00000002,
     kEdsImageType_RAW           = 0x00000004,
     kEdsImageType_CR2           = 0x00000006,
+    kEdsImageType_HEIF          = 0x00000008,
 
 } EdsImageType;
 
@@ -661,97 +675,106 @@ typedef enum
 
 typedef enum
 {
-	/* Jpeg Only */
-	EdsImageQuality_LJ		=	0x0010ff0f,	/* Jpeg Large */
-	EdsImageQuality_M1J		=	0x0510ff0f,	/* Jpeg Middle1 */
-	EdsImageQuality_M2J		=	0x0610ff0f,	/* Jpeg Middle2 */
-	EdsImageQuality_SJ		=	0x0210ff0f,	/* Jpeg Small */
-	EdsImageQuality_LJF		=	0x0013ff0f,	/* Jpeg Large Fine */
-	EdsImageQuality_LJN		=	0x0012ff0f,	/* Jpeg Large Normal */
-	EdsImageQuality_MJF		=	0x0113ff0f,	/* Jpeg Middle Fine */
-	EdsImageQuality_MJN		=	0x0112ff0f,	/* Jpeg Middle Normal */
-	EdsImageQuality_SJF		=	0x0213ff0f,	/* Jpeg Small Fine */
-	EdsImageQuality_SJN		=	0x0212ff0f,	/* Jpeg Small Normal */
-	EdsImageQuality_S1JF	=	0x0E13ff0f,	/* Jpeg Small1 Fine */
-	EdsImageQuality_S1JN	=	0x0E12ff0f,	/* Jpeg Small1 Normal */
-	EdsImageQuality_S2JF	=	0x0F13ff0f,	/* Jpeg Small2 */
-	EdsImageQuality_S3JF	=	0x1013ff0f,	/* Jpeg Small3 */
+    /* Jpeg Only */
+    EdsImageQuality_LJ        =    0x0010ff0f,    /* Jpeg Large */
+    EdsImageQuality_MJ        =    0x0110ff0f,    /* Jpeg Middle */
+    EdsImageQuality_M1J        =    0x0510ff0f,    /* Jpeg Middle1 */
+    EdsImageQuality_M2J        =    0x0610ff0f,    /* Jpeg Middle2 */
+    EdsImageQuality_SJ        =    0x0210ff0f,    /* Jpeg Small */
+    EdsImageQuality_S1J        =    0x0e10ff0f,    /* Jpeg Small1 */
+    EdsImageQuality_S2J        =    0x0f10ff0f,    /* Jpeg Small2 */
+    EdsImageQuality_LJF        =    0x0013ff0f,    /* Jpeg Large Fine */
+    EdsImageQuality_LJN        =    0x0012ff0f,    /* Jpeg Large Normal */
+    EdsImageQuality_MJF        =    0x0113ff0f,    /* Jpeg Middle Fine */
+    EdsImageQuality_MJN        =    0x0112ff0f,    /* Jpeg Middle Normal */
+    EdsImageQuality_SJF        =    0x0213ff0f,    /* Jpeg Small Fine */
+    EdsImageQuality_SJN        =    0x0212ff0f,    /* Jpeg Small Normal */
+    EdsImageQuality_S1JF    =    0x0E13ff0f,    /* Jpeg Small1 Fine */
+    EdsImageQuality_S1JN    =    0x0E12ff0f,    /* Jpeg Small1 Normal */
+    EdsImageQuality_S2JF    =    0x0F13ff0f,    /* Jpeg Small2 */
+    EdsImageQuality_S3JF    =    0x1013ff0f,    /* Jpeg Small3 */
 
-	/* RAW + Jpeg */
-	EdsImageQuality_LR		=	0x0064ff0f,	/* RAW */
-	EdsImageQuality_LRLJF	=	0x00640013,	/* RAW + Jpeg Large Fine */
-	EdsImageQuality_LRLJN	=	0x00640012,	/* RAW + Jpeg Large Normal */
-	EdsImageQuality_LRMJF	=	0x00640113,	/* RAW + Jpeg Middle Fine */
-	EdsImageQuality_LRMJN	=	0x00640112,	/* RAW + Jpeg Middle Normal */
-	EdsImageQuality_LRSJF	=	0x00640213,	/* RAW + Jpeg Small Fine */
-	EdsImageQuality_LRSJN	=	0x00640212,	/* RAW + Jpeg Small Normal */
-	EdsImageQuality_LRS1JF	=	0x00640E13,	/* RAW + Jpeg Small1 Fine */
-	EdsImageQuality_LRS1JN	=	0x00640E12,	/* RAW + Jpeg Small1 Normal */
-	EdsImageQuality_LRS2JF	=	0x00640F13,	/* RAW + Jpeg Small2 */
-	EdsImageQuality_LRS3JF	=	0x00641013,	/* RAW + Jpeg Small3 */
+    /* RAW + Jpeg */
+    EdsImageQuality_LR        =    0x0064ff0f,    /* RAW */
+    EdsImageQuality_LRLJF    =    0x00640013,    /* RAW + Jpeg Large Fine */
+    EdsImageQuality_LRLJN    =    0x00640012,    /* RAW + Jpeg Large Normal */
+    EdsImageQuality_LRMJF    =    0x00640113,    /* RAW + Jpeg Middle Fine */
+    EdsImageQuality_LRMJN    =    0x00640112,    /* RAW + Jpeg Middle Normal */
+    EdsImageQuality_LRSJF    =    0x00640213,    /* RAW + Jpeg Small Fine */
+    EdsImageQuality_LRSJN    =    0x00640212,    /* RAW + Jpeg Small Normal */
+    EdsImageQuality_LRS1JF    =    0x00640E13,    /* RAW + Jpeg Small1 Fine */
+    EdsImageQuality_LRS1JN    =    0x00640E12,    /* RAW + Jpeg Small1 Normal */
+    EdsImageQuality_LRS2JF    =    0x00640F13,    /* RAW + Jpeg Small2 */
+    EdsImageQuality_LRS3JF    =    0x00641013,    /* RAW + Jpeg Small3 */
 
-	EdsImageQuality_LRLJ	=	0x00640010,	/* RAW + Jpeg Large */
-	EdsImageQuality_LRM1J	=	0x00640510,	/* RAW + Jpeg Middle1 */
-	EdsImageQuality_LRM2J	=	0x00640610,	/* RAW + Jpeg Middle2 */
-	EdsImageQuality_LRSJ	=	0x00640210,	/* RAW + Jpeg Small */
+    EdsImageQuality_LRLJ    =    0x00640010,    /* RAW + Jpeg Large */
+    EdsImageQuality_LRMJ    =    0x00640110,    /* RAW + Jpeg Middle */
+    EdsImageQuality_LRM1J    =    0x00640510,    /* RAW + Jpeg Middle1 */
+    EdsImageQuality_LRM2J    =    0x00640610,    /* RAW + Jpeg Middle2 */
+    EdsImageQuality_LRSJ    =    0x00640210,    /* RAW + Jpeg Small */
+    EdsImageQuality_LRS1J    =    0x00640e10,    /* RAW + Jpeg Small1 */
+    EdsImageQuality_LRS2J    =    0x00640f10,    /* RAW + Jpeg Small2 */
 
-	/* MRAW(SRAW1) + Jpeg */
-	EdsImageQuality_MR		=	0x0164ff0f,	/* MRAW(SRAW1) */
-	EdsImageQuality_MRLJF	=	0x01640013,	/* MRAW(SRAW1) + Jpeg Large Fine */
-	EdsImageQuality_MRLJN	=	0x01640012,	/* MRAW(SRAW1) + Jpeg Large Normal */
-	EdsImageQuality_MRMJF	=	0x01640113,	/* MRAW(SRAW1) + Jpeg Middle Fine */
-	EdsImageQuality_MRMJN	=	0x01640112,	/* MRAW(SRAW1) + Jpeg Middle Normal */
-	EdsImageQuality_MRSJF	=	0x01640213,	/* MRAW(SRAW1) + Jpeg Small Fine */
-	EdsImageQuality_MRSJN	=	0x01640212,	/* MRAW(SRAW1) + Jpeg Small Normal */
-	EdsImageQuality_MRS1JF	=	0x01640E13,	/* MRAW(SRAW1) + Jpeg Small1 Fine */
-	EdsImageQuality_MRS1JN	=	0x01640E12,	/* MRAW(SRAW1) + Jpeg Small1 Normal */
-	EdsImageQuality_MRS2JF	=	0x01640F13,	/* MRAW(SRAW1) + Jpeg Small2 */
-	EdsImageQuality_MRS3JF	=	0x01641013,	/* MRAW(SRAW1) + Jpeg Small3 */
+    /* MRAW(SRAW1) + Jpeg */
+    EdsImageQuality_MR        =    0x0164ff0f,    /* MRAW(SRAW1) */
+    EdsImageQuality_MRLJF    =    0x01640013,    /* MRAW(SRAW1) + Jpeg Large Fine */
+    EdsImageQuality_MRLJN    =    0x01640012,    /* MRAW(SRAW1) + Jpeg Large Normal */
+    EdsImageQuality_MRMJF    =    0x01640113,    /* MRAW(SRAW1) + Jpeg Middle Fine */
+    EdsImageQuality_MRMJN    =    0x01640112,    /* MRAW(SRAW1) + Jpeg Middle Normal */
+    EdsImageQuality_MRSJF    =    0x01640213,    /* MRAW(SRAW1) + Jpeg Small Fine */
+    EdsImageQuality_MRSJN    =    0x01640212,    /* MRAW(SRAW1) + Jpeg Small Normal */
+    EdsImageQuality_MRS1JF    =    0x01640E13,    /* MRAW(SRAW1) + Jpeg Small1 Fine */
+    EdsImageQuality_MRS1JN    =    0x01640E12,    /* MRAW(SRAW1) + Jpeg Small1 Normal */
+    EdsImageQuality_MRS2JF    =    0x01640F13,    /* MRAW(SRAW1) + Jpeg Small2 */
+    EdsImageQuality_MRS3JF    =    0x01641013,    /* MRAW(SRAW1) + Jpeg Small3 */
 
-	EdsImageQuality_MRLJ	=	0x01640010,	/* MRAW(SRAW1) + Jpeg Large */
-	EdsImageQuality_MRM1J	=	0x01640510,	/* MRAW(SRAW1) + Jpeg Middle1 */
-	EdsImageQuality_MRM2J	=	0x01640610,	/* MRAW(SRAW1) + Jpeg Middle2 */
-	EdsImageQuality_MRSJ	=	0x01640210,	/* MRAW(SRAW1) + Jpeg Small */
+    EdsImageQuality_MRLJ    =    0x01640010,    /* MRAW(SRAW1) + Jpeg Large */
+    EdsImageQuality_MRM1J    =    0x01640510,    /* MRAW(SRAW1) + Jpeg Middle1 */
+    EdsImageQuality_MRM2J    =    0x01640610,    /* MRAW(SRAW1) + Jpeg Middle2 */
+    EdsImageQuality_MRSJ    =    0x01640210,    /* MRAW(SRAW1) + Jpeg Small */
 
-	/* SRAW(SRAW2) + Jpeg */
-	EdsImageQuality_SR		=	0x0264ff0f,	/* SRAW(SRAW2) */
-	EdsImageQuality_SRLJF	=	0x02640013,	/* SRAW(SRAW2) + Jpeg Large Fine */
-	EdsImageQuality_SRLJN	=	0x02640012,	/* SRAW(SRAW2) + Jpeg Large Normal */
-	EdsImageQuality_SRMJF	=	0x02640113,	/* SRAW(SRAW2) + Jpeg Middle Fine */
-	EdsImageQuality_SRMJN	=	0x02640112,	/* SRAW(SRAW2) + Jpeg Middle Normal */
-	EdsImageQuality_SRSJF	=	0x02640213,	/* SRAW(SRAW2) + Jpeg Small Fine */
-	EdsImageQuality_SRSJN	=	0x02640212,	/* SRAW(SRAW2) + Jpeg Small Normal */
-	EdsImageQuality_SRS1JF	=	0x02640E13,	/* SRAW(SRAW2) + Jpeg Small1 Fine */
-	EdsImageQuality_SRS1JN	=	0x02640E12,	/* SRAW(SRAW2) + Jpeg Small1 Normal */
-	EdsImageQuality_SRS2JF	=	0x02640F13,	/* SRAW(SRAW2) + Jpeg Small2 */
-	EdsImageQuality_SRS3JF	=	0x02641013,	/* SRAW(SRAW2) + Jpeg Small3 */
+    /* SRAW(SRAW2) + Jpeg */
+    EdsImageQuality_SR        =    0x0264ff0f,    /* SRAW(SRAW2) */
+    EdsImageQuality_SRLJF    =    0x02640013,    /* SRAW(SRAW2) + Jpeg Large Fine */
+    EdsImageQuality_SRLJN    =    0x02640012,    /* SRAW(SRAW2) + Jpeg Large Normal */
+    EdsImageQuality_SRMJF    =    0x02640113,    /* SRAW(SRAW2) + Jpeg Middle Fine */
+    EdsImageQuality_SRMJN    =    0x02640112,    /* SRAW(SRAW2) + Jpeg Middle Normal */
+    EdsImageQuality_SRSJF    =    0x02640213,    /* SRAW(SRAW2) + Jpeg Small Fine */
+    EdsImageQuality_SRSJN    =    0x02640212,    /* SRAW(SRAW2) + Jpeg Small Normal */
+    EdsImageQuality_SRS1JF    =    0x02640E13,    /* SRAW(SRAW2) + Jpeg Small1 Fine */
+    EdsImageQuality_SRS1JN    =    0x02640E12,    /* SRAW(SRAW2) + Jpeg Small1 Normal */
+    EdsImageQuality_SRS2JF    =    0x02640F13,    /* SRAW(SRAW2) + Jpeg Small2 */
+    EdsImageQuality_SRS3JF    =    0x02641013,    /* SRAW(SRAW2) + Jpeg Small3 */
 
-	EdsImageQuality_SRLJ	=	0x02640010,	/* SRAW(SRAW2) + Jpeg Large */
-	EdsImageQuality_SRM1J	=	0x02640510,	/* SRAW(SRAW2) + Jpeg Middle1 */
-	EdsImageQuality_SRM2J	=	0x02640610,	/* SRAW(SRAW2) + Jpeg Middle2 */
-	EdsImageQuality_SRSJ	=	0x02640210,	/* SRAW(SRAW2) + Jpeg Small */
+    EdsImageQuality_SRLJ    =    0x02640010,    /* SRAW(SRAW2) + Jpeg Large */
+    EdsImageQuality_SRM1J    =    0x02640510,    /* SRAW(SRAW2) + Jpeg Middle1 */
+    EdsImageQuality_SRM2J    =    0x02640610,    /* SRAW(SRAW2) + Jpeg Middle2 */
+    EdsImageQuality_SRSJ    =    0x02640210,    /* SRAW(SRAW2) + Jpeg Small */
 
-	/* CRAW + Jpeg */
-	EdsImageQuality_CR		=	0x0063ff0f,	/* CRAW */
-	EdsImageQuality_CRLJF	=	0x00630013,	/* CRAW + Jpeg Large Fine */
-	EdsImageQuality_CRMJF	=	0x00630113,	/* CRAW + Jpeg Middle Fine  */
-	EdsImageQuality_CRM1JF	=	0x00630513,	/* CRAW + Jpeg Middle1 Fine  */
-	EdsImageQuality_CRM2JF	=	0x00630613,	/* CRAW + Jpeg Middle2 Fine  */
-	EdsImageQuality_CRSJF	=	0x00630213,	/* CRAW + Jpeg Small Fine  */
-	EdsImageQuality_CRS1JF	=	0x00630E13,	/* CRAW + Jpeg Small1 Fine  */
-	EdsImageQuality_CRS2JF	=	0x00630F13,	/* CRAW + Jpeg Small2 Fine  */
-	EdsImageQuality_CRS3JF	=	0x00631013,	/* CRAW + Jpeg Small3 Fine  */
-	EdsImageQuality_CRLJN	=	0x00630012,	/* CRAW + Jpeg Large Normal */
-	EdsImageQuality_CRMJN	=	0x00630112,	/* CRAW + Jpeg Middle Normal */
-	EdsImageQuality_CRM1JN	=	0x00630512,	/* CRAW + Jpeg Middle1 Normal */
-	EdsImageQuality_CRM2JN	=	0x00630612,	/* CRAW + Jpeg Middle2 Normal */
-	EdsImageQuality_CRSJN	=	0x00630212,	/* CRAW + Jpeg Small Normal */
-	EdsImageQuality_CRS1JN	=	0x00630E12,	/* CRAW + Jpeg Small1 Normal */
+    /* CRAW + Jpeg */
+    EdsImageQuality_CR        =    0x0063ff0f,    /* CRAW */
+    EdsImageQuality_CRLJF    =    0x00630013,    /* CRAW + Jpeg Large Fine */
+    EdsImageQuality_CRMJF    =    0x00630113,    /* CRAW + Jpeg Middle Fine  */
+    EdsImageQuality_CRM1JF    =    0x00630513,    /* CRAW + Jpeg Middle1 Fine  */
+    EdsImageQuality_CRM2JF    =    0x00630613,    /* CRAW + Jpeg Middle2 Fine  */
+    EdsImageQuality_CRSJF    =    0x00630213,    /* CRAW + Jpeg Small Fine  */
+    EdsImageQuality_CRS1JF    =    0x00630E13,    /* CRAW + Jpeg Small1 Fine  */
+    EdsImageQuality_CRS2JF    =    0x00630F13,    /* CRAW + Jpeg Small2 Fine  */
+    EdsImageQuality_CRS3JF    =    0x00631013,    /* CRAW + Jpeg Small3 Fine  */
+    EdsImageQuality_CRLJN    =    0x00630012,    /* CRAW + Jpeg Large Normal */
+    EdsImageQuality_CRMJN    =    0x00630112,    /* CRAW + Jpeg Middle Normal */
+    EdsImageQuality_CRM1JN    =    0x00630512,    /* CRAW + Jpeg Middle1 Normal */
+    EdsImageQuality_CRM2JN    =    0x00630612,    /* CRAW + Jpeg Middle2 Normal */
+    EdsImageQuality_CRSJN    =    0x00630212,    /* CRAW + Jpeg Small Normal */
+    EdsImageQuality_CRS1JN    =    0x00630E12,    /* CRAW + Jpeg Small1 Normal */
 
-	EdsImageQuality_CRLJ	=	0x00630010,	/* CRAW + Jpeg Large */
-	EdsImageQuality_CRM1J	=	0x00630510,	/* CRAW + Jpeg Middle1 */
-	EdsImageQuality_CRM2J	=	0x00630610,	/* CRAW + Jpeg Middle2 */
-	EdsImageQuality_CRSJ	=	0x00630210,	/* CRAW + Jpeg Small */
+    EdsImageQuality_CRLJ    =    0x00630010,    /* CRAW + Jpeg Large */
+    EdsImageQuality_CRMJ    =    0x00630110,    /* CRAW + Jpeg Middle */
+    EdsImageQuality_CRM1J    =    0x00630510,    /* CRAW + Jpeg Middle1 */
+    EdsImageQuality_CRM2J    =    0x00630610,    /* CRAW + Jpeg Middle2 */
+    EdsImageQuality_CRSJ    =    0x00630210,    /* CRAW + Jpeg Small */
+    EdsImageQuality_CRS1J    =    0x00630e10,    /* CRAW + Jpeg Small1 */
+    EdsImageQuality_CRS2J    =    0x00630f10,    /* CRAW + Jpeg Small2 */
 
     /* HEIF */
     EdsImageQuality_HEIFL   =   0x0080ff0f,  /* HEIF Large */
@@ -780,7 +803,7 @@ typedef enum
     EdsImageQuality_CRHEIFS1N =  0x00630e82, /* CRAW + HEIF Small1 Normal */
     EdsImageQuality_CRHEIFS2F =  0x00630f83, /* CRAW + HEIF Small2 Fine */
 
-	EdsImageQuality_Unknown = 0xffffffff,
+    EdsImageQuality_Unknown = 0xffffffff,
 }EdsImageQuality;
 
 
@@ -840,6 +863,19 @@ typedef enum
 
 
 /*-----------------------------------------------------------------------------
+ObjectFormat Code
+-----------------------------------------------------------------------------*/
+typedef enum
+{
+    UNKNOWN   = 0x00000000,
+    Jpeg      = 0x3801,
+    CR2       = 0xB103,
+    MP4       = 0xB982,
+    CR3       = 0xB108,
+    HEIF_CODE = 0xB10B,
+} EdsObjectFormat;
+
+/*-----------------------------------------------------------------------------
  Battery level
 -----------------------------------------------------------------------------*/
 typedef enum
@@ -876,7 +912,8 @@ typedef enum
     kEdsStorageType_CF  = 1,
     kEdsStorageType_SD  = 2,
     kEdsStorageType_HD  = 4,
-	kEdsStorageType_CFast = 5,
+    kEdsStorageType_CFast = 5,
+    kEdsStorageType_CFe = 7,
 
 } EdsStorageType;
 
@@ -888,7 +925,7 @@ typedef enum
     kEdsWhiteBalance_Auto         = 0,
     kEdsWhiteBalance_Daylight     = 1,
     kEdsWhiteBalance_Cloudy       = 2,
-    kEdsWhiteBalance_Tangsten     = 3,
+    kEdsWhiteBalance_Tungsten     = 3,
     kEdsWhiteBalance_Fluorescent  = 4,
     kEdsWhiteBalance_Strobe       = 5,
     kEdsWhiteBalance_WhitePaper   = 6,
@@ -958,63 +995,64 @@ typedef enum
 -----------------------------------------------------------------------------*/
 typedef enum 
 {
-    kEdsAEMode_Program          = 0 ,
-    kEdsAEMode_Tv               = 1,
-    kEdsAEMode_Av               = 2,
-    kEdsAEMode_Manual           = 3,
-    kEdsAEMode_Bulb             = 4,
-    kEdsAEMode_A_DEP            = 5,
-    kEdsAEMode_DEP              = 6,
-    kEdsAEMode_Custom           = 7,
-    kEdsAEMode_Lock             = 8,
-    kEdsAEMode_Green            = 9,
-    kEdsAEMode_NightPortrait    = 10,
-    kEdsAEMode_Sports           = 11,
-    kEdsAEMode_Portrait         = 12,
-    kEdsAEMode_Landscape        = 13,
-    kEdsAEMode_Closeup          = 14,
-    kEdsAEMode_FlashOff         = 15,
-    kEdsAEMode_CreativeAuto     = 19,
-	kEdsAEMode_Movie			= 20,
-	kEdsAEMode_PhotoInMovie		= 21,
-	kEdsAEMode_SceneIntelligentAuto	= 22,
-	kEdsAEMode_SCN              = 25,
-	kEdsAEMode_NightScenes      = 23,
-	kEdsAEMode_BacklitScenes    = 24,
-	kEdsAEMode_Children         = 26,
-	kEdsAEMode_Food             = 27,
-	kEdsAEMode_CandlelightPortraits = 28,
-	kEdsAEMode_CreativeFilter   = 29,
-	kEdsAEMode_RoughMonoChrome  = 30,
-	kEdsAEMode_SoftFocus        = 31,
-	kEdsAEMode_ToyCamera        = 32,
-	kEdsAEMode_Fisheye          = 33,
-	kEdsAEMode_WaterColor       = 34,
-	kEdsAEMode_Miniature        = 35,
-	kEdsAEMode_Hdr_Standard     = 36,
-	kEdsAEMode_Hdr_Vivid        = 37,
-	kEdsAEMode_Hdr_Bold         = 38,
-	kEdsAEMode_Hdr_Embossed     = 39,
-	kEdsAEMode_Movie_Fantasy    = 40,
-	kEdsAEMode_Movie_Old        = 41,
-	kEdsAEMode_Movie_Memory     = 42,
-	kEdsAEMode_Movie_DirectMono = 43,
-	kEdsAEMode_Movie_Mini       = 44,
-    kEdsAEMode_PanningAssist    = 45,
-    kEdsAEMode_GroupPhoto       = 46,
-    kEdsAEMode_Myself           = 50,
-	kEdsAEMode_PlusMovieAuto    = 51,
-    kEdsAEMode_SmoothSkin       = 52,
-	kEdsAEMode_Panorama			= 53,
-    kEdsAEMode_Silent       	= 54,
-    kEdsAEMode_Flexible         = 55,
-	kEdsAEMode_OilPainting		= 56,
-	kEdsAEMode_Fireworks		= 57,
-	kEdsAEMode_StarPortrait		= 58,
-    kEdsAEMode_StarNightscape	= 59,
-	kEdsAEMode_StarTrails		= 60,
-	kEdsAEMode_StarTimelapseMovie = 61,
-	kEdsAEMode_BackgroundBlur	= 62,
+    kEdsAEMode_Program          = 0x00 ,
+    kEdsAEMode_Tv               = 0x01,
+    kEdsAEMode_Av               = 0x02,
+    kEdsAEMode_Manual           = 0x03,
+    kEdsAEMode_Bulb             = 0x04,
+    kEdsAEMode_A_DEP            = 0x05,
+    kEdsAEMode_DEP              = 0x06,
+    kEdsAEMode_Custom           = 0x07,
+    kEdsAEMode_Lock             = 0x08,
+    kEdsAEMode_Green            = 0x09,
+    kEdsAEMode_NightPortrait    = 0x0A,
+    kEdsAEMode_Sports           = 0x0B,
+    kEdsAEMode_Portrait         = 0x0C,
+    kEdsAEMode_Landscape        = 0x0D,
+    kEdsAEMode_Closeup          = 0x0E,
+    kEdsAEMode_FlashOff         = 0x0F,
+    kEdsAEMode_CreativeAuto     = 0x13,
+	kEdsAEMode_Movie			= 0x14,
+	kEdsAEMode_PhotoInMovie		= 0x15,
+	kEdsAEMode_SceneIntelligentAuto	= 0x16,
+	kEdsAEMode_SCN              = 0x19,
+	kEdsAEMode_NightScenes      = 0x17,
+	kEdsAEMode_BacklitScenes    = 0x18,
+	kEdsAEMode_Children         = 0x1A,
+	kEdsAEMode_Food             = 0x1B,
+	kEdsAEMode_CandlelightPortraits = 0x1C,
+	kEdsAEMode_CreativeFilter   = 0x1D,
+	kEdsAEMode_RoughMonoChrome  = 0x1E,
+	kEdsAEMode_SoftFocus        = 0x1F,
+	kEdsAEMode_ToyCamera        = 0x20,
+	kEdsAEMode_Fisheye          = 0x21,
+	kEdsAEMode_WaterColor       = 0x22,
+	kEdsAEMode_Miniature        = 0x23,
+	kEdsAEMode_Hdr_Standard     = 0x24,
+	kEdsAEMode_Hdr_Vivid        = 0x25,
+	kEdsAEMode_Hdr_Bold         = 0x26,
+	kEdsAEMode_Hdr_Embossed     = 0x27,
+	kEdsAEMode_Movie_Fantasy    = 0x28,
+	kEdsAEMode_Movie_Old        = 0x29,
+	kEdsAEMode_Movie_Memory     = 0x2A,
+	kEdsAEMode_Movie_DirectMono = 0x2B,
+	kEdsAEMode_Movie_Mini       = 0x2C,
+    kEdsAEMode_PanningAssist    = 0x2D,
+    kEdsAEMode_GroupPhoto       = 0x2E,
+    kEdsAEMode_Myself           = 0x32,
+	kEdsAEMode_PlusMovieAuto    = 0x33,
+    kEdsAEMode_SmoothSkin       = 0x34,
+	kEdsAEMode_Panorama			= 0x35,
+    kEdsAEMode_Silent       	= 0x36,
+    kEdsAEMode_Flexible         = 0x37,
+	kEdsAEMode_OilPainting		= 0x38,
+	kEdsAEMode_Fireworks		= 0x39,
+	kEdsAEMode_StarPortrait		= 0x3A,
+    kEdsAEMode_StarNightscape	= 0x3B,
+	kEdsAEMode_StarTrails		= 0x3C,
+	kEdsAEMode_StarTimelapseMovie = 0x3D,
+	kEdsAEMode_BackgroundBlur	= 0x3E,
+    kEdsAEMode_VideoBlog = 0x3F,
 	kEdsAEMode_Unknown			= 0xffffffff,
 
 } EdsAEMode;
@@ -1039,8 +1077,7 @@ typedef enum
 {
 	kEdsEvfOutputDevice_TFT			= 1,
 	kEdsEvfOutputDevice_PC			= 2,
-	kEdsEvfOutputDevice_MOBILE		= 4,
-	kEdsEvfOutputDevice_MOBILE2		= 8,
+	kEdsEvfOutputDevice_PC_Small	= 8,
 } EdsEvfOutputDevice;
 
 /*-----------------------------------------------------------------------------
@@ -1058,17 +1095,21 @@ typedef enum
 -----------------------------------------------------------------------------*/
 typedef enum 
 {
-	Evf_AFMode_Quick = 0,
-	Evf_AFMode_Live = 1,
-	Evf_AFMode_LiveFace = 2,
-	Evf_AFMode_LiveMulti = 3,
-	Evf_AFMode_LiveZone = 4,
-	Evf_AFMode_LiveSingleExpandCross = 5,
-	Evf_AFMode_LiveSingleExpandSurround = 6,
-	Evf_AFMode_LiveZoneLargeH = 7,
-	Evf_AFMode_LiveZoneLargeV = 8,
-	Evf_AFMode_LiveCatchAF = 9,
-	Evf_AFMode_LiveSpotAF = 10,
+	Evf_AFMode_Quick = 0x00,
+	Evf_AFMode_Live = 0x01,
+	Evf_AFMode_LiveFace = 0x02,
+	Evf_AFMode_LiveMulti = 0x03,
+	Evf_AFMode_LiveZone = 0x04,
+	Evf_AFMode_LiveSingleExpandCross = 0x05,
+	Evf_AFMode_LiveSingleExpandSurround = 0x06,
+	Evf_AFMode_LiveZoneLargeH = 0x07,
+	Evf_AFMode_LiveZoneLargeV = 0x08,
+	Evf_AFMode_LiveCatchAF = 0x09,
+	Evf_AFMode_LiveSpotAF = 0x0a,
+	Evf_AFMode_FlexibleZone1 = 0x0b,
+	Evf_AFMode_FlexibleZone2 = 0x0c,
+	Evf_AFMode_FlexibleZone3 = 0x0d,
+	Evf_AFMode_WholeArea = 0x0e,
 } EdsEvfAFMode;
 
 /*-----------------------------------------------------------------------------
@@ -1142,7 +1183,7 @@ typedef enum
     kEdsMirrorUpSettingOn  = 1,
 }EdsMirrorUpSetting;
 
-/******************************************************************************
+/****************************************************************************
  Definition of base Structures
 ******************************************************************************/
 /*-----------------------------------------------------------------------------
@@ -1359,6 +1400,19 @@ typedef struct tagEdsCameraPos
     EdsInt32        pitching;
 
 } EdsCameraPos;
+
+/*-----------------------------------------------------------------------------
+ FocusShiftSet
+-----------------------------------------------------------------------------*/
+typedef struct tagEdsFocusShiftSet
+{
+    EdsInt32        version;
+    EdsInt32        focusShiftFunction;
+    EdsInt32        shootingNumber;
+    EdsInt32        stepWidth;
+    EdsInt32        exposureSmoothing;
+
+} EdsFocusShiftSet;
 
 /*-----------------------------------------------------------------------------
  Manual WhiteBalance Data
