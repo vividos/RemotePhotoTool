@@ -335,11 +335,11 @@ private:
 
 private:
    BEGIN_MSG_MAP(LuaScriptEditorView)
-      CHAIN_MSG_MAP_ALT(FindReplaceClass, 1)
-      CHAIN_MSG_MAP_ALT(EditCommandsClass, 1)
       COMMAND_CODE_HANDLER(SCEN_CHANGE, OnChangedText)
       MESSAGE_HANDLER(WM_DESTROY, OnDestroy)
       MESSAGE_HANDLER(WM_TIMER, OnTimer)
+      CHAIN_MSG_MAP_ALT(FindReplaceClass, 1)
+      CHAIN_MSG_MAP_ALT(EditCommandsClass, 1)
    END_MSG_MAP()
 
 // Handler prototypes (uncomment arguments if needed):
