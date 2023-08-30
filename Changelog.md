@@ -5,17 +5,23 @@ the git sourcecode repository at [https://github.com/vividos/RemotePhotoTool](ht
 
 ## Version 1.7.0
 
-### tl;dr ###
+### Overview ###
 
 - Added Camera File System photo mode to access the camera's file system.
-- Added RemotePhotoToolCmdline option `--dir`
+- Added RemotePhotoToolCmdline option `--dir`.
+
+#### Experimental ####
+
+This release contains experimental support for libgphoto2. This may or may not
+work, and some things are not implemented yet, and may never be.
+
 - Added support for all PTP2 cameras that can be accessed using libgphoto2.
-- Added standalone GeoTagTool to read in GPX tracks and geo-tag JPEG images.
+- Remote control, shutter release and viewfinder is not implemented
 
 #### Other ####
 
 The following libraries were updated:
-- Lua 5.4.4
+- Lua 5.4.6
 - IJG jpeg-9e
 - Canon ED-SDK version 13.16.0, released on 2022-12-07.
 
