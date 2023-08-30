@@ -9,6 +9,7 @@ the git sourcecode repository at [https://github.com/vividos/RemotePhotoTool](ht
 
 - Added Camera File System photo mode to access the camera's file system.
 - Added RemotePhotoToolCmdline option `--dir`.
+- Removed "Create timelapse from files..." as it never really worked.
 
 #### Experimental ####
 

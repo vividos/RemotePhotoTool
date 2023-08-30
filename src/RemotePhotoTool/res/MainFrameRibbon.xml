@@ -119,9 +119,9 @@
           <MenuGroup Class="MajorItems">
             <Button CommandName="phototool_PREV_IMAGES_SHOW"/>
           </MenuGroup>
-          <MenuGroup Class="MajorItems">
+          <!-- MenuGroup Class="MajorItems">
             <Button CommandName="phototool_EXTRA_CREATE_TIMELAPSE_FROM_FILES"/>
-          </MenuGroup>
+          </MenuGroup -->
           <MenuGroup Class="MajorItems">
             <Button CommandName="wtl_APP_EXIT"/>
           </MenuGroup>
