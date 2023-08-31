@@ -1,0 +1,21 @@
+# top-most .editorconfig file
+root = true
+
+# all files
+[*]
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+tab_width = 3
+
+# code files
+[*.{cpp,hpp,c,h,lua}]
+indent_style = space
+indent_size = 3
+
+# Visual C++ project files
+[*.{vcxproj,props}]
+insert_final_newline = false
+indent_style = space
+indent_size = 2
+tab_width = 2
