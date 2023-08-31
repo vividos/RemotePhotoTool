@@ -146,6 +146,7 @@
     <ClInclude Include="AboutDlg.hpp" />
     <ClInclude Include="App.hpp" />
     <ClInclude Include="AppSettings.hpp" />
+    <ClInclude Include="atldataobject.h" />
     <ClInclude Include="BlankView.hpp" />
     <ClInclude Include="CameraConnectionManager.hpp" />
     <ClInclude Include="CameraErrorDlg.hpp" />
@@ -156,6 +157,7 @@
     <ClInclude Include="CameraInfoDlg.hpp" />
     <ClInclude Include="ConnectCameraDlg.hpp" />
     <ClInclude Include="DevicePropertyView.hpp" />
+    <ClInclude Include="DropFilesHelper.hpp" />
     <ClInclude Include="HDRPanoramaPhotoModeView.hpp" />
     <ClInclude Include="HDRPhotoModeView.hpp" />
     <ClInclude Include="Icons.hpp" />

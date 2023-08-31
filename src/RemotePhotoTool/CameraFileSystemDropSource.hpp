@@ -8,6 +8,7 @@
 
 #include <atlcom.h>
 #include <oleidl.h>
+#include "atldataobject.h"
 
 struct FileInfo;
 
@@ -23,10 +24,11 @@ struct CameraFileSystemDraggedFilesInfo
 
 /// \brief IDropSource implementation for camera file system
 /// \see https://www.codeproject.com/articles/14482/wtl-for-mfc-programmers-part-x-implementing-a-drag
+/// \see https://web.archive.org/web/20050824130636/http://msdn.microsoft.com/library/en-us/dnwui/html/ddhelp_pt2.asp
 class CameraFileSystemDropSource :
    public CComObjectRootEx<CComMultiThreadModel>,
    public CComCoClass<CameraFileSystemDropSource>,
-   public IDataObject,
+   public CDataObjectImpl<CameraFileSystemDropSource>,
    public IDropSource
 {
 public:
@@ -37,87 +39,21 @@ public:
    }
 
    /// initializes drop source by the infos of files to be dragged
-   void Init(CameraFileSystemDraggedFilesInfo draggedFilesInfo)
-   {
-      m_draggedFilesInfo = draggedFilesInfo;
-   }
+   bool Init(CameraFileSystemDraggedFilesInfo draggedFilesInfo);
 
+   /// performs drag-drop and transfers the dropped files
    HRESULT DoDragDrop(DWORD okEffects, DWORD* effects)
    {
       return ::DoDragDrop(this, this, okEffects, effects);
    }
 
+   /// cleans up drop source by removing the temp files
+   void Cleanup();
+
    BEGIN_COM_MAP(CameraFileSystemDropSource)
       COM_INTERFACE_ENTRY(IDataObject)
       COM_INTERFACE_ENTRY(IDropSource)
    END_COM_MAP()
-
-   // virtual methods from IDataObject
-
-   STDMETHODIMP SetData(FORMATETC* pformatetc, STGMEDIUM* pmedium, BOOL fRelease) override
-   {
-      UNUSED(pformatetc);
-      UNUSED(pmedium);
-      UNUSED(fRelease);
-      return E_NOTIMPL;
-   }
-
-   STDMETHODIMP GetData(FORMATETC* pformatetcIn, STGMEDIUM* pmedium) override
-   {
-      UNUSED(pformatetcIn);
-      UNUSED(pmedium);
-      return E_NOTIMPL;
-   }
-
-   STDMETHODIMP EnumFormatEtc(DWORD dwDirection, IEnumFORMATETC** ppenumFormatEtc) override
-   {
-      UNUSED(dwDirection);
-      UNUSED(ppenumFormatEtc);
-      return E_NOTIMPL;
-   }
-
-   STDMETHODIMP QueryGetData(FORMATETC* pformatetc) override
-   {
-      UNUSED(pformatetc);
-      return E_NOTIMPL;
-   }
-
-   STDMETHODIMP GetDataHere(FORMATETC* pformatetc, STGMEDIUM* pmedium) override
-   {
-      UNUSED(pformatetc);
-      UNUSED(pmedium);
-      return E_NOTIMPL;
-   }
-
-   STDMETHODIMP GetCanonicalFormatEtc(FORMATETC* pformatectIn,
-      FORMATETC* pformatetcOut)
-   {
-      UNUSED(pformatectIn);
-      UNUSED(pformatetcOut);
-      return E_NOTIMPL;
-   }
-
-   STDMETHODIMP DAdvise(FORMATETC* pformatetc, DWORD advf,
-      IAdviseSink* pAdvSink, DWORD* pdwConnection) override
-   {
-      UNUSED(pformatetc);
-      UNUSED(advf);
-      UNUSED(pAdvSink);
-      UNUSED(pdwConnection);
-      return E_NOTIMPL;
-   }
-
-   STDMETHODIMP DUnadvise(DWORD dwConnection) override
-   {
-      UNUSED(dwConnection);
-      return E_NOTIMPL;
-   }
-
-   STDMETHODIMP EnumDAdvise(IEnumSTATDATA** ppenumAdvise) override
-   {
-      UNUSED(ppenumAdvise);
-      return E_NOTIMPL;
-   }
 
    // virtual methods from IDropSource
 
@@ -138,8 +74,14 @@ public:
    void SaveFile(const FileInfo& fileInfo, const CString& targetFolder, const std::vector<unsigned char>& imageData);
 
 private:
+   /// temp folder to download the files into
+   CString m_tempFolder;
+
    /// dragged files info
    CameraFileSystemDraggedFilesInfo m_draggedFilesInfo;
+
+   /// list of all temp files produced during dropping
+   std::vector<CString> m_tempFilenames;
 
    /// last drop effect that was reported to us
    DWORD m_lastEffect;

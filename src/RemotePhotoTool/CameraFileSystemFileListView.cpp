@@ -113,7 +113,9 @@ LRESULT CameraFileSystemFileListView::OnFileSystemDownload(WORD /*wNotifyCode*/,
 
 LRESULT CameraFileSystemFileListView::OnBeginDrag(int /*idCtrl*/, LPNMHDR /*pnmh*/, BOOL& /*bHandled*/)
 {
-   CComObjectStack<CameraFileSystemDropSource> dropSource;
+   OleInitialize(nullptr);
+
+   CComObjectStackEx<CameraFileSystemDropSource> dropSource;
 
    CameraFileSystemDraggedFilesInfo draggedFilesInfo;
    draggedFilesInfo.m_cameraFileSystem = m_cameraFileSystem;
@@ -130,13 +132,18 @@ LRESULT CameraFileSystemFileListView::OnBeginDrag(int /*idCtrl*/, LPNMHDR /*pnmh
       draggedFilesInfo.m_cameraFileInfos.push_back(fileInfo);
    }
 
-   dropSource.Init(draggedFilesInfo);
+   if (!dropSource.Init(draggedFilesInfo))
+      return 0;
 
    DWORD effect = DROPEFFECT_NONE;
    HRESULT hr = dropSource.DoDragDrop(DROPEFFECT_COPY | DROPEFFECT_LINK, &effect);
 
-   if (SUCCEEDED(hr))
-      DownloadFiles(fileInfoList);
+   if (hr == DRAGDROP_S_DROP)
+      ATLTRACE(_T("Drop succeeded"));
+
+   dropSource.Cleanup();
+
+   OleUninitialize();
 
    return 0;
 }
