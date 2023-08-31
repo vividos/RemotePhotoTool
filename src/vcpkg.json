@@ -1,7 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
   "name": "remotephototool",
-  "version-string": "1.7.0",
+  "version-string": "1.7.1",
   "dependencies": [
     "wtl",
     "boost-multi-index",
