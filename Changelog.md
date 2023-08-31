@@ -24,7 +24,7 @@ work, and some things are not implemented yet, and may never be.
 The following libraries were updated:
 - Lua 5.4.6
 - IJG jpeg-9e
-- Canon ED-SDK version 13.16.0, released on 2022-12-07.
+- Canon ED-SDK version 13.17.0, released on 2023-06-12.
 
 ## 2020-06-30: Version 1.6.0 Build 129 ##
 
