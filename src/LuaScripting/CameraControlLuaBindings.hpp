@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2020 Michael Fink
+// Copyright (C) 2008-2026 Michael Fink
 //
 /// \file CameraControlLuaBindings.hpp Lua bindings for the CameraControl library
 //
@@ -11,7 +11,7 @@
 #include "Instance.hpp"
 #include <ulib/thread/RecursiveMutex.hpp>
 #include <ulib/thread/Event.hpp>
-#include <ulib/config/BoostAsio.hpp>
+#include <asio.hpp>
 #include "ShutterReleaseSettings.hpp"
 #include "RemoteReleaseControl.hpp"
 
@@ -34,7 +34,7 @@ public:
    typedef std::function<void(const CString&)> T_fnOutputDebugString;
 
    /// ctor; inits bindings
-   CameraControlLuaBindings(Lua::State& state, boost::asio::io_service::strand& strand);
+   CameraControlLuaBindings(Lua::State& state, asio::io_service::strand& strand);
 
    /// dtor; cleans up bindings
    virtual ~CameraControlLuaBindings();
@@ -93,7 +93,7 @@ private:
    void CleanupBindings();
 
    /// handler for timer used for event handling
-   void OnTimerEventHandling(const boost::system::error_code& error);
+   void OnTimerEventHandling(const std::error_code& error);
 
 
    // Sys functions
@@ -376,7 +376,7 @@ private:
    std::shared_ptr<Viewfinder> m_spViewfinder;
 
    /// strand to execute all Lua calls on
-   boost::asio::io_service::strand& m_strand;
+   asio::io_service::strand& m_strand;
 
    /// output debug string handler
    T_fnOutputDebugString m_fnOutputDebugString;
@@ -385,7 +385,7 @@ private:
    RecursiveMutex m_mtxAsyncWaitForCamera_InScript;
 
    /// timer for event handling
-   boost::asio::deadline_timer m_timerEventHandling;
+   asio::system_timer m_timerEventHandling;
 
    /// event that is set when the timer should stop
    ManualResetEvent m_evtStopTimer;

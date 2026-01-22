@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2023 Michael Fink
+// Copyright (C) 2008-2026 Michael Fink
 //
 /// \file SerialPort.hpp serial port classes
 //
@@ -8,7 +8,7 @@
 
 #include <memory>
 #include <functional>
-#include <ulib/config/BoostAsio.hpp>
+#include <asio.hpp>
 #include "SerialPortInfo.hpp"
 #include "SerialPortConfig.hpp"
 #include <vector>
@@ -26,7 +26,7 @@ namespace Serial
       typedef std::function<void(int errorCode, const std::vector<BYTE>& data, size_t bytesTransferred)> T_fnAsyncReceiveHandler;
 
       /// ctor opens serial port
-      SerialPort(LPCTSTR deviceName, boost::asio::io_service& service);
+      SerialPort(LPCTSTR deviceName, asio::io_service& service);
 
       /// dtor; closes serial port
       ~SerialPort();

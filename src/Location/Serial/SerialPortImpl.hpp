@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2018 Michael Fink
+// Copyright (C) 2008-2026 Michael Fink
 //
 /// \file SerialPortImpl.hpp serial port implementation
 //
@@ -8,18 +8,18 @@
 
 #include "stdafx.h"
 #include "SerialPort.hpp"
-#include <boost/asio/serial_port.hpp>
+#include <asio/serial_port.hpp>
 #include <ulib/SystemException.hpp>
 #include "SharedBuffer.hpp"
 
 using Serial::SerialPort;
 
-/// serial port implementation class using boost::asio::serial_port
+/// serial port implementation class using asio::serial_port
 class SerialPort::Impl
 {
 public:
    /// ctor
-   Impl(LPCSTR deviceName, boost::asio::io_service& service)
+   Impl(LPCSTR deviceName, asio::io_service& service)
       :m_serialPort(service, deviceName)
    {
    }
@@ -37,7 +37,7 @@ public:
    template <typename Opt>
    void SetOption(Opt& opt)
    {
-      boost::system::error_code ec;
+      std::error_code ec;
       m_serialPort.set_option(opt, ec);
       if (ec)
          throw SystemException(_T("SetOption"), ec.value(), __FILE__, __LINE__);
@@ -47,7 +47,7 @@ public:
    template <typename Opt>
    void GetOption(Opt& opt)
    {
-      boost::system::error_code ec;
+      std::error_code ec;
       m_serialPort.get_option(opt, ec);
       if (ec)
          throw SystemException(_T("GetOption"), ec.value(), __FILE__, __LINE__);
@@ -56,7 +56,7 @@ public:
    /// returns current baudrate
    unsigned int GetBaudrate()
    {
-      boost::asio::serial_port_base::baud_rate opt;
+      asio::serial_port_base::baud_rate opt;
       GetOption(opt);
       return opt.value();
    }
@@ -64,7 +64,7 @@ public:
    /// returns current byte size in bits
    unsigned int GetByteSize()
    {
-      boost::asio::serial_port_base::character_size opt;
+      asio::serial_port_base::character_size opt;
       GetOption(opt);
       return opt.value();
    }
@@ -72,10 +72,10 @@ public:
    /// returns current parity value
    SerialPortConfig::T_enParity GetParity()
    {
-      boost::asio::serial_port_base::parity opt;
+      asio::serial_port_base::parity opt;
       GetOption(opt);
-      return opt.value() == boost::asio::serial_port_base::parity::none ? SerialPortConfig::parityNone :
-         opt.value() == boost::asio::serial_port_base::parity::even ? SerialPortConfig::parityEven :
+      return opt.value() == asio::serial_port_base::parity::none ? SerialPortConfig::parityNone :
+         opt.value() == asio::serial_port_base::parity::even ? SerialPortConfig::parityEven :
          SerialPortConfig::parityOdd;
    }
 
@@ -85,70 +85,70 @@ public:
    /// \retval 15 1.5 stop bits
    unsigned int GetStopBits()
    {
-      boost::asio::serial_port_base::stop_bits opt;
+      asio::serial_port_base::stop_bits opt;
       GetOption(opt);
-      return opt.value() == boost::asio::serial_port_base::stop_bits::two ? 2 :
-         opt.value() == boost::asio::serial_port_base::stop_bits::one ? 1 : 15;
+      return opt.value() == asio::serial_port_base::stop_bits::two ? 2 :
+         opt.value() == asio::serial_port_base::stop_bits::one ? 1 : 15;
    }
 
    /// returns current flow control value
    SerialPortConfig::T_enFlowControl GetFlowControl()
    {
-      boost::asio::serial_port_base::flow_control opt;
+      asio::serial_port_base::flow_control opt;
       GetOption(opt);
-      return opt.value() == boost::asio::serial_port_base::flow_control::none ? SerialPortConfig::flowNone :
-         opt.value() == boost::asio::serial_port_base::flow_control::software ? SerialPortConfig::flowSoftware :
+      return opt.value() == asio::serial_port_base::flow_control::none ? SerialPortConfig::flowNone :
+         opt.value() == asio::serial_port_base::flow_control::software ? SerialPortConfig::flowSoftware :
          SerialPortConfig::flowHardware;
    }
 
    /// sets new baudrate value
    void SetBaudrate(unsigned int baudrate)
    {
-      boost::asio::serial_port_base::baud_rate opt(baudrate);
+      asio::serial_port_base::baud_rate opt(baudrate);
       SetOption(opt);
    }
 
    /// sets new byte size value, in bits
    void SetByteSize(unsigned int byteSize)
    {
-      boost::asio::serial_port_base::character_size opt(byteSize);
+      asio::serial_port_base::character_size opt(byteSize);
       SetOption(opt);
    }
 
    /// sets new parity value
    void SetParity(SerialPortConfig::T_enParity parity)
    {
-      boost::asio::serial_port_base::parity opt(
-         parity == SerialPortConfig::parityNone ? boost::asio::serial_port_base::parity::none :
-         parity == SerialPortConfig::parityEven ? boost::asio::serial_port_base::parity::even :
-         boost::asio::serial_port_base::parity::odd);
+      asio::serial_port_base::parity opt(
+         parity == SerialPortConfig::parityNone ? asio::serial_port_base::parity::none :
+         parity == SerialPortConfig::parityEven ? asio::serial_port_base::parity::even :
+         asio::serial_port_base::parity::odd);
       SetOption(opt);
    }
 
    /// sets new number of stop bits
    void SetStopBits(unsigned int stopBits)
    {
-      boost::asio::serial_port_base::stop_bits opt(
-         stopBits == 1 ? boost::asio::serial_port_base::stop_bits::one :
-         stopBits == 2 ? boost::asio::serial_port_base::stop_bits::two :
-         boost::asio::serial_port_base::stop_bits::onepointfive);
+      asio::serial_port_base::stop_bits opt(
+         stopBits == 1 ? asio::serial_port_base::stop_bits::one :
+         stopBits == 2 ? asio::serial_port_base::stop_bits::two :
+         asio::serial_port_base::stop_bits::onepointfive);
       SetOption(opt);
    }
 
    /// sets new flow control value
    void SetFlowControl(SerialPortConfig::T_enFlowControl flowControl)
    {
-      boost::asio::serial_port_base::flow_control opt(
-         flowControl == SerialPortConfig::flowNone ? boost::asio::serial_port_base::flow_control::none :
-         flowControl == SerialPortConfig::flowSoftware ? boost::asio::serial_port_base::flow_control::software :
-         boost::asio::serial_port_base::flow_control::hardware);
+      asio::serial_port_base::flow_control opt(
+         flowControl == SerialPortConfig::flowNone ? asio::serial_port_base::flow_control::none :
+         flowControl == SerialPortConfig::flowSoftware ? asio::serial_port_base::flow_control::software :
+         asio::serial_port_base::flow_control::hardware);
       SetOption(opt);
    }
 
    /// sends a break command
    void SendBreak()
    {
-      boost::system::error_code ec;
+      std::error_code ec;
       m_serialPort.send_break(ec);
       if (ec)
          throw SystemException(_T("SendBreak: ") + CString(ec.message().c_str()), ec.value(), __FILE__, __LINE__);
@@ -157,9 +157,9 @@ public:
    /// sends some data
    void Send(const std::vector<BYTE>& data)
    {
-      boost::system::error_code ec;
-      boost::asio::const_buffers_1 buffer(&data[0], data.size());
-      boost::asio::write(m_serialPort, buffer);
+      std::error_code ec;
+      asio::const_buffers_1 buffer(&data[0], data.size());
+      asio::write(m_serialPort, buffer);
       if (ec)
          throw SystemException(_T("Receive"), ec.value(), __FILE__, __LINE__);
    }
@@ -167,10 +167,10 @@ public:
    /// reveices data
    void Receive(std::vector<BYTE>& data, unsigned int numMaxSize)
    {
-      boost::system::error_code ec;
+      std::error_code ec;
 
       data.resize(numMaxSize);
-      boost::asio::mutable_buffers_1 buffer(&data[0], data.size());
+      asio::mutable_buffers_1 buffer(&data[0], data.size());
 
       std::size_t uiRead = m_serialPort.read_some(buffer, ec);
       if (ec)
@@ -181,7 +181,7 @@ public:
 
    /// async handler for receiving data
    static void AsyncReceiveHandler(
-      const boost::system::error_code& error,
+      const std::error_code& error,
       std::size_t bytesTransferred,
       SharedMutableBuffer recvBuffer,
       T_fnAsyncReceiveHandler asyncReceiveHandler)
@@ -208,5 +208,5 @@ public:
 
 private:
    /// serial port object
-   boost::asio::serial_port m_serialPort;
+   asio::serial_port m_serialPort;
 };

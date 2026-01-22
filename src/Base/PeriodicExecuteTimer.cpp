@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2020 Michael Fink
+// Copyright (C) 2008-2026 Michael Fink
 //
 /// \file PeriodicExecuteTimer.cpp Periodic execution timer
 //
@@ -8,7 +8,7 @@
 #include "PeriodicExecuteTimer.hpp"
 #include "SingleThreadExecutor.hpp"
 #include "SingleThreadExecutorImpl.hpp"
-#include <ulib/config/BoostAsio.hpp>
+#include <asio.hpp>
 #include <ulib/thread/LightweightMutex.hpp>
 
 /// PeriodicExecuteTimer implementation
@@ -19,8 +19,8 @@ struct PeriodicExecuteTimer::Impl :
    /// executor when the periodic timer is also destroyed
    std::shared_ptr<SingleThreadExecutor::Impl> m_executorImpl;
 
-   /// deadline timer
-   boost::asio::deadline_timer m_timer;
+   /// timer for periodic execution
+   asio::system_timer m_timer;
 
    /// timer interval
    unsigned int m_timerPeriodInMilliseconds;
@@ -43,7 +43,7 @@ struct PeriodicExecuteTimer::Impl :
    void InitTimer();
 
    /// timer handler
-   void OnTimer(const boost::system::error_code& error);
+   void OnTimer(const std::error_code& error);
 
    /// stops timer
    void Stop();
@@ -71,11 +71,11 @@ PeriodicExecuteTimer::Impl::~Impl() noexcept
 
 void PeriodicExecuteTimer::Impl::InitTimer()
 {
-   m_timer.expires_from_now(boost::posix_time::milliseconds(m_timerPeriodInMilliseconds));
+   m_timer.expires_from_now(std::chrono::milliseconds(m_timerPeriodInMilliseconds));
    m_timer.async_wait(std::bind(&Impl::OnTimer, shared_from_this(), std::placeholders::_1));
 }
 
-void PeriodicExecuteTimer::Impl::OnTimer(const boost::system::error_code& error)
+void PeriodicExecuteTimer::Impl::OnTimer(const std::error_code& error)
 {
    if (error)
       return; // timer was cancelled

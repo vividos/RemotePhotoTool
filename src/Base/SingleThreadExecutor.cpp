@@ -1,13 +1,13 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2020 Michael Fink
+// Copyright (C) 2008-2026 Michael Fink
 //
 /// \file SingleThreadExecutor.cpp Single-thread executor
 //
 #include "stdafx.h"
 #include "SingleThreadExecutor.hpp"
 #include "SingleThreadExecutorImpl.hpp"
-#include <ulib/config/BoostAsio.hpp>
+#include <asio.hpp>
 
 SingleThreadExecutor::Impl::~Impl() noexcept
 {
@@ -32,7 +32,7 @@ void SingleThreadExecutor::Impl::Run()
    while (!m_isFinished)
    {
       // process asio handlers, if any
-      boost::system::error_code ec;
+      std::error_code ec;
 
       m_ioService.poll_one(ec);
 

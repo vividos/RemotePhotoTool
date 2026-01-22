@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2018 Michael Fink
+// Copyright (C) 2008-2026 Michael Fink
 //
 /// \file SerialPort.cpp serial port classes
 //
@@ -12,7 +12,7 @@
 
 using Serial::SerialPort;
 
-SerialPort::SerialPort(LPCTSTR deviceName, boost::asio::io_service& service)
+SerialPort::SerialPort(LPCTSTR deviceName, asio::io_service& service)
 {
    m_spImpl.reset(new SerialPort::Impl(CStringA(deviceName), service));
 }

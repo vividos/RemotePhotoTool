@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2018 Michael Fink
+// Copyright (C) 2008-2026 Michael Fink
 //
 /// \file Receiver.cpp GPS receiver class
 //
@@ -33,7 +33,7 @@ public:
    CString m_serialPortDeviceName;
 
    /// Asio I/O service to use for serial port
-   boost::asio::io_service m_ioService;
+   asio::io_service m_ioService;
 
    /// serial port to use for receiving GPS data
    std::unique_ptr<Serial::SerialPort> m_serialPort;
@@ -203,10 +203,10 @@ void Receiver::RunWorkerThread()
          m_impl->m_ioService.run();
          break;
       }
-      catch (const boost::system::system_error& ex)
+      catch (const std::system_error& ex)
       {
          ATLTRACE(
-            _T("GPS::Receiver: caught boost::system::system_error exception: code=%u, what=%hs\n"),
+            _T("GPS::Receiver: caught std::system_error exception: code=%u, what=%hs\n"),
             ex.code().value(),
             ex.what());
       }

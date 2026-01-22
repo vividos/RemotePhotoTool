@@ -1,13 +1,13 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2015 Michael Fink
+// Copyright (C) 2008-2026 Michael Fink
 //
 /// \file LuaScriptWorkerThread.hpp Lua script worker thread
 //
 #pragma once
 
 // includes
-#include <ulib/config/BoostAsio.hpp>
+#include <asio.hpp>
 #include <thread>
 #include <ulib/thread/Thread.hpp>
 #include "CameraException.hpp"
@@ -22,7 +22,7 @@ public:
    LuaScriptWorkerThread()
       :m_ioService(1),
       m_strand(m_ioService),
-      m_upDefaultWork(new boost::asio::io_service::work(m_ioService)),
+      m_upDefaultWork(new asio::io_service::work(m_ioService)),
       m_thread(std::bind(&LuaScriptWorkerThread::Run, this))
    {
    }
@@ -58,7 +58,7 @@ public:
    }
 
    /// returns strand
-   boost::asio::io_service::strand& GetStrand() { return m_strand; }
+   asio::io_service::strand& GetStrand() { return m_strand; }
 
 private:
    /// thread function
@@ -137,13 +137,13 @@ private:
 
 private:
    /// io service
-   boost::asio::io_service m_ioService;
+   asio::io_service m_ioService;
 
    /// single strand to be used for Lua calls
-   boost::asio::io_service::strand m_strand;
+   asio::io_service::strand m_strand;
 
    /// default work
-   std::unique_ptr<boost::asio::io_service::work> m_upDefaultWork;
+   std::unique_ptr<asio::io_service::work> m_upDefaultWork;
 
    /// background thread
    std::thread m_thread;

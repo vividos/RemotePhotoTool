@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2020 Michael Fink
+// Copyright (C) 2008-2026 Michael Fink
 //
 /// \file SystemLuaBindings.hpp Lua bindings for system functionality
 //
@@ -8,7 +8,7 @@
 
 // includes
 #include "Lua.hpp"
-#include <ulib/config/BoostAsio.hpp>
+#include <asio.hpp>
 #include <ulib/thread/Event.hpp>
 
 // forward references
@@ -20,7 +20,7 @@ class SystemLuaBindings : public std::enable_shared_from_this<SystemLuaBindings>
 {
 public:
    /// ctor; inits bindings
-   SystemLuaBindings(LuaScheduler& scheduler, boost::asio::io_service::strand& strand);
+   SystemLuaBindings(LuaScheduler& scheduler, asio::io_service::strand& strand);
 
    /// dtor; cleans up bindings
    virtual ~SystemLuaBindings();
@@ -54,7 +54,7 @@ private:
    {
    public:
       /// ctor
-      ManualResetEvent(LuaScheduler& scheduler, boost::asio::io_service::strand& strand);
+      ManualResetEvent(LuaScheduler& scheduler, asio::io_service::strand& strand);
 
       /// init event object in given table
       void InitBindings(Lua::Table& manualResetEvent);
@@ -79,7 +79,7 @@ private:
       void RestartTimer(DWORD dwWaitTimeout);
 
       /// wait handler; checks for event state and resumes thread (yielded in wait())
-      void WaitHandler(const boost::system::error_code& error, DWORD dwWaitTimeout);
+      void WaitHandler(const std::error_code& error, DWORD dwWaitTimeout);
 
       /// returns internal event name
       CString GetEventName() const;
@@ -89,13 +89,13 @@ private:
       ::ManualResetEvent m_event;
 
       /// wait timer
-      boost::asio::deadline_timer m_timerWait;
+      asio::system_timer m_timerWait;
 
       /// Lua scheduler
       LuaScheduler& m_scheduler;
 
       /// strand to execute all Lua calls on
-      boost::asio::io_service::strand& m_strand;
+      asio::io_service::strand& m_strand;
    };
 
 private:
@@ -103,7 +103,7 @@ private:
    LuaScheduler& m_scheduler;
 
    /// strand to execute all Lua calls on
-   boost::asio::io_service::strand& m_strand;
+   asio::io_service::strand& m_strand;
 
    /// all events created by SysCreateEvent()
    std::vector<std::shared_ptr<ManualResetEvent>> m_vecAllEvents;

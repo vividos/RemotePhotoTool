@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2020 Michael Fink
+// Copyright (C) 2008-2026 Michael Fink
 //
 /// \file OneShotExecuteTimer.cpp One-shot execution timer
 //
@@ -8,7 +8,7 @@
 #include "OneShotExecuteTimer.hpp"
 #include "SingleThreadExecutor.hpp"
 #include "SingleThreadExecutorImpl.hpp"
-#include <ulib/config/BoostAsio.hpp>
+#include <asio.hpp>
 #include <ulib/thread/LightweightMutex.hpp>
 
 /// OneShotExecuteTimer implementation
@@ -20,7 +20,7 @@ struct OneShotExecuteTimer::Impl :
    std::shared_ptr<SingleThreadExecutor::Impl> m_executorImpl;
 
    /// system timer
-   boost::asio::system_timer m_timer;
+   asio::system_timer m_timer;
 
    /// mutext to protect callback and timer
    LightweightMutex m_mtxTimerCallback;
@@ -39,7 +39,7 @@ struct OneShotExecuteTimer::Impl :
    void InitTimer(time_t executeTime);
 
    /// timer handler
-   void OnTimer(const boost::system::error_code& error);
+   void OnTimer(const std::error_code& error);
 
    /// stops timer
    void Stop();
@@ -72,7 +72,7 @@ void OneShotExecuteTimer::Impl::InitTimer(time_t executeTime)
    m_timer.async_wait(std::bind(&Impl::OnTimer, shared_from_this(), std::placeholders::_1));
 }
 
-void OneShotExecuteTimer::Impl::OnTimer(const boost::system::error_code& error)
+void OneShotExecuteTimer::Impl::OnTimer(const std::error_code& error)
 {
    if (error)
       return; // timer was cancelled

@@ -5,7 +5,7 @@
   "dependencies": [
     "wtl",
     "boost-multi-index",
-    "boost-asio",
+    "asio",
     "libjpeg-turbo",
     "libexif",
     "lua"

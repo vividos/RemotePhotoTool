@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2020 Michael Fink
+// Copyright (C) 2008-2026 Michael Fink
 //
 /// \file CameraControlLuaBindings.cpp Lua bindings for the CameraControl library
 //
@@ -14,7 +14,7 @@
 #include "RemoteReleaseControl.hpp"
 #include "Viewfinder.hpp"
 #include "BulbReleaseControl.hpp"
-#include <ulib/config/BoostAsio.hpp>
+#include <asio.hpp>
 #include <atomic>
 
 /// name for Lua value in App object to store handler for asyncWaitForCamera()
@@ -38,7 +38,7 @@ LPCTSTR c_pszDownloadHandlerTable = _T("__DownloadHandler");
 /// cycle time for event timer
 const unsigned int c_uiEventTimerCycleInMilliseconds = 100;
 
-CameraControlLuaBindings::CameraControlLuaBindings(Lua::State& state, boost::asio::io_service::strand& strand)
+CameraControlLuaBindings::CameraControlLuaBindings(Lua::State& state, asio::io_service::strand& strand)
 :m_state(state),
 m_strand(strand),
 m_timerEventHandling(m_strand.context()),
@@ -349,13 +349,13 @@ void CameraControlLuaBindings::RestartEventTimer()
 {
    m_evtTimerStopped.Reset();
 
-   m_timerEventHandling.expires_from_now(boost::posix_time::milliseconds(c_uiEventTimerCycleInMilliseconds));
+   m_timerEventHandling.expires_from_now(std::chrono::milliseconds(c_uiEventTimerCycleInMilliseconds));
    m_timerEventHandling.async_wait(
       m_strand.wrap(
          std::bind(&CameraControlLuaBindings::OnTimerEventHandling, shared_from_this(), std::placeholders::_1)));
 }
 
-void CameraControlLuaBindings::OnTimerEventHandling(const boost::system::error_code& error)
+void CameraControlLuaBindings::OnTimerEventHandling(const std::error_code& error)
 {
    if (error || m_evtStopTimer.Wait(0))
    {

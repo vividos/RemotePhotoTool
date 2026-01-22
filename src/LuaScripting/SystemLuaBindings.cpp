@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2008-2015 Michael Fink
+// Copyright (C) 2008-2026 Michael Fink
 //
 /// \file SystemLuaBindings.cpp Lua bindings for system functionality
 //
@@ -15,7 +15,7 @@
 /// poll time for manual-reset events
 const unsigned int c_uiManualResetEventPollTimeInMs = 50;
 
-SystemLuaBindings::SystemLuaBindings(LuaScheduler& scheduler, boost::asio::io_service::strand& strand)
+SystemLuaBindings::SystemLuaBindings(LuaScheduler& scheduler, asio::io_service::strand& strand)
 :m_scheduler(scheduler),
 m_strand(strand)
 {
@@ -94,7 +94,7 @@ std::vector<Lua::Value> SystemLuaBindings::SysCreateEvent(Lua::State& state)
    return vecRetValues;
 }
 
-SystemLuaBindings::ManualResetEvent::ManualResetEvent(LuaScheduler& scheduler, boost::asio::io_service::strand& strand)
+SystemLuaBindings::ManualResetEvent::ManualResetEvent(LuaScheduler& scheduler, asio::io_service::strand& strand)
 :m_event(false),
 m_timerWait(strand.context()),
 m_scheduler(scheduler),
@@ -223,14 +223,14 @@ std::vector<Lua::Value> SystemLuaBindings::ManualResetEvent::Resume(Lua::State&,
 
 void SystemLuaBindings::ManualResetEvent::RestartTimer(DWORD dwWaitTimeout)
 {
-   m_timerWait.expires_from_now(boost::posix_time::milliseconds(c_uiManualResetEventPollTimeInMs));
+   m_timerWait.expires_from_now(std::chrono::milliseconds(c_uiManualResetEventPollTimeInMs));
    m_timerWait.async_wait(m_strand.wrap(
       std::bind(&SystemLuaBindings::ManualResetEvent::WaitHandler, shared_from_this(),
          std::placeholders::_1, dwWaitTimeout)
       ));
 }
 
-void SystemLuaBindings::ManualResetEvent::WaitHandler(const boost::system::error_code& error,
+void SystemLuaBindings::ManualResetEvent::WaitHandler(const std::error_code& error,
    DWORD dwWaitTimeout)
 {
    if (error)
