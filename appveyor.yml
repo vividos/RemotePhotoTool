@@ -1,12 +1,12 @@
 #
 # RemotePhotoTool - remote camera control software
-# Copyright (c) 2008-2023 Michael Fink
+# Copyright (c) 2008-2026 Michael Fink
 #
 # AppVeyor build configuration file
 #
 version: 1.7.1.{build}
 
-image: Visual Studio 2022
+image: Visual Studio 2026
 
 platform: Win32
 
@@ -18,14 +18,14 @@ cache:
 
 before_build:
   - ps: src\Patch-BuildVersion.ps1 -version $env:appveyor_build_version
-  - cmd: nuget restore src\RemotePhotoTool.sln
+  - cmd: nuget restore src\RemotePhotoTool.slnx
   - cmd: |
       cd "C:\Tools\vcpkg"
       git pull > nul
       call .\bootstrap-vcpkg.bat -disableMetrics
 
 build:
-  project: src\RemotePhotoTool.sln
+  project: src\RemotePhotoTool.slnx
   parallel: true
   verbosity: minimal
 

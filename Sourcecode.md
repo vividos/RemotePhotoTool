@@ -75,9 +75,9 @@ programs "Hugin" (for panorama stitching) and "Photomatix Pro" (for HDR generati
 
 # Installation of components #
 
-## Visual Studio Community 2022 ##
+## Visual Studio Community 2026 ##
 
-Install Visual Studio 2022. Any version will do, including Visual Studio Community, which
+Install Visual Studio 2026. Any version will do, including Visual Studio Community, which
 I'm using. Be sure to install the "Microsoft Foundation Classes for C++" feature, that can be found
 under "Programming Languages > Visual C++" node when installing Visual Studio.
 When installed into the default folders, the example batch files can be used to build the
@@ -107,7 +107,7 @@ To get Visual Studio integration, also install the "Wix Toolset Visual Studio 20
 
 ## RemotePhotoTool ##
 
-Just open the file `"src\RemotePhotoTool.sln"` and select `"Release"` and `"Win32"` in the toolbar.
+Just open the file `"src\RemotePhotoTool.slnx"` and select `"Release"` and `"Win32"` in the toolbar.
 Rebuild the application and run it.
 
 ## Release check list ##

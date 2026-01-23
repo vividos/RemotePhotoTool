@@ -1,0 +1,147 @@
+<Solution>
+  <Configurations>
+    <BuildType Name="AppVeyor" />
+    <BuildType Name="Debug" />
+    <BuildType Name="Release" />
+    <BuildType Name="SonarCloud" />
+    <Platform Name="Win32" />
+  </Configurations>
+  <Folder Name="/Documentation Files/">
+    <File Path="../appveyor.yml" />
+    <File Path="../Changelog.md" />
+    <File Path="../Credits.md" />
+    <File Path="../Features.md" />
+    <File Path="../License.md" />
+    <File Path="../LuaScripting.md" />
+    <File Path="../README.md" />
+    <File Path="../Screenshots.md" />
+    <File Path="../Sourcecode.md" />
+    <File Path="../SupportedCameras.md" />
+    <File Path="../TestCases.md" />
+    <File Path="../TODO.txt" />
+    <File Path="Patch-BuildVersion.ps1" />
+    <File Path="vcpkg.json" />
+  </Folder>
+  <Folder Name="/Documentation Files/Lua Scripts/">
+    <File Path="../scripts/BulbShutterRelease.lua" />
+    <File Path="../scripts/ListenEvents.lua" />
+    <File Path="../scripts/LuaQuickReference.lua" />
+    <File Path="../scripts/Multithreaded.lua" />
+    <File Path="../scripts/PrintProperties.lua" />
+    <File Path="../scripts/RemotePhotoTool.lua" />
+    <File Path="../scripts/TakeImage.lua" />
+    <File Path="../scripts/Viewfinder.lua" />
+    <File Path="../scripts/WaitForCamera.lua" />
+  </Folder>
+  <Folder Name="/Helper Projects/">
+    <Project Path="cppcheck/cppcheck.vcxproj">
+      <BuildType Solution="AppVeyor|*" Project="Release" />
+      <BuildType Solution="SonarCloud|*" Project="Release" />
+      <Build Solution="AppVeyor|*" Project="false" />
+      <Build Solution="SonarCloud|*" Project="false" />
+    </Project>
+    <Project Path="doxygen/doxygen.vcxproj">
+      <BuildType Solution="AppVeyor|*" Project="Release" />
+      <BuildType Solution="SonarCloud|*" Project="Release" />
+      <Build Solution="AppVeyor|*" Project="false" />
+      <Build Solution="SonarCloud|*" Project="false" />
+    </Project>
+    <Project Path="Setup/Setup.wixproj" Id="442ee287-dd84-4cec-9607-535a63b001ef">
+      <BuildDependency Project="CanonEOSShutterCount/CanonEOSShutterCount.vcxproj" />
+      <BuildDependency Project="RemotePhotoTool/RemotePhotoTool.vcxproj" />
+      <BuildDependency Project="RemotePhotoToolCmdline/RemotePhotoToolCmdline.vcxproj" />
+      <BuildDependency Project="RemoteScriptingEditor/RemoteScriptingEditor.vcxproj" />
+      <BuildType Solution="AppVeyor|*" Project="Release" />
+      <BuildType Solution="SonarCloud|*" Project="Release" />
+      <Platform Project="x86" />
+      <Build Solution="AppVeyor|*" />
+      <Build Solution="Debug|*" />
+      <Build Solution="Release|*" />
+    </Project>
+    <Project Path="Thirdparty/Thirdparty.vcxproj">
+      <BuildType Solution="AppVeyor|*" Project="Release" />
+      <BuildType Solution="SonarCloud|*" Project="Release" />
+    </Project>
+  </Folder>
+  <Folder Name="/Library Projects/">
+    <Project Path="Base/Base.vcxproj" Id="3ab1bb98-d491-47db-8d93-1dab3ce88c87">
+      <BuildType Solution="AppVeyor|*" Project="Release" />
+      <BuildType Solution="SonarCloud|*" Project="Release" />
+    </Project>
+    <Project Path="CameraControl/CameraControl.vcxproj" Id="ce953b34-5513-4719-aead-a61f0585ab34">
+      <BuildDependency Project="Base/Base.vcxproj" />
+      <BuildType Solution="AppVeyor|*" Project="Release" />
+      <BuildType Solution="SonarCloud|*" Project="Release" />
+    </Project>
+    <Project Path="Location/Location.vcxproj" Id="431ed9a1-2dc8-4c10-9c6b-e2d9a6103efd">
+      <BuildType Solution="AppVeyor|*" Project="Release" />
+      <BuildType Solution="SonarCloud|*" Project="Release" />
+    </Project>
+    <Project Path="Logic/Logic.vcxproj" Id="40627961-fc2d-4f09-8e74-073a0279a98a">
+      <BuildType Solution="AppVeyor|*" Project="Release" />
+      <BuildType Solution="SonarCloud|*" Project="Release" />
+    </Project>
+    <Project Path="LuaScripting/LuaScripting.vcxproj" Id="41b565f7-f668-4425-a93d-6cabc18f6d1f">
+      <BuildDependency Project="CameraControl/CameraControl.vcxproj" />
+      <BuildType Solution="AppVeyor|*" Project="Release" />
+      <BuildType Solution="SonarCloud|*" Project="Release" />
+    </Project>
+    <Project Path="RemotePhotoTool.CameraControl/RemotePhotoTool.CameraControl.vcxproj" Id="a8eaa77d-1747-4e3f-987c-eec2308c6d26">
+      <BuildDependency Project="Thirdparty/Thirdparty.vcxproj" />
+      <BuildType Solution="AppVeyor|*" Project="Release" />
+      <BuildType Solution="SonarCloud|*" Project="Release" />
+      <Build Solution="AppVeyor|*" Project="false" />
+    </Project>
+  </Folder>
+  <Folder Name="/Main Application Projects/">
+    <Project Path="CanonEOSShutterCount/CanonEOSShutterCount.vcxproj" Id="c1cb4553-07d9-4cf2-90cc-0bb23584ad00">
+      <BuildType Solution="AppVeyor|*" Project="Release" />
+      <BuildType Solution="SonarCloud|*" Project="Release" />
+    </Project>
+    <Project Path="GeoTagTool/GeoTagTool.vcxproj" Id="16415658-bb35-4bed-8d18-0e1bd0958745">
+      <BuildType Solution="AppVeyor|*" Project="Release" />
+      <BuildType Solution="SonarCloud|*" Project="Release" />
+    </Project>
+    <Project Path="MoveScriptGenerator/MoveScriptGenerator.vcxproj" Id="d1756f69-5398-4cc3-978e-25a5f59bdd7f">
+      <BuildType Solution="AppVeyor|*" Project="Release" />
+      <BuildType Solution="SonarCloud|*" Project="Release" />
+      <Build Solution="AppVeyor|*" Project="false" />
+    </Project>
+    <Project Path="RemotePhotoTool/RemotePhotoTool.vcxproj" Id="cdedf8b5-a808-4995-97eb-1289a84ff7ed">
+      <BuildDependency Project="Base/Base.vcxproj" />
+      <BuildDependency Project="Thirdparty/Thirdparty.vcxproj" />
+      <BuildType Solution="AppVeyor|*" Project="Release" />
+      <BuildType Solution="SonarCloud|*" Project="Release" />
+    </Project>
+    <Project Path="RemotePhotoToolCmdline/RemotePhotoToolCmdline.vcxproj" Id="caf7cfa3-1ef2-40a1-a08a-a7c609629c2a">
+      <BuildDependency Project="Base/Base.vcxproj" />
+      <BuildDependency Project="Thirdparty/Thirdparty.vcxproj" />
+      <BuildType Solution="AppVeyor|*" Project="Release" />
+      <BuildType Solution="SonarCloud|*" Project="Release" />
+    </Project>
+    <Project Path="RemoteScriptingEditor/RemoteScriptingEditor.vcxproj" Id="4a6e0938-3c68-44a8-a94a-ea879801d3d5">
+      <BuildDependency Project="Thirdparty/Thirdparty.vcxproj" />
+      <BuildType Solution="AppVeyor|*" Project="Release" />
+      <BuildType Solution="SonarCloud|*" Project="Release" />
+    </Project>
+    <Project Path="WpfDotNetCameraControl/WpfDotNetCameraControl.csproj" Id="ed6e5ce5-526c-4f2e-bdaf-dce758f32f3f">
+      <BuildType Solution="AppVeyor|*" Project="Release" />
+      <BuildType Solution="SonarCloud|*" Project="Release" />
+      <Build Solution="AppVeyor|*" Project="false" />
+    </Project>
+  </Folder>
+  <Folder Name="/Unit Tests/">
+    <Project Path="Location/Location.UnitTest/Location.UnitTest.vcxproj" Id="16be2561-a996-4a56-ac6d-c69fcde29075">
+      <BuildType Solution="AppVeyor|*" Project="Release" />
+      <BuildType Solution="SonarCloud|*" Project="Release" />
+    </Project>
+    <Project Path="Logic/Logic.UnitTest/Logic.UnitTest.vcxproj" Id="051c359a-ae9e-44d6-9f67-1df7e51e0778">
+      <BuildType Solution="AppVeyor|*" Project="Release" />
+      <BuildType Solution="SonarCloud|*" Project="Release" />
+    </Project>
+    <Project Path="LuaScripting/LuaScripting.UnitTest/LuaScripting.UnitTest.vcxproj" Id="35dc1e9a-e7f1-4dec-b7b8-fd4055292bb6">
+      <BuildType Solution="AppVeyor|*" Project="Release" />
+      <BuildType Solution="SonarCloud|*" Project="Release" />
+    </Project>
+  </Folder>
+</Solution>
