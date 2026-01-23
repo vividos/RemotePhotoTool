@@ -134,11 +134,11 @@ std::shared_ptr<PreviousImageInfo> PreviousImagesManager::SelectImageInfo(T_enRe
    case imageTypeNext:
       {
          if (m_vecPreviousImages.back() == spReferenceImageInfo)
-            return false; // already at end
+            return std::shared_ptr<PreviousImageInfo>(); // already at end
 
          auto iter = std::find(m_vecPreviousImages.begin(), m_vecPreviousImages.end(), spReferenceImageInfo);
          if (iter == m_vecPreviousImages.end())
-            return false; // not in this list!
+            return std::shared_ptr<PreviousImageInfo>(); // not in this list!
 
          // at this point: iter != end()
          ++iter;

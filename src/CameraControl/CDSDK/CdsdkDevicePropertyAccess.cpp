@@ -179,9 +179,9 @@ void DevicePropertyAccess::GetRawCdsdk(const Variant& v, unsigned int propId, st
    case cdDEVICE_PROP_FIRMWARE_VERSION:
       ATLASSERT(v.Type() == Variant::typeString);
       {
-         CString cszText = v.Get<CString>();
-         CStringA cszaText = cszText;
-         LPCSTR pszaText = cszaText.GetString();
+         CString text = v.Get<CString>();
+         CStringA ansiText{ text };
+         LPCSTR pszaText = ansiText.GetString();
          vecData.assign(pszaText, pszaText+strlen(pszaText)+1);
       }
       break;

@@ -107,7 +107,7 @@ void CameraFileSystemImpl::StartDownload(const FileInfo& fileInfo, T_fnDownloadF
    if (pos != -1)
       folder = fileInfo.m_filename.Left(pos);
 
-   CStringA name = fileInfo.m_filename.Mid(pos + 1);
+   CStringA name{ fileInfo.m_filename.Mid(pos + 1) };
 
    std::vector<unsigned char> buffer;
    buffer.resize(fileInfo.m_fileSize);

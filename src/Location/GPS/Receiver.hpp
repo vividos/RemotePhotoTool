@@ -6,6 +6,7 @@
 //
 #pragma once
 
+#include <memory>
 #include <ulib/Observer.hpp>
 
 class DateTime;

@@ -4,7 +4,7 @@ This document describes how the source code of RemotePhotoTool is organized.
 
 ## Source code ##
 
-The application is developed using C++. Features from C++17 are used where possible.
+The application is developed using C++. Features from C++20 are used where possible.
 
 The app uses classes from the Boost library where no appropriate class from the Standard
 C++ Library could be used. The application also uses other libraries. See the

@@ -263,7 +263,7 @@ void RemoteReleaseControlImpl::DownloadReleasedImage(cdUInt32 numData)
       return;
 
    // read data
-   CStringA cszaFilename = settings.Filename();
+   CStringA cszaFilename{ settings.Filename() };
    ReadReleaseData(cszaFilename, numData);
 
    // call finished handler

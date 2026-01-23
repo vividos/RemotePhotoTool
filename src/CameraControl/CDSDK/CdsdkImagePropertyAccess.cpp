@@ -445,6 +445,9 @@ class PropertyAccessReadWrite : public PropertyAccessRead<propId, T, defaultVal>
    typedef PropertyAccessRead<propId, T, defaultVal> BaseClass;
 
 public:
+   /// get function
+   typedef BaseClass::T_fnGet T_fnGet;
+
    /// set function
    typedef std::function<cdError(cdHSource, T)> T_fnSet;
 
@@ -484,6 +487,8 @@ class PropertyAccessReadWriteEnum : public PropertyAccessReadWrite<propId, T, de
    typedef PropertyAccessReadWrite<propId, T, defaultVal> BaseClass;
 
 public:
+   typedef BaseClass::T_fnGet T_fnGet; ///< get function
+   typedef BaseClass::T_fnSet T_fnSet; ///< set function
    typedef std::function<cdError(cdHSource, cdHEnum*)> T_fnEnumReset;   ///< function to reset enumeration
    typedef std::function<cdError(cdHEnum, cdUInt32*)> T_fnEnumCount;    ///< function to return count of values
    typedef std::function<cdError(cdHEnum, T*)> T_fnEnumNext;   ///< function to get next value
