@@ -49,8 +49,7 @@ TimeSpan Helper::ParseUTCTime(const CString& field)
       fractVal);
 
    // check fields
-   if (t.Status() == TimeSpan::invalid ||
-      t.Hours() >= 24 ||
+   if (t.Hours() >= 24 ||
       t.Minutes() > 59 ||
       t.Seconds() > 59 ||
       t.Milliseconds() > 1000)

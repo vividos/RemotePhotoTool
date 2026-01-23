@@ -19,7 +19,7 @@ class App
 {
 public:
    /// constructs a new application, using command line arguments
-   App(int argc, _TCHAR* argv[])
+   App(int argc, LPCTSTR argv[])
       :m_imageFileInfos(CollectImageFileInfos(argc, argv))
    {
    }
@@ -39,7 +39,7 @@ public:
 
 private:
    /// collects image file infos from passed command line arguments
-   static std::vector<ImageFileInfo> CollectImageFileInfos(int argc, _TCHAR* argv[])
+   static std::vector<ImageFileInfo> CollectImageFileInfos(int argc, LPCTSTR argv[])
    {
       std::vector<ImageFileInfo> allImages;
 
@@ -231,7 +231,7 @@ private:
 };
 
 /// main function
-int _tmain(int argc, _TCHAR* argv[])
+int _tmain(int argc, LPCTSTR argv[])
 {
    try
    {

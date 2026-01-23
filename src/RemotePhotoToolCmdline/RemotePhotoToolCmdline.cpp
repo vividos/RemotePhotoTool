@@ -10,7 +10,7 @@
 #include "CmdlineApp.hpp"
 
 /// command line app main function
-int _tmain(int argc, _TCHAR* argv[])
+int _tmain(int argc, LPCTSTR argv[])
 {
    try
    {

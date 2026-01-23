@@ -10,7 +10,7 @@
 #include "EDSDK/EdsdkShutterCounterReader.hpp"
 
 /// main function
-int _tmain(int, _TCHAR*[])
+int _tmain(int, LPCTSTR[])
 {
    try
    {

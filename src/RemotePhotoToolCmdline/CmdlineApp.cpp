@@ -49,7 +49,7 @@ void CmdlineApp::InitCrashReporter()
    CrashReporter::Init(cszFolder, _T("RemotePhotoToolCmdline"));
 }
 
-void CmdlineApp::Run(int argc, TCHAR* argv[])
+void CmdlineApp::Run(int argc, LPCTSTR argv[])
 {
    // parse options
    AppOptions options(m_vecCommandList);

@@ -26,7 +26,7 @@ public:
    static void InitCrashReporter();
 
    /// runs command line
-   void Run(int argc, TCHAR* argv[]);
+   void Run(int argc, LPCTSTR argv[]);
 
 private:
    /// executes app command

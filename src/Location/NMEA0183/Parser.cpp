@@ -292,7 +292,7 @@ void NMEA0183::Parser::OnSentenceTypeGNS(NMEA0183::SentenceInfo &sentence)
 
 void Parser::UpdateDateTimeFromTimeSpan(const TimeSpan& newTime)
 {
-   if (m_positionInfo.TimeStamp().Status() == DateTime::valid)
+   if (m_positionInfo.TimeStamp().Status() == DateTime::T_enStatus::valid)
    {
       DateTime oldTimeStamp = m_positionInfo.TimeStamp();
 

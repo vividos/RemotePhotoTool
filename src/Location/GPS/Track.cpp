@@ -1,6 +1,6 @@
 //
 // RemotePhotoTool - remote camera control software
-// Copyright (C) 2006-2018 Michael Fink
+// Copyright (C) 2006-2026 Michael Fink
 //
 /// \file Track.cpp WGS84 coordinate
 //
@@ -20,12 +20,12 @@ size_t Track::NumPoints() const
 
 DateTime Track::StartTime() const
 {
-   return m_trackPoints.empty() ? DateTime(DateTime::invalid) : m_trackPoints.front().m_timeStamp;
+   return m_trackPoints.empty() ? DateTime(DateTime::T_enStatus::invalid) : m_trackPoints.front().m_timeStamp;
 }
 
 DateTime Track::EndTime() const
 {
-   return m_trackPoints.empty() ? DateTime(DateTime::invalid) : m_trackPoints.back().m_timeStamp;
+   return m_trackPoints.empty() ? DateTime(DateTime::T_enStatus::invalid) : m_trackPoints.back().m_timeStamp;
 }
 
 void Track::AddPoint(const GPS::WGS84::Coordinate& coordinate, const DateTime& timeStamp)
@@ -40,7 +40,7 @@ std::pair<GPS::WGS84::Coordinate, DateTime> Track::FindNearest(const DateTime& t
 
    if (iter == m_trackPoints.get<1>().end())
    {
-      return std::make_pair(GPS::WGS84::Coordinate(), DateTime(DateTime::invalid));
+      return std::make_pair(GPS::WGS84::Coordinate(), DateTime(DateTime::T_enStatus::invalid));
    }
 
    return std::make_pair(iter->m_coord, iter->m_timeStamp);
@@ -48,7 +48,7 @@ std::pair<GPS::WGS84::Coordinate, DateTime> Track::FindNearest(const DateTime& t
 
 bool Track::InTrackRange(const DateTime& timeStamp) const
 {
-   return timeStamp.Status() == DateTime::valid &&
+   return timeStamp.Status() == DateTime::T_enStatus::valid &&
       !m_trackPoints.empty() &&
       timeStamp >= StartTime() &&
       timeStamp <= EndTime();
