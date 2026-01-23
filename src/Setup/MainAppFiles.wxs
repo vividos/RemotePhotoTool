@@ -2,7 +2,7 @@
 <!--
 
   RemotePhotoTool - remote camera control software
-  Copyright (C) 2008-2020 Michael Fink
+  Copyright (C) 2008-2026 Michael Fink
 
   MainAppFiles.wxs - Main application file components (fragment)
 
@@ -36,8 +36,8 @@
         <File Id="LuaDll" Name="lua.dll" DiskId="1" KeyPath="yes" Source="$(var.BinaryFolder)\lua.dll" />
       </Component>
 
-      <Component Id="LibExifDll" Guid="*" Directory="INSTALLDIR">
-        <File Id="LibExifDll" Name="libexif.dll" DiskId="1" KeyPath="yes" Source="$(var.BinaryFolder)\libexif.dll" />
+      <Component Id="Exif12Dll" Guid="*" Directory="INSTALLDIR">
+        <File Id="Exif12Dll" Name="exif-12.dll" DiskId="1" KeyPath="yes" Source="$(var.BinaryFolder)\exif-12.dll" />
       </Component>
 
       <Component Id="LibWdiDll" Guid="*" Directory="INSTALLDIR">
